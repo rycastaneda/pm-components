@@ -18,7 +18,7 @@ const CategoryTypeList = ({ types, onTypeClick }) => (
 CategoryTypeList.propTypes = {
     types: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
-        selected: PropTypes.bool.isRequired,
+        selected: PropTypes.bool,
         title: PropTypes.string.isRequired
     }).isRequired).isRequired,
     onTypeClick: PropTypes.func.isRequired

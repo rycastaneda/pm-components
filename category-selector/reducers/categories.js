@@ -1,10 +1,23 @@
-export default function categories(state = [], action) {
+import { GET_CATEGORY_LIST, SELECT_CATEGORY } from '../constants/ActionTypes';
+import { combineReducers } from 'redux';
 
-    if (action.type === 'ADD') {
-        return state.concat([ action.text ]);
+const getCategories = (state = [], action) => {
+    if (action.type === GET_CATEGORY_LIST) {
+        return state.concat([action.text]);
+    } else {
+        return state;
     }
-    else {
-        return state
-    }
+};
 
-}
+const selectCategory = (state = [], action) => {
+    if (action.type === SELECT_CATEGORY) {
+        return state.concat([action.text]);
+    } else {
+        return state;
+    }
+};
+
+export default combineReducers({
+    getCategories,
+    selectCategory
+});

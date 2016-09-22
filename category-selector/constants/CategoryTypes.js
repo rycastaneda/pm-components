@@ -1,6 +1,7 @@
-export const CATEGORY_TYPES = [{
+export const TYPES =  [{
     id: 1,
-    title: 'Equipment'
+    title: 'Equipment',
+    selected: true
 }, {
     id: 2,
     title: 'Trades'

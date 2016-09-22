@@ -16,7 +16,6 @@ const CategoryList = ({ categories, onCategoryClick }) => (
 CategoryList.propTypes = {
     categories: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
-        selected: PropTypes.bool.isRequired,
         title: PropTypes.string.isRequired
     }).isRequired).isRequired,
     onCategoryClick: PropTypes.func.isRequired

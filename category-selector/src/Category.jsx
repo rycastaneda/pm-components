@@ -1,9 +1,8 @@
 import React, { PropTypes } from 'react';
 
-const Category = ({ id, title, selected, onClick }) => (
+const Category = ({ id, title, onClick }) => (
     <option
         onClick={onClick}
-        selected={selected}
         value={id}
     >
         {title}
@@ -13,7 +12,6 @@ const Category = ({ id, title, selected, onClick }) => (
 Category.propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
-    selected: PropTypes.bool.isRequired,
     onClick: PropTypes.func.isRequired
 };
 
