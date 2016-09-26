@@ -1,15 +1,18 @@
-[
-  {
-    "type": "categories",
-    "id": 1,
-    "attributes": {
-      "title": "Piling package"
+{
+  "data": [
+    {
+      "type": "categories",
+      "id": 1,
+      "attributes": {
+        "title": "Piling package"
+      }
+    },
+    {
+      "type": "categories",
+      "id": 2,
+      "attributes": {
+        "title": "Something else"
+      }
     }
-  },{
-    "type": "categories",
-    "id": 2,
-    "attributes": {
-      "title": "Something else"
-    }
-  }
-]
+  ]
+}

@@ -2,8 +2,8 @@ import React, { PropTypes } from 'react';
 import CategoryType from './CategoryType';
 
 const CategoryTypeList = ({ types, onTypeClick }) => (
-    <div className="something">
-        <ul>
+    <div className="col-xs-12 mar-btm">
+        <ul className="category-types btn-group btn-group-justified">
         {types.map(type =>
             <CategoryType
                 key={type.id}

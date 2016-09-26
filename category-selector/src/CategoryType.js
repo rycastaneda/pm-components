@@ -1,9 +1,10 @@
 import React, { PropTypes } from 'react';
 
 const CategoryType = ({ id, title, selected = false, onClick }) => (
-    <li id={id}
+    <li
+        className={`input-group-addon category-types__item ${selected ? 'category-types__item--selected' : ''}`}
+        id={id}
         onClick={onClick}
-        selected={selected}
     >
         {title}
     </li>

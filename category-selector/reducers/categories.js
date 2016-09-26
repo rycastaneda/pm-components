@@ -1,23 +1,47 @@
-import { GET_CATEGORY_LIST, SELECT_CATEGORY } from '../constants/ActionTypes';
+import { SELECT_CATEGORY_TYPE, REQUEST_CATEGORIES, RECEIVE_CATEGORIES } from '../constants/ActionTypes';
 import { combineReducers } from 'redux';
 
-const getCategories = (state = [], action) => {
-    if (action.type === GET_CATEGORY_LIST) {
-        return state.concat([action.text]);
-    } else {
-        return state;
-    }
-};
 
-const selectCategory = (state = [], action) => {
-    if (action.type === SELECT_CATEGORY) {
-        return state.concat([action.text]);
-    } else {
-        return state;
+export function selectedCategoryType(state = '', action) {
+    switch (action.type) {
+        case SELECT_CATEGORY_TYPE:
+            return action.categoryType;
+        default:
+            return state;
     }
-};
+}
 
-export default combineReducers({
-    getCategories,
-    selectCategory
-});
+function categories(state = {
+    isFetching: false,
+    didInvalidate: false,
+    items: []
+}, action) {
+    switch (action.type) {
+        case REQUEST_CATEGORIES:
+            return Object.assign({}, state, {
+                isFetching: true,
+                didInvalidate: false
+            });
+        case RECEIVE_CATEGORIES:
+            return Object.assign({}, state, {
+                isFetching: false,
+                didInvalidate: false,
+                items: action.categories,
+                lastUpdated: action.receivedAt
+            });
+        default:
+            return state;
+    }
+}
+
+export function postsByCategoryType(state = {}, action) {
+    switch (action.type) {
+        case RECEIVE_CATEGORIES:
+        case REQUEST_CATEGORIES:
+            return Object.assign({}, state, {
+                [action.categoryType]: categories(state[action.categoryType], action)
+            });
+        default:
+            return state;
+    }
+}

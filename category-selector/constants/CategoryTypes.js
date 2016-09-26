@@ -1,4 +1,4 @@
-export const TYPES =  [{
+export const CATEGORY_TYPES =  [{
     id: 1,
     title: 'Equipment',
     selected: true

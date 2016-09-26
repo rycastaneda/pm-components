@@ -1,17 +1,18 @@
 import React, { PropTypes } from 'react';
 
-const Category = ({ id, title, onClick }) => (
+
+const Category = ({ id, attributes, onClick }) => (
     <option
         onClick={onClick}
         value={id}
     >
-        {title}
+        {attributes.title}
     </option>
 );
 
 Category.propTypes = {
     id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
+    attributes: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired
 };
 
