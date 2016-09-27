@@ -12,17 +12,13 @@ class CategorySelection extends Component {
         super(props);
         // We need to do it because ES6 class properties do not automatically bind to the React class instance
         this.handleCategoryTypeClick = this.handleCategoryTypeClick.bind(this);
-        this.onSuggestions1FetchRequested = this.onSuggestions1FetchRequested.bind(this);
-        this.onSuggestions2FetchRequested = this.onSuggestions2FetchRequested.bind(this);
+        this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this);
         this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this);
-        this.onSuggestion1Selected = this.onSuggestion1Selected.bind(this);
-        this.onSuggestion2Selected = this.onSuggestion2Selected.bind(this);
-        this.onSuggestion3Selected = this.onSuggestion3Selected.bind(this);
+        this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
         this.getSuggestionValue = this.getSuggestionValue.bind(this);
         this.renderSuggestion = this.renderSuggestion.bind(this);
         this.shouldRenderSuggestions = this.shouldRenderSuggestions.bind(this);
         this.onChange = this.onChange.bind(this);
-        this.onChange2 = this.onChange2.bind(this);
         this.onFocus = this.onFocus.bind(this);
     }
 
@@ -42,30 +38,20 @@ class CategorySelection extends Component {
         this.props.dispatch(selectCategoryType(nextCategoryType));
     }
 
-    onSuggestions1FetchRequested({ value }) {
-        const defaultList = this.props.categories;
-        this.props.dispatch(fetchRequestedSuggestions(defaultList, value, 1));
-    }
-
-    onSuggestions2FetchRequested({ value }) {
-        const list = this.props.selectedCategories[1].related;
-        this.props.dispatch(fetchRequestedSuggestions(list, value, 2));
+    onSuggestionsFetchRequested(index) {
+        return ({ value }) => {
+            this.props.dispatch(fetchRequestedSuggestions(value, index));
+        }
     }
 
     onSuggestionsClearRequested() {
         this.props.dispatch(resetSuggestions());
     }
 
-    onSuggestion1Selected(event, { suggestion }) {
-        this.props.dispatch(selectCategory(suggestion));
-    }
-
-    onSuggestion2Selected(event, { suggestion }) {
-        this.props.dispatch(selectCategory(suggestion, 2));
-    }
-
-    onSuggestion3Selected(event, { suggestion }) {
-        this.props.dispatch(selectCategory(suggestion, 3));
+    onSuggestionSelected(index) {
+        return (event, { suggestion }) => {
+            this.props.dispatch(selectCategory(suggestion, index));
+        }
     }
 
     // Indicates what should input value be when suggestion is clicked
@@ -85,14 +71,11 @@ class CategorySelection extends Component {
         return true;
     }
 
-    onChange(event, { newValue }) {
-        console.log(event);
-       this.props.dispatch(requestSuggestionsIfNeeded(newValue, 1));
-    }
-
-    onChange2(event, { newValue }) {
-        console.log(event);
-        this.props.dispatch(requestSuggestionsIfNeeded(newValue, 2));
+    onChange(index) {
+        return (event, { newValue }) => {
+            console.log(event);
+            this.props.dispatch(requestSuggestionsIfNeeded(newValue, index));
+        };
     }
 
     onFocus(event) {
@@ -115,17 +98,10 @@ class CategorySelection extends Component {
             placeholder: 'Select or type the category'
         };
 
-        const inputProps = Object.assign({}, DEFAULT_INPUT_PROPS, {
+        const inputProps = index => Object.assign({}, DEFAULT_INPUT_PROPS, {
             id: 'categories-input-1',
-            value: inputs[1],
-            onChange: this.onChange
-        });
-
-
-        const inputProps2 = Object.assign({}, DEFAULT_INPUT_PROPS, {
-            id: 'categories-input-2',
-            value: inputs[2],
-            onChange: this.onChange2
+            value: inputs[index],
+            onChange: this.onChange(index)
         });
 
         return (
@@ -141,29 +117,19 @@ class CategorySelection extends Component {
                     onTypeClick={this.handleCategoryTypeClick}
                 />
 
-                <Autosuggest
-                    id="categories-1"
-                    suggestions={suggestions}
-                    onSuggestionsFetchRequested={this.onSuggestions1FetchRequested}
-                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                    onSuggestionSelected={this.onSuggestion1Selected}
-                    getSuggestionValue={this.getSuggestionValue}
-                    renderSuggestion={this.renderSuggestion}
-                    shouldRenderSuggestions={this.shouldRenderSuggestions}
-                    inputProps={inputProps}
-                />
-
-                <Autosuggest
-                    id="categories-2"
-                    suggestions={suggestions}
-                    onSuggestionsFetchRequested={this.onSuggestions2FetchRequested}
-                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                    onSuggestionSelected={this.onSuggestion2Selected}
-                    getSuggestionValue={this.getSuggestionValue}
-                    renderSuggestion={this.renderSuggestion}
-                    shouldRenderSuggestions={this.shouldRenderSuggestions}
-                    inputProps={inputProps2}
-                />
+                {selectedCategories.map((category, index) => (
+                    <Autosuggest
+                        id="categories-{index}"
+                        suggestions={suggestions[index]}
+                        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested(index)}
+                        onSuggestionsClearRequested={this.onSuggestionsClearRequested(index)}
+                        onSuggestionSelected={this.onSuggestionSelected(index)}
+                        getSuggestionValue={this.getSuggestionValue}
+                        renderSuggestion={this.renderSuggestion}
+                        shouldRenderSuggestions={this.shouldRenderSuggestions}
+                        inputProps={inputProps(index)}
+                    />
+                ))}
 
             </div>
         );
@@ -177,8 +143,8 @@ CategorySelection.propTypes = {
     isFetching: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired,
     suggestions: PropTypes.array,
-    inputs: PropTypes.object,
-    selectedCategories: PropTypes.object
+    inputs: PropTypes.array,
+    selectedCategories: PropTypes.array
 };
 
 function mapStateToProps(state) {

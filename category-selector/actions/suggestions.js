@@ -11,12 +11,11 @@ function escapeRegexCharacters(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function getSuggestions(list, value) {
+function getSuggestions(value) {
     const escapedValue = escapeRegexCharacters(value.trim());
     const regex = new RegExp('^' + escapedValue, 'i');
-    console.log(list);
-    // const list = state.categoriesByCategoryType[state.selectedCategoryType].items;
-
+    
+    const list = state.selectedCategory[state.selectedCategoryType].related
     return list.filter(item => regex.test(item.attributes.title));
 }
 
@@ -33,35 +32,35 @@ function resetInputs() {
     };
 }
 
-function shouldRequestSuggestions(state, value, categoryLevel) {
-    return state.inputs[categoryLevel] !== value;
+function shouldRequestSuggestions(state, value, index) {
+    return state.inputs[index] !== value;
 }
 
-export function fetchRequestedSuggestions(list, value, categoryLevel) {
+export function fetchRequestedSuggestions(value, index) {
     return (dispatch) => {
-        dispatch(requestSuggestions(value, categoryLevel));
-        const suggestions = getSuggestions(list, value);
+        dispatch(requestSuggestions(value, index));
+        const suggestions = getSuggestions(value);
 
         return dispatch(receiveSuggestions(suggestions));
     };
 }
 
-export function requestSuggestions(value, categoryLevel) {
+export function requestSuggestions(value, index) {
     return {
         type: REQUEST_SUGGESTIONS,
-        categoryLevel,
+        index,
         value
     };
 }
 
 
 
-export function requestSuggestionsIfNeeded(value, categoryLevel) {
+export function requestSuggestionsIfNeeded(value, index) {
     return (dispatch, getState) => {
-        if (shouldRequestSuggestions(getState(), value, categoryLevel)) {
+        if (shouldRequestSuggestions(getState(), value, index)) {
             dispatch(resetInputs());
 
-            return dispatch(requestSuggestions(value, categoryLevel));
+            return dispatch(requestSuggestions(value, index));
         }
     };
 }
@@ -73,10 +72,10 @@ export function resetSuggestions() {
     };
 }
 
-export function selectCategory(category, categoryLevel = 1) {
+export function selectCategory(category, index) {
     return {
         type: SELECT_CATEGORY,
-        categoryLevel,
+        index,
         category
     };
 }

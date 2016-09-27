@@ -8,15 +8,15 @@
       },
       "related": [
         {
-          "type": "subcategories",
-          "id": 1,
+          "type": "categories",
+          "id": 2,
           "attributes": {
             "title": "New category"
           },
           "related": [
             {
-              "type": "subcategories",
-              "id": 1,
+              "type": "categories",
+              "id": 3,
               "attributes": {
                 "title": "New category 333"
               }
@@ -27,7 +27,7 @@
     },
     {
       "type": "categories",
-      "id": 2,
+      "id": 4,
       "attributes": {
         "title": "Something else"
       }

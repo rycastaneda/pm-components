@@ -1,10 +1,10 @@
 import { SELECT_CATEGORY_TYPE, REQUEST_CATEGORIES, RECEIVE_CATEGORIES } from '../constants/ActionTypes';
 
 
-export function selectedCategoryType(state = 1, action) {
+export function selectedCategoryType(state = [1], action) {
     switch (action.type) {
         case SELECT_CATEGORY_TYPE:
-            return action.categoryType;
+            return [action.categoryType];
         default:
             return state;
     }

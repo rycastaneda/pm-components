@@ -1,11 +1,5 @@
 import { RECEIVE_SUGGESTIONS, REQUEST_SUGGESTIONS, RESET_SUGGESTIONS, SELECT_CATEGORY, RESET_INPUTS } from '../constants/ActionTypes';
 
-const DEFAULT_INPUT_STATE = {
-    1: '',
-    2: '',
-    3: ''
-};
-
 export function suggestions(state = [], action) {
     switch (action.type) {
         case RECEIVE_SUGGESTIONS:
@@ -16,28 +10,29 @@ export function suggestions(state = [], action) {
     }
 }
 
-export function inputs(state = DEFAULT_INPUT_STATE, action) {
+export function inputs(state = [], action) {
     switch (action.type) {
         case REQUEST_SUGGESTIONS:
-            return Object.assign({}, state, {
-                [action.categoryLevel]: action.value
-            });
+            return [
+                ...state.slice(0, action.index),
+                action.value,
+                ...state.slice(action.index + 1)
+            ];
         case RESET_INPUTS:
-            return Object.assign({}, state, {
-                2: '',
-                3: ''
-            });
+            return state.slice(0, action.index + 1);
         default:
             return state;
     }
 }
 
-export function selectedCategories(state = {}, action) {
+export function selectedCategories(state = [], action) {
     switch (action.type) {
         case SELECT_CATEGORY:
-            return Object.assign({}, state, {
-                [action.categoryLevel]: action.category
-            });
+            return [
+                ...state.slice(0, action.index),
+                action.category,
+                ...state.slice(action.index + 1)
+            ];
         default:
             return state;
     }
