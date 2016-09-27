@@ -1,8 +1,7 @@
 import { SELECT_CATEGORY_TYPE, REQUEST_CATEGORIES, RECEIVE_CATEGORIES } from '../constants/ActionTypes';
-import { combineReducers } from 'redux';
 
 
-export function selectedCategoryType(state = '', action) {
+export function selectedCategoryType(state = 1, action) {
     switch (action.type) {
         case SELECT_CATEGORY_TYPE:
             return action.categoryType;
@@ -34,7 +33,7 @@ function categories(state = {
     }
 }
 
-export function postsByCategoryType(state = {}, action) {
+export function categoriesByCategoryType(state = {}, action) {
     switch (action.type) {
         case RECEIVE_CATEGORIES:
         case REQUEST_CATEGORIES:

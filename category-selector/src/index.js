@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import configureStore from './configureStore';
 import { setEndpointHost, setEndpointPath } from 'redux-json-api';
+import configureStore from './configureStore';
 
 import CategorySelection from './CategorySelection';
 

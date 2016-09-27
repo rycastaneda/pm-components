@@ -5,7 +5,25 @@
       "id": 1,
       "attributes": {
         "title": "Piling package"
-      }
+      },
+      "related": [
+        {
+          "type": "subcategories",
+          "id": 1,
+          "attributes": {
+            "title": "New category"
+          },
+          "related": [
+            {
+              "type": "subcategories",
+              "id": 1,
+              "attributes": {
+                "title": "New category 333"
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "type": "categories",

@@ -1,5 +1,5 @@
+
 import { SELECT_CATEGORY_TYPE, REQUEST_CATEGORIES, RECEIVE_CATEGORIES } from '../constants/ActionTypes';
-import { readEndpoint } from 'redux-json-api';
 import _categories from '../mocks/categories.json';
 
 function requestCategories(categoryType) {
@@ -9,7 +9,7 @@ function requestCategories(categoryType) {
     };
 }
 
-function receiveCategores(categoryType, json) {
+function receiveCategories(categoryType, json) {
     return {
         type: RECEIVE_CATEGORIES,
         categoryType,
@@ -22,19 +22,19 @@ function fetchCategories(categoryType) {
     return (dispatch) => {
         dispatch(requestCategories(categoryType));
 
-        return dispatch(receiveCategores(categoryType, _categories));
+        return dispatch(receiveCategories(categoryType, _categories));
 
         // return dispatch(readEndpoint(`api/users/${categoryType}`))
             // .then(response => response)
-            // .then(json => dispatch(receiveCategores(categoryType, json)));
+            // .then(json => dispatch(receiveCategories(categoryType, json)));
     };
 }
 
 function shouldFetchCategories(state, categoryType) {
-    const posts = state.postsByCategoryType[categoryType];
-    if (!posts) {
+    const categoryList = state.categoriesByCategoryType[categoryType];
+    if (!categoryList) {
         return true;
-    } else if (posts.isFetching) {
+    } else if (categoryList.isFetching) {
         return false;
     } else {
         return console.log('terrr');

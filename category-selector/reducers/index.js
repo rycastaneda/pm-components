@@ -1,9 +1,13 @@
 import { combineReducers } from 'redux';
 import { reducer as api } from 'redux-json-api';
-import { postsByCategoryType, selectedCategoryType } from './categories';
+import { categoriesByCategoryType, selectedCategoryType } from './categories';
+import { suggestions, inputs, selectedCategories } from './suggestions';
 
 export default combineReducers({
     api,
-    postsByCategoryType,
-    selectedCategoryType
+    categoriesByCategoryType,
+    selectedCategoryType,
+    suggestions,
+    inputs,
+    selectedCategories
 });

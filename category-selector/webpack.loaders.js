@@ -1,6 +1,6 @@
 module.exports = [
     {
-        test: /\.jsx?$/,
+        test: /\.js/,
         exclude: /(node_modules|bower_components|dist)/,
         loader: 'babel'
     },
