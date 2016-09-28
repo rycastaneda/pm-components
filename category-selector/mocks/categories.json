@@ -31,6 +31,230 @@
       "attributes": {
         "title": "Something else"
       }
+    },
+    {
+      "type": "categories",
+      "id": 5,
+      "attributes": {
+        "title": "Piling package"
+      },
+      "related": [
+        {
+          "type": "categories",
+          "id": 2,
+          "attributes": {
+            "title": "New category"
+          },
+          "related": [
+            {
+              "type": "categories",
+              "id": 3,
+              "attributes": {
+                "title": "New category 333"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "categories",
+      "id": 6,
+      "attributes": {
+        "title": "Something else"
+      }
+    },
+    {
+      "type": "categories",
+      "id": 7,
+      "attributes": {
+        "title": "Piling package"
+      },
+      "related": [
+        {
+          "type": "categories",
+          "id": 2,
+          "attributes": {
+            "title": "New category"
+          },
+          "related": [
+            {
+              "type": "categories",
+              "id": 3,
+              "attributes": {
+                "title": "New category 333"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "categories",
+      "id": 8,
+      "attributes": {
+        "title": "Something else"
+      }
+    },
+    {
+      "type": "categories",
+      "id": 9,
+      "attributes": {
+        "title": "Piling package"
+      },
+      "related": [
+        {
+          "type": "categories",
+          "id": 2,
+          "attributes": {
+            "title": "New category"
+          },
+          "related": [
+            {
+              "type": "categories",
+              "id": 3,
+              "attributes": {
+                "title": "New category 333"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "categories",
+      "id": 10,
+      "attributes": {
+        "title": "Something else"
+      }
+    },
+    {
+      "type": "categories",
+      "id": 1,
+      "attributes": {
+        "title": "Piling package"
+      },
+      "related": [
+        {
+          "type": "categories",
+          "id": 2,
+          "attributes": {
+            "title": "New category"
+          },
+          "related": [
+            {
+              "type": "categories",
+              "id": 3,
+              "attributes": {
+                "title": "New category 333"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "categories",
+      "id": 4,
+      "attributes": {
+        "title": "Something else"
+      }
+    },
+    {
+      "type": "categories",
+      "id": 5,
+      "attributes": {
+        "title": "Piling package"
+      },
+      "related": [
+        {
+          "type": "categories",
+          "id": 2,
+          "attributes": {
+            "title": "New category"
+          },
+          "related": [
+            {
+              "type": "categories",
+              "id": 3,
+              "attributes": {
+                "title": "New category 333"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "categories",
+      "id": 6,
+      "attributes": {
+        "title": "Something else"
+      }
+    },
+    {
+      "type": "categories",
+      "id": 7,
+      "attributes": {
+        "title": "Piling package"
+      },
+      "related": [
+        {
+          "type": "categories",
+          "id": 2,
+          "attributes": {
+            "title": "New category"
+          },
+          "related": [
+            {
+              "type": "categories",
+              "id": 3,
+              "attributes": {
+                "title": "New category 333"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "categories",
+      "id": 8,
+      "attributes": {
+        "title": "Something else"
+      }
+    },
+    {
+      "type": "categories",
+      "id": 9,
+      "attributes": {
+        "title": "Piling package"
+      },
+      "related": [
+        {
+          "type": "categories",
+          "id": 2,
+          "attributes": {
+            "title": "New category"
+          },
+          "related": [
+            {
+              "type": "categories",
+              "id": 3,
+              "attributes": {
+                "title": "New category 333"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "categories",
+      "id": 10,
+      "attributes": {
+        "title": "Something else"
+      }
     }
   ]
 }

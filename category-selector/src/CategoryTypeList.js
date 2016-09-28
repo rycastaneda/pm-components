@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import CategoryType from './CategoryType';
 
-const CategoryTypeList = ({ types, onTypeClick }) => (
+const CategoryTypeList = ({ types, onTypeClick, selected }) => (
     <div
         className="col-xs-12 mar-btm">
         <ul
@@ -11,6 +11,7 @@ const CategoryTypeList = ({ types, onTypeClick }) => (
                 key={type.id}
                 {...type}
                 onClick={() => onTypeClick(type)}
+                selected={selected === type.attributes.title}
             />
         )}
         </ul>
@@ -22,8 +23,8 @@ CategoryTypeList.propTypes = {
         id: PropTypes.number.isRequired,
         attributes: PropTypes.object
     }).isRequired).isRequired,
-    onTypeClick: PropTypes.func.isRequired
+    onTypeClick: PropTypes.func.isRequired,
+    selected: PropTypes.string
 };
-
 
 export default CategoryTypeList;

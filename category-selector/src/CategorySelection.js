@@ -66,12 +66,13 @@ class CategorySelection extends Component {
     }
 
     render() {
-        const { isFetching, suggestions,  inputs, fetchedCategoriesByFilter } = this.props;
+        const { selectedCategoryFilter, isFetching, suggestions,  inputs, fetchedCategoriesByFilter } = this.props;
 
         const TITLE = 'What service do you need? *';
 
         const DEFAULT_INPUT_PROPS = {
-            placeholder: 'Select or type the category'
+            placeholder: 'Select or type the category',
+            className: 'form-control'
         };
 
         const inputProps = index => Object.assign({}, DEFAULT_INPUT_PROPS, {
@@ -79,6 +80,18 @@ class CategorySelection extends Component {
             value: inputs[index] || '',
             onChange: this.onChange(index)
         });
+
+        let display = false
+        if (selectedCategoryFilter) {
+            // console.log(fetchedCategoriesByFilter[selectedCategoryFilter]);
+            if (fetchedCategoriesByFilter[selectedCategoryFilter].categories.length > 0) {
+                display = true;
+            }
+
+        }
+       // const display = fetchedCategoriesByFilter.length > 0 ? fetchedCategoriesByFilter[selectedCategoryFilter].length > 0 : false;
+
+        console.log(display);
 
         return (
             <div
@@ -91,31 +104,36 @@ class CategorySelection extends Component {
                 <CategoryTypeList
                     types={CATEGORY_TYPES}
                     onTypeClick={this.handleCategoryFilterClick}
+                    selected={selectedCategoryFilter}
                 />
 
-                <Autosuggest
-                    id="categories-0"
-                    suggestions={suggestions}
-                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested(0)}
-                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                    onSuggestionSelected={this.onSuggestionSelected(0)}
-                    getSuggestionValue={this.getSuggestionValue}
-                    renderSuggestion={this.renderSuggestion}
-                    shouldRenderSuggestions={this.shouldRenderSuggestions}
-                    inputProps={inputProps(0)}
-                />
+                <div className="col-xs-12 mar-btm">
 
-                <Autosuggest
-                    id="categories-1"
-                    suggestions={suggestions}
-                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested(1)}
-                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                    onSuggestionSelected={this.onSuggestionSelected(1)}
-                    getSuggestionValue={this.getSuggestionValue}
-                    renderSuggestion={this.renderSuggestion}
-                    shouldRenderSuggestions={this.shouldRenderSuggestions}
-                    inputProps={inputProps(1)}
-                />
+                    <Autosuggest
+                        id="categories-0"
+                        suggestions={suggestions}
+                        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested(0)}
+                        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                        onSuggestionSelected={this.onSuggestionSelected(0)}
+                        getSuggestionValue={this.getSuggestionValue}
+                        renderSuggestion={this.renderSuggestion}
+                        shouldRenderSuggestions={this.shouldRenderSuggestions}
+                        inputProps={inputProps(0)}
+                    />
+                </div>
+                <div className="col-xs-12 mar-btm">
+                    <Autosuggest
+                        id="categories-1"
+                        suggestions={suggestions}
+                        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested(1)}
+                        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                        onSuggestionSelected={this.onSuggestionSelected(1)}
+                        getSuggestionValue={this.getSuggestionValue}
+                        renderSuggestion={this.renderSuggestion}
+                        shouldRenderSuggestions={this.shouldRenderSuggestions}
+                        inputProps={inputProps(1)}
+                    />
+                </div>
             </div>
         );
     }
@@ -123,25 +141,26 @@ class CategorySelection extends Component {
 
 
 CategorySelection.propTypes = {
-    selectedCategoryType: PropTypes.array,
+    selectedCategoryFilter: PropTypes.string,
     isFetching: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired,
     suggestions: PropTypes.array,
-    inputs: PropTypes.array
+    inputs: PropTypes.array,
+    fetchedCategoriesByFilter: PropTypes.object
 };
 
 function mapStateToProps(state) {
     const {
-        selectedCategoryType,
+        selectedCategoryFilter,
         fetchedCategoriesByFilter,
         suggestions,
         inputs
     } = state;
 
-    const { isFetching } = fetchedCategoriesByFilter[selectedCategoryType] || { isFetching: true };
+    const { isFetching } = fetchedCategoriesByFilter[selectedCategoryFilter] || { isFetching: true };
 
     return {
-        selectedCategoryType,
+        selectedCategoryFilter,
         fetchedCategoriesByFilter,
         isFetching,
         suggestions,

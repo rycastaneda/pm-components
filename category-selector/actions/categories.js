@@ -54,24 +54,15 @@ export function selectCategoryFilter(filterName) {
     };
 }
 
-
-
 export function selectCategory(suggestion, index) {
     return (dispatch, getState) => {
         const categoryFilter = getState().selectedCategoryFilter;
-        dispatch(triggerCategory(suggestion, categoryFilter, index));
-        console.log(getState());
-        console.log('sssss');
-    };
-
-}
-
-function triggerCategory(suggestion, filter, index) {
-    return {
-        type: SELECT_CATEGORY,
-        category: suggestion,
-        index,
-        filter
+        dispatch({
+            type: SELECT_CATEGORY,
+            category: suggestion,
+            index,
+            filter: categoryFilter
+        });
     };
 
 }

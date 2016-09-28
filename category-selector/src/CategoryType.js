@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 
-const CategoryType = ({ id, attributes, onClick }) => (
+const CategoryType = ({ id, attributes, onClick, selected = false }) => (
     <li
-        className={`input-group-addon category-types__item ${attributes.selected ? 'category-types__item--selected' : ''}`}
+        className={`input-group-addon category-types__item ${selected ? 'category-types__item--selected' : ''}`}
         id={id}
         onClick={onClick}
     >
@@ -10,9 +10,11 @@ const CategoryType = ({ id, attributes, onClick }) => (
     </li>
 );
 
+
 CategoryType.propTypes = {
     id: PropTypes.number.isRequired,
     attributes: PropTypes.object.isRequired,
+    selected: PropTypes.bool.isRequired,
     onClick: PropTypes.func.isRequired
 };
 

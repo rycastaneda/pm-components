@@ -23,14 +23,6 @@ function receiveSuggestions(suggestions, index) {
     };
 }
 
-function triggerUpdateInput(value, index) {
-    return {
-        type: UPDATE_INPUT,
-        index,
-        value
-    };
-}
-
 export function fetchSuggestions(value, index) {
     return (dispatch, getState) => {
         const suggestions = getSuggestions(getState(), value, index);
@@ -42,7 +34,12 @@ export function fetchSuggestions(value, index) {
 export function updateInput(value, index) {
     return (dispatch) => {
         dispatch(resetInputs(index));
-        return dispatch(triggerUpdateInput(value, index));
+
+        return dispatch({
+            type: UPDATE_INPUT,
+            index,
+            value
+        });
     };
 }
 
