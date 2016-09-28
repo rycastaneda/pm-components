@@ -1,57 +1,77 @@
-
-import { SELECT_CATEGORY_TYPE, REQUEST_CATEGORIES, RECEIVE_CATEGORIES } from '../constants/ActionTypes';
+import { SELECT_CATEGORY, SELECT_CATEGORY_FILTER, REQUEST_CATEGORIES, RECEIVE_CATEGORIES } from '../constants/ActionTypes';
+// import { readEndpoint } from 'redux-json-api';
 import _categories from '../mocks/categories.json';
 
-function requestCategories(categoryType) {
+
+function requestCategories(filter) {
     return {
         type: REQUEST_CATEGORIES,
-        categoryType
+        filter
     };
 }
 
-function receiveCategories(categoryType, json) {
+function receiveCategories(filter, categories) {
     return {
         type: RECEIVE_CATEGORIES,
-        categoryType,
-        categories: json.data.map(child => child),
-        receivedAt: Date.now()
+        categories,
+        // categories: categories.map(child => child),
+        filter
     };
 }
 
-function fetchCategories(categoryType) {
+function fetchCategories(categoryFilter) {
     return (dispatch) => {
-        dispatch(requestCategories(categoryType));
+        const filterName = categoryFilter.attributes.title;
 
-        return dispatch(receiveCategories(categoryType, _categories));
+        dispatch(requestCategories(filterName));
+        return dispatch(receiveCategories(filterName, _categories.data));
 
-        // return dispatch(readEndpoint(`api/users/${categoryType}`))
-            // .then(response => response)
-            // .then(json => dispatch(receiveCategories(categoryType, json)));
+        // return dispatch(readEndpoint(`api/users/`))
+        //     .then(response => response)
+        //     .then(json => dispatch(getCategories(json)));
     };
 }
 
-function shouldFetchCategories(state, categoryType) {
-    const categoryList = state.categoriesByCategoryType[categoryType];
-    if (!categoryList) {
-        return true;
-    } else if (categoryList.isFetching) {
-        return false;
-    } else {
-        return console.log('terrr');
-    }
+function shouldFetchCategories(state, categoryFilter) {
+    const categoryList = state.fetchedCategoriesByFilter[categoryFilter];
+    if (!categoryList) return true;
+    else if (categoryList.isFetching) return false;
+    else return; // some error console.log('terrr');
 }
 
-export function fetchPostsIfNeeded(categoryType) {
+export function fetchCategoriesIfNeeded(categoryFilter) {
     return (dispatch, getState) => {
-        if (shouldFetchCategories(getState(), categoryType)) {
-            return dispatch(fetchCategories(categoryType));
+        if (shouldFetchCategories(getState(), categoryFilter)) {
+            return dispatch(fetchCategories(categoryFilter));
         }
     };
 }
 
-export function selectCategoryType(categoryType) {
+export function selectCategoryFilter(filterName) {
     return {
-        type: SELECT_CATEGORY_TYPE,
-        categoryType
+        type: SELECT_CATEGORY_FILTER,
+        filterName
     };
+}
+
+
+
+export function selectCategory(suggestion, index) {
+    return (dispatch, getState) => {
+        const categoryFilter = getState().selectedCategoryFilter;
+        dispatch(triggerCategory(suggestion, categoryFilter, index));
+        console.log(getState());
+        console.log('sssss');
+    };
+
+}
+
+function triggerCategory(suggestion, filter, index) {
+    return {
+        type: SELECT_CATEGORY,
+        category: suggestion,
+        index,
+        filter
+    };
+
 }

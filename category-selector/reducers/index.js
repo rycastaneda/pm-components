@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
 import { reducer as api } from 'redux-json-api';
-import { categoriesByCategoryType, selectedCategoryType } from './categories';
-import { suggestions, inputs, selectedCategories } from './suggestions';
+import { selectedCategoryFilter, selectedCategoriesByFilter, fetchedCategoriesByFilter } from './categories';
+import { suggestions, inputs,  } from './suggestions';
 
 export default combineReducers({
     api,
-    categoriesByCategoryType,
-    selectedCategoryType,
+    selectedCategoryFilter,
     suggestions,
     inputs,
-    selectedCategories
+    selectedCategoriesByFilter,
+    fetchedCategoriesByFilter
 });

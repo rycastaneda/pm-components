@@ -10,7 +10,7 @@ const CategoryTypeList = ({ types, onTypeClick }) => (
             <CategoryType
                 key={type.id}
                 {...type}
-                onClick={() => onTypeClick(type.id)}
+                onClick={() => onTypeClick(type)}
             />
         )}
         </ul>
@@ -20,8 +20,7 @@ const CategoryTypeList = ({ types, onTypeClick }) => (
 CategoryTypeList.propTypes = {
     types: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
-        selected: PropTypes.bool,
-        title: PropTypes.string.isRequired
+        attributes: PropTypes.object
     }).isRequired).isRequired,
     onTypeClick: PropTypes.func.isRequired
 };

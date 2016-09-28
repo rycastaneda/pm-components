@@ -1,81 +1,60 @@
-import {
-    RECEIVE_SUGGESTIONS,
-    REQUEST_SUGGESTIONS,
-    RESET_SUGGESTIONS,
-    SELECT_CATEGORY,
-    RESET_INPUTS
-} from '../constants/ActionTypes';
-
+import { RECEIVE_SUGGESTIONS, RESET_SUGGESTIONS, RESET_INPUTS, UPDATE_INPUT } from '../constants/ActionTypes';
 
 function escapeRegexCharacters(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function getSuggestions(value) {
+function getSuggestions(state, value, index) {
     const escapedValue = escapeRegexCharacters(value.trim());
     const regex = new RegExp('^' + escapedValue, 'i');
-    
-    const list = state.selectedCategory[state.selectedCategoryType].related
-    return list.filter(item => regex.test(item.attributes.title));
+    const filterName = state.selectedCategoryFilter;
+    const DEFAULT_LIST = state.fetchedCategoriesByFilter[state.selectedCategoryFilter].categories || [];
+
+    let list = index === 0 ? DEFAULT_LIST : state.selectedCategoriesByFilter[filterName][index-1].related;
+
+    return list.filter(category => regex.test(category.attributes.title));
 }
 
-function receiveSuggestions(suggestions) {
+function receiveSuggestions(suggestions, index) {
     return {
         type: RECEIVE_SUGGESTIONS,
-        suggestions
+        suggestions,
+        index
     };
 }
 
-function resetInputs() {
+function triggerUpdateInput(value, index) {
     return {
-        type: RESET_INPUTS
-    };
-}
-
-function shouldRequestSuggestions(state, value, index) {
-    return state.inputs[index] !== value;
-}
-
-export function fetchRequestedSuggestions(value, index) {
-    return (dispatch) => {
-        dispatch(requestSuggestions(value, index));
-        const suggestions = getSuggestions(value);
-
-        return dispatch(receiveSuggestions(suggestions));
-    };
-}
-
-export function requestSuggestions(value, index) {
-    return {
-        type: REQUEST_SUGGESTIONS,
+        type: UPDATE_INPUT,
         index,
         value
     };
 }
 
-
-
-export function requestSuggestionsIfNeeded(value, index) {
+export function fetchSuggestions(value, index) {
     return (dispatch, getState) => {
-        if (shouldRequestSuggestions(getState(), value, index)) {
-            dispatch(resetInputs());
+        const suggestions = getSuggestions(getState(), value, index);
 
-            return dispatch(requestSuggestions(value, index));
-        }
+        return dispatch(receiveSuggestions(suggestions, index));
+    };
+}
+
+export function updateInput(value, index) {
+    return (dispatch) => {
+        dispatch(resetInputs(index));
+        return dispatch(triggerUpdateInput(value, index));
     };
 }
 
 export function resetSuggestions() {
     return {
-        type: RESET_SUGGESTIONS,
-        suggestions:[]
+        type: RESET_SUGGESTIONS
     };
 }
 
-export function selectCategory(category, index) {
+function resetInputs(index) {
     return {
-        type: SELECT_CATEGORY,
-        index,
-        category
+        type: RESET_INPUTS,
+        index
     };
 }
