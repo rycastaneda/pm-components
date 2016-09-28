@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-const loaders = require('./webpack.loaders.js');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     entry: [
@@ -14,7 +14,24 @@ module.exports = {
         extensions: ['', '.js']
     },
     module: {
-        loaders
+        loaders: [
+            {
+                test: /\.js/,
+                exclude: /(node_modules|bower_components|dist)/,
+                loader: 'babel'
+            },
+            {
+                test: /\.json$/,
+                loader: 'json'
+            },
+            {
+                test: /\.scss$/,
+                loader: ExtractTextPlugin.extract(
+                    'style', // The backup style loader
+                    'css?sourceMap!sass?sourceMap'
+                )
+            }
+        ]
     },
     plugins: [
         new webpack.DefinePlugin({
@@ -24,6 +41,7 @@ module.exports = {
         }),
         new webpack.optimize.UglifyJsPlugin({ output: { comments: false } }),
         new webpack.optimize.OccurenceOrderPlugin(),
-        new webpack.optimize.DedupePlugin()
+        new webpack.optimize.DedupePlugin(),
+        new ExtractTextPlugin('./index.css')
     ]
 };

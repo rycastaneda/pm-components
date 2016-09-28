@@ -7,6 +7,7 @@ import configureStore from './configureStore';
 import CategorySelection from './CategorySelection';
 
 const store = configureStore();
+require('./index.scss');
 
 store.dispatch(setEndpointHost('http://reqres.in'));
 store.dispatch(setEndpointPath(''));

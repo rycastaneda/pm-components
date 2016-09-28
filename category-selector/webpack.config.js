@@ -1,9 +1,9 @@
 const webpack = require('webpack');
-const loaders = require('./webpack.loaders.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || '8080';
+
 
 module.exports =  {
     context: __dirname,
@@ -30,7 +30,24 @@ module.exports =  {
         extensions: ['', '.js', '.jsx']
     },
     module: {
-        loaders
+        loaders: [
+            {
+                test: /\.js/,
+                exclude: /(node_modules|bower_components|dist)/,
+                loader: 'babel'
+            },
+            {
+                test: /\.json$/,
+                loader: 'json'
+            },
+            {
+                test: /\.scss$/,
+                loaders: ['style', 'css', 'sass']
+            }
+        ]
+    },
+    sassLoader: {
+        includePaths: ['src/index']
     },
     plugins: [
         new webpack.NoErrorsPlugin(),
