@@ -1,10 +1,12 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const vendorPlugins = require('../shared/vendorPlugins.js');
 
 module.exports = {
-    entry: [
-        './src/index.js'
-    ],
+    entry: {
+        app: './src/index.js',
+        vendor: vendorPlugins
+    },
     devtool: 'cheap-module-source-map',
     output: {
         path: `${__dirname}/dist`,
@@ -42,6 +44,7 @@ module.exports = {
         new webpack.optimize.UglifyJsPlugin({ output: { comments: false } }),
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.optimize.DedupePlugin(),
-        new ExtractTextPlugin('./index.css')
+        new ExtractTextPlugin('./index.css'),
+        new webpack.optimize.CommonsChunkPlugin('vendor', '../../shared/dist/vendor.bundle.js')
     ]
 };
