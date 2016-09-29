@@ -53,7 +53,7 @@ module.exports =  {
         new webpack.NoErrorsPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
-            template: './src/template.html'
+            template: './index.html'
         })
     ]
 };
