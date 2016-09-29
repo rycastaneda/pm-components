@@ -1,17 +1,22 @@
-import { SELECT_CATEGORY, SELECT_CATEGORY_FILTER, REQUEST_CATEGORIES, RECEIVE_CATEGORIES } from '../constants/ActionTypes';
-import { prepopulateSuggestions, resetSuggestionsList, updateInput } from './suggestions';
+import {
+    SELECT_CATEGORY,
+    SELECT_CATEGORY_FILTER,
+    REQUEST_CATEGORIES,
+    RECEIVE_CATEGORIES
+} from '../constants/ActionTypes';
+import { prepopulateSuggestions } from './suggestions';
 // import { readEndpoint } from 'redux-json-api';
 import _categories from '../mocks/categories.json';
 
 
-function requestCategories(filter) {
+export function requestCategories(filterName) {
     return {
         type: REQUEST_CATEGORIES,
-        filter
+        filterName
     };
 }
 
-function receiveCategories(filter, categories) {
+export function receiveCategories(filterName, categories) {
     return (dispatch) => {
         dispatch(prepopulateSuggestions(categories));
 
@@ -19,12 +24,12 @@ function receiveCategories(filter, categories) {
             type: RECEIVE_CATEGORIES,
             categories,
             // categories: categories.map(child => child),
-            filter
+            filterName
         });
     };
 }
 
-function fetchCategories(categoryFilter) {
+export function fetchCategories(categoryFilter) {
     return (dispatch) => {
         const filterName = categoryFilter.attributes.title;
 
@@ -53,14 +58,9 @@ export function fetchCategoriesIfNeeded(categoryFilter) {
 }
 
 export function selectCategoryFilter(filterName) {
-    return (dispatch) => {
-        dispatch(resetSuggestionsList());
-        dispatch(updateInput('', 0));
-
-        return dispatch({
-            type: SELECT_CATEGORY_FILTER,
-            filterName
-        });
+    return {
+        type: SELECT_CATEGORY_FILTER,
+        filterName
     };
 }
 
@@ -77,7 +77,7 @@ export function selectCategory(suggestion, index) {
             type: SELECT_CATEGORY,
             category: suggestion,
             index,
-            filter: categoryFilter
+            filterName: categoryFilter
         });
     };
 

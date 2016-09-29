@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { selectCategoryFilter, fetchCategoriesIfNeeded } from '../actions/categories';
+import { updateInput, resetSuggestionsList } from '../actions/suggestions';
 import CategoryTypeList from '../components/CategoryTypeList';
 import { CATEGORY_TYPES } from '../constants/CategoryTypes';
 import CategorySuggestion from '../components/CategorySuggestion';
@@ -15,6 +16,8 @@ class CategorySelection extends Component {
 
     handleCategoryFilterClick(categoryFilter) {
         this.props.dispatch(selectCategoryFilter(categoryFilter.attributes.title));
+        this.props.dispatch(resetSuggestionsList());
+        this.props.dispatch(updateInput('', 0));
         return this.props.dispatch(fetchCategoriesIfNeeded(categoryFilter));
     }
 
@@ -42,7 +45,6 @@ class CategorySelection extends Component {
                         <CategorySuggestion key={index} currentIndex={index} />
                     );})
                 }
-
             </div>
         );
     }

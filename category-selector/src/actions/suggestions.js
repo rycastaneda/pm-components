@@ -19,7 +19,7 @@ function getSuggestions(state, value, index) {
     return list.filter(category => regex.test(category.attributes.title));
 }
 
-function receiveSuggestions(suggestions, index) {
+export function receiveSuggestions(suggestions, index) {
     return {
         type: RECEIVE_SUGGESTIONS,
         suggestions,

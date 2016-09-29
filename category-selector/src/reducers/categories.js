@@ -37,7 +37,7 @@ export function fetchedCategoriesByFilter(state = {}, action) {
         case RECEIVE_CATEGORIES:
         case REQUEST_CATEGORIES:
             return Object.assign({}, state, {
-                [action.filter]: categories(state[action.filter], action)
+                [action.filterName]: categories(state[action.filterName], action)
             });
         default:
             return state;
@@ -62,7 +62,7 @@ export function selectedCategoriesByFilter(state = {}, action) {
     switch (action.type) {
         case SELECT_CATEGORY:
             return Object.assign({}, state, {
-                [action.filter]: selectedCategories(state[action.filter], action)
+                [action.filterName]: selectedCategories(state[action.filterName], action)
             });
         default:
             return state;
