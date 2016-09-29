@@ -6,25 +6,30 @@ Steps to install:
 
 Run `npm install`
 
-To run locally `npm run dev`
+To run locally `npm start`
+
+To run lint `npm run lint`
 
 Production build `npm run build`
 
 ## Structure
 
  ```
-    /dist
-    /constants
-    /reducers
+    /dist    
     /src
-    /tests
+      /actions
+      /components
+      /constants
+      /containers
+      /mocks
+      /reducers
+      /styles
     
     .babelrc
     .eslintrc
     index.html
     package.json
     webpack.config.js
-    webpack.loader.js
     webpack.produciton.config.js
  ```
 

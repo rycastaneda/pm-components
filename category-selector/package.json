@@ -8,11 +8,9 @@
   },
   "scripts": {
     "build": "webpack --config webpack.production.config.js --progress --profile --colors",
-    "dev": "webpack-dev-server --progress --profile --colors",
+    "start": "webpack-dev-server --progress --profile --colors",
     "lint": "eslint src",
-    "fix": "eslint src test --fix",
-    "test": "mocha tests/tests.config.js tests/*.spec.js",
-    "ci": "npm run lint && cross-env DEBUG_CALLS=true npm run test"
+    "test": "mocha tests/tests.config.js tests/*.spec.js"
   },
   "repository": {
     "type": "git",

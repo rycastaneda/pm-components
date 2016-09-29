@@ -49,9 +49,10 @@ class CategorySelection extends Component {
 }
 
 CategorySelection.propTypes = {
-    selectedCategoryFilter: PropTypes.string,
+    selectedCategoryFilter: PropTypes.string.isRequired,
     isFetching: PropTypes.bool.isRequired,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    suggestionsList: PropTypes.array.isRequired
 };
 
 function mapStateToProps(state) {
