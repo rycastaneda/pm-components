@@ -10,7 +10,7 @@
     "build": "webpack --config webpack.production.config.js --progress --profile --colors",
     "start": "webpack-dev-server --progress --profile --colors",
     "lint": "eslint src",
-    "test": "mocha tests/tests.config.js tests/*.spec.js"
+    "test": "mocha tests.config.js src/**/*.spec.js"
   },
   "repository": {
     "type": "git",

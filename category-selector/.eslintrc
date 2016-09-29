@@ -14,7 +14,9 @@
     "node": true
   },
   "globals": {
-    "React": true
+    "React": true,
+    "describe": true,
+    "it": true
   },
   "plugins": [
     "react"
