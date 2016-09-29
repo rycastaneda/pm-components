@@ -30,7 +30,7 @@
     "consistent-this": ["error", "self"],
     "curly": ["error", "multi-line"],
     "eqeqeq": ["error", "always"],
-    "indent": ["error", 4],
+    "indent": ["error", 4, { "SwitchCase": 1}],
     "jsx-quotes": ["error", "prefer-double"],
     "keyword-spacing": ["error", {"before": true}],
     "max-nested-callbacks": ["error", 5],

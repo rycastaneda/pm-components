@@ -1,41 +1,46 @@
-import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES, SELECT_CATEGORY, SELECT_CATEGORY_FILTER } from '../constants/ActionTypes';
+import {
+    REQUEST_CATEGORIES,
+    RECEIVE_CATEGORIES,
+    SELECT_CATEGORY,
+    SELECT_CATEGORY_FILTER
+} from '../constants/ActionTypes';
 
 export function selectedCategoryFilter(state = '', action) {
     switch (action.type) {
-    case SELECT_CATEGORY_FILTER:
-        return action.filterName;
-    default:
-        return state;
+        case SELECT_CATEGORY_FILTER:
+            return action.filterName;
+        default:
+            return state;
     }
 }
 
 function categories(state = { isFetching: false, error: false, categories: [] }, action) {
     switch (action.type) {
-    case REQUEST_CATEGORIES:
-        return Object.assign({}, state, {
-            isFetching: true,
-            error: false
-        });
-    case RECEIVE_CATEGORIES:
-        return Object.assign({}, state, {
-            isFetching: false,
-            error: false,
-            categories: action.categories
-        });
-    default:
-        return state;
+        case REQUEST_CATEGORIES:
+            return Object.assign({}, state, {
+                isFetching: true,
+                error: false
+            });
+        case RECEIVE_CATEGORIES:
+            return Object.assign({}, state, {
+                isFetching: false,
+                error: false,
+                categories: action.categories
+            });
+        default:
+            return state;
     }
 }
 
 export function fetchedCategoriesByFilter(state = {}, action) {
     switch (action.type) {
-    case RECEIVE_CATEGORIES:
-    case REQUEST_CATEGORIES:
-        return Object.assign({}, state, {
-            [action.filter]: categories(state[action.filter], action)
-        });
-    default:
-        return state;
+        case RECEIVE_CATEGORIES:
+        case REQUEST_CATEGORIES:
+            return Object.assign({}, state, {
+                [action.filter]: categories(state[action.filter], action)
+            });
+        default:
+            return state;
     }
 
 }
