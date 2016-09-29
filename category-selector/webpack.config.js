@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || '8080';
@@ -50,6 +51,9 @@ module.exports =  {
         includePaths: ['src/index']
     },
     plugins: [
+        new StyleLintPlugin({
+            syntax: 'scss'
+        }),
         new webpack.NoErrorsPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({

@@ -1,43 +1,41 @@
 .category-types__item {
-  padding: 12px;
-  cursor: pointer;
+    padding: 12px;
+    cursor: pointer;
 
-  &--selected {
-    background-color: #E68020;
-    color: #ffffff;
-    border: 1px solid #E68020;
-    font-weight: bold;
-  }
+    &--selected {
+        color: #ffffff;
+        background-color: #e68020;
+        border: 1px solid #e68020;
+        font-weight: bold;
+    }
 }
 
 .react-autosuggest__container {
-  position: relative;
+    position: relative;
 }
 
 .react-autosuggest__suggestions-list {
-  position: absolute;
-  z-index: 10;
-  background: white;
-  padding-left: 40px;
-  width: 100%;
-  cursor: pointer;
-  height: auto;
-  max-height: 250px;
-  overflow: scroll;
+    position: absolute;
+    z-index: 10;
+    overflow: scroll;
 
-  &::-webkit-scrollbar {
+    width: 100%;
+    height: auto;
+    max-height: 250px;
+    padding-left: 40px;
 
-  }
+    background: #ffffff;
+    cursor: pointer;
 }
 
 .react-autosuggest__suggestion {
-  padding: 7px;
-  font-weight: bold;
-  font-size: 12px;
-  color: #333333;
-  border-bottom: 1px solid #dddddd;
+    padding: 7px;
+    color: #333333;
+    border-bottom: 1px solid #dddddd;
+    font-size: 12px;
+    font-weight: bold;
 
-  &--focused {
-    background: #eeeeee;
-  }
+    &--focused {
+        background: #eeeeee;
+    }
 }
