@@ -57,7 +57,7 @@ class CategorySuggestion extends Component {
     }
 
     render() {
-        const { suggestions,  inputs } = this.props;
+        const { suggestions,  inputs, currentIndex } = this.props;
 
         const DEFAULT_INPUT_PROPS = {
             placeholder: 'Select or type the category',
@@ -72,30 +72,29 @@ class CategorySuggestion extends Component {
 
         return (
             <div className="col-xs-12 mar-btm">
-
                 <Autosuggest
                     id="categories-0"
                     suggestions={suggestions}
-                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested(0)}
+                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested(currentIndex)}
                     onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                    onSuggestionSelected={this.onSuggestionSelected(0)}
+                    onSuggestionSelected={this.onSuggestionSelected(currentIndex)}
                     getSuggestionValue={this.getSuggestionValue}
                     renderSuggestion={this.renderSuggestion}
                     shouldRenderSuggestions={this.shouldRenderSuggestions}
-                    inputProps={inputProps(0)}
+                    inputProps={inputProps(currentIndex)}
                 />
             </div>
         );
     }
 }
 
-
 CategorySuggestion.propTypes = {
-    selectedCategoryFilter: PropTypes.string,
+    selectedCategoryFilter: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
-    suggestions: PropTypes.array,
-    inputs: PropTypes.array,
-    fetchedCategoriesByFilter: PropTypes.object
+    suggestions: PropTypes.array.isRequired,
+    inputs: PropTypes.array.isRequired,
+    fetchedCategoriesByFilter: PropTypes.object.isRequired,
+    currentIndex: PropTypes.number.isRequired
 };
 
 function mapStateToProps(state) {

@@ -1,4 +1,11 @@
-import { RECEIVE_SUGGESTIONS, RESET_SUGGESTIONS, RESET_INPUTS, UPDATE_INPUT } from '../constants/ActionTypes';
+import {
+    RECEIVE_SUGGESTIONS,
+    RESET_SUGGESTIONS,
+    RESET_INPUTS,
+    UPDATE_INPUT,
+    PREPOPULATE_SUGGESTIONS,
+    RESET_SUGGESTIONS_LIST
+} from '../constants/ActionTypes';
 
 function escapeRegexCharacters(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -7,10 +14,7 @@ function escapeRegexCharacters(str) {
 function getSuggestions(state, value, index) {
     const escapedValue = escapeRegexCharacters(value.trim());
     const regex = new RegExp('^' + escapedValue, 'i');
-    const filterName = state.selectedCategoryFilter;
-    const DEFAULT_LIST = state.fetchedCategoriesByFilter[state.selectedCategoryFilter].categories || [];
-
-    let list = index === 0 ? DEFAULT_LIST : state.selectedCategoriesByFilter[filterName][index-1].related;
+    const list = state.suggestionsList[index];
 
     return list.filter(category => regex.test(category.attributes.title));
 }
@@ -46,6 +50,20 @@ export function updateInput(value, index) {
 export function resetSuggestions() {
     return {
         type: RESET_SUGGESTIONS
+    };
+}
+
+export function resetSuggestionsList() {
+    return {
+        type: RESET_SUGGESTIONS_LIST
+    };
+}
+
+export function prepopulateSuggestions(suggestion, index = 0) {
+    return {
+        type: PREPOPULATE_SUGGESTIONS,
+        suggestion,
+        index
     };
 }
 

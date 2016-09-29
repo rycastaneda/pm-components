@@ -19,7 +19,7 @@ class CategorySelection extends Component {
     }
 
     render() {
-        const { selectedCategoryFilter, isFetching } = this.props;
+        const { selectedCategoryFilter, suggestionsList } = this.props;
 
         const TITLE = 'What service do you need? *';
 
@@ -37,7 +37,11 @@ class CategorySelection extends Component {
                     selected={selectedCategoryFilter}
                 />
 
-                <CategorySuggestion />
+                {suggestionsList.map((suggestion, index) => {
+                    return (
+                        <CategorySuggestion key={index} currentIndex={index} />
+                    );})
+                }
 
             </div>
         );
@@ -51,12 +55,13 @@ CategorySelection.propTypes = {
 };
 
 function mapStateToProps(state) {
-    const { selectedCategoryFilter, fetchedCategoriesByFilter } = state;
+    const { selectedCategoryFilter, fetchedCategoriesByFilter, suggestionsList } = state;
     const { isFetching } = fetchedCategoriesByFilter[selectedCategoryFilter] || { isFetching: true };
 
     return {
         selectedCategoryFilter,
-        isFetching
+        isFetching,
+        suggestionsList
     };
 }
 

@@ -1,4 +1,11 @@
-import { RECEIVE_SUGGESTIONS, RESET_SUGGESTIONS, RESET_INPUTS, UPDATE_INPUT } from '../constants/ActionTypes';
+import {
+    RECEIVE_SUGGESTIONS,
+    RESET_SUGGESTIONS,
+    RESET_INPUTS,
+    UPDATE_INPUT,
+    PREPOPULATE_SUGGESTIONS,
+    RESET_SUGGESTIONS_LIST
+} from '../constants/ActionTypes';
 
 export function suggestions(state = [], action) {
     switch (action.type) {
@@ -21,6 +28,21 @@ export function inputs(state = [], action) {
             ];
         case RESET_INPUTS:
             return state.slice(0, action.index + 1);
+        default:
+            return state;
+    }
+}
+
+export function suggestionsList(state = [], action) {
+    switch (action.type) {
+        case PREPOPULATE_SUGGESTIONS:
+            return [
+                ...state.slice(0, action.index),
+                action.suggestion,
+                ...state.slice(action.index + 1)
+            ];
+        case RESET_SUGGESTIONS_LIST:
+            return [];
         default:
             return state;
     }
