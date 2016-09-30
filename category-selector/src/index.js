@@ -6,7 +6,7 @@ import thunkMiddleware from 'redux-thunk';
 import { setEndpointHost, setEndpointPath } from 'redux-json-api';
 import rootReducer from './reducers/index';
 import CategorySelection from './containers/CategorySelection';
-import * as styles from './styles/index.scss';
+import './styles/index.scss';
 
 // Configure store with thunk middleware to allow async requests
 const store = createStore(

@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const vendorPlugins = require('../shared/vendorPlugins.js');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -18,9 +19,9 @@ module.exports = {
     module: {
         loaders: [
             {
-                test: /\.js/,
-                exclude: /(node_modules|bower_components|dist)/,
-                loader: 'babel'
+                test: /\.js$/,
+                exclude: /(node_modules|dist)/,
+                loaders: ['babel', 'eslint?{failOnError:true}']
             },
             {
                 test: /\.json$/,
@@ -36,12 +37,22 @@ module.exports = {
         ]
     },
     plugins: [
+        new StyleLintPlugin({
+            syntax: 'scss'
+        }),
         new webpack.DefinePlugin({
             'process.env': {
                 'NODE_ENV': JSON.stringify('production')
             }
         }),
-        new webpack.optimize.UglifyJsPlugin({ output: { comments: false } }),
+        new webpack.optimize.UglifyJsPlugin({
+            output: {
+                comments: false
+            },
+            compress: {
+                warnings: false
+            }
+        }),
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.optimize.DedupePlugin(),
         new ExtractTextPlugin('./index.css'),

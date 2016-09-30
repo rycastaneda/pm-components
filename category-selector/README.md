@@ -8,9 +8,10 @@ Run `npm install`
 
 To run locally `npm start`
 
-To run lint `npm run lint`
-
 Production build `npm run build`
+
+Production build WILL fail if there are any eslint or stylelint errors.
+
 
 ## Structure
 
