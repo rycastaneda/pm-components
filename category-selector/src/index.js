@@ -21,5 +21,5 @@ render(
     <Provider store={store}>
         <CategorySelection/>
     </Provider>,
-    document.querySelector('#category-selector')
+    document.querySelector('[data-component="category-selector"')
 );
