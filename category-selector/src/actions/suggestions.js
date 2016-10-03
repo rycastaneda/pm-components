@@ -1,10 +1,8 @@
 import {
     RECEIVE_SUGGESTIONS,
     RESET_SUGGESTIONS,
-    RESET_INPUTS,
     UPDATE_INPUT,
-    PREPOPULATE_SUGGESTIONS,
-    RESET_SUGGESTIONS_CACHE
+    UPDATE_SUGGESTIONS_CACHE
 } from '../constants/ActionTypes';
 
 function escapeRegexCharacters(str) {
@@ -14,7 +12,7 @@ function escapeRegexCharacters(str) {
 function getSuggestions(state, value, index) {
     const escapedValue = escapeRegexCharacters(value.trim());
     const regex = new RegExp('^' + escapedValue, 'i');
-    const list = state.suggestionsCache[index];
+    const list = state.categorySelector.dropDowns[index].suggestionsCache;
 
     return list.filter(category => regex.test(category.attributes.title));
 }
@@ -36,40 +34,35 @@ export function fetchSuggestions(value, index) {
 }
 
 export function updateInput(value, index) {
-    return (dispatch) => {
-        dispatch(resetInputs(index));
-
-        return dispatch({
-            type: UPDATE_INPUT,
-            index,
-            value
-        });
+    return {
+        type: UPDATE_INPUT,
+        index,
+        value
     };
+
 }
 
 export function resetSuggestions() {
     return {
-        type: RESET_SUGGESTIONS
+        type: RESET_SUGGESTIONS,
+        suggestions: []
     };
 }
 
-export function resetSuggestionsList() {
-    return {
-        type: RESET_SUGGESTIONS_CACHE
-    };
-}
+export function updateSuggestionsCache(categories, index = 0) {
 
-export function prepopulateSuggestions(suggestion, index = 0) {
-    return {
-        type: PREPOPULATE_SUGGESTIONS,
-        suggestion,
-        index
-    };
-}
+    return (dispatch, getState) => {
+        if (!getState().categorySelector.dropDowns[index]) {
+            dispatch({
+                type: 'ADD_DROPDOWN',
+                index
+            });
+        }
 
-export function resetInputs(index) {
-    return {
-        type: RESET_INPUTS,
-        index
+        return dispatch({
+            type: UPDATE_SUGGESTIONS_CACHE,
+            suggestionsCache: categories,
+            index
+        });
     };
 }

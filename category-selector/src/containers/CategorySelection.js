@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { selectCategoryFilter, fetchCategoriesIfNeeded } from '../actions/categories';
-import { resetInputs, resetSuggestionsList } from '../actions/suggestions';
+import { selectType, fetchCategoriesIfNeeded } from '../actions/categories';
 import CategoryTypeList from '../components/CategoryTypeList';
 import { CATEGORY_TYPES } from '../constants/CategoryTypes';
 import CategorySuggestion from '../components/CategorySuggestion';
@@ -15,14 +14,12 @@ class CategorySelection extends Component {
     }
 
     handleCategoryFilterClick(categoryFilter) {
-        this.props.dispatch(selectCategoryFilter(categoryFilter.attributes.title));
-        this.props.dispatch(resetSuggestionsList());
-        this.props.dispatch(resetInputs(0));
+        this.props.dispatch(selectType(categoryFilter.attributes.title));
         return this.props.dispatch(fetchCategoriesIfNeeded(categoryFilter));
     }
 
     render() {
-        const { selectedCategoryType, suggestionsCache } = this.props;
+        const { categorySelector } = this.props;
 
         const TITLE = 'What service do you need? *';
 
@@ -37,10 +34,10 @@ class CategorySelection extends Component {
                 <CategoryTypeList
                     types={CATEGORY_TYPES}
                     onTypeClick={this.handleCategoryFilterClick}
-                    selected={selectedCategoryType}
+                    selected={categorySelector.selectedType}
                 />
 
-                {suggestionsCache.map((suggestion, index) => {
+                {categorySelector.dropDowns.map((suggestion, index) => {
                     return (
                         <CategorySuggestion key={index} currentIndex={index} />
                     );})
@@ -51,20 +48,18 @@ class CategorySelection extends Component {
 }
 
 CategorySelection.propTypes = {
-    selectedCategoryType: PropTypes.string.isRequired,
+    categorySelector: PropTypes.object.isRequired,
     isFetching: PropTypes.bool.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    suggestionsCache: PropTypes.array.isRequired
+    dispatch: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
-    const { selectedCategoryType, fetchedCategoryTypes, suggestionsCache } = state;
-    const { isFetching } = fetchedCategoryTypes[selectedCategoryType] || { isFetching: true };
+    const { categorySelector, fetchedCategoryTypes } = state;
+    const { isFetching } = fetchedCategoryTypes[categorySelector.selectedType] || { isFetching: true };
 
     return {
-        selectedCategoryType,
         isFetching,
-        suggestionsCache
+        categorySelector
     };
 }
 

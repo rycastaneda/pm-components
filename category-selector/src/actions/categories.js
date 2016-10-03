@@ -2,39 +2,39 @@ import {
     SELECT_CATEGORY,
     SELECT_CATEGORY_TYPE,
     REQUEST_CATEGORIES,
-    RECEIVE_CATEGORIES
+    RECEIVE_CATEGORIES,
+    SET_INITIAL_STATE
 } from '../constants/ActionTypes';
-import { prepopulateSuggestions } from './suggestions';
+import { updateSuggestionsCache } from './suggestions';
 // import { readEndpoint } from 'redux-json-api';
 import _categories from '../mocks/categories.json';
 
 
-export function requestCategories(filterName) {
+export function requestCategories(filterType) {
     return {
         type: REQUEST_CATEGORIES,
-        filterName
+        filterType
     };
 }
 
-export function receiveCategories(filterName, categories) {
+export function receiveCategories(filterType, categories) {
     return (dispatch) => {
-        dispatch(prepopulateSuggestions(categories));
-
-        return dispatch({
+        dispatch({
             type: RECEIVE_CATEGORIES,
             categories,
             // categories: categories.map(child => child),
-            filterName
+            filterType
         });
+        return dispatch(updateSuggestionsCache(categories));
     };
 }
 
-export function fetchCategories(categoryFilter) {
+function fetchCategories(categoryFilter) {
     return (dispatch) => {
-        const filterName = categoryFilter.attributes.title;
+        const filterType = categoryFilter.attributes.title;
 
-        dispatch(requestCategories(filterName));
-        return dispatch(receiveCategories(filterName, _categories.data));
+        dispatch(requestCategories(filterType));
+        return dispatch(receiveCategories(filterType, _categories.data));
 
         // return dispatch(readEndpoint(`api/users/`))
         //     .then(response => response)
@@ -57,27 +57,35 @@ export function fetchCategoriesIfNeeded(categoryFilter) {
     };
 }
 
-export function selectCategoryFilter(filterName) {
+function resetSelectedTypes() {
     return {
-        type: SELECT_CATEGORY_TYPE,
-        filterName
+        type: SET_INITIAL_STATE
+    };
+}
+
+export function selectType(filterType) {
+    return (dispatch) => {
+        dispatch(resetSelectedTypes());
+
+        return dispatch({
+            type: SELECT_CATEGORY_TYPE,
+            filterType
+        });
     };
 }
 
 export function selectCategory(suggestion, index) {
-    return (dispatch, getState) => {
-        const categoryFilter = getState().selectedCategoryType;
+    return (dispatch) => {
         // We check if category has children
         // Ans prepopulate suggestions for the next drop down (index + 1)
         if (suggestion.related) {
-            dispatch(prepopulateSuggestions(suggestion.related, index + 1));
+            dispatch(updateSuggestionsCache(suggestion.related, index + 1));
         }
 
         return dispatch({
             type: SELECT_CATEGORY,
             category: suggestion,
-            index,
-            filterName: categoryFilter
+            index
         });
     };
 

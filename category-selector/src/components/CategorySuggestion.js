@@ -57,7 +57,7 @@ class CategorySuggestion extends Component {
     }
 
     render() {
-        const { suggestions,  inputs, currentIndex } = this.props;
+        const { categorySelector, currentIndex } = this.props;
 
         const DEFAULT_INPUT_PROPS = {
             placeholder: 'Select or type the category',
@@ -66,7 +66,7 @@ class CategorySuggestion extends Component {
 
         const inputProps = index => Object.assign({}, DEFAULT_INPUT_PROPS, {
             id: `categories-input-${index}`,
-            value: inputs[index] || '',
+            value: categorySelector.dropDowns[index].input || '',
             onChange: this.onChange(index)
         });
 
@@ -74,7 +74,7 @@ class CategorySuggestion extends Component {
             <div className="col-xs-12 mar-btm">
                 <Autosuggest
                     id="categories-0"
-                    suggestions={suggestions}
+                    suggestions={categorySelector.suggestions}
                     onSuggestionsFetchRequested={this.onSuggestionsFetchRequested(currentIndex)}
                     onSuggestionsClearRequested={this.onSuggestionsClearRequested}
                     onSuggestionSelected={this.onSuggestionSelected(currentIndex)}
@@ -89,28 +89,16 @@ class CategorySuggestion extends Component {
 }
 
 CategorySuggestion.propTypes = {
-    selectedCategoryType: PropTypes.string.isRequired,
+    categorySelector: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    suggestions: PropTypes.array.isRequired,
-    inputs: PropTypes.array.isRequired,
     fetchedCategoryTypes: PropTypes.object.isRequired,
     currentIndex: PropTypes.number.isRequired
 };
 
 function mapStateToProps(state) {
-    const {
-        selectedCategoryType,
-        fetchedCategoryTypes,
-        suggestions,
-        inputs
-    } = state;
+    const { fetchedCategoryTypes, categorySelector } = state;
 
-    return {
-        selectedCategoryType,
-        fetchedCategoryTypes,
-        suggestions,
-        inputs
-    };
+    return { fetchedCategoryTypes, categorySelector };
 }
 
 export default connect(mapStateToProps)(CategorySuggestion);
