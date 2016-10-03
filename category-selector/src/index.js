@@ -11,6 +11,7 @@ import './styles/index.scss';
 // Configure store with thunk middleware to allow async requests
 const store = createStore(
     rootReducer,
+    window.devToolsExtension && window.devToolsExtension(),
     applyMiddleware(thunkMiddleware)
 );
 
