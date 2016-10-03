@@ -4,7 +4,7 @@ import {
     RESET_INPUTS,
     UPDATE_INPUT,
     PREPOPULATE_SUGGESTIONS,
-    RESET_SUGGESTIONS_LIST
+    RESET_SUGGESTIONS_CACHE
 } from '../constants/ActionTypes';
 
 function escapeRegexCharacters(str) {
@@ -14,7 +14,7 @@ function escapeRegexCharacters(str) {
 function getSuggestions(state, value, index) {
     const escapedValue = escapeRegexCharacters(value.trim());
     const regex = new RegExp('^' + escapedValue, 'i');
-    const list = state.suggestionsList[index];
+    const list = state.suggestionsCache[index];
 
     return list.filter(category => regex.test(category.attributes.title));
 }
@@ -55,7 +55,7 @@ export function resetSuggestions() {
 
 export function resetSuggestionsList() {
     return {
-        type: RESET_SUGGESTIONS_LIST
+        type: RESET_SUGGESTIONS_CACHE
     };
 }
 
@@ -67,7 +67,7 @@ export function prepopulateSuggestions(suggestion, index = 0) {
     };
 }
 
-function resetInputs(index) {
+export function resetInputs(index) {
     return {
         type: RESET_INPUTS,
         index

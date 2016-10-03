@@ -4,7 +4,7 @@ import {
     RESET_INPUTS,
     UPDATE_INPUT,
     PREPOPULATE_SUGGESTIONS,
-    RESET_SUGGESTIONS_LIST
+    RESET_SUGGESTIONS_CACHE
 } from '../constants/ActionTypes';
 
 export function suggestions(state = [], action) {
@@ -33,7 +33,7 @@ export function inputs(state = [], action) {
     }
 }
 
-export function suggestionsList(state = [], action) {
+export function suggestionsCache(state = [], action) {
     switch (action.type) {
         case PREPOPULATE_SUGGESTIONS:
             return [
@@ -41,7 +41,7 @@ export function suggestionsList(state = [], action) {
                 action.suggestion,
                 ...state.slice(action.index + 1)
             ];
-        case RESET_SUGGESTIONS_LIST:
+        case RESET_SUGGESTIONS_CACHE:
             return [];
         default:
             return state;

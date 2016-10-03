@@ -5,7 +5,7 @@ import { expect } from 'chai';
 describe('Categories actions: ', () => {
     it('selectCategoryFilter function should create a select categoryFilter action', () => {
         expect(actions.selectCategoryFilter('Equipment')).to.deep.equal({
-            type: types.SELECT_CATEGORY_FILTER,
+            type: types.SELECT_CATEGORY_TYPE,
             filterName: 'Equipment'
         });
     });

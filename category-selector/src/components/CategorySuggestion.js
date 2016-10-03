@@ -89,25 +89,25 @@ class CategorySuggestion extends Component {
 }
 
 CategorySuggestion.propTypes = {
-    selectedCategoryFilter: PropTypes.string.isRequired,
+    selectedCategoryType: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     suggestions: PropTypes.array.isRequired,
     inputs: PropTypes.array.isRequired,
-    fetchedCategoriesByFilter: PropTypes.object.isRequired,
+    fetchedCategoryTypes: PropTypes.object.isRequired,
     currentIndex: PropTypes.number.isRequired
 };
 
 function mapStateToProps(state) {
     const {
-        selectedCategoryFilter,
-        fetchedCategoriesByFilter,
+        selectedCategoryType,
+        fetchedCategoryTypes,
         suggestions,
         inputs
     } = state;
 
     return {
-        selectedCategoryFilter,
-        fetchedCategoriesByFilter,
+        selectedCategoryType,
+        fetchedCategoryTypes,
         suggestions,
         inputs
     };

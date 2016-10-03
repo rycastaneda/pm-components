@@ -2,12 +2,12 @@ import {
     REQUEST_CATEGORIES,
     RECEIVE_CATEGORIES,
     SELECT_CATEGORY,
-    SELECT_CATEGORY_FILTER
+    SELECT_CATEGORY_TYPE
 } from '../constants/ActionTypes';
 
-export function selectedCategoryFilter(state = '', action) {
+export function selectedCategoryType(state = '', action) {
     switch (action.type) {
-        case SELECT_CATEGORY_FILTER:
+        case SELECT_CATEGORY_TYPE:
             return action.filterName;
         default:
             return state;
@@ -32,7 +32,7 @@ function categories(state = { isFetching: false, error: false, categories: [] },
     }
 }
 
-export function fetchedCategoriesByFilter(state = {}, action) {
+export function fetchedCategoryTypes(state = {}, action) {
     switch (action.type) {
         case RECEIVE_CATEGORIES:
         case REQUEST_CATEGORIES:
@@ -45,7 +45,7 @@ export function fetchedCategoriesByFilter(state = {}, action) {
 
 }
 
-function selectedCategories(state = [], action) {
+export function selectedCategories(state = [], action) {
     switch (action.type) {
         case SELECT_CATEGORY:
             return [
@@ -53,17 +53,6 @@ function selectedCategories(state = [], action) {
                 action.category,
                 ...state.slice(action.index + 1)
             ];
-        default:
-            return state;
-    }
-}
-
-export function selectedCategoriesByFilter(state = {}, action) {
-    switch (action.type) {
-        case SELECT_CATEGORY:
-            return Object.assign({}, state, {
-                [action.filterName]: selectedCategories(state[action.filterName], action)
-            });
         default:
             return state;
     }

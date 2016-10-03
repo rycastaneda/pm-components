@@ -1,6 +1,6 @@
 import {
     SELECT_CATEGORY,
-    SELECT_CATEGORY_FILTER,
+    SELECT_CATEGORY_TYPE,
     REQUEST_CATEGORIES,
     RECEIVE_CATEGORIES
 } from '../constants/ActionTypes';
@@ -43,7 +43,7 @@ export function fetchCategories(categoryFilter) {
 }
 
 function shouldFetchCategories(state, categoryFilter) {
-    const categoryList = state.fetchedCategoriesByFilter[categoryFilter];
+    const categoryList = state.fetchedCategoryTypes[categoryFilter];
     if (!categoryList) return true;
     else if (categoryList.isFetching) return false;
     else return; // some error console.log('terrr');
@@ -59,14 +59,14 @@ export function fetchCategoriesIfNeeded(categoryFilter) {
 
 export function selectCategoryFilter(filterName) {
     return {
-        type: SELECT_CATEGORY_FILTER,
+        type: SELECT_CATEGORY_TYPE,
         filterName
     };
 }
 
 export function selectCategory(suggestion, index) {
     return (dispatch, getState) => {
-        const categoryFilter = getState().selectedCategoryFilter;
+        const categoryFilter = getState().selectedCategoryType;
         // We check if category has children
         // Ans prepopulate suggestions for the next drop down (index + 1)
         if (suggestion.related) {
