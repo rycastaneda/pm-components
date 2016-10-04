@@ -1,8 +1,17 @@
-import { CLICK_BUTTON } from '../constants/ActionTypes';
+import { BUTTON_IS_CLICKED, INITIAL_STATE } from '../constants/ActionTypes';
 
-export function clickButton(name) {
+export function updateState() {
+    return (dispatch, getState) => {
+        if (getState().boilerplate.buttonIsCLicked) return;
+
+        return dispatch({
+            type: BUTTON_IS_CLICKED
+        });
+    };
+}
+
+export function resetState() {
     return {
-        type: CLICK_BUTTON,
-        name
+        type: INITIAL_STATE
     };
 }

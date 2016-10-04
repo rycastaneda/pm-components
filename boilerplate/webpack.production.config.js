@@ -1,28 +1,14 @@
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const vendorPlugins = require('../shared/vendorPlugins.js');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 
-const HOST = process.env.HOST || 'localhost';
-const PORT = process.env.PORT || '8080';
-
-
-module.exports =  {
-    context: __dirname,
-    devServer: {
-        contentBase: './dist',
-        // do not print bundle build stats
-        noInfo: true,
-        // enable HMR
-        hot: true,
-        inline: true,
-        port: PORT,
-        host: HOST
+module.exports = {
+    entry: {
+        app: './src/index.js',
+        vendor: vendorPlugins
     },
-    devtool: 'eval',
-    entry: [
-        `webpack-dev-server/client?http://${HOST}:${PORT}`,
-        `webpack/hot/dev-server`,
-        './src/index.js'],
+    devtool: 'cheap-module-source-map',
     output: {
         path: `${__dirname}/dist`,
         filename: 'bundle.js'
@@ -35,7 +21,7 @@ module.exports =  {
             {
                 test: /\.js$/,
                 exclude: /(node_modules|dist)/,
-                loaders: ['babel', 'eslint?{failOnWarning: true}']
+                loaders: ['babel', 'eslint?{failOnError:true}']
             },
             {
                 test: /\.json$/,
@@ -43,21 +29,33 @@ module.exports =  {
             },
             {
                 test: /\.scss$/,
-                loaders: ['style', 'css', 'sass']
+                loader: ExtractTextPlugin.extract(
+                    'style', // The backup style loader
+                    'css?sourceMap!sass?sourceMap'
+                )
             }
         ]
-    },
-    sassLoader: {
-        includePaths: ['src/index']
     },
     plugins: [
         new StyleLintPlugin({
             syntax: 'scss'
         }),
-        new webpack.NoErrorsPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
-        new HtmlWebpackPlugin({
-            template: './index.html'
-        })
+        new webpack.DefinePlugin({
+            'process.env': {
+                'NODE_ENV': JSON.stringify('production')
+            }
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            output: {
+                comments: false
+            },
+            compress: {
+                warnings: false
+            }
+        }),
+        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.optimize.DedupePlugin(),
+        new ExtractTextPlugin('./index.css'),
+        new webpack.optimize.CommonsChunkPlugin('vendor', '../../shared/dist/vendor.bundle.js')
     ]
 };

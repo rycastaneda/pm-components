@@ -1,9 +1,15 @@
-import { CLICK_BUTTON } from '../constants/ActionTypes';
+import { BUTTON_IS_CLICKED, INITIAL_STATE } from '../constants/ActionTypes';
 
-export function clickedButton(state = '', action) {
+const INITAL_BOILERPLATE_STATE = { buttonIsCLicked: false };
+
+export function boilerplate(state = INITAL_BOILERPLATE_STATE, action) {
     switch (action.type) {
-        case CLICK_BUTTON:
-            return action.name;
+        case BUTTON_IS_CLICKED:
+            return Object.assign({}, state, {
+                buttonIsCLicked: true
+            });
+        case INITIAL_STATE:
+            return Object.assign({}, state, INITAL_BOILERPLATE_STATE);
         default:
             return state;
     }
