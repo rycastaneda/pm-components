@@ -1,4 +1,6 @@
-# Boilerplate for pm-components
+# Plantminer-components boilerplate
+
+Contains a basic setup with a few simple examples which can be copied and used for any new plantminer-components.
 
 ## Prerequisites
 It is very useful to have React Dev Tools and Redux Dev Tools extensions enabled in Chrome/Firefox.
@@ -50,30 +52,45 @@ webpack.*.js      # develop and produciton configurations
 5. Now you can start working on your component
 
 Component development is separate from 'plantminer-web' or 'plantminer-admin'.
-You should not need to interact much with those application as your component is a separate piece of functionality.
+You should not need to interact much with those applications as your component is a separate piece of functionality.
 In order to test it all together, please follow these steps:
 
-1. Go to vagrantbox and cd into 'plantminer-components' folder
-2. Run `sudo npm link` - you should see something like 
+1. Build your component from inside your component folder (for ex., plantminer-components/boilerplate)
     
-    `npm WARN pm-components@0.1.0 No license field.
-     /usr/lib/node_modules/pm-components -> /var/www/plantminer-components`
-3. Go to your application gulp folder, for example to 'plantminer-web/dev/gulp'
-4. Open package.json file and add a new dependency
+    `npm run build`
+
+2. Go to vagrantbox and cd into 'plantminer-components' folder
+3. Run `sudo npm link` - you should see something like 
+    
+    `npm WARN plantminer-components@0.1.0 No license field.
+     /usr/lib/node_modules/plantminer-components -> /var/www/plantminer-components`
+4. Go to your application gulp folder, for example to 'plantminer-web/dev/gulp'
+5. Open package.json file and add a new dependency
     
     `"plantminer-componenets": "git+ssh://git@bitbucket.org:minergroup/plantminer-components.git#feature\/PM-943"`
     
     where '#' is your feature branch
     
-5. Inside 'plantminer-web/dev/gulp' run `npm install`
-6. After install is successful, run `sudo npm link pm-components`
+6. Inside 'plantminer-web/dev/gulp' run `sudo npm link plantminer-components`
 
     You should see something link 
     
-    `/var/www/plantminer-web/dev/gulp/node_modules/pm-components -> /usr/lib/node_modules/pm-components -> /var/www/plantminer-components`
+    `/var/www/plantminer-web/dev/gulp/node_modules/plantminer-components -> /usr/lib/node_modules/plantminer-components -> /var/www/plantminer-components`
 
     This will create a symlink from node_modules to your local component
-7. 
+7. Run `gulp copy`. It will copy your components folder 
+    from node_modules/plantminer-components/your-component/dist to /assets/v2/plantminer-components/your-component/dist
+    
+8. Start a watch task `gulp jswatch`. This will setup a watch on your dist folder, 
+which means every time you make a new build, the changes will be copied to /assets/v2/plantminer-components/your-component/dist 
+
+9. Add dependency in carabiner.php to include '/assets/v2/plantminer-components/your-component/dist/bundle.js'
+
+    and css if needed.
+
+10. Add html tag to your php page, for example 
+    ` <div data-component="boilerplate"></div>`
+
 
 
 
