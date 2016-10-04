@@ -10,12 +10,12 @@ class CategorySelection extends Component {
     constructor(props) {
         super(props);
         // We need to do it because ES6 class properties do not automatically bind to the React class instance
-        this.handleCategoryFilterClick = this.handleCategoryFilterClick.bind(this);
+        this.handleCategoryTypeClick = this.handleCategoryTypeClick.bind(this);
     }
 
-    handleCategoryFilterClick(categoryFilter) {
-        this.props.dispatch(selectType(categoryFilter.attributes.title));
-        return this.props.dispatch(fetchCategoriesIfNeeded(categoryFilter));
+    handleCategoryTypeClick(type) {
+        this.props.dispatch(selectType(type.attributes.title));
+        return this.props.dispatch(fetchCategoriesIfNeeded(type));
     }
 
     render() {
@@ -33,7 +33,7 @@ class CategorySelection extends Component {
 
                 <CategoryTypeList
                     types={CATEGORY_TYPES}
-                    onTypeClick={this.handleCategoryFilterClick}
+                    onTypeClick={this.handleCategoryTypeClick}
                     selected={categorySelector.selectedType}
                 />
 

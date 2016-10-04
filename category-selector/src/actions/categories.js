@@ -3,38 +3,40 @@ import {
     SELECT_CATEGORY_TYPE,
     REQUEST_CATEGORIES,
     RECEIVE_CATEGORIES,
-    SET_INITIAL_STATE
+    SET_INITIAL_CATEGORY_SELECTOR_STATE
 } from '../constants/ActionTypes';
 import { updateSuggestionsCache } from './suggestions';
 // import { readEndpoint } from 'redux-json-api';
 import _categories from '../mocks/categories.json';
 
 
-export function requestCategories(filterType) {
+export function requestCategories(categoryType) {
     return {
         type: REQUEST_CATEGORIES,
-        filterType
+        categoryType
     };
 }
 
-export function receiveCategories(filterType, categories) {
+export function receiveCategories(categoryType, categories) {
     return (dispatch) => {
         dispatch({
             type: RECEIVE_CATEGORIES,
             categories,
             // categories: categories.map(child => child),
-            filterType
+            categoryType
         });
+        // We populate suggestions cache to avoid traversing fetchedCategoryTypes deep 2-3 levels down
+        // TODO: reconsider when we get api structure
         return dispatch(updateSuggestionsCache(categories));
     };
 }
 
-function fetchCategories(categoryFilter) {
+function fetchCategories(categoryType) {
     return (dispatch) => {
-        const filterType = categoryFilter.attributes.title;
+        const type = categoryType.attributes.title;
 
-        dispatch(requestCategories(filterType));
-        return dispatch(receiveCategories(filterType, _categories.data));
+        dispatch(requestCategories(type));
+        return dispatch(receiveCategories(type, _categories.data));
 
         // return dispatch(readEndpoint(`api/users/`))
         //     .then(response => response)
@@ -42,34 +44,36 @@ function fetchCategories(categoryFilter) {
     };
 }
 
-function shouldFetchCategories(state, categoryFilter) {
-    const categoryList = state.fetchedCategoryTypes[categoryFilter];
+function shouldFetchCategories(state, categoryType) {
+    const categoryList = state.fetchedCategoryTypes[categoryType];
+    // Check if we have already data in available in fetchedCategoryTypes 'cache'
     if (!categoryList) return true;
     else if (categoryList.isFetching) return false;
-    else return; // some error console.log('terrr');
+    // TODO: add some error handling if needed
+    else return;
 }
 
-export function fetchCategoriesIfNeeded(categoryFilter) {
+export function fetchCategoriesIfNeeded(categoryType) {
     return (dispatch, getState) => {
-        if (shouldFetchCategories(getState(), categoryFilter)) {
-            return dispatch(fetchCategories(categoryFilter));
+        if (shouldFetchCategories(getState(), categoryType)) {
+            return dispatch(fetchCategories(categoryType));
         }
     };
 }
 
-function resetSelectedTypes() {
+export function resetSelectedTypes() {
     return {
-        type: SET_INITIAL_STATE
+        type: SET_INITIAL_CATEGORY_SELECTOR_STATE
     };
 }
 
-export function selectType(filterType) {
+export function selectType(categoryType) {
     return (dispatch) => {
         dispatch(resetSelectedTypes());
 
         return dispatch({
             type: SELECT_CATEGORY_TYPE,
-            filterType
+            categoryType
         });
     };
 }
@@ -77,7 +81,7 @@ export function selectType(filterType) {
 export function selectCategory(suggestion, index) {
     return (dispatch) => {
         // We check if category has children
-        // Ans prepopulate suggestions for the next drop down (index + 1)
+        // And prepopulate suggestions for the next drop down (index + 1)
         if (suggestion.related) {
             dispatch(updateSuggestionsCache(suggestion.related, index + 1));
         }

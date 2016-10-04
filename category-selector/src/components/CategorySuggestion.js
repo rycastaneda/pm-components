@@ -91,14 +91,13 @@ class CategorySuggestion extends Component {
 CategorySuggestion.propTypes = {
     categorySelector: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    fetchedCategoryTypes: PropTypes.object.isRequired,
     currentIndex: PropTypes.number.isRequired
 };
 
 function mapStateToProps(state) {
-    const { fetchedCategoryTypes, categorySelector } = state;
+    const { categorySelector } = state;
 
-    return { fetchedCategoryTypes, categorySelector };
+    return { categorySelector };
 }
 
 export default connect(mapStateToProps)(CategorySuggestion);

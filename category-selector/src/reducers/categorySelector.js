@@ -4,12 +4,12 @@ import {
     SELECT_CATEGORY,
     SELECT_CATEGORY_TYPE,
     UPDATE_INPUT,
-    UPDATE_SUGGESTIONS_CACHE
-} from '../constants/ActionTypes';
-import {
+    UPDATE_SUGGESTIONS_CACHE,
     RECEIVE_SUGGESTIONS,
     RESET_SUGGESTIONS,
-    SET_INITIAL_STATE
+    SET_INITIAL_CATEGORY_SELECTOR_STATE,
+    ADD_DROPDOWN,
+    RESET_DROPDOWNS
 } from '../constants/ActionTypes';
 
 const INITIAL_CATEGORY_SELECTOR_STATE = {
@@ -18,7 +18,7 @@ const INITIAL_CATEGORY_SELECTOR_STATE = {
     dropDowns: []
 };
 
-const DEFAULT_DROPDOWN = {
+const DEFAULT_DROPDOWN_STATE = {
     input: '',
     suggestionsCache: [],
     selectedCategory: {}
@@ -29,16 +29,17 @@ export function categorySelector(state = INITIAL_CATEGORY_SELECTOR_STATE, action
     switch (action.type) {
         case SELECT_CATEGORY_TYPE:
             return Object.assign({}, state, {
-                selectedType: action.filterType
+                selectedType: action.categoryType
             });
         case RECEIVE_SUGGESTIONS:
         case RESET_SUGGESTIONS:
             return Object.assign({}, state, {
                 suggestions: action.suggestions
             });
-        case SET_INITIAL_STATE:
+        case SET_INITIAL_CATEGORY_SELECTOR_STATE:
             return Object.assign({}, state, INITIAL_CATEGORY_SELECTOR_STATE);
-        case 'ADD_DROPDOWN':
+        case ADD_DROPDOWN:
+        case RESET_DROPDOWNS:
         case UPDATE_SUGGESTIONS_CACHE:
         case UPDATE_INPUT:
         case SELECT_CATEGORY:
@@ -52,12 +53,14 @@ export function categorySelector(state = INITIAL_CATEGORY_SELECTOR_STATE, action
 
 function dropDowns(state = [], action) {
     switch (action.type) {
-        case 'ADD_DROPDOWN':
+        case ADD_DROPDOWN:
             return [
                 ...state.slice(0, action.index),
-                DEFAULT_DROPDOWN,
+                DEFAULT_DROPDOWN_STATE,
                 ...state.slice(action.index + 1)
             ];
+        case RESET_DROPDOWNS:
+            return state.slice(0, action.index);
         case UPDATE_SUGGESTIONS_CACHE:
             return state.map((dropDown, index) => {
                 if (index === action.index) {
@@ -114,7 +117,7 @@ export function fetchedCategoryTypes(state = {}, action) {
         case RECEIVE_CATEGORIES:
         case REQUEST_CATEGORIES:
             return Object.assign({}, state, {
-                [action.filterType]: categories(state[action.filterType], action)
+                [action.categoryType]: categories(state[action.categoryType], action)
             });
         default:
             return state;
