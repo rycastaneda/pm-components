@@ -64,7 +64,9 @@ In order to test it all together, please follow these steps:
     
     `npm WARN plantminer-components@0.1.0 No license field.
      /usr/lib/node_modules/plantminer-components -> /var/www/plantminer-components`
+
 4. Go to your application gulp folder, for example to 'plantminer-web/dev/gulp'
+
 5. Open package.json file and add a new dependency
     
     `"plantminer-componenets": "git+ssh://git@bitbucket.org:minergroup/plantminer-components.git#feature\/PM-943"`
@@ -78,15 +80,14 @@ In order to test it all together, please follow these steps:
     `/var/www/plantminer-web/dev/gulp/node_modules/plantminer-components -> /usr/lib/node_modules/plantminer-components -> /var/www/plantminer-components`
 
     This will create a symlink from node_modules to your local component
+    
 7. Run `gulp copy`. It will copy your components folder 
-    from node_modules/plantminer-components/your-component/dist to /assets/v2/plantminer-components/your-component/dist
+    from node_modules/plantminer-components/boilerplate/dist to /assets/v2/plantminer-components/boilerplate/dist
     
 8. Start a watch task `gulp jswatch`. This will setup a watch on your dist folder, 
 which means every time you make a new build, the changes will be copied to /assets/v2/plantminer-components/your-component/dist 
 
-9. Add dependency in carabiner.php to include '/assets/v2/plantminer-components/your-component/dist/bundle.js'
-
-    and css if needed.
+9. Add dependency in carabiner.php to include '/assets/v2/plantminer-components/boilerplate/dist/bundle.js' and css if needed.
 
 10. Add html tag to your php page, for example 
     ` <div data-component="boilerplate"></div>`
