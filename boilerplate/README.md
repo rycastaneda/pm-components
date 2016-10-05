@@ -6,7 +6,7 @@ Contains a basic setup with a few simple examples which can be copied and used f
 
 - Read about [Redux](https://github.com/reactjs/redux) and [Redux Thunk](https://github.com/gaearon/redux-thunk)
 - Read [Presentational vs Container Components](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0#.c8yjx0box)
-- Install React Dev Tools for [Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi) or[Firefox](https://addons.mozilla.org/en-US/firefox/addon/react-devtools/?src=search)
+- Install React Dev Tools for [Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/react-devtools/?src=search)
 - Install Redux Dev Tools for [Chrome](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/remotedev/?src=cb-dl-recentlyadded)
 - Watch React Dev Tools [Videos](https://egghead.io/lessons/developer-tools)
 - The boilerplate already has Redux Dev Tools extension enabled in `src/index.js`
@@ -17,20 +17,25 @@ Contains a basic setup with a few simple examples which can be copied and used f
     ```
     npm install
     ```
+
 - After everything is successfully installed, run 
     
     ```
     npm start
     ```
+
 - Go to your browser and navigate to `http://localhost:8080/index.html`
 
+
 - Now you can open Redux Dev Tools and see your state and actions dispatched
+
 
 - To run tests
 
     ```
     npm run tests
     ```
+
 - To run production build
 
     ```
@@ -44,32 +49,32 @@ Contains a basic setup with a few simple examples which can be copied and used f
 ```
 /src
 
-    /actions      # contains actions and business logic
+    /actions                # contains actions and business logic
         boilerplate.js
-    /components   # contains UI components (presentational)
+    /components             # contains UI components (presentational)
         Button.js
-    /constants    # contains action types and all other constants
+    /constants              # contains action types and all other constants
         ActionTypes.js
-    /containers   # contains both presentational and container components, provide data and behaviour
+    /containers             # contains both presentational and container components, provide data and behaviour
         Boilerplate.js
-    /mocks        # contains api mocks (json files)
-    /reducers     # contains reducers
+    /mocks                  # contains api mocks (json files)
+    /reducers               # contains reducers
         boilerplate.js
         index.js
-    /styles       # contains component styles (each file to be named after components file)
+    /styles                 # contains component styles (each file to be named after components file)
         buttons.scss
         index.scss
     
-    index.js      # entry point of application (contains 'Provider' and creation of 'store') 
+    index.js                # entry point of application (contains 'Provider' and creation of 'store') 
     
 .babelrc
 .eslintrc
 .stylelintrc
-index.html        # contains simple markup for component development
+index.html                  # contains simple markup for component development
 package.json
 
-tests.config.js   # tests configuration setup
-webpack.*.js      # development and production configurations
+tests.config.js             # tests configuration setup
+webpack.*.js                # development and production configurations
     
 ```
 
@@ -80,9 +85,11 @@ webpack.*.js      # development and production configurations
 - Remove and rename anything you do not need 
 - Now you can start working on your component
 
+
 Component development is separate from `plantminer-web` or `plantminer-admin`.
 You should not need to interact much with those applications as your component is a separate piece of functionality.
 In order to test it all together, please follow these steps:
+
 
 - Build your component from inside your component folder (for example, `plantminer-components/boilerplate`)
 
@@ -96,6 +103,7 @@ In order to test it all together, please follow these steps:
     ```
     sudo npm link
     ``` 
+    
     You should see something like 
     
     ```
