@@ -1,11 +1,11 @@
-import { BUTTON_IS_CLICKED, INITIAL_STATE } from '../constants/ActionTypes';
+import { IS_CLICKED, INITIAL_STATE } from '../constants/ActionTypes';
 
 export function updateState() {
     return (dispatch, getState) => {
-        if (getState().boilerplate.buttonIsCLicked) return;
+        if (getState().boilerplate.buttonIsClicked) return;
 
         return dispatch({
-            type: BUTTON_IS_CLICKED
+            type: IS_CLICKED
         });
     };
 }
