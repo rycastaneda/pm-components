@@ -23,7 +23,9 @@ Contains a basic setup with a few simple examples which can be copied and used f
     npm start
     ```
 - Go to your browser and navigate to `http://localhost:8080/index.html`
+
 - Now you can open Redux Dev Tools and see your state and actions dispatched
+
 - To run tests
 
     ```
@@ -128,6 +130,7 @@ In order to test it all together, please follow these steps:
     ```
     gulp copy
     ```
+    
     It will copy your components folder from `node_modules/plantminer-components/boilerplate/dist` to `/assets/v2/plantminer-components/boilerplate/dist`
     
 - Start a watch task 
@@ -135,6 +138,7 @@ In order to test it all together, please follow these steps:
     ```
     gulp jswatch
     ```
+    
     This will setup a watch on your dist folder, 
     which means every time you make a new build, the changes will be copied to `/assets/v2/plantminer-components/your-component/dist`
 
