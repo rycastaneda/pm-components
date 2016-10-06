@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { selectType, fetchCategoriesIfNeeded } from '../actions/categories';
 import CategoryTypeList from '../components/CategoryTypeList';
 import { CATEGORY_TYPES } from '../constants/CategoryTypes';
-import CategorySuggestion from '../components/CategorySuggestion';
+import CategorySuggestion from './CategorySuggestion';
 
 class CategorySelection extends Component {
 

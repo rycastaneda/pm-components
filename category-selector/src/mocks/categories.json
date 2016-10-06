@@ -2,258 +2,99 @@
   "data": [
     {
       "type": "categories",
-      "id": 1,
+      "id": "73",
       "attributes": {
-        "title": "Piling package"
+        "title": "Lasers  / Levelling / Testing",
+        "selectable": 0
       },
-      "related": [
-        {
-          "type": "categories",
-          "id": 2,
-          "attributes": {
-            "title": "New category"
-          },
-          "related": [
+      "relationships": {
+        "categories": {
+          "data": [
             {
               "type": "categories",
-              "id": 3,
-              "attributes": {
-                "title": "New category 333"
-              }
+              "id": "74"
+            },
+            {
+              "type": "categories",
+              "id": "75"
             }
           ]
         }
-      ]
-    },
-    {
-      "type": "categories",
-      "id": 4,
-      "attributes": {
-        "title": "Something else"
       }
     },
     {
       "type": "categories",
-      "id": 5,
+      "id": "99",
       "attributes": {
-        "title": "Piling package"
+        "title": "Lasers  /  Testing",
+        "selectable": 0
       },
-      "related": [
-        {
-          "type": "categories",
-          "id": 2,
-          "attributes": {
-            "title": "New category"
-          },
-          "related": [
+      "relationships": {
+        "categories": {
+          "data": [
             {
               "type": "categories",
-              "id": 3,
-              "attributes": {
-                "title": "New category 333"
-              }
+              "id": "311"
             }
           ]
         }
-      ]
-    },
+      }
+    }
+  ],
+  "included": [
     {
       "type": "categories",
-      "id": 6,
+      "id": "74",
       "attributes": {
-        "title": "Something else"
+        "title": "Levelling Equipment",
+        "selectable": 1
+      },
+      "relationships": {
+        "categories": {
+          "data": [{
+            "type": "categories",
+            "id": "75"
+          }]
+        }
       }
     },
     {
       "type": "categories",
-      "id": 7,
+      "id": "75",
       "attributes": {
-        "title": "Piling package"
+        "title": "Laser Equipment",
+        "selectable": 1
       },
-      "related": [
-        {
-          "type": "categories",
-          "id": 2,
-          "attributes": {
-            "title": "New category"
-          },
-          "related": [
-            {
-              "type": "categories",
-              "id": 3,
-              "attributes": {
-                "title": "New category 333"
-              }
-            }
-          ]
+      "relationships": {
+        "categories": {
+          "data": []
         }
-      ]
-    },
-    {
-      "type": "categories",
-      "id": 8,
-      "attributes": {
-        "title": "Something else"
       }
     },
     {
       "type": "categories",
-      "id": 9,
+      "id": "76",
       "attributes": {
-        "title": "Piling package"
+        "title": "Misc. Lasers & Leveling Equipment",
+        "selectable": 1
       },
-      "related": [
-        {
-          "type": "categories",
-          "id": 2,
-          "attributes": {
-            "title": "New category"
-          },
-          "related": [
-            {
-              "type": "categories",
-              "id": 3,
-              "attributes": {
-                "title": "New category 333"
-              }
-            }
-          ]
+      "relationships": {
+        "categories": {
+          "data": []
         }
-      ]
-    },
-    {
-      "type": "categories",
-      "id": 10,
-      "attributes": {
-        "title": "Something else"
       }
     },
     {
       "type": "categories",
-      "id": 1,
+      "id": "311",
       "attributes": {
-        "title": "Piling package"
+        "title": "Testing Equipment",
+        "selectable": 1
       },
-      "related": [
-        {
-          "type": "categories",
-          "id": 2,
-          "attributes": {
-            "title": "New category"
-          },
-          "related": [
-            {
-              "type": "categories",
-              "id": 3,
-              "attributes": {
-                "title": "New category 333"
-              }
-            }
-          ]
+      "relationships": {
+        "categories": {
+          "data": []
         }
-      ]
-    },
-    {
-      "type": "categories",
-      "id": 4,
-      "attributes": {
-        "title": "Something else"
-      }
-    },
-    {
-      "type": "categories",
-      "id": 5,
-      "attributes": {
-        "title": "Piling package"
-      },
-      "related": [
-        {
-          "type": "categories",
-          "id": 2,
-          "attributes": {
-            "title": "New category"
-          },
-          "related": [
-            {
-              "type": "categories",
-              "id": 3,
-              "attributes": {
-                "title": "New category 333"
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "categories",
-      "id": 6,
-      "attributes": {
-        "title": "Something else"
-      }
-    },
-    {
-      "type": "categories",
-      "id": 7,
-      "attributes": {
-        "title": "Piling package"
-      },
-      "related": [
-        {
-          "type": "categories",
-          "id": 2,
-          "attributes": {
-            "title": "New category"
-          },
-          "related": [
-            {
-              "type": "categories",
-              "id": 3,
-              "attributes": {
-                "title": "New category 333"
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "categories",
-      "id": 8,
-      "attributes": {
-        "title": "Something else"
-      }
-    },
-    {
-      "type": "categories",
-      "id": 9,
-      "attributes": {
-        "title": "Piling package"
-      },
-      "related": [
-        {
-          "type": "categories",
-          "id": 2,
-          "attributes": {
-            "title": "New category"
-          },
-          "related": [
-            {
-              "type": "categories",
-              "id": 3,
-              "attributes": {
-                "title": "New category 333"
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "categories",
-      "id": 10,
-      "attributes": {
-        "title": "Something else"
       }
     }
   ]

@@ -4,7 +4,6 @@ import {
     SELECT_CATEGORY,
     SELECT_CATEGORY_TYPE,
     UPDATE_INPUT,
-    UPDATE_SUGGESTIONS_CACHE,
     RECEIVE_SUGGESTIONS,
     RESET_SUGGESTIONS,
     SET_INITIAL_CATEGORY_SELECTOR_STATE,
@@ -20,7 +19,6 @@ const INITIAL_CATEGORY_SELECTOR_STATE = {
 
 const DEFAULT_DROPDOWN_STATE = {
     input: '',
-    suggestionsCache: [],
     selectedCategory: {}
 };
 
@@ -40,7 +38,6 @@ export function categorySelector(state = INITIAL_CATEGORY_SELECTOR_STATE, action
             return Object.assign({}, state, INITIAL_CATEGORY_SELECTOR_STATE);
         case ADD_DROPDOWN:
         case RESET_DROPDOWNS:
-        case UPDATE_SUGGESTIONS_CACHE:
         case UPDATE_INPUT:
         case SELECT_CATEGORY:
             return Object.assign({}, state, {
@@ -61,15 +58,6 @@ function dropDowns(state = [], action) {
             ];
         case RESET_DROPDOWNS:
             return state.slice(0, action.index);
-        case UPDATE_SUGGESTIONS_CACHE:
-            return state.map((dropDown, index) => {
-                if (index === action.index) {
-                    return Object.assign({}, dropDown, {
-                        suggestionsCache: action.suggestionsCache
-                    });
-                }
-                return dropDown;
-            });
         case UPDATE_INPUT:
             return state.map((dropDown, index) => {
                 if (index === action.index) {
