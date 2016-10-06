@@ -2,7 +2,6 @@ import {
     RECEIVE_SUGGESTIONS,
     RESET_SUGGESTIONS,
     UPDATE_INPUT,
-    ADD_DROPDOWN,
     RESET_DROPDOWNS
 } from '../constants/ActionTypes';
 

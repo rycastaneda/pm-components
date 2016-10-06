@@ -36,7 +36,7 @@ function fetchCategories(categoryType) {
         const type = categoryType.attributes.title;
 
         dispatch(requestCategories(type));
-        setTimeout(function () {
+        setTimeout(function() {
             dispatch(receiveCategories(type, _categories));
         }, 500);
 
