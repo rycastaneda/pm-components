@@ -21,16 +21,8 @@ class CategorySelection extends Component {
     render() {
         const { categorySelector } = this.props;
 
-        const TITLE = 'What service do you need? *';
-
         return (
-            <div
-                className="db-form-section">
-                <h6
-                    className="db-form-title">
-                    {TITLE}
-                </h6>
-
+            <div>
                 <CategoryTypeList
                     types={CATEGORY_TYPES}
                     onTypeClick={this.handleCategoryTypeClick}

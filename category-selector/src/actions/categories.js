@@ -6,8 +6,7 @@ import {
     SET_INITIAL_CATEGORY_SELECTOR_STATE,
     ADD_DROPDOWN
 } from '../constants/ActionTypes';
-// import { readEndpoint } from 'redux-json-api';
-import _categories from '../mocks/categories.json';
+import { readEndpoint } from 'redux-json-api';
 
 export function requestCategories(categoryType) {
     return {
@@ -34,23 +33,17 @@ export function receiveCategories(categoryType, categories) {
 function fetchCategories(categoryType) {
     return (dispatch) => {
         const type = categoryType.attributes.title;
+        const service_type = categoryType.attributes.service_type;
 
         dispatch(requestCategories(type));
-        setTimeout(function() {
-            dispatch(receiveCategories(type, _categories));
-        }, 500);
 
-
-        // return dispatch(receiveCategories(type, _categories.data));
-
-        // return dispatch(readEndpoint(`api/users/`))
-        //     .then(response => response)
-        //     .then(json => dispatch(getCategories(json)));
+        dispatch(readEndpoint(`categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`))
+            .then(response => dispatch(receiveCategories(type, response)));
     };
 }
 
 function shouldFetchCategories(state, categoryType) {
-    const categoryList = state.fetchedCategoryTypes[categoryType];
+    const categoryList = state.fetchedCategoryTypes[categoryType.attributes.title];
     // Check if we have already data in available in fetchedCategoryTypes 'cache'
     if (!categoryList) return true;
     else if (categoryList.isFetching) return false;
@@ -68,6 +61,8 @@ export function fetchCategoriesIfNeeded(categoryType) {
     return (dispatch, getState) => {
         if (shouldFetchCategories(getState(), categoryType)) {
             return dispatch(fetchCategories(categoryType));
+        } else {
+            dispatch(addDropDown());
         }
     };
 }
@@ -80,6 +75,7 @@ export function resetSelectedTypes() {
 
 export function selectType(categoryType) {
     return (dispatch) => {
+        triggerDomChanges();
         dispatch(resetSelectedTypes());
 
         return dispatch({
@@ -91,7 +87,8 @@ export function selectType(categoryType) {
 
 export function selectCategory(category, index) {
     return (dispatch) => {
-        const hasSubcategories = category.relationships.categories.data.length > 0;
+        const hasSubcategories = category.relationships ? category.relationships.categories.data.length > 0 : false;
+        triggerDomChanges(category.id);
 
         dispatch({
             type: SELECT_CATEGORY,
@@ -103,4 +100,14 @@ export function selectCategory(category, index) {
             dispatch(addDropDown(index + 1));
         }
     };
+}
+
+
+function triggerDomChanges(id = 0) {
+    const el = document.getElementById('qr_category_id') || {};
+    const triggerChange = new Event('change');
+
+    el.value = id;
+    el.dispatchEvent = el.dispatchEvent || function() {};
+    el.dispatchEvent(triggerChange);
 }
