@@ -41,7 +41,10 @@ class CategorySuggestion extends Component {
     // Template for suggestions list
     renderSuggestion(suggestion) {
         return (
-            <span>{suggestion.attributes.title}</span>
+            <div>
+                <i className="fa fa-wrench"/>
+                <span>{suggestion.attributes.title}</span>
+            </div>
         );
     }
 

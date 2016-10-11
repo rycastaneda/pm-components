@@ -1,41 +1,5 @@
-.category-types__item {
-    padding: 12px;
-    cursor: pointer;
+// variables
+$main-color: #e68020;
 
-    &--selected {
-        color: #ffffff;
-        background-color: #e68020;
-        border: 1px solid #e68020;
-        font-weight: bold;
-    }
-}
-
-.react-autosuggest__container {
-    position: relative;
-}
-
-.react-autosuggest__suggestions-list {
-    position: absolute;
-    z-index: 10;
-    overflow: scroll;
-
-    width: 100%;
-    height: auto;
-    max-height: 250px;
-    padding-left: 40px;
-
-    background: #ffffff;
-    cursor: pointer;
-}
-
-.react-autosuggest__suggestion {
-    padding: 7px;
-    color: #333333;
-    border-bottom: 1px solid #dddddd;
-    font-size: 12px;
-    font-weight: bold;
-
-    &--focused {
-        background: #eeeeee;
-    }
-}
+@import './categorySelection';
+@import './categorySuggestion';
