@@ -1,45 +1,45 @@
 .react-autosuggest__container {
     position: relative;
 
+    /* stylelint-disable */
     ::-webkit-scrollbar {
         width: 12px;
     }
 
     ::-webkit-scrollbar-track {
-        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
         border-radius: 10px;
     }
 
     ::-webkit-scrollbar-thumb {
         border-radius: 10px;
-        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
     }
-
+    /* stylelint-enable */
 }
 
 .react-autosuggest__suggestions-list {
     position: absolute;
     z-index: 10;
-    overflow: scroll;
-    border: 1px solid #eeeeee;
+    overflow-x: auto;
 
     width: 100%;
+    min-width: 200px;
     height: auto;
     max-height: 250px;
 
     background: #ffffff;
-    cursor: pointer;
-
-    -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.125);
-    -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.125);
-    -o-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.125);
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.125);
-
+    border: 1px solid #eeeeee;
     border-radius: 3px;
 
-    min-width: 200px;
-    overflow-y: auto;
-    overflow-x: hidden;
+    cursor: pointer;
+
+    /* stylelint-disable */
+    /* a library should be used or a mixin */
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.125);
+    -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.125);
+    -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.125);
+    /* stylelint-enable */
 }
 
 .react-autosuggest__suggestion {
@@ -50,10 +50,9 @@
     font-weight: normal;
 
     i {
+        margin: 0 7px 0 3px;
         color: $main-color;
-        margin-right: 7px;
         font-size: 16px;
-        margin-left: 3px;
     }
 
     &--focused {
