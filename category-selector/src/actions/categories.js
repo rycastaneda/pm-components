@@ -88,7 +88,10 @@ export function selectType(categoryType) {
 export function selectCategory(category, index) {
     return (dispatch) => {
         const hasSubcategories = category.relationships ? category.relationships.categories.data.length > 0 : false;
-        triggerDomChanges(category.id);
+        
+        if (category.attributes.selectable) {
+            triggerDomChanges(category.id);
+        }
 
         dispatch({
             type: SELECT_CATEGORY,
