@@ -1,12 +1,13 @@
 import React, { PropTypes } from 'react';
 
-const CategoryType = ({ id, attributes, onClick, selected = false }) => (
+const CategoryType = ({ id, attributes, onClick, selected = false, isFetching = false }) => (
     <li
-        className={`input-group-addon category-types__item ${selected ? 'category-types__item--selected' : ''}`}
+        className={`category-types__item ${selected ? 'category-types__item--selected' : ''}`}
         id={id}
         onClick={onClick}
     >
         {attributes.title}
+        {selected && isFetching ? <i className="category-types__spinner fa fa-spinner fa-spin"></i> : ''}
     </li>
 );
 
@@ -15,7 +16,8 @@ CategoryType.propTypes = {
     id: PropTypes.number.isRequired,
     attributes: PropTypes.object.isRequired,
     selected: PropTypes.bool.isRequired,
-    onClick: PropTypes.func.isRequired
+    onClick: PropTypes.func.isRequired,
+    isFetching: PropTypes.bool
 };
 
 export default CategoryType;

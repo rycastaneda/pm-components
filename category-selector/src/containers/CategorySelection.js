@@ -19,7 +19,7 @@ class CategorySelection extends Component {
     }
 
     render() {
-        const { categorySelector } = this.props;
+        const { categorySelector, isFetching } = this.props;
 
         return (
             <div>
@@ -27,6 +27,7 @@ class CategorySelection extends Component {
                     types={CATEGORY_TYPES}
                     onTypeClick={this.handleCategoryTypeClick}
                     selected={categorySelector.selectedType}
+                    isFetching={isFetching}
                 />
 
                 {categorySelector.dropDowns.map((suggestion, index) => {
@@ -47,7 +48,7 @@ CategorySelection.propTypes = {
 
 function mapStateToProps(state) {
     const { categorySelector, fetchedCategoryTypes } = state;
-    const { isFetching } = fetchedCategoryTypes[categorySelector.selectedType] || { isFetching: true };
+    const { isFetching } = fetchedCategoryTypes[categorySelector.selectedType] || { isFetching: false };
 
     return {
         isFetching,

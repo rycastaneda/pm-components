@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import CategoryType from './CategoryType';
 
-const CategoryTypeList = ({ types, onTypeClick, selected }) => (
+const CategoryTypeList = ({ types, onTypeClick, selected, isFetching }) => (
     <div
         className="col-xs-12 mar-btm">
         <ul
@@ -12,6 +12,7 @@ const CategoryTypeList = ({ types, onTypeClick, selected }) => (
                 {...type}
                 onClick={() => onTypeClick(type)}
                 selected={selected === type.attributes.title}
+                isFetching={isFetching}
             />
         )}
         </ul>
@@ -24,7 +25,8 @@ CategoryTypeList.propTypes = {
         attributes: PropTypes.object
     }).isRequired).isRequired,
     onTypeClick: PropTypes.func.isRequired,
-    selected: PropTypes.string
+    selected: PropTypes.string,
+    isFetching: PropTypes.bool.isRequired
 };
 
 export default CategoryTypeList;
