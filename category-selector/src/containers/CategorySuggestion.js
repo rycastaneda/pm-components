@@ -74,7 +74,8 @@ class CategorySuggestion extends Component {
         });
 
         return (
-            <div className="col-xs-12 mar-btm">
+            <div className="col-xs-12 mar-btm category-suggestion">
+                { currentIndex > 0 ? <i className="category-suggestion__icon fa fa-arrow-right"></i> : '' }
                 <Autosuggest
                     id="categories-0"
                     suggestions={categorySelector.suggestions}

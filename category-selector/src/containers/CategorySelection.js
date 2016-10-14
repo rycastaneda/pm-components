@@ -38,7 +38,7 @@ class CategorySelection extends Component {
                 { categorySelector.isApiError ?
                     <div
                         className="col-xs-12">
-                        We are very sorry, but something went wrong. Could you please refresh the page and try again?
+                        Sorry, an error occurred while trying to fetch categories. Please refresh the page and try again.
                     </div> : '' }
             </div>
         );
