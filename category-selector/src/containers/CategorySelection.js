@@ -35,6 +35,11 @@ class CategorySelection extends Component {
                         <CategorySuggestion key={index} currentIndex={index} />
                     );})
                 }
+                { categorySelector.isApiError ?
+                    <div
+                        className="col-xs-12">
+                        We are very sorry, but something went wrong. Could you please refresh the page and try again?
+                    </div> : '' }
             </div>
         );
     }

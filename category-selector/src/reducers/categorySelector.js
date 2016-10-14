@@ -14,7 +14,8 @@ import {
 const INITIAL_CATEGORY_SELECTOR_STATE = {
     selectedType: '',
     suggestions: [],
-    dropDowns: []
+    dropDowns: [],
+    isApiError: false
 };
 
 const DEFAULT_DROPDOWN_STATE = {
@@ -42,6 +43,11 @@ export function categorySelector(state = INITIAL_CATEGORY_SELECTOR_STATE, action
         case SELECT_CATEGORY:
             return Object.assign({}, state, {
                 dropDowns: dropDowns(state.dropDowns, action)
+            });
+        // A bit of a hack around failed api calls
+        case 'API_READ_FAILED':
+            return Object.assign({}, state, {
+                isApiError: true
             });
         default:
             return state;
@@ -82,17 +88,15 @@ function dropDowns(state = [], action) {
 
 }
 
-function categories(state = { isFetching: false, error: false, categories: [] }, action) {
+function categories(state = { isFetching: false, categories: [] }, action) {
     switch (action.type) {
         case REQUEST_CATEGORIES:
             return Object.assign({}, state, {
-                isFetching: true,
-                error: false
+                isFetching: true
             });
         case RECEIVE_CATEGORIES:
             return Object.assign({}, state, {
                 isFetching: false,
-                error: false,
                 categories: action.categories
             });
         default:
