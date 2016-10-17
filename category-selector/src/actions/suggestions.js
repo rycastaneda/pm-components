@@ -11,7 +11,7 @@ function escapeRegexCharacters(str) {
 
 function getSuggestions(state, value, index) {
     const escapedValue = escapeRegexCharacters(value.trim());
-    const regex = new RegExp('^' + escapedValue, 'i');
+    const regex = new RegExp(escapedValue, 'ig');
     const currentCategories = state.fetchedCategoryTypes[state.categorySelector.selectedType].categories;
     const parentCategories = currentCategories.data;
     const included = currentCategories.included;

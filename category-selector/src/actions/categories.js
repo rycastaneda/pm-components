@@ -45,7 +45,11 @@ function fetchCategories(categoryType) {
 function shouldFetchCategories(state, categoryType) {
     const categoryList = state.fetchedCategoryTypes[categoryType.attributes.title];
     // Check if we have already data in available in fetchedCategoryTypes 'cache'
-    return !categoryList || !categoryList.isFetching;
+    if (!categoryList) {
+        return true;
+    } else if (categoryList.isFetching) {
+        return false;
+    }
 }
 
 function addDropDown(index = 0) {
