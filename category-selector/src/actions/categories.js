@@ -114,4 +114,9 @@ export function triggerDomChanges(id = 0) {
     el.value = id;
     el.dispatchEvent = el.dispatchEvent || function() {};
     el.dispatchEvent(triggerChange);
+
+    window.PlantminerComponents = window.PlantminerComponents || {};
+    window.PlantminerComponents.categorySelector = {
+        selectedCategoryId: parseInt(id, 10)
+    };
 }
