@@ -8,7 +8,8 @@ function getToken() {
 }
 
 export function configureApi(store) {
-    const API_HOST = `${window.location.protocol}//api.${window.location.hostname}`;
+    const HOSTNAME = process.env.NODE_ENV !== 'production' ? 'pm.local.dev' : window.location.hostname;
+    const API_HOST = `${window.location.protocol}//api.${HOSTNAME}`;
     const token = getToken() || '';
 
     store.dispatch(setEndpointHost(API_HOST));
