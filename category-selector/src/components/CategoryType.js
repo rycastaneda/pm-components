@@ -11,11 +11,10 @@ const CategoryType = ({ id, attributes, onClick, selected = false, isFetching = 
     </li>
 );
 
-
 CategoryType.propTypes = {
     id: PropTypes.number.isRequired,
     attributes: PropTypes.object.isRequired,
-    selected: PropTypes.bool.isRequired,
+    selected: PropTypes.bool,
     onClick: PropTypes.func.isRequired,
     isFetching: PropTypes.bool
 };

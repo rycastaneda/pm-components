@@ -24,16 +24,16 @@ export function receiveCategories(categoryType, categories) {
         });
 
         // If we have any data to display
-        if (categories.data.length > 0) {
+        if (categories.data && categories.data.length > 0) {
             dispatch(addDropDown());
         }
     };
 }
 
-function fetchCategories(categoryType) {
+export function fetchCategories(categoryType) {
     return (dispatch) => {
-        const type = categoryType.attributes.title;
-        const service_type = categoryType.attributes.service_type;
+        const type = categoryType.attributes.title || '';
+        const service_type = categoryType.attributes.service_type || '';
 
         dispatch(requestCategories(type));
 
@@ -42,17 +42,17 @@ function fetchCategories(categoryType) {
     };
 }
 
-function shouldFetchCategories(state, categoryType) {
-    const categoryList = state.fetchedCategoryTypes[categoryType.attributes.title];
+export function shouldFetchCategories(categoryType, state = {}) {
+    const categoryList = state.fetchedCategoryTypes ? state.fetchedCategoryTypes[categoryType.attributes.title] : false;
     // Check if we have already data in available in fetchedCategoryTypes 'cache'
-    if (!categoryList) {
-        return true;
-    } else if (categoryList.isFetching) {
+    if (categoryList && categoryList.isFetching) {
         return false;
+    } else {
+        return !categoryList;
     }
 }
 
-function addDropDown(index = 0) {
+export function addDropDown(index = 0) {
     return {
         type: ADD_DROPDOWN,
         index
@@ -61,10 +61,10 @@ function addDropDown(index = 0) {
 
 export function fetchCategoriesIfNeeded(categoryType) {
     return (dispatch, getState) => {
-        if (shouldFetchCategories(getState(), categoryType)) {
+        if (shouldFetchCategories(categoryType, getState())) {
             return dispatch(fetchCategories(categoryType));
         } else {
-            dispatch(addDropDown());
+            return dispatch(addDropDown());
         }
     };
 }
@@ -107,8 +107,7 @@ export function selectCategory(category, index) {
     };
 }
 
-
-function triggerDomChanges(id = 0) {
+export function triggerDomChanges(id = 0) {
     const el = document.getElementById('qr_category_id') || {};
     const triggerChange = new Event('change');
 
