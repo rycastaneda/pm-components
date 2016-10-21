@@ -8,7 +8,7 @@ import Boilerplate from './containers/Boilerplate';
 import './styles/index.scss';
 
 // Add redux dev tools unless we have a production build
-const enhance = process.env.NODE_ENV !== 'production' ? compose(
+const enhance = process.env.NODE_ENV !== 'production' && window.devToolsExtension ? compose(
     applyMiddleware(thunkMiddleware),
     window.devToolsExtension && window.devToolsExtension()
 ) : applyMiddleware(thunkMiddleware);
