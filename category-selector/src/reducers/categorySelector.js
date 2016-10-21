@@ -23,7 +23,6 @@ const DEFAULT_DROPDOWN_STATE = {
     selectedCategory: {}
 };
 
-
 export function categorySelector(state = INITIAL_CATEGORY_SELECTOR_STATE, action) {
     switch (action.type) {
         case SELECT_CATEGORY_TYPE:

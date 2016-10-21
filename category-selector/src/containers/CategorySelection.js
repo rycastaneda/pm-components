@@ -13,8 +13,13 @@ class CategorySelection extends Component {
         this.handleCategoryTypeClick = this.handleCategoryTypeClick.bind(this);
     }
 
+    /**
+     *
+     * @param {object} type
+     * @returns {*}
+     */
     handleCategoryTypeClick(type) {
-        this.props.dispatch(selectType(type.attributes.title));
+        this.props.dispatch(selectType(type));
         return this.props.dispatch(fetchCategoriesIfNeeded(type));
     }
 

@@ -17,6 +17,11 @@ class CategorySuggestion extends Component {
         this.onChange = this.onChange.bind(this);
     }
 
+    /**
+     *
+     * @param {number} index
+     * @returns {function({value: {string}})}
+     */
     onSuggestionsFetchRequested(index) {
         return ({ value }) => {
             this.props.dispatch(fetchSuggestions(value, index));
@@ -27,18 +32,36 @@ class CategorySuggestion extends Component {
         this.props.dispatch(resetSuggestions());
     }
 
+    /**
+     *
+     * @param {number} index
+     * @returns {function(*, {suggestion: {Object}})}
+     */
     onSuggestionSelected(index) {
         return (event, { suggestion }) => {
             this.props.dispatch(selectCategory(suggestion, index));
         };
     }
 
-    // Indicates what should input value be when suggestion is clicked
+    /**
+     *
+     * @description
+     * Indicates what should input value be when suggestion is clicked
+     *
+     * @param {Object} suggestion
+     * @returns {string}
+     */
     getSuggestionValue(suggestion) {
         return suggestion.attributes.title;
     }
 
-    // Template for suggestions list
+    /**
+     * @description
+     * Template for suggestions list
+     *
+     * @param {object} suggestion
+     * @returns {XML}
+     */
     renderSuggestion(suggestion) {
         return (
             <div>
@@ -48,11 +71,20 @@ class CategorySuggestion extends Component {
         );
     }
 
-    // Always render suggestion when inout is focused
+    /**
+     *
+     * @returns {boolean}
+     */
     shouldRenderSuggestions() {
+        // Always render suggestion when input is focused
         return true;
     }
 
+    /**
+     *
+     * @param {number} index
+     * @returns {function(*, {newValue: {string}})}
+     */
     onChange(index) {
         return (event, { newValue }) => {
             this.props.dispatch(updateInput(newValue, index));
