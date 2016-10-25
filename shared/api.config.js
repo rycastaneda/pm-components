@@ -19,7 +19,7 @@ function configureHeaders() {
                 }, {})[COOKIE_TOKEN];
 
     return {
-        Authorization: `Bearer ${token}`,
+        Authorization: 'Bearer ' + token,
         Accept: 'application/vnd.pm.v1+json'
     };
 
@@ -57,14 +57,14 @@ function configureHostname() {
     const hostname = window.location.hostname.replace(/www./, '');
 
     if (process.env.NODE_ENV === 'develop') {
-        return `${protocol}api.pm.local.dev`;
+        return protocol + 'api.pm.local.dev';
     }
 
     if (hostname.includes('staging')) {
-        return `${protocol}${hostname.replace(/staging/, 'api.staging')}`;
+        return protocol + hostname.replace(/staging/, 'api.staging');
     }
 
-    return `${protocol}api.${hostname}`;
+    return protocol + 'api.' + hostname;
 }
 
 module.exports =  {
