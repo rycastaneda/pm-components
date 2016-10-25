@@ -4,8 +4,9 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
+import { setEndpointHost, setEndpointPath, setHeaders } from 'redux-json-api';
+import api from '../../shared/api.config';
 import CategorySelection from './containers/CategorySelection';
-import { configureApi } from './api/api.config';
 import './styles/index.scss';
 
 // Configure store with thunk middleware to allow async requests
@@ -14,7 +15,10 @@ const store = createStore(
     window.devToolsExtension && window.devToolsExtension(),
     applyMiddleware(thunkMiddleware)
 );
-configureApi(store);
+
+store.dispatch(setEndpointHost(api.configureHostname()));
+store.dispatch(setEndpointPath(''));
+store.dispatch(setHeaders(api.configureHeaders()));
 
 render(
     <Provider store={store}>

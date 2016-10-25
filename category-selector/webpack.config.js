@@ -54,6 +54,11 @@ module.exports =  {
         new StyleLintPlugin({
             syntax: 'scss'
         }),
+        new webpack.DefinePlugin({
+            'process.env': {
+                'NODE_ENV': JSON.stringify('develop')
+            }
+        }),
         new webpack.NoErrorsPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
