@@ -1,0 +1,107 @@
+.dropzone {
+    width: 100%;
+    min-height: 200px;
+    border: 2px dashed rgb(102, 102, 102);
+    border-radius: 5px;
+}
+
+.pos-r {
+    position: relative;
+}
+
+.loader, .drop-placeholder {
+    padding: 15px;
+    text-align: center;
+}
+
+.panel-heading {
+
+    i.actions {
+        padding: 5px;
+        cursor: pointer;
+    }
+}
+
+.group-panel {
+    position: relative;
+}
+
+.image-container {
+    overflow: hidden;
+    height: 350px;
+    margin: 15px;
+    background: none;
+    box-shadow: 0 0 8px 1px rgba(166, 158, 166, 1);
+
+    .image {
+        z-index: 2;
+
+        i.fa-times {
+            padding: 15px;
+            color: #999999;
+            cursor: pointer;
+        }
+    }
+
+    .thumb {
+        width: 100%;
+        height: 200px;
+        font-size: 200px;
+        text-align: center;
+    }
+
+    .added {
+        margin-top: 25px;
+    }
+
+    .filename {
+        margin: 0;
+        text-align: center;
+    }
+
+    .details {
+        color: #999999;
+        font-size: 10px;
+        text-align: center;
+    }
+}
+
+.loader, .backdrop {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 5;
+
+    .backdrop {
+        z-index: 5;
+        background-color: #ffffff;
+        opacity: 0.7;
+    }
+
+    i {
+        position: absolute;
+        top: 50%;
+        z-index: 5;
+        font-size: 64px;
+        text-align: center;
+    }
+
+}
+
+.upload {
+    margin-top: 5px;
+    text-align: center;
+
+    button {
+        padding: 10px 50px;
+        color: #ffffff;
+        background: #414141;
+        border: 0;
+        border-radius: 3px;
+        box-shadow: 0 4 0 0 #eeeeee;
+        font-size: 18px;
+        font-weight: bold;
+    }
+}
