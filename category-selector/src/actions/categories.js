@@ -70,7 +70,10 @@ export function fetchCategories(categoryType) {
             function(resolve, reject) {
                 dispatch(readEndpoint(`categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`))
                 // Dispatch an action that categories have been received from API
-                    .then(response => resolve(dispatch(receiveCategories(type, response))))
+                    .then((response) => {
+                        dispatch(receiveCategories(type, response));
+                        resolve();
+                    })
                     .catch(() => reject());
             }
         );
