@@ -24,7 +24,7 @@ class CategorySelection extends Component {
     }
 
     render() {
-        const { categorySelector, isFetching } = this.props;
+        const { categorySelector, isFetching, isApiError } = this.props;
 
         return (
             <div>
@@ -40,11 +40,11 @@ class CategorySelection extends Component {
                         <CategorySuggestion key={index} currentIndex={index} />
                     );})
                 }
-                { categorySelector.isApiError ?
+                {isApiError ?
                     <div
                         className="col-xs-12">
                         Sorry, an error occurred while trying to fetch categories. Please refresh the page and try again.
-                    </div> : '' }
+                    </div> : ''}
             </div>
         );
     }
@@ -53,15 +53,18 @@ class CategorySelection extends Component {
 CategorySelection.propTypes = {
     categorySelector: PropTypes.object.isRequired,
     isFetching: PropTypes.bool.isRequired,
+    isApiError: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
     const { categorySelector, fetchedCategoryTypes } = state;
-    const { isFetching } = fetchedCategoryTypes[categorySelector.selectedType] || { isFetching: false };
+    const { isApiError, isFetching } = fetchedCategoryTypes[categorySelector.selectedType] ||
+        { isApiError: false, isFetching: false };
 
     return {
         isFetching,
+        isApiError,
         categorySelector
     };
 }

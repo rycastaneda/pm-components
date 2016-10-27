@@ -8,14 +8,14 @@ import {
     RESET_SUGGESTIONS,
     SET_INITIAL_CATEGORY_SELECTOR_STATE,
     ADD_DROPDOWN,
-    RESET_DROPDOWNS
+    RESET_DROPDOWNS,
+    REQUEST_FAILED
 } from '../constants/ActionTypes';
 
 const INITIAL_CATEGORY_SELECTOR_STATE = {
     selectedType: '',
     suggestions: [],
-    dropDowns: [],
-    isApiError: false
+    dropDowns: []
 };
 
 const DEFAULT_DROPDOWN_STATE = {
@@ -42,11 +42,6 @@ export function categorySelector(state = INITIAL_CATEGORY_SELECTOR_STATE, action
         case SELECT_CATEGORY:
             return Object.assign({}, state, {
                 dropDowns: dropDowns(state.dropDowns, action)
-            });
-        // A bit of a hack around failed api calls
-        case 'API_READ_FAILED':
-            return Object.assign({}, state, {
-                isApiError: true
             });
         default:
             return state;
@@ -87,16 +82,24 @@ function dropDowns(state = [], action) {
 
 }
 
-function categories(state = { isFetching: false, categories: {} }, action) {
+function categories(state = { isFetching: false, categories: {}, isApiError: false }, action) {
     switch (action.type) {
         case REQUEST_CATEGORIES:
             return Object.assign({}, state, {
-                isFetching: true
+                isFetching: true,
+                isApiError: false
             });
         case RECEIVE_CATEGORIES:
             return Object.assign({}, state, {
                 isFetching: false,
+                isApiError: false,
                 categories: action.categories
+            });
+        // A bit of a hack around failed api calls
+        case REQUEST_FAILED:
+            return Object.assign({}, state, {
+                isFetching: false,
+                isApiError: true
             });
         default:
             return state;
@@ -107,6 +110,7 @@ export function fetchedCategoryTypes(state = {}, action) {
     switch (action.type) {
         case RECEIVE_CATEGORIES:
         case REQUEST_CATEGORIES:
+        case REQUEST_FAILED:
             return Object.assign({}, state, {
                 [action.categoryType]: categories(state[action.categoryType], action)
             });

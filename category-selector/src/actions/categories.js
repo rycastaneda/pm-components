@@ -4,7 +4,8 @@ import {
     REQUEST_CATEGORIES,
     RECEIVE_CATEGORIES,
     SET_INITIAL_CATEGORY_SELECTOR_STATE,
-    ADD_DROPDOWN
+    ADD_DROPDOWN,
+    REQUEST_FAILED
 } from '../constants/ActionTypes';
 import { readEndpoint } from 'redux-json-api';
 /**
@@ -21,16 +22,16 @@ export function requestCategories(type) {
 
 /**
  *
- * @param {Object} categoryType
+ * @param {string} type
  * @param {Object} categories
  * @returns {function(*)}
  */
-export function receiveCategories(categoryType, categories) {
+export function receiveCategories(type, categories) {
     return (dispatch) => {
         dispatch({
             type: RECEIVE_CATEGORIES,
             categories,
-            categoryType
+            categoryType: type
         });
 
         // If we have any data to display
@@ -42,8 +43,21 @@ export function receiveCategories(categoryType, categories) {
 
 /**
  *
+ * @param {string} [type]
+ * @returns {{type, categoryType: string}}
+ */
+export function reportError(type) {
+    return {
+        type: REQUEST_FAILED,
+        categoryType: type
+    };
+}
+
+
+/**
+ *
  * @param {Object} categoryType
- * @returns {function(*)}
+ * @returns {function(*=)}
  */
 export function fetchCategories(categoryType) {
     return (dispatch) => {
@@ -52,9 +66,14 @@ export function fetchCategories(categoryType) {
         // Dispatch a state change to indicate that categories are being fetched
         dispatch(requestCategories(type));
 
-        dispatch(readEndpoint(`categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`))
-            // Dispatch an action that categories have been received from API
-            .then(response => dispatch(receiveCategories(type, response)));
+        return new Promise(
+            function(resolve, reject) {
+                dispatch(readEndpoint(`categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`))
+                // Dispatch an action that categories have been received from API
+                    .then(response => resolve(dispatch(receiveCategories(type, response))))
+                    .catch(() => reject());
+            }
+        );
     };
 }
 
@@ -77,17 +96,20 @@ export function addDropDown(index = 0) {
  */
 export function fetchCategoriesIfNeeded(categoryType) {
     return (dispatch, getState) => {
-        const cachedCategoryType = getState().fetchedCategoryTypes[categoryType.attributes.title] || {};
+        const type = categoryType.attributes.title;
+        const cachedCategoryType = getState().fetchedCategoryTypes[type] || {};
         // Check if we have already data in available in fetchedCategoryTypes 'cache'
         const categories = cachedCategoryType.categories && cachedCategoryType.categories.hasOwnProperty('data') ?
             cachedCategoryType.categories.data.length : false;
 
-        if (cachedCategoryType.isFetching) return;
+        if (cachedCategoryType.isFetching || cachedCategoryType.isApiError) return;
 
         // Check if categories are already available in the cache
         if (!categories) {
             // If not, make an API call to get categories
-            return dispatch(fetchCategories(categoryType));
+            dispatch(fetchCategories(categoryType))
+                // Catch errors if API request failed
+                .catch(() => dispatch(reportError(type)));
         } else {
             // If they are, display an input with dropdown suggestions
             return dispatch(addDropDown());

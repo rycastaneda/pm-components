@@ -123,7 +123,8 @@ describe('Categories actions: ', () => {
         const fn = actions.fetchCategoriesIfNeeded(categoryType);
         const getState = sinon.stub().returns(state);
         const addDropDown = actions.addDropDown();
-        const dispatch = sinon.spy();
+        const dispatch = sinon.stub();
+        dispatch.returns(Promise.resolve('assume we have got results back'));
         fn(dispatch, getState);
 
         expect(fn).is.a('function');
