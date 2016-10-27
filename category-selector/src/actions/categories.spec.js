@@ -6,7 +6,12 @@ import * as actions from './categories';
 
 describe('Categories actions: ', () => {
     it('selectType function should dispatch a select category action type', () => {
-        const fn = actions.selectType('Equipment');
+        const testCategory = {
+            attributes: {
+                title: 'Equipment'
+            }
+        };
+        const fn = actions.selectType(testCategory);
         const resetSelectedTypes = actions.resetSelectedTypes();
         const dispatch = sinon.spy();
         fn(dispatch);
@@ -110,8 +115,13 @@ describe('Categories actions: ', () => {
                 title: 'test'
             }
         };
+
+        const state = {
+            fetchedCategoryTypes: {}
+        };
+
         const fn = actions.fetchCategoriesIfNeeded(categoryType);
-        const getState = sinon.stub().returns({});
+        const getState = sinon.stub().returns(state);
         const addDropDown = actions.addDropDown();
         const dispatch = sinon.spy();
         fn(dispatch, getState);
@@ -127,13 +137,20 @@ describe('Categories actions: ', () => {
                 title: 'test'
             }
         };
+
+        const state = {
+            fetchedCategoryTypes: {
+                test: {
+                    categories: {
+                        data: [1]
+                    }
+                }
+            }
+        };
+
         const fn = actions.fetchCategoriesIfNeeded(categoryType);
         const addDropDown = actions.addDropDown();
-        const getState = sinon.stub().returns({
-            fetchedCategoryTypes: {
-                'test': true
-            }
-        });
+        const getState = sinon.stub().returns(state);
         const dispatch = sinon.spy();
         fn(dispatch, getState);
 

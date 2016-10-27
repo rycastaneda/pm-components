@@ -87,7 +87,7 @@ function dropDowns(state = [], action) {
 
 }
 
-function categories(state = { isFetching: false, categories: [] }, action) {
+function categories(state = { isFetching: false, categories: {} }, action) {
     switch (action.type) {
         case REQUEST_CATEGORIES:
             return Object.assign({}, state, {

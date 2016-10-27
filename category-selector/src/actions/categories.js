@@ -7,7 +7,6 @@ import {
     ADD_DROPDOWN
 } from '../constants/ActionTypes';
 import { readEndpoint } from 'redux-json-api';
-
 /**
  *
  * @param {string} type
@@ -61,24 +60,6 @@ export function fetchCategories(categoryType) {
 
 /**
  *
- * @param {Object} categoryType
- * @param {Object} [state={}]
- * @returns {boolean}
- */
-export function shouldFetchCategories(categoryType, state = {}) {
-    // Check if we have already data in available in fetchedCategoryTypes 'cache'
-    const categoryList = state.fetchedCategoryTypes ? state.fetchedCategoryTypes[categoryType.attributes.title] : false;
-    // If categories are being fetched
-    // Do not start a new fetch
-    if (categoryList && categoryList.isFetching) {
-        return false;
-    } else {
-        return !categoryList;
-    }
-}
-
-/**
- *
  * @param {number} [index=0]
  * @returns {{type, index: number}}
  */
@@ -96,14 +77,22 @@ export function addDropDown(index = 0) {
  */
 export function fetchCategoriesIfNeeded(categoryType) {
     return (dispatch, getState) => {
+        const cachedCategoryType = getState().fetchedCategoryTypes[categoryType.attributes.title] || {};
+        // Check if we have already data in available in fetchedCategoryTypes 'cache'
+        const categories = cachedCategoryType.categories && cachedCategoryType.categories.hasOwnProperty('data') ?
+            cachedCategoryType.categories.data.length : false;
+
+        if (cachedCategoryType.isFetching) return;
+
         // Check if categories are already available in the cache
-        if (shouldFetchCategories(categoryType, getState())) {
+        if (!categories) {
             // If not, make an API call to get categories
             return dispatch(fetchCategories(categoryType));
         } else {
             // If they are, display an input with dropdown suggestions
             return dispatch(addDropDown());
         }
+
     };
 }
 
@@ -149,7 +138,6 @@ export function selectType(categoryType) {
 export function selectCategory(category, index) {
     return (dispatch) => {
         const hasSubcategories = category.relationships ? category.relationships.categories.data.length > 0 : false;
-
         // Trigger other onchange events
         // If user has finished selecting categories
         if (category.attributes.selectable) {
@@ -163,8 +151,9 @@ export function selectCategory(category, index) {
         });
 
         if (hasSubcategories) {
-            dispatch(addDropDown(index + 1));
+            return dispatch(addDropDown(index + 1));
         }
+
     };
 }
 
