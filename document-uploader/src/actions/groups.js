@@ -1,17 +1,17 @@
 import {
-    LOADING_GROUPS,
-    RECEIVING_GROUPS,
-    ADDED_GROUP,
-    TOGGLING_RENAME_GROUP,
-    UPDATING_GROUP,
+    GROUPS_LOADING,
+    GROUPS_RECEIVING,
+    GROUP_ADDED,
+    GROUP_RENAME_TOGGLE,
+    GROUP_UPDATING,
     GROUP_REMOVED,
     GROUP_RENAMED,
-    RECEIVING_DOCUMENTS,
-    UPLOADING_DOCUMENTS,
-    UPLOADING_DOCUMENT_PROGRESS,
-    UPLOADING_DOCUMENT_FAILED,
-    DOCUMENT_UPLOADED,
-    REMOVING_DOCUMENT
+    DOCUMENTS_RECEIVING,
+    DOCUMENTS_UPLOADING,
+    DOCUMENT_UPLOAD_IN_PROGRESS,
+    DOCUMENT_UPLOAD_FAILED,
+    DOCUMENT_UPLOAD_SUCCESS,
+    DOCUMENT_REMOVED
 } from '../constants/ActionTypes';
 import {
     createEntity,
@@ -19,22 +19,23 @@ import {
     updateEntity,
     readEndpoint
 } from 'redux-json-api';
-import store from 'store';
 import fetch from 'isomorphic-fetch';
-import { handleError } from '../api/api.config';
+import log from 'consolelog';
 
 export function fetchDocuments() {
     return (dispatch) => {
         dispatch({
-            type: LOADING_GROUPS
+            type: GROUPS_LOADING
         });
-        dispatch(readEndpoint(`document-groups?include=documents`))
-            .catch(error => handleError(fetchDocuments, dispatch, error))
+
+        return dispatch(readEndpoint(`document-groups?include=documents`))
             .then((groups) => {
-                if (!groups || !groups.data.length) {
-                    groups = store.get('default_groups');
+                if (groups && (groups.response && !groups.response.ok)) { // error
+                    return;
                 }
-                return dispatch({ type: RECEIVING_GROUPS, groups });
+
+                log('groups', groups);
+                return dispatch({ type: GROUPS_RECEIVING, groups });
             });
     };
 }
@@ -42,38 +43,36 @@ export function fetchDocuments() {
 export function addGroup(title, callback) {
     return (dispatch) => {
         dispatch({
-            type: LOADING_GROUPS
+            type: GROUPS_LOADING
         });
 
         dispatch(createEntity({
             type: 'document-groups',
             attributes: {
                 title
-            }
+            },
+            relationships: {}
         })).then((response) => {
             callback();
             return dispatch({
-                type: ADDED_GROUP,
+                type: GROUP_ADDED,
                 group: response.data
             });
         });
     };
 }
 
-export function removeGroup(id, index) {
+export function removeGroup(group) {
     return (dispatch) => {
         dispatch({
-            type: LOADING_GROUPS
+            type: GROUPS_LOADING
         });
-        dispatch(deleteEntity({
-            type: 'document-groups',
-            id
-        }))
-        .catch(error => handleError(fetchDocuments, dispatch, error))
+
+        dispatch(deleteEntity(group))
         .then(() => {
             return dispatch({
                 type: GROUP_REMOVED,
-                index
+                id: group.id
             });
         });
     };
@@ -81,26 +80,26 @@ export function removeGroup(id, index) {
 
 export function catchFiles(index, id, documents) {
     return {
-        type: RECEIVING_DOCUMENTS,
+        type: DOCUMENTS_RECEIVING,
         id,
         index,
         documents
     };
 }
 
-export function removeFile(index, fileIndex) {
+export function removeFile(index, fileId) {
     // TODO DISPATCH REMOVING_FILE_ENDPOINT
     return (dispatch) => {
         dispatch({
-            type: UPDATING_GROUP,
+            type: GROUP_UPDATING,
             index
         });
 
         setTimeout(() => {
             return dispatch({
-                type: REMOVING_DOCUMENT,
+                type: DOCUMENT_REMOVED,
                 index,
-                fileIndex
+                fileId
             });
         }, 1000);
     };
@@ -108,16 +107,15 @@ export function removeFile(index, fileIndex) {
 
 export function toggleRenaming(index) {
     return {
-        type: TOGGLING_RENAME_GROUP,
+        type: GROUP_RENAME_TOGGLE,
         index
     };
 }
 
 export function renamingGroup(index, id, title) {
-    // TODO DISPATCH RENAMING FILE ENDPOINT
     return (dispatch) => {
         dispatch({
-            type: UPDATING_GROUP,
+            type: GROUP_UPDATING,
             index
         });
 
@@ -141,7 +139,7 @@ export function renamingGroup(index, id, title) {
 
 export function incrementProgress(id, file_id) {
     return {
-        type: UPLOADING_DOCUMENT_PROGRESS,
+        type: DOCUMENT_UPLOAD_IN_PROGRESS,
         id,
         file_id
     };
@@ -150,8 +148,9 @@ export function incrementProgress(id, file_id) {
 export function uploadFile(id) {
     return (dispatch, getState) => {
         let filesToBeAdded = getState().documentsToBeAdded[id];
+
         dispatch({
-            type: UPLOADING_DOCUMENTS,
+            type: DOCUMENTS_UPLOADING,
             id
         });
 
@@ -176,9 +175,11 @@ export function uploadFile(id) {
             }).then((response) => {
                 file.loop = false;
                 dispatch({
-                    type: response.ok &&  DOCUMENT_UPLOADED || UPLOADING_DOCUMENT_FAILED,
+                    type: response.ok &&
+                        DOCUMENT_UPLOAD_SUCCESS ||
+                        DOCUMENT_UPLOAD_FAILED,
                     id,
-                    file: file
+                    file
                 });
             });
         });

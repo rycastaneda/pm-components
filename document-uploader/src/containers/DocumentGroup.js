@@ -40,8 +40,8 @@ class DocumentGroup extends Component {
         return this.props.dispatch(removeFile(groupIndex, fileId));
     }
 
-    handleRemoveGroup(id, index) {
-        return this.props.dispatch(removeGroup(id, index));
+    handleRemoveGroup(group) {
+        return this.props.dispatch(removeGroup(group));
     }
 
     handleAddGroup(e) {
@@ -110,7 +110,7 @@ class DocumentGroup extends Component {
 
         return (
             <div className="group-panel">
-                <Loader loading={this.props.documentGroups.loading} />
+                {this.props.documentGroups.loading ? <Loader /> : ''}
                 {groups}
                 {error}
                 <form onSubmit={this.handleAddGroup}>

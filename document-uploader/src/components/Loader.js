@@ -1,17 +1,11 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 
-const Loader = ({ loading }) => {
-    return loading ? (
-        <div className="loader">
-            <div className="backdrop"></div>
-            <i className="actions fa fa-spin fa-spinner"></i>
-        </div>
-    ) : (<div></div>);
-};
-
-Loader.propTypes = {
-    loading: PropTypes.bool.isRequired
-};
+const Loader = () => (
+    <div className="loader">
+        <div className="backdrop"></div>
+        <i className="actions fa fa-spin fa-spinner"></i>
+    </div>
+);
 
 export default Loader;
 

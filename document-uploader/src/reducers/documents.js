@@ -1,19 +1,16 @@
 import {
-    RECEIVING_GROUPS,
-    REMOVING_DOCUMENT,
-    DOCUMENT_UPLOADED
+    GROUPS_RECEIVING,
+    DOCUMENT_REMOVED,
+    DOCUMENT_UPLOAD_SUCCESS
 } from '../constants/ActionTypes';
 
 export function documents(state = [], action) {
     switch (action.type) {
-        case RECEIVING_GROUPS:
-            return action.groups.included || [];
-        case REMOVING_DOCUMENT:
-            return [
-                ...state.slice(0, action.fileIndex),
-                ...state.slice(action.fileIndex + 1)
-            ];
-        case DOCUMENT_UPLOADED:
+        case GROUPS_RECEIVING:
+            return action.groups.included.documents || [];
+        case DOCUMENT_REMOVED:
+            return state.filter(document => document.id !== action.fileId);
+        case DOCUMENT_UPLOAD_SUCCESS:
             return state.concat(action.file);
         default:
             return state;

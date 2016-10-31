@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
-import Files from './Files';
 import Loader from './Loader';
 import Dropzone from 'react-dropzone';
+import Documents from './Documents';
 
 const Group = ({
     group,
@@ -49,14 +49,14 @@ const Group = ({
 
     return (
         <div className="panel panel-default group-panel" key={groupIndex}>
-            <Loader loading={group.attributes.is_updating}/>
+            {group.attributes.is_updating ? <Loader /> : ''}
             <div className="panel-heading">
                 <aside className="pull-left">
                     {title}
                 </aside>
                 <aside className="pull-right">
                     {actions}
-                    <i className="actions fa fa-trash" onClick={() => onGroupRemove(group.id, groupIndex)}></i>
+                    <i className="actions fa fa-trash" onClick={() => onGroupRemove(group)}></i>
                 </aside>
                 <div className="clearfix"></div>
             </div>
@@ -66,7 +66,7 @@ const Group = ({
                 }}>
                     <p className="text-center drop-placeholder">Drop files here</p>
                     {documentsAdded.length ?
-                    <Files
+                    <Documents
                         files={documentsAdded}
                         groupIndex={groupIndex}
                         preview={true}
@@ -81,7 +81,7 @@ const Group = ({
                 : null}
 
                 {documents && documents.length ?
-                    <Files
+                    <Documents
                         files={documents}
                         groupIndex={groupIndex}
                         preview={false}

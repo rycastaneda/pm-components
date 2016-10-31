@@ -1,14 +1,14 @@
 import {
     API_READ_FAILED,
-    LOADING_GROUPS,
-    RECEIVING_GROUPS,
-    ADDED_GROUP,
-    TOGGLING_RENAME_GROUP,
-    UPDATING_GROUP,
+    GROUPS_LOADING,
+    GROUPS_RECEIVING,
+    GROUP_ADDED,
+    GROUP_RENAME_TOGGLE,
+    GROUP_UPDATING,
     GROUP_REMOVED,
     GROUP_RENAMED,
-    DOCUMENT_UPLOADED,
-    REMOVING_DOCUMENT
+    DOCUMENT_UPLOAD_SUCCESS,
+    DOCUMENT_REMOVED
 } from '../constants/ActionTypes';
 
 const INITIAL_STATE = {
@@ -32,11 +32,11 @@ export function documentGroups(state = INITIAL_STATE, action) {
                 loading: false,
                 error: action.response || DEFAULT_ERROR
             });
-        case LOADING_GROUPS:
+        case GROUPS_LOADING:
             return Object.assign({}, state, {
                 loading: true
             });
-        case RECEIVING_GROUPS:
+        case GROUPS_RECEIVING:
             // ADD DEFAULT GROUP STATES
             return Object.assign({}, state, {
                 loading: false,
@@ -45,13 +45,13 @@ export function documentGroups(state = INITIAL_STATE, action) {
                     return group;
                 })
             });
-        case ADDED_GROUP:
+        case GROUP_ADDED:
         case GROUP_REMOVED:
-        case UPDATING_GROUP:
+        case GROUP_UPDATING:
         case GROUP_RENAMED:
-        case REMOVING_DOCUMENT:
-        case DOCUMENT_UPLOADED:
-        case TOGGLING_RENAME_GROUP:
+        case GROUP_RENAME_TOGGLE:
+        case DOCUMENT_REMOVED:
+        case DOCUMENT_UPLOAD_SUCCESS:
             return Object.assign({}, state, {
                 loading: false,
                 data: groups(state.data, action)
@@ -71,16 +71,16 @@ function groups(state = [], action) {
     }
 
     switch (action.type) {
-        case ADDED_GROUP:
+        case GROUP_ADDED:
             Object.assign(action.group.attributes, DEFAULT_GROUP_STATES.attributes);
             return state.concat(action.group);
-        case TOGGLING_RENAME_GROUP:
+        case GROUP_RENAME_TOGGLE:
             return updatingGroup({
                 attributes: Object.assign({}, state[action.index].attributes, {
                     is_renaming: !state[action.index].attributes.is_renaming
                 })
             });
-        case UPDATING_GROUP:
+        case GROUP_UPDATING:
             return updatingGroup({
                 attributes: Object.assign({}, state[action.index].attributes, {
                     is_updating: true
@@ -94,7 +94,11 @@ function groups(state = [], action) {
                     title: action.title
                 })
             });
-        case DOCUMENT_UPLOADED:
+        case GROUP_REMOVED:
+            return state.filter((group) => {
+                return group.id !== action.id;
+            });
+        case DOCUMENT_UPLOAD_SUCCESS:
             return state.map((group) => {
                 if (group.id === action.id) {
                     let { id, type } = action.file;
@@ -102,12 +106,7 @@ function groups(state = [], action) {
                 }
                 return group;
             });
-        case GROUP_REMOVED:
-            return [
-                ...state.slice(0, action.index),
-                ...state.slice(action.index + 1)
-            ];
-        case REMOVING_DOCUMENT:
+        case DOCUMENT_REMOVED:
             return updatingGroup({
                 attributes: Object.assign({}, state[action.index].attributes, {
                     is_updating: false
