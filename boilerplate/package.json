@@ -7,10 +7,10 @@
     "npm": ">=3.0.0"
   },
   "scripts": {
-    "build": "webpack --config webpack.production.config.js --progress --profile --colors",
+    "build": "npm run test && webpack --config webpack.production.config.js --progress --profile --colors",
     "start": "webpack-dev-server --progress --profile --colors",
     "lint": "eslint src",
-    "tests": "mocha tests.config.js src/**/*.spec.js"
+    "test": "mocha tests.config.js src/**/*.spec.js"
   },
   "repository": {
     "type": "git",
@@ -45,6 +45,7 @@
     "redux-json-api": "1.5.1",
     "redux-thunk": "2.1.0",
     "sass-loader": "4.0.2",
+    "sinon": "^1.17.6",
     "style-loader": "0.13.1",
     "stylelint-webpack-plugin": "0.3.1",
     "webpack": "1.13.2",
