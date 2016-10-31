@@ -1,2 +1,2 @@
-export const IS_CLICKED = 'IS_CLICKED';
-export const INITIAL_STATE = 'INITIAL_STATE';
+export const IS_EDITING = 'IS_EDITING';
+export const IS_DELETED = 'IS_DELETED';
