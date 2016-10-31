@@ -12,7 +12,7 @@ Contains a basic setup with a few simple examples which can be copied and used f
 - The boilerplate already has Redux Dev Tools extension enabled in `src/index.js`
 
 ## Setup local
-- In your console go to `/plantminer-components/boilerplate` and run 
+- Outside vagrantbox, in your console go to `/plantminer-components/boilerplate` and run 
 
     ```
     npm install
@@ -33,7 +33,7 @@ Contains a basic setup with a few simple examples which can be copied and used f
 - To run tests
 
     ```
-    npm run tests
+    npm run test
     ```
 
 - To run production build
