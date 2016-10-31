@@ -26,5 +26,5 @@ render(
     <Provider store={store}>
         <DocumentGroup/>
     </Provider>,
-    document.querySelector('[data-component="DocumentGroup"')
+    document.querySelector('[data-component="document-group"')
 );

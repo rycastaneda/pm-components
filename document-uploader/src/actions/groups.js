@@ -20,7 +20,6 @@ import {
     readEndpoint
 } from 'redux-json-api';
 import fetch from 'isomorphic-fetch';
-import log from 'consolelog';
 
 export function fetchDocuments() {
     return (dispatch) => {
@@ -34,7 +33,6 @@ export function fetchDocuments() {
                     return;
                 }
 
-                log('groups', groups);
                 return dispatch({ type: GROUPS_RECEIVING, groups });
             });
     };
