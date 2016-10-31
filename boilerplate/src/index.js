@@ -23,5 +23,5 @@ render(
     <Provider store={store}>
         <Boilerplate/>
     </Provider>,
-    document.querySelector('[data-component="boilerplate"')
+    document.querySelector('[data-component="boilerplate"]')
 );

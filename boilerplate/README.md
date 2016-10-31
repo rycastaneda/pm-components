@@ -33,7 +33,7 @@ Contains a basic setup with a few simple examples which can be copied and used f
 - To run tests
 
     ```
-    npm run tests
+    npm run test
     ```
 
 - To run production build
