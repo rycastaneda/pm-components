@@ -4,48 +4,39 @@ import moment from 'moment';
 import filesize from 'filesize';
 
 const Document = ({ file, preview, groupIndex, onFileRemove }) => {
-    let removeBtn,
-        progress = (
-            <Progress
-                status={file.attributes.status}
-                progress={file.attributes.progress}/>
-        ),
-        thumb = <i className={`thumb ${!onFileRemove ? 'added' : ''} fa fa-file-o`}></i>;
+    const progress = (
+        <Progress key={file.id}
+            status={file.attributes.status}
+            progress={file.attributes.progress}/>
+    );
 
-    if (file.attributes.type.match(/image.*/)) {
-        thumb = (
-            <img
+    const removeBtn = (
+        <div className="row" key={file.id}>
+            <aside className="pull-right">
+                <i onClick={() => {
+                    onFileRemove(groupIndex, file.id);
+                }} className="fa fa-times pull-right"></i>
+            </aside>
+        </div>
+    );
+
+    const thumb = file.attributes.type.match(/image.*/) ?
+        (<img key={file.id + 1}
             className={`thumb ${!onFileRemove ? 'added' : ''}`}
-            src={preview ? file.attributes.preview : file.attributes.location}/>
-        );
-    }
+            src={preview ? file.attributes.preview : file.attributes.location}/>) :
+        (<i className={`thumb ${!onFileRemove ? 'added' : ''} fa fa-file-o`}></i>);
 
-    if (!preview) {
-        removeBtn = (
-            <div className="row">
-                <aside className="pull-right">
-                    <i onClick={() => {
-                        onFileRemove(groupIndex, file.id);
-                    }} className="fa fa-times pull-right"></i>
-                </aside>
-            </div>
-        );
-
-        thumb = (
-            <a target="_blank" href={file.attributes.location}>{thumb}</a>
-        );
-
-        progress = null;
-    }
+    const link = (
+        <a key={file.id + 1} target="_blank"
+           href={file.attributes.location}>{thumb}</a>
+    );
 
     return (
         <div className="col-lg-3 col-md-6 col-sm-6">
             <div className="image-container">
                 <div className="image clearfix">
                     <div className="col-lg-12">
-                        {removeBtn}
-                        {thumb}
-                        {progress}
+                        { preview ? [thumb, progress] : [removeBtn, link] }
                         <p className="filename text-center">{file.attributes.name}</p>
                         <div className="details text-center">{filesize(file.attributes.size)}</div>
                         <div className="details ">{moment(file.attributes.created_at).fromNow()}</div>
