@@ -1,38 +1,43 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import RequirementsList from '../components/RequirementsList';
-import { setAsEditing, deleteRequirement } from '../actions/quoteRequirements';
+import EditForm from '../containers/EditForm';
+import Viewer from '../components/Viewer';
+import { setAsEditing, deleteRequirement, getRequirements } from '../actions/quoteRequirements';
 
 class QuoteRequirements extends Component {
 
     constructor(props) {
         super(props);
-        this.onUpdate = this.onUpdate.bind(this);
-        this.onDelete = this.onDelete.bind(this);
-        this.onSave = this.onSave.bind(this);
+        this.handleUpdate = this.handleUpdate.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
-    onUpdate(id) {
-        return this.props.dispatch(setAsEditing(id));
+    componentWillMount() {
+        this.props.dispatch(getRequirements());
     }
 
-    onDelete(id) {
-        return this.props.dispatch(deleteRequirement(id));
-    }
-
-    onSave(item) {
+    handleUpdate(item) {
         return this.props.dispatch(setAsEditing(item));
+    }
+
+    handleDelete(item) {
+        return this.props.dispatch(deleteRequirement(item));
     }
 
     render() {
         const { quoteRequirements } = this.props;
         return (
-
             <div>
-                <RequirementsList list={quoteRequirements.items}
-                                  onDelete={this.onDelete}
-                                  onSave={this.onSave}
-                                  onUpdate={this.onUpdate}/>
+                {quoteRequirements.items.map(item =>
+                    item.isEditing ?
+                        <EditForm key={item.id}
+                                  item={item}/> :
+                        <Viewer key={item.id}
+                                text={item.attributes.text}
+                                isMandatory={item.attributes.isMandatory}
+                                handleUpdate={() => this.handleUpdate(item)}
+                                handleDelete={() => this.handleDelete(item)}/>
+                )}
             </div>
         );
     }
@@ -44,7 +49,7 @@ QuoteRequirements.propTypes = {
 };
 
 function mapStateToProps(state) {
-    const { quoteRequirements  } = state;
+    const { quoteRequirements } = state;
 
     return {
         quoteRequirements

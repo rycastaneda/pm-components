@@ -1,25 +1,42 @@
-import { IS_EDITING, IS_DELETED } from '../constants/ActionTypes';
+import {
+    IS_EDITING, IS_DELETED, SAVE_REQUIREMENT, UPDATE_TEXT,
+    UPDATE_INCLUSIONS_CATEGORY,
+    UPDATE_INCLUSIONS_SELECTION,
+    UPDATE_MANDATORY_SELECTION, ADD_NEW_ITEM,
+    REQUIREMENTS_REQUESTED,
+    REQUIREMENTS_RECEIVED,
+    IS_DEFAULT_ADDED,
+    IS_SAVED
+} from '../constants/ActionTypes';
 
-const testItems = [
-    {
-        id: 1,
-        isEditing: false,
-        attributes: {}
+const NEW_EMPTY_ITEM = {
+    id: 0,
+    isEditing: true,
+    alwaysDisplay: false,
+    attributes: {}
+};
 
-    }, {
-        id: 2,
-        isEditing: false,
-        attributes: {}
-    }
-];
-
-// const INITIAL_STATE = { items: items };
-
-export function quoteRequirements(state = { items: testItems }, action) {
-    console.log(action);
+export function quoteRequirements(state = { items: [], areLoading: false }, action) {
     switch (action.type) {
+        case REQUIREMENTS_REQUESTED:
+            return Object.assign({}, state, {
+                areLoading: true
+            });
+        case REQUIREMENTS_RECEIVED:
+            return Object.assign({}, state, {
+                items: action.items,
+                areLoading: false
+            });
+        case SAVE_REQUIREMENT:
+        case UPDATE_TEXT:
+        case UPDATE_INCLUSIONS_CATEGORY:
+        case UPDATE_INCLUSIONS_SELECTION:
+        case UPDATE_MANDATORY_SELECTION:
+        case IS_DEFAULT_ADDED:
+        case IS_SAVED:
         case IS_DELETED:
         case IS_EDITING:
+        case ADD_NEW_ITEM:
             return Object.assign({}, state, {
                 items: items(state.items, action)
             });
@@ -28,30 +45,44 @@ export function quoteRequirements(state = { items: testItems }, action) {
     }
 }
 
-function items(state = testItems, action) {
+function items(state = [], action) {
     switch (action.type) {
+        case IS_DEFAULT_ADDED:
+            return [...state, NEW_EMPTY_ITEM];
+        case IS_SAVED:
+            return state.map(item =>
+                item.id === action.id ?
+                { ...item, id: 60, isEditing: false } : item
+            );
         case IS_DELETED:
-            return state.map((item, index) => {
-                if (item.id !== action.id) {
-                    return state;
-                }
-                console.log(item + '  ' + index);
-
-                return [
-                    ...state.slice(0, index),
-                    ...state.slice(index + 1)
-                ];
-            });
+            return state.filter(item =>
+                item.id !== action.id
+            );
         case IS_EDITING:
-            return state.map((item) => {
-                if (item.id !== action.id) {
-                    return state;
-                }
-
-                return Object.assign({}, item, {
-                    isEditing: !item.isEditing
-                });
-            });
+            return state.map(item =>
+                item.id === action.id ?
+                { ...item, isEditing: !item.isEditing } : item
+            );
+        case UPDATE_TEXT:
+            return state.map(item =>
+                item.id === action.id ?
+                    {
+                        ...item,
+                        attributes: Object.assign({}, item.attributes, {
+                            text: action.text
+                        })
+                    } : item
+            );
+        case UPDATE_MANDATORY_SELECTION:
+            return state.map(item =>
+                item.id === action.id ?
+                    {
+                        ...item,
+                        attributes: Object.assign({}, item.attributes, {
+                            isMandatory: action.isMandatory
+                        })
+                    } : item
+            );
         default:
             return state;
     }

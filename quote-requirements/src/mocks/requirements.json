@@ -1,0 +1,38 @@
+{
+  "data": [
+    {
+      "type": "inclusions",
+      "id": "92347",
+      "attributes": {
+        "text": "The Tenderer shall submit has to be ...",
+        "include": 55,
+        "isMandatory": true
+      },
+      "relationships": {
+        "data": [
+          {
+            "type": "quote-requests",
+            "id": 25528
+          }
+        ]
+      }
+    },
+    {
+      "type": "inclusions",
+      "id": "239048",
+      "attributes": {
+        "text": "The Tenderer shall submit has to be ...",
+        "include": 5,
+        "isMandatory": true
+      },
+      "relationships": {
+        "data": [
+          {
+            "type": "quote-requests",
+            "id": 25522
+          }
+        ]
+      }
+    }
+  ]
+}

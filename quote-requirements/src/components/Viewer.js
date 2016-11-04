@@ -1,22 +1,24 @@
 import React, { PropTypes } from 'react';
 
-const Viewer = ({ text, onDelete, onUpdate }) => (
+const Viewer = ({ text = '', isMandatory = false, handleDelete, handleUpdate }) => (
     <div>
 
         <div>{text}</div>
 
         <input readOnly="true"
                type="checkbox"
+               checked={isMandatory}
         />
-        <button onClick={onUpdate}>Update</button>
-        <button onClick={onDelete}>Delete</button>
+        <button onClick={handleUpdate}>Update</button>
+        <button onClick={handleDelete}>Delete</button>
     </div>
 );
 
 Viewer.propTypes = {
-    text: PropTypes.string.isRequired,
-    onDelete: PropTypes.func.isRequired,
-    onUpdate: PropTypes.func.isRequired
+    text: PropTypes.string,
+    handleDelete: PropTypes.func.isRequired,
+    handleUpdate: PropTypes.func.isRequired,
+    isMandatory: PropTypes.bool
 };
 
 export default Viewer;

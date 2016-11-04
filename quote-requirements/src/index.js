@@ -23,5 +23,5 @@ render(
     <Provider store={store}>
         <QuoteRequirements/>
     </Provider>,
-    document.querySelector('[data-component="quote-requirements"')
+    document.querySelector('[data-component="quote-requirements"]')
 );
