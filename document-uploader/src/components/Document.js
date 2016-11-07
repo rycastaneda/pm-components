@@ -15,16 +15,16 @@ const Document = ({ file, preview, groupIndex, onFileRemove }) => {
             <aside className="pull-right">
                 <i onClick={() => {
                     onFileRemove(groupIndex, file.id);
-                }} className="fa fa-times pull-right"></i>
+                }} className="document__remove-icon fa fa-times pull-right"></i>
             </aside>
         </div>
     );
 
     const thumb = file.attributes.type.match(/image.*/) ?
         (<img key={file.id + 1}
-            className={`thumb ${!onFileRemove ? 'added' : ''}`}
+            className={`document__thumb ${!onFileRemove ? 'document__thumb--added' : ''}`}
             src={preview ? file.attributes.preview : file.attributes.location}/>) :
-        (<i className={`thumb ${!onFileRemove ? 'added' : ''} fa fa-file-o`}></i>);
+        (<i className={`document__thumb ${!onFileRemove ? 'document__thumb--added' : ''} fa fa-file-o`}></i>);
 
     const link = (
         <a key={file.id + 1} target="_blank"
@@ -33,13 +33,13 @@ const Document = ({ file, preview, groupIndex, onFileRemove }) => {
 
     return (
         <div className="col-lg-3 col-md-6 col-sm-6">
-            <div className="image-container">
-                <div className="image clearfix">
+            <div className="document">
+                <div className="document__image">
                     <div className="col-lg-12">
                         { preview ? [thumb, progress] : [removeBtn, link] }
-                        <p className="filename text-center">{file.attributes.name}</p>
-                        <div className="details text-center">{filesize(file.attributes.size)}</div>
-                        <div className="details ">{moment(file.attributes.created_at).fromNow()}</div>
+                        <p className="document__filename">{file.attributes.name}</p>
+                        <div className="document__details">{filesize(file.attributes.size)}</div>
+                        <div className="document__details">{moment(file.attributes.created_at).fromNow()}</div>
                     </div>
                 </div>
             </div>

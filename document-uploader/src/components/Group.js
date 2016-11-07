@@ -36,14 +36,14 @@ const Group = ({
     const actions = group.attributes.is_renaming ?
         (<span>
             <i onClick={() => onGroupRename(groupIndex, group.id, rename)}
-                className="actions fa fa-check"></i>
+                className="group-panel__actions fa fa-check"></i>
             <i onClick={() => toggleRenaming(groupIndex)}
-                className="actions fa fa-times"></i>
+                className="group-panel__actions fa fa-times"></i>
         </span>) :
         (<i onClick={() => {
             toggleRenaming(groupIndex);
         }}
-        className="actions fa fa-pencil"></i>) ;
+        className="group-panel__actions fa fa-pencil"></i>) ;
 
 
     return (
@@ -55,7 +55,7 @@ const Group = ({
                 </aside>
                 <aside className="pull-right">
                     {actions}
-                    <i className="actions fa fa-trash" onClick={() => onGroupRemove(group)}></i>
+                    <i className="group-panel__actions fa fa-trash" onClick={() => onGroupRemove(group)}></i>
                 </aside>
                 <div className="clearfix"></div>
             </div>
@@ -63,7 +63,7 @@ const Group = ({
                 <Dropzone className="dropzone" onDrop={(files) => {
                     catchFiles(groupIndex, group.id, files);
                 }}>
-                    <p className="text-center drop-placeholder">Drop files here</p>
+                    <p className="text-center dropzone__placeholder">Drop files here</p>
                     {documentsAdded.length ?
                     <Documents
                         files={documentsAdded}
@@ -76,7 +76,7 @@ const Group = ({
                 {documentsAdded.length ?
                     <div className="upload">
                         <button
-                            className="upload"
+                            className="upload__button"
                             onClick={() => onFileUpload(group.id)}>Upload</button>
                     </div>
                 : null}
