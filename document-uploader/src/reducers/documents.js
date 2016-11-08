@@ -7,7 +7,7 @@ import {
 export function documents(state = [], action) {
     switch (action.type) {
         case GROUPS_RECEIVING:
-            return action.groups.included.documents || [];
+            return action.groups.included && action.groups.included.documents || [];
         case DOCUMENT_REMOVED:
             return state.filter(document => document.id !== action.fileId);
         case DOCUMENT_UPLOAD_SUCCESS:

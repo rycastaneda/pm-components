@@ -2,8 +2,8 @@ import React from 'react';
 
 const Loader = () => (
     <div className="loader">
-        <div className="backdrop"></div>
-        <i className="actions fa fa-spin fa-spinner"></i>
+        <div className="loader__backdrop"></div>
+        <i className="loader__spinner fa fa-spin fa-spinner"></i>
     </div>
 );
 
