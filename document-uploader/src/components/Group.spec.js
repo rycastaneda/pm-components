@@ -1,0 +1,117 @@
+import React from 'react';
+import { shallow } from 'enzyme';
+import Group from './Group';
+import Documents from './Documents';
+import { expect } from 'chai';
+
+const setup = (props) => {
+    const component = shallow(
+        <Group {...props} />
+    );
+
+    return { component };
+};
+
+const group = {
+    'type': 'document-groups',
+    'id': '4',
+    'attributes': {
+        'title': 'Architectural Plan',
+        'user_id': null,
+        'updated_at': {
+            'date': '2016-11-08 00:35:41.000000',
+            'timezone_type': 3,
+            'timezone': 'UTC'
+        },
+        'created_at': {
+            'date': '2016-10-27 18:00:53.000000',
+            'timezone_type': 3,
+            'timezone': 'UTC'
+        },
+        'links': [{
+            'rel': 'self',
+            'uri': '/document-groups/4'
+        }],
+        'is_updating': false,
+        'is_renaming': false
+    },
+    'links': {
+        'self': 'http://api2.pm.local.dev/document-groups/4'
+    },
+    'relationships': {
+        'documents': {
+            'links': {
+                'self': 'http://api2.pm.local.dev/document-groups/4/relationships/documents',
+                'related': 'http://api2.pm.local.dev/document-groups/4/documents'
+            },
+            'data': []
+        }
+    }
+};
+
+const documents = [{
+    id: 1, 
+    attributes: {
+        name: 'Mt Hood',
+        preview: 'https://i.redd.it/90zxujjyv7wx.jpg',
+        size: 15000,
+        type: 'image/png',
+        progress: 0,
+        created: +new Date()
+    }
+}, {
+    id: 2, 
+    attributes: {
+        name: 'Mt Hood',
+        preview: 'https://i.redd.it/90zxujjyv7wx.jpg',
+        size: 15000,
+        type: 'image/png',
+        progress: 0,
+        created: +new Date()
+    }
+}];
+
+describe('Group component: ', () => {
+    it('should render with documents added', () => {
+        const { component } = setup({
+            group,
+            preview: true,
+            groupIndex: 1,
+            documents,
+            documentsAdded: []
+        });
+
+        expect(component.find('.panel-heading .pull-left').text()).to.eql(group.attributes.title);
+        expect(component.find(Documents).render()).to.be.ok;
+    });
+
+    it('should be able rename the group.', () => {
+        const { component } = setup({
+            group,
+            preview: true,
+            groupIndex: 1,
+            documents,
+            documentsAdded: []
+        });
+
+        expect(component.find('.fa-pencil')).to.be.ok;
+
+        group.attributes.is_renaming = true;
+        component.setProps({ group });
+        expect(component.find('.group-panel__actions')).to.have.lengthOf(3);
+
+        component.find('.form-control').simulate('change', {
+            target: {
+                value: group.attributes.title + ' renamed'
+            }
+        });
+
+        group.attributes.title = group.attributes.title + ' renamed';
+        group.attributes.is_renaming = false;
+        component.setProps({ group });
+
+        expect(component.find('.pull-left').text()).to.eql(group.attributes.title);
+
+    });
+});
+

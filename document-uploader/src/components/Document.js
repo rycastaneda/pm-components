@@ -38,8 +38,8 @@ const Document = ({ file, preview, groupIndex, onFileRemove }) => {
                     <div className="col-lg-12">
                         { preview ? [thumb, progress] : [removeBtn, link] }
                         <p className="document__filename">{file.attributes.name}</p>
-                        <div className="document__details">{filesize(file.attributes.size)}</div>
-                        <div className="document__details">{moment(file.attributes.created_at).fromNow()}</div>
+                        <div className="document__filesize">{filesize(file.attributes.size)}</div>
+                        <div className="document__timestamp">{moment(file.attributes.created_at).fromNow()}</div>
                     </div>
                 </div>
             </div>
