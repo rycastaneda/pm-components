@@ -14,7 +14,7 @@ const setup = (props) => {
 
 const group = {
     'type': 'document-groups',
-    'id': '4',
+    'id': '1',
     'attributes': {
         'title': 'Architectural Plan',
         'user_id': null,
@@ -34,18 +34,6 @@ const group = {
         }],
         'is_updating': false,
         'is_renaming': false
-    },
-    'links': {
-        'self': 'http://api2.pm.local.dev/document-groups/4'
-    },
-    'relationships': {
-        'documents': {
-            'links': {
-                'self': 'http://api2.pm.local.dev/document-groups/4/relationships/documents',
-                'related': 'http://api2.pm.local.dev/document-groups/4/documents'
-            },
-            'data': []
-        }
     }
 };
 
@@ -82,7 +70,7 @@ describe('Group component: ', () => {
         });
 
         expect(component.find('.panel-heading .pull-left').text()).to.eql(group.attributes.title);
-        expect(component.find(Documents).render()).to.be.ok;
+        expect(component.find(Documents).render().find('.files')).to.be.ok;
     });
 
     it('should be able rename the group.', () => {
@@ -98,13 +86,9 @@ describe('Group component: ', () => {
 
         group.attributes.is_renaming = true;
         component.setProps({ group });
-        expect(component.find('.group-panel__actions')).to.have.lengthOf(3);
 
-        component.find('.form-control').simulate('change', {
-            target: {
-                value: group.attributes.title + ' renamed'
-            }
-        });
+        // Save icon and cancel should be present
+        expect(component.find('.group-panel__actions')).to.have.lengthOf(3);
 
         group.attributes.title = group.attributes.title + ' renamed';
         group.attributes.is_renaming = false;
@@ -113,5 +97,6 @@ describe('Group component: ', () => {
         expect(component.find('.pull-left').text()).to.eql(group.attributes.title);
 
     });
+
 });
 

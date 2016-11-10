@@ -40,17 +40,6 @@ describe('Document component: ', () => {
         expect(component.find('.document__timestamp').text()).to.equal('a few seconds ago');
     });
 
-    it('should show the remove icon on preview setup', () => {
-        const { component } = setup({
-            file,
-            preview: true,
-            groupIndex: 1,
-            onFileRemove 
-        });
-
-        expect(component.find('.document__remove-icon')).to.be.ok;
-    });
-
     it('should render an attachment icon if file is not image', () => {
 
         file.attributes.type = 'file/';
@@ -64,5 +53,6 @@ describe('Document component: ', () => {
 
         expect(component.find('.document__thumb').prop('className')).to.have.string('fa-file-o');
     });
+
 });
 
