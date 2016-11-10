@@ -1,0 +1,18 @@
+.edit-form {
+
+    &__button {
+        width: 100%;
+    }
+
+    &__textarea {
+        height: 95px;
+    }
+
+    &__category-select {
+        height: 30px;
+
+        &--inactive {
+            color: #d4d4d4;
+        }
+    }
+}

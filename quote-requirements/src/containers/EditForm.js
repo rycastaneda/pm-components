@@ -31,33 +31,47 @@ class EditForm extends Component {
         const defaultText = item.attributes.text || '';
 
         return (
-            <div>
-               <textarea name="description"
-                         defaultValue={defaultText}
-                         onChange={this.handleChange}
-               />
-                <div>
-                    <input name=""
-                           id="mandatory"
-                           type="checkbox"
-                           checked={item.attributes.isMandatory}
-                           onChange={this.handleChange}
+            <div className="edit-form">
+                <div className="col-md-8">
+                    <textarea name="description"
+                              className="form-control edit-form__textarea"
+                              defaultValue={defaultText}
+                              onChange={this.handleChange}
                     />
-                    <label htmlFor="mandatory">Mandatory for supplier</label>
                 </div>
-                <div>
-                    <input name=""
-                           id="always-show"
-                           type="checkbox"
-                           onChange={this.handleChange}
-                    />
-                    <label htmlFor="always-show">Always display?</label>
-                    <select value="A">
+                <div className="col-md-4">
+                    <button className="edit-form__button btn"
+                            type="submit"
+                            onClick={this.handleSave}>
+                        { item.id ? 'Save' : 'Add' }
+                    </button>
+                    <div className="checkbox">
+                        <label htmlFor="always-show">
+                            <input name="always-show-checkbox"
+                                   id="always-show"
+                                   type="checkbox"
+                                   onChange={this.handleChange}
+                            />
+                            Always display?
+                        </label>
+                    </div>
+                    <select value="A"
+                            className="form-control edit-form__category-select edit-form__category-select--inactive">
                         <option value="A">for all excavators</option>
                         <option value="B">for 4-10 Tonne Excavators</option>
                     </select>
                 </div>
-                <button type="submit" onClick={this.handleSave}>{ item.id ? 'Save' : 'Add' }</button>
+                <div className="col-md-12 checkbox">
+                    <label htmlFor="mandatory">
+                        <input name=""
+                               id="mandatory"
+                               type="checkbox"
+                               checked={item.attributes.isMandatory}
+                               onChange={this.handleChange}
+                        />
+                        Mandatory for supplier
+                    </label>
+                </div>
             </div>
         );
     }
