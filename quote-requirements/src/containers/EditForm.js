@@ -1,25 +1,41 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { updateText, updateMandatorySelection, saveItem } from '../actions/quoteRequirements';
+import { updateText, updateMandatorySelection, saveItem, updateInclusionsSelection, handleCategoryInclusionChange } from '../actions/quoteRequirements';
+import InclusionSelection from '../components/InclusionSelection';
 
 class EditForm extends Component {
 
     constructor(props) {
         super(props);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+        this.handleMandatoryChange = this.handleMandatoryChange.bind(this);
+        this.handleInclusionChange = this.handleInclusionChange.bind(this);
+        this.handleCategoryInclusionChange = this.handleCategoryInclusionChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
     }
 
-    handleChange(event) {
+    handleInclusionChange(event) {
         const item = this.props.item;
-        const type = event.target.type;
 
-        if (event.target.type === 'textarea') {
-            return this.props.dispatch(updateText(item, event.target.value));
-        } else if (type === 'checkbox') {
-            return this.props.dispatch(updateMandatorySelection(item, event.target.checked));
-        }
+        return this.props.dispatch(updateInclusionsSelection(item, event.target.checked));
+    }
 
+    handleCategoryInclusionChange(event) {
+        const item = this.props.item;
+
+        return this.props.dispatch(handleCategoryInclusionChange(item, parseInt(event.target.value, 10)));
+    }
+
+    handleDescriptionChange(event) {
+        const item = this.props.item;
+
+        return this.props.dispatch(updateText(item, event.target.value));
+    }
+
+    handleMandatoryChange(event) {
+        const item = this.props.item;
+
+        return this.props.dispatch(updateMandatorySelection(item, event.target.checked));
     }
 
     handleSave() {
@@ -36,7 +52,7 @@ class EditForm extends Component {
                     <textarea name="description"
                               className="form-control edit-form__textarea"
                               defaultValue={defaultText}
-                              onChange={this.handleChange}
+                              onChange={this.handleDescriptionChange}
                     />
                 </div>
                 <div className="col-md-4">
@@ -50,16 +66,15 @@ class EditForm extends Component {
                             <input name="always-show-checkbox"
                                    id="always-show"
                                    type="checkbox"
-                                   onChange={this.handleChange}
+                                   checked={item.attributes.include}
+                                   onChange={this.handleInclusionChange}
                             />
                             Always display?
                         </label>
                     </div>
-                    <select value="A"
-                            className="form-control edit-form__category-select edit-form__category-select--inactive">
-                        <option value="A">for all excavators</option>
-                        <option value="B">for 4-10 Tonne Excavators</option>
-                    </select>
+                    <InclusionSelection handleChange={this.handleCategoryInclusionChange}
+                                        isReadOnly={item.attributes.include}
+                                        selected={item.attributes.category_id} />
                 </div>
                 <div className="col-md-12 checkbox">
                     <label htmlFor="mandatory">
@@ -67,7 +82,7 @@ class EditForm extends Component {
                                id="mandatory"
                                type="checkbox"
                                checked={item.attributes.isMandatory}
-                               onChange={this.handleChange}
+                               onChange={this.handleMandatoryChange}
                         />
                         Mandatory for supplier
                     </label>

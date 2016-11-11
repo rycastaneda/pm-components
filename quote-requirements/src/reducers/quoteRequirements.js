@@ -83,6 +83,26 @@ function items(state = [], action) {
                         })
                     } : item
             );
+        case UPDATE_INCLUSIONS_SELECTION:
+            return state.map(item =>
+                item.id === action.id ?
+                    {
+                        ...item,
+                        attributes: Object.assign({}, item.attributes, {
+                            include: action.include
+                        })
+                    } : item
+            );
+        case UPDATE_INCLUSIONS_CATEGORY:
+            return state.map(item =>
+                item.id === action.id ?
+                    {
+                        ...item,
+                        attributes: Object.assign({}, item.attributes, {
+                            'category_id': action.category
+                        })
+                    } : item
+            );
         default:
             return state;
     }

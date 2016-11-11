@@ -7,12 +7,14 @@ import {
     IS_DEFAULT_ADDED,
     IS_SAVED,
     UPDATE_INCLUSIONS_SELECTION,
+    UPDATE_INCLUSIONS_CATEGORY,
     UPDATE_MANDATORY_SELECTION,
     REQUIREMENTS_REQUESTED,
     REQUIREMENTS_RECEIVED
 } from '../constants/ActionTypes';
 
 import * as items from '../mocks/requirements.json';
+// import { readEndpoint } from 'redux-json-api';
 
 export function setAsEditing(item) {
     return {
@@ -52,11 +54,18 @@ export function updateMandatorySelection(item, value) {
     };
 }
 
-export function updateInclusionsSelection(item) {
+export function updateInclusionsSelection(item, value) {
     return {
         type: UPDATE_INCLUSIONS_SELECTION,
         id: item.id,
-        alwaysDisplay: item.alwaysDisplay
+        include: value
+    };
+}
+export function handleCategoryInclusionChange(item, value) {
+    return {
+        type: UPDATE_INCLUSIONS_CATEGORY,
+        id: item.id,
+        category: value
     };
 }
 
@@ -107,6 +116,14 @@ export function addDefaultRequirement() {
 
 export function getRequirements() {
     return (dispatch) => {
+
+        // dispatch(readEndpoint(`searcher_requirements`))
+        // // Dispatch an action that categories have been received from API
+        //     .then((response) => {
+        //         dispatch(receiveCategories(type, response));
+        //         return dispatch(addDefaultRequirement());
+        //     })
+        // };
 
         dispatch(requestRequirements());
         setTimeout(() => {

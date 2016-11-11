@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import EditForm from '../containers/EditForm';
-import Viewer from '../components/Viewer';
+import Viewer from './ViewForm';
 
 const RequirementsList = ({ list, handleUpdate, handleDelete }) => (
     <div>

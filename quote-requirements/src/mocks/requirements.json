@@ -4,8 +4,9 @@
       "type": "inclusions",
       "id": "92347",
       "attributes": {
-        "text": "The Tenderer shall submit has to be ...",
-        "include": 55,
+        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+        "include": false,
+        "category_id": 55,
         "isMandatory": true
       },
       "relationships": {
@@ -21,8 +22,27 @@
       "type": "inclusions",
       "id": "239048",
       "attributes": {
-        "text": "The Tenderer shall submit has to be ...",
-        "include": 5,
+        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+        "include": true,
+        "category_id": 55,
+        "isMandatory": true
+      },
+      "relationships": {
+        "data": [
+          {
+            "type": "quote-requests",
+            "id": 25522
+          }
+        ]
+      }
+    },
+    {
+      "type": "inclusions",
+      "id": "239049",
+      "attributes": {
+        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+        "include": true,
+        "category_id": 33,
         "isMandatory": true
       },
       "relationships": {

@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import EditForm from '../containers/EditForm';
-import Viewer from '../components/Viewer';
+import Viewer from '../components/ViewForm';
 import { setAsEditing, deleteRequirement, getRequirements } from '../actions/quoteRequirements';
 
 class QuoteRequirements extends Component {
