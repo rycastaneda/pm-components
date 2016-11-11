@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
 import QuoteRequirements from './containers/QuoteRequirements';
+import { setEndpointHost, setEndpointPath, setHeaders } from 'redux-json-api';
+import api from '../../shared/api.config';
 import './styles/index.scss';
 
 // Add redux dev tools unless we have a production build
@@ -18,6 +20,10 @@ const store = createStore(
     rootReducer,
     enhance
 );
+
+store.dispatch(setEndpointHost(api.configureHostname()));
+store.dispatch(setEndpointPath(''));
+store.dispatch(setHeaders(api.configureHeaders()));
 
 render(
     <Provider store={store}>
