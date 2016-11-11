@@ -72,7 +72,7 @@ function configureHostname() {
 
     if (hostname.includes('staging')) {
         if (apiBranch) {
-            return protocol + hostname.replace(/.+staging/, apiBranch.toLowerCase() + 'api.staging');
+            return protocol + hostname.replace(/.+staging/, apiBranch.toLowerCase() + '.api.staging');
         } else {
             return protocol + hostname.replace(/staging/, 'api.staging');
         }
