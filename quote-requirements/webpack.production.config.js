@@ -1,12 +1,10 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const vendorPlugins = require('../shared/vendorPlugins.js');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = {
     entry: {
-        app: './src/index.js',
-        vendor: vendorPlugins
+        app: './src/index.js'
     },
     devtool: 'cheap-module-source-map',
     output: {
@@ -45,17 +43,20 @@ module.exports = {
                 'NODE_ENV': JSON.stringify('production')
             }
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            output: {
-                comments: false
-            },
-            compress: {
-                warnings: false
-            }
-        }),
+        // new webpack.optimize.UglifyJsPlugin({
+        //     output: {
+        //         comments: false
+        //     },
+        //     compress: {
+        //         warnings: false
+        //     }
+        // }),
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.optimize.DedupePlugin(),
         new ExtractTextPlugin('./index.css'),
-        new webpack.optimize.CommonsChunkPlugin('vendor', '../../shared/dist/vendor.bundle.js')
+        new webpack.DllReferencePlugin({
+            context: '.',
+            manifest: require('../shared/vendor-manifest.json')
+        }),
     ]
 };
