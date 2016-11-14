@@ -24,7 +24,7 @@ function escapeRegexCharacters(str) {
 function getSuggestions(state, value, index) {
     const escapedValue = escapeRegexCharacters(value.trim());
     // Create a new regex
-    const regex = new RegExp(escapedValue, 'ig');
+    const regex = new RegExp(escapedValue, 'i');
     // Get current categories values from categories 'cache'
     const currentCategories = state.fetchedCategoryTypes[state.categorySelector.selectedType].categories;
     // If first level category - it is considered parent
