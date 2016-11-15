@@ -8,7 +8,6 @@
   },
   "scripts": {
     "build": "webpack --config webpack.production.config.js --progress --profile --colors",
-    "build-vendor": "webpack --config webpack.vendor.config.js",
     "start": "webpack-dev-server --progress --profile --colors",
     "lint": "eslint src",
     "test": "mocha tests.config.js src/**/*.spec.js"
