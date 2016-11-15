@@ -56,12 +56,7 @@ class EditForm extends Component {
                     />
                 </div>
                 <div className="col-md-4">
-                    <button className="edit-form__button btn"
-                            type="submit"
-                            onClick={this.handleSave}>
-                        { item.id ? 'Save' : 'Add' }
-                    </button>
-                    <div className="checkbox">
+                    <div className="checkbox edit-form__checkbox-container">
                         <label htmlFor="always-show">
                             <input name="always-show-checkbox"
                                    id="always-show"
@@ -73,8 +68,15 @@ class EditForm extends Component {
                         </label>
                     </div>
                     <InclusionSelection handleChange={this.handleCategoryInclusionChange}
-                                        isReadOnly={item.attributes.include}
+                                        isDisabled={!item.attributes.include}
                                         selected={item.attributes.category_id} />
+
+                    <button className="edit-form__button btn"
+                            type="submit"
+                            onClick={this.handleSave}>
+                        { item.id ? 'Save' : 'Add' }
+                    </button>
+
                 </div>
                 <div className="col-md-12 checkbox">
                     <label htmlFor="mandatory">

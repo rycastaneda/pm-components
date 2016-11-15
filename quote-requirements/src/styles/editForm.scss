@@ -1,18 +1,32 @@
 .edit-form {
+    overflow: hidden;
+    float: left;
+    width: 100%;
+    padding-top: 15px;
+    background: #ffffff;
+
+    border-top: 1px solid #eeeeee;
 
     &__button {
         width: 100%;
     }
 
-    &__textarea {
-        height: 95px;
-    }
-
     &__category-select {
-        height: 30px;
+        height: 25px;
+        margin-top: -7px;
+        margin-bottom: 14px;
 
         &--inactive {
             color: #d4d4d4;
         }
+    }
+
+    &__checkbox-container {
+        padding-top: 0;
+    }
+
+    textarea {
+        height: 95px;
+        resize: none;
     }
 }

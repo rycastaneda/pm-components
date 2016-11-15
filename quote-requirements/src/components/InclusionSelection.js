@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
 
-const InclusionSelection = ({ handleChange, isReadOnly = false, selected }) => (
+const InclusionSelection = ({ handleChange, isDisabled = false, selected }) => (
     <select defaultValue={selected || 'all'}
-            readOnly={ isReadOnly }
-            className={'form-control edit-form__category-select' +
-                `${isReadOnly ? 'edit-form__category-select--inactive' : ''}` }
+            disabled={ isDisabled }
+            className={'form-control edit-form__category-select ' +
+                `${isDisabled ? 'edit-form__category-select--inactive' : ''}` }
             onChange={handleChange}>
         <option value="all">for all excavators</option>
         <option value="33">for 4-10 Tonne Excavators</option>
@@ -14,7 +14,7 @@ const InclusionSelection = ({ handleChange, isReadOnly = false, selected }) => (
 
 InclusionSelection.propTypes = {
     handleChange: PropTypes.func.isRequired,
-    isReadOnly: PropTypes.bool,
+    isDisabled: PropTypes.bool,
     selected: PropTypes.string
 };
 

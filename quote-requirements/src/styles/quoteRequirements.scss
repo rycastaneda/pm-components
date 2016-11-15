@@ -1,0 +1,13 @@
+.quote-requirements {
+    overflow: hidden;
+    margin-top: -15px;
+    margin-bottom: -15px;
+
+    &__form {
+        border-top: 1px solid #eeeeee;
+
+        &:first-of-type {
+            border-top: none;
+        }
+    }
+}
