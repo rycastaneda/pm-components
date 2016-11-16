@@ -41,7 +41,8 @@ describe('Categories actions: ', () => {
         };
         const fn = actions.selectCategory(test, 0);
         const dispatch = sinon.spy();
-        fn(dispatch);
+        const getState = sinon.spy();
+        fn(dispatch, getState);
 
         expect(fn).is.a('function');
         expect(dispatch.callCount).to.equal(2);
@@ -58,7 +59,8 @@ describe('Categories actions: ', () => {
         };
         const fn = actions.selectCategory(test, 1);
         const dispatch = sinon.spy();
-        fn(dispatch);
+        const getState = sinon.spy();
+        fn(dispatch, getState);
 
         expect(fn).is.a('function');
         expect(dispatch.callCount).to.equal(1);
