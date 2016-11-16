@@ -161,12 +161,12 @@ export function selectType(categoryType) {
  * @returns {function(*)}
  */
 export function selectCategory(category, index) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         const hasSubcategories = category.relationships ? category.relationships.categories.data.length > 0 : false;
         // Trigger other onchange events
         // If user has finished selecting categories
         if (category.attributes.selectable) {
-            triggerDomChanges(category.id);
+            triggerDomChanges(category.id, getState());
         }
 
         dispatch({
@@ -195,7 +195,7 @@ export function selectCategory(category, index) {
  *
  * @param {number} [id=0] - category id
  */
-export function triggerDomChanges(id = 0) {
+export function triggerDomChanges(id = 0, state = {}) {
     const el = document.getElementById('qr_category_id') || {};
     const triggerChange = new Event('change');
 
@@ -205,6 +205,7 @@ export function triggerDomChanges(id = 0) {
 
     window.PlantminerComponents = window.PlantminerComponents || {};
     window.PlantminerComponents.categorySelector = {
-        selectedCategoryId: parseInt(id, 10)
+        selectedCategoryId: parseInt(id, 10),
+        dropDowns: state.categorySelector ? state.categorySelector.dropDowns : {}
     };
 }
