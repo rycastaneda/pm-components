@@ -1,19 +1,25 @@
 import {
-    IS_EDITING, IS_DELETED, SAVE_REQUIREMENT, UPDATE_TEXT,
-    UPDATE_INCLUSIONS_CATEGORY,
-    UPDATE_INCLUSIONS_SELECTION,
-    UPDATE_MANDATORY_SELECTION, ADD_NEW_ITEM,
     REQUIREMENTS_REQUESTED,
     REQUIREMENTS_RECEIVED,
-    IS_DEFAULT_ADDED,
-    IS_SAVED
+    IS_EDITING,
+    IS_DELETED,
+    IS_EMPTY_ADDED,
+    IS_SAVED,
+    IS_CREATED,
+    UPDATE_TEXT,
+    UPDATE_INCLUSIONS_CATEGORY,
+    UPDATE_INCLUSIONS_SELECTION,
+    UPDATE_MANDATORY_SELECTION
 } from '../constants/ActionTypes';
 
-const NEW_EMPTY_ITEM = {
+const DEFAULT_EMPTY_ITEM = {
     id: 0,
     isEditing: true,
-    alwaysDisplay: false,
-    attributes: {}
+    attributes: {
+        mandatory: false,
+        include: false,
+        text: ''
+    }
 };
 
 export function quoteRequirements(state = { items: [], areLoading: false }, action) {
@@ -27,16 +33,15 @@ export function quoteRequirements(state = { items: [], areLoading: false }, acti
                 items: action.items,
                 areLoading: false
             });
-        case SAVE_REQUIREMENT:
         case UPDATE_TEXT:
         case UPDATE_INCLUSIONS_CATEGORY:
         case UPDATE_INCLUSIONS_SELECTION:
         case UPDATE_MANDATORY_SELECTION:
-        case IS_DEFAULT_ADDED:
+        case IS_EMPTY_ADDED:
         case IS_SAVED:
+        case IS_CREATED:
         case IS_DELETED:
         case IS_EDITING:
-        case ADD_NEW_ITEM:
             return Object.assign({}, state, {
                 items: items(state.items, action)
             });
@@ -47,12 +52,17 @@ export function quoteRequirements(state = { items: [], areLoading: false }, acti
 
 function items(state = [], action) {
     switch (action.type) {
-        case IS_DEFAULT_ADDED:
-            return [...state, NEW_EMPTY_ITEM];
+        case IS_EMPTY_ADDED:
+            return [...state, DEFAULT_EMPTY_ITEM];
         case IS_SAVED:
             return state.map(item =>
                 item.id === action.id ?
-                { ...item, id: 60, isEditing: false } : item
+                { ...item, id: action.id, isEditing: false } : item
+            );
+        case IS_CREATED:
+            return state.map(item =>
+                item.id === 0 ?
+                { ...item, id: action.id, isEditing: false } : item
             );
         case IS_DELETED:
             return state.filter(item =>
@@ -61,7 +71,7 @@ function items(state = [], action) {
         case IS_EDITING:
             return state.map(item =>
                 item.id === action.id ?
-                { ...item, isEditing: !item.isEditing } : item
+                { ...item, isEditing: true } : item
             );
         case UPDATE_TEXT:
             return state.map(item =>
@@ -79,7 +89,7 @@ function items(state = [], action) {
                     {
                         ...item,
                         attributes: Object.assign({}, item.attributes, {
-                            isMandatory: action.isMandatory
+                            mandatory: action.mandatory
                         })
                     } : item
             );
@@ -99,12 +109,11 @@ function items(state = [], action) {
                     {
                         ...item,
                         attributes: Object.assign({}, item.attributes, {
-                            'category_id': action.category
+                            'category_id': action.category_id
                         })
                     } : item
             );
         default:
             return state;
     }
-
 }

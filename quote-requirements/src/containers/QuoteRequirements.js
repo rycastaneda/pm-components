@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import EditForm from '../containers/EditForm';
 import Viewer from '../components/ViewForm';
-import { setAsEditing, deleteRequirement, getRequirements } from '../actions/quoteRequirements';
+import { setItemAsEditing, deleteItem, getItems } from '../actions/quoteRequirements';
 
 class QuoteRequirements extends Component {
 
@@ -13,30 +13,32 @@ class QuoteRequirements extends Component {
     }
 
     componentWillMount() {
-        this.props.dispatch(getRequirements());
+        this.props.dispatch(getItems());
     }
 
     handleUpdate(item) {
-        return this.props.dispatch(setAsEditing(item));
+        return this.props.dispatch(setItemAsEditing(item));
     }
 
-    handleDelete(item) {
-        return this.props.dispatch(deleteRequirement(item));
+    handleDelete(event, item) {
+        event.preventDefault();
+
+        return this.props.dispatch(deleteItem(item));
     }
 
     render() {
         const { quoteRequirements } = this.props;
         return (
-            <div>
+            <div className="quote-inclusions">
                 {quoteRequirements.items.map(item =>
                     item.isEditing ?
                         <EditForm key={item.id}
                                   item={item}/> :
                         <Viewer key={item.id}
                                 text={item.attributes.text}
-                                isMandatory={item.attributes.isMandatory}
+                                isMandatory={item.attributes.mandatory}
                                 handleUpdate={() => this.handleUpdate(item)}
-                                handleDelete={() => this.handleDelete(item)}/>
+                                handleDelete={event => this.handleDelete(event, item)}/>
                 )}
             </div>
         );

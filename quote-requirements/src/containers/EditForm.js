@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { updateText, updateMandatorySelection, saveItem, updateInclusionsSelection, handleCategoryInclusionChange } from '../actions/quoteRequirements';
+import { handleTextChange, handleMandatorySelection, updateItem, createItem, handleInclusionsSelection, handleCategoryInclusionChange } from '../actions/quoteRequirements';
 import InclusionSelection from '../components/InclusionSelection';
 
 class EditForm extends Component {
@@ -17,7 +17,7 @@ class EditForm extends Component {
     handleInclusionChange(event) {
         const item = this.props.item;
 
-        return this.props.dispatch(updateInclusionsSelection(item, event.target.checked));
+        return this.props.dispatch(handleInclusionsSelection(item, event.target.checked));
     }
 
     handleCategoryInclusionChange(event) {
@@ -29,17 +29,19 @@ class EditForm extends Component {
     handleDescriptionChange(event) {
         const item = this.props.item;
 
-        return this.props.dispatch(updateText(item, event.target.value));
+        return this.props.dispatch(handleTextChange(item, event.target.value));
     }
 
     handleMandatoryChange(event) {
         const item = this.props.item;
 
-        return this.props.dispatch(updateMandatorySelection(item, event.target.checked));
+        return this.props.dispatch(handleMandatorySelection(item, event.target.checked));
     }
 
-    handleSave() {
-        this.props.dispatch(saveItem(this.props.item));
+    handleSave(event) {
+        event.preventDefault();
+        if (this.props.item.id) this.props.dispatch(updateItem(this.props.item));
+        else this.props.dispatch(createItem(this.props.item));
     }
 
     render() {
@@ -47,7 +49,7 @@ class EditForm extends Component {
         const defaultText = item.attributes.text || '';
 
         return (
-            <div className="edit-form">
+            <div className="quote-inclusions__form edit-form">
                 <div className="col-md-8">
                     <textarea name="description"
                               className="form-control edit-form__textarea"
@@ -56,10 +58,12 @@ class EditForm extends Component {
                     />
                 </div>
                 <div className="col-md-4">
-                    <div className="checkbox edit-form__checkbox-container">
-                        <label htmlFor="always-show">
-                            <input name="always-show-checkbox"
-                                   id="always-show"
+                    <div className="edit-form__checkbox-container">
+                        <label className="edit-form__checkbox-label"
+                               htmlFor={`include__${item.id}`}>
+                            <input name={`include-checkbox__${item.id}`}
+                                   className="edit-form__checkbox-input"
+                                   id={`include__${item.id}`}
                                    type="checkbox"
                                    checked={item.attributes.include}
                                    onChange={this.handleInclusionChange}
@@ -79,11 +83,11 @@ class EditForm extends Component {
 
                 </div>
                 <div className="col-md-12 checkbox">
-                    <label htmlFor="mandatory">
-                        <input name=""
-                               id="mandatory"
+                    <label htmlFor={`mandatory__${item.id}`}>
+                        <input name={`mandatory-checkbox__${item.id}`}
+                               id={`mandatory__${item.id}`}
                                type="checkbox"
-                               checked={item.attributes.isMandatory}
+                               checked={item.attributes.mandatory}
                                onChange={this.handleMandatoryChange}
                         />
                         Mandatory for supplier

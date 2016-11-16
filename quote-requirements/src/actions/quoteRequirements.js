@@ -1,44 +1,89 @@
 import {
+    REQUIREMENTS_REQUESTED,
+    REQUIREMENTS_RECEIVED,
     IS_EDITING,
     IS_DELETED,
-    SAVE_REQUIREMENT,
-    UPDATE_TEXT,
-    ADD_NEW_ITEM,
-    IS_DEFAULT_ADDED,
+    IS_EMPTY_ADDED,
     IS_SAVED,
+    IS_CREATED,
     UPDATE_INCLUSIONS_SELECTION,
     UPDATE_INCLUSIONS_CATEGORY,
     UPDATE_MANDATORY_SELECTION,
-    REQUIREMENTS_REQUESTED,
-    REQUIREMENTS_RECEIVED
+    UPDATE_TEXT
 } from '../constants/ActionTypes';
 
-import * as items from '../mocks/requirements.json';
-// import { readEndpoint } from 'redux-json-api';
+import { createEntity, readEndpoint, updateEntity, deleteEntity } from 'redux-json-api';
 
-export function setAsEditing(item) {
+const TYPE = 'searcher-requirements';
+
+export function createItem(item) {
+    return (dispatch) => {
+
+        dispatch(createEntity({
+            type: TYPE,
+            attributes: item.attributes
+        }))
+        .then((response) => {
+            dispatch({
+                type: IS_CREATED,
+                id: response.data.id
+            });
+            dispatch(addEmptyRequirement());
+        });
+    };
+}
+
+export function getItems() {
+    return (dispatch) => {
+        dispatch(requestRequirements());
+
+        dispatch(readEndpoint(TYPE))
+        .then((response) => {
+            dispatch(receiveRequirements(response.data));
+            dispatch(addEmptyRequirement());
+        });
+    };
+}
+
+export function updateItem(item) {
+    return (dispatch) => {
+        dispatch(updateEntity({
+            type: TYPE,
+            id: item.id,
+            attributes: item.attributes
+        }))
+        .then((response) => {
+            dispatch({
+                type: IS_SAVED,
+                id: response.data.id
+            });
+        });
+    };
+}
+
+export function deleteItem(item) {
+    return (dispatch) => {
+        dispatch(deleteEntity({
+            type: TYPE,
+            id: item.id
+        }))
+        .then(() => {
+            dispatch({
+                type: IS_DELETED,
+                id: item.id
+            });
+        });
+    };
+}
+
+export function setItemAsEditing(item) {
     return {
         type: IS_EDITING,
         id: item.id
     };
 }
 
-export function deleteRequirement(item) {
-    return {
-        type: IS_DELETED,
-        id: item.id
-    };
-}
-
-export function saveRequirement(item) {
-    return {
-        type: SAVE_REQUIREMENT,
-        id: item.id,
-        text: item.attributes.text
-    };
-}
-
-export function updateText(item, value) {
+export function handleTextChange(item, value) {
     return {
         type: UPDATE_TEXT,
         id: item.id,
@@ -46,50 +91,27 @@ export function updateText(item, value) {
     };
 }
 
-export function updateMandatorySelection(item, value) {
+export function handleMandatorySelection(item, value) {
     return {
         type: UPDATE_MANDATORY_SELECTION,
         id: item.id,
-        isMandatory: value
+        mandatory: value
     };
 }
 
-export function updateInclusionsSelection(item, value) {
+export function handleInclusionsSelection(item, value) {
     return {
         type: UPDATE_INCLUSIONS_SELECTION,
         id: item.id,
         include: value
     };
 }
+
 export function handleCategoryInclusionChange(item, value) {
     return {
         type: UPDATE_INCLUSIONS_CATEGORY,
         id: item.id,
-        category: value
-    };
-}
-
-export function addNewItem() {
-    return {
-        type: ADD_NEW_ITEM
-    };
-}
-
-export function saveItem(item) {
-    return (dispatch) => {
-        dispatch(itemSaved(item));
-
-        if (!item.id) {
-            dispatch(addDefaultRequirement());
-        }
-
-    };
-}
-
-export function itemSaved(item) {
-    return {
-        type: IS_SAVED,
-        id: item.id
+        'category_id': value
     };
 }
 
@@ -97,38 +119,17 @@ export function requestRequirements() {
     return {
         type: REQUIREMENTS_REQUESTED
     };
-
 }
 
 export function receiveRequirements(items) {
     return {
         type: REQUIREMENTS_RECEIVED,
-        items: items.data
+        items: items
     };
-
 }
 
-export function addDefaultRequirement() {
+export function addEmptyRequirement() {
     return {
-        type: IS_DEFAULT_ADDED
-    };
-}
-
-export function getRequirements() {
-    return (dispatch) => {
-
-        // dispatch(readEndpoint(`searcher_requirements`))
-        // // Dispatch an action that categories have been received from API
-        //     .then((response) => {
-        //         dispatch(receiveCategories(type, response));
-        //         return dispatch(addDefaultRequirement());
-        //     })
-        // };
-
-        dispatch(requestRequirements());
-        setTimeout(() => {
-            dispatch(receiveRequirements(items));
-            return dispatch(addDefaultRequirement());
-        }, 1000);
+        type: IS_EMPTY_ADDED
     };
 }

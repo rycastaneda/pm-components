@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
 const Viewer = ({ text = '', isMandatory = false, handleDelete, handleUpdate }) => (
-    <div className="view-form">
+    <div className="quote-inclusions__form view-form">
 
         <div className="view-form__description">
             {text}
