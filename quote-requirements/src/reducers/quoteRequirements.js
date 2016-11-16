@@ -109,7 +109,7 @@ function items(state = [], action) {
                     {
                         ...item,
                         attributes: Object.assign({}, item.attributes, {
-                            'category_id': action.category_id
+                            'category_id': `${action.category_id}`
                         })
                     } : item
             );

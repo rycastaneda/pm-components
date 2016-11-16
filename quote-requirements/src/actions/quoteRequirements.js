@@ -50,7 +50,12 @@ export function updateItem(item) {
         dispatch(updateEntity({
             type: TYPE,
             id: item.id,
-            attributes: item.attributes
+            attributes: {
+                include: item.attributes.include,
+                mandatory: item.attributes.mandatory,
+                text: item.attributes.text,
+                'category_id': item.attributes.include ? item.attributes.category_id : ''
+            }
         }))
         .then((response) => {
             dispatch({

@@ -47,6 +47,8 @@ class EditForm extends Component {
     render() {
         const { item } = this.props;
         const defaultText = item.attributes.text || '';
+        const categorySelectorComponent = window.PlantminerComponents ? window.PlantminerComponents.categorySelector : {};
+        const options = categorySelectorComponent ? categorySelectorComponent.dropDowns : [];
 
         return (
             <div className="quote-inclusions__form edit-form">
@@ -71,7 +73,8 @@ class EditForm extends Component {
                             Always display?
                         </label>
                     </div>
-                    <InclusionSelection handleChange={this.handleCategoryInclusionChange}
+                    <InclusionSelection options={options}
+                                        handleChange={this.handleCategoryInclusionChange}
                                         isDisabled={!item.attributes.include}
                                         selected={item.attributes.category_id} />
 
@@ -100,16 +103,7 @@ class EditForm extends Component {
 
 EditForm.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    quoteRequirements: PropTypes.object.isRequired,
     item: PropTypes.object
 };
 
-function mapStateToProps(state) {
-    const { quoteRequirements } = state;
-
-    return {
-        quoteRequirements
-    };
-}
-
-export default connect(mapStateToProps)(EditForm);  // adds dispatch prop
+export default connect()(EditForm);  // adds dispatch prop

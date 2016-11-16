@@ -20,7 +20,8 @@ function configureHeaders() {
 
     return {
         Authorization: 'Bearer ' + token,
-        Accept: 'application/vnd.pm.v1+json'
+        Accept: 'application/vnd.pm.v1+json',
+        'Content-Type': 'application/vnd.pm.v1+json'
     };
 
 }

@@ -37,6 +37,7 @@ class QuoteRequirements extends Component {
                         <Viewer key={item.id}
                                 text={item.attributes.text}
                                 isMandatory={item.attributes.mandatory}
+                                isAlwaysIncluded={item.attributes.include}
                                 handleUpdate={() => this.handleUpdate(item)}
                                 handleDelete={event => this.handleDelete(event, item)}/>
                 )}
