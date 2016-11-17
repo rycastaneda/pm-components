@@ -46,18 +46,21 @@ function configureHeaders() {
  * https://hotfix.api.staging.plantminer.co.nz
  *
  * Staging Feature
- * http://pm-xxx.api.staging.plantminer.com.au
- * http://pm-xxx.api.staging.plantminer.co.nz
+ * https://pm-xxx.api.staging.plantminer.com.au
+ * https://pm-xxx.api.staging.plantminer.co.nz
  *
  * Production
- * http://api.plantminer.com.au
- * http://api.plantminer.co.nz
+ * https://api.plantminer.com.au
+ * https://api.plantminer.co.nz
  *
  * @returns {string}
  */
 function configureHostname() {
     const protocol = 'https://';
     const hostname = window.location.hostname.replace(/www./, '');
+    const countryHost = hostname.includes('nz') ? '.co.nz' : '.com.au';
+    const staging = '.api.staging.plantminer';
+
     const apiBranch = window.location.search.substr(1).split('&').map(function(pair) {
         return pair.split('=');
     }).reduce(
@@ -66,19 +69,23 @@ function configureHostname() {
             return a;
         }, {})['apiBranch'];
 
-    if (process.env.NODE_ENV === 'develop') {
+    if (hostname.includes('local.dev') || process.env.NODE_ENV === 'develop') {
         return protocol + 'api.pm.local.dev';
     }
 
-    if (hostname.includes('staging')) {
-        if (apiBranch) {
-            return protocol + hostname.replace(/.+staging/, apiBranch.toLowerCase() + '.api.staging');
-        } else {
-            return protocol + hostname.replace(/staging/, 'api.staging');
-        }
+    if (apiBranch) {
+        return [protocol, apiBranch.toLowerCase(), staging, countryHost].join('');
     }
 
-    return protocol + 'api.' + hostname;
+    if (hostname.includes('release')) {
+        return [protocol, 'release', staging, countryHost].join('');
+    }
+
+    if (hostname.includes('hotfix')) {
+        return [protocol, 'hotfix', staging, countryHost].join('');
+    }
+
+    return [protocol, 'api.plantminer', countryHost].join('');
 }
 
 module.exports =  {
