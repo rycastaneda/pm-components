@@ -8,6 +8,8 @@
 function configureHeaders() {
     const COOKIE_TOKEN = 'pm_token';
 
+    if (process.env.NODE_ENV === 'develop') return getLocalHeaders();
+
     const token = document.cookie.split(';')
             .map(function(cookie) {
                 return cookie.trim().split('=');
@@ -23,7 +25,36 @@ function configureHeaders() {
         Accept: 'application/vnd.pm.v1+json',
         'Content-Type': 'application/vnd.pm.v1+json'
     };
+}
 
+/**
+ * @description
+ * Configure token and header for local development
+ * This method is used to ease local development of plantminer components
+ * It allows to obtain an api token thus make other api request
+ *
+ * @returns {{Authorization: string, Accept: string}}
+ */
+function getLocalHeaders() {
+    const tokenRequest = new Request('https:/api.pm.local.dev/authenticate',
+        {
+            method: 'POST',
+            headers: { 'Accept': 'application/vnd.pm.v1+json', 'Content-Type': 'application/vnd.pm.v1+json' },
+            body: '{"email":"sara1@plantminer.com.au", "password": "password"}' });
+
+    fetch(tokenRequest)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(response) {
+            localStorage.setItem('token', response.token);
+        });
+
+    return {
+        Authorization: 'Bearer ' + localStorage.getItem('token'),
+        Accept: 'application/vnd.pm.v1+json',
+        'Content-Type': 'application/vnd.pm.v1+json'
+    };
 }
 
 
@@ -47,18 +78,21 @@ function configureHeaders() {
  * https://hotfix.api.staging.plantminer.co.nz
  *
  * Staging Feature
- * http://pm-xxx.api.staging.plantminer.com.au
- * http://pm-xxx.api.staging.plantminer.co.nz
+ * https://pm-xxx.api.staging.plantminer.com.au
+ * https://pm-xxx.api.staging.plantminer.co.nz
  *
  * Production
- * http://api.plantminer.com.au
- * http://api.plantminer.co.nz
+ * https://api.plantminer.com.au
+ * https://api.plantminer.co.nz
  *
  * @returns {string}
  */
 function configureHostname() {
     const protocol = 'https://';
     const hostname = window.location.hostname.replace(/www./, '');
+    const countryHost = hostname.includes('nz') ? '.co.nz' : '.com.au';
+    const staging = '.api.staging.plantminer';
+
     const apiBranch = window.location.search.substr(1).split('&').map(function(pair) {
         return pair.split('=');
     }).reduce(
@@ -67,19 +101,23 @@ function configureHostname() {
             return a;
         }, {})['apiBranch'];
 
-    if (process.env.NODE_ENV === 'develop') {
+    if (hostname.includes('local.dev') || process.env.NODE_ENV === 'develop') {
         return protocol + 'api.pm.local.dev';
     }
 
-    if (hostname.includes('staging')) {
-        if (apiBranch) {
-            return protocol + hostname.replace(/.+staging/, apiBranch.toLowerCase() + '.api.staging');
-        } else {
-            return protocol + hostname.replace(/staging/, 'api.staging');
-        }
+    if (apiBranch) {
+        return [protocol, apiBranch.toLowerCase(), staging, countryHost].join('');
     }
 
-    return protocol + 'api.' + hostname;
+    if (hostname.includes('release')) {
+        return [protocol, 'release', staging, countryHost].join('');
+    }
+
+    if (hostname.includes('hotfix')) {
+        return [protocol, 'hotfix', staging, countryHost].join('');
+    }
+
+    return [protocol, 'api.plantminer', countryHost].join('');
 }
 
 module.exports =  {
