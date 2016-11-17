@@ -8,6 +8,8 @@
 function configureHeaders() {
     const COOKIE_TOKEN = 'pm_token';
 
+    if (process.env.NODE_ENV === 'develop') return getLocalHeaders();
+
     const token = document.cookie.split(';')
             .map(function(cookie) {
                 return cookie.trim().split('=');
@@ -22,7 +24,36 @@ function configureHeaders() {
         Authorization: 'Bearer ' + token,
         Accept: 'application/vnd.pm.v1+json'
     };
+}
 
+/**
+ * @description
+ * Configure token and header for local development
+ * This method is used to ease local development of plantminer components
+ * It allows to obtain an api token thus make other api request
+ *
+ * @returns {{Authorization: string, Accept: string}}
+ */
+function getLocalHeaders() {
+    const tokenRequest = new Request('https:/api.pm.local.dev/authenticate',
+        {
+            method: 'POST',
+            headers: { 'Accept': 'application/vnd.pm.v1+json', 'Content-Type': 'application/vnd.pm.v1+json' },
+            body: '{"email":"sara1@plantminer.com.au", "password": "password"}' });
+
+    fetch(tokenRequest)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(response) {
+            localStorage.setItem('token', response.token);
+        });
+
+    return {
+        Authorization: 'Bearer ' + localStorage.getItem('token'),
+        Accept: 'application/vnd.pm.v1+json',
+        'Content-Type': 'application/vnd.pm.v1+json'
+    };
 }
 
 
