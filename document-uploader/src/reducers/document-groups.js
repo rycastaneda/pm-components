@@ -13,6 +13,7 @@ import {
 
 const INITIAL_STATE = {
     data: [], // array of document groups
+    defaults: [],
     loading: false
 };
 
@@ -24,6 +25,8 @@ const DEFAULT_GROUP_STATES = {
         is_renaming: false
     }
 };
+
+
 
 export function documentGroups(state = INITIAL_STATE, action) {
     switch (action.type) {
@@ -38,14 +41,31 @@ export function documentGroups(state = INITIAL_STATE, action) {
             });
         case GROUPS_RECEIVING:
             // ADD DEFAULT GROUP STATES
-            return Object.assign({}, state, {
-                loading: false,
-                data: action.groups.data.map((group) => {
+            const data = action.groups.data.filter((group) => {
+                if (group.attributes.user_id) {
                     Object.assign(group.attributes, DEFAULT_GROUP_STATES.attributes);
                     return group;
-                })
+                }
+            });
+
+            const defaults = action.groups.data.filter((group) => {
+                if (!group.attributes.user_id && !data.find(data => group.attributes.title === data.attributes.title)) {
+                    Object.assign(group.attributes, DEFAULT_GROUP_STATES.attributes);
+                    return group;
+                }
+            });
+
+            return Object.assign({}, state, {
+                loading: false,
+                defaults,
+                data
             });
         case GROUP_ADDED:
+            state.defaults = state.defaults.filter(group => group.attributes.title !== action.group.attributes.title);
+            return Object.assign({}, state, {
+                loading: false,
+                data: groups(state.data, action)
+            });
         case GROUP_REMOVED:
         case GROUP_UPDATING:
         case GROUP_RENAMED:

@@ -26,5 +26,22 @@
         font-size: 64px;
         text-align: center;
     }
+}
 
+.loader-block {
+    position: relative;
+    min-height: 200px;
+    text-align: center;
+    
+    &__backdrop {
+        background-color: #ffffff;
+        opacity: 0.7;
+    }
+
+    &__spinner {
+        margin: 50px auto;
+        z-index: 5;
+        font-size: 64px;
+        text-align: center;
+    }
 }

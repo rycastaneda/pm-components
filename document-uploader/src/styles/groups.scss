@@ -14,9 +14,13 @@
     }
 }
 
+.add-form {
+    position: relative;
+}
+
 .group-panel {
     position: relative;
-
+    
     &__actions {
         padding: 5px;
         cursor: pointer;

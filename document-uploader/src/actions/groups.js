@@ -1,6 +1,7 @@
 import {
     GROUPS_LOADING,
     GROUPS_RECEIVING,
+    GROUPS_DEFAULTS,
     GROUP_ADDED,
     GROUP_RENAME_TOGGLE,
     GROUP_UPDATING,
@@ -51,7 +52,8 @@ export function addGroup(title, callback) {
             },
             relationships: {}
         })).then((response) => {
-            callback();
+            callback && callback();
+
             return dispatch({
                 type: GROUP_ADDED,
                 group: response.data
@@ -60,10 +62,11 @@ export function addGroup(title, callback) {
     };
 }
 
-export function removeGroup(group) {
+export function removeGroup(group, index) {
     return (dispatch) => {
         dispatch({
-            type: GROUPS_LOADING
+            type: GROUP_UPDATING,
+            index
         });
 
         dispatch(deleteEntity(group))

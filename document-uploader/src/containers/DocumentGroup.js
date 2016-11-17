@@ -12,6 +12,7 @@ import {
 } from '../actions/groups';
 import Group from '../components/Group';
 import Loader from '../components/Loader';
+import AddGroupForm from '../components/AddGroupForm';
 
 class DocumentGroup extends Component {
 
@@ -40,22 +41,12 @@ class DocumentGroup extends Component {
         return this.props.dispatch(removeFile(groupIndex, fileId));
     }
 
-    handleRemoveGroup(group) {
-        return this.props.dispatch(removeGroup(group));
+    handleRemoveGroup(group, index) {
+        return this.props.dispatch(removeGroup(group, index));
     }
 
-    handleAddGroup(e) {
-        e.preventDefault();
-
-        if (!this.addGroupInput.value.length) {
-            return;
-        }
-
-        return this.props.dispatch(
-            addGroup(this.addGroupInput.value, () => {
-                this.addGroupInput.value = '';
-            })
-        );
+    handleAddGroup(value, callback) {
+        return this.props.dispatch(addGroup(value, callback));
     }
 
     handleTogglingRename(index) {
@@ -110,19 +101,12 @@ class DocumentGroup extends Component {
 
         return (
             <div className="group-panel">
-                {this.props.documentGroups.loading ? <Loader /> : ''}
                 {groups}
                 {error}
-                <form onSubmit={this.handleAddGroup}>
-                    <div className="input-group">
-                        <span className="input-group-addon">+</span>
-                        <input
-                            ref={ref => this.addGroupInput = ref}
-                            type="text"
-                            className="form-control"
-                            placeholder="Add new group" />
-                    </div>
-                </form>
+                {this.props.documentGroups.loading ? <Loader block={true}/> : ''}
+                <AddGroupForm 
+                    onAddGroup={this.handleAddGroup}
+                    documentGroups={this.props.documentGroups}/>
             </div>
         );
     }

@@ -55,7 +55,7 @@ const Group = ({
                 </aside>
                 <aside className="pull-right">
                     {actions}
-                    <i className="group-panel__actions fa fa-trash" onClick={() => onGroupRemove(group)}></i>
+                    <i className="group-panel__actions fa fa-trash" onClick={() => onGroupRemove(group, groupIndex)}></i>
                 </aside>
                 <div className="clearfix"></div>
             </div>
