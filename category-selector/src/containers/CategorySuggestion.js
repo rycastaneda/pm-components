@@ -117,6 +117,7 @@ class CategorySuggestion extends Component {
                     getSuggestionValue={this.getSuggestionValue}
                     renderSuggestion={this.renderSuggestion}
                     shouldRenderSuggestions={this.shouldRenderSuggestions}
+                    focusFirstSuggestion={true}
                     inputProps={inputProps(currentIndex)}
                 />
             </div>
