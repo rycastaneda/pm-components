@@ -8,6 +8,8 @@ import {
     REQUEST_FAILED
 } from '../constants/ActionTypes';
 import { readEndpoint } from 'redux-json-api';
+import { resetDropDowns } from './suggestions';
+
 /**
  *
  * @param {string} type
@@ -177,6 +179,8 @@ export function selectCategory(category, index) {
 
         if (hasSubcategories) {
             return dispatch(addDropDown(index + 1));
+        } else {
+            return dispatch(resetDropDowns(index + 1));
         }
 
     };
