@@ -86,17 +86,19 @@ export function fetchSuggestions(value, index) {
  */
 export function updateInput(value, index) {
     return (dispatch, getState) => {
-        const subCategoryDropDown = index + 1;
-        // We need to always reset preselected user values for subcategories
-        if (getState().categorySelector.dropDowns[subCategoryDropDown]) {
-            dispatch(resetDropDowns(subCategoryDropDown));
-        }
+        const subCategoryIndex = index + 1;
+        const subCategory = getState().categorySelector.dropDowns[subCategoryIndex];
 
-        return dispatch({
+        dispatch({
             type: UPDATE_INPUT,
             index,
             value
         });
+
+        // We need to always reset preselected user values for subcategories
+        if (subCategory && !subCategory.isDefault) {
+            dispatch(resetDropDowns(subCategoryIndex));
+        }
     };
 }
 

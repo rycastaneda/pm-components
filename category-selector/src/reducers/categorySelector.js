@@ -20,7 +20,8 @@ const INITIAL_CATEGORY_SELECTOR_STATE = {
 
 const DEFAULT_DROPDOWN_STATE = {
     input: '',
-    selectedCategory: {}
+    selectedCategory: {},
+    isDefault: true
 };
 
 export function categorySelector(state = INITIAL_CATEGORY_SELECTOR_STATE, action) {
@@ -62,7 +63,8 @@ function dropDowns(state = [], action) {
             return state.map((dropDown, index) => {
                 if (index === action.index) {
                     return Object.assign({}, dropDown, {
-                        input: action.value
+                        input: action.value,
+                        isDefault: false
                     });
                 }
                 return dropDown;

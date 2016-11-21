@@ -24,7 +24,7 @@ Contains a basic setup with a few simple examples which can be copied and used f
     npm start
     ```
 
-- Go to your browser and navigate to `http://localhost:8080/index.html`
+- Go to your browser and navigate to `http://localhost:5050/index.html`
 
 
 - Now you can open Redux Dev Tools and see your state and actions dispatched
