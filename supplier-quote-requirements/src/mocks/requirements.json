@@ -1,0 +1,55 @@
+{
+  "data": [
+    {
+      "type": "inclusions",
+      "id": "92347",
+      "attributes": {
+        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+        "selection": true,
+        "comments": ""
+      },
+      "relationships": {
+        "data": [
+          {
+            "type": "quote-requests",
+            "id": 25528
+          }
+        ]
+      }
+    },
+    {
+      "type": "inclusions",
+      "id": "239048",
+      "attributes": {
+        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+        "comments": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+        "selection": true
+      },
+      "relationships": {
+        "data": [
+          {
+            "type": "quote-requests",
+            "id": 25522
+          }
+        ]
+      }
+    },
+    {
+      "type": "inclusions",
+      "id": "239049",
+      "attributes": {
+        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+        "comments": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+        "selection": true
+      },
+      "relationships": {
+        "data": [
+          {
+            "type": "quote-requests",
+            "id": 25522
+          }
+        ]
+      }
+    }
+  ]
+}
