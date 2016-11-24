@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { handleTextChange, handleMandatorySelection, updateItem, createItem, handleInclusionsSelection, handleCategoryInclusionChange } from '../actions/quoteRequirements';
+import { handleTextChange, handleMandatorySelection, updateItem, createItem, handleCategoryInclusionChange } from '../actions/quoteRequirements';
 import InclusionSelection from '../components/InclusionSelection';
 
 class EditForm extends Component {
@@ -9,21 +9,18 @@ class EditForm extends Component {
         super(props);
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
         this.handleMandatoryChange = this.handleMandatoryChange.bind(this);
-        this.handleInclusionChange = this.handleInclusionChange.bind(this);
         this.handleCategoryInclusionChange = this.handleCategoryInclusionChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
     }
 
-    handleInclusionChange(event) {
-        const item = this.props.item;
-
-        return this.props.dispatch(handleInclusionsSelection(item, event.target.checked));
-    }
-
     handleCategoryInclusionChange(event) {
         const item = this.props.item;
+        const value = event.target.value;
 
-        return this.props.dispatch(handleCategoryInclusionChange(item, parseInt(event.target.value, 10)));
+        const include = value !== 'none';
+        const category_id = include && value !== 'all' ? parseInt(value, 10) : null;
+
+        return this.props.dispatch(handleCategoryInclusionChange(item, include, category_id));
     }
 
     handleDescriptionChange(event) {
@@ -60,23 +57,13 @@ class EditForm extends Component {
                     />
                 </div>
                 <div className="col-md-4">
-                    <div className="edit-form__checkbox-container">
-                        <label className="edit-form__checkbox-label"
-                               htmlFor={`include__${item.id}`}>
-                            <input name={`include-checkbox__${item.id}`}
-                                   className="edit-form__checkbox-input"
-                                   id={`include__${item.id}`}
-                                   type="checkbox"
-                                   checked={item.attributes.include}
-                                   onChange={this.handleInclusionChange}
-                            />
-                            Always display?
-                        </label>
+                    <div className="edit-form__category-select-label">
+                        Apply to
                     </div>
                     <InclusionSelection options={options}
                                         handleChange={this.handleCategoryInclusionChange}
-                                        isDisabled={!item.attributes.include}
-                                        selected={item.attributes.category_id} />
+                                        include={item.attributes.include}
+                                        category_id={item.attributes.category_id} />
 
                     <button className="edit-form__button btn"
                             type="submit"

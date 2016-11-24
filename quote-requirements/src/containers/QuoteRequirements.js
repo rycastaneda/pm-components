@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import EditForm from '../containers/EditForm';
 import Viewer from '../components/ViewForm';
-import { setItemAsEditing, deleteItem, getItems } from '../actions/quoteRequirements';
+import { setItemAsEditing, deleteItem, getItems, updateQuoteId } from '../actions/quoteRequirements';
 
 class QuoteRequirements extends Component {
 
@@ -12,8 +12,21 @@ class QuoteRequirements extends Component {
         this.handleDelete = this.handleDelete.bind(this);
     }
 
-    componentWillMount() {
-        this.props.dispatch(getItems());
+    componentDidMount() {
+        const quoteId = document.getElementById('quote_id').value;
+        const categoryId = document.getElementById('qr_category_id').value;
+
+        this.props.dispatch(updateQuoteId(quoteId));
+
+        if (categoryId) {
+            this.props.dispatch(getItems(quoteId, `${categoryId}`));
+        }
+
+        document.getElementById('qr_category_id').addEventListener('change', (event) => {
+            if (event.target.value) {
+                this.props.dispatch(getItems(quoteId, `${event.target.value}`, true));
+            }
+        });
     }
 
     handleUpdate(item) {

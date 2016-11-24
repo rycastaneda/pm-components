@@ -13,25 +13,12 @@
 
     &__category-select {
         height: 25px;
-        margin-top: -7px;
         margin-bottom: 13px;
-
-        &--inactive {
-            color: #d4d4d4;
-        }
     }
 
-    &__checkbox-container {
-        margin-bottom: 7px;
-
-        label {
-            font-weight: normal;
-            cursor: pointer;
-        }
-
-        input {
-            margin-right: 7px;
-        }
+    &__category-select-label {
+        margin-bottom: 5px;
+        font-size: 13px;
     }
 
     textarea {

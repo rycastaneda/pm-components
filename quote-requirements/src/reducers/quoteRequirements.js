@@ -1,6 +1,7 @@
 import {
     REQUIREMENTS_REQUESTED,
     REQUIREMENTS_RECEIVED,
+    REQUIREMENTS_RELATIONSHIP,
     IS_EDITING,
     IS_DELETED,
     IS_EMPTY_ADDED,
@@ -8,8 +9,8 @@ import {
     IS_CREATED,
     UPDATE_TEXT,
     UPDATE_INCLUSIONS_CATEGORY,
-    UPDATE_INCLUSIONS_SELECTION,
-    UPDATE_MANDATORY_SELECTION
+    UPDATE_MANDATORY_SELECTION,
+    UPDATE_QUOTE_ID
 } from '../constants/ActionTypes';
 
 const DEFAULT_EMPTY_ITEM = {
@@ -18,11 +19,20 @@ const DEFAULT_EMPTY_ITEM = {
     attributes: {
         mandatory: false,
         include: false,
-        text: ''
+        text: '',
+        category_id: null
     }
 };
 
-export function quoteRequirements(state = { items: [], areLoading: false }, action) {
+const DEFAULT_STATE = {
+    items: [],
+    areLoading: false,
+    requirementsRelationship: [],
+    quoteRelationships: {},
+    quoteId: ''
+};
+
+export function quoteRequirements(state = DEFAULT_STATE, action) {
     switch (action.type) {
         case REQUIREMENTS_REQUESTED:
             return Object.assign({}, state, {
@@ -33,9 +43,16 @@ export function quoteRequirements(state = { items: [], areLoading: false }, acti
                 items: action.items,
                 areLoading: false
             });
+        case UPDATE_QUOTE_ID:
+            return Object.assign({}, state, {
+                quoteId: action.quoteId
+            });
+        case REQUIREMENTS_RELATIONSHIP:
+            return Object.assign({}, state, {
+                requirementsRelationship: action.requirementsRelationship
+            });
         case UPDATE_TEXT:
         case UPDATE_INCLUSIONS_CATEGORY:
-        case UPDATE_INCLUSIONS_SELECTION:
         case UPDATE_MANDATORY_SELECTION:
         case IS_EMPTY_ADDED:
         case IS_SAVED:
@@ -45,6 +62,7 @@ export function quoteRequirements(state = { items: [], areLoading: false }, acti
             return Object.assign({}, state, {
                 items: items(state.items, action)
             });
+
         default:
             return state;
     }
@@ -76,42 +94,27 @@ function items(state = [], action) {
         case UPDATE_TEXT:
             return state.map(item =>
                 item.id === action.id ?
-                    {
-                        ...item,
-                        attributes: Object.assign({}, item.attributes, {
-                            text: action.text
-                        })
-                    } : item
+                { ...item,
+                    attributes: Object.assign({}, item.attributes, {
+                        text: action.text
+                    }) } : item
             );
         case UPDATE_MANDATORY_SELECTION:
             return state.map(item =>
                 item.id === action.id ?
-                    {
-                        ...item,
-                        attributes: Object.assign({}, item.attributes, {
-                            mandatory: action.mandatory
-                        })
-                    } : item
-            );
-        case UPDATE_INCLUSIONS_SELECTION:
-            return state.map(item =>
-                item.id === action.id ?
-                    {
-                        ...item,
-                        attributes: Object.assign({}, item.attributes, {
-                            include: action.include
-                        })
-                    } : item
+                { ...item,
+                    attributes: Object.assign({}, item.attributes, {
+                        mandatory: action.mandatory
+                    }) } : item
             );
         case UPDATE_INCLUSIONS_CATEGORY:
             return state.map(item =>
                 item.id === action.id ?
-                    {
-                        ...item,
-                        attributes: Object.assign({}, item.attributes, {
-                            'category_id': `${action.category_id}`
-                        })
-                    } : item
+                { ...item,
+                    attributes: Object.assign({}, item.attributes, {
+                        include: action.include,
+                        category_id: action.category_id
+                    }) } : item
             );
         default:
             return state;

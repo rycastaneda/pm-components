@@ -3,18 +3,42 @@
     padding: 15px;
 
     &--favourite {
-        border-left: 2px solid #e68020;
+        background-color: rgba(230, 128, 32, 0.09);
     }
 
     &__description {
+        position: relative;
         float: left;
         width: 80%;
     }
 
-    &__mandatory-text {
-        margin-top: 5px;
-        font-size: 12px;
-        font-weight: 900;
+    &__text {
+        overflow: hidden;
+        height: 40px;
+
+        &--mandatory {
+            font-size: 12px;
+            font-weight: 900;
+        }
+    }
+
+    &__read-more {
+        //cursor: pointer;
+        //color: #afafaf;
+        //width: 100%;
+        //vertical-align: middle;
+        //font-size: 13px;
+        //text-align: center;
+        //text-decoration: underline;
+        //
+        //label:after {
+        //    content: 'Read more';
+        //    display: block;
+        //    cursor: pointer;
+        //}
+        //input {
+        //    opacity: 0;
+        //}
     }
 
     &__buttons-container {

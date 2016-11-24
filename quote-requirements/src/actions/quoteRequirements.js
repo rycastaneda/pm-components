@@ -1,47 +1,103 @@
 import {
     REQUIREMENTS_REQUESTED,
     REQUIREMENTS_RECEIVED,
+    REQUIREMENTS_RELATIONSHIP,
     IS_EDITING,
     IS_DELETED,
     IS_EMPTY_ADDED,
     IS_SAVED,
     IS_CREATED,
-    UPDATE_INCLUSIONS_SELECTION,
     UPDATE_INCLUSIONS_CATEGORY,
     UPDATE_MANDATORY_SELECTION,
-    UPDATE_TEXT
+    UPDATE_TEXT,
+    UPDATE_QUOTE_ID
 } from '../constants/ActionTypes';
 
-import { createEntity, readEndpoint, updateEntity, deleteEntity } from 'redux-json-api';
+import { createEntity, readEndpoint, updateEntity } from 'redux-json-api';
 
 const TYPE = 'searcher-requirements';
 
 export function createItem(item) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
 
         dispatch(createEntity({
             type: TYPE,
             attributes: item.attributes
         }))
-        .then((response) => {
-            dispatch({
-                type: IS_CREATED,
-                id: response.data.id
-            });
-            dispatch(addEmptyRequirement());
-        });
+            .then((response) => {
+                const searcherRequirements = getState().quoteRequirements.requirementsRelationship;
+                const quoteId = getState().quoteRequirements.quoteId;
+
+                searcherRequirements.push({
+                    type: TYPE,
+                    id: response.data.id
+                });
+
+                dispatch(updateEntity(linkRequirementsToQuote(quoteId, searcherRequirements))).then(() => {
+                    dispatch(updateRequirementsRelationship(searcherRequirements));
+                });
+
+                dispatch({
+                    type: IS_CREATED,
+                    id: response.data.id
+                });
+                dispatch(addEmptyRequirement());
+            })
+        ;
     };
 }
 
-export function getItems() {
+function linkRequirementsToQuote(quoteId, requirements) {
+    return {
+        type: 'searcher-quote-requests',
+        id: quoteId,
+        relationships: {
+            'searcher-requirements': {
+                data: requirements
+            }
+        }
+    };
+}
+
+export function getItems(quoteId = '', categoryId = '', newCategory = false) {
     return (dispatch) => {
         dispatch(requestRequirements());
+        // Request quote specific requirements
+        dispatch(readEndpoint(`searcher-quote-requests/${quoteId}?include=searcherRequirements`))
+            .then((response) => {
+                const relationships = response.data.relationships;
+                const quoteSpecificRequirements = relationships.searcherRequirements.data;
 
-        dispatch(readEndpoint(TYPE))
-        .then((response) => {
-            dispatch(receiveRequirements(response.data));
-            dispatch(addEmptyRequirement());
-        });
+                // User can have 'global' requirements which are not linked to the quote
+                // Global requirements are the ones user ticked with 'include to all quote requests'
+                // They are supposed to be displayed for the user and be automatically linked to the quote
+                // In order to do that we manually update the relationship to link all global requirements to the current quote
+                if (!quoteSpecificRequirements.length || newCategory) {
+                    let searcherRequirements = [];
+                    // Make a request to get all quote requirements which belong to the user
+                    dispatch(readEndpoint(`${TYPE}?filters[category_id]=${categoryId}`))
+                        .then((list) => {
+                            // Generate an array of quote requirements objects
+                            list.data.forEach((item) => {
+                                searcherRequirements.push({
+                                    type: TYPE,
+                                    id: parseInt(item.id, 10)
+                                });
+                            });
+                            // Do a call to manually link all quote requirements to the quote
+                            dispatch(updateEntity(linkRequirementsToQuote(quoteId, searcherRequirements))).then(() => {
+                                dispatch(updateRequirementsRelationship(searcherRequirements));
+                            });
+
+                            dispatch(receiveRequirements(list.data));
+                            dispatch(addEmptyRequirement());
+                        });
+                } else {
+                    dispatch(updateRequirementsRelationship(quoteSpecificRequirements));
+                    dispatch(receiveRequirements(response.included));
+                    dispatch(addEmptyRequirement());
+                }
+            });
     };
 }
 
@@ -54,30 +110,32 @@ export function updateItem(item) {
                 include: item.attributes.include,
                 mandatory: item.attributes.mandatory,
                 text: item.attributes.text,
-                'category_id': item.attributes.include ? item.attributes.category_id : ''
+                'category_id': item.attributes.category_id
             }
         }))
-        .then((response) => {
-            dispatch({
-                type: IS_SAVED,
-                id: response.data.id
+            .then((response) => {
+                dispatch({
+                    type: IS_SAVED,
+                    id: response.data.id
+                });
             });
-        });
     };
 }
 
 export function deleteItem(item) {
-    return (dispatch) => {
-        dispatch(deleteEntity({
-            type: TYPE,
-            id: item.id
-        }))
-        .then(() => {
-            dispatch({
-                type: IS_DELETED,
-                id: item.id
+    return (dispatch, getState) => {
+        const searcherRequirements = getState().quoteRequirements.requirementsRelationship.filter((s => s.id !== item.id));
+        const quoteId = getState().quoteRequirements.quoteId;
+
+        dispatch(updateEntity(linkRequirementsToQuote(quoteId, searcherRequirements)))
+            .then(() => {
+                dispatch(updateRequirementsRelationship(searcherRequirements));
+
+                dispatch({
+                    type: IS_DELETED,
+                    id: item.id
+                });
             });
-        });
     };
 }
 
@@ -85,6 +143,13 @@ export function setItemAsEditing(item) {
     return {
         type: IS_EDITING,
         id: item.id
+    };
+}
+
+export function updateRequirementsRelationship(requirementsRelationship) {
+    return {
+        type: REQUIREMENTS_RELATIONSHIP,
+        requirementsRelationship
     };
 }
 
@@ -96,6 +161,13 @@ export function handleTextChange(item, value) {
     };
 }
 
+export function updateQuoteId(quoteId) {
+    return {
+        type: UPDATE_QUOTE_ID,
+        quoteId
+    };
+}
+
 export function handleMandatorySelection(item, value) {
     return {
         type: UPDATE_MANDATORY_SELECTION,
@@ -104,19 +176,12 @@ export function handleMandatorySelection(item, value) {
     };
 }
 
-export function handleInclusionsSelection(item, value) {
-    return {
-        type: UPDATE_INCLUSIONS_SELECTION,
-        id: item.id,
-        include: value
-    };
-}
-
-export function handleCategoryInclusionChange(item, value) {
+export function handleCategoryInclusionChange(item, include, category_id) {
     return {
         type: UPDATE_INCLUSIONS_CATEGORY,
         id: item.id,
-        'category_id': value
+        include,
+        'category_id': category_id
     };
 }
 
