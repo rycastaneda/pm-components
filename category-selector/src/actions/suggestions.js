@@ -33,8 +33,8 @@ function getSuggestions(state, value, index) {
     // SubCategories data is available in included block
     const included = currentCategories.included;
     // Get all subCategories from 'cache'
-    const subCategories = state.categorySelector.dropDowns[index-1] ?
-        state.categorySelector.dropDowns[index-1].selectedCategory.relationships.categories.data : [];
+    const subCategories = state.categorySelector.dropDowns[index - 1] ?
+        state.categorySelector.dropDowns[index - 1].selectedCategory.relationships.categories.data : [];
 
     let unfilteredSuggestions = index === 0 ? parentCategories : [];
 
@@ -47,7 +47,18 @@ function getSuggestions(state, value, index) {
         }));
     }
     // Filter suggestions with the given value
-    return unfilteredSuggestions.filter(category => regex.test(category.attributes.title));
+    return unfilteredSuggestions.filter(category => regex.test(category.attributes.title)).sort(function(a, b) {
+        const value = escapedValue.toLowerCase();
+        const aTitle = a.attributes.title;
+        const bTitle = b.attributes.title;
+        const bgnA = aTitle.substr(0, escapedValue.length).toLowerCase();
+        const bgnB = bTitle.substr(0, escapedValue.length).toLowerCase();
+
+        if (bgnA === value) {
+            if (bgnB !== value) return -1;
+        } else if (bgnB === value) return 1;
+        return aTitle < bTitle ? -1 : (aTitle > bTitle ? 1 : 0);
+    });
 }
 
 /**
