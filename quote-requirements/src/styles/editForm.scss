@@ -1,11 +1,14 @@
+$background-color: #ffffff;
+$border-color: #eeeeee;
+
 .edit-form {
     overflow: hidden;
     float: left;
     width: 100%;
     padding-top: 15px;
-    background: #ffffff;
+    background: $background-color;
 
-    border-top: 1px solid #eeeeee;
+    border-top: 1px solid $border-color;
 
     &__button {
         width: 100%;

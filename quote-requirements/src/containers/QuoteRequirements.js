@@ -1,15 +1,13 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import EditForm from '../containers/EditForm';
-import Viewer from '../components/ViewForm';
-import { setItemAsEditing, deleteItem, getItems, updateQuoteId } from '../actions/quoteRequirements';
+import Viewer from '../containers/ViewForm';
+import { getItems, updateQuoteId } from '../actions/quoteRequirements';
 
 class QuoteRequirements extends Component {
 
     constructor(props) {
         super(props);
-        this.handleUpdate = this.handleUpdate.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
     }
 
     componentDidMount() {
@@ -23,20 +21,10 @@ class QuoteRequirements extends Component {
         }
 
         document.getElementById('qr_category_id').addEventListener('change', (event) => {
-            if (event.target.value) {
+            if (event.target.value !== '0') {
                 this.props.dispatch(getItems(quoteId, `${event.target.value}`, true));
             }
         });
-    }
-
-    handleUpdate(item) {
-        return this.props.dispatch(setItemAsEditing(item));
-    }
-
-    handleDelete(event, item) {
-        event.preventDefault();
-
-        return this.props.dispatch(deleteItem(item));
     }
 
     render() {
@@ -44,15 +32,11 @@ class QuoteRequirements extends Component {
         return (
             <div className="quote-inclusions">
                 {quoteRequirements.items.map(item =>
-                    item.isEditing ?
-                        <EditForm key={item.id}
-                                  item={item}/> :
-                        <Viewer key={item.id}
-                                text={item.attributes.text}
-                                isMandatory={item.attributes.mandatory}
-                                isAlwaysIncluded={item.attributes.include}
-                                handleUpdate={() => this.handleUpdate(item)}
-                                handleDelete={event => this.handleDelete(event, item)}/>
+                    item.isEditing
+                        ? <EditForm key={item.id}
+                                    item={item}/>
+                        : <Viewer key={item.id}
+                                  item={item}/>
                 )}
             </div>
         );

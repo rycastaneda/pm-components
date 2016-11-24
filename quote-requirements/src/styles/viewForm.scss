@@ -1,6 +1,10 @@
+$main-color: #e68020;
+$hover-color: #9c4e04;
+$padding: 15px;
+
 .view-form {
-    overflow: hidden;
-    padding: 15px;
+    position: relative;
+    padding: $padding;
 
     &--favourite {
         background-color: rgba(230, 128, 32, 0.09);
@@ -8,13 +12,11 @@
 
     &__description {
         position: relative;
-        float: left;
-        width: 80%;
+        padding-right: 75px;
     }
 
     &__text {
-        overflow: hidden;
-        height: 40px;
+        word-wrap: break-word;
 
         &--mandatory {
             font-size: 12px;
@@ -23,36 +25,41 @@
     }
 
     &__read-more {
-        //cursor: pointer;
-        //color: #afafaf;
-        //width: 100%;
-        //vertical-align: middle;
-        //font-size: 13px;
-        //text-align: center;
-        //text-decoration: underline;
-        //
-        //label:after {
-        //    content: 'Read more';
-        //    display: block;
-        //    cursor: pointer;
-        //}
-        //input {
-        //    opacity: 0;
-        //}
+        display: block;
+        width: 100%;
+        margin-top: -3px;
+
+        font-size: 12px;
+
+        text-align: center;
+        text-decoration: underline;
+
+        cursor: pointer;
     }
 
     &__buttons-container {
-        overflow: hidden;
-        float: right;
-        width: 16%;
+        position: absolute;
+        top: $padding;
+        right: $padding;
+
     }
 
     &__button {
-        width: 100%;
-        margin-bottom: 12px;
+        display: inline-block;
+        margin-right: 10px;
+        color: $main-color;
 
         &:last-of-type {
-            margin-bottom: 0;
+            margin-right: 0;
         }
+
+        &:hover {
+            color: $hover-color;
+        }
+    }
+
+    &__icon {
+        font-size: 20px;
+        cursor: pointer;
     }
 }

@@ -10,12 +10,14 @@ import {
     UPDATE_TEXT,
     UPDATE_INCLUSIONS_CATEGORY,
     UPDATE_MANDATORY_SELECTION,
-    UPDATE_QUOTE_ID
+    UPDATE_QUOTE_ID,
+    TOGGLE_VIEW_FULL_TEXT
 } from '../constants/ActionTypes';
 
 const DEFAULT_EMPTY_ITEM = {
     id: 0,
     isEditing: true,
+    viewFullText: false,
     attributes: {
         mandatory: false,
         include: false,
@@ -59,6 +61,7 @@ export function quoteRequirements(state = DEFAULT_STATE, action) {
         case IS_CREATED:
         case IS_DELETED:
         case IS_EDITING:
+        case TOGGLE_VIEW_FULL_TEXT:
             return Object.assign({}, state, {
                 items: items(state.items, action)
             });
@@ -90,6 +93,11 @@ function items(state = [], action) {
             return state.map(item =>
                 item.id === action.id ?
                 { ...item, isEditing: true } : item
+            );
+        case TOGGLE_VIEW_FULL_TEXT:
+            return state.map(item =>
+                item.id === action.id ?
+                { ...item, viewFullText: !item.viewFullText } : item
             );
         case UPDATE_TEXT:
             return state.map(item =>

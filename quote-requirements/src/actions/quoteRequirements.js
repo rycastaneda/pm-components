@@ -10,7 +10,8 @@ import {
     UPDATE_INCLUSIONS_CATEGORY,
     UPDATE_MANDATORY_SELECTION,
     UPDATE_TEXT,
-    UPDATE_QUOTE_ID
+    UPDATE_QUOTE_ID,
+    TOGGLE_VIEW_FULL_TEXT
 } from '../constants/ActionTypes';
 
 import { createEntity, readEndpoint, updateEntity } from 'redux-json-api';
@@ -124,7 +125,7 @@ export function updateItem(item) {
 
 export function deleteItem(item) {
     return (dispatch, getState) => {
-        const searcherRequirements = getState().quoteRequirements.requirementsRelationship.filter((s => s.id !== item.id));
+        const searcherRequirements = getState().quoteRequirements.requirementsRelationship.filter((s => parseInt(s.id, 10) !== parseInt(item.id, 10)));
         const quoteId = getState().quoteRequirements.quoteId;
 
         dispatch(updateEntity(linkRequirementsToQuote(quoteId, searcherRequirements)))
@@ -142,6 +143,12 @@ export function deleteItem(item) {
 export function setItemAsEditing(item) {
     return {
         type: IS_EDITING,
+        id: item.id
+    };
+}
+export function toggleViewFullText(item) {
+    return {
+        type: TOGGLE_VIEW_FULL_TEXT,
         id: item.id
     };
 }

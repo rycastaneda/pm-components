@@ -7,6 +7,7 @@ export const IS_DELETED = 'IS_DELETED';
 export const IS_SAVED = 'IS_SAVED';
 export const IS_CREATED = 'IS_CREATED';
 export const IS_EMPTY_ADDED = 'IS_EMPTY_ADDED';
+export const TOGGLE_VIEW_FULL_TEXT = 'TOGGLE_VIEW_FULL_TEXT';
 
 export const UPDATE_TEXT = 'UPDATE_TEXT';
 export const UPDATE_MANDATORY_SELECTION = 'UPDATE_MANDATORY_SELECTION';

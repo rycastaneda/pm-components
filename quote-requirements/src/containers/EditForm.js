@@ -1,6 +1,12 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { handleTextChange, handleMandatorySelection, updateItem, createItem, handleCategoryInclusionChange } from '../actions/quoteRequirements';
+import {
+    handleTextChange,
+    handleMandatorySelection,
+    updateItem,
+    createItem,
+    handleCategoryInclusionChange
+} from '../actions/quoteRequirements';
 import InclusionSelection from '../components/InclusionSelection';
 
 class EditForm extends Component {
@@ -55,7 +61,19 @@ class EditForm extends Component {
                               defaultValue={defaultText}
                               onChange={this.handleDescriptionChange}
                     />
+                    <div className="checkbox">
+                        <label htmlFor={`mandatory__${item.id}`}>
+                            <input name={`mandatory-checkbox__${item.id}`}
+                                   id={`mandatory__${item.id}`}
+                                   type="checkbox"
+                                   checked={item.attributes.mandatory}
+                                   onChange={this.handleMandatoryChange}
+                            />
+                            Mandatory for supplier
+                        </label>
+                    </div>
                 </div>
+
                 <div className="col-md-4">
                     <div className="edit-form__category-select-label">
                         Apply to
@@ -63,26 +81,17 @@ class EditForm extends Component {
                     <InclusionSelection options={options}
                                         handleChange={this.handleCategoryInclusionChange}
                                         include={item.attributes.include}
-                                        category_id={item.attributes.category_id} />
+                                        category_id={item.attributes.category_id}/>
 
                     <button className="edit-form__button btn"
+                            disabled={ !item.attributes.text }
                             type="submit"
                             onClick={this.handleSave}>
                         { item.id ? 'Save' : 'Add' }
                     </button>
 
                 </div>
-                <div className="col-md-12 checkbox">
-                    <label htmlFor={`mandatory__${item.id}`}>
-                        <input name={`mandatory-checkbox__${item.id}`}
-                               id={`mandatory__${item.id}`}
-                               type="checkbox"
-                               checked={item.attributes.mandatory}
-                               onChange={this.handleMandatoryChange}
-                        />
-                        Mandatory for supplier
-                    </label>
-                </div>
+
             </div>
         );
     }
@@ -90,7 +99,7 @@ class EditForm extends Component {
 
 EditForm.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    item: PropTypes.object
+    item: PropTypes.object.isRequired
 };
 
 export default connect()(EditForm);  // adds dispatch prop
