@@ -25,17 +25,18 @@ class Viewer extends Component {
 
     render() {
         const { item } = this.props;
+        const text = item.attributes.text;
 
         return (
             <div className={`quote-inclusions__form view-form ${item.attributes.include ? 'view-form--favourite' : ''}`}>
                 <div className="view-form__description">
                     <div className="view-form__text">
                         { item.viewFullText
-                            ? item.attributes.text
-                            : item.attributes.text.substring(0, 200)
+                            ? text
+                            : text.length > 200 ? `${text.substring(0, 199)}...` : text
                         }
                     </div>
-                    { item.attributes.text.length > 200
+                    { text.length > 200
                         ? <a className="view-form__read-more"
                              onClick={this.toggleViewFullText}>{ item.viewFullText ? 'Read less' : 'Read more' }</a>
                         : null

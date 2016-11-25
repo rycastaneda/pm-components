@@ -61,7 +61,7 @@ class EditForm extends Component {
                               defaultValue={defaultText}
                               onChange={this.handleDescriptionChange}
                     />
-                    <div className="checkbox">
+                    <div className="checkbox edit-form__checkbox">
                         <label htmlFor={`mandatory__${item.id}`}>
                             <input name={`mandatory-checkbox__${item.id}`}
                                    id={`mandatory__${item.id}`}

@@ -4,10 +4,17 @@ $border-color: #eeeeee;
 .edit-form {
     overflow: hidden;
     width: 100%;
-    padding-top: 15px;
+    padding: 15px 0;
     background: $background-color;
 
     border-top: 1px solid $border-color;
+
+    &__checkbox {
+
+        label {
+            margin-bottom: 0;
+        }
+    }
 
     &__button {
         width: 100%;
