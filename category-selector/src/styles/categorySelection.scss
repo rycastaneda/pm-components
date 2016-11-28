@@ -1,0 +1,36 @@
+.category-types {
+
+    &__item {
+        display: table-cell;
+        padding: 14px;
+
+        color: #555555;
+        background-color: #eeeeee;
+        border: 1px solid #cccccc;
+
+        font-size: 15px;
+        font-weight: normal;
+        text-align: center;
+
+        cursor: pointer;
+
+        vertical-align: middle;
+        white-space: nowrap;
+
+        &:not(:last-child) {
+            border-right: 0;
+        }
+
+        &--selected {
+            color: #ffffff;
+            background-color: $main-color;
+            border: 1px solid $main-color;
+            font-weight: bold;
+        }
+    }
+
+    &__spinner {
+        margin-left: 4px;
+        font-size: 18px;
+    }
+}
