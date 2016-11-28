@@ -4,7 +4,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
-import DocumentGroup from './containers/DocumentGroup';
+import DocumentUploader from './containers/DocumentUploader';
 import './styles/index.scss';
 import { configureApi } from './api/api.config';
 
@@ -24,7 +24,7 @@ configureApi(store);
 
 render(
     <Provider store={store}>
-        <DocumentGroup/>
+        <DocumentUploader/>
     </Provider>,
-    document.querySelector('[data-component="document-group"')
+    document.querySelector('[data-component="document-uploader"')
 );

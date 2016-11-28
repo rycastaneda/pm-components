@@ -3,23 +3,30 @@ import Select from 'react-select';
 
 const AddGroupForm = ({ onAddGroup, documentGroups }) => {
     const titles = [];
-    const formatOptions = (group) => {
+
+    let options = documentGroups.defaults.map((group) => {
         titles.push(group.attributes.title);
         return {
             value: group.id,
+            isDefault: 1,
             label: group.attributes.title
         };
-    };
-    let options = documentGroups.defaults.map(formatOptions);
-    // options = options.concat(documentGroups.data.map(formatOptions));
+    }).concat(documentGroups.data.map((group) => {
+        titles.push(group.attributes.title);
+        return {
+            value: group.id,
+            isDefault: 0,
+            label: group.attributes.title
+        };
+    }));
+
 
     const handleSubmit = (group) => {
-
         if (!group.value.length) {
             return;
         }
 
-        onAddGroup(group.label);
+        onAddGroup(group.label, !!group.isDefault);
     };
 
     return (

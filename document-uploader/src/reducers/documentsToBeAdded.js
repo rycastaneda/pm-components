@@ -2,6 +2,7 @@ import {
     DOCUMENTS_RECEIVING,
     DOCUMENTS_UPLOADING,
     DOCUMENT_UPLOAD_SUCCESS,
+    DOCUMENT_UPLOAD_SUCCESS_CLEAN,
     DOCUMENT_UPLOAD_FAILED,
     DOCUMENT_UPLOAD_IN_PROGRESS
 } from '../constants/ActionTypes';
@@ -26,7 +27,7 @@ export function documentsToBeAdded(state ={}, action) {
             return Object.assign({}, state, {
                 [action.id]: state[action.id].map((document) => {
                     document.attributes = Object.assign(document.attributes, {
-                        status: UPLOAD_IN_PROGRESS, progress: 0
+                        status: UPLOAD_IN_PROGRESS, progress: 15
                     });
                     return document;
                 })
@@ -35,13 +36,15 @@ export function documentsToBeAdded(state ={}, action) {
             return Object.assign({}, state, {
                 [action.id]: state[action.id].map((document) => {
                     if (document.id === action.file_id) {
-                        if (document.attributes.progress + 10 >= 100) {
-                            document.attributes.progress = 95;
-                        } else {
-                            document.attributes.progress += 10;
-                        }
+                        document.attributes.progress = action.progress;
                     }
                     return document;
+                })
+            });
+        case DOCUMENT_UPLOAD_SUCCESS_CLEAN:
+            return Object.assign({}, state, {
+                [action.id]: state[action.id].filter((document) => {
+                    return document.id !== action.file.id;
                 })
             });
         case DOCUMENT_UPLOAD_SUCCESS:

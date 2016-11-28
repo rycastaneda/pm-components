@@ -60,7 +60,7 @@ const Group = ({
                 <div className="clearfix"></div>
             </div>
             <div className="panel-body">
-                <Dropzone className="dropzone" onDrop={(files) => {
+                <Dropzone className="dropzone" accept="application/pdf" onDrop={(files) => {
                     catchFiles(groupIndex, group.id, files);
                 }}>
                     <p className="text-center dropzone__placeholder">Drop files here</p>
@@ -72,12 +72,20 @@ const Group = ({
                         />
                     : null}
                 </Dropzone>
-
+                {group.attributes.errors.length ?
+                (<div className="alert alert-danger">
+                    <ul>
+                    {group.attributes.errors.map((error, key) => {
+                        return <li key={key}>{error}</li>; 
+                    })}
+                    </ul>
+                </div>
+                ) : ''}
                 {documentsAdded.length ?
                     <div className="upload">
                         <button
                             className="upload__button"
-                            onClick={() => onFileUpload(group.id)}>Upload</button>
+                            onClick={() => onFileUpload(group.id, groupIndex)}>Upload</button>
                     </div>
                 : null}
 

@@ -7,9 +7,14 @@ import {
 export function documents(state = [], action) {
     switch (action.type) {
         case GROUPS_RECEIVING:
-            return action.groups.included && action.groups.included.documents || [];
+            if (action.groups.included) {
+                return action.groups.included.filter((group) => {
+                    return group.type === 'documents';
+                });
+            }
+            return [];
         case DOCUMENT_REMOVED:
-            return state.filter(document => document.id !== action.fileId);
+            return state.filter(document => document.id !== action.id);
         case DOCUMENT_UPLOAD_SUCCESS:
             return state.concat(action.file);
         default:

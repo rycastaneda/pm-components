@@ -5,6 +5,7 @@
 .dropzone {
     width: 100%;
     min-height: 200px;
+    margin-bottom: 10px;
     border: 2px dashed rgb(102, 102, 102);
     border-radius: 5px;
 
@@ -20,7 +21,7 @@
 
 .group-panel {
     position: relative;
-    
+
     &__actions {
         padding: 5px;
         cursor: pointer;
@@ -82,3 +83,4 @@
         font-weight: bold;
     }
 }
+

@@ -4,7 +4,8 @@ import {
     GROUPS_RECEIVING,
     GROUP_ADDED,
     GROUP_RENAME_TOGGLE,
-    GROUP_UPDATING,
+    GROUP_TOGGLE_UPDATING,
+    GROUP_UPDATE_FAILED,
     GROUP_REMOVED,
     GROUP_RENAMED,
     DOCUMENT_UPLOAD_SUCCESS,
@@ -22,13 +23,14 @@ const DEFAULT_ERROR = 'Request failed. Please try again later.';
 const DEFAULT_GROUP_STATES = {
     attributes: {
         is_updating: false,
-        is_renaming: false
+        is_renaming: false,
+        errors: []
     }
 };
 
-
-
 export function documentGroups(state = INITIAL_STATE, action) {
+    let data, defaults;
+
     switch (action.type) {
         case API_READ_FAILED:
             return Object.assign({}, state, {
@@ -41,14 +43,14 @@ export function documentGroups(state = INITIAL_STATE, action) {
             });
         case GROUPS_RECEIVING:
             // ADD DEFAULT GROUP STATES
-            const data = action.groups.data.filter((group) => {
+            data = action.groups.data.filter((group) => {
                 if (group.attributes.user_id) {
                     Object.assign(group.attributes, DEFAULT_GROUP_STATES.attributes);
                     return group;
                 }
             });
 
-            const defaults = action.groups.data.filter((group) => {
+            defaults = action.groups.data.filter((group) => {
                 if (!group.attributes.user_id && !data.find(data => group.attributes.title === data.attributes.title)) {
                     Object.assign(group.attributes, DEFAULT_GROUP_STATES.attributes);
                     return group;
@@ -61,13 +63,9 @@ export function documentGroups(state = INITIAL_STATE, action) {
                 data
             });
         case GROUP_ADDED:
-            state.defaults = state.defaults.filter(group => group.attributes.title !== action.group.attributes.title);
-            return Object.assign({}, state, {
-                loading: false,
-                data: groups(state.data, action)
-            });
         case GROUP_REMOVED:
-        case GROUP_UPDATING:
+        case GROUP_TOGGLE_UPDATING:
+        case GROUP_UPDATE_FAILED:
         case GROUP_RENAMED:
         case GROUP_RENAME_TOGGLE:
         case DOCUMENT_REMOVED:
@@ -100,12 +98,18 @@ function groups(state = [], action) {
                     is_renaming: !state[action.index].attributes.is_renaming
                 })
             });
-        case GROUP_UPDATING:
+        case GROUP_TOGGLE_UPDATING:
             return updatingGroup({
                 attributes: Object.assign({}, state[action.index].attributes, {
-                    is_updating: true
+                    is_updating: action.loading
                 })
             });
+        case GROUP_UPDATE_FAILED: 
+            return updatingGroup({
+                attributes: Object.assign({}, state[action.index].attributes, {
+                    errors: action.errors
+                })
+            }); 
         case GROUP_RENAMED:
             return updatingGroup({
                 attributes: Object.assign({}, state[action.index].attributes, {

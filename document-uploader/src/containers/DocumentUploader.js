@@ -13,6 +13,7 @@ import {
 import Group from '../components/Group';
 import Loader from '../components/Loader';
 import AddGroupForm from '../components/AddGroupForm';
+import CSSTransitionGroup from 'react-addons-css-transition-group';
 
 class DocumentGroup extends Component {
 
@@ -26,6 +27,7 @@ class DocumentGroup extends Component {
         this.handleGroupRename = this.handleGroupRename.bind(this);
         this.handleRemoveGroup = this.handleRemoveGroup.bind(this);
         this.handleFileUpload = this.handleFileUpload.bind(this);
+        this.quote_id = document.querySelector('[data-quote-id]').getAttribute('data-quote-id');
         this.props.dispatch(fetchDocuments());
     }
 
@@ -33,20 +35,21 @@ class DocumentGroup extends Component {
         return this.props.dispatch(catchFiles(index, id, files));
     }
 
-    handleFileUpload(index) {
-        this.props.dispatch(uploadFile(index));
+    handleFileUpload(group_id, index) {
+        const quote_id = document.querySelector('[data-quote-id]').getAttribute('data-quote-id');
+        this.props.dispatch(uploadFile(group_id, index, quote_id));
     }
 
-    handleRemoveFile(groupIndex, fileId) {
-        return this.props.dispatch(removeFile(groupIndex, fileId));
+    handleRemoveFile(groupIndex, file) {
+        return this.props.dispatch(removeFile(groupIndex, this.quote_id, file));
     }
 
     handleRemoveGroup(group, index) {
         return this.props.dispatch(removeGroup(group, index));
     }
 
-    handleAddGroup(value, callback) {
-        return this.props.dispatch(addGroup(value, callback));
+    handleAddGroup(value, isDefault, callback) {
+        return this.props.dispatch(addGroup(value, isDefault, this.quote_id, callback));
     }
 
     handleTogglingRename(index) {
@@ -101,7 +104,12 @@ class DocumentGroup extends Component {
 
         return (
             <div className="group-panel">
+                <CSSTransitionGroup
+                  transitionName="documents"
+                  transitionEnterTimeout={500}
+                  transitionLeaveTimeout={300}>
                 {groups}
+                </CSSTransitionGroup>
                 {error}
                 {this.props.documentGroups.loading ? <Loader block={true}/> : ''}
                 <AddGroupForm 

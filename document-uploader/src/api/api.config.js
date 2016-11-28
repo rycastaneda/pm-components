@@ -1,5 +1,7 @@
 import { setEndpointHost, setEndpointPath, setHeaders } from 'redux-json-api';
 import cookie from 'react-cookie';
+import axios from 'axios';
+
 const COOKIE_TOKEN = 'pm_token';
 
 function getToken() {
@@ -18,4 +20,7 @@ export function configureApi(store) {
         'Content-Type': 'application/json',
         Accept: 'application/vnd.pm.v1+json'
     }));
+
+    axios.defaults.baseURL = API_HOST;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }

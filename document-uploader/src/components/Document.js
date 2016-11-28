@@ -14,7 +14,7 @@ const Document = ({ file, preview, groupIndex, onFileRemove }) => {
         <div className="row" key={file.id}>
             <aside className="pull-right">
                 <i onClick={() => {
-                    onFileRemove(groupIndex, file.id);
+                    onFileRemove(groupIndex, file);
                 }} className="document__remove-icon fa fa-times pull-right"></i>
             </aside>
         </div>
@@ -23,13 +23,19 @@ const Document = ({ file, preview, groupIndex, onFileRemove }) => {
     const thumb = file.attributes.type.match(/image.*/) ?
         (<img key={file.id + 1}
             className={`document__thumb ${!onFileRemove ? 'document__thumb--added' : ''}`}
-            src={preview ? file.attributes.preview : file.attributes.location}/>) :
+            src={preview ? file.attributes.preview : file.links.self}/>) :
         (<i className={`document__thumb ${!onFileRemove ? 'document__thumb--added' : ''} fa fa-file-o`}></i>);
 
     const link = (
         <a key={file.id + 1} target="_blank"
-           href={file.attributes.location}>{thumb}</a>
+           href={file.links && file.links.self || ''}>{thumb}</a>
     );
+
+    let date_created = file.attributes.created_at;
+
+    if (!preview) {
+        date_created = file.attributes.created_at && file.attributes.created_at.date;
+    } 
 
     return (
         <div className="col-lg-3 col-md-6 col-sm-6">
@@ -39,7 +45,7 @@ const Document = ({ file, preview, groupIndex, onFileRemove }) => {
                         { preview ? [thumb, progress] : [removeBtn, link] }
                         <p className="document__filename">{file.attributes.name}</p>
                         <div className="document__filesize">{filesize(file.attributes.size)}</div>
-                        <div className="document__timestamp">{moment(file.attributes.created_at).fromNow()}</div>
+                        <div className="document__timestamp">{moment(date_created).fromNow()}</div>
                     </div>
                 </div>
             </div>
