@@ -8,6 +8,8 @@ import {
     REQUEST_FAILED
 } from '../constants/ActionTypes';
 import { readEndpoint } from 'redux-json-api';
+import { resetDropDowns } from './suggestions';
+
 /**
  *
  * @param {string} type
@@ -163,11 +165,6 @@ export function selectType(categoryType) {
 export function selectCategory(category, index) {
     return (dispatch, getState) => {
         const hasSubcategories = category.relationships ? category.relationships.categories.data.length > 0 : false;
-        // Trigger other onchange events
-        // If user has finished selecting categories
-        if (category.attributes.selectable) {
-            triggerDomChanges(category.id, getState());
-        }
 
         dispatch({
             type: SELECT_CATEGORY,
@@ -175,8 +172,16 @@ export function selectCategory(category, index) {
             index
         });
 
+        // Trigger other onchange events
+        // If user has finished selecting categories
+        if (category.attributes.selectable) {
+            triggerDomChanges(category.id, getState());
+        }
+
         if (hasSubcategories) {
             return dispatch(addDropDown(index + 1));
+        } else {
+            return dispatch(resetDropDowns(index + 1));
         }
 
     };
