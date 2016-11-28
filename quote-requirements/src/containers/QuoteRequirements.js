@@ -11,16 +11,20 @@ class QuoteRequirements extends Component {
     }
 
     componentDidMount() {
+        // Get quote id and selected category id values stored in hidden inputs inside php page
+        // If the user load this page second time to 'edit'
         const quoteId = document.getElementById('quote_id').value;
-        const categoryId = document.getElementById('qr_category_id').value;
+        const categoryIdField = document.getElementById('qr_category_id');
+        const categoryId = categoryIdField.value;
 
         this.props.dispatch(updateQuoteId(quoteId));
 
         if (categoryId) {
             this.props.dispatch(getItems(quoteId, `${categoryId}`));
         }
-
-        document.getElementById('qr_category_id').addEventListener('change', (event) => {
+        // Add event listener to trigger api call by passing selected category id
+        // If the user load the page for the first time
+        categoryIdField.addEventListener('change', (event) => {
             if (event.target.value !== '0') {
                 this.props.dispatch(getItems(quoteId, `${event.target.value}`, true));
             }
@@ -56,4 +60,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(QuoteRequirements);  // adds dispatch prop
+export default connect(mapStateToProps)(QuoteRequirements);

@@ -1,7 +1,7 @@
 import {
     REQUIREMENTS_REQUESTED,
     REQUIREMENTS_RECEIVED,
-    REQUIREMENTS_RELATIONSHIP,
+    REQUIREMENTS_RELATIONSHIP_UPDATED,
     IS_EDITING,
     IS_DELETED,
     IS_EMPTY_ADDED,
@@ -18,6 +18,11 @@ import { createEntity, readEndpoint, updateEntity } from 'redux-json-api';
 
 const TYPE = 'searcher-requirements';
 
+/**
+ *
+ * @param {Object} item
+ * @returns {function(*=, *)}
+ */
 export function createItem(item) {
     return (dispatch, getState) => {
 
@@ -27,15 +32,11 @@ export function createItem(item) {
         }))
             .then((response) => {
                 const searcherRequirements = getState().quoteRequirements.requirementsRelationship;
-                const quoteId = getState().quoteRequirements.quoteId;
+                // const quoteId = getState().quoteRequirements.quoteId;
 
                 searcherRequirements.push({
                     type: TYPE,
                     id: response.data.id
-                });
-
-                dispatch(updateEntity(linkRequirementsToQuote(quoteId, searcherRequirements))).then(() => {
-                    dispatch(updateRequirementsRelationship(searcherRequirements));
                 });
 
                 dispatch({
@@ -43,11 +44,18 @@ export function createItem(item) {
                     id: response.data.id
                 });
                 dispatch(addEmptyRequirement());
+
+                updateSoo(searcherRequirements);
             })
         ;
     };
 }
-
+/**
+ *
+ * @param {string} quoteId
+ * @param {Object[]} requirements
+ * @returns {Object}
+ */
 function linkRequirementsToQuote(quoteId, requirements) {
     return {
         type: 'searcher-quote-requests',
@@ -60,6 +68,22 @@ function linkRequirementsToQuote(quoteId, requirements) {
     };
 }
 
+function updateSoo(searcherRequirements) {
+    return (dispatch, getState) => {
+        const quoteId = getState().quoteRequirements.quoteId;
+
+        dispatch(updateEntity(linkRequirementsToQuote(quoteId, searcherRequirements))).then(() => {
+            dispatch(updateRequirementsRelationship(searcherRequirements));
+        });
+    };
+}
+/**
+ *
+ * @param {string} [quoteId='']
+ * @param {string} [categoryId='']
+ * @param {boolean} [newCategory=false]
+ * @returns {function(*=)}
+ */
 export function getItems(quoteId = '', categoryId = '', newCategory = false) {
     return (dispatch) => {
         dispatch(requestRequirements());
@@ -101,7 +125,11 @@ export function getItems(quoteId = '', categoryId = '', newCategory = false) {
             });
     };
 }
-
+/**
+ *
+ * @param {Object} item
+ * @returns {function(*)}
+ */
 export function updateItem(item) {
     return (dispatch) => {
         dispatch(updateEntity({
@@ -122,7 +150,11 @@ export function updateItem(item) {
             });
     };
 }
-
+/**
+ *
+ * @param {Object} item
+ * @returns {function(*, *)}
+ */
 export function deleteItem(item) {
     return (dispatch, getState) => {
         const searcherRequirements = getState().quoteRequirements.requirementsRelationship.filter((s => parseInt(s.id, 10) !== parseInt(item.id, 10)));
@@ -139,27 +171,45 @@ export function deleteItem(item) {
             });
     };
 }
-
+/**
+ *
+ * @param {Object} item
+ * @returns {{type, id: string}}
+ */
 export function setItemAsEditing(item) {
     return {
         type: IS_EDITING,
         id: item.id
     };
 }
+/**
+ *
+ * @param {Object} item
+ * @returns {{type, id: string}}
+ */
 export function toggleViewFullText(item) {
     return {
         type: TOGGLE_VIEW_FULL_TEXT,
         id: item.id
     };
 }
-
+/**
+ *
+ * @param {Object[]} requirementsRelationship
+ * @returns {{type, requirementsRelationship: *}}
+ */
 export function updateRequirementsRelationship(requirementsRelationship) {
     return {
-        type: REQUIREMENTS_RELATIONSHIP,
+        type: REQUIREMENTS_RELATIONSHIP_UPDATED,
         requirementsRelationship
     };
 }
-
+/**
+ *
+ * @param {Object} item
+ * @param {string} value
+ * @returns {{type, id: string, text: *}}
+ */
 export function handleTextChange(item, value) {
     return {
         type: UPDATE_TEXT,
@@ -167,14 +217,23 @@ export function handleTextChange(item, value) {
         text: value
     };
 }
-
+/**
+ *
+ * @param {string} quoteId
+ * @returns {{type, quoteId: *}}
+ */
 export function updateQuoteId(quoteId) {
     return {
         type: UPDATE_QUOTE_ID,
         quoteId
     };
 }
-
+/**
+ *
+ * @param {Object} item
+ * @param {boolean} value
+ * @returns {{type, id: string, mandatory: *}}
+ */
 export function handleMandatorySelection(item, value) {
     return {
         type: UPDATE_MANDATORY_SELECTION,
@@ -182,7 +241,13 @@ export function handleMandatorySelection(item, value) {
         mandatory: value
     };
 }
-
+/**
+ *
+ * @param {Object} item
+ * @param {boolean} include
+ * @param {number} category_id
+ * @returns {{type, id: string, include: *, category_id: *}}
+ */
 export function handleCategoryInclusionChange(item, include, category_id) {
     return {
         type: UPDATE_INCLUSIONS_CATEGORY,
@@ -191,20 +256,30 @@ export function handleCategoryInclusionChange(item, include, category_id) {
         'category_id': category_id
     };
 }
-
+/**
+ *
+ * @returns {{type}}
+ */
 export function requestRequirements() {
     return {
         type: REQUIREMENTS_REQUESTED
     };
 }
-
+/**
+ *
+ * @param {Object[]} items
+ * @returns {{type, items: *}}
+ */
 export function receiveRequirements(items) {
     return {
         type: REQUIREMENTS_RECEIVED,
         items: items
     };
 }
-
+/**
+ *
+ * @returns {{type}}
+ */
 export function addEmptyRequirement() {
     return {
         type: IS_EMPTY_ADDED

@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import {
     handleTextChange,
     handleMandatorySelection,
+    handleCategoryInclusionChange,
     updateItem,
-    createItem,
-    handleCategoryInclusionChange
+    createItem
 } from '../actions/quoteRequirements';
 import InclusionSelection from '../components/InclusionSelection';
 
@@ -50,6 +50,7 @@ class EditForm extends Component {
     render() {
         const { item } = this.props;
         const defaultText = item.attributes.text || '';
+        // Below is implemented to interact with 'category-selector' component and obtain selected information
         const categorySelectorComponent = window.PlantminerComponents ? window.PlantminerComponents.categorySelector : {};
         const options = categorySelectorComponent ? categorySelectorComponent.dropDowns : [];
 
@@ -102,4 +103,4 @@ EditForm.propTypes = {
     item: PropTypes.object.isRequired
 };
 
-export default connect()(EditForm);  // adds dispatch prop
+export default connect()(EditForm);

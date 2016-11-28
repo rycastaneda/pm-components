@@ -9,12 +9,13 @@ const InclusionSelection = ({ handleChange, category_id = null, include = false,
             <option value="none">only this quote request</option>
             <option value="all">any quote requests</option>
             {
+                options.length ?
                 options.map((option) => {
                     return (
                         <option key={option.id}
                                 value={option.selectedCategory.id}>{`any ${option.input}`}</option>
                     );
-                })
+                }) : null
             }
         </select>
     );

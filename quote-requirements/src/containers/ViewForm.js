@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { setItemAsEditing, deleteItem, toggleViewFullText } from '../actions/quoteRequirements';
 
-class Viewer extends Component {
+class ViewForm extends Component {
 
     constructor(props) {
         super(props);
@@ -62,9 +62,9 @@ class Viewer extends Component {
     }
 }
 
-Viewer.propTypes = {
+ViewForm.propTypes = {
     dispatch: PropTypes.func.isRequired,
     item: PropTypes.object.isRequired
 };
 
-export default connect()(Viewer);  // adds dispatch prop
+export default connect()(ViewForm);  // adds dispatch prop

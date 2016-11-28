@@ -1,7 +1,7 @@
 import {
     REQUIREMENTS_REQUESTED,
     REQUIREMENTS_RECEIVED,
-    REQUIREMENTS_RELATIONSHIP,
+    REQUIREMENTS_RELATIONSHIP_UPDATED,
     IS_EDITING,
     IS_DELETED,
     IS_EMPTY_ADDED,
@@ -49,7 +49,7 @@ export function quoteRequirements(state = DEFAULT_STATE, action) {
             return Object.assign({}, state, {
                 quoteId: action.quoteId
             });
-        case REQUIREMENTS_RELATIONSHIP:
+        case REQUIREMENTS_RELATIONSHIP_UPDATED:
             return Object.assign({}, state, {
                 requirementsRelationship: action.requirementsRelationship
             });

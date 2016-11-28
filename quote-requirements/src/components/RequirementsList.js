@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import EditForm from '../containers/EditForm';
-import Viewer from './ViewForm';
+import ViewForm from '../containers/ViewForm';
 
 const RequirementsList = ({ list, handleUpdate, handleDelete }) => (
     <div>
@@ -8,10 +8,10 @@ const RequirementsList = ({ list, handleUpdate, handleDelete }) => (
             item.isEditing ?
                 <EditForm key={item.id}
                           item={item}/> :
-                <Viewer key={item.id}
-                        text={item.attributes.text}
-                        handleUpdate={() => handleUpdate(item)}
-                        handleDelete={() => handleDelete(item)}/>
+                <ViewForm key={item.id}
+                          text={item.attributes.text}
+                          handleUpdate={() => handleUpdate(item)}
+                          handleDelete={() => handleDelete(item)}/>
         )}
     </div>
 );
