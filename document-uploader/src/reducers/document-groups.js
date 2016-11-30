@@ -11,6 +11,7 @@ import {
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_REMOVED
 } from '../constants/ActionTypes';
+import _ from 'lodash'; 
 
 const INITIAL_STATE = {
     data: [], // array of document groups
@@ -43,24 +44,11 @@ export function documentGroups(state = INITIAL_STATE, action) {
             });
         case GROUPS_RECEIVING:
             // ADD DEFAULT GROUP STATES
-            data = action.groups.data.filter((group) => {
-                if (group.attributes.user_id) {
-                    Object.assign(group.attributes, DEFAULT_GROUP_STATES.attributes);
-                    return group;
-                }
-            });
-
-            defaults = action.groups.data.filter((group) => {
-                if (!group.attributes.user_id && !data.find(data => group.attributes.title === data.attributes.title)) {
-                    Object.assign(group.attributes, DEFAULT_GROUP_STATES.attributes);
-                    return group;
-                }
-            });
-
+            defaults = _.uniq(action.groups.data.map(group => group.title));
+            console.log("defaults", defaults);
             return Object.assign({}, state, {
                 loading: false,
-                defaults,
-                data
+                defaults
             });
         case GROUP_ADDED:
         case GROUP_REMOVED:

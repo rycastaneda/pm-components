@@ -11,15 +11,7 @@ const AddGroupForm = ({ onAddGroup, documentGroups }) => {
             isDefault: 1,
             label: group.attributes.title
         };
-    }).concat(documentGroups.data.map((group) => {
-        titles.push(group.attributes.title);
-        return {
-            value: group.id,
-            isDefault: 0,
-            label: group.attributes.title
-        };
-    }));
-
+    });
 
     const handleSubmit = (group) => {
         if (!group.value.length) {

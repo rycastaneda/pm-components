@@ -10,6 +10,8 @@
     "type": "git",
     "repo": "git@bitbucket.org:minergroup/plantminer-components.git[#feature/PM-943]"
   },
-  "dependencies": {},
+  "dependencies": {
+    "lodash": "^4.17.2"
+  },
   "devDependencies": {}
 }
