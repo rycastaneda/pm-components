@@ -1,34 +1,27 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import ViewerForm from '../components/ViewForm';
-import { setItemAsEditing, getItems } from '../actions/quoteRequirements';
+import DisplayForm from '../containers/DisplayForm';
+import { getItems } from '../actions/SupplierQuoteRequirements';
 
 class SupplierQuoteRequirements extends Component {
 
     constructor(props) {
         super(props);
-        this.handleSelection = this.handleSelection.bind(this);
     }
 
     componentWillMount() {
-        const quoteId = '123';
+        // const quoteId = '123';
 
-        this.props.dispatch(getItems(quoteId));
-    }
-
-    handleSelection(item) {
-        return this.props.dispatch(setItemAsEditing(item));
+        this.props.dispatch(getItems());
     }
 
     render() {
         const { quoteRequirements } = this.props;
         return (
-            <div className="supplier-quote-inclusions">
+            <div className="supplier-quote-requirements__form">
                 {quoteRequirements.items.map(item =>
-                    <ViewerForm key={item.id}
-                            text={item.attributes.text}
-                            isMandatory={item.attributes.mandatory}
-                            handleSelection={() => this.handleSelection(item)}/>
+                    <DisplayForm key={item.id}
+                                 item={item}/>
                 )}
             </div>
         );

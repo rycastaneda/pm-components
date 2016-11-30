@@ -1,0 +1,35 @@
+.display-form {
+    overflow: hidden;
+    padding: 15px 0;
+    border-bottom: 1px solid $border-color;
+
+    &:last-of-type {
+        border-bottom: none;
+    }
+
+    &__right-block {
+        text-align: right;
+    }
+
+    &__link {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    &__description {
+        word-wrap: break-word;
+    }
+
+    &__buttons-container {
+        margin-bottom: 5px;
+    }
+
+    &__button {
+        min-width: 50px;
+        text-align: center;
+
+        &--selected {
+            background-color: $button-selected-color;
+        }
+    }
+}
