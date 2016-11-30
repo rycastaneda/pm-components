@@ -30,7 +30,7 @@ const DEFAULT_GROUP_STATES = {
 };
 
 export function documentGroups(state = INITIAL_STATE, action) {
-    let data, defaults;
+    let defaults;
 
     switch (action.type) {
         case API_READ_FAILED:
@@ -45,7 +45,6 @@ export function documentGroups(state = INITIAL_STATE, action) {
         case GROUPS_RECEIVING:
             // ADD DEFAULT GROUP STATES
             defaults = _.uniq(action.groups.data.map(group => group.title));
-            console.log("defaults", defaults);
             return Object.assign({}, state, {
                 loading: false,
                 defaults
