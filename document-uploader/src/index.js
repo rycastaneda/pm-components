@@ -5,11 +5,12 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
 import DocumentUploader from './containers/DocumentUploader';
+import { setEndpointHost, setEndpointPath, setHeaders } from 'redux-json-api';
+import api from '../../shared/api.config';
 import './styles/index.scss';
-import { configureApi } from './api/api.config';
 
 // Add redux dev tools unless we have a production build
-const enhance = process.env.NODE_ENV !== 'production' ? compose(
+const enhance = process.env.NODE_ENV !== 'production' && window.devToolsExtension ? compose(
     applyMiddleware(thunkMiddleware),
     window.devToolsExtension && window.devToolsExtension()
 ) : applyMiddleware(thunkMiddleware);
@@ -20,7 +21,9 @@ const store = createStore(
     enhance
 );
 
-configureApi(store);
+store.dispatch(setEndpointHost(api.configureHostname()));
+store.dispatch(setEndpointPath(''));
+store.dispatch(setHeaders(api.configureHeaders()));
 
 render(
     <Provider store={store}>
