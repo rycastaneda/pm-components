@@ -7,6 +7,7 @@ import rootReducer from './reducers/index';
 import DocumentUploader from './containers/DocumentUploader';
 import { setEndpointHost, setEndpointPath, setHeaders } from 'redux-json-api';
 import api from '../../shared/api.config';
+import axios from 'axios';
 import './styles/index.scss';
 
 // Add redux dev tools unless we have a production build
@@ -25,6 +26,8 @@ store.dispatch(setEndpointHost(api.configureHostname()));
 store.dispatch(setEndpointPath(''));
 store.dispatch(setHeaders(api.configureHeaders()));
 
+axios.defaults.baseURL = api.configureHostname();
+axios.defaults.headers.common = api.configureHeaders();
 
 render(
     <Provider store={store}>

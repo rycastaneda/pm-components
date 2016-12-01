@@ -232,26 +232,33 @@ export function uploadFile(group_id, index, quote_id) {
                         })
                     });
 
-                    return dispatch({
-                        type: DOCUMENT_UPLOAD_SUCCESS_CLEAN,
-                        id: group_id,
-                        file
-                    });
-                }).catch(() => {
+                    setTimeout(() => {
+                        dispatch({
+                            type: DOCUMENT_UPLOAD_SUCCESS_CLEAN,
+                            id: group_id,
+                            file
+                        });
+                    }, 1000);
+
+                    return response;
+                }).catch((response) => {
                     errors.push(`The file ${file.attributes.name} failed to upload. Please try again`);
                     dispatch({
                         type: DOCUMENT_UPLOAD_FAILED,
                         id: group_id,
                         file
                     });
+                    return response;
                 });
             })
-        ).then(() => {
-            dispatch({
-                type: GROUP_UPDATE_FAILED,
-                index,
-                errors: errors
-            });
+        ).then((response) => {
+            if (!response.every(response => response.status === 200)) {
+                dispatch({
+                    type: GROUP_UPDATE_FAILED,
+                    index,
+                    errors: errors
+                });
+            }
         });
     };
 }
