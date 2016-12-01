@@ -45,7 +45,7 @@ const Group = ({
         }}
         className="group-panel__actions fa fa-pencil"></i>) ;
 
-
+    console.log("group", group);
     return (
         <div className="panel panel-default group-panel" key={groupIndex}>
             {group.attributes.is_updating ? <Loader /> : ''}
@@ -72,7 +72,7 @@ const Group = ({
                         />
                     : null}
                 </Dropzone>
-                {group.attributes.errors.length ?
+                {group.attributes.errors && group.attributes.errors.length ?
                 (<div className="alert alert-danger">
                     <ul>
                     {group.attributes.errors.map((error, key) => {

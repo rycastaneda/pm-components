@@ -47,6 +47,7 @@ export function documentGroups(state = INITIAL_STATE, action) {
             defaults = _.uniq(action.groups.data, group => group.attributes.title);
             return Object.assign({}, state, {
                 loading: false,
+                data: action.groups.data,
                 defaults
             });
         case GROUP_ADDED:
