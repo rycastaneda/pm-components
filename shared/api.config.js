@@ -100,7 +100,7 @@ function configureHostname() {
             return a;
         }, {})['apiBranch'];
 
-    if (hostname.includes('local.dev') || process.env.NODE_ENV === 'develop') {
+    if (hostname.indexOf('local.dev') > -1 || process.env.NODE_ENV === 'develop') {
         return protocol + 'api.pm.local.dev';
     }
 
@@ -108,11 +108,11 @@ function configureHostname() {
         return [protocol, apiBranch.toLowerCase(), staging, countryHost].join('');
     }
 
-    if (hostname.includes('release')) {
+    if (hostname.indexOf('release') > -1) {
         return [protocol, 'release', staging, countryHost].join('');
     }
 
-    if (hostname.includes('hotfix')) {
+    if (hostname.indexOf('hotfix') > -1) {
         return [protocol, 'hotfix', staging, countryHost].join('');
     }
 
