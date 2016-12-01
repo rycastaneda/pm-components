@@ -35,7 +35,7 @@ function configureHeaders() {
  * @returns {{Authorization: string, Accept: string}}
  */
 function getLocalHeaders() {
-    const tokenRequest = new Request('https:/api.pm.local.dev/authenticate',
+    const tokenRequest = new Request('https:/api2.pm.local.dev/authenticate',
         {
             method: 'POST',
             headers: { 'Accept': 'application/vnd.pm.v1+json', 'Content-Type': 'application/vnd.pm.v1+json' },
@@ -101,7 +101,7 @@ function configureHostname() {
         }, {})['apiBranch'];
 
     if (hostname.includes('local.dev') || process.env.NODE_ENV === 'develop') {
-        return protocol + 'api.pm.local.dev';
+        return protocol + 'api2.pm.local.dev';
     }
 
     if (apiBranch) {
