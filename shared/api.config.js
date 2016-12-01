@@ -89,7 +89,7 @@ function getLocalHeaders() {
 function configureHostname() {
     const protocol = 'https://';
     const hostname = window.location.hostname.replace(/www./, '');
-    const countryHost = hostname.includes('nz') ? '.co.nz' : '.com.au';
+    const countryHost = hostname.indexOf('nz') > -1 ? '.co.nz' : '.com.au';
     const staging = '.api.staging.plantminer';
 
     const apiBranch = window.location.search.substr(1).split('&').map(function(pair) {
