@@ -25,6 +25,7 @@ store.dispatch(setEndpointHost(api.configureHostname()));
 store.dispatch(setEndpointPath(''));
 store.dispatch(setHeaders(api.configureHeaders()));
 
+
 render(
     <Provider store={store}>
         <DocumentUploader/>

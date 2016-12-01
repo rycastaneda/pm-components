@@ -11,7 +11,7 @@ import {
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_REMOVED
 } from '../constants/ActionTypes';
-import _ from 'lodash'; 
+import { uniq } from 'lodash'; 
 
 const INITIAL_STATE = {
     data: [], // array of document groups
@@ -44,7 +44,7 @@ export function documentGroups(state = INITIAL_STATE, action) {
             });
         case GROUPS_RECEIVING:
             // ADD DEFAULT GROUP STATES
-            defaults = _.uniq(action.groups.data, group => group.attributes.title);
+            defaults = uniq(action.groups.data, group => group.attributes.title);
             return Object.assign({}, state, {
                 loading: false,
                 data: action.groups.data,
