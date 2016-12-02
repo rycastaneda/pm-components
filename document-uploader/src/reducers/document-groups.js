@@ -47,10 +47,15 @@ export function documentGroups(state = INITIAL_STATE, action) {
             defaults = uniq(action.groups.data, group => group.attributes.title);
             return Object.assign({}, state, {
                 loading: false,
-                data: action.groups.data,
+                data: action.groups.data.filter(group => group.attributes.user_id),
                 defaults
             });
         case GROUP_ADDED:
+            return Object.assign({}, state, {
+                loading: false,
+                defaults: state.defaults.concat(action.group),
+                data: groups(state.data, action)
+            });
         case GROUP_REMOVED:
         case GROUP_TOGGLE_UPDATING:
         case GROUP_UPDATE_FAILED:

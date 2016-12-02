@@ -1,37 +1,67 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import Select from 'react-select';
+import { uniqBy } from 'lodash';
 
-const AddGroupForm = ({ onAddGroup, documentGroups }) => {
-    const titles = [];
-
-    let options = documentGroups.defaults.map((group) => {
-        titles.push(group.attributes.title);
-        return {
-            value: group.id,
-            isDefault: 1,
-            label: group.attributes.title
+class AddGroupForm extends Component {
+    constructor(props) {
+        super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.defValue = {
+            value: '', 
+            default: 0, 
+            label: ''
         };
-    });
+    }
 
-    const handleSubmit = (group) => {
+    handleSubmit(group) {
+        const { onAddGroup, documentGroups } = this.props;
         if (!group.value.length) {
             return;
         }
 
-        onAddGroup(group.label, !!group.isDefault);
-    };
+        const inDefaults = documentGroups.defaults.filter((defaultGroup) => {
+            return defaultGroup.attributes.user_id && defaultGroup.attributes.title === group.label;
+        }).length;
 
-    return (
-        <div>
-            <Select.Creatable
-                arrowRenderer={() => <span>+</span>}
-                placeholder="Add new group"
-                options={options}
-                onChange={handleSubmit}
-            />
-        </div>
-    );
-};
+        if (inDefaults) {
+            group.default = 1;
+            if (this.defValue.label !== group.label) {
+                this.setState({
+                    defValue: group
+                });
+            }
+            return group;
+        }
+
+        onAddGroup(group.label, !!group.default);
+    }
+
+    render()  {
+        let  options = uniqBy(this.props.documentGroups.defaults, group => group.attributes.title).map((group) => {
+            return {
+                value: group.id,
+                default: 0,
+                label: group.attributes.title
+            };
+        });
+
+        return (
+            <div>
+                <Select.Creatable
+                    ref={(ref) => {
+                        this.input = ref;
+                    }}
+                    value={this.state && this.state.defValue}
+                    onBlurResetsInput={false}
+                    arrowRenderer={() => <span>+</span>}
+                    placeholder="Add new group"
+                    options={options}
+                    onChange={this.handleSubmit}
+                />
+            </div>
+        );
+    }
+}
 
 AddGroupForm.propTypes = {
     onAddGroup: PropTypes.func.isRequired,
