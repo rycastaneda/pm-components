@@ -10,9 +10,6 @@
     "type": "git",
     "repo": "git@bitbucket.org:minergroup/plantminer-components.git[#feature/PM-943]"
   },
-  "dependencies": {
-    "lodash": "^4.17.2",
-    "react-addons-css-transition-group": "^15.4.1"
-  },
+  "dependencies": {},
   "devDependencies": {}
 }
