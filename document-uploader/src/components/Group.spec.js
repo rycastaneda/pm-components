@@ -46,6 +46,9 @@ const documents = [{
         type: 'image/png',
         progress: 0,
         created: +new Date()
+    },
+    links: {
+        self: 'https://i.redd.it/90zxujjyv7wx.jpg'
     }
 }, {
     id: 2, 
@@ -56,6 +59,9 @@ const documents = [{
         type: 'image/png',
         progress: 0,
         created: +new Date()
+    },
+    links: {
+        self: 'https://i.redd.it/90zxujjyv7wx.jpg'
     }
 }];
 
