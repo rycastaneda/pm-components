@@ -9,10 +9,12 @@ class SupplierQuoteRequirements extends Component {
         super(props);
     }
 
-    componentWillMount() {
-        // const quoteId = '123';
+    componentDidMount() {
+        const self = this;
 
-        this.props.dispatch(getItems());
+        document.getElementById('selected-item-row-id').addEventListener('input', function(event) {
+            self.props.dispatch(getItems(event.target.value));
+        });
     }
 
     render() {
