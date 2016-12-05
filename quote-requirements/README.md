@@ -7,13 +7,13 @@ Quote Requirements Component
 
     ```
     npm start
-    ````
+    ```
 - Go to `localhost:5050`
 
 
 ## To run as part of plantminer-web
  
-- Checkout `plantminer-web/feature/PM-1055` + `feature/API-19` of API
+- Checkout `plantminer-web` `feature/PM-1055` + `feature/API-19` of API
 
 - Login as a searcher and start creating a new QR
 
