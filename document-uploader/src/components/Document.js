@@ -3,7 +3,7 @@ import Progress from './Progress';
 import moment from 'moment';
 import filesize from 'filesize';
 
-const Document = ({ file, preview, groupIndex, onFileRemove }) => {
+const Document = ({ file, preview, groupIndex, onFileRemove, onDownloadFile }) => {
     const progress = (
         <Progress key={file.id}
             status={file.attributes.status}
@@ -23,12 +23,15 @@ const Document = ({ file, preview, groupIndex, onFileRemove }) => {
     const thumb = file.attributes.type.match(/image.*/) ?
         (<img key={file.id + 1}
             className={`document__thumb ${!onFileRemove ? 'document__thumb--added' : ''}`}
-            src={preview ? file.attributes.preview : file.links.self}/>) :
+            src={preview ? file.attributes.preview : file.attributes.links.self}/>) :
         (<i className={`document__thumb ${!onFileRemove ? 'document__thumb--added' : ''} fa fa-file-o`}></i>);
 
     const link = (
-        <a key={file.id + 1} target="_blank"
-           href={file.links && file.links.self || ''}>{thumb}</a>
+        <a key={file.id + 1} 
+        onClick={() => {
+            onDownloadFile(file.links && file.links.self || '', file.attributes.name);
+        }}
+        >{thumb}</a>
     );
 
     let date_created = file.attributes.created_at;
@@ -57,7 +60,8 @@ Document.propTypes = {
     file: PropTypes.object.isRequired,
     preview: PropTypes.bool.isRequired,
     groupIndex: PropTypes.number.isRequired,
-    onFileRemove: PropTypes.func
+    onFileRemove: PropTypes.func,
+    onDownloadFile: PropTypes.func
 };
 
 export default Document;

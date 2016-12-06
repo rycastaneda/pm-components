@@ -9,7 +9,7 @@ export function documents(state = [], action) {
         case GROUPS_RECEIVING:
             if (action.groups.included) {
                 return action.groups.included.filter((group) => {
-                    return group.type === 'documents';
+                    return group.type === `searcher-quote-requests/${group.attributes.quote_id}/documents`;
                 });
             }
             return [];

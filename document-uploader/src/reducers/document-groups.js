@@ -62,6 +62,19 @@ export function documentGroups(state = INITIAL_STATE, action) {
         case GROUP_RENAMED:
         case GROUP_RENAME_TOGGLE:
         case DOCUMENT_REMOVED:
+            defaults = state.defaults.map((def) => {
+                if (def.id  === action.id) {
+                    def.attributes.user_id = null;
+                }
+
+                return def;
+            });
+            
+            return Object.assign({}, state, {
+                loading: false,
+                data: groups(state.data, action),
+                defaults
+            });
         case DOCUMENT_UPLOAD_SUCCESS:
             return Object.assign({}, state, {
                 loading: false,
@@ -119,8 +132,16 @@ function groups(state = [], action) {
             return state.map((group) => {
                 if (group.id === action.id) {
                     let { id, type } = action.file;
+                    
+                    if (!group.relationships.documents) { // add documents to relationship if does not exists
+                        group.relationships.documents = {
+                            data: []
+                        };
+                    }
+
                     group.relationships.documents.data = group.relationships.documents.data.concat({ id, type });
                 }
+
                 return group;
             });
         case DOCUMENT_REMOVED:

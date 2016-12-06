@@ -13,6 +13,7 @@ const Group = ({
     onFileUpload,
     onGroupRename,
     onGroupRemove,
+    onDownloadFile,
     toggleRenaming
 }) => {
     let rename;
@@ -94,6 +95,7 @@ const Group = ({
                     groupIndex={groupIndex}
                     preview={false}
                     onFileRemove={onFileRemove}
+                    onDownloadFile={onDownloadFile}
                     />
                 : null}
             </div>
@@ -111,6 +113,7 @@ Group.propTypes = {
     onFileUpload: PropTypes.func,
     onGroupRemove: PropTypes.func,
     onGroupRename: PropTypes.func,
+    onDownloadFile: PropTypes.func,
     toggleRenaming: PropTypes.func
 };
 

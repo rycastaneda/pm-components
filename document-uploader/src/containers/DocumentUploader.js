@@ -8,6 +8,7 @@ import {
     toggleRenaming,
     catchFiles,
     removeFile,
+    downloadFile,
     uploadFile
 } from '../actions/groups';
 import Group from '../components/Group';
@@ -26,9 +27,15 @@ class DocumentGroup extends Component {
         this.handleTogglingRename = this.handleTogglingRename.bind(this);
         this.handleGroupRename = this.handleGroupRename.bind(this);
         this.handleRemoveGroup = this.handleRemoveGroup.bind(this);
+        this.handleRemoveGroup = this.handleRemoveGroup.bind(this);
         this.handleFileUpload = this.handleFileUpload.bind(this);
+        this.handleDownloadFile = this.handleDownloadFile.bind(this);
         this.quote_id = document.querySelector('[data-quote-id]').getAttribute('data-quote-id');
         this.props.dispatch(fetchDocuments());
+    }
+
+    handleDownloadFile(quote, filename) {
+        return this.props.dispatch(downloadFile(quote, filename));
     }
 
     handleCatchFiles(index, id, files) {
@@ -89,6 +96,7 @@ class DocumentGroup extends Component {
                     onFileUpload={this.handleFileUpload}
                     onGroupRename={this.handleGroupRename}
                     onGroupRemove={this.handleRemoveGroup}
+                    onDownloadFile={this.handleDownloadFile}
                     toggleRenaming={this.handleTogglingRename}
                     catchFiles={this.handleCatchFiles}
                 />;

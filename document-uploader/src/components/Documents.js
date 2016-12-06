@@ -4,7 +4,7 @@ import Document from './Document';
 
 class Documents extends Component { 
     render() {
-        const { files, groupIndex, onFileRemove, preview } = this.props;
+        const { files, groupIndex, onFileRemove, onDownloadFile, preview } = this.props;
 
         return (
             <div className="files">
@@ -21,6 +21,7 @@ class Documents extends Component {
                         preview={preview}
                         groupIndex={groupIndex}
                         onFileRemove={onFileRemove}
+                        onDownloadFile={onDownloadFile}
                     />
                 ))}
                 </CSSTransitionGroup>
@@ -34,6 +35,7 @@ Documents.propTypes = {
     files: PropTypes.array.isRequired,
     groupIndex: PropTypes.number.isRequired,
     onFileRemove: PropTypes.func,
+    onDownloadFile: PropTypes.func,
     preview: PropTypes.bool
 };
 
