@@ -14,7 +14,7 @@ import {
     TOGGLE_VIEW_FULL_TEXT
 } from '../constants/ActionTypes';
 
-import { createEntity, readEndpoint, updateEntity } from 'redux-json-api';
+import { createEntity, readEndpoint, updateEntity, setEndpointPath } from 'redux-json-api';
 
 const TYPE = 'searcher-requirements';
 
@@ -25,27 +25,26 @@ const TYPE = 'searcher-requirements';
  */
 export function createItem(item) {
     return (dispatch, getState) => {
-
+        dispatch(setEndpointPath(''));
         dispatch(createEntity({
             type: TYPE,
             attributes: item.attributes
         }))
             .then((response) => {
                 const searcherRequirements = getState().quoteRequirements.requirementsRelationship;
-                // const quoteId = getState().quoteRequirements.quoteId;
+                const quoteId = getState().quoteRequirements.quoteId;
 
                 searcherRequirements.push({
                     type: TYPE,
                     id: response.data.id
                 });
+                dispatch(linkRequirementsToQuote(quoteId, searcherRequirements));
 
                 dispatch({
                     type: IS_CREATED,
                     id: response.data.id
                 });
                 dispatch(addEmptyRequirement());
-
-                updateSoo(searcherRequirements);
             })
         ;
     };
@@ -54,44 +53,42 @@ export function createItem(item) {
  *
  * @param {string} quoteId
  * @param {Object[]} requirements
- * @returns {Object}
+ * @returns {function(*=)}
  */
 function linkRequirementsToQuote(quoteId, requirements) {
-    return {
-        type: 'searcher-quote-requests',
-        id: quoteId,
-        relationships: {
-            'searcher-requirements': {
-                data: requirements
+    return (dispatch) => {
+        const itemId = document.getElementById('item_id') ? document.getElementById('item_id').value : null;
+
+        dispatch(setEndpointPath(`/searcher-quote-requests/${quoteId}`));
+        dispatch(updateEntity({
+            type: 'requested-items',
+            id: itemId,
+            relationships: {
+                'searcher-requirements': {
+                    data: requirements
+                }
             }
-        }
-    };
-}
-
-function updateSoo(searcherRequirements) {
-    return (dispatch, getState) => {
-        const quoteId = getState().quoteRequirements.quoteId;
-
-        dispatch(updateEntity(linkRequirementsToQuote(quoteId, searcherRequirements))).then(() => {
-            dispatch(updateRequirementsRelationship(searcherRequirements));
+        })).then(() => {
+            dispatch(updateRequirementsRelationship(requirements));
         });
     };
 }
+
 /**
  *
- * @param {string} [quoteId='']
+ * @param {string} quoteId
  * @param {string} [categoryId='']
  * @param {boolean} [newCategory=false]
  * @returns {function(*=)}
  */
-export function getItems(quoteId = '', categoryId = '', newCategory = false) {
+export function getItems(quoteId, categoryId = '', newCategory = false) {
     return (dispatch) => {
-        dispatch(requestRequirements());
+        const itemId = document.getElementById('item_id') ? document.getElementById('item_id').value : null;
         // Request quote specific requirements
-        dispatch(readEndpoint(`searcher-quote-requests/${quoteId}?include=searcherRequirements`))
+        dispatch(readEndpoint(`searcher-quote-requests/${quoteId}/requested-items/${itemId}?include=searcherRequirements`))
             .then((response) => {
-                const relationships = response.data.relationships;
-                const quoteSpecificRequirements = relationships.searcherRequirements.data;
+                const relationships = response.data.relationships || {};
+                const quoteSpecificRequirements = relationships.searcherRequirements ? relationships.searcherRequirements.data : [];
 
                 // User can have 'global' requirements which are not linked to the quote
                 // Global requirements are the ones user ticked with 'include to all quote requests'
@@ -102,6 +99,8 @@ export function getItems(quoteId = '', categoryId = '', newCategory = false) {
                     // Make a request to get all quote requirements which belong to the user
                     dispatch(readEndpoint(`${TYPE}?filters[category_id]=${categoryId}`))
                         .then((list) => {
+                            dispatch(receiveRequirements(list.data));
+
                             // Generate an array of quote requirements objects
                             list.data.forEach((item) => {
                                 searcherRequirements.push({
@@ -110,11 +109,8 @@ export function getItems(quoteId = '', categoryId = '', newCategory = false) {
                                 });
                             });
                             // Do a call to manually link all quote requirements to the quote
-                            dispatch(updateEntity(linkRequirementsToQuote(quoteId, searcherRequirements))).then(() => {
-                                dispatch(updateRequirementsRelationship(searcherRequirements));
-                            });
+                            dispatch(linkRequirementsToQuote(quoteId, searcherRequirements));
 
-                            dispatch(receiveRequirements(list.data));
                             dispatch(addEmptyRequirement());
                         });
                 } else {
@@ -132,6 +128,7 @@ export function getItems(quoteId = '', categoryId = '', newCategory = false) {
  */
 export function updateItem(item) {
     return (dispatch) => {
+        dispatch(setEndpointPath(''));
         dispatch(updateEntity({
             type: TYPE,
             id: item.id,
@@ -160,15 +157,13 @@ export function deleteItem(item) {
         const searcherRequirements = getState().quoteRequirements.requirementsRelationship.filter((s => parseInt(s.id, 10) !== parseInt(item.id, 10)));
         const quoteId = getState().quoteRequirements.quoteId;
 
-        dispatch(updateEntity(linkRequirementsToQuote(quoteId, searcherRequirements)))
-            .then(() => {
-                dispatch(updateRequirementsRelationship(searcherRequirements));
+        dispatch(linkRequirementsToQuote(quoteId, searcherRequirements));
 
-                dispatch({
-                    type: IS_DELETED,
-                    id: item.id
-                });
-            });
+        return dispatch({
+            type: IS_DELETED,
+            id: item.id
+        });
+
     };
 }
 /**

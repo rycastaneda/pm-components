@@ -10,14 +10,14 @@ describe('RequirementsList component: ', () => {
         const handleUpdate = () => true;
         const handleDelete = () => true;
         const list = [
-            { isEditing: true, attributes: { text: '' } },
-            { isEditing: false, attributes: { text: '' } }
+            { id: 1, isEditing: true, attributes: { text: '' } },
+            { id: 2, isEditing: false, attributes: { text: '' } }
         ];
 
         const component = shallow(
             <RequirementsList list={list}
-                              handleDelete={handleDelete} h
-                              andleUpdate={handleUpdate}/>
+                              handleDelete={handleDelete}
+                              handleUpdate={handleUpdate}/>
         );
 
         expect(component.node.type).to.equal('div');
