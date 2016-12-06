@@ -5,7 +5,7 @@
  *
  * @returns {{Authorization: string, Accept: string}}
  */
-function configureHeaders() {
+function configureHeaders(headers = {}) {
     const COOKIE_TOKEN = 'pm_token';
 
     if (process.env.NODE_ENV === 'develop') return getLocalHeaders();
@@ -20,10 +20,11 @@ function configureHeaders() {
                     return a;
                 }, {})[COOKIE_TOKEN];
 
-    return {
+    return Object.assign({}, {
         Authorization: 'Bearer ' + token,
-        Accept: 'application/vnd.pm.v1+json'
-    };
+        Accept: 'application/vnd.pm.v1+json',
+        'Content-Type': 'application/vnd.pm.v1+json'
+    }, headers);
 }
 
 /**
