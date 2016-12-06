@@ -23,7 +23,7 @@ Quote Requirements Component
 - Quote Requirements section will be visible underneath Pricing Requirements section
 
 
-## Restrictions
+## Limitations
 
 - `Quote Id` is not available inside the react component context, this is why a hidden field is used to transfer the value from
 php page to the component `<input type="hidden" id="quote_id" value="" />`
