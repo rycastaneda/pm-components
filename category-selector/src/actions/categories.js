@@ -7,7 +7,7 @@ import {
     ADD_DROPDOWN,
     REQUEST_FAILED
 } from '../constants/ActionTypes';
-import { readEndpoint } from 'redux-json-api';
+import { readEndpoint, createEntity, updateEntity, setEndpointPath } from 'redux-json-api';
 import { resetDropDowns } from './suggestions';
 
 /**
@@ -70,6 +70,7 @@ export function fetchCategories(categoryType) {
 
         return new Promise(
             function(resolve, reject) {
+                dispatch(setEndpointPath(''));
                 dispatch(readEndpoint(`categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`))
                 // Dispatch an action that categories have been received from API
                     .then((response) => {
@@ -153,6 +154,18 @@ export function selectType(categoryType) {
 }
 
 /**
+ * @param {Object} item
+ * @returns {function(*)}
+ */
+export function createItem(item) {
+    return (dispatch) => {
+        dispatch(createEntity(item)).then((response) => {
+            document.getElementById('item_id').value = response.data.id;
+        });
+    };
+}
+
+/**
  *
  * @description
  * This function dispatches select category action and
@@ -163,9 +176,25 @@ export function selectType(categoryType) {
  * @returns {function(*)}
  */
 export function selectCategory(category, index) {
-    return (dispatch, getState) => {
-        const hasSubcategories = category.relationships ? category.relationships.categories.data.length > 0 : false;
+    const hasSubcategories = category.relationships ? category.relationships.categories.data.length > 0 : false;
+    const quoteId =  document.getElementById('quote_id') ? document.getElementById('quote_id').value : null;
+    const itemId =  document.getElementById('item_id') ? document.getElementById('item_id').value : null;
 
+    const item = {
+        type: 'requested-items',
+        id: itemId || null,
+        relationships: {
+            category: {
+                data: {
+                    type: 'categories',
+                    id: category.id
+                }
+            }
+        }
+
+    };
+
+    return (dispatch, getState) => {
         dispatch({
             type: SELECT_CATEGORY,
             category,
@@ -176,6 +205,15 @@ export function selectCategory(category, index) {
         // If user has finished selecting categories
         if (category.attributes.selectable) {
             triggerDomChanges(category.id, getState());
+
+            dispatch(setEndpointPath(`/searcher-quote-requests/${quoteId}`));
+            // Make an api call to generate an item service
+            if (!itemId) {
+                dispatch(createItem(item));
+                // If item id is already generated, make an update call
+            } else {
+                dispatch(updateEntity(item));
+            }
         }
 
         if (hasSubcategories) {
@@ -183,7 +221,6 @@ export function selectCategory(category, index) {
         } else {
             return dispatch(resetDropDowns(index + 1));
         }
-
     };
 }
 
