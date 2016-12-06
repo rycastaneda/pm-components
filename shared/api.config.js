@@ -36,7 +36,7 @@ function configureHeaders(headers = {}) {
  * @returns {{Authorization: string, Accept: string}}
  */
 function getLocalHeaders() {
-    const tokenRequest = new Request('https:/api2.pm.local.dev/authenticate',
+    const tokenRequest = new Request('https:/api.pm.local.dev/authenticate',
         {
             method: 'POST',
             headers: { 'Accept': 'application/vnd.pm.v1+json', 'Content-Type': 'application/vnd.pm.v1+json' },
