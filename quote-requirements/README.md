@@ -8,6 +8,7 @@ Quote Requirements Component
     ```
     npm start
     ```
+    
 - Go to `localhost:5050`
 
 
@@ -34,3 +35,6 @@ there is a hidden input value `<input type="hidden" id="qr_category_id" value=""
 
 - `Category Id` is a dynamic value based on which category the user selected. In order to track the changes of category id, 
 there is a `change event listener` added to the component `categoryIdField.addEventListener('change',  ...`
+
+- `Item Id` is available only inside php page and is triggered by `Category Selector` component. The value is required to 
+make api requests to save/update requirements.
