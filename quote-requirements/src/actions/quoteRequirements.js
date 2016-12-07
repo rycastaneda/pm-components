@@ -84,7 +84,6 @@ function linkRequirementsToQuote(quoteId, requirements) {
  */
 export function getItems(itemId, quoteId, categoryId = '', newCategory = false) {
     return (dispatch) => {
-        console.log(itemId);
         // Request quote specific requirements
         dispatch(readEndpoint(`searcher-quote-requests/${quoteId}/requested-items/${itemId}?include=searcherRequirements`))
             .then((response) => {
