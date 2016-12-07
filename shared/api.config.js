@@ -108,7 +108,7 @@ function configureHostname() {
         return [protocol, apiBranch.toLowerCase(), staging, countryHost].join('');
     }
 
-    if (hostname.indexOf('release') > -1) {
+    if (hostname.indexOf('staging') > -1) {
         return [protocol, 'release', staging, countryHost].join('');
     }
 
