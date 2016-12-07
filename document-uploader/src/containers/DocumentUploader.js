@@ -9,11 +9,13 @@ import {
     catchFiles,
     removeFile,
     downloadFile,
+    downloadDocumentGroup,
     uploadFile
 } from '../actions/groups';
 import Group from '../components/Group';
 import Loader from '../components/Loader';
 import AddGroupForm from '../components/AddGroupForm';
+import GroupLists from '../components/GroupLists';
 import CSSTransitionGroup from 'react-addons-css-transition-group';
 
 class DocumentGroup extends Component {
@@ -30,12 +32,18 @@ class DocumentGroup extends Component {
         this.handleRemoveGroup = this.handleRemoveGroup.bind(this);
         this.handleFileUpload = this.handleFileUpload.bind(this);
         this.handleDownloadFile = this.handleDownloadFile.bind(this);
+        this.handleDownloadDocumentGroup = this.handleDownloadDocumentGroup.bind(this);
         this.quote_id = document.querySelector('[data-quote-id]').getAttribute('data-quote-id');
+        this.readOnly = document.querySelector('[data-quote-id]').getAttribute('data-read-only');
         this.props.dispatch(fetchDocuments());
     }
 
     handleDownloadFile(quote, filename) {
         return this.props.dispatch(downloadFile(quote, filename));
+    }
+
+    handleDownloadDocumentGroup(group_id, filename) {
+        return this.props.dispatch(downloadDocumentGroup(this.quote_id, group_id, filename));
     }
 
     handleCatchFiles(index, id, files) {
@@ -77,30 +85,41 @@ class DocumentGroup extends Component {
         }
 
         let document_ids = group.relationships.documents.data.map(document => document.id);
+        // get document ids valid for display which are those that are not default
         return this.props.documents.filter((document) => {
-            return !!~document_ids.indexOf(document.id);
+            return document_ids.includes(document.id);
         });
     }
 
     render() {
         let groups, error;
+
+        const list = (
+            <GroupLists 
+                groups={this.props.documentGroups.data} 
+                downloadDocumentGroup={this.handleDownloadDocumentGroup}
+            />
+        );
+
+        const document_groups = this.props.documentGroups.data.map((group, key) => {
+            return <Group
+                group={group}
+                documentsAdded={this.props.documentsToBeAdded[group.id] || []}
+                documents={this.getDocuments(group)}
+                key={key}
+                groupIndex={key}
+                onFileRemove={this.handleRemoveFile}
+                onFileUpload={this.handleFileUpload}
+                onGroupRename={this.handleGroupRename}
+                onGroupRemove={this.handleRemoveGroup}
+                onDownloadFile={this.handleDownloadFile}
+                toggleRenaming={this.handleTogglingRename}
+                catchFiles={this.handleCatchFiles}
+            />;
+        });
+
         if (this.props.documentGroups) {
-            groups = this.props.documentGroups.data.map((group, key) => {
-                return <Group
-                    group={group}
-                    documentsAdded={this.props.documentsToBeAdded[group.id] || []}
-                    documents={this.getDocuments(group)}
-                    key={key}
-                    groupIndex={key}
-                    onFileRemove={this.handleRemoveFile}
-                    onFileUpload={this.handleFileUpload}
-                    onGroupRename={this.handleGroupRename}
-                    onGroupRemove={this.handleRemoveGroup}
-                    onDownloadFile={this.handleDownloadFile}
-                    toggleRenaming={this.handleTogglingRename}
-                    catchFiles={this.handleCatchFiles}
-                />;
-            });
+            groups = this.readOnly ? list : document_groups;
         }
 
         if (this.props.documentGroups.error) {
@@ -120,9 +139,11 @@ class DocumentGroup extends Component {
                 </CSSTransitionGroup>
                 {error}
                 {this.props.documentGroups.loading ? <Loader block={true}/> : ''}
+                {!this.readOnly ? 
                 <AddGroupForm 
                     onAddGroup={this.handleAddGroup}
-                    documentGroups={this.props.documentGroups}/>
+                    documentGroups={this.props.documentGroups}/> 
+                : null }
             </div>
         );
     }

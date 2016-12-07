@@ -41,10 +41,7 @@ const Group = ({
             <i onClick={() => toggleRenaming(groupIndex)}
                 className="group-panel__actions fa fa-times"></i>
         </span>) :
-        (<i onClick={() => {
-            toggleRenaming(groupIndex);
-        }}
-        className="group-panel__actions fa fa-pencil"></i>) ;
+        (<i onClick={() => toggleRenaming(groupIndex)} className="group-panel__actions fa fa-pencil"></i>) ;
 
     return (
         <div className="panel panel-default group-panel" key={groupIndex}>
@@ -80,7 +77,7 @@ const Group = ({
                     })}
                     </ul>
                 </div>
-                ) : ''}
+                ) : null}
                 {documentsAdded.length ?
                     <div className="upload">
                         <button

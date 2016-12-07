@@ -43,7 +43,7 @@ const documents = [{
         name: 'Mt Hood',
         preview: 'https://i.redd.it/90zxujjyv7wx.jpg',
         size: 15000,
-        type: 'image/png',
+        type: 'application/pdf',
         progress: 0,
         created: +new Date()
     },
@@ -56,7 +56,7 @@ const documents = [{
         name: 'Mt Hood',
         preview: 'https://i.redd.it/90zxujjyv7wx.jpg',
         size: 15000,
-        type: 'image/png',
+        type: 'application/pdf',
         progress: 0,
         created: +new Date()
     },

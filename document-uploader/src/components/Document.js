@@ -19,7 +19,7 @@ const Document = ({ file, preview, groupIndex, onFileRemove, onDownloadFile }) =
             </aside>
         </div>
     );
-
+    
     const thumb = file.attributes.type.match(/image.*/) ?
         (<img key={file.id + 1}
             className={`document__thumb ${!onFileRemove ? 'document__thumb--added' : ''}`}

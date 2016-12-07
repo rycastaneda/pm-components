@@ -14,7 +14,8 @@ import {
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_UPLOAD_SUCCESS_CLEAN,
     DOCUMENT_REMOVED,
-    DOCUMENT_DOWNLOADED
+    DOCUMENT_DOWNLOADED,
+    GROUP_DOWNLOADED
 } from '../constants/ActionTypes';
 import {
     createEntity,
@@ -270,22 +271,36 @@ export function downloadFile(quote, filename) {
             type: DOCUMENT_DOWNLOADED
         });
 
-        axios.defaults.headers.common['Content-Type'] = 'application/octet-stream';
-        var xhr = new XMLHttpRequest();
-        xhr.responseType = 'blob';
-        xhr.onload = function() {
-            var a = document.createElement('a');
-            a.href = window.URL.createObjectURL(xhr.response); // xhr.response is a blob
-            a.download = filename; // Set the file name.
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-        };
-        
-        xhr.open('GET', quote);
-        xhr.setRequestHeader('accept', axios.defaults.headers.common['Accept']);
-        xhr.setRequestHeader('authorization', axios.defaults.headers.common['Authorization']);
-        xhr.setRequestHeader('content-type', 'application/octet-stream');
-        xhr.send();
+        downloadBlob(quote, filename);
     };
+}
+
+export function downloadDocumentGroup(quote_id, group_id, filename) {
+    return (dispatch) => {
+        dispatch({
+            type: GROUP_DOWNLOADED
+        });
+
+        downloadBlob(axios.defaults.baseURL + `/searcher-quote-requests/${quote_id}/documents?filters[group_id]=${group_id}`, filename);
+    };
+}
+
+
+function downloadBlob(url, filename) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onload = function() {
+        var a = document.createElement('a');
+        a.href = window.URL.createObjectURL(xhr.response); // xhr.response is a blob
+        a.download = filename; // Set the file name.
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+    };
+
+    xhr.open('GET', url);
+    xhr.setRequestHeader('accept', axios.defaults.headers.common['Accept']);
+    xhr.setRequestHeader('authorization', axios.defaults.headers.common['Authorization']);
+    xhr.setRequestHeader('content-type', 'application/octet-stream');
+    xhr.send();
 }
