@@ -15,18 +15,21 @@ class QuoteRequirements extends Component {
         // If the user load this page second time to 'edit'
         const quoteId = document.getElementById('quote_id').value;
         const categoryIdField = document.getElementById('qr_category_id');
+        const itemIdField = document.getElementById('item_id');
         const categoryId = categoryIdField.value;
 
         this.props.dispatch(updateQuoteId(quoteId));
 
         if (categoryId) {
-            this.props.dispatch(getItems(quoteId, `${categoryId}`));
+            this.props.dispatch(getItems(itemIdField.value, quoteId, `${categoryId}`));
         }
         // Add event listener to trigger api call by passing selected category id
         // If the user load the page for the first time
         categoryIdField.addEventListener('change', (event) => {
+            const itemId = document.getElementById('item_id').value;
+
             if (event.target.value !== '0') {
-                this.props.dispatch(getItems(quoteId, `${event.target.value}`, true));
+                this.props.dispatch(getItems(itemId, quoteId, `${event.target.value}`, true));
             }
         });
     }

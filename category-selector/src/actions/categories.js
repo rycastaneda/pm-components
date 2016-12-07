@@ -7,7 +7,7 @@ import {
     ADD_DROPDOWN,
     REQUEST_FAILED
 } from '../constants/ActionTypes';
-import { readEndpoint } from 'redux-json-api';
+import { readEndpoint, createEntity, updateEntity, setEndpointPath } from 'redux-json-api';
 import { resetDropDowns } from './suggestions';
 
 /**
@@ -70,6 +70,7 @@ export function fetchCategories(categoryType) {
 
         return new Promise(
             function(resolve, reject) {
+                dispatch(setEndpointPath(''));
                 dispatch(readEndpoint(`categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`))
                 // Dispatch an action that categories have been received from API
                     .then((response) => {
@@ -153,6 +154,19 @@ export function selectType(categoryType) {
 }
 
 /**
+ * @param {Object} item
+ * @param {string} categoryId
+ * @returns {function(*)}
+ */
+export function createItem(item, categoryId) {
+    return (dispatch, getState) => {
+        dispatch(createEntity(item)).then((response) => {
+            triggerDomChanges(response.data.id, categoryId, getState());
+        });
+    };
+}
+
+/**
  *
  * @description
  * This function dispatches select category action and
@@ -163,9 +177,25 @@ export function selectType(categoryType) {
  * @returns {function(*)}
  */
 export function selectCategory(category, index) {
-    return (dispatch, getState) => {
-        const hasSubcategories = category.relationships ? category.relationships.categories.data.length > 0 : false;
+    const hasSubcategories = category.relationships ? category.relationships.categories.data.length > 0 : false;
+    const quoteId =  document.getElementById('quote_id') ? document.getElementById('quote_id').value : null;
+    const itemId =  document.getElementById('item_id') ? parseInt(document.getElementById('item_id').value, 10) : null;
 
+    const item = {
+        type: 'requested-items',
+        id: itemId || null,
+        relationships: {
+            category: {
+                data: {
+                    type: 'categories',
+                    id: category.id
+                }
+            }
+        }
+
+    };
+
+    return (dispatch, getState) => {
         dispatch({
             type: SELECT_CATEGORY,
             category,
@@ -175,7 +205,15 @@ export function selectCategory(category, index) {
         // Trigger other onchange events
         // If user has finished selecting categories
         if (category.attributes.selectable) {
-            triggerDomChanges(category.id, getState());
+
+            dispatch(setEndpointPath(`/searcher-quote-requests/${quoteId}`));
+            // Make an api call to generate an item service
+            if (!itemId) {
+                dispatch(createItem(item, category.id));
+                // If item id is already generated, make an update call
+            } else {
+                dispatch(updateEntity(item)).then(() => triggerDomChanges(null, category.id, getState()));
+            }
         }
 
         if (hasSubcategories) {
@@ -183,7 +221,6 @@ export function selectCategory(category, index) {
         } else {
             return dispatch(resetDropDowns(index + 1));
         }
-
     };
 }
 
@@ -198,19 +235,22 @@ export function selectCategory(category, index) {
  * Also category selector need to interact with other react component.
  * As a temporary solution, global PlantminerComponents object is introduced
  *
- * @param {number} [id=0] - category id
+ * @param {number} [categoryId=0] - category id
  */
-export function triggerDomChanges(id = 0, state = {}) {
-    const el = document.getElementById('qr_category_id') || {};
+export function triggerDomChanges(itemId = 0, categoryId = 0, state = {}) {
+    const categoryField = document.getElementById('qr_category_id') || {};
+    const itemField = document.getElementById('item_id') || {};
     const triggerChange = new Event('change');
 
-    el.value = id;
-    el.dispatchEvent = el.dispatchEvent || function() {};
-    el.dispatchEvent(triggerChange);
+    categoryField.value = categoryId;
+    itemField.value = itemField.value === '0' ? itemId : itemField.value;
+
+    categoryField.dispatchEvent = categoryField.dispatchEvent || function() {};
+    categoryField.dispatchEvent(triggerChange);
 
     window.PlantminerComponents = window.PlantminerComponents || {};
     window.PlantminerComponents.categorySelector = {
-        selectedCategoryId: parseInt(id, 10),
+        selectedCategoryId: parseInt(categoryField, 10),
         dropDowns: state.categorySelector ? state.categorySelector.dropDowns : {}
     };
 }
