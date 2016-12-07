@@ -76,14 +76,15 @@ function linkRequirementsToQuote(quoteId, requirements) {
 
 /**
  *
+ * @param {string} itemId
  * @param {string} quoteId
  * @param {string} [categoryId='']
  * @param {boolean} [newCategory=false]
  * @returns {function(*=)}
  */
-export function getItems(quoteId, categoryId = '', newCategory = false) {
+export function getItems(itemId, quoteId, categoryId = '', newCategory = false) {
     return (dispatch) => {
-        const itemId = document.getElementById('item_id') ? document.getElementById('item_id').value : null;
+        console.log(itemId);
         // Request quote specific requirements
         dispatch(readEndpoint(`searcher-quote-requests/${quoteId}/requested-items/${itemId}?include=searcherRequirements`))
             .then((response) => {
