@@ -10,6 +10,7 @@ import {
     removeFile,
     downloadFile,
     downloadDocumentGroup,
+    downloadDocumentGroups,
     uploadFile
 } from '../actions/groups';
 import Group from '../components/Group';
@@ -33,17 +34,22 @@ class DocumentGroup extends Component {
         this.handleFileUpload = this.handleFileUpload.bind(this);
         this.handleDownloadFile = this.handleDownloadFile.bind(this);
         this.handleDownloadDocumentGroup = this.handleDownloadDocumentGroup.bind(this);
+        this.handleDownloadDocumentGroups = this.handleDownloadDocumentGroups.bind(this);
         this.quote_id = document.querySelector('[data-quote-id]').getAttribute('data-quote-id');
         this.readOnly = document.querySelector('[data-quote-id]').getAttribute('data-read-only');
-        this.props.dispatch(fetchDocuments());
+        this.props.dispatch(fetchDocuments(this.quote_id));
     }
 
-    handleDownloadFile(quote, filename) {
-        return this.props.dispatch(downloadFile(quote, filename));
+    handleDownloadFile(quote, index, filename) {
+        return this.props.dispatch(downloadFile(quote, index, filename));
     }
 
-    handleDownloadDocumentGroup(group_id, filename) {
-        return this.props.dispatch(downloadDocumentGroup(this.quote_id, group_id, filename));
+    handleDownloadDocumentGroup(group, index) {
+        return this.props.dispatch(downloadDocumentGroup(this.quote_id, group, index));
+    }
+
+    handleDownloadDocumentGroups() {
+        return this.props.dispatch(downloadDocumentGroups(this.quote_id, `SearcherQR-${this.quote_id}`));
     }
 
     handleCatchFiles(index, id, files) {
@@ -114,6 +120,7 @@ class DocumentGroup extends Component {
                 onGroupRemove={this.handleRemoveGroup}
                 onDownloadFile={this.handleDownloadFile}
                 toggleRenaming={this.handleTogglingRename}
+                onDownloadDocumentGroup={this.handleDownloadDocumentGroup}
                 catchFiles={this.handleCatchFiles}
             />;
         });
@@ -128,9 +135,18 @@ class DocumentGroup extends Component {
                 <div className="alert alert-danger">{message}</div>
             );
         }
-
+        
         return (
             <div className="group-panel">
+                <div className="row container text-center">
+                    <button className="btn btn-default" onClick={() => {
+                        this.handleDownloadDocumentGroups();
+                    }}>
+                        <i className={`fa ${this.props.documentGroups.downloading ? 'fa-spin fa-spinner' : 'fa-download'}`}></i>
+                        &nbsp; Download All
+                    </button>
+                    <hr/>
+                </div>
                 <CSSTransitionGroup
                   transitionName="documents"
                   transitionEnterTimeout={500}

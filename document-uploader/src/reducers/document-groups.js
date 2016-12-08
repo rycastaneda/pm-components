@@ -8,6 +8,8 @@ import {
     GROUP_UPDATE_FAILED,
     GROUP_REMOVED,
     GROUP_RENAMED,
+    GROUPS_DOWNLOAD_STARTED, 
+    GROUPS_DOWNLOADED,
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_REMOVED
 } from '../constants/ActionTypes';
@@ -16,7 +18,8 @@ import { uniq } from 'lodash';
 const INITIAL_STATE = {
     data: [], // array of document groups
     defaults: [],
-    loading: false
+    loading: false,
+    downloading: false
 };
 
 const DEFAULT_ERROR = 'Request failed. Please try again later.';
@@ -56,6 +59,14 @@ export function documentGroups(state = INITIAL_STATE, action) {
                 defaults: state.defaults.concat(action.group),
                 data: groups(state.data, action)
             });
+        case GROUPS_DOWNLOAD_STARTED: 
+            return Object.assign({}, state, {
+                downloading: true
+            });
+        case GROUPS_DOWNLOADED: 
+            return Object.assign({}, state, {
+                downloading: false,
+            });
         case GROUP_REMOVED:
         case GROUP_TOGGLE_UPDATING:
         case GROUP_UPDATE_FAILED:
@@ -69,7 +80,7 @@ export function documentGroups(state = INITIAL_STATE, action) {
 
                 return def;
             });
-            
+
             return Object.assign({}, state, {
                 loading: false,
                 data: groups(state.data, action),

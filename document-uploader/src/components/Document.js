@@ -19,7 +19,7 @@ const Document = ({ file, preview, groupIndex, onFileRemove, onDownloadFile }) =
             </aside>
         </div>
     );
-    
+
     const thumb = file.attributes.type.match(/image.*/) ?
         (<img key={file.id + 1}
             className={`document__thumb ${!onFileRemove ? 'document__thumb--added' : ''}`}
@@ -29,7 +29,7 @@ const Document = ({ file, preview, groupIndex, onFileRemove, onDownloadFile }) =
     const link = (
         <a key={file.id + 1} 
         onClick={() => {
-            onDownloadFile(file.links && file.links.self || '', file.attributes.name);
+            onDownloadFile(file.links && file.links.self || '', groupIndex, file.attributes.name);
         }}
         >{thumb}</a>
     );

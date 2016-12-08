@@ -14,6 +14,7 @@ const Group = ({
     onGroupRename,
     onGroupRemove,
     onDownloadFile,
+    onDownloadDocumentGroup,
     toggleRenaming
 }) => {
     let rename;
@@ -53,6 +54,9 @@ const Group = ({
                 <aside className="pull-right">
                     {actions}
                     <i className="group-panel__actions fa fa-trash" onClick={() => onGroupRemove(group, groupIndex)}></i>
+                    {documents && documents.length ?
+                    <i className="group-panel__actions fa fa-download" onClick={() => onDownloadDocumentGroup(group, groupIndex)}></i>
+                    : null}
                 </aside>
                 <div className="clearfix"></div>
             </div>
@@ -111,6 +115,7 @@ Group.propTypes = {
     onGroupRemove: PropTypes.func,
     onGroupRename: PropTypes.func,
     onDownloadFile: PropTypes.func,
+    onDownloadDocumentGroup: PropTypes.func,
     toggleRenaming: PropTypes.func
 };
 

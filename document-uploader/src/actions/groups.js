@@ -7,6 +7,8 @@ import {
     GROUP_UPDATE_FAILED,
     GROUP_REMOVED,
     GROUP_RENAMED,
+    GROUP_DOWNLOAD_STARTED,
+    GROUP_DOWNLOADED,
     DOCUMENTS_RECEIVING,
     DOCUMENTS_UPLOADING,
     DOCUMENT_UPLOAD_IN_PROGRESS,
@@ -14,8 +16,10 @@ import {
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_UPLOAD_SUCCESS_CLEAN,
     DOCUMENT_REMOVED,
+    DOCUMENT_DOWNLOAD_STARTED,
     DOCUMENT_DOWNLOADED,
-    GROUP_DOWNLOADED
+    GROUPS_DOWNLOAD_STARTED,
+    GROUPS_DOWNLOADED
 } from '../constants/ActionTypes';
 import {
     createEntity,
@@ -26,7 +30,7 @@ import {
 } from 'redux-json-api';
 import axios from 'axios';
 
-export function fetchDocuments() {
+export function fetchDocuments(quote_id) {
     return (dispatch) => {
         dispatch({
             type: GROUPS_LOADING
@@ -34,7 +38,7 @@ export function fetchDocuments() {
 
         dispatch(setEndpointPath(``));
 
-        return dispatch(readEndpoint(`document-groups?include=documents`))
+        return dispatch(readEndpoint(`document-groups?include=documents&filter[quote_id]=${quote_id}`))
             .then((groups) => {
                 if (groups && (groups.response && !groups.response.ok)) { // error
                     return;
@@ -265,28 +269,52 @@ export function uploadFile(group_id, index, quote_id) {
     };
 }
 
-export function downloadFile(quote, filename) {
+export function downloadFile(quote, index, filename) {
     return (dispatch) => {
-        dispatch({
-            type: DOCUMENT_DOWNLOADED
-        });
+        dispatch({ type: DOCUMENT_DOWNLOAD_STARTED });
+        dispatch({ type: GROUP_TOGGLE_UPDATING, index, loading: true });
 
-        downloadBlob(quote, filename);
+        downloadBlob(
+            quote, 
+            filename, 
+            () => {
+                dispatch({ type: DOCUMENT_DOWNLOADED });
+                dispatch({ type: GROUP_TOGGLE_UPDATING, index, loading: false });
+            }
+        );
     };
 }
 
-export function downloadDocumentGroup(quote_id, group_id, filename) {
+export function downloadDocumentGroup(quote_id, group, index) {
     return (dispatch) => {
-        dispatch({
-            type: GROUP_DOWNLOADED
-        });
+        dispatch({ type: GROUP_DOWNLOAD_STARTED });
+        dispatch({ type: GROUP_TOGGLE_UPDATING, index, loading: true });
 
-        downloadBlob(axios.defaults.baseURL + `/searcher-quote-requests/${quote_id}/documents?filters[group_id]=${group_id}`, filename);
+        downloadBlob(
+            axios.defaults.baseURL + `/searcher-quote-requests/${quote_id}/documents?filters[group_id]=${group.id}`, 
+            group.attributes.title,
+            () => {
+                dispatch({ type: GROUP_DOWNLOADED });
+                dispatch({ type: GROUP_TOGGLE_UPDATING, index, loading: false });
+            }
+        );
+    };
+}
+
+export function downloadDocumentGroups(quote_id, filename) {
+    return (dispatch) => {
+        dispatch({ type: GROUPS_DOWNLOAD_STARTED });
+
+        downloadBlob(
+            axios.defaults.baseURL + `/searcher-quote-requests/${quote_id}/documents`, 
+            filename,
+            () => dispatch({ type: GROUPS_DOWNLOADED })
+        );
     };
 }
 
 
-function downloadBlob(url, filename) {
+function downloadBlob(url, filename, callback) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'blob';
     xhr.onload = function() {
@@ -296,6 +324,7 @@ function downloadBlob(url, filename) {
         a.style.display = 'none';
         document.body.appendChild(a);
         a.click();
+        callback();
     };
 
     xhr.open('GET', url);
