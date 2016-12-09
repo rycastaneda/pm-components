@@ -202,7 +202,8 @@ export function selectCategory(category, index) {
  */
 export function triggerDomChanges(id = 0, state = {}) {
     const el = document.getElementById('qr_category_id') || {};
-    const triggerChange = new Event('change');
+    const triggerChange = document.createEvent('HTMLEvents');
+    triggerChange.initEvent('change', false, true);
 
     el.value = id;
     el.dispatchEvent = el.dispatchEvent || function() {};
