@@ -5,7 +5,7 @@ import {
     handleButtonSelection,
     toggleCommentsDisplay,
     saveComments
-} from '../actions/SupplierQuoteRequirements';
+} from '../actions/supplierQuoteRequirements';
 import Button from '../components/Button';
 import CommentsForm from '../components/CommentsForm';
 
@@ -38,6 +38,7 @@ class DisplayForm extends Component {
 
     render() {
         const { item } = this.props;
+        const supplierResponse = item.supplierResponse.attributes;
 
         return (
             <div className="display-form">
@@ -51,7 +52,7 @@ class DisplayForm extends Component {
                         item.displayCommentsField
                         ? <CommentsForm handleCommentsSave={this.handleCommentsSave}
                                         handleCommentsUpdate={this.handleCommentsUpdate}
-                                        commentsText={item.comments} />
+                                        commentsText={supplierResponse ? supplierResponse.comment : ''} />
                         : null
                     }
 
@@ -60,7 +61,7 @@ class DisplayForm extends Component {
                     <div className="btn-group btn-group-justified display-form__buttons-container">
                         { item.buttons.map(button =>
                             <Button key={button.id}
-                                    isSelected={item.buttonSelected.id === button.id}
+                                    isSelected={supplierResponse ? supplierResponse.response === button.value : false}
                                     handleSelection={() => this.handleButtonSelection(button)}
                                     label={button.value}/>)
                         }

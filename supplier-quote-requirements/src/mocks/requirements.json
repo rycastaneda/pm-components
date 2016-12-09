@@ -1,30 +1,58 @@
 {
-  "data": [
+  "data": {
+    "type": "matched-items",
+    "id": "9225",
+    "attributes": [],
+    "relationships": {
+      "searcherRequirements": {
+        "data": [
+          {
+            "type": "searcher-requirements",
+            "id": "1"
+          }
+        ]
+      },
+      "searcherRequirementResponses": {
+        "data": [
+          {
+            "type": "searcher-requirement-responses",
+            "id": "32"
+          },
+          {
+            "type": "searcher-requirement-responses",
+            "id": "31"
+          }
+        ]
+      }
+    }
+  },
+  "included": [
     {
-      "type": "inclusions",
-      "id": "92347",
+      "type": "searcher-requirements",
+      "id": "1",
       "attributes": {
-        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-        "selection": true,
-        "comments": ""
+        "text": "Testing",
+        "category_id": null,
+        "include": true,
+        "mandatory": false
       }
     },
     {
-      "type": "inclusions",
-      "id": "239048",
+      "type": "searcher-requirement-responses",
+      "id": "32",
       "attributes": {
-        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-        "comments": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-        "selection": true
+        "searcher_requirement_id": 1,
+        "response": "Yes",
+        "comment": "Testing"
       }
     },
     {
-      "type": "inclusions",
-      "id": "239049",
+      "type": "searcher-requirement-responses",
+      "id": "31",
       "attributes": {
-        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-        "comments": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-        "selection": true
+        "searcher_requirement_id": 2,
+        "response": "Yes",
+        "comment": "Testing"
       }
     }
   ]

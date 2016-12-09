@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
 const Button = ({ handleSelection, label, isSelected }) => (
-    <button className={`btn display-form__button ${isSelected ? 'display-form__button--selected' : ''}`}
+    <button className={`btn display-form__button${isSelected ? ' display-form__button--selected' : ''}`}
             onClick={handleSelection}>{label}
     </button>
 );

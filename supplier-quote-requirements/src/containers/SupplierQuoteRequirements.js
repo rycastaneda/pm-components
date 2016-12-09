@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import DisplayForm from '../containers/DisplayForm';
-import { getItems } from '../actions/SupplierQuoteRequirements';
+import { updateQuoteId, updateQuoteItemId, getItems } from '../actions/supplierQuoteRequirements';
 
 class SupplierQuoteRequirements extends Component {
 
@@ -11,9 +11,11 @@ class SupplierQuoteRequirements extends Component {
 
     componentDidMount() {
         const self = this;
+        self.props.dispatch(updateQuoteId(document.getElementById('quote-id').value));
 
         document.getElementById('selected-item-row-id').addEventListener('input', function(event) {
-            self.props.dispatch(getItems(event.target.value));
+            self.props.dispatch(updateQuoteItemId(event.target.value));
+            self.props.dispatch(getItems());
         });
     }
 
