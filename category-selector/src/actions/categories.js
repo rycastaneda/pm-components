@@ -71,6 +71,9 @@ export function fetchCategories(categoryType) {
         dispatch(readEndpoint(`categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`))
         .then((response) => {
             dispatch(receiveCategories(type, response));
+        })
+        .catch((reason) => {
+            window.console.log('readEndpoint categories: ', reason);
         });
     };
 }
