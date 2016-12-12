@@ -68,20 +68,13 @@ export function fetchCategories(categoryType) {
         // Dispatch a state change to indicate that categories are being fetched
         dispatch(requestCategories(type));
 
-        return new Promise(
-            function(resolve, reject) {
-                dispatch(readEndpoint(`categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`))
-                // Dispatch an action that categories have been received from API
-                    .then((response) => {
-                        dispatch(receiveCategories(type, response));
-                        resolve();
-                    })
-                    .catch((reason) => {
-                        window.console.log('readEndpoint categories: ', reason);
-                        reject();
-                    });
-            }
-        );
+        dispatch(readEndpoint(`categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`))
+        .then((response) => {
+            dispatch(receiveCategories(type, response));
+        })
+        .catch((reason) => {
+            window.console.log('readEndpoint categories: ', reason);
+        });
     };
 }
 
@@ -115,9 +108,9 @@ export function fetchCategoriesIfNeeded(categoryType) {
         // Check if categories are already available in the cache
         if (!categories) {
             // If not, make an API call to get categories
-            dispatch(fetchCategories(categoryType))
+            dispatch(fetchCategories(categoryType));
                 // Catch errors if API request failed
-                .catch(() => dispatch(reportError(type)));
+                // .catch(() => dispatch(reportError(type)));
         } else {
             // If they are, display an input with dropdown suggestions
             return dispatch(addDropDown());
