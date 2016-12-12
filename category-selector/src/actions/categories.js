@@ -76,7 +76,10 @@ export function fetchCategories(categoryType) {
                         dispatch(receiveCategories(type, response));
                         resolve();
                     })
-                    .catch(() => reject());
+                    .catch((reason) => {
+                        window.console.log('readEndpoint categories: ', reason);
+                        reject();
+                    });
             }
         );
     };
