@@ -137,7 +137,9 @@ export function fetchCategoriesIfNeeded(categoryType) {
         // Check if categories are already available in the cache
         if (!categories) {
             // If not, make an API call to get categories
-            dispatch(fetchCategories(categoryType));
+            dispatch(fetchCategories(categoryType))
+            // Catch errors if API request failed
+            .catch(() => dispatch(reportError(type)));
         } else {
             // If they are, display an input with dropdown suggestions
             return dispatch(addDropDown());
