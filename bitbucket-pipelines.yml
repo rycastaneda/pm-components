@@ -1,0 +1,17 @@
+# PlantMiner Components
+image:
+  name: plantminer/ci:v1.5
+  username: $DOCKER_USERNAME
+  password: $DOCKER_PASSWORD
+  email: $DOCKER_EMAIL
+pipelines:
+  branches:
+    master:
+      - step:
+          script:
+            # Build boilerplate
+            - cd boilerplate && npm build && cd -
+            - cd boilerplate && npm build && cd -
+            # Build category-selector
+            - cd category-selector && npm build && cd -
+            - cd category-selector && npm build && cd -
