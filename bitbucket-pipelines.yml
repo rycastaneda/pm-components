@@ -10,9 +10,9 @@ pipelines:
       - step:
           script:
             # Build boilerplate
-            - cd boilerplate && npm build && cd -
+            - cd boilerplate && npm install && cd -
             - cd boilerplate && npm build && cd -
 
             # Build category-selector
-            - cd category-selector && npm build && cd -
+            - cd category-selector && npm install && cd -
             - cd category-selector && npm build && cd -
