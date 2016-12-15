@@ -21,27 +21,26 @@ class AddGroupForm extends Component {
             return;
         }
 
-        /* Check if selected document group is in defaults 
-            and has null user_id
-         */
-        const inDefaults = documentGroups.defaults.filter((defaultGroup) => {
-            return defaultGroup.attributes.user_id && defaultGroup.attributes.title === group.label;
-        }).length;
+        /* Check if selected document group is in defaults if it has been added 
+            then change the selectbox input
+        */
+        let added = documentGroups.defaults.some((defaultGroup) => {
+            return defaultGroup.attributes.title === group.label && defaultGroup.attributes.user_id;
+        });
 
-        /* if group is from defaults,
-            if input group has same value from the defaults 
-            don't add the group right away as the input name should be unique  */
-        if (inDefaults) {
-            /* On adding a group, automatically set it as one of defaults */
-            group.default = 1;
-           
-            if (this.defValue.label !== group.label) { 
-                this.setState({
-                    defValue: group
-                });
-            }
+        if (added) {
+            this.setState({
+                defValue: group
+            });
             return group;
         }
+
+        let fromDefaults = documentGroups.defaults.find((defaultGroup) => {
+            return defaultGroup.attributes.title === group.label;
+        });
+
+        /* On adding a group, automatically set it as one of defaults if it is from defaults meaning user_id is null*/
+        group.default = fromDefaults;
 
         onAddGroup(group.label, !!group.default);
     }

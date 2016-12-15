@@ -1,6 +1,7 @@
 import {
     GROUPS_LOADING,
     GROUPS_RECEIVING,
+    GROUPS_RECEIVING_DEFAULTS,
     GROUP_ADDED,
     GROUP_RENAME_TOGGLE,
     GROUP_TOGGLE_UPDATING,
@@ -38,6 +39,15 @@ export function fetchDocuments(quote_id) {
 
         dispatch(setEndpointPath(``));
 
+        dispatch(readEndpoint(`document-groups?include=documents&filter[defaults]=1`))
+            .then((defaults) => {
+                if (defaults && (defaults.response && !defaults.response.ok)) { // error
+                    return;
+                }
+
+                return dispatch({ type: GROUPS_RECEIVING_DEFAULTS, defaults });
+            });
+
         return dispatch(readEndpoint(`document-groups?include=documents&filter[quote_id]=${quote_id}`))
             .then((groups) => {
                 if (groups && (groups.response && !groups.response.ok)) { // error
@@ -46,6 +56,7 @@ export function fetchDocuments(quote_id) {
 
                 return dispatch({ type: GROUPS_RECEIVING, groups });
             });
+
     };
 }
 

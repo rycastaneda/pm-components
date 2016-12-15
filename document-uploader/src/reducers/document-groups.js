@@ -2,6 +2,7 @@ import {
     API_READ_FAILED,
     GROUPS_LOADING,
     GROUPS_RECEIVING,
+    GROUPS_RECEIVING_DEFAULTS,
     GROUP_ADDED,
     GROUP_RENAME_TOGGLE,
     GROUP_TOGGLE_UPDATING,
@@ -51,7 +52,12 @@ export function documentGroups(state = INITIAL_STATE, action) {
             return Object.assign({}, state, {
                 loading: false,
                 data: action.groups.data.filter(group => group.attributes.user_id),
-                defaults
+                defaults: state.defaults.concat(defaults)
+            });
+        case GROUPS_RECEIVING_DEFAULTS: 
+            return Object.assign({}, state, {
+                loading: false,
+                defaults: state.defaults.concat(action.defaults.data)
             });
         case GROUP_ADDED:
             return Object.assign({}, state, {
@@ -65,7 +71,7 @@ export function documentGroups(state = INITIAL_STATE, action) {
             });
         case GROUPS_DOWNLOADED: 
             return Object.assign({}, state, {
-                downloading: false,
+                downloading: false
             });
         case GROUP_REMOVED:
         case GROUP_TOGGLE_UPDATING:
