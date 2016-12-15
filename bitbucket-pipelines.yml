@@ -12,6 +12,7 @@ pipelines:
             # Build boilerplate
             - cd boilerplate && npm build && cd -
             - cd boilerplate && npm build && cd -
+
             # Build category-selector
             - cd category-selector && npm build && cd -
             - cd category-selector && npm build && cd -
