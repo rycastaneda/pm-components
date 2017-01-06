@@ -114,6 +114,10 @@ function configureHostname() {
         return [protocol, apiHost].join('');
     }
 
+    if (hostname.indexOf('hotfix') > -1) {
+        return [protocol, 'hotfix', staging, countryHost].join('');
+    }
+
     return [protocol, 'api.plantminer', countryHost].join('');
 }
 
