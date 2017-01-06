@@ -22,7 +22,8 @@ function configureHeaders() {
 
     return {
         Authorization: 'Bearer ' + token,
-        Accept: 'application/vnd.pm.v1+json'
+        Accept: 'application/vnd.pm.v1+json',
+        'Content-Type': 'application/vnd.pm.v1+json'
     };
 }
 
@@ -108,7 +109,7 @@ function configureHostname() {
         return [protocol, apiBranch.toLowerCase(), staging, countryHost].join('');
     }
 
-    if (hostname.indexOf('staging') > -1) {
+    if (hostname.indexOf('release') > -1) {
         return [protocol, 'release', staging, countryHost].join('');
     }
 
