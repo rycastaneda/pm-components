@@ -35,6 +35,5 @@ export function saveDocument(doc) {
         Plantminer.documents.splice(index, 1);
     }
 
-    console.log("doc util", doc);
     return doc;
 }

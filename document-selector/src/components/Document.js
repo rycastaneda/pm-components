@@ -9,7 +9,7 @@ export default class Document extends Component {
         } = this.props;
 
         const checked = document.requesteditems ? document.requesteditems.length : 0; // Add check if all items are checked, else set this to false
-        
+
         return (
             <tr className="group-table__document-row">
                 <td className="group-table__document-name">{document.name}</td>
@@ -21,6 +21,6 @@ export default class Document extends Component {
 
 Document.propTypes = {
     document: PropTypes.object,
-    toggleDocument: PropTypes.func,
+    toggleDocument: PropTypes.func
 };
 

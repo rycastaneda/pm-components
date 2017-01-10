@@ -17,8 +17,8 @@ export function documents(state = INITIAL_STATE, action) {
 
     switch (action.type) {
         case DOCUMENTS_RECEIVING:
-
             normalized = normalizeObject(action.response.data);
+            Plantminer.documents = Object.keys(normalized);
 
             return Object.assign({}, state, {
                 byId: normalized,

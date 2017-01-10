@@ -1,8 +1,6 @@
 import { 
-    REQUESTED_ITEMS_FETCHING, 
     REQUESTED_ITEMS_RECEIVING,
-    DOCUMENTS_RECEIVING,
-    REQUESTED_ITEM_TOGGLE
+    DOCUMENTS_RECEIVING
 } from '../constants/DocumentSelector';
 import { normalizeObject } from '../utility/utils';
 
