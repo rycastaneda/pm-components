@@ -1,43 +1,56 @@
 import { 
     REQUESTED_ITEMS_FETCHING, 
-    REQUESTED_ITEMS_RECEIVING
+    REQUESTED_ITEMS_RECEIVING,
     REQUESTED_ITEM_TOGGLE
 } from '../constants/DocumentSelector';
-import {
-    updateEntity,
-    readEndpoint
-} from 'redux-json-api';
+import axios from 'axios';
 
 
-export function fetchItems() {
+export function fetchItems(quote_id, addedItems) {
     return (dispatch) => {
-        
+        console.log("quote_id", quote_id, addedItems);
         dispatch({
             type: REQUESTED_ITEMS_FETCHING
         });
 
-        return dispatch(readEndpoint(`searcher-quote-requests/requested-items`))
+        return axios(`searcher-quote-requests/${quote_id}/requested-items`)
             .then((items) => {
                 if (items && (items.response && !items.response.ok)) { // error
                     return;
                 }
 
-                return dispatch({ type: REQUESTED_ITEMS_RECEIVING, items });
+                return dispatch({ type: REQUESTED_ITEMS_RECEIVING, items: items.data, addedItems });
             });
     };
 }
 
-export function selectItem(document, items) {
+export function toggleItem(document, item) {
     return (dispatch) => {
-        document.relationships.requested_items.data = items;
+        Object.assign(document, { 
+            relationships : {
+                'requesteditems': {
+                    data: [{
+                        type: 'requesteditems',
+                        id: item.id
+                    }]
+                }
+            }
+        });
+        console.log("document, item", document, item);
 
-        return dispatch(updateEntity(document)).then((response) => {
-            console.log("response", response);
+        axios({
+            url: `${document.type}/${document.id}/relationships/requesteditems`, 
+            data: { data: document },
+            method: item.attributes.checked ? 'DELETE' : 'PATCH'
+        }).then((response) => {
+            console.log("REQUESTED_ITEM_TOGGLE", REQUESTED_ITEM_TOGGLE);
+
             dispatch({
                 type: REQUESTED_ITEM_TOGGLE,
-                item: response
-            })
-
+                item,
+                document,
+                response
+            });
         });
     };
 }
