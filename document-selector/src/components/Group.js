@@ -13,7 +13,6 @@ export default class Group extends Component {
         } = this.props;
 
         const qs = document.querySelector('[data-all-items]');
-        console.log("documents", documents);
         let groupChecked = documents.every((document) => {
             return document.requesteditems && document.requesteditems.length;
         });
@@ -22,8 +21,6 @@ export default class Group extends Component {
             return <td key={key}>{items.byId[id].title}</td>;
         });
 
-        console.log("qs", qs);
-        console.log("group", group);
         return (
             <tr>
                 <td colSpan="2">

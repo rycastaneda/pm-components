@@ -8,14 +8,13 @@ import axios from 'axios';
 
 export function fetchItems(quote_id, addedItems) {
     return (dispatch) => {
-        console.log("quote_id", quote_id, addedItems);
         dispatch({
             type: REQUESTED_ITEMS_FETCHING
         });
 
         return axios(`searcher-quote-requests/${quote_id}/requested-items`)
             .then((items) => {
-                if (items && (items.response && !items.response.ok)) { // error
+                if (items && (items.response && !items.response.ok)) { // error check
                     return;
                 }
 
@@ -24,9 +23,9 @@ export function fetchItems(quote_id, addedItems) {
     };
 }
 
-export function toggleItem(document, item) {
+export function toggleItem(document, item, checked) {
     return (dispatch) => {
-        Object.assign(document, { 
+        const data = Object.assign({}, document, { 
             relationships : {
                 'requesteditems': {
                     data: [{
@@ -36,15 +35,12 @@ export function toggleItem(document, item) {
                 }
             }
         });
-        console.log("document, item", document, item);
 
         axios({
-            url: `${document.type}/${document.id}/relationships/requesteditems`, 
-            data: { data: document },
-            method: item.attributes.checked ? 'DELETE' : 'PATCH'
+            url: `searcher-quote-requests/${document.quote_id}/documents/${document.id}/relationships/requesteditems`, 
+            data: { data },
+            method: checked ? 'DELETE' : 'PATCH'
         }).then((response) => {
-            console.log("REQUESTED_ITEM_TOGGLE", REQUESTED_ITEM_TOGGLE);
-
             dispatch({
                 type: REQUESTED_ITEM_TOGGLE,
                 item,

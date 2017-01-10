@@ -4,34 +4,19 @@ import {
     DOCUMENTS_RECEIVING,
     REQUESTED_ITEM_TOGGLE
 } from '../constants/DocumentSelector';
-import { findIndex } from 'lodash';
+import { normalizeObject } from '../utility/utils';
 
 const INITIAL_STATE = { 
     byId: {},
     allIds: []
 };
 
-function toggleItemArray(array, toggle) {
-    console.log("array.length", array.length, toggle);
-    let index = array.findIndex((element) => {
-        return element.id === toggle.id;
-    });
-    console.log("index", index);
-    if (index < 0) {
-        array.push(toggle);
-    } else {
-        array.splice(index, 1);
-    }
-    console.log("array", array);
-    return array;
-}
-
 export function requestedItems(state = INITIAL_STATE, action) {
     let items = {}; 
-    let allIds = [];
+    let allIds = [], normalized = {};
     switch (action.type) {
         case DOCUMENTS_RECEIVING: 
-            action.response.included.map((include) => {
+            action.response.included.map((include) => { // get all items from the documents endpoint 
                 if (include.type === 'requesteditems') {
                     Object.assign(items, {
                         [include.id]: include.attributes
@@ -45,18 +30,11 @@ export function requestedItems(state = INITIAL_STATE, action) {
                 allIds
             };
         case REQUESTED_ITEMS_RECEIVING:
-            items = action.items.map((item) => {
-                item.attributes.included = false;
-
-                if (action.addedItems && findIndex(action.addedItems, { id: item.id })) {
-                    item.attributes.included = true;
-                }
-                return item;
-            });
+            normalized = normalizeObject(action.items.data); // Replace all items with its own designated endpoint
 
             return Object.assign({}, state, {
-                loading: false,
-                data: items
+                byId: normalized,
+                allIds: Object.keys(normalized)
             });
         default:
             return state;

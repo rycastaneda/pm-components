@@ -5,11 +5,13 @@ export default class RequestedItem extends Component {
         const {
             document,
             item,
+            checked,
             toggleItem
         } = this.props;
+
         return (
             <td>
-                <input type="checkbox" checked={item.checked} onChange={() => toggleItem(document, item)}/>
+                <input type="checkbox" checked={checked} onChange={() => toggleItem(document, item, checked)}/>
             </td>
         );
     }
@@ -17,6 +19,7 @@ export default class RequestedItem extends Component {
 
 RequestedItem.propTypes = {
     document: PropTypes.object,
+    checked: PropTypes.bool,
     item: PropTypes.object,
     toggleItem: PropTypes.func
 };

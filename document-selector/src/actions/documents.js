@@ -4,7 +4,6 @@ import {
     DOCUMENT_TOGGLE,
     GROUP_TOGGLE,
     TOGGLE_LOADING
-    // DOCUMENTS_SELECT_ALL
 } from '../constants/DocumentSelector';
 import { selectItems, fetchItems } from './requested-item';
 import axios from 'axios';
@@ -26,7 +25,7 @@ export function fetchDocuments(quote_id, allItems) {
                 if (!allItems) {
                     dispatch(fetchItems(quote_id, response.data.included));
                 }
-                console.log("response", response);
+
                 return dispatch({ 
                     type: DOCUMENTS_RECEIVING, 
                     response: response.data
@@ -47,7 +46,6 @@ export function toggleDocument(document) {
 
 export function toggleGroup(group, checked) {
     return (dispatch, getState) => {
-        console.log("group, checked", group, checked);
         dispatch({
             type: GROUP_TOGGLE,
             items: getState().requestedItems.allIds,

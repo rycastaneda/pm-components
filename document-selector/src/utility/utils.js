@@ -16,6 +16,7 @@ export function normalizeObject(collections) {
         Object.assign(normalized, {
             [collection.id]: {
                 id: collection.id,
+                type: collection.type,
                 ...collection.attributes,
                 ...relationships
             }

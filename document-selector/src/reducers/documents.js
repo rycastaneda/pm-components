@@ -1,6 +1,5 @@
 // globals Plantminer
 import { 
-    DOCUMENTS_FETCHING, 
     DOCUMENTS_RECEIVING,
     DOCUMENT_TOGGLE,
     GROUP_TOGGLE,
@@ -13,32 +12,17 @@ const INITIAL_STATE = {
     allIds: []
 };
 
-
-function toggleItemArray(array, toggle) {
-    console.log("array.length", array.length, toggle);
-    let index = array.findIndex((element) => {
-        return element.id === toggle.id;
-    });
-    console.log("index", index);
-    // if (index < 0) {
-    //     array.push(toggle);
-    // } else {
-    //     array.splice(index, 1);
-    // }
-    // console.log("array", array);
-    // return array;
-}
-
 export function documents(state = INITIAL_STATE, action) {
-    let documentIds = [];
+    let normalized = {}, index;
 
     switch (action.type) {
         case DOCUMENTS_RECEIVING:
-            documentIds = Object.keys(normalizeObject(action.response.data));
+
+            normalized = normalizeObject(action.response.data);
 
             return Object.assign({}, state, {
-                byId: normalizeObject(action.response.data),
-                allIds: documentIds
+                byId: normalized,
+                allIds: Object.keys(normalized)
             });
         case DOCUMENT_TOGGLE: 
             saveDocument(action.document);
@@ -54,47 +38,33 @@ export function documents(state = INITIAL_STATE, action) {
             };
         case GROUP_TOGGLE: 
             action.group.documents.map((document) => {
-                console.log("document.id", document.id);
-                console.log("state.byId[document.id]", state.byId[document.id]);
                 saveDocument(document);
-                state.byId[document.id].requesteditems = action.checked ? [] : action.items;
-                console.log("state", state);
+                state.byId[document.id].requesteditems = action.checked ? [] : action.items; // add requested items to relationships
             });
 
             return {
                 ...state
             };
-
-            // return Object.assign({}, state, {
-            //     data: state.data.map((document) => {
-            //         if (document.relationships.groups.data.id === action.group.id) {
-            //             if (action.checked) {
-            //                 document.relationships.requesteditems.data = [];
-            //                 Plantminer.documents = [];
-            //             } else {
-            //                 let index = Plantminer.documents.indexOf(document.id);
-            //                 if (index < 0) {
-            //                     Plantminer.documents.push(document.id);
-            //                 }
-            //                 document.relationships.requesteditems.data.push({});
-            //             }
-            //         }
-            //         return document;
-            //     })
-            // });
         case REQUESTED_ITEM_TOGGLE: 
-            console.log("state", state);
-            return Object.assign({}, state, { 
-                data: state.data.map((document) => {
-                    console.log("action", action, document);
-                    if (document.id === action.document.id) {
-                        console.log("document.relationships.requesteditems.data", document.relationships.requesteditems.data);
+            index = action.document.requesteditems.indexOf(action.item.id);
 
-                        document.relationships.requesteditems.data = toggleItemArray(document.relationships.requesteditems.data, action.item);
+            if (index < 0) {
+                action.document.requesteditems.push(action.item.id);
+            } else {
+                action.document.requesteditems.splice(index, 1);
+            }
+
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.document.id]: {
+                        ...state.byId[action.document.id],
+                        requesteditems: action.document.requesteditems // toggle requested item
                     }
-                    return document;
-                })
-            });
+                }
+
+            };
         default:
             return state;
     }

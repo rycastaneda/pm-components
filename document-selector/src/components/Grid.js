@@ -17,7 +17,7 @@ const Grid = ({ groups, items, toggleItem }) => {
 
 Grid.propTypes = {
     groups: PropTypes.array.isRequired,
-    items: PropTypes.array.isRequired,
+    items: PropTypes.object.isRequired,
     toggleItem: PropTypes.func.isRequired
 };
 

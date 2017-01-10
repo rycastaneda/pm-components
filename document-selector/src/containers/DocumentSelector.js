@@ -25,8 +25,8 @@ class DocumentSelector extends Component {
         return this.props.dispatch(toggleGroup(group, checked));
     }
 
-    handleToggleItem(document, item) {
-        return this.props.dispatch(toggleItem(document, item));
+    handleToggleItem(document, item, checked) {
+        return this.props.dispatch(toggleItem(document, item, checked));
     }
 
     render() {
@@ -42,7 +42,7 @@ class DocumentSelector extends Component {
                     </DocumentGroupSelector>
                 : <Grid 
                     groups={this.props.groups} 
-                    items={this.props.requestedItems.data}
+                    items={this.props.requestedItems}
                     toggleItem={this.handleToggleItem}/>
                 }
             </div>
@@ -59,22 +59,20 @@ DocumentSelector.propTypes = {
 function mapStateToProps(state) {
     const { groups, requestedItems, documents, ui  } = state;
 
-    if (!groups.allIds.length ) { // return defaults on empty load
+    if (!groups.allIds.length) { // return defaults on empty load
         return { groups: [], requestedItems, ui };
     }
-    console.log("documents", documents);
     // Get groups with documents 
     const normalized = groups.allIds.map((groupId) => { 
         let group = groups.byId[groupId]; 
 
         group.documents = documents.allIds.map((documentId) => {
             if (documents.byId[documentId].groups === groupId) {
-                if(documents.byId[documentId].requesteditems) {
-                    let items = documents.byId[documentId].requesteditems.map(item => {
-                        return requestedItems.byId[item];
-                    });
-                    documents.byId[documentId].items = items;
-                }
+                let items = documents.byId[documentId].requesteditems.map((item) => {
+                    return requestedItems.byId[item];
+                });
+                documents.byId[documentId].items = items;
+                
                 return documents.byId[documentId];
             }
         }).filter(doc => doc); // clean up undefined documents

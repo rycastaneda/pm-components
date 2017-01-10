@@ -18,8 +18,6 @@ export function groups(state = INITIAL_STATE, action) {
                     Object.assign(groups, {
                         [include.id]: include.attributes
                     });
-                    console.log("include", include);
-                    console.log("groups DOCUMENTS_RECEIVING", groups);
                     allIds.push(include.id);
                 }
             });
