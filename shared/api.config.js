@@ -35,7 +35,7 @@ function configureHeaders() {
  * @returns {{Authorization: string, Accept: string}}
  */
 function getLocalHeaders() {
-    const tokenRequest = new Request('https:/api.pm.local.dev/authenticate',
+    const tokenRequest = new Request('https:/api2.pm.local.dev/authenticate',
         {
             method: 'POST',
             headers: { 'Accept': 'application/vnd.pm.v1+json', 'Content-Type': 'application/vnd.pm.v1+json' },
@@ -89,7 +89,7 @@ function getLocalHeaders() {
 function configureHostname() {
     const protocol = 'https://';
     const hostname = window.location.hostname.replace(/www./, '');
-    const countryHost = hostname.includes('nz') ? '.co.nz' : '.com.au';
+    const countryHost = hostname.indexOf('nz') > -1 ? '.co.nz' : '.com.au';
     const staging = '.api.staging.plantminer';
 
     const apiBranch = window.location.search.substr(1).split('&').map(function(pair) {
@@ -100,7 +100,7 @@ function configureHostname() {
             return a;
         }, {})['apiBranch'];
 
-    if (hostname.includes('local.dev') || process.env.NODE_ENV === 'develop') {
+    if (hostname.indexOf('local.dev') > -1 || process.env.NODE_ENV === 'develop') {
         return protocol + 'api.pm.local.dev';
     }
 
@@ -108,11 +108,11 @@ function configureHostname() {
         return [protocol, apiBranch.toLowerCase(), staging, countryHost].join('');
     }
 
-    if (hostname.includes('release')) {
+    if (hostname.indexOf('release') > -1) {
         return [protocol, 'release', staging, countryHost].join('');
     }
 
-    if (hostname.includes('hotfix')) {
+    if (hostname.indexOf('hotfix') > -1) {
         return [protocol, 'hotfix', staging, countryHost].join('');
     }
 
