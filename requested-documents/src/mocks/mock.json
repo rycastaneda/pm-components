@@ -1,0 +1,52 @@
+{
+  "data": [
+    {
+      "type": "requested-documents",
+      "id": 1,
+      "attributes": {
+        "title": "Document 1",
+        "checked": true
+      }
+    },
+    {
+      "type": "requested-documents",
+      "id": 2,
+      "attributes": {
+        "title": "Document 2",
+        "checked": false
+      }
+    },
+    {
+      "type": "requested-documents",
+      "id": 3,
+      "attributes": {
+        "title": "Document 3",
+        "checked": false
+      }
+    },
+    {
+      "type": "requested-documents",
+      "id": 4,
+      "attributes": {
+        "title": "Document 4",
+        "checked": false
+      }
+    },
+    {
+      "type": "requested-documents",
+      "id": 5,
+      "attributes": {
+        "title": "Document 5",
+        "checked": false
+      }
+    },
+    {
+      "type": "requested-documents",
+      "id": 6,
+      "attributes": {
+        "title": "Document 6",
+        "checked": false
+      }
+    }
+  ]
+}
