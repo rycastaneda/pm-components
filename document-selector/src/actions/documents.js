@@ -1,30 +1,57 @@
 import { 
     DOCUMENTS_RECEIVING, 
     DOCUMENTS_FETCHING,
+    DOCUMENT_TOGGLE,
+    GROUP_TOGGLE,
     TOGGLE_LOADING
-    // DOCUMENTS_SELECT_ALL
 } from '../constants/DocumentSelector';
-import {
-    readEndpoint
-} from 'redux-json-api';
-import { selectItems } from 'requested-items';
+import { selectItems, fetchItems } from './requested-item';
+import axios from 'axios';
 
-
-export function fetchDocuments() {
+export function fetchDocuments(quote_id, allItems) {
     return (dispatch) => {
         
         dispatch({
             type: DOCUMENTS_FETCHING
         });
 
-        return dispatch(readEndpoint(`document-groups?include=documents`))
-            .then((groups) => {
-                if (groups && (groups.response && !groups.response.ok)) { // error
+        return axios.get(`searcher-quote-requests/${quote_id}/documents?include=requesteditems,groups`)
+            .then((response) => {
+                if (response && (response.response && !response.response.ok)) { // error
                     return;
                 }
 
-                return dispatch({ type: DOCUMENTS_RECEIVING, groups });
+                // call endpoint to requested items if mode is not allItems
+                if (!allItems) {
+                    dispatch(fetchItems(quote_id, response.data.included));
+                }
+
+                return dispatch({ 
+                    type: DOCUMENTS_RECEIVING, 
+                    response: response.data
+                });
             });
+    };
+}
+
+export function toggleDocument(document) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: DOCUMENT_TOGGLE,
+            document,
+            items: getState().requestedItems.allIds
+        });
+    };
+}
+
+export function toggleGroup(group, checked) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: GROUP_TOGGLE,
+            items: getState().requestedItems.allIds,
+            group,
+            checked
+        });
     };
 }
 

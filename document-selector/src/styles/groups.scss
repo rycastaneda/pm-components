@@ -1,0 +1,14 @@
+/* add here your styles */
+.group-table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+
+    &__header {
+        font-weight: bold;
+    }
+
+    &__document-name {
+        padding-left: 20px;
+    }
+}

@@ -1,1 +1,1 @@
-{"version":3,"file":"./index.css","sources":[],"mappings":"","sourceRoot":""}
+{"version":3,"file":"./index.css","sources":["webpack:////./src/styles/src/styles/groups.scss"],"sourcesContent":["/* add here your styles */\n.group-table {\n    width: 100%;\n    max-width: 100%;\n    margin-bottom: 20px;\n\n    &__header {\n        font-weight: bold;\n    }\n\n    &__document-name {\n        padding-left: 20px;\n    }\n}\n\n\n\n/** WEBPACK FOOTER **\n ** /./src/styles/src/styles/groups.scss\n **/"],"mappings":"AACA","sourceRoot":""}
