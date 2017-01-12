@@ -22,7 +22,8 @@ function configureHeaders() {
 
     return {
         Authorization: 'Bearer ' + token,
-        Accept: 'application/vnd.pm.v1+json'
+        Accept: 'application/vnd.pm.v1+json',
+        'Content-Type': 'application/vnd.pm.v1+json'
     };
 }
 
@@ -47,6 +48,7 @@ function getLocalHeaders() {
         })
         .then(function(response) {
             localStorage.setItem('token', response.token);
+
         });
 
     return {
