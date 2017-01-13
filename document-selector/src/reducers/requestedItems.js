@@ -24,8 +24,7 @@ export function requestedItems(state = INITIAL_STATE, action) {
                     }
                 });
             }
-            
-            Plantminer.documents = allIds;
+
             return {
                 byId: items,
                 allIds
