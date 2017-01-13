@@ -8,7 +8,7 @@ import {
 import { selectItems, fetchItems } from './requested-item';
 import axios from 'axios';
 
-export function fetchDocuments(quote_id, allItems) {
+export function fetchDocuments(quote_id) {
     return (dispatch) => {
         
         dispatch({
@@ -22,9 +22,7 @@ export function fetchDocuments(quote_id, allItems) {
                 }
 
                 // call endpoint to requested items if mode is not allItems
-                if (!allItems) {
-                    dispatch(fetchItems(quote_id, response.data.included));
-                }
+                dispatch(fetchItems(quote_id, response.data.included));
 
                 return dispatch({ 
                     type: DOCUMENTS_RECEIVING, 

@@ -6,11 +6,11 @@
  * @returns {{Authorization: string, Accept: string}}
  */
 function configureHeaders() {
-    const COOKIE_TOKEN = 'pm_token';
+    var COOKIE_TOKEN = 'pm_token';
 
     if (process.env.NODE_ENV === 'develop') return getLocalHeaders();
 
-    const token = document.cookie.split(';')
+    var token = document.cookie.split(';')
             .map(function(cookie) {
                 return cookie.trim().split('=');
             })
@@ -22,7 +22,8 @@ function configureHeaders() {
 
     return {
         Authorization: 'Bearer ' + token,
-        Accept: 'application/vnd.pm.v1+json'
+        Accept: 'application/vnd.pm.v1+json',
+        'Content-Type': 'application/vnd.pm.v1+json'
     };
 }
 
@@ -35,7 +36,7 @@ function configureHeaders() {
  * @returns {{Authorization: string, Accept: string}}
  */
 function getLocalHeaders() {
-    const tokenRequest = new Request('https:/api.pm.local.dev/authenticate',
+    var tokenRequest = new Request('https:/api.pm.local.dev/authenticate',
         {
             method: 'POST',
             headers: { 'Accept': 'application/vnd.pm.v1+json', 'Content-Type': 'application/vnd.pm.v1+json' },
@@ -47,7 +48,6 @@ function getLocalHeaders() {
         })
         .then(function(response) {
             localStorage.setItem('token', response.token);
-
         });
 
     return {
@@ -88,12 +88,12 @@ function getLocalHeaders() {
  * @returns {string}
  */
 function configureHostname() {
-    const protocol = 'https://';
-    const hostname = window.location.hostname.replace(/www./, '');
-    const countryHost = hostname.indexOf('nz') > -1 ? '.co.nz' : '.com.au';
-    const staging = '.api.staging.plantminer';
+    var protocol = 'https://';
+    var hostname = window.location.hostname.replace(/www./, '');
+    var countryHost = hostname.indexOf('nz') > -1 ? '.co.nz' : '.com.au';
+    var staging = '.api.staging.plantminer';
 
-    const apiBranch = window.location.search.substr(1).split('&').map(function(pair) {
+    var apiBranch = window.location.search.substr(1).split('&').map(function(pair) {
         return pair.split('=');
     }).reduce(
         function(a, b) {
@@ -109,8 +109,9 @@ function configureHostname() {
         return [protocol, apiBranch.toLowerCase(), staging, countryHost].join('');
     }
 
-    if (hostname.indexOf('release') > -1) {
-        return [protocol, 'release', staging, countryHost].join('');
+    if (hostname.indexOf('staging') > -1) {
+        var apiHost = window.location.hostname.replace(/www/, 'api');
+        return [protocol, apiHost].join('');
     }
 
     if (hostname.indexOf('hotfix') > -1) {
