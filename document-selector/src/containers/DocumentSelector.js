@@ -32,7 +32,7 @@ class DocumentSelector extends Component {
     render() {
         return (
             <div className="db-form-section">
-                <div className="row">
+                <div>
                     <h6 className="db-form-title">
                         <span className="pull-left">Documents</span> 
                         <button className="pull-right db-function copy-from">Copy From</button>
