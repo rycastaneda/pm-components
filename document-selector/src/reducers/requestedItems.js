@@ -14,14 +14,16 @@ export function requestedItems(state = INITIAL_STATE, action) {
     let allIds = [], normalized = {};
     switch (action.type) {
         case DOCUMENTS_RECEIVING: 
-            action.response.included.map((include) => { // get all items from the documents endpoint 
-                if (include.type === 'requesteditems') {
-                    Object.assign(items, {
-                        [include.id]: include.attributes
-                    });
-                    allIds.push(include.id);
-                }
-            });
+            if (action.response.data.length) {
+                action.response.included.map((include) => { // get all items from the documents endpoint 
+                    if (include.type === 'requesteditems') {
+                        Object.assign(items, {
+                            [include.id]: include.attributes
+                        });
+                        allIds.push(include.id);
+                    }
+                });
+            }
 
             return {
                 byId: items,

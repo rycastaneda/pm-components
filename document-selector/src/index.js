@@ -21,8 +21,10 @@ const store = createStore(
     enhance
 );
 
-const hostname = api.configureHostname();
-const headers = api.configureHeaders();
+let hostname = api.configureHostname();
+let headers = api.configureHeaders();
+
+headers['Content-Type'] = 'application/json';
 
 axios.defaults.baseURL = hostname;
 axios.defaults.headers.common = headers;

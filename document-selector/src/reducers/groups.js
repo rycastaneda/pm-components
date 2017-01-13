@@ -13,14 +13,16 @@ export function groups(state = INITIAL_STATE, action) {
 
     switch (action.type) {
         case DOCUMENTS_RECEIVING:
-            action.response.included.map((include) => {
-                if (include.type === 'document-group') {
-                    Object.assign(groups, {
-                        [include.id]: include.attributes
-                    });
-                    allIds.push(include.id);
-                }
-            });
+            if (action.response.data.length) {
+                action.response.included.map((include) => {
+                    if (include.type === 'document-group') {
+                        Object.assign(groups, {
+                            [include.id]: include.attributes
+                        });
+                        allIds.push(include.id);
+                    }
+                });
+            }
 
             return Object.assign({}, state, {
                 byId: groups,

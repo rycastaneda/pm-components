@@ -22,12 +22,17 @@ const store = createStore(
     enhance
 );
 
-store.dispatch(setEndpointHost(api.configureHostname()));
-store.dispatch(setEndpointPath(''));
-store.dispatch(setHeaders(api.configureHeaders()));
+let headers = api.configureHeaders();
+let hostname = api.configureHostname();
 
-axios.defaults.baseURL = api.configureHostname();
-axios.defaults.headers.common = api.configureHeaders();
+headers['Content-Type'] = 'application/json';
+
+store.dispatch(setEndpointHost(hostname));
+store.dispatch(setEndpointPath(''));
+store.dispatch(setHeaders(headers));
+
+axios.defaults.baseURL = hostname;
+axios.defaults.headers.common = headers;
 
 render(
     <Provider store={store}>
