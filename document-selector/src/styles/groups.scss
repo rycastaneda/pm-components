@@ -1,14 +1,52 @@
-/* add here your styles */
 .group-table {
     width: 100%;
     max-width: 100%;
-    margin-bottom: 20px;
 
     &__header {
+        padding: 6px 10px;
+        background: #eeeeee;
+        border-bottom: 1px #000000;
         font-weight: bold;
+        line-height: 30px;
+    }
+
+    &__title {
+        width: 100%;
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    &__item, &__item-invisible {
+        overflow: hidden;
+        width: 30px;
+        padding: 5px 10px;
+        font-size: 12px;
+        text-overflow: ellipsis;
+        text-align: center;
+        white-space: nowrap;
+
+        &-invisible {
+            color: #eeeeee;
+        }
+    }
+
+    &__checkbox, &__document-checkbox {
+        width: 50%;
+        text-align: center;
     }
 
     &__document-name {
-        padding-left: 20px;
+        display: block;
+        overflow: hidden;
+        width: 50%;
+        padding-left: 10px;
+        font-size: 12px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
+
+}
+
+.copy-from {
+    margin-right: 10px;
 }

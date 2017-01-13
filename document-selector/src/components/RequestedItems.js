@@ -16,8 +16,8 @@ export default class RequestedItems extends Component {
         });
 
         return (
-            <tr>
-                <td>{document.name}</td>
+            <tr className="group-table__document-row">
+                <td className="group-table__document-name">{document.name}</td>
                 {requestedItems}
             </tr>
         );

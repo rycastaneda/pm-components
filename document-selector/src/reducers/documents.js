@@ -5,7 +5,7 @@ import {
     GROUP_TOGGLE,
     REQUESTED_ITEM_TOGGLE
 } from '../constants/DocumentSelector';
-import { normalizeObject, saveDocument } from '../utility/utils';
+import { normalizeObject } from '../utility/utils';
 
 const INITIAL_STATE = {
     byId: {},
@@ -24,7 +24,6 @@ export function documents(state = INITIAL_STATE, action) {
                 allIds: Object.keys(normalized)
             });
         case DOCUMENT_TOGGLE: 
-            saveDocument(action.document);
             return {
                 ...state,
                 byId: {
@@ -37,7 +36,6 @@ export function documents(state = INITIAL_STATE, action) {
             };
         case GROUP_TOGGLE: 
             action.group.documents.map((document) => {
-                saveDocument(document);
                 state.byId[document.id].requesteditems = action.checked ? [] : action.items; // add requested items to relationships
             });
 

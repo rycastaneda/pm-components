@@ -13,7 +13,7 @@ export default class Document extends Component {
         return (
             <tr className="group-table__document-row">
                 <td className="group-table__document-name">{document.name}</td>
-                <td><input type="checkbox" onChange={() => toggleDocument(document)} checked={checked}/></td>
+                <td className="group-table__document-checkbox"><input type="checkbox" onChange={() => toggleDocument(document)} checked={checked}/></td>
             </tr>
         );
     }

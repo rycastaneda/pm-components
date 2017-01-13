@@ -26,15 +26,3 @@ export function normalizeObject(collections) {
     return normalized;
 }
 
-
-export function saveDocument(doc) {
-    let index = Plantminer.documents.indexOf(doc.id);
-    if (index < 0) {
-        Plantminer.documents.push(doc.id);
-    } else {
-        Plantminer.documents.splice(index, 1);
-    }
-
-    return doc;
-}
-

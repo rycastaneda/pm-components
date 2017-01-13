@@ -31,8 +31,14 @@ class DocumentSelector extends Component {
 
     render() {
         return (
-            <div>
-                <button>Copy From</button>
+            <div className="db-form-section">
+                <div className="row">
+                    <h6 className="db-form-title">
+                        <span className="pull-left">Documents</span> 
+                        <button className="pull-right db-function copy-from">Copy From</button>
+                        <div className="clearfix"></div>
+                    </h6>
+                </div>
                 {document.querySelector('[data-all-items]') ? 
                 <div>
                     <input 
@@ -78,7 +84,7 @@ function mapStateToProps(state) {
                 let items = documents.byId[documentId].requesteditems.map((item) => {
                     return requestedItems.byId[item];
                 });
-                
+
                 documents.byId[documentId].items = items;
 
                 if (items.length) { // store those with added items on addedDocuments field

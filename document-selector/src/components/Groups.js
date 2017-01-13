@@ -7,6 +7,7 @@ const Groups = ({ groups, items, toggleItem, toggleGroup, toggleDocument }) => {
 
         return <Group 
             key={key}
+            index={key}
             items={items} 
             group={group} 
             documents={group.documents} 

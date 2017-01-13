@@ -4,6 +4,7 @@ import Documents from './Documents';
 export default class Group extends Component {
     render() {
         const {
+            index,
             group,
             documents,
             items,
@@ -18,7 +19,9 @@ export default class Group extends Component {
         });
 
         const requestedItems = items.allIds.map((id, key) => {
-            return <td key={key}>{items.byId[id].title}</td>;
+            return <td className={index === 0 ? 'group-table__item' : 'group-table__item-invisible' } key={key}>
+                {items.byId[id].title}
+            </td>;
         });
 
         return (
@@ -27,14 +30,14 @@ export default class Group extends Component {
                     <table className="group-table">
                         <tbody>
                             <tr className="group-table__header">
-                                <td>{group.title}</td>
+                                <td className="group-table__title">{group.title}</td>
                                 {qs ? 
-                                <td>
+                                <td className="group-table__checkbox">
                                     <input 
                                     type="checkbox" 
                                     checked={groupChecked}
                                     onChange={() => toggleGroup(group, groupChecked)}/>
-                                </td> : requestedItems}
+                                </td> : requestedItems }
                             </tr>
                         </tbody>
                         <Documents items={items} documents={documents} toggleItem={toggleItem} toggleDocument={toggleDocument}/>
@@ -46,6 +49,7 @@ export default class Group extends Component {
 }
 
 Group.propTypes = {
+    index: PropTypes.number,
     group: PropTypes.object,
     documents: PropTypes.array,
     items: PropTypes.object,
