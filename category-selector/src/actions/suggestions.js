@@ -47,7 +47,7 @@ function getSuggestions(state, value, index) {
         }));
     }
     // Filter suggestions with the given value
-    return unfilteredSuggestions.filter(category => regex.test(category.attributes.title)).sort(function(a, b) {
+    return !value ? unfilteredSuggestions : unfilteredSuggestions.filter(category => regex.test(category.attributes.title)).sort(function(a, b) {
         const value = escapedValue.toLowerCase();
         const aTitle = a.attributes.title;
         const bTitle = b.attributes.title;
