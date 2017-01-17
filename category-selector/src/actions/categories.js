@@ -7,7 +7,6 @@ import {
     ADD_DROPDOWN,
     REQUEST_FAILED
 } from '../constants/ActionTypes';
-import { readEndpoint } from 'redux-json-api';
 import { resetDropDowns } from './suggestions';
 import api from '../../../shared/api.config';
 
@@ -71,37 +70,27 @@ export function fetchCategories(categoryType) {
 
         return new Promise(
             function(resolve, reject) {
-                if (navigator.appName === 'Microsoft Internet Explorer' ||  !!(navigator.userAgent.match(/Trident/) || navigator.userAgent.match(/rv 11/))) {
-                    const apiHost = api.configureHostname();
-                    const apiHeaders = api.configureHeaders();
-                    const xhttp = new XMLHttpRequest();
+                const apiHost = api.configureHostname();
+                const apiHeaders = api.configureHeaders();
+                const xhttp = new XMLHttpRequest();
 
-                    xhttp.onreadystatechange = function() {
-                        if (this.readyState === 4 && this.status === 200) {
-                            dispatch(receiveCategories(type, JSON.parse(this.responseText)));
-                            resolve();
-                        }
-                    };
-
-                    xhttp.onerror = function(error) {
-                        window.console.log('error', error);
-                        reject();
-                    };
-
-                    xhttp.open('GET', `${apiHost}/categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`, true);
-                    for (let t in apiHeaders) {
-                        xhttp.setRequestHeader(t, apiHeaders[t]);
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 200) {
+                        dispatch(receiveCategories(type, JSON.parse(this.responseText)));
+                        resolve();
                     }
-                    xhttp.send();
-                } else {
-                    dispatch(readEndpoint(`categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`))
-                    // Dispatch an action that categories have been received from API
-                        .then((response) => {
-                            dispatch(receiveCategories(type, response));
-                            resolve();
-                        })
-                        .catch(() => reject());
+                };
+
+                xhttp.onerror = function(error) {
+                    window.console.log('error', error);
+                    reject();
+                };
+
+                xhttp.open('GET', `${apiHost}/categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`, true);
+                for (let t in apiHeaders) {
+                    xhttp.setRequestHeader(t, apiHeaders[t]);
                 }
+                xhttp.send();
             }
         );
     };
