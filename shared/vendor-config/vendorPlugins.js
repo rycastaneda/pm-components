@@ -9,7 +9,6 @@ module.exports = [
     'react-dom',
     'react-redux',
     'redux',
-    'redux-json-api',
     'axios',
     'redux-thunk'
 ];
