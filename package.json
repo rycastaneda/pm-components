@@ -1,6 +1,6 @@
 {
   "name": "plantminer-components",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "description": "Collection of plantminer components",
   "engines": {
     "node": ">=4",
