@@ -9,6 +9,5 @@ module.exports = [
     'react-dom',
     'react-redux',
     'redux',
-    'axios',
     'redux-thunk'
 ];
