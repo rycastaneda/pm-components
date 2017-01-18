@@ -7,8 +7,8 @@ import {
     ADD_DROPDOWN,
     REQUEST_FAILED
 } from '../constants/ActionTypes';
-import { readEndpoint } from 'redux-json-api';
 import { resetDropDowns } from './suggestions';
+import api from '../../../shared/api.config';
 
 /**
  *
@@ -70,13 +70,27 @@ export function fetchCategories(categoryType) {
 
         return new Promise(
             function(resolve, reject) {
-                dispatch(readEndpoint(`categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`))
-                // Dispatch an action that categories have been received from API
-                    .then((response) => {
-                        dispatch(receiveCategories(type, response));
+                const apiHost = api.configureHostname();
+                const apiHeaders = api.configureHeaders();
+                const xhttp = new XMLHttpRequest();
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 200) {
+                        dispatch(receiveCategories(type, JSON.parse(this.responseText)));
                         resolve();
-                    })
-                    .catch(() => reject());
+                    }
+                };
+
+                xhttp.onerror = function(error) {
+                    window.console.log('error', error);
+                    reject();
+                };
+
+                xhttp.open('GET', `${apiHost}/categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`, true);
+                for (let t in apiHeaders) {
+                    xhttp.setRequestHeader(t, apiHeaders[t]);
+                }
+                xhttp.send();
             }
         );
     };
@@ -113,8 +127,8 @@ export function fetchCategoriesIfNeeded(categoryType) {
         if (!categories) {
             // If not, make an API call to get categories
             dispatch(fetchCategories(categoryType))
-                // Catch errors if API request failed
-                .catch(() => dispatch(reportError(type)));
+            // Catch errors if API request failed
+            .catch(() => dispatch(reportError(type)));
         } else {
             // If they are, display an input with dropdown suggestions
             return dispatch(addDropDown());
@@ -202,7 +216,8 @@ export function selectCategory(category, index) {
  */
 export function triggerDomChanges(id = 0, state = {}) {
     const el = document.getElementById('qr_category_id') || {};
-    const triggerChange = new Event('change');
+    const triggerChange = document.createEvent('HTMLEvents');
+    triggerChange.initEvent('change', false, true);
 
     el.value = id;
     el.dispatchEvent = el.dispatchEvent || function() {};
