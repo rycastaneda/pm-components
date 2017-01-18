@@ -5,8 +5,8 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
 import DocumentUploader from './containers/DocumentUploader';
-import { setEndpointHost, setEndpointPath, setHeaders } from 'redux-json-api';
 import api from '../../shared/api.config';
+import 'babel-polyfill';
 import axios from 'axios';
 import './styles/index.scss';
 
@@ -26,11 +26,6 @@ let headers = api.configureHeaders();
 let hostname = api.configureHostname();
 
 headers['Content-Type'] = 'application/json';
-
-store.dispatch(setEndpointHost(hostname));
-store.dispatch(setEndpointPath(''));
-store.dispatch(setHeaders(headers));
-
 axios.defaults.baseURL = hostname;
 axios.defaults.headers.common = headers;
 

@@ -22,13 +22,6 @@ import {
     GROUPS_DOWNLOAD_STARTED,
     GROUPS_DOWNLOADED
 } from '../constants/ActionTypes';
-import {
-    createEntity,
-    deleteEntity,
-    updateEntity,
-    setEndpointPath,
-    readEndpoint
-} from 'redux-json-api';
 import axios from 'axios';
 
 export function fetchDocuments(quote_id) {
@@ -37,24 +30,14 @@ export function fetchDocuments(quote_id) {
             type: GROUPS_LOADING
         });
 
-        dispatch(setEndpointPath(``));
-
-        dispatch(readEndpoint(`document-groups?include=documents&filter[defaults]=1`))
+        axios.get(`/document-groups?include=documents&filter[defaults]=1`)
             .then((defaults) => {
-                if (defaults && (defaults.response && !defaults.response.ok)) { // error
-                    return;
-                }
-
-                return dispatch({ type: GROUPS_RECEIVING_DEFAULTS, defaults });
+                return dispatch({ type: GROUPS_RECEIVING_DEFAULTS, defaults: defaults.data });
             });
 
-        return dispatch(readEndpoint(`document-groups?include=documents&filter[quote_id]=${quote_id}`))
+        axios.get(`/document-groups?include=documents&filter[quote_id]=${quote_id}`)
             .then((groups) => {
-                if (groups && (groups.response && !groups.response.ok)) { // error
-                    return;
-                }
-
-                return dispatch({ type: GROUPS_RECEIVING, groups });
+                return dispatch({ type: GROUPS_RECEIVING, groups: groups.data });
             });
 
     };
@@ -66,17 +49,19 @@ export function addGroup(title, isDefault, quote_id, callback) {
             type: GROUPS_LOADING
         });
 
-        dispatch(setEndpointPath(``));
+        const newGroup = {
+            data: {
+                type: 'document-groups',
+                attributes: {
+                    title,
+                    default: isDefault,
+                    quote_id
+                },
+                relationships: {}
+            }
+        };
 
-        dispatch(createEntity({
-            type: 'document-groups',
-            attributes: {
-                title,
-                default: isDefault,
-                quote_id
-            },
-            relationships: {}
-        })).then((response) => {
+        axios.post('/document-groups', newGroup).then((response) => {
             callback && callback();
 
             return dispatch({
@@ -95,9 +80,9 @@ export function removeGroup(group, index) {
             index
         });
 
-        dispatch(setEndpointPath(``));
-
-        dispatch(deleteEntity(group))
+        axios.delete(`/document-groups/${group.id}`, {
+            data: group
+        })
         .then(() => {
             return dispatch({
                 type: GROUP_REMOVED,
@@ -134,15 +119,17 @@ export function renamingGroup(index, id, title) {
             index
         });
 
-        dispatch(setEndpointPath(``));
-
-        dispatch(updateEntity({
-            type: 'document-groups',
-            id,
-            attributes: {
-                title
+        const newGroup = {
+            data: {
+                type: 'document-groups',
+                id,
+                attributes: {
+                    title
+                }
             }
-        }))
+        };
+
+        axios.patch('/document-groups/' + id, newGroup)
         .then(() => {
             return dispatch({
                 type: GROUP_RENAMED,

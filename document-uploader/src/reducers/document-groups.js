@@ -62,7 +62,7 @@ export function documentGroups(state = INITIAL_STATE, action) {
         case GROUP_ADDED:
             return Object.assign({}, state, {
                 loading: false,
-                defaults: state.defaults.concat(action.group),
+                defaults: state.defaults.concat(action.group.data),
                 data: groups(state.data, action)
             });
         case GROUPS_DOWNLOAD_STARTED: 
@@ -113,8 +113,8 @@ function groups(state = [], action) {
 
     switch (action.type) {
         case GROUP_ADDED:
-            Object.assign(action.group.attributes, DEFAULT_GROUP_STATES.attributes);
-            return state.concat(action.group);
+            Object.assign(action.group.data.attributes, DEFAULT_GROUP_STATES.attributes);
+            return state.concat(action.group.data);
         case GROUP_RENAME_TOGGLE:
             return updatingGroup({
                 attributes: Object.assign({}, state[action.index].attributes, {
