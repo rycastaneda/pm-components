@@ -139,7 +139,7 @@ class DocumentGroup extends Component {
         return (
             <div className="group-panel">
                 <div className="row container text-center">
-                    <button className="btn btn-default" onClick={() => {
+                    <button className="db-function" onClick={() => {
                         this.handleDownloadDocumentGroups();
                     }}>
                         <i className={`fa ${this.props.documentGroups.downloading ? 'fa-spin fa-spinner' : 'fa-download'}`}></i>

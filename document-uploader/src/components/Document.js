@@ -34,6 +34,8 @@ const Document = ({ file, preview, groupIndex, onFileRemove, onDownloadFile }) =
         >{thumb}</a>
     );
 
+    const stamp = <div className="document__timestamp">{moment(date_created).fromNow()}</div>;
+
     let date_created = file.attributes.created_at;
 
     if (!preview) {
@@ -48,7 +50,7 @@ const Document = ({ file, preview, groupIndex, onFileRemove, onDownloadFile }) =
                         { preview ? [thumb, progress] : [removeBtn, link] }
                         <p className="document__filename">{file.attributes.name}</p>
                         <div className="document__filesize">{filesize(file.attributes.size)}</div>
-                        <div className="document__timestamp">{moment(date_created).fromNow()}</div>
+                        { preview ? null : stamp }
                     </div>
                 </div>
             </div>

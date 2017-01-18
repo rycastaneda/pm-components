@@ -45,9 +45,9 @@ const Group = ({
         (<i onClick={() => toggleRenaming(groupIndex)} className="group-panel__actions fa fa-pencil"></i>) ;
 
     return (
-        <div className="panel panel-default group-panel" key={groupIndex}>
+        <div className="db-form-section group-panel" key={groupIndex}>
             {group.attributes.is_updating ? <Loader /> : ''}
-            <div className="panel-heading">
+            <div className="db-form-title">
                 <aside className="pull-left">
                     {group.attributes.is_renaming ? title : group.attributes.title}
                 </aside>

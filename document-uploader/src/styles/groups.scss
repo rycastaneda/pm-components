@@ -37,6 +37,8 @@
 
     &__image {
         z-index: 2;
+        text-align: center;
+        font-size: 12px;
     }
 
     &__remove-icon {
@@ -57,8 +59,7 @@
     }
 
     &__filename {
-        margin: 0;
-        text-align: center;
+        margin-top: 5px;
     }
 
     &__filesize, $__timestamp {
