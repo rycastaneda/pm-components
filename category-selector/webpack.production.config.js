@@ -54,9 +54,6 @@ module.exports = {
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.optimize.DedupePlugin(),
         new ExtractTextPlugin('./index.css'),
-        // In order to reduce the size of app bundle
-        // We are using a dll library reference to point to a pre build vendor bundle
-        // VWhen vendor bundle is rebuild - all apps have to rebuild to match the changes
         new webpack.DllReferencePlugin({
             context: '.',
             manifest: require('../shared/dist/vendor-manifest.json')

@@ -47,26 +47,20 @@ module.exports =  {
             }
         ]
     },
-    // Entry point for node-sass files
     sassLoader: {
-        includePaths: ['src/styles/index']
+        includePaths: ['src/index']
     },
     plugins: [
-        // Enable stylelint plugin to lint scss files
-        // By default, the build WILL fail if there are any errors
         new StyleLintPlugin({
             syntax: 'scss'
         }),
-        // Define node environment to be 'develop'
         new webpack.DefinePlugin({
             'process.env': {
                 'NODE_ENV': JSON.stringify('develop')
             }
         }),
         new webpack.NoErrorsPlugin(),
-        // Enable hot module reload
         new webpack.HotModuleReplacementPlugin(),
-        // Generates a base html
         new HtmlWebpackPlugin({
             template: './index.html'
         })
