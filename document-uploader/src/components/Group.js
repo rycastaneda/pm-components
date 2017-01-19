@@ -64,7 +64,7 @@ const Group = ({
                 <Dropzone className="dropzone" accept="application/pdf" onDrop={(files) => {
                     catchFiles(groupIndex, group.id, files);
                 }}>
-                    <p className="text-center dropzone__placeholder">Drop files here</p>
+                    <p className="text-center dropzone__placeholder"><i className="fa fa-cloud-upload"></i> Drop files here or click to select files.</p>
                     {documentsAdded.length ?
                     <Documents
                         files={documentsAdded}
