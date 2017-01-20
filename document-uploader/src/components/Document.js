@@ -11,7 +11,7 @@ const Document = ({ file, preview, groupIndex, onFileRemove, onDownloadFile }) =
     );
 
     const removeBtn = (
-        <div className="document__remove-icon">
+        <div key={`remove-file.id + 1`} className="document__remove-icon">
             <a onClick={() => {
                 onFileRemove(groupIndex, file);
             }} className="icon-btn icon-btn-hollow">
@@ -27,7 +27,7 @@ const Document = ({ file, preview, groupIndex, onFileRemove, onDownloadFile }) =
         (<i className={`document__thumb  ${!onFileRemove ? 'document__thumb--added' : ''} fa fa-file-pdf-o`}></i>);
 
     const link = (
-        <a key={file.id + 1} 
+        <a key={`link-${file.id + 1}`} 
         onClick={() => {
             onDownloadFile(file.links && file.links.self || '', groupIndex, file.attributes.name);
         }}
@@ -41,7 +41,6 @@ const Document = ({ file, preview, groupIndex, onFileRemove, onDownloadFile }) =
     } 
 
     const stamp = <div className="document__timestamp">{moment(date_created).fromNow()}</div>;
-
     return (
         <div className="col-lg-3 col-md-6 col-sm-6">
             <div className="document">
