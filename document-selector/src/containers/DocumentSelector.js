@@ -53,8 +53,6 @@ class DocumentSelector extends Component {
             this.handleCloseItemModal();
             return this.props.dispatch(copyItem(item));
         }
-
-
     }
 
     handleSelectItem(item) {
@@ -62,22 +60,28 @@ class DocumentSelector extends Component {
     }
 
     render() {
+        const copyModal = (
+            <div className="pull-right">
+                <button className="db-function copy-from" onClick={this.handleOpenItemModal}>Copy From</button>
+                <CopyFromModal
+                    items={this.props.requestedItems}
+                    isOpen={this.props.ui.isOpen}
+                    active={this.props.ui.selectedItem}
+                    closeModal={this.handleCloseItemModal}
+                    copyItem={this.handleCopyItem}
+                    selectItem={this.handleSelectItem}
+                    >
+                </CopyFromModal>
+            </div>
+        );
+
         return (
             <div className="db-form-section">
                 <div>
                     <h6 className="db-form-title">
                         <span className="pull-left">Documents</span> 
-                        <button className="pull-right db-function copy-from" onClick={this.handleOpenItemModal}>Copy From</button>
+                        {document.querySelector('[data-all-items]')? copyModal : ''}
                         <div className="clearfix"></div>
-                        <CopyFromModal
-                            items={this.props.requestedItems}
-                            isOpen={this.props.ui.isOpen}
-                            active={this.props.ui.selectedItem}
-                            closeModal={this.handleCloseItemModal}
-                            copyItem={this.handleCopyItem}
-                            selectItem={this.handleSelectItem}
-                            >
-                        </CopyFromModal>
                     </h6>
                 </div>
                 {document.querySelector('[data-all-items]') ? 
