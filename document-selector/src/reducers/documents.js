@@ -3,6 +3,7 @@ import {
     DOCUMENTS_RECEIVING,
     DOCUMENT_TOGGLE,
     GROUP_TOGGLE,
+    SELECT_ITEM,
     REQUESTED_ITEM_TOGGLE
 } from '../constants/DocumentSelector';
 import { normalizeObject } from '../utility/utils';
@@ -17,7 +18,10 @@ export function documents(state = INITIAL_STATE, action) {
 
     switch (action.type) {
         case DOCUMENTS_RECEIVING:
-            normalized = normalizeObject(action.response.data);
+            normalized = normalizeObject(action.response.data, function(relationships) {
+                relationships['saveditems'] = relationships['requesteditems'];
+                return relationships;
+            });
 
             return Object.assign({}, state, {
                 byId: normalized,
@@ -30,7 +34,12 @@ export function documents(state = INITIAL_STATE, action) {
                     ...state.byId,
                     [action.document.id]: {
                         ...state.byId[action.document.id],
-                        requesteditems: action.document.requesteditems && action.document.requesteditems.length ? []: action.items // toggle requested items with all item ids
+                        requesteditems: action.document.requesteditems && action.document.requesteditems.length 
+                        ? []
+                        : action.items, // toggle requested items with all item ids
+                        saveditems: action.document.requesteditems && action.document.requesteditems.length 
+                        ? []
+                        : action.items 
                     }
                 }
             };
@@ -62,6 +71,17 @@ export function documents(state = INITIAL_STATE, action) {
                 }
 
             };
+
+        case SELECT_ITEM:
+            state.allIds.map((id) => {
+                if (!state.byId[id].saveditems.includes(action.item)) {
+                    state.byId[id].requesteditems = [];
+                } else {
+                    state.byId[id].requesteditems = state.byId[id].saveditems;
+                }
+            });
+
+            return { ...state };
         default:
             return state;
     }

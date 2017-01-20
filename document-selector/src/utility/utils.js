@@ -1,4 +1,4 @@
-export function normalizeObject(collections) {
+export function normalizeObject(collections, callback) {
     let normalized = {};
     collections.map((collection) => {
         let relationships = {};
@@ -10,6 +10,10 @@ export function normalizeObject(collections) {
                 relationships[key] = collection.relationships[key].data.map((relationship) => {
                     return relationship.id;
                 });
+            }
+
+            if (callback) {
+                relationships = callback(relationships);
             }
         }
 

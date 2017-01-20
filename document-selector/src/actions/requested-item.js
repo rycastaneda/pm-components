@@ -1,7 +1,11 @@
 import { 
     REQUESTED_ITEMS_FETCHING, 
     REQUESTED_ITEMS_RECEIVING,
-    REQUESTED_ITEM_TOGGLE
+    REQUESTED_ITEM_TOGGLE,
+    OPEN_COPY_MODAL,
+    CLOSE_COPY_MODAL,
+    SELECT_ITEM,
+    COPY_ITEM
 } from '../constants/DocumentSelector';
 import axios from 'axios';
 
@@ -52,5 +56,36 @@ export function toggleItem(document, item, checked) {
 }
 
 
+export function openItemModal() {
+    return (dispatch) => {
+        dispatch({
+            type: OPEN_COPY_MODAL
+        });
+    };
+}
 
+export function closeItemModal() {
+    return (dispatch) => {
+        dispatch({
+            type: CLOSE_COPY_MODAL
+        });
+    };
+}
 
+export function copyItem(item) {
+    return (dispatch) => {
+        dispatch({
+            type: COPY_ITEM,
+            item
+        });
+    };
+}
+
+export function selectItem(item) {
+    return (dispatch) => {
+        dispatch({
+            type: SELECT_ITEM,
+            item
+        });
+    };
+}

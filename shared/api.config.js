@@ -5,7 +5,6 @@
  *
  * @returns {{Authorization: string, Accept: string}}
  */
-<<<<<<< HEAD
 function configureHeaders() {
     var COOKIE_TOKEN = 'pm_token';
 
@@ -25,7 +24,7 @@ function configureHeaders() {
         Authorization: 'Bearer ' + token,
         Accept: 'application/vnd.pm.v1+json',
         'Content-Type': 'application/vnd.pm.v1+json'
-    };
+    });
 }
 
 /**

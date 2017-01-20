@@ -32,6 +32,7 @@
 
     &__checkbox, &__document-checkbox {
         width: 50%;
+        padding-right: 10px;
         text-align: center;
     }
 
@@ -49,4 +50,17 @@
 
 .copy-from {
     margin-right: 10px;
+}
+
+.requestedItems {
+
+    li {
+
+        &.active, &.active:hover {
+            color: #ffffff;
+            background-color: #e68020;
+            border-color: #e68020;
+        }
+
+    }
 }

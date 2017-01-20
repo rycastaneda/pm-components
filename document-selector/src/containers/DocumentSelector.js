@@ -1,9 +1,16 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchDocuments, toggleDocument, toggleGroup } from '../actions/documents';
-import { toggleItem } from '../actions/requested-item';
+import { 
+    toggleItem, 
+    openItemModal, 
+    closeItemModal, 
+    copyItem,
+    selectItem
+} from '../actions/requested-item';
 import Grid from '../components/Grid';
 import DocumentGroupSelector from '../components/DocumentGroupSelector';
+import CopyFromModal from '../components/CopyFromModal';
 
 class DocumentSelector extends Component {
     constructor(props) {
@@ -12,6 +19,10 @@ class DocumentSelector extends Component {
         this.handleToggleDocument = this.handleToggleDocument.bind(this);
         this.handleToggleGroup = this.handleToggleGroup.bind(this);
         this.handleToggleItem = this.handleToggleItem.bind(this);
+        this.handleOpenItemModal = this.handleOpenItemModal.bind(this);
+        this.handleCloseItemModal = this.handleCloseItemModal.bind(this);
+        this.handleCopyItem = this.handleCopyItem.bind(this);
+        this.handleSelectItem = this.handleSelectItem.bind(this);
         this.quote_id = document.querySelector('[data-quote-id]').getAttribute('data-quote-id');
         this.field = document.querySelector('[data-field]').getAttribute('data-field');
         this.props.dispatch(fetchDocuments(this.quote_id, document.querySelector('[data-all-items]')));
@@ -29,14 +40,44 @@ class DocumentSelector extends Component {
         return this.props.dispatch(toggleItem(document, item, checked));
     }
 
+    handleOpenItemModal() {
+        return this.props.dispatch(openItemModal());
+    }
+
+    handleCloseItemModal() {
+        return this.props.dispatch(closeItemModal());
+    }
+
+    handleCopyItem(item) {
+        if (item) {
+            this.handleCloseItemModal();
+            return this.props.dispatch(copyItem(item));
+        }
+
+
+    }
+
+    handleSelectItem(item) {
+        return this.props.dispatch(selectItem(item));
+    }
+
     render() {
         return (
             <div className="db-form-section">
                 <div>
                     <h6 className="db-form-title">
                         <span className="pull-left">Documents</span> 
-                        <button className="pull-right db-function copy-from">Copy From</button>
+                        <button className="pull-right db-function copy-from" onClick={this.handleOpenItemModal}>Copy From</button>
                         <div className="clearfix"></div>
+                        <CopyFromModal
+                            items={this.props.requestedItems}
+                            isOpen={this.props.ui.isOpen}
+                            active={this.props.ui.selectedItem}
+                            closeModal={this.handleCloseItemModal}
+                            copyItem={this.handleCopyItem}
+                            selectItem={this.handleSelectItem}
+                            >
+                        </CopyFromModal>
                     </h6>
                 </div>
                 {document.querySelector('[data-all-items]') ? 
@@ -66,6 +107,7 @@ DocumentSelector.propTypes = {
     dispatch: PropTypes.func.isRequired,
     groups: PropTypes.array,
     addedDocuments: PropTypes.array,
+    ui: PropTypes.object,
     requestedItems: PropTypes.object
 };
 
