@@ -62,7 +62,10 @@ class DocumentSelector extends Component {
     render() {
         const copyModal = (
             <div className="pull-right">
-                <button className="db-function copy-from" onClick={this.handleOpenItemModal}>Copy From</button>
+                <button className="db-function copy-from" onClick={(e) => {
+                    e.preventDefault();
+                    this.handleOpenItemModal();
+                }}>Copy From</button>
                 <CopyFromModal
                     items={this.props.requestedItems}
                     isOpen={this.props.ui.isOpen}

@@ -8,7 +8,7 @@ const DocumentGroupSelector = ({ groups, items, toggleGroup, toggleDocument }) =
                 <Groups groups={groups} items={items} toggleGroup={toggleGroup} toggleDocument={toggleDocument}/> 
             :<tbody>
                 <tr>
-                    <td>No items found</td>
+                    <td>No documents found</td>
                 </tr>
             </tbody>}
         </table>
