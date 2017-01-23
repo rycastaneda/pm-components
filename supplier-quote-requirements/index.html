@@ -1,0 +1,25 @@
+<!-- This template is for reference only and is ONLY displayed for local development -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+        <script>
+            window.addEventListener("load", function() {
+                // Replicate behaviour inside php page
+                var el = document.getElementById('selected-item-row-id');
+
+                el.value = '62746';
+                el.dispatchEvent(new Event('input'));
+            });
+        </script>
+    </head>
+    <body>
+    <input type="hidden" id="selected-item-row-id" value="" />
+    <input type="hidden" id="quote-id" value="28460" />
+    <!-- Change 'data-component' to the name of your component -->
+    <div data-component="supplier-quote-requirements">Loading...</div>
+    </body>
+</html>
