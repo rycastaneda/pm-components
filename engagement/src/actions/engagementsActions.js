@@ -1,0 +1,107 @@
+import {
+    RECEIVE_ENGAGEMENTS,
+    ENGAGEMENT_DELETED
+} from '../constants/ActionTypes';
+
+import { setEndpointPath, readEndpoint, deleteEntity } from 'redux-json-api';
+
+export function loadEngagements(quoteId) {
+    const endPoint = 'engagements?include=matchedItem.matchedSupplier,matchedItem.requestedItem';
+
+    return (dispatch) => {
+        dispatch(setEndpointPath(`/searcher-quote-requests/${quoteId}`));
+        dispatch(readEndpoint(endPoint))
+        .then((response) => {
+            dispatch(loadEngagementsSuccess(response));
+        }).catch((error) => {
+            window.console.log(error);
+        });
+    };
+}
+
+function getSupplier(included, matchedItemId) {
+    let supplier = included.filter(function(i) {
+        return i.id === matchedItemId;
+    }).reduce(
+        (a, b) => b.relationships.matchedSupplier.data, {}
+    ).reduce((a, b) => b, {});
+
+    let supplierDetails = included.filter(i =>
+        i.type === 'supplier' && i.id === supplier.id
+    ).reduce(a => a);
+
+    return supplierDetails;
+}
+
+export function loadEngagementsSuccess(engagements) {
+    const pendingEngagements = engagements.data
+        .filter(i => i.attributes.status === 1)
+        .map((engagement) => {
+            let matchedItemId = engagement.relationships.matchedItem.data.id;
+            let engagementDetailId = engagement.relationships.engagementDetails.data[0].id;
+            let userId = engagement.relationships.user.data.id;
+            return {
+                'type': 'engagements',
+                'id': engagement.id,
+                'attributes': engagement.attributes,
+                'engagementDetails': engagements.included
+                    .filter(i => (i.type === 'engagement-details' && i.id === engagementDetailId))
+                    .map((item) => {
+                        let pricingOption = engagements.included.filter(
+                            i => (i.type === 'pricing-option' && i.id === item.relationships.pricingOption.data.id)
+                        ).reduce(a => a);
+                        return {
+                            type: item.type,
+                            id: item.id,
+                            attributes: item.attributes,
+                            pricingOption: pricingOption
+                        };
+                    }),
+                'matchedItem': engagements.included
+                    .filter(i => (i.type === 'matched-item' && i.id === matchedItemId))
+                    .map((item) => {
+                        return {
+                            type: item.type,
+                            id: item.id,
+                            attributes: item.attributes
+                        };
+                    }).reduce(a => a),
+                'requestedItem': engagements.included
+                    .filter(i => (i.type === 'matched-item' && i.id === matchedItemId))
+                    .map((item) => {
+                        return item.relationships.requestedItem.data;
+                    }).reduce(a => a),
+                'createdBy': engagements.included
+                    .filter(i => (i.type === 'user' && i.id === userId))
+                    .map((user) => {
+                        return user.attributes.first_name + ' ' + user.attributes.last_name;
+                    }).reduce(a => a),
+                'supplier': getSupplier(engagements.included, matchedItemId)
+            };
+        });
+
+    const sentEngagements = engagements.data.filter(i => i.attributes.status === 2);
+
+    return { type: RECEIVE_ENGAGEMENTS, pendingEngagements, sentEngagements };
+}
+
+export function deleteEngagement(requestedItemId, matchedItemId, engagementId) {
+    return (dispatch, getState) => {
+        const quoteId = getState().itemsReducer.quoteId;
+        dispatch(setEndpointPath(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}`));
+        dispatch(deleteEntity({
+            type: 'engagements',
+            id: engagementId,
+            relationships: {}
+        }))
+        .then((response) => {
+            dispatch({
+                type: ENGAGEMENT_DELETED,
+                id: engagementId
+            });
+            window.console.log('response:', response);
+        }).catch((error) => {
+            window.console.log('error:', error);
+        });
+    };
+}

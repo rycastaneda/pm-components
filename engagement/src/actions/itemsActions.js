@@ -1,0 +1,222 @@
+import {
+    UPDATE_QUOTE_ID,
+    LOAD_ITEMS_SUCCESS,
+    LOAD_ITEMS_ERROR,
+    RECEIVE_SUGGESTIONS,
+    RESET_SUGGESTIONS,
+    UPDATE_SUGGESTION
+} from '../constants/ActionTypes';
+import {
+    setEndpointPath,
+    readEndpoint
+} from 'redux-json-api';
+
+/**
+ * source: http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
+ * @param {string} str
+ * @returns {string|XML|*|void}
+ */
+function escapeRegexCharacters(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ *
+ * @param {Array} included
+ * @param {number} id
+ * @returns {supplier: Object}
+ */
+function getSupplier(included, id) {
+    let supplier = included.filter((i) => {
+        if (i.type === 'supplier' && i.id === id) {
+            return i;
+        }
+    })[0];
+    return supplier === undefined ? {} : supplier;
+}
+
+/**
+ *
+ * @param {Array} items
+ * @param {Array} included
+ * @param {string} value
+ * @returns {shouldReturnAll: boolean}
+ */
+function checkAllSuggestions(items, included, value) {
+    let shouldReturnAll = false;
+    for (const item of items) {
+        // Get all matchedItems
+        let detailsMatchedItems = [],
+            supplier = {},
+            supplierTitle = '',
+            matchedItems = item.relationships['matchedItems'].data;
+
+        for (const matchedItem of matchedItems) {
+            if (!shouldReturnAll) {
+                // Get details of matchedItems from included
+                detailsMatchedItems = detailsMatchedItems.concat(included.filter((i) => {
+                    if (i.id === matchedItem.id) {
+                        return i;
+                    }
+                }));
+                // Get details of supplier from included
+                supplier = getSupplier(included, detailsMatchedItems[detailsMatchedItems.length-1].relationships.matchedSupplier.data[0].id);
+                supplierTitle = supplier ? supplier.attributes.title : '';
+
+                shouldReturnAll = detailsMatchedItems.filter((details) => {
+                    if (details.attributes.title + ' - ' + supplierTitle === value) {
+                        return details;
+                    }
+                }).length > 0;
+            }
+        }
+    }
+    return shouldReturnAll;
+}
+
+/**
+ *
+ * @param {Object} state
+ * @param {string} value
+ * @returns {suggestions: Array}
+ */
+function getSuggestions(state, value) {
+    const escapedValue = escapeRegexCharacters(value.trim());
+    const regex = new RegExp(escapedValue, 'i');                            // Create a new regex
+
+    let items = state.itemsReducer.items.data,                     // Get all items
+        included = state.itemsReducer.items.included,                 // Get all included
+        shouldReturnAll = checkAllSuggestions(items, included, value);     // Check if need to display all suggestions
+
+    return items.map((item) => {
+        let matchedItems = item.relationships['matchedItems'].data,      // Get all matchedItems
+            matchedItemsDetails = [];
+
+        for (const matchedItem of matchedItems) {
+            // Get details of matchedItem from included
+            matchedItemsDetails = matchedItemsDetails.concat(included.filter((i) => {
+                if (i.id === matchedItem.id) {
+                    return i;
+                }
+            }));
+            // @todo: Remove this injection of supplier from here // Get details of supplier from included
+            matchedItemsDetails[matchedItemsDetails.length-1].supplier = getSupplier(included, matchedItemsDetails[matchedItemsDetails.length-1].relationships.matchedSupplier.data[0].id);
+        }
+
+        // filter matchedItemsDetails and supplier with the given value
+        matchedItems = matchedItemsDetails.filter((details) => {
+            let supplier = getSupplier(included, details.relationships.matchedSupplier.data[0].id);
+            let supplierTitle = supplier ? supplier.attributes.title : '';
+            return shouldReturnAll ? true : regex.test(details.attributes.title + ' - ' + supplierTitle);
+        });
+
+        return {
+            requestedItem: item.attributes['title'],
+            matchedItems: matchedItems
+        };
+        // filter items that consists of matchedItems
+    }).filter(item => item.matchedItems.length > 0);
+}
+
+/**
+ *
+ * @param {string} quoteId
+ * @returns {function(*, *)}
+ */
+export function loadItems(quoteId) {
+    const endPoint = 'requested-items?filters[only_quoted_item]=1&include=quoteRequest,matchedItems.matchedSupplier';
+    return (dispatch) => {
+        dispatch(setEndpointPath(`/searcher-quote-requests/${quoteId}`));
+        dispatch(readEndpoint(endPoint))
+        .then((response) => {
+            dispatch(loadItemsSuccess(response));
+        }).catch((error) => {
+            dispatch(loadItemsError(error));
+        });
+    };
+}
+
+/**
+ *
+ * @param {string} quoteId
+ * @returns {{type, quoteId: *}}
+ */
+export function updateQuoteId(quoteId) {
+    return {
+        type: UPDATE_QUOTE_ID,
+        quoteId
+    };
+}
+
+/**
+ *
+ * @param {Object} items
+ * @returns {{type, items: Object}}
+ */
+export function loadItemsSuccess(items) {
+    return {
+        type: LOAD_ITEMS_SUCCESS,
+        items
+    };
+}
+
+/**
+ *
+ * @param {Object} error
+ * @returns {{type, error: Object}}
+ */
+export function loadItemsError(error) {
+    return {
+        type: LOAD_ITEMS_ERROR,
+        error
+    };
+}
+
+/**
+ *
+ * @param {Array} suggestions
+ * @returns {{type, suggestions: Array}}
+ */
+export function receiveSuggestions(suggestions) {
+    return {
+        type: RECEIVE_SUGGESTIONS,
+        suggestions
+    };
+}
+
+/**
+ *
+ * @param {string} value
+ * @returns {function(*, *)}
+ */
+export function fetchSuggestions(value) {
+    return (dispatch, getState) => {
+        const suggestions = getSuggestions(getState(), value);
+        return dispatch(receiveSuggestions(suggestions));
+    };
+}
+
+/**
+ *
+ * @returns {{type, suggestions: Array}}
+ */
+export function resetSuggestions() {
+    return {
+        type: RESET_SUGGESTIONS,
+        suggestions: []
+    };
+}
+
+/**
+ *
+ * @param {string} value
+ * @returns {function(*, *)}
+ */
+export function updateSuggestion(value) {
+    return (dispatch) => {
+        return dispatch({
+            type: UPDATE_SUGGESTION,
+            value
+        });
+    };
+}
