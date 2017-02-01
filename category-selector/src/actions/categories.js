@@ -7,7 +7,6 @@ import {
     ADD_DROPDOWN,
     REQUEST_FAILED
 } from '../constants/ActionTypes';
-import { readEndpoint, createEntity, updateEntity, setEndpointPath } from 'redux-json-api';
 import { resetDropDowns } from './suggestions';
 import api from '../../../shared/api.config';
 
@@ -71,37 +70,27 @@ export function fetchCategories(categoryType) {
 
         return new Promise(
             function(resolve, reject) {
-                if (navigator.appName === 'Microsoft Internet Explorer' ||  !!(navigator.userAgent.match(/Trident/) || navigator.userAgent.match(/rv 11/))) {
-                    const apiHost = api.configureHostname();
-                    const apiHeaders = api.configureHeaders();
-                    const xhttp = new XMLHttpRequest();
+                const apiHost = api.configureHostname();
+                const apiHeaders = api.configureHeaders();
+                const xhttp = new XMLHttpRequest();
 
-                    xhttp.onreadystatechange = function() {
-                        if (this.readyState === 4 && this.status === 200) {
-                            dispatch(receiveCategories(type, JSON.parse(this.responseText)));
-                            resolve();
-                        }
-                    };
-
-                    xhttp.onerror = function(error) {
-                        window.console.log('error', error);
-                        reject();
-                    };
-
-                    xhttp.open('GET', `${apiHost}/categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`, true);
-                    for (let t in apiHeaders) {
-                        xhttp.setRequestHeader(t, apiHeaders[t]);
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 200) {
+                        dispatch(receiveCategories(type, JSON.parse(this.responseText)));
+                        resolve();
                     }
-                    xhttp.send();
-                } else {
-                    dispatch(readEndpoint(`categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`))
-                    // Dispatch an action that categories have been received from API
-                        .then((response) => {
-                            dispatch(receiveCategories(type, response));
-                            resolve();
-                        })
-                        .catch(() => reject());
+                };
+
+                xhttp.onerror = function(error) {
+                    window.console.log('error', error);
+                    reject();
+                };
+
+                xhttp.open('GET', `${apiHost}/categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`, true);
+                for (let t in apiHeaders) {
+                    xhttp.setRequestHeader(t, apiHeaders[t]);
                 }
+                xhttp.send();
             }
         );
     };
@@ -178,19 +167,6 @@ export function selectType(categoryType) {
 }
 
 /**
- * @param {Object} item
- * @param {string} categoryId
- * @returns {function(*)}
- */
-export function createItem(item, categoryId) {
-    return (dispatch, getState) => {
-        dispatch(createEntity(item)).then((response) => {
-            triggerDomChanges(response.data.id, categoryId, getState());
-        });
-    };
-}
-
-/**
  *
  * @description
  * This function dispatches select category action and
@@ -201,25 +177,9 @@ export function createItem(item, categoryId) {
  * @returns {function(*)}
  */
 export function selectCategory(category, index) {
-    const hasSubcategories = category.relationships ? category.relationships.categories.data.length > 0 : false;
-    const quoteId =  document.getElementById('quote_id') ? document.getElementById('quote_id').value : null;
-    const itemId =  document.getElementById('item_id') ? parseInt(document.getElementById('item_id').value, 10) : null;
-
-    const item = {
-        type: 'requested-items',
-        id: itemId || null,
-        relationships: {
-            category: {
-                data: {
-                    type: 'categories',
-                    id: category.id
-                }
-            }
-        }
-
-    };
-
     return (dispatch, getState) => {
+        const hasSubcategories = category.relationships ? category.relationships.categories.data.length > 0 : false;
+
         dispatch({
             type: SELECT_CATEGORY,
             category,
@@ -229,15 +189,7 @@ export function selectCategory(category, index) {
         // Trigger other onchange events
         // If user has finished selecting categories
         if (category.attributes.selectable) {
-
-            dispatch(setEndpointPath(`/searcher-quote-requests/${quoteId}`));
-            // Make an api call to generate an item service
-            if (!itemId) {
-                dispatch(createItem(item, category.id));
-                // If item id is already generated, make an update call
-            } else {
-                dispatch(updateEntity(item)).then(() => triggerDomChanges(null, category.id, getState()));
-            }
+            triggerDomChanges(category.id, getState());
         }
 
         if (hasSubcategories) {
@@ -245,6 +197,7 @@ export function selectCategory(category, index) {
         } else {
             return dispatch(resetDropDowns(index + 1));
         }
+
     };
 }
 
@@ -259,22 +212,20 @@ export function selectCategory(category, index) {
  * Also category selector need to interact with other react component.
  * As a temporary solution, global PlantminerComponents object is introduced
  *
- * @param {number} [categoryId=0] - category id
+ * @param {number} [id=0] - category id
  */
-export function triggerDomChanges(itemId = 0, categoryId = 0, state = {}) {
-    const categoryField = document.getElementById('qr_category_id') || {};
-    const itemField = document.getElementById('item_id') || {};
-    const triggerChange = new Event('change');
+export function triggerDomChanges(id = 0, state = {}) {
+    const el = document.getElementById('qr_category_id') || {};
+    const triggerChange = document.createEvent('HTMLEvents');
+    triggerChange.initEvent('change', false, true);
 
-    categoryField.value = categoryId;
-    itemField.value = itemField.value === '0' ? itemId : itemField.value;
-
-    categoryField.dispatchEvent = categoryField.dispatchEvent || function() {};
-    categoryField.dispatchEvent(triggerChange);
+    el.value = id;
+    el.dispatchEvent = el.dispatchEvent || function() {};
+    el.dispatchEvent(triggerChange);
 
     window.PlantminerComponents = window.PlantminerComponents || {};
     window.PlantminerComponents.categorySelector = {
-        selectedCategoryId: parseInt(categoryField, 10),
+        selectedCategoryId: parseInt(id, 10),
         dropDowns: state.categorySelector ? state.categorySelector.dropDowns : {}
     };
 }

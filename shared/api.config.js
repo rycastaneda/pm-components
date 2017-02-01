@@ -109,12 +109,14 @@ function configureHostname() {
         return [protocol, apiBranch.toLowerCase(), staging, countryHost].join('');
     }
 
-    if (hostname.indexOf('staging') > -1) {
-        return [protocol, 'release', staging, countryHost].join('');
+    if (hostname.indexOf('staging.pitclient') > -1) {
+        var apiHostPIT = window.location.hostname.replace(/client.staging.pitclient.com/, 'api.staging.plantminer.com.au');
+        return [protocol, apiHostPIT].join('');
     }
 
-    if (hostname.indexOf('hotfix') > -1) {
-        return [protocol, 'hotfix', staging, countryHost].join('');
+    if (hostname.indexOf('staging') > -1) {
+        var apiHost = window.location.hostname.replace(/www/, 'api');
+        return [protocol, apiHost].join('');
     }
 
     return [protocol, 'api.plantminer', countryHost].join('');
