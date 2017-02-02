@@ -33,5 +33,5 @@ render(
     <Provider store={store}>
         <RequestedDocuments/>
     </Provider>,
-    document.querySelector('[data-component="document-uploader"]')
+    document.querySelector('[data-component="supplier-requested-documents"]')
 );
