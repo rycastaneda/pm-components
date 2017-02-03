@@ -24,7 +24,7 @@ const store = createStore(
 
 let headers = api.configureHeaders();
 let hostname = api.configureHostname();
-
+console.log("headers", headers);
 headers['Content-Type'] = 'application/json';
 axios.defaults.baseURL = hostname;
 axios.defaults.headers.common = headers;

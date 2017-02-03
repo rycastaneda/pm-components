@@ -7,25 +7,25 @@ class Requirements extends Component {
             return <Requirement 
                 key={key}
                 requirement={requirement} 
-                onFileRemove={this.props.onFileRemove}
-                onDropFiles={this.props.onDropFiles}>
+                onRemoveDocument={this.props.onRemoveDocument}
+                onDropDocuments={this.props.onDropDocuments}>
             </Requirement>;
         });
 
         return (
-            <div>
+            <ul className="list-group">
                 {requirements.length 
                 ? requirements
                 : 'No matched items found'}
-            </div>
+            </ul>
         );
     }
 }
 
 Requirements.propTypes = {
     requirements: PropTypes.array.isRequired,
-    onFileRemove: PropTypes.func.isRequired,
-    onDropFiles: PropTypes.func.isRequired
+    onRemoveDocument: PropTypes.func.isRequired,
+    onDropDocuments: PropTypes.func.isRequired
 };
 
 export default Requirements;

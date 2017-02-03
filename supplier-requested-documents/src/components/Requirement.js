@@ -1,44 +1,50 @@
 import React, { PropTypes, Component } from 'react';
 import Dropzone from 'react-dropzone';
-import Files from '../components/Files';
+import Documents from '../components/Documents';
 
 class Requirement extends Component { 
     render() {
         const {
             requirement,
-            onDropFiles,
-            onFileRemove
+            onDropDocuments,
+            onRemoveDocument
         } = this.props;
 
         return (
-            <div>
-                <div className="pull-left">
-                    <h3>{requirement.name}</h3>
-                </div>
-                <div className="pull-right">
-                    <Dropzone 
-                        className="dropzone"
-                        onDrop={(files) => {
-                            onDropFiles(requirement.id, files);
-                        }}>
-                    </Dropzone>
-                </div>
-                {requirement.files && requirement.files.length
-                    ? <Files onFileRemove={onFileRemove} 
-                        files={requirement.files} 
-                        requirementId={requirement.id}>
-                     </Files>
-                    : null }
-                <div className="clearfix"></div>
-            </div>
+            <li>
+                <ul className="list-group">
+                    <li className="list-group-item">
+                        <Dropzone className="dropzone clearfix"
+                            accept="application/pdf"
+                            onDrop={(documents) => {
+                                onDropDocuments(requirement.id, documents);
+                            }}>
+                            <div className="pull-left">
+                                {requirement.name}
+                            </div>
+                            <div className="pull-right">
+                                <p className="text-center dropzone__placeholder">
+                                    <i className="fa fa-cloud-upload"></i> Drop documents here or click to select files.
+                                </p>
+                            </div>
+                        </Dropzone>
+                    </li>
+                    {requirement.documents && requirement.documents.length
+                        ? <Documents onRemoveDocument={onRemoveDocument} 
+                            documents={requirement.documents} 
+                            requirementId={requirement.id}>
+                         </Documents>
+                        : null }
+                </ul>
+            </li>
         );
     }
 }
 
 Requirement.propTypes = {
     requirement: PropTypes.object.isRequired,
-    onFileRemove: PropTypes.func.isRequired,
-    onDropFiles: PropTypes.func.isRequired
+    onRemoveDocument: PropTypes.func.isRequired,
+    onDropDocuments: PropTypes.func.isRequired
 };
 
 export default Requirement;

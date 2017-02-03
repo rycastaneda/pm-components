@@ -1,13 +1,13 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
-import { UPLOAD_IN_PROGRESS, UPLOAD_SUCCESS, UPLOAD_FAILED } from '../constants';
+import { IN_PROGRESS, SUCCESS, FAILED } from '../constants';
 
 const Progress = ({ status, progress }) => (
     <div className="progress">
         <div className={classnames('progress-bar progress-bar-striped', {
-            'progress-bar-success': status === UPLOAD_SUCCESS,
-            'progress-bar-danger': status === UPLOAD_FAILED,
-            'active': status === UPLOAD_IN_PROGRESS
+            'progress-bar-success': status === SUCCESS,
+            'progress-bar-danger': status === FAILED,
+            'active': status === IN_PROGRESS
         })}
             style={{ width: progress + '%' }}>
             <span className="sr-only">{`${progress}% Complete`}</span>

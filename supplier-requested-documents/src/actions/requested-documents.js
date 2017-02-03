@@ -10,15 +10,16 @@ import {
 import requirements from '../mocks/requirements.json';
 import axios from 'axios';
 
-export function fetchRequirements(quote_id, item_id) {
+export function fetchRequirements(quoteId, itemId) {
     return (dispatch) => {
         dispatch({
             type: FETCH_REQUIREMENTS,
-            quote_id,
-            item_id
+            quoteId,
+            itemId
         });
 
         axios.get(`http://httpbin.org/delay/1`)
+        // axios.get(`/supplier-quote-requests/${quoteId}/matched-items/${itemId}?includes=quoteRequestedDocuments&fields=requestedItem`)
             .then(() => {
                 return dispatch({ 
                     type: RECEIVE_REQUIREMENTS, 
@@ -29,54 +30,55 @@ export function fetchRequirements(quote_id, item_id) {
     };
 }
 
-export function incrementProgress(file_id, progress) {
+export function incrementProgress(docId, progress) {
     return {
         type: DOCUMENT_UPLOAD_IN_PROGRESS,
-        file_id,
+        docId,
         progress
     };
 }
 
-export function removeFile(requirement_id, file_id) {
+export function removeDocument(requirementId, docId) {
     return {
         type: DOCUMENT_REMOVING,
-        requirement_id,
-        file_id
+        requirementId,
+        docId
     };
 }
 
-export function catchFiles(quote_id, item_id, requirement_id, filesToBeAdded) {
+export function catchDocuments(quoteId, itemId, requirementId, docsToBeAdded) {
     return (dispatch) => {
         dispatch({
             type: DOCUMENTS_RECEIVING,
-            item_id,
-            filesToBeAdded
+            requirementId,
+            docsToBeAdded
         });
 
-        filesToBeAdded.map((file) => {
-            let fileData = new FormData(); 
+        docsToBeAdded.map((document) => {
+            let docData = new FormData(); 
+            docData.append('quoteId', quoteId);
+            docData.append('itemId', itemId);
+            docData.append('requirementId', requirementId);
+            docData.append('document', document);
 
-            fileData.append('quote_id', quote_id);
-            fileData.append('item_id', item_id);
-            fileData.append('requirement_id', requirement_id);
-            fileData.append('document', file);
-
-            return axios.post(`http://httpbin.org/post`, fileData, {
+            return axios.post(`http://httpbin.org/post`, docData, {
                 onUploadProgress: function(progressEvent) {
                     let percentCompleted = progressEvent.loaded / progressEvent.total;
-                    dispatch(incrementProgress(file.id, Math.ceil(percentCompleted * 100)));
+                    dispatch(incrementProgress(document.id, Math.ceil(percentCompleted * 100)));
                 }
             }).then((response) => {
                 dispatch({
                     type: DOCUMENT_UPLOAD_SUCCESS,
-                    requirement_id
+                    requirementId,
+                    documentId: document.id
                 });
 
                 return response;
             }).catch((response) => {
                 dispatch({
                     typ: DOCUMENT_UPLOAD_FAILED,
-                    file: file.id
+                    requirementId,
+                    documentId: document.id
                 });
 
                 return response;

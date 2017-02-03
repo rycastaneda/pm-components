@@ -1,6 +1,9 @@
 .dropzone {
+    min-height: auto;
+    padding: 0;
+    border: none;
+
     &__placeholder {
-        margin: 70px auto;
         font-size: 12px;
         text-align: center;
     }
