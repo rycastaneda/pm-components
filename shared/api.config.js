@@ -110,7 +110,9 @@ function configureHostname() {
     }
 
     if (hostname.indexOf('staging.pitclient') > -1) {
-        var apiHostPIT = window.location.hostname.replace(/client.staging.pitclient.com/, 'api.staging.plantminer.com.au');
+        var apiHostPIT = (hostname.indexOf('nz.staging.pitclient') > -1)
+                            ? window.location.hostname.replace(/client.nz.staging.pitclient.com/, 'api.staging.plantminer.co.nz')
+                            : window.location.hostname.replace(/client.staging.pitclient.com/, 'api.staging.plantminer.com.au');
         return [protocol, apiHostPIT].join('');
     }
 
