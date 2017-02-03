@@ -102,7 +102,7 @@ function configureHostname() {
         }, {})['apiBranch'];
 
     if (hostname.indexOf('local.dev') > -1 || process.env.NODE_ENV === 'develop') {
-        return protocol + 'api.pm.local.dev';
+        return window.api_url;
     }
 
     if (apiBranch) {
