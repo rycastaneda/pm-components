@@ -10,3 +10,5 @@ export const DOCUMENT_UPLOAD_FAILED = 'DOCUMENT_UPLOAD_FAILED';
 export const IN_PROGRESS = 'IN_PROGRESS';
 export const FAILED = 'FAILED';
 export const SUCCESS = 'SUCCESS';
+
+export const FETCH_FAILED = 'FETCH_FAILED';

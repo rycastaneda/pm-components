@@ -26,7 +26,7 @@ class RequestedDocuments extends Component {
             return file;
         });
 
-        this.props.dispatch(catchDocuments(this.quote_id, this.matched_item, requirement_id, files));
+        this.props.dispatch(catchDocuments(this.quote_id, this.matched_id, requirement_id, files));
     }
 
     handleRemoveDocument(requirement_id, file_id) {
@@ -41,13 +41,17 @@ class RequestedDocuments extends Component {
 
         return (
             <div className="group-panel">
-                {ui.loading
-                ? <Loader></Loader>
-                : <Requirements 
-                    requirements={requirements} 
-                    onRemoveDocument={this.handleRemoveDocument} 
-                    onDropDocuments={this.handleCatchDocs}>
-                  </Requirements>
+                {ui.error === 'FETCH_FAILED' ? 
+                    <div className="alert alert-danger">
+                        <strong>Something went wrong. Please try again later.</strong>
+                    </div>
+                : ui.loading && !ui.error
+                    ? <Loader></Loader>
+                    : <Requirements 
+                        requirements={requirements} 
+                        onRemoveDocument={this.handleRemoveDocument} 
+                        onDropDocuments={this.handleCatchDocs}>
+                      </Requirements>
                 }
             </div>
         );

@@ -14,9 +14,7 @@ class Requirements extends Component {
 
         return (
             <ul className="list-group">
-                {requirements.length 
-                ? requirements
-                : 'No matched items found'}
+                {requirements}
             </ul>
         );
     }

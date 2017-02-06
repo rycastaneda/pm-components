@@ -5,9 +5,9 @@ import {
     DOCUMENT_UPLOAD_IN_PROGRESS,
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_UPLOAD_FAILED,
+    FETCH_FAILED,
     DOCUMENT_REMOVING
 } from '../constants';
-import requirements from '../mocks/requirements.json';
 import axios from 'axios';
 
 export function fetchRequirements(quoteId, itemId) {
@@ -18,12 +18,15 @@ export function fetchRequirements(quoteId, itemId) {
             itemId
         });
 
-        axios.get(`http://httpbin.org/delay/1`)
-        // axios.get(`/supplier-quote-requests/${quoteId}/matched-items/${itemId}?includes=quoteRequestedDocuments&fields=requestedItem`)
-            .then(() => {
+        axios.get(`/supplier-quote-requests/${quoteId}/requested-items?include=complianceDocuments`)
+            .then((response) => {
                 return dispatch({ 
                     type: RECEIVE_REQUIREMENTS, 
-                    requirements
+                    requirements: response.data
+                });
+            }).catch(() => {
+                return dispatch({
+                    type: FETCH_FAILED
                 });
             });
 
@@ -61,7 +64,7 @@ export function catchDocuments(quoteId, itemId, requirementId, docsToBeAdded) {
             docData.append('requirementId', requirementId);
             docData.append('document', document);
 
-            return axios.post(`http://httpbin.org/post`, docData, {
+            return axios.post(`/supplier-quote-requests/${quoteId}/matched-items/${itemId}/documents`, docData, {
                 onUploadProgress: function(progressEvent) {
                     let percentCompleted = progressEvent.loaded / progressEvent.total;
                     dispatch(incrementProgress(document.id, Math.ceil(percentCompleted * 100)));

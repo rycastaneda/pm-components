@@ -21,8 +21,10 @@ export function requirementsDocuments(state = INITIAL_STATE, action) {
 }
 
 function receiveRequirements(state, action) {
-    action.requirements.data.map((requirement) => {
+    console.log("action", action);
+    action.requirements.included.map((requirement) => {
         state.byId[requirement.id] = requirement.attributes;
+        state.byId[requirement.id].documentIds = [];
         state.byId[requirement.id].docsToAdd = [];
         state.allIds.push(requirement.id);
     });

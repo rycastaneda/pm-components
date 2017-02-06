@@ -20,7 +20,7 @@ class Requirement extends Component {
                                 onDropDocuments(requirement.id, documents);
                             }}>
                             <div className="pull-left">
-                                {requirement.name}
+                                {requirement.title}
                             </div>
                             <div className="pull-right">
                                 <p className="text-center dropzone__placeholder">
