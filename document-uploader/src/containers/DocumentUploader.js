@@ -139,12 +139,14 @@ class DocumentGroup extends Component {
         return (
             <div className="group-panel">
                 <div className="row container text-center">
-                    <button className="db-function" onClick={() => {
-                        this.handleDownloadDocumentGroups();
-                    }}>
-                        <i className={`fa ${this.props.documentGroups.downloading ? 'fa-spin fa-spinner' : 'fa-download'}`}></i>
-                        &nbsp; Download All
-                    </button>
+                    {this.props.documents.length ?
+                        <button className="db-function" onClick={() => {
+                            this.handleDownloadDocumentGroups();
+                        }}>
+                            <i className={`fa ${this.props.documentGroups.downloading ? 'fa-spin fa-spinner' : 'fa-download'}`}></i>
+                            &nbsp; Download All
+                        </button>
+                        : null}
                     <hr/>
                 </div>
                 <CSSTransitionGroup
