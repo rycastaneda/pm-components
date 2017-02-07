@@ -1,13 +1,19 @@
 import {
     RECEIVE_REQUIREMENTS,
     DOCUMENTS_RECEIVING,
-    DOCUMENT_REMOVING,
-    DOCUMENT_UPLOAD_SUCCESS
+    RECEIVE_DOC_REQUIREMENTS,
+    DOCUMENT_REMOVING
 } from '../constants';
 
 const INITIAL_STATE = {
-    byId: {}, // array of document groups
-    allIds: []
+    byId: {
+        additional: {
+            title: 'Additional Documents',
+            documentIds: [],
+            docsToAdd: []
+        }
+    }, // array of document groups
+    allIds: ['additional']
 };
 
 export function requirementsDocuments(state = INITIAL_STATE, action) {
@@ -15,18 +21,18 @@ export function requirementsDocuments(state = INITIAL_STATE, action) {
         case RECEIVE_REQUIREMENTS: return receiveRequirements(state, action);
         case DOCUMENTS_RECEIVING: return receiveDocument(state, action);
         case DOCUMENT_REMOVING: return removeDocument(state, action);
+        case RECEIVE_DOC_REQUIREMENTS: return receiveDocRequirements(state, action);
         default:
             return state;
     }
 }
 
 function receiveRequirements(state, action) {
-    console.log("action", action);
     action.requirements.included.map((requirement) => {
-        state.byId[requirement.id] = requirement.attributes;
-        state.byId[requirement.id].documentIds = [];
-        state.byId[requirement.id].docsToAdd = [];
-        state.allIds.push(requirement.id);
+        state.byId[requirement.attributes.pivot.id] = requirement.attributes;
+        state.byId[requirement.attributes.pivot.id].documentIds = [];
+        state.byId[requirement.attributes.pivot.id].docsToAdd = [];
+        state.allIds.push(requirement.attributes.pivot.id);
     });
 
     return Object.assign({}, state);
@@ -59,6 +65,16 @@ function removeDocument(state, action) {
     if (index > -1) {
         requirement.documentIds.splice(index, 1);
     }
+
+    return Object.assign({}, state);
+}
+
+function receiveDocRequirements(state, action) {
+    action.documents.data.map((document) => {
+        if(!document.attributes.requested_document_id) {
+            state.byId['additional'].documentIds.push(document.id); 
+        }
+    });
 
     return Object.assign({}, state);
 }

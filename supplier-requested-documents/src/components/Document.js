@@ -14,7 +14,7 @@ class Document extends Component {
                 {document.progress !== 100 
                 ? <Progress progress={document.progress} status={document.status}></Progress>
                 : null}
-                <span className="pull-left">{document.filename}</span>
+                <span className="pull-left">{document.name}</span>
                 <span className="pull-right">
                     <i className="fa fa-times" onClick={() => onRemoveDocument(requirementId, document.id)}></i>
                 </span>

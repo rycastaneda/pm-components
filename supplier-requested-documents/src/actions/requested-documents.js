@@ -4,6 +4,7 @@ import {
     DOCUMENTS_RECEIVING,
     DOCUMENT_UPLOAD_IN_PROGRESS,
     DOCUMENT_UPLOAD_SUCCESS,
+    RECEIVE_DOC_REQUIREMENTS,
     DOCUMENT_UPLOAD_FAILED,
     FETCH_FAILED,
     DOCUMENT_REMOVING
@@ -20,6 +21,15 @@ export function fetchRequirements(quoteId, itemId) {
 
         axios.get(`/supplier-quote-requests/${quoteId}/requested-items?include=complianceDocuments`)
             .then((response) => {
+
+                axios.get(`/supplier-quote-requests/${quoteId}/matched-items/${itemId}/documents`)
+                .then((response) => {
+                    return dispatch({
+                        type: RECEIVE_DOC_REQUIREMENTS,
+                        documents: response.data 
+                    });
+                });
+
                 return dispatch({ 
                     type: RECEIVE_REQUIREMENTS, 
                     requirements: response.data
@@ -41,11 +51,17 @@ export function incrementProgress(docId, progress) {
     };
 }
 
-export function removeDocument(requirementId, docId) {
-    return {
-        type: DOCUMENT_REMOVING,
-        requirementId,
-        docId
+export function removeDocument(quoteId, itemId, requirementId, docId) {
+    return (dispatch) => {
+        axios.delete(`/supplier-quote-requests/${quoteId}/matched-items/${itemId}/documents/${docId}`)
+            .then(() => {
+                dispatch({
+                    type: DOCUMENT_REMOVING,
+                    requirementId,
+                    docId
+                });
+            });
+
     };
 }
 
@@ -59,9 +75,10 @@ export function catchDocuments(quoteId, itemId, requirementId, docsToBeAdded) {
 
         docsToBeAdded.map((document) => {
             let docData = new FormData(); 
-            docData.append('quoteId', quoteId);
-            docData.append('itemId', itemId);
-            docData.append('requirementId', requirementId);
+
+            if (requirementId !== 'additional') {
+                docData.append('requested_document_id', requirementId);
+            }
             docData.append('document', document);
 
             return axios.post(`/supplier-quote-requests/${quoteId}/matched-items/${itemId}/documents`, docData, {

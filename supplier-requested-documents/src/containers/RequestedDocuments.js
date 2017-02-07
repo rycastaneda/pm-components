@@ -5,6 +5,7 @@ import {
     catchDocuments,
     removeDocument
 } from '../actions/requested-documents';
+import AdditionalDocuments from '../components/AdditionalDocuments';
 import Requirements from '../components/Requirements';
 import Loader from '../components/Loader';
 
@@ -22,7 +23,6 @@ class RequestedDocuments extends Component {
     handleCatchDocs(requirement_id, files) {
         files = files.map((file, index) => {
             file.id = +new Date() + index;
-            file.filename = file.name;
             return file;
         });
 
@@ -30,14 +30,29 @@ class RequestedDocuments extends Component {
     }
 
     handleRemoveDocument(requirement_id, file_id) {
-        this.props.dispatch(removeDocument(requirement_id, file_id));
+        this.props.dispatch(removeDocument(this.quote_id, this.matched_id, requirement_id, file_id));
     }
 
     render() {
         const {
             requirements,
-            ui
+            ui,
+            additionalDocuments
         } = this.props;
+
+        let content;
+
+        if (ui.loading && !ui.error) {
+            content = <Loader></Loader>;
+        } else {
+            content = <div>
+                <Requirements 
+                    requirements={requirements} 
+                    onRemoveDocument={this.handleRemoveDocument} 
+                    onDropDocuments={this.handleCatchDocs}>
+                </Requirements>
+            </div>;
+        }
 
         return (
             <div className="group-panel">
@@ -47,12 +62,8 @@ class RequestedDocuments extends Component {
                     </div>
                 : ui.loading && !ui.error
                     ? <Loader></Loader>
-                    : <Requirements 
-                        requirements={requirements} 
-                        onRemoveDocument={this.handleRemoveDocument} 
-                        onDropDocuments={this.handleCatchDocs}>
-                      </Requirements>
-                }
+                    : content
+                } 
             </div>
         );
     }
@@ -61,6 +72,7 @@ class RequestedDocuments extends Component {
 RequestedDocuments.propTypes = {
     dispatch: PropTypes.func.isRequired,
     requirements: PropTypes.array,
+    additionalDocuments: PropTypes.array,
     ui: PropTypes.object
 };
 
@@ -75,9 +87,18 @@ function mapStateToProps(state) {
     if (!requirementsDocuments.allIds.length) {
         return {
             requirements: [],
+            additionalDocuments: [],
             ui
         };
     }
+
+
+    const additional = requirementsDocuments.byId['additional'];
+    const additionalDocIds = additional.docsToAdd.concat(additional.documentIds);
+
+    const additionalDocuments = additionalDocIds.map((id) => {
+        return documentsToBeAdded.byId[id];
+    });
 
     let requirements = requirementsDocuments.allIds.map((id) => {
         let req = requirementsDocuments.byId[id];
@@ -87,9 +108,9 @@ function mapStateToProps(state) {
         });
 
         return req;
-    });
+    }).reverse();
 
-    return { requirements, ui };
+    return { requirements, ui, additionalDocuments };
 }
 
 export default connect(mapStateToProps)(RequestedDocuments);  // adds dispatch prop

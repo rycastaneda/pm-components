@@ -1,5 +1,6 @@
 import {
     DOCUMENTS_RECEIVING,
+    RECEIVE_DOC_REQUIREMENTS,
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_UPLOAD_FAILED,
     DOCUMENT_UPLOAD_IN_PROGRESS
@@ -19,6 +20,16 @@ export function documentsToBeAdded(state = INITIAL_STATE, action) {
                 doc.progress = 15;
                 state.byId[doc.id] = doc;
                 state.allIds.push(doc.id);
+            });
+
+            return Object.assign({}, state);
+        case RECEIVE_DOC_REQUIREMENTS:
+            action.documents.data.map((document) => {
+                document.attributes.status = SUCCESS;
+                document.attributes.progress = 100;
+                document.attributes.id = document.id;
+                state.byId[document.id] = document.attributes;
+                state.allIds.push(document.id);
             });
 
             return Object.assign({}, state);
