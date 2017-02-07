@@ -16,9 +16,11 @@ export function documentsToBeAdded(state = INITIAL_STATE, action) {
     switch (action.type) {
         case DOCUMENTS_RECEIVING:
             action.docsToBeAdded.map((doc) => {
-                doc.status = IN_PROGRESS;
-                doc.progress = 15;
-                state.byId[doc.id] = doc;
+                state.byId[doc.id] = Object.assign({}, doc, {
+                    status: IN_PROGRESS,
+                    progress: 15,
+                    name: doc.name
+                });
                 state.allIds.push(doc.id);
             });
 

@@ -5,10 +5,11 @@ class Documents extends Component {
     render() {
         const documents = this.props.documents.map((document, key) => {
             return <Document 
-                key={key}
-                document={document} 
-                requirementId={this.props.requirementId} 
-                onRemoveDocument={this.props.onRemoveDocument}></Document>;
+                        key={key}
+                        document={document} 
+                        requirementId={this.props.requirementId} 
+                        onRemoveDocument={this.props.onRemoveDocument}>
+                    </Document>;
         });
 
         return (
@@ -23,7 +24,7 @@ class Documents extends Component {
 
 Documents.propTypes = {
     documents: PropTypes.array.isRequired,
-    requirementId: PropTypes.string.isRequired,
+    requirementId: PropTypes.node.isRequired,
     onRemoveDocument: PropTypes.func.isRequired
 };
 

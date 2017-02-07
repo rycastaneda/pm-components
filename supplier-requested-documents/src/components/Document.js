@@ -12,8 +12,9 @@ class Document extends Component {
         return (
             <li className="list-group-item">
                 {document.progress !== 100 
-                ? <Progress progress={document.progress} status={document.status}></Progress>
-                : null}
+                    ? <Progress progress={document.progress} status={document.status}></Progress>
+                    : null
+                }
                 <span className="pull-left">{document.name}</span>
                 <span className="pull-right">
                     <i className="fa fa-times" onClick={() => onRemoveDocument(requirementId, document.id)}></i>
@@ -26,7 +27,7 @@ class Document extends Component {
 
 Document.propTypes = {
     document: PropTypes.object.isRequired,
-    requirementId: PropTypes.string.isRequired,
+    requirementId: PropTypes.node.isRequired,
     onRemoveDocument: PropTypes.func.isRequired
 };
 

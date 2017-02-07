@@ -5,7 +5,6 @@ import {
     catchDocuments,
     removeDocument
 } from '../actions/requested-documents';
-import AdditionalDocuments from '../components/AdditionalDocuments';
 import Requirements from '../components/Requirements';
 import Loader from '../components/Loader';
 
@@ -22,7 +21,7 @@ class RequestedDocuments extends Component {
 
     handleCatchDocs(requirement_id, files) {
         files = files.map((file, index) => {
-            file.id = +new Date() + index;
+            file.id = +new Date() + index; // create unique ID after dropping the documents
             return file;
         });
 
@@ -36,8 +35,7 @@ class RequestedDocuments extends Component {
     render() {
         const {
             requirements,
-            ui,
-            additionalDocuments
+            ui
         } = this.props;
 
         let content;
@@ -72,7 +70,6 @@ class RequestedDocuments extends Component {
 RequestedDocuments.propTypes = {
     dispatch: PropTypes.func.isRequired,
     requirements: PropTypes.array,
-    additionalDocuments: PropTypes.array,
     ui: PropTypes.object
 };
 
@@ -87,18 +84,9 @@ function mapStateToProps(state) {
     if (!requirementsDocuments.allIds.length) {
         return {
             requirements: [],
-            additionalDocuments: [],
             ui
         };
     }
-
-
-    const additional = requirementsDocuments.byId['additional'];
-    const additionalDocIds = additional.docsToAdd.concat(additional.documentIds);
-
-    const additionalDocuments = additionalDocIds.map((id) => {
-        return documentsToBeAdded.byId[id];
-    });
 
     let requirements = requirementsDocuments.allIds.map((id) => {
         let req = requirementsDocuments.byId[id];
@@ -108,9 +96,9 @@ function mapStateToProps(state) {
         });
 
         return req;
-    }).reverse();
+    }).reverse(); // make the additional documents section appear last
 
-    return { requirements, ui, additionalDocuments };
+    return { requirements, ui };
 }
 
 export default connect(mapStateToProps)(RequestedDocuments);  // adds dispatch prop

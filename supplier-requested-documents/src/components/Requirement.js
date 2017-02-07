@@ -10,6 +10,13 @@ class Requirement extends Component {
             onRemoveDocument
         } = this.props;
 
+        const documents = requirement.documents && requirement.documents.length 
+            ? <Documents onRemoveDocument={onRemoveDocument} 
+                    documents={requirement.documents} 
+                    requirementId={requirement.id}>
+                 </Documents>
+            : null;
+
         return (
             <li>
                 <ul className="list-group">
@@ -29,12 +36,7 @@ class Requirement extends Component {
                             </div>
                         </Dropzone>
                     </li>
-                    {requirement.documents && requirement.documents.length
-                        ? <Documents onRemoveDocument={onRemoveDocument} 
-                            documents={requirement.documents} 
-                            requirementId={requirement.id}>
-                         </Documents>
-                        : null }
+                    {documents}
                 </ul>
             </li>
         );

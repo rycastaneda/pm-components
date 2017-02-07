@@ -21,7 +21,6 @@ export function fetchRequirements(quoteId, itemId) {
 
         axios.get(`/supplier-quote-requests/${quoteId}/requested-items?include=complianceDocuments`)
             .then((response) => {
-
                 axios.get(`/supplier-quote-requests/${quoteId}/matched-items/${itemId}/documents`)
                 .then((response) => {
                     return dispatch({
@@ -79,6 +78,7 @@ export function catchDocuments(quoteId, itemId, requirementId, docsToBeAdded) {
             if (requirementId !== 'additional') {
                 docData.append('requested_document_id', requirementId);
             }
+
             docData.append('document', document);
 
             return axios.post(`/supplier-quote-requests/${quoteId}/matched-items/${itemId}/documents`, docData, {

@@ -3,8 +3,6 @@ import { shallow } from 'enzyme';
 import Loader from './Loader';
 import { expect } from 'chai';
 
-
-
 describe('Loader component: ', () => {
     it('should render a spinner', () => {
         const component = shallow(

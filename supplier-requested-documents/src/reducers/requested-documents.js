@@ -29,10 +29,12 @@ export function requirementsDocuments(state = INITIAL_STATE, action) {
 
 function receiveRequirements(state, action) {
     action.requirements.included.map((requirement) => {
-        state.byId[requirement.attributes.pivot.id] = requirement.attributes;
-        state.byId[requirement.attributes.pivot.id].documentIds = [];
-        state.byId[requirement.attributes.pivot.id].docsToAdd = [];
-        state.allIds.push(requirement.attributes.pivot.id);
+        let id = requirement.attributes.pivot.id;
+
+        state.byId[id] = requirement.attributes;
+        state.byId[id].documentIds = [];
+        state.byId[id].docsToAdd = [];
+        state.allIds.push(id);
     });
 
     return Object.assign({}, state);
@@ -71,9 +73,7 @@ function removeDocument(state, action) {
 
 function receiveDocRequirements(state, action) {
     action.documents.data.map((document) => {
-        if(!document.attributes.requested_document_id) {
-            state.byId['additional'].documentIds.push(document.id); 
-        }
+        state.byId[document.attributes.requested_document_id || 'additional'].documentIds.push(document.id); 
     });
 
     return Object.assign({}, state);
