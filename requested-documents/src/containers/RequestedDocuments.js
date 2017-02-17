@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { getDocuments, updateCheckbox, addNewDocument } from '../actions/requestedDocuments';
+import { getDocuments, updateQuoteId, updateCheckbox, addNewDocument } from '../actions/requestedDocuments';
 import Document from '../components/Document';
 import DocumentSuggestion from '../containers/DocumentSuggestion';
 
@@ -13,7 +13,10 @@ class RequestedDocuments extends Component {
     }
 
     componentWillMount() {
-        return this.props.dispatch(getDocuments());
+        const quoteId = document.getElementById('quote_id').value;
+
+        this.props.dispatch(updateQuoteId(quoteId));
+        this.props.dispatch(getDocuments());
     }
 
     handleCheckboxChange(event, document) {
@@ -25,20 +28,28 @@ class RequestedDocuments extends Component {
     }
 
     render() {
-        const { requestedDocuments } = this.props;
+        const { requestedDocuments, documentSuggestions } = this.props;
 
         return (
-            <div className="requested-documents">
+            <div className="requested-documents col-xs-12">
                 { requestedDocuments.docs.map(document =>
-                    <Document key={document.id}
-                              id={document.id}
+                    <Document key={parseInt(document.id)}
+                              id={parseInt(document.id)}
                               title={document.attributes.title}
                               checked={document.attributes.checked}
                               handleChange={event => this.handleCheckboxChange(event, document)}/>
                 )}
-                <DocumentSuggestion />
-                <button className="btn"
-                        onClick={this.handleClick}>+ Add</button>
+                <div className="row">
+                    <div className="col-md-4">
+                        <DocumentSuggestion />
+                    </div>
+                    <div className="col-md-4">
+                        <button className="btn"
+                                disabled={ !documentSuggestions.input }
+                                onClick={this.handleClick}>+ Add
+                        </button>
+                    </div>
+                </div>
             </div>
         );
     }
@@ -46,14 +57,16 @@ class RequestedDocuments extends Component {
 
 RequestedDocuments.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    requestedDocuments: PropTypes.object
+    requestedDocuments: PropTypes.object,
+    documentSuggestions: PropTypes.object
 };
 
 function mapStateToProps(state) {
-    const { requestedDocuments } = state;
+    const { requestedDocuments, documentSuggestions } = state;
 
     return {
-        requestedDocuments
+        requestedDocuments,
+        documentSuggestions
     };
 }
 

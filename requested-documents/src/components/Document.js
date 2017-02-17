@@ -2,12 +2,14 @@ import React, { PropTypes } from 'react';
 
 const Document = ({ handleChange, id, title, checked = false }) => (
     <div className="checkbox">
-        <input id={`document-${id}`}
-               type="checkbox"
-               checked={checked}
-               onChange={handleChange}
-        />
-        <label htmlFor={`document-${id}`}>{title}</label>
+        <label htmlFor={`document-${id}`}>
+            <input id={`document-${id}`}
+                   type="checkbox"
+                   checked={checked}
+                   onChange={handleChange}
+            />
+            {title}
+        </label>
     </div>
 );
 

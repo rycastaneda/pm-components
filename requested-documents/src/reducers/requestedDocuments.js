@@ -1,6 +1,20 @@
-import { REQUEST_DOCUMENTS, RECEIVE_DOCUMENTS, UPDATED_CHECKBOX_VALUE, ADD_NEW_DOCUMENT } from '../constants/ActionTypes';
+import {
+    REQUEST_DOCUMENTS,
+    RECEIVE_DOCUMENTS,
+    RECEIVE_SUGGESTIONS_DOCUMENTS,
+    UPDATE_QUOTE_ID,
+    UPDATED_CHECKBOX_VALUE,
+    ADD_NEW_DOCUMENT
+} from '../constants/ActionTypes';
 
-export function requestedDocuments(state = { docs: [], isFetching: false }, action) {
+const DEFAULT_STATE = {
+    docs: [],
+    docsSuggestions: [],
+    isFetching: false,
+    quoteId: ''
+};
+
+export function requestedDocuments(state = DEFAULT_STATE, action) {
     switch (action.type) {
         case REQUEST_DOCUMENTS:
             return Object.assign({}, state, {
@@ -9,6 +23,14 @@ export function requestedDocuments(state = { docs: [], isFetching: false }, acti
         case RECEIVE_DOCUMENTS:
             return Object.assign({}, state, {
                 docs: action.response
+            });
+        case RECEIVE_SUGGESTIONS_DOCUMENTS:
+            return Object.assign({}, state, {
+                docsSuggestions: action.response
+            });
+        case UPDATE_QUOTE_ID:
+            return Object.assign({}, state, {
+                quoteId: action.quoteId
             });
         case UPDATED_CHECKBOX_VALUE:
         case ADD_NEW_DOCUMENT:
