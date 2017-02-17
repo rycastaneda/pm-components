@@ -1,0 +1,11 @@
+.dropzone {
+    min-height: auto;
+    padding: 0;
+    border: none;
+
+    &__placeholder {
+        font-size: 12px;
+        text-align: center;
+    }
+}
+
