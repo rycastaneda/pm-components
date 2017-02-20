@@ -4,6 +4,7 @@ import {
     RECEIVE_SUGGESTIONS_DOCUMENTS,
     UPDATE_QUOTE_ID,
     UPDATED_CHECKBOX_VALUE,
+    UPDATING_STATUS,
     ADD_NEW_DOCUMENT
 } from '../constants/ActionTypes';
 
@@ -32,6 +33,7 @@ export function requestedDocuments(state = DEFAULT_STATE, action) {
             return Object.assign({}, state, {
                 quoteId: action.quoteId
             });
+        case UPDATING_STATUS:
         case UPDATED_CHECKBOX_VALUE:
         case ADD_NEW_DOCUMENT:
             return Object.assign({}, state, {
@@ -48,7 +50,17 @@ export function document(state = [], action) {
             return state.map(doc =>
                 doc.id === action.id ? {
                     ...doc, attributes: Object.assign({}, doc.attributes, {
-                        checked: action.value
+                        checked: action.value,
+                        updating: action.updating
+                    })
+                }
+                    : doc
+            );
+        case UPDATING_STATUS:
+            return state.map(doc =>
+                doc.id === action.id ? {
+                    ...doc, attributes: Object.assign({}, doc.attributes, {
+                        updating: action.updating
                     })
                 }
                     : doc
