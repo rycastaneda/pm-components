@@ -26,9 +26,9 @@ export function getDocuments() {
                     .then((response) => {
                         let complianceDocsSearcher = response.data.included;
 
-                        let complianceDocsSearcherIds = complianceDocsSearcher.map(function(complianceDoc) {
+                        let complianceDocsSearcherIds = complianceDocsSearcher ? complianceDocsSearcher.map(function(complianceDoc) {
                             return complianceDoc.attributes.compliance_document_type_id;
-                        });
+                        }) : [];
 
                         complianceDocs = complianceDocs.map(function(complianceDoc) {
                             if (complianceDocsSearcherIds.indexOf(parseInt(complianceDoc.id)) !== -1) {
