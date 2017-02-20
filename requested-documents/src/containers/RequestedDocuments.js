@@ -23,7 +23,8 @@ class RequestedDocuments extends Component {
         return this.props.dispatch(updateCheckbox(event.target.checked, document));
     }
 
-    handleClick() {
+    handleClick(event) {
+        event.preventDefault();
         return this.props.dispatch(addNewDocument());
     }
 
@@ -47,6 +48,7 @@ class RequestedDocuments extends Component {
                     </div>
                     <div className="col-md-4">
                         <button className="btn"
+                                type="submit"
                                 disabled={ !documentSuggestions.input }
                                 onClick={this.handleClick}>+ Add
                         </button>
