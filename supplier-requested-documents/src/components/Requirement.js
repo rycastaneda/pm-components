@@ -21,19 +21,18 @@ class Requirement extends Component {
             <li>
                 <ul>
                     <li>
-                        <Dropzone className="dropzone dz-clickable clearfix"
-                            accept="application/pdf"
-                            onDrop={(documents) => {
-                                onDropDocuments(requirement.id, documents);
-                            }}>
-                            <div className="form-group">
-                                <label className="pull-left">{requirement.title}</label>
-                                <div className="clearfix"></div>
-                                <p className="text-center dropzone__placeholder">
-                                    <i className="fa fa-cloud-upload"></i> Drop documents here or click to select files.
-                                </p>
-                            </div>
-                        </Dropzone>
+                        <div className="form-group">
+                            <label>{requirement.title}</label>
+                            <Dropzone className="dropzone dz-clickable"
+                                accept="application/pdf"
+                                onDrop={(documents) => {
+                                    onDropDocuments(requirement.id, documents);
+                                }}>
+                                    <p className="text-center dz-default dz-message">
+                                        <i className="fa fa-cloud-upload"></i> Drop documents here or click to select files.
+                                    </p>
+                            </Dropzone>
+                        </div>
                     </li>
                     {documents}
                 </ul>

@@ -1,14 +1,3 @@
-.dropzone {
-    min-height: auto;
-    padding: 0;
-    border: none;
-
-    &__placeholder {
-        font-size: 12px;
-        text-align: center;
-    }
-}
-
 .list-group {
     // No need to set list-style: none; since .list-group-item is block level
     margin-bottom: 20px;
@@ -18,9 +7,9 @@
 .list-group-item {
     position: relative;
     display: block;
-    margin-bottom: -1px;
+    margin-bottom: 2px;
     padding: 10px 15px;
-    border: 1px solid 1px;
+    border: 1px solid #dddddd;
 
     // Round the first and last items
     &:first-child {
