@@ -12,7 +12,7 @@ class RequestedDocuments extends Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const quoteId = document.getElementById('quote_id').value;
 
         this.props.dispatch(updateQuoteId(quoteId));
