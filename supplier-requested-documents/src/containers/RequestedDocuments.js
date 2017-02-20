@@ -72,7 +72,8 @@ class RequestedDocuments extends Component {
 RequestedDocuments.propTypes = {
     dispatch: PropTypes.func.isRequired,
     requirements: PropTypes.array,
-    ui: PropTypes.object
+    ui: PropTypes.object,
+    summary: PropTypes.object
 };
 
 
