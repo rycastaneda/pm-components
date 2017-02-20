@@ -4,6 +4,7 @@ import {
     RECEIVE_SUGGESTIONS_DOCUMENTS,
     UPDATE_QUOTE_ID,
     UPDATED_CHECKBOX_VALUE,
+    UPDATING_STATUS,
     ADD_NEW_DOCUMENT
 } from '../constants/ActionTypes';
 
@@ -53,15 +54,10 @@ export function getDocuments() {
     };
 }
 
-export function updateQuoteId(quoteId) {
-    return {
-        type: UPDATE_QUOTE_ID,
-        quoteId
-    };
-}
-
 export function updateCheckbox(checked, doc) {
     return (dispatch, getState) => {
+        dispatch(updatingStatus(doc, true));
+
         const quoteId = getState().requestedDocuments.quoteId;
         const itemId = document.getElementById('item_id') ? document.getElementById('item_id').value : null;
 
@@ -78,7 +74,8 @@ export function updateCheckbox(checked, doc) {
                 return dispatch({
                     type: UPDATED_CHECKBOX_VALUE,
                     id: doc.id,
-                    value: checked
+                    value: checked,
+                    updating: false
                 });
             });
         } else {
@@ -87,7 +84,8 @@ export function updateCheckbox(checked, doc) {
                 return dispatch({
                     type: UPDATED_CHECKBOX_VALUE,
                     id: doc.id,
-                    value: checked
+                    value: checked,
+                    updating: false
                 });
             });
         }
@@ -157,6 +155,21 @@ export function addNewDocument() {
 export function requestDocuments() {
     return {
         type: REQUEST_DOCUMENTS
+    };
+}
+
+export function updateQuoteId(quoteId) {
+    return {
+        type: UPDATE_QUOTE_ID,
+        quoteId
+    };
+}
+
+export function updatingStatus(doc, updating) {
+    return {
+        type: UPDATING_STATUS,
+        id: doc.id,
+        updating
     };
 }
 

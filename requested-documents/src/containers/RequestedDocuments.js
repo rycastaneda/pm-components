@@ -37,7 +37,9 @@ class RequestedDocuments extends Component {
                               id={parseInt(document.id)}
                               title={document.attributes.title}
                               checked={document.attributes.checked}
-                              handleChange={event => this.handleCheckboxChange(event, document)}/>
+                              updating={document.attributes.updating}
+                              handleChange={event => this.handleCheckboxChange(event, document)
+                              }/>
                 )}
                 <div className="row">
                     <div className="col-md-4">
