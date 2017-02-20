@@ -28,7 +28,7 @@ export function requirementsDocuments(state = INITIAL_STATE, action) {
 }
 
 function receiveRequirements(state, action) {
-    action.requirements.included.map((requirement) => {
+    action.requirements.included && action.requirements.included.map((requirement) => {
         let id = requirement.attributes.pivot.id;
 
         state.byId[id] = requirement.attributes;

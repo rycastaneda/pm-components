@@ -8,8 +8,6 @@
 function configureHeaders() {
     var COOKIE_TOKEN = 'pm_token';
 
-    if (process.env.NODE_ENV === 'develop') return getLocalHeaders();
-
     var token = document.cookie.split(';')
             .map(function(cookie) {
                 return cookie.trim().split('=');
@@ -19,6 +17,8 @@ function configureHeaders() {
                     a[b[0]] = b[1];
                     return a;
                 }, {})[COOKIE_TOKEN];
+
+    if (process.env.NODE_ENV === 'develop' && !token) return getLocalHeaders();
 
     return {
         Authorization: 'Bearer ' + token,
