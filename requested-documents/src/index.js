@@ -4,10 +4,11 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
-import { setEndpointHost, setEndpointPath, setHeaders } from 'redux-json-api';
 import RequestedDocuments from './containers/RequestedDocuments';
 import api from '../../shared/api.config';
 import './styles/index.scss';
+import 'babel-polyfill';
+import axios from 'axios';
 
 // Add redux dev tools unless we have a production build
 const enhance = process.env.NODE_ENV !== 'production' && window.devToolsExtension ? compose(
@@ -21,9 +22,11 @@ const store = createStore(
     enhance
 );
 
-store.dispatch(setEndpointHost(api.configureHostname()));
-store.dispatch(setEndpointPath(''));
-store.dispatch(setHeaders(api.configureHeaders()));
+let hostname = api.configureHostname();
+let headers = api.configureHeaders();
+
+axios.defaults.baseURL = hostname;
+axios.defaults.headers.common = headers;
 
 render(
     <Provider store={store}>

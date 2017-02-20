@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import Autosuggest from 'react-autosuggest';
 import { connect } from 'react-redux';
 
-import { fetchSuggestions, resetSuggestions, updateInput, suggestionSelected } from '../actions/documentSuggestions';
+import { fetchSuggestions, resetSuggestions, updateInput, suggestionSelected, checkSelection } from '../actions/documentSuggestions';
 
 class DocumentSuggestions extends Component {
 
@@ -15,6 +15,7 @@ class DocumentSuggestions extends Component {
         this.renderSuggestion = this.renderSuggestion.bind(this);
         this.shouldRenderSuggestions = this.shouldRenderSuggestions.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.onBlur = this.onBlur.bind(this);
     }
 
     onSuggestionsFetchRequested() {
@@ -57,17 +58,25 @@ class DocumentSuggestions extends Component {
         };
     }
 
+    onBlur() {
+        return (event, { focusedSuggestion }) => {
+            this.props.dispatch(checkSelection(focusedSuggestion));
+        };
+    }
+
     render() {
         const { documentSuggestions } = this.props;
 
         const inputProps = {
             id: `suggestion-1`,
+            className:'form-control',
             value: documentSuggestions.input || '',
-            onChange: this.onChange()
+            onChange: this.onChange(),
+            onBlur: this.onBlur()
         };
 
         return (
-            <div className="col-xs-12 mar-btm document-suggestions">
+            <div className="document-suggestions">
                 <Autosuggest
                     id="document-suggestion"
                     suggestions={documentSuggestions.suggestions}

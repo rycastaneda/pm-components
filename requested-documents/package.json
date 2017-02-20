@@ -1,7 +1,7 @@
 {
   "name": "requested-documents",
   "version": "0.1.0",
-  "description": "requested-documents",
+  "description": "Requested documents component for QR creation",
   "engines": {
     "node": ">=4",
     "npm": ">=3.0.0"
@@ -18,10 +18,12 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "axios": "^0.15.3",
     "babel-core": "6.14.0",
     "babel-loader": "6.2.5",
     "babel-plugin-transform-object-rest-spread": "^6.19.0",
     "babel-plugin-transform-runtime": "6.15.0",
+    "babel-polyfill": "^6.20.0",
     "babel-preset-es2015": "6.14.0",
     "babel-preset-react": "6.11.1",
     "chai": "3.5.0",
@@ -43,12 +45,11 @@
     "react-redux": "4.4.5",
     "react-typeahead": "2.0.0-alpha.5",
     "redux": "3.6.0",
-    "redux-json-api": "1.6.1",
     "redux-thunk": "2.1.0",
     "sass-loader": "4.0.2",
     "sinon": "^1.17.6",
     "style-loader": "0.13.1",
-    "stylelint-webpack-plugin": "0.3.1",
+    "stylelint-webpack-plugin": "0.4.2",
     "webpack": "1.13.2",
     "webpack-config": "6.1.3",
     "webpack-dev-server": "1.16.1"
