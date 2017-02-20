@@ -9,7 +9,7 @@ import api from '../../shared/api.config';
 import axios from 'axios';
 import './styles/index.scss';
 
-!window._babelPolyfill && require('babel-polyfill');
+!window._babelPolyfill && require('babel-polyfill'); // prevent polyfill from importing twice
 
 // Add redux dev tools unless we have a production build
 const enhance = process.env.NODE_ENV !== 'production' && window.devToolsExtension ? compose(

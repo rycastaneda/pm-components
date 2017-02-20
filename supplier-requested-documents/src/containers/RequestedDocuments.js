@@ -35,7 +35,8 @@ class RequestedDocuments extends Component {
     render() {
         const {
             requirements,
-            ui
+            ui, 
+            summary
         } = this.props;
 
         let content;
@@ -54,6 +55,7 @@ class RequestedDocuments extends Component {
 
         return (
             <div className="group-panel">
+                <input type="hidden" name="requestedDocuments" value={JSON.stringify(summary)}/>
                 {ui.error === 'FETCH_FAILED' ? 
                     <div className="alert alert-danger">
                         <strong>Something went wrong. Please try again later.</strong>
@@ -80,17 +82,21 @@ function mapStateToProps(state) {
         documentsToBeAdded,
         ui
     } = state;
+    const summary = {};
 
     if (!requirementsDocuments.allIds.length) {
         return {
             requirements: [],
-            ui
+            ui, 
+            summary
         };
     }
 
     let requirements = requirementsDocuments.allIds.map((id) => {
         let req = requirementsDocuments.byId[id];
         req.id = id;
+        summary[id] = req.documentIds;
+
         req.documents = req.docsToAdd.concat(req.documentIds).map((id) => {
             return documentsToBeAdded.byId[id];
         });
@@ -98,7 +104,7 @@ function mapStateToProps(state) {
         return req;
     }).reverse(); // make the additional documents section appear last
 
-    return { requirements, ui };
+    return { requirements, ui, summary };
 }
 
 export default connect(mapStateToProps)(RequestedDocuments);  // adds dispatch prop

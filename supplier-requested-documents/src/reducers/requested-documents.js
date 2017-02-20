@@ -2,6 +2,7 @@ import {
     RECEIVE_REQUIREMENTS,
     DOCUMENTS_RECEIVING,
     RECEIVE_DOC_REQUIREMENTS,
+    DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_REMOVING
 } from '../constants';
 
@@ -22,9 +23,19 @@ export function requirementsDocuments(state = INITIAL_STATE, action) {
         case DOCUMENTS_RECEIVING: return receiveDocument(state, action);
         case DOCUMENT_REMOVING: return removeDocument(state, action);
         case RECEIVE_DOC_REQUIREMENTS: return receiveDocRequirements(state, action);
+        case DOCUMENT_UPLOAD_SUCCESS: return replaceDocument(state, action);
         default:
             return state;
     }
+}
+
+function replaceDocument(state, action) {
+    let index = state.byId[action.requirementId].documentIds.indexOf(action.requirementId);
+
+    state.byId[action.requirementId].documentIds.splice(index, 1);
+    state.byId[action.requirementId].documentIds.push(action.newDocumentId);
+
+    return Object.assign({}, state);
 }
 
 function receiveRequirements(state, action) {

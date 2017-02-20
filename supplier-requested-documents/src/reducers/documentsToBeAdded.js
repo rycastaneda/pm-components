@@ -13,6 +13,8 @@ const INITIAL_STATE = {
 };
 
 export function documentsToBeAdded(state = INITIAL_STATE, action) {
+    let index;
+
     switch (action.type) {
         case DOCUMENTS_RECEIVING:
             action.docsToBeAdded.map((doc) => {
@@ -47,6 +49,20 @@ export function documentsToBeAdded(state = INITIAL_STATE, action) {
                 }
             };
         case DOCUMENT_UPLOAD_SUCCESS:
+            state.byId[action.newDocumentId] = state.byId[action.documentId]; 
+            Object.assign(state.byId[action.newDocumentId], action.attributes, {
+                progress: 100,
+                status: action.type === DOCUMENT_UPLOAD_SUCCESS ? SUCCESS : FAILED
+            });
+
+            index = state.allIds.indexOf(action.documentId);
+            state.allIds.splice(index, 1);
+            state.allIds.push(action.newDocumentId);
+
+            delete state.byId[action.documentId];
+
+
+            return Object.assign({}, state);
         case DOCUMENT_UPLOAD_FAILED:
             return {
                 ...state,

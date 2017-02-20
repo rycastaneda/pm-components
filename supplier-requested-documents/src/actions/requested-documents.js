@@ -81,16 +81,23 @@ export function catchDocuments(quoteId, itemId, requirementId, docsToBeAdded) {
 
             docData.append('document', document);
 
-            return axios.post(`/supplier-quote-requests/${quoteId}/matched-items/${itemId}/documents`, docData, {
-                onUploadProgress: function(progressEvent) {
-                    let percentCompleted = progressEvent.loaded / progressEvent.total;
-                    dispatch(incrementProgress(document.id, Math.ceil(percentCompleted * 100)));
+            return axios.post(
+                itemId ? `/supplier-quote-requests/${quoteId}/matched-items/${itemId}/documents`
+                : `/supplier-quote-requests/${quoteId}/documents`, 
+                docData, 
+                {
+                    onUploadProgress: function(progressEvent) {
+                        let percentCompleted = progressEvent.loaded / progressEvent.total;
+                        dispatch(incrementProgress(document.id, Math.ceil(percentCompleted * 100)));
+                    }
                 }
-            }).then((response) => {
+            ).then((response) => {
                 dispatch({
                     type: DOCUMENT_UPLOAD_SUCCESS,
                     requirementId,
-                    documentId: document.id
+                    documentId: document.id,
+                    newDocumentId: response.data.data.id,
+                    attributes: response.data.data.attributes
                 });
 
                 return response;
