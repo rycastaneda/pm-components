@@ -6,9 +6,10 @@ import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
 import RequestedDocuments from './containers/RequestedDocuments';
 import api from '../../shared/api.config';
-import 'babel-polyfill';
 import axios from 'axios';
 import './styles/index.scss';
+
+!window._babelPolyfill && require('babel-polyfill');
 
 // Add redux dev tools unless we have a production build
 const enhance = process.env.NODE_ENV !== 'production' && window.devToolsExtension ? compose(
@@ -28,6 +29,7 @@ headers['Content-Type'] = 'application/json';
 
 axios.defaults.baseURL = hostname;
 axios.defaults.headers.common = headers;
+
 
 render(
     <Provider store={store}>
