@@ -35,6 +35,11 @@ export function fetchRequirements(quoteId, itemId) {
                         documents: response.data 
                     });
                 });
+
+                return dispatch({ 
+                    type: RECEIVE_REQUIREMENTS, 
+                    requirements: response.data
+                });
             }).catch(() => {
                 return dispatch({
                     type: FETCH_FAILED
