@@ -19,19 +19,21 @@ export function fetchRequirements(quoteId, itemId) {
             itemId
         });
 
-        axios.get(`/supplier-quote-requests/${quoteId}/requested-items?include=complianceDocuments,searcherRequirements`)
+        axios.get(`/supplier-quote-requests/${quoteId}/requested-items?include=complianceDocuments`)
             .then((response) => {
+                if (!itemId) {
+                    return dispatch({ 
+                        type: RECEIVE_REQUIREMENTS, 
+                        requirements: response.data
+                    });
+                }
+
                 axios.get(`/supplier-quote-requests/${quoteId}/matched-items/${itemId}/documents`)
                 .then((response) => {
                     return dispatch({
                         type: RECEIVE_DOC_REQUIREMENTS,
                         documents: response.data 
                     });
-                });
-
-                return dispatch({ 
-                    type: RECEIVE_REQUIREMENTS, 
-                    requirements: response.data
                 });
             }).catch(() => {
                 return dispatch({
