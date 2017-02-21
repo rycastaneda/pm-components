@@ -21,7 +21,7 @@ class Requirement extends Component {
             <li>
                 <ul>
                     <li>
-                        <div className="form-group">
+                        <div className="form-group mar-top-sm">
                             <label>{requirement.title}</label>
                             <Dropzone className="dropzone dz-clickable"
                                 accept="application/pdf"
