@@ -19,7 +19,7 @@ export function fetchRequirements(quoteId, itemId) {
             itemId
         });
 
-        axios.get(`/supplier-quote-requests/${quoteId}/requested-items?include=complianceDocuments`)
+        axios.get(`/supplier-quote-requests/${quoteId}/requested-items?include=complianceDocuments,searcherRequirements`)
             .then((response) => {
                 axios.get(`/supplier-quote-requests/${quoteId}/matched-items/${itemId}/documents`)
                 .then((response) => {
