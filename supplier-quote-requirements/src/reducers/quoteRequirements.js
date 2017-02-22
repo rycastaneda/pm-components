@@ -3,6 +3,8 @@ import {
     REQUIREMENTS_RECEIVED,
     UPDATE_QUOTE_ID,
     UPDATE_QUOTE_ITEM_ID,
+    UPDATE_REQUEST_ITEM_ID,
+    UPDATE_REQUEST_BY_TO_ITEM_ID,
     ADD_DEFAULT_SUPPLIER_RESPONSE,
     UPDATE_SUPPLIER_RESPONSE_ID,
     UPDATE_COMMENTS,
@@ -57,6 +59,10 @@ export function quoteRequirements(state = DEFAULT_STATE, action) {
             return { ...state, quoteId: action.id };
         case UPDATE_QUOTE_ITEM_ID:
             return { ...state, itemId: action.id };
+        case UPDATE_REQUEST_ITEM_ID:
+            return { ...state, requestItemId: action.id };
+        case UPDATE_REQUEST_BY_TO_ITEM_ID:
+            return { ...state, requesByTotItemId: action.id };
         case ADD_DEFAULT_SUPPLIER_RESPONSE:
         case UPDATE_SUPPLIER_RESPONSE_ID:
         case UPDATE_COMMENTS:

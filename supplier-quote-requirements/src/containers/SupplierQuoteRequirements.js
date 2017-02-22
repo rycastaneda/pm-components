@@ -1,7 +1,13 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import DisplayForm from '../containers/DisplayForm';
-import { updateQuoteId, updateQuoteItemId, getItems } from '../actions/supplierQuoteRequirements';
+import {
+    updateQuoteId,
+    updateRequestItemId,
+    updateRequestByToItemId,
+    updateQuoteItemId,
+    getItems
+} from '../actions/supplierQuoteRequirements';
 
 class SupplierQuoteRequirements extends Component {
 
@@ -11,9 +17,15 @@ class SupplierQuoteRequirements extends Component {
 
     componentDidMount() {
         const self = this;
-        self.props.dispatch(updateQuoteId(document.getElementById('quote-id').value));
 
-        document.getElementById('selected-item-row-id').addEventListener('input', function(event) {
+        self.props.dispatch(updateQuoteId(document.getElementById('quote-id').value));
+        self.props.dispatch(updateRequestItemId(document.getElementById('rqid').value));
+        self.props.dispatch(updateRequestByToItemId(document.getElementById('qrbtid').value));
+
+        self.props.dispatch(updateQuoteItemId(document.getElementById('riqi_id').value));
+        self.props.dispatch(getItems());
+
+        document.getElementById('riqi_id').addEventListener('input', function(event) {
             self.props.dispatch(updateQuoteItemId(event.target.value));
             self.props.dispatch(getItems());
         });
@@ -22,11 +34,17 @@ class SupplierQuoteRequirements extends Component {
     render() {
         const { quoteRequirements } = this.props;
         return (
-            <div className="supplier-quote-requirements__form">
-                {quoteRequirements.items.map(item =>
-                    <DisplayForm key={item.id}
-                                 item={item}/>
-                )}
+            <div className="supplier-quote-requirements__form col-xs-12">
+                { quoteRequirements.items.length
+                    ?   <div>
+                            <label>Quote Requirements</label>
+                            { quoteRequirements.items.map(item =>
+                                <DisplayForm key={item.id}
+                                             item={item}/>
+                            )}
+                        </div>
+                    : null
+                }
             </div>
         );
     }
