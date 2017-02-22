@@ -51,6 +51,7 @@ export function documentsToBeAdded(state = INITIAL_STATE, action) {
         case DOCUMENT_UPLOAD_SUCCESS:
             state.byId[action.newDocumentId] = state.byId[action.documentId]; 
             Object.assign(state.byId[action.newDocumentId], action.attributes, {
+                id: action.newDocumentId,
                 progress: 100,
                 status: action.type === DOCUMENT_UPLOAD_SUCCESS ? SUCCESS : FAILED
             });
@@ -60,7 +61,6 @@ export function documentsToBeAdded(state = INITIAL_STATE, action) {
             state.allIds.push(action.newDocumentId);
 
             delete state.byId[action.documentId];
-
 
             return Object.assign({}, state);
         case DOCUMENT_UPLOAD_FAILED:

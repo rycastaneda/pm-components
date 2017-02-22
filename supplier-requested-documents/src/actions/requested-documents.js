@@ -59,7 +59,8 @@ export function incrementProgress(docId, progress) {
 
 export function removeDocument(quoteId, itemId, requirementId, docId) {
     return (dispatch) => {
-        axios.delete(`/supplier-quote-requests/${quoteId}/matched-items/${itemId}/documents/${docId}`)
+        axios.delete(itemId ? `/supplier-quote-requests/${quoteId}/matched-items/${itemId}/documents/${docId}`
+            : `/supplier-quote-requests/${quoteId}/documents/${docId}`)
             .then(() => {
                 dispatch({
                     type: DOCUMENT_REMOVING,
