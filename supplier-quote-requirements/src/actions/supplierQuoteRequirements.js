@@ -3,6 +3,8 @@ import {
     REQUIREMENTS_RECEIVED,
     UPDATE_QUOTE_ID,
     UPDATE_QUOTE_ITEM_ID,
+    UPDATE_REQUEST_ITEM_ID,
+    UPDATE_REQUEST_BY_TO_ITEM_ID,
     ADD_DEFAULT_SUPPLIER_RESPONSE,
     UPDATE_SUPPLIER_RESPONSE_ID,
     UPDATE_SELECTION,
@@ -11,20 +13,21 @@ import {
     SAVE_COMMENTS
 } from '../constants/ActionTypes';
 
-import { readEndpoint, createEntity, updateEntity, setEndpointPath } from 'redux-json-api';
+import axios from 'axios';
 
 function constructEndpoint(state) {
-    return `/supplier-quote-requests/${state.quoteRequirements.quoteId}/matched-items/${state.quoteRequirements.itemId}`;
+    // return `/supplier-quote-requests/${state.quoteRequirements.quoteId}/requested-items/${state.quoteRequirements.requestItemId}`;
+    return `/supplier-quote-requests/${state.quoteRequirements.requestItemByToId}/matched-items/${state.quoteRequirements.itemId}`;
 }
 
 export function getItems() {
     return (dispatch, getState) => {
         dispatch(requestRequirements());
 
-        dispatch(readEndpoint(`${constructEndpoint(getState())}?include=searcherRequirements,searcherRequirementResponses`))
+        axios.get(`${constructEndpoint(getState(), true)}?include=searcherRequirements,searcherRequirementResponses`)
             .then((response) => {
-                const responses = response.included.filter(r => r.type === 'searcher-requirement-responses');
-                const requirements = response.included.filter(r => r.type === 'searcher-requirements');
+                const responses = response.data.included.filter(r => r.type === 'searcher-requirement-responses');
+                const requirements = response.data.included.filter(r => r.type === 'searcher-requirements');
 
                 const requirementsWithResponses = requirements.map((r) => {
                     const response = responses.filter(res => res.attributes.searcher_requirement_id === parseInt(r.id, 10));
@@ -40,41 +43,46 @@ export function getItems() {
 export function handleButtonSelection(item, button) {
 
     return (dispatch, getState) => {
-        dispatch(setEndpointPath(constructEndpoint(getState())));
-
         if (!item.supplierResponse.id) {
             // Do a POST request to create a new response object
-            dispatch(createEntity({
-                type: 'searcher-requirement-responses',
-                id: null,
-                attributes: {
-                    'searcher_requirement_id': item.id,
-                    response: button.value,
-                    comment: ''
-                },
-                relationships: {
-                    'searcher-requirements': {
-                        data: {
-                            type: 'searcher-requirements',
-                            id: parseInt(item.id, 10)
+            let searcherRequirementResponses = {
+                data: [{
+                    type: 'searcher-requirement-responses',
+                    id: null,
+                    attributes: {
+                        'searcher_requirement_id': item.id,
+                        response: button.value,
+                        comment: ''
+                    },
+                    relationships: {
+                        'searcher-requirements': {
+                            data: {
+                                type: 'searcher-requirements',
+                                id: parseInt(item.id, 10)
+                            }
                         }
                     }
-                }
-            })).then((resp) => {
+                }]
+            };
+
+            axios.post(`${constructEndpoint(getState())}`, searcherRequirementResponses).then((resp) => {
                 dispatch(addDefaultSupplierResponse(item));
                 dispatch(updateSupplierResponseId(item, resp.data.id));
                 dispatch(updateButtonSelection(item, resp.data.attributes.response));
             });
-
         } else {
             // Do a PATCH to update the existing response
-            dispatch(updateEntity({
-                type: item.supplierResponse.type,
-                id: item.supplierResponse.id,
-                attributes: {
-                    response: button.value
+            const supplierResponse = {
+                data: {
+                    type: item.supplierResponse.type,
+                    id: item.supplierResponse.id,
+                    attributes: {
+                        response: button.value
+                    }
                 }
-            })).then((resp) => {
+            };
+
+            axios.patch(`${constructEndpoint(getState())}`, supplierResponse).then((resp) => {
                 dispatch(updateButtonSelection(item, resp.data.attributes.response));
             });
         }
@@ -83,15 +91,17 @@ export function handleButtonSelection(item, button) {
 
 
 export function saveComments(item) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         // Do a PATCH to update the existing response
-        dispatch(updateEntity({
+        const supplierResponse = {
             type: item.supplierResponse.type,
             id: item.supplierResponse.id,
             attributes: {
                 comment: item.supplierResponse.attributes.comment
             }
-        })).then(() => {
+        };
+
+        axios.patch(`${constructEndpoint(getState())}`, supplierResponse).then(() => {
             dispatch({
                 type: SAVE_COMMENTS,
                 id: item.id
@@ -108,6 +118,7 @@ export function handleCommentsUpdate(item, comment) {
         comment
     };
 }
+
 export function addDefaultSupplierResponse(item) {
     return {
         type: ADD_DEFAULT_SUPPLIER_RESPONSE,
@@ -161,6 +172,20 @@ export function updateQuoteItemId(id) {
 export function updateQuoteId(id) {
     return {
         type: UPDATE_QUOTE_ID,
+        id
+    };
+}
+
+export function updateRequestItemId(id) {
+    return {
+        type: UPDATE_REQUEST_ITEM_ID,
+        id
+    };
+}
+
+export function updateRequestByToItemId(id) {
+    return {
+        type: UPDATE_REQUEST_BY_TO_ITEM_ID,
         id
     };
 }
