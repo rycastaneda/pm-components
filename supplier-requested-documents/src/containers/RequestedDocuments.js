@@ -93,12 +93,13 @@ function mapStateToProps(state) {
         };
     }
 
-    let requirements = requirementsDocuments.allIds.map((id) => {
-        let req = requirementsDocuments.byId[id];
-        req.id = id;
-        summary[id] = req.documentIds;
+    let requirements = requirementsDocuments.allIds.map((requirementId) => {
+        let req = requirementsDocuments.byId[requirementId];
+        req.id = requirementId;
+        summary[requirementId] = [];
 
         req.documents = req.docsToAdd.concat(req.documentIds).map((id) => {
+            summary[requirementId].push(documentsToBeAdded.byId[id].upload_id);
             return documentsToBeAdded.byId[id];
         });
 
