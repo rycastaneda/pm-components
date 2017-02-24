@@ -7,7 +7,7 @@ import rootReducer from './reducers/index';
 import SupplierQuoteRequirements from './containers/SupplierQuoteRequirements';
 import api from '../../shared/api.config';
 import './styles/index.scss';
-!window._babelImportimport && require('babel-polyfill');
+!window._babelPolyfill && require('babel-polyfill'); // prevent polyfill from importing twice
 import axios from 'axios';
 
 // Add redux dev tools unless we have a production build
