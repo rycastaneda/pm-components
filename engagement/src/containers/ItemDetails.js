@@ -67,13 +67,13 @@ class ItemDetails extends Component {
                 pricingOptions.length ?
                 <div className="item-details">
                     <h4 className="pad-top">{ editMode ? 'Edit Pending Engagement' : 'Create New Engagement' }</h4>
-                    { engagementTitle ? <h6>{engagementTitle}</h6> : null }
+                    { engagementTitle ? <h6>{engagementTitle}</h6> : <h6>{currentEngagement.relationships.supplier.attributes.title} - {currentEngagement.relationships.matchedItemTitle}</h6> }
                     <table className="table table-striped db-table">
                         <thead>
                             <tr>
                                 <th>Rates</th>
                                 <th>Quote</th>
-                                <th>Unit</th>
+                                <th>Units</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -86,7 +86,7 @@ class ItemDetails extends Component {
                         canCreateEngagement ? null :
                         <div>
                             <div className="row mar-top">
-                                <label className="col-md-3 control-label">Work Order*: </label>
+                                <label className="col-md-3 control-label">Work Order *: </label>
                                 <div className="col-md-9">
                                     <input className="form-control"
                                            type="text"

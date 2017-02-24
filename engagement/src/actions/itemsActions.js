@@ -1,5 +1,7 @@
 import {
     UPDATE_QUOTE_ID,
+    UPDATE_REQUESTED_ITEM_ID,
+    UPDATE_MATCHED_ITEM_ID,
     LOAD_ITEMS_SUCCESS,
     LOAD_ITEMS_ERROR,
     RECEIVE_SUGGESTIONS,
@@ -64,7 +66,7 @@ function checkAllSuggestions(items, included, value) {
                 supplierTitle = supplier ? supplier.attributes.title : '';
 
                 shouldReturnAll = detailsMatchedItems.filter((details) => {
-                    if (details.attributes.title + ' - ' + supplierTitle === value) {
+                    if (supplierTitle + ' - ' + details.attributes.title === value) {
                         return details;
                     }
                 }).length > 0;
@@ -145,6 +147,30 @@ export function updateQuoteId(quoteId) {
     return {
         type: UPDATE_QUOTE_ID,
         quoteId
+    };
+}
+
+/**
+ *
+ * @param {string} rqId
+ * @returns {{type, rqId: *}}
+ */
+export function updateRequestedItemId(rqId) {
+    return {
+        type: UPDATE_REQUESTED_ITEM_ID,
+        rqId
+    };
+}
+
+/**
+ *
+ * @param {string} riqiId
+ * @returns {{type, riqiId: *}}
+ */
+export function updateMatchedItemId(riqiId) {
+    return {
+        type: UPDATE_MATCHED_ITEM_ID,
+        riqiId
     };
 }
 

@@ -1,5 +1,8 @@
 import {
+    COMPONENT_SPOT,
     UPDATE_QUOTE_ID,
+    UPDATE_REQUESTED_ITEM_ID,
+    UPDATE_MATCHED_ITEM_ID,
     LOAD_ITEMS_SUCCESS,
     LOAD_ITEMS_ERROR,
     RECEIVE_SUGGESTIONS,
@@ -7,10 +10,12 @@ import {
     UPDATE_SUGGESTION,
 
     RECEIVE_NEW_ENGAGEMENT,
+    RESET_CURRENT_ENGAGEMENT,
     RESET_ITEM_DETAILS,
     PRICING_OPTIONS_RECEIVED,
     UPDATE_TEXT,
     UPDATE_PRICING_OPTION,
+    RESET_PRICING_OPTIONS,
     UPDATE_PURCHASE_ORDER,
     UPDATE_PLAN_DATE,
     UPDATED_ENGAGEMENT,
@@ -26,7 +31,10 @@ const INITIAL_ITEMS_STATE = {
     isApiError: false,
     items: [],
     suggestions: [],
-    quoteId: null
+    quoteId: null,
+    rqId: null,
+    riqiId: null,
+    spot: ''
 };
 
 const INITIAL_ITEM_DETAILS_STATE = {
@@ -41,10 +49,23 @@ const INITIAL_ENGAGEMENTS_STATE = {
 
 export function itemsReducer(state = INITIAL_ITEMS_STATE, action) {
     switch (action.type) {
+        case COMPONENT_SPOT:
+            return Object.assign({}, state, {
+                spot: action.spot
+            });
         case UPDATE_QUOTE_ID:
             return Object.assign({}, state, {
                 quoteId: action.quoteId
             });
+        case UPDATE_REQUESTED_ITEM_ID:
+            return Object.assign({}, state, {
+                rqId: action.rqId
+            });
+        case UPDATE_MATCHED_ITEM_ID:
+            return Object.assign({}, state, {
+                riqiId: action.riqiId
+            });
+
         case LOAD_ITEMS_SUCCESS:
             return Object.assign({}, state, {
                 items: action.items,
@@ -94,11 +115,13 @@ export function engagementsReducer(state = INITIAL_ENGAGEMENTS_STATE, action) {
 export function itemDetailsReducer(state = INITIAL_ITEM_DETAILS_STATE, action) {
     switch (action.type) {
         case RECEIVE_NEW_ENGAGEMENT:
+        case RESET_CURRENT_ENGAGEMENT:
             return Object.assign({}, state, {
                 currentEngagement: action.currentEngagement
             });
         case RESET_ITEM_DETAILS:
             return Object.assign({}, state, INITIAL_ITEM_DETAILS_STATE);
+        case RESET_PRICING_OPTIONS:
         case PRICING_OPTIONS_RECEIVED:
             return Object.assign({}, state, {
                 pricingOptions: action.pricingOptions

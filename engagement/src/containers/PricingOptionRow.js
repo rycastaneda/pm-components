@@ -42,24 +42,24 @@ class PricingOptionRow extends Component {
                 <td className="checkbox" data-heading="Rates">
                     <label htmlFor={`pricingOption__${pricingOption.id}`}>
                     {
-                        pricingOption.attributes.value ? <input name={`pricingOption-checkbox__${pricingOption.id}`}
-                                                                id={`pricingOption__${pricingOption.id}`}
-                                                                type="checkbox"
-                                                                checked={pricingOption.attributes.selected}
-                                                                onChange={this.handlePricingOptionChange}
-                                                        /> : null
+                        (pricingOption.attributes.value !== null) ? <input name={`pricingOption-checkbox__${pricingOption.id}`}
+                                                                        id={`pricingOption__${pricingOption.id}`}
+                                                                        type="checkbox"
+                                                                        checked={pricingOption.attributes.selected}
+                                                                        onChange={this.handlePricingOptionChange}
+                                                                    /> : null
                     }
                     {pricingOption.attributes.title}
                     </label>
                 </td>
                 <td data-heading="Quote">
                     {
-                        pricingOption.attributes.value ? `$${pricingOption.attributes.value}` : null
+                        (pricingOption.attributes.value !== null) ? `$${pricingOption.attributes.value}` : null
                     }
                 </td>
                 <td data-heading="Unit">
                     {
-                        pricingOption.attributes.value ? <input type="number"
+                        (pricingOption.attributes.value !== null) ? <input type="number"
                                                                 className="form-control"
                                                                 value={defaultValue}
                                                                 onChange={this.handleUnitChange}

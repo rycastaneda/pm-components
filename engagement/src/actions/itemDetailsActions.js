@@ -1,4 +1,5 @@
 import {
+    UPDATE_SUGGESTION,
     LOAD_ITEM_DETAILS_SUCCESS,
     LOAD_ITEM_DETAILS_ERROR,
     RECEIVE_NEW_ENGAGEMENT,
@@ -27,6 +28,8 @@ export function loadItemDetails(matchedItemId, requestedItemId, engagement) {
         dispatch(readEndpoint(endPoint))
         .then((response) => {
             let pricingOptions = [];
+            let supplier = [];
+            let matchedItemTitle = '';
             if (engagement) {
                 pricingOptions = response.included.filter((i) => {
                     if (i.type === 'pricing-options') {
@@ -53,6 +56,12 @@ export function loadItemDetails(matchedItemId, requestedItemId, engagement) {
                     return pricingOptionUpdated;
                 });
             } else {
+                supplier = response.included.filter((i) => {
+                    if (i.type === 'supplier') {
+                        return i;
+                    }
+                });
+                matchedItemTitle = response.data.attributes.title;
                 pricingOptions = response.included.filter((i) => {
                     if (i.type === 'pricing-options') {
                         i.attributes.selected = i.attributes.selected ? i.attributes.selected : false;
@@ -61,8 +70,8 @@ export function loadItemDetails(matchedItemId, requestedItemId, engagement) {
                 });
             }
 
+            dispatch(updateCurrentEngagement(matchedItemId, requestedItemId, engagement, supplier, matchedItemTitle));
             dispatch(receivePricingOptions(pricingOptions));
-            dispatch(updateCurrentEngagement(matchedItemId, requestedItemId, engagement));
         }).catch((error) => {
             dispatch(loadItemDetailsError(error));
         });
@@ -76,8 +85,10 @@ export function receivePricingOptions(pricingOptions) {
     };
 }
 
-export function updateCurrentEngagement(matchedItemId, requestedItemId, engagement) {
-    const engagementTitle = engagement ? `${engagement.matchedItem.attributes.title} - ${engagement.supplier.attributes.title}` : null;
+export function updateCurrentEngagement(matchedItemId, requestedItemId, engagement, supplier, matchedItemTitle) {
+    window.console.log(supplier);
+    const supplierDetails = supplier.length ? supplier[0] : {};
+    const engagementTitle = engagement ? `${engagement.supplier.attributes.title} - ${engagement.matchedItem.attributes.title}` : null;
     let currentEngagement = {
         'type': 'engagements',
         'id': engagement ? engagement.id : null,
@@ -99,11 +110,13 @@ export function updateCurrentEngagement(matchedItemId, requestedItemId, engageme
                 }
             },
             'requested-items': {
-                data: {
+                'data': {
                     'type': 'requested-items',
                     'id': requestedItemId
                 }
-            }
+            },
+            'supplier': supplierDetails,
+            matchedItemTitle
         }
     };
     return { type: RECEIVE_NEW_ENGAGEMENT, currentEngagement };
@@ -165,6 +178,11 @@ export function createEngagement() {
         .then((response) => {
             window.console.log('engagement created: ', response.data.id);
             dispatch(createEngagementDetails(pricingOptions, requestedItemId, matchedItemId, response.data.id, quoteId));
+            dispatch({
+                type: UPDATE_SUGGESTION,
+                value: ''
+            });
+
         }).catch((error) => {
             window.console.log(error);
         });

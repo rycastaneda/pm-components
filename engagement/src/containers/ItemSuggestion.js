@@ -39,7 +39,7 @@ class ItemSuggestion extends Component {
     }
 
     getSuggestionValue(suggestion) {
-        return `${suggestion.attributes.title} - ${suggestion.supplier.attributes.title}`;
+        return `${suggestion.supplier.attributes.title} - ${suggestion.attributes.title}`;
     }
 
     renderSectionTitle(section) {
@@ -51,7 +51,7 @@ class ItemSuggestion extends Component {
 
     renderSuggestion(suggestion) {
         return (<span> {
-                `${suggestion.attributes.title} - ${suggestion.supplier.attributes.title}`
+                `${suggestion.supplier.attributes.title} - ${suggestion.attributes.title}`
             } </span>
         );
     }
@@ -70,7 +70,7 @@ class ItemSuggestion extends Component {
         const { itemsReducer } = this.props;
 
         const DEFAULT_INPUT_PROPS = {
-            placeholder: 'Select Item....',
+            placeholder: 'Select service to create a new engagement ....',
             className: 'form-control'
         };
 
@@ -84,9 +84,8 @@ class ItemSuggestion extends Component {
 
         return (
           <div className="autoSuggest">
-            {isApiError ? 'Sorry, an error occurred while trying to load Items. Please refresh the page and try again.' : ''}
-            {isFetching ? 'Loading...' : ''}
-            <i className="fa fa-close close-suggestion"></i>
+            {isApiError ? 'Sorry, an error occurred while trying to load details. Please refresh the page and try again.' : ''}
+            {isFetching ? <i className="fa fa-spinner fa-pulse fa-2x fa-fw"></i> : ''}
             {!isFetching && !isApiError ?
                 <Autosuggest
                   multiSection = {true}

@@ -1,5 +1,7 @@
 import {
     RECEIVE_ENGAGEMENTS,
+    RESET_CURRENT_ENGAGEMENT,
+    RESET_PRICING_OPTIONS,
     ENGAGEMENT_DELETED
 } from '../constants/ActionTypes';
 
@@ -88,6 +90,7 @@ export function loadEngagementsSuccess(engagements) {
 export function deleteEngagement(requestedItemId, matchedItemId, engagementId) {
     return (dispatch, getState) => {
         const quoteId = getState().itemsReducer.quoteId;
+        const currentEngagementId = getState().itemDetailsReducer.currentEngagement.id;
         dispatch(setEndpointPath(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}`));
         dispatch(deleteEntity({
             type: 'engagements',
@@ -95,6 +98,16 @@ export function deleteEngagement(requestedItemId, matchedItemId, engagementId) {
             relationships: {}
         }))
         .then((response) => {
+            if (currentEngagementId === engagementId) {
+                dispatch({
+                    type: RESET_CURRENT_ENGAGEMENT,
+                    currentEngagement: {}
+                });
+                dispatch({
+                    type: RESET_PRICING_OPTIONS,
+                    pricingOptions: []
+                });
+            }
             dispatch({
                 type: ENGAGEMENT_DELETED,
                 id: engagementId
