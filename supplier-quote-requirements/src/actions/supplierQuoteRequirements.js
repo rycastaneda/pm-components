@@ -16,10 +16,7 @@ import {
 import axios from 'axios';
 
 function constructEndpoint(state) {
-    if (!state.quoteRequirements.itemId) {
-        return `/supplier-quote-requests/${state.quoteRequirements.quoteId}/requested-items/${state.quoteRequirements.requestItemId}`;
-    }
-    return `/supplier-quote-requests/${state.quoteRequirements.quoteId}/matched-items/${state.quoteRequirements.itemId}`;
+    return `/supplier-quote-requests/${state.quoteRequirements.quoteId}/requested-items/${state.quoteRequirements.requestItemId}`;
 }
 
 export function getItems() {
