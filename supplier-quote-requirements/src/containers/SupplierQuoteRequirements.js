@@ -21,7 +21,7 @@ class SupplierQuoteRequirements extends Component {
         self.props.dispatch(updateRequestItemId(document.querySelector('[data-component="supplier-quote-requirements"]').getAttribute('data-rqid')));
         self.props.dispatch(updateRequestByToItemId(document.querySelector('[data-component="supplier-quote-requirements"]').getAttribute('data-qrbtid')));
 
-        self.props.dispatch(updateQuoteItemId(document.querySelector('[data-component="supplier-quote-requirements"]').getAttribute('data-riqi_id')));
+        self.props.dispatch(updateQuoteItemId(document.querySelector('[data-component="supplier-quote-requirements"]').getAttribute('data-riqi-id')));
         self.props.dispatch(getItems());
     }
 
