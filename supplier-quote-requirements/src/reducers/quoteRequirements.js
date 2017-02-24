@@ -62,7 +62,7 @@ export function quoteRequirements(state = DEFAULT_STATE, action) {
         case UPDATE_REQUEST_ITEM_ID:
             return { ...state, requestItemId: action.id };
         case UPDATE_REQUEST_BY_TO_ITEM_ID:
-            return { ...state, requesByTotItemId: action.id };
+            return { ...state, requestByToItemId: action.id };
         case ADD_DEFAULT_SUPPLIER_RESPONSE:
         case UPDATE_SUPPLIER_RESPONSE_ID:
         case UPDATE_COMMENTS:

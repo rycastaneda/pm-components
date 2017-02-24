@@ -17,18 +17,12 @@ class SupplierQuoteRequirements extends Component {
 
     componentDidMount() {
         const self = this;
+        self.props.dispatch(updateQuoteId(document.querySelector('[data-component="supplier-quote-requirements"]').getAttribute('data-quote-id')));
+        self.props.dispatch(updateRequestItemId(document.querySelector('[data-component="supplier-quote-requirements"]').getAttribute('data-rqid')));
+        self.props.dispatch(updateRequestByToItemId(document.querySelector('[data-component="supplier-quote-requirements"]').getAttribute('data-qrbtid')));
 
-        self.props.dispatch(updateQuoteId(document.getElementById('quote-id').value));
-        self.props.dispatch(updateRequestItemId(document.getElementById('rqid').value));
-        self.props.dispatch(updateRequestByToItemId(document.getElementById('qrbtid').value));
-
-        self.props.dispatch(updateQuoteItemId(document.getElementById('riqi_id').value));
+        self.props.dispatch(updateQuoteItemId(document.querySelector('[data-component="supplier-quote-requirements"]').getAttribute('data-riqi_id')));
         self.props.dispatch(getItems());
-
-        document.getElementById('riqi_id').addEventListener('input', function(event) {
-            self.props.dispatch(updateQuoteItemId(event.target.value));
-            self.props.dispatch(getItems());
-        });
     }
 
     render() {
