@@ -16,7 +16,8 @@ class RequestedDocuments extends Component {
         this.handleRemoveDocument = this.handleRemoveDocument.bind(this);
         this.quote_id = document.querySelector('[data-component="supplier-requested-documents"]').getAttribute('data-quote-id');
         this.matched_id = document.querySelector('[data-component="supplier-requested-documents"]').getAttribute('data-matched-item');
-        this.props.dispatch(fetchRequirements(this.quote_id, this.matched_id));
+        this.reqId = document.querySelector('[data-component="supplier-requested-documents"]').getAttribute('data-rqid');
+        this.props.dispatch(fetchRequirements(this.quote_id, this.matched_id, this.reqId));
     }
 
     handleCatchDocs(requirement_id, files) {

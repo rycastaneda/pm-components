@@ -11,7 +11,7 @@ import {
 } from '../constants';
 import axios from 'axios';
 
-export function fetchRequirements(quoteId, itemId) {
+export function fetchRequirements(quoteId, itemId, reqId) {
     return (dispatch) => {
         dispatch({
             type: FETCH_REQUIREMENTS,
@@ -19,7 +19,7 @@ export function fetchRequirements(quoteId, itemId) {
             itemId
         });
 
-        axios.get(`/supplier-quote-requests/${quoteId}/requested-items?include=complianceDocuments`)
+        axios.get(`/supplier-quote-requests/${quoteId}/requested-items/${reqId}?include=complianceDocuments`)
             .then((response) => {
                 if (!itemId) {
                     return dispatch({ 
