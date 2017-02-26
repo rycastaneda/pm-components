@@ -36,7 +36,14 @@ class EngagementRow extends Component {
     }
 
     engagementTotal(engagement) {
-        return this.convertToCurrency(engagement.engagementDetails[0].attributes.rate_value * engagement.engagementDetails[0].attributes.unit * engagement.matchedItem.attributes.quantity);
+        const qty = engagement.matchedItem.attributes.quantity;
+        let total = 0;
+
+        engagement.engagementDetails.forEach(
+            engagementDetail => total += (engagementDetail.attributes.rate_value * engagementDetail.attributes.unit * qty)
+        );
+
+        return this.convertToCurrency(total);
     }
 
     render() {
@@ -47,12 +54,18 @@ class EngagementRow extends Component {
                 <div className="col-md-7 separator-vertical">
                     Engagement:<strong> #{engagement.id}</strong> <br />
                     <strong>{engagement.supplier.attributes.title}</strong> <br />
-                    {engagement.matchedItem.attributes.title}<br />
+                    {engagement.matchedItem.attributes.title}<br /><br />
                     Pricing:
-                        ${this.convertToCurrency(engagement.engagementDetails[0].attributes.rate_value)} ({engagement.engagementDetails[0].pricingOption.attributes.title} Rate)
-                         x {engagement.engagementDetails[0].attributes.unit} Estimated Unit(s)<br />
+                    {engagement.engagementDetails.map(pricing =>
+                        <span key={pricing.id}> ${this.convertToCurrency(pricing.attributes.rate_value)} ({pricing.pricingOption.attributes.title} Rate)
+                         x {pricing.attributes.unit} Estimated Unit(s)</span>
+                    )}
+                    <br />
                     Quantity: {engagement.matchedItem.attributes.quantity}
-                    {engagement.attributes.po_number ? <div>Purchase Order: {engagement.attributes.po_number}</div> : null}
+                    <br /><br />
+                    {engagement.attributes.po_number ?
+                        <span>Purchase Order: {engagement.attributes.po_number} | </span> : null
+                    }
                     Created by: {engagement.createdBy}
                 </div>
                 <div className="col-md-3 text-center">
