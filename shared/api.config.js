@@ -36,12 +36,11 @@ function configureHeaders() {
  * @returns {{Authorization: string, Accept: string}}
  */
 function getLocalHeaders() {
-    var tokenRequest = new Request('https://api.pm.local.dev/authenticate',
+    var tokenRequest = new Request('https:/api.pm.local.dev/authenticate',
         {
             method: 'POST',
             headers: { 'Accept': 'application/vnd.pm.v1+json', 'Content-Type': 'application/vnd.pm.v1+json' },
-            // body: '{"email":"sara1@plantminer.com.au", "password": "password"}' });
-            body: '{"email":"troy.redden@bundaberg.qld.gov.au", "password": "password"}' });
+            body: '{"email":"sara1@plantminer.com.au", "password": "password"}' });
 
     fetch(tokenRequest)
         .then(function(response) {
@@ -103,11 +102,18 @@ function configureHostname() {
         }, {})['apiBranch'];
 
     if (hostname.indexOf('local.dev') > -1 || process.env.NODE_ENV === 'develop') {
-        return protocol + 'api.pm.local.dev';
+        return window.api_url;
     }
 
     if (apiBranch) {
         return [protocol, apiBranch.toLowerCase(), staging, countryHost].join('');
+    }
+
+    if (hostname.indexOf('staging.pitclient') > -1) {
+        var apiHostPIT = (hostname.indexOf('nz.staging.pitclient') > -1)
+                            ? window.location.hostname.replace(/client.nz.staging.pitclient.com/, 'api.staging.plantminer.co.nz')
+                            : window.location.hostname.replace(/client.staging.pitclient.com/, 'api.staging.plantminer.com.au');
+        return [protocol, apiHostPIT].join('');
     }
 
     if (hostname.indexOf('staging') > -1) {

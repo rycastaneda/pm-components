@@ -1,11 +1,11 @@
+require('es6-promise/auto');
+
 import React from 'react';
 import { render } from 'react-dom';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
-import { setEndpointHost, setEndpointPath, setHeaders } from 'redux-json-api';
-import api from '../../shared/api.config';
 import CategorySelection from './containers/CategorySelection';
 import './styles/index.scss';
 
@@ -20,10 +20,6 @@ const store = createStore(
     rootReducer,
     enhance
 );
-
-store.dispatch(setEndpointHost(api.configureHostname()));
-store.dispatch(setEndpointPath(''));
-store.dispatch(setHeaders(api.configureHeaders()));
 
 render(
     <Provider store={store}>
