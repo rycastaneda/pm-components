@@ -6,7 +6,7 @@ import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
 import DocumentUploader from './containers/DocumentUploader';
 import api from '../../shared/api.config';
-import 'babel-polyfill';
+!window._babelPolyfill && require('babel-polyfill'); // prevent polyfill from importing twice
 import axios from 'axios';
 import './styles/index.scss';
 
