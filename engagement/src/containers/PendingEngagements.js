@@ -2,26 +2,32 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import EngagementRow from './EngagementRow';
 import Button from '../components/Button';
+import { sendEngagements } from '../actions/engagementsActions';
 
 class PendingEngagements extends Component {
     constructor(props) {
         super(props);
         this.handleSendEngagements = this.handleSendEngagements.bind(this);
         this.pendingEngagementsTotal = this.pendingEngagementsTotal.bind(this);
+        this.convertToCurrency = this.convertToCurrency.bind(this);
     }
 
     handleSendEngagements() {
-        window.alert('handleSendEngagements');
+        return this.props.dispatch(sendEngagements());
+    }
+
+    convertToCurrency(value) {
+        return parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
     }
 
     pendingEngagementsTotal(engagements) {
-        return parseFloat(engagements.reduce(function(a, b) {
+        return this.convertToCurrency(engagements.reduce(function(a, b) {
             return a + (b.engagementDetails[0].attributes.rate_value * b.engagementDetails[0].attributes.unit * b.matchedItem.attributes.quantity);
-        }, 0)).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+        }, 0));
     }
 
     render() {
-        const { pendingEngagements } = this.props.engagementsReducer;
+        const { pendingEngagements, sentEngagements } = this.props.engagementsReducer;
 
         return (
             <div>
@@ -41,6 +47,19 @@ class PendingEngagements extends Component {
                             <span className="txt-large">${this.pendingEngagementsTotal(pendingEngagements)}</span>
                         </div>
                     </div>
+                    {sentEngagements.length === 0 ?  <div className="row">
+                                                    <div className="col-xs-12 align-right db-form-submit">
+                                                        <div className = "checkbox">
+                                                            <label>
+                                                                <input type="checkbox" />
+                                                                Notify all unsuccessful suppliers
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                  </div>
+                                                : null
+                    }
+
                     <div className="row">
                         <div className="col-xs-12 align-right db-form-submit">
                             <Button classNames="submit btn" title="Send Engagements"
@@ -49,7 +68,7 @@ class PendingEngagements extends Component {
                         </div>
                     </div>
                 </div> : null
-                }
+            }
             </div>
         );
     }

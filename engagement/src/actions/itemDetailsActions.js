@@ -15,6 +15,7 @@ import {
 } from '../constants/ActionTypes';
 
 import { setEndpointPath, createEntity, readEndpoint, updateEntity } from 'redux-json-api';
+import axios from 'axios';
 import moment from 'moment';
 import { loadEngagements } from './engagementsActions';
 
@@ -78,11 +79,62 @@ export function loadItemDetails(matchedItemId, requestedItemId, engagement) {
     };
 }
 
+export function loadItemDetailsPanel(panelId, itemId) {
+    return (dispatch) => {
+        axios.get(`/browse-panels/${panelId}/items/${itemId}?include=supplier,standardRates`)
+        .then((response) => {
+            let pricingOptions = [];
+            let supplier = [];
+            let matchedItemTitle = '';
+            supplier = response.included.filter((i) => {
+                if (i.type === 'supplier') {
+                    return i;
+                }
+            });
+            matchedItemTitle = response.data.attributes.title;
+            pricingOptions = response.included.filter((i) => {
+                if (i.type === 'pricing-options') {
+                    i.attributes.selected = i.attributes.selected ? i.attributes.selected : false;
+                    return i;
+                }
+            });
+
+            window.console.log(pricingOptions);
+            window.console.log(supplier);
+            window.console.log(matchedItemTitle);
+
+            dispatch(updateCurrentEngagementPanel(supplier, matchedItemTitle));
+            dispatch(receivePricingOptions(pricingOptions));
+        }).catch((error) => {
+            dispatch(loadItemDetailsError(error));
+        });
+    };
+}
+
 export function receivePricingOptions(pricingOptions) {
     return {
         type: PRICING_OPTIONS_RECEIVED,
         pricingOptions: pricingOptions
     };
+}
+
+export function updateCurrentEngagementPanel(supplier, matchedItemTitle) {
+    window.console.log(supplier);
+    const supplierDetails = supplier.length ? supplier[0] : {};
+    let currentEngagement = {
+        'type': 'engagements',
+        'id': null,
+        'attributes': {
+            'status': 1,
+            'purchase-order': null,
+            'plan-start-date': null
+        },
+        'relationships': {
+            'supplier': supplierDetails,
+            matchedItemTitle
+        }
+    };
+    return { type: RECEIVE_NEW_ENGAGEMENT, currentEngagement };
 }
 
 export function updateCurrentEngagement(matchedItemId, requestedItemId, engagement, supplier, matchedItemTitle) {

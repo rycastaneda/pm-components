@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
 import { setEndpointHost, setEndpointPath, setHeaders } from 'redux-json-api';
+import axios from 'axios';
 import api from '../../shared/api.config';
 import Engagement from './containers/Engagement';
 import { COMPONENT_SPOT } from './constants/ActionTypes';
@@ -23,6 +24,12 @@ const store = createStore(
     enhance
 );
 
+let hostname = api.configureHostname();
+let headers = api.configureHeaders();
+
+axios.defaults.baseURL = hostname;
+axios.defaults.headers.common = headers;
+
 store.dispatch(setEndpointHost(api.configureHostname()));
 store.dispatch(setHeaders(api.configureHeaders()));
 store.dispatch(setEndpointPath(''));
@@ -37,6 +44,17 @@ if (document.querySelector('[data-component="engagement-supplier-item"')) {
             <Engagement/>
         </Provider>,
         document.querySelector('[data-component="engagement-supplier-item"')
+    );
+} else if (document.querySelector('[data-component="engagement-browse"')) {
+    store.dispatch({
+        type: COMPONENT_SPOT,
+        spot: 'browse'
+    });
+    render(
+        <Provider store={store}>
+            <Engagement/>
+        </Provider>,
+        document.querySelector('[data-component="engagement-browse"')
     );
 } else {
     store.dispatch({

@@ -3,6 +3,8 @@ import {
     UPDATE_QUOTE_ID,
     UPDATE_REQUESTED_ITEM_ID,
     UPDATE_MATCHED_ITEM_ID,
+    UPDATE_PANEL_ID,
+    UPDATE_ITEM_ID,
     LOAD_ITEMS_SUCCESS,
     LOAD_ITEMS_ERROR,
     RECEIVE_SUGGESTIONS,
@@ -65,7 +67,14 @@ export function itemsReducer(state = INITIAL_ITEMS_STATE, action) {
             return Object.assign({}, state, {
                 riqiId: action.riqiId
             });
-
+        case UPDATE_PANEL_ID:
+            return Object.assign({}, state, {
+                panelId: action.panelId
+            });
+        case UPDATE_ITEM_ID:
+            return Object.assign({}, state, {
+                itemId: action.itemId
+            });
         case LOAD_ITEMS_SUCCESS:
             return Object.assign({}, state, {
                 items: action.items,

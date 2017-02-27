@@ -6,6 +6,7 @@ import {
 } from '../constants/ActionTypes';
 
 import { setEndpointPath, readEndpoint, deleteEntity } from 'redux-json-api';
+import axios from 'axios';
 
 export function loadEngagements(quoteId) {
     const endPoint = 'engagements?include=matchedItem.matchedSupplier,matchedItem.requestedItem';
@@ -82,7 +83,50 @@ export function loadEngagementsSuccess(engagements) {
             };
         });
 
-    const sentEngagements = engagements.data.filter(i => i.attributes.status === 2);
+    const sentEngagements = engagements.data.filter(i => i.attributes.status === 5)
+        .map((engagement) => {
+            let matchedItemId = engagement.relationships.matchedItem.data.id;
+            let engagementDetailId = engagement.relationships.engagementDetails.data[0].id;
+            let userId = engagement.relationships.user.data.id;
+            return {
+                'type': 'engagements',
+                'id': engagement.id,
+                'attributes': engagement.attributes,
+                'engagementDetails': engagements.included
+                    .filter(i => (i.type === 'engagement-details' && i.id === engagementDetailId))
+                    .map((item) => {
+                        let pricingOption = engagements.included.filter(
+                            i => (i.type === 'pricing-option' && i.id === item.relationships.pricingOption.data.id)
+                        ).reduce(a => a);
+                        return {
+                            type: item.type,
+                            id: item.id,
+                            attributes: item.attributes,
+                            pricingOption: pricingOption
+                        };
+                    }),
+                'matchedItem': engagements.included
+                    .filter(i => (i.type === 'matched-item' && i.id === matchedItemId))
+                    .map((item) => {
+                        return {
+                            type: item.type,
+                            id: item.id,
+                            attributes: item.attributes
+                        };
+                    }).reduce(a => a),
+                'requestedItem': engagements.included
+                    .filter(i => (i.type === 'matched-item' && i.id === matchedItemId))
+                    .map((item) => {
+                        return item.relationships.requestedItem.data;
+                    }).reduce(a => a),
+                'createdBy': engagements.included
+                    .filter(i => (i.type === 'user' && i.id === userId))
+                    .map((user) => {
+                        return user.attributes.first_name + ' ' + user.attributes.last_name;
+                    }).reduce(a => a),
+                'supplier': getSupplier(engagements.included, matchedItemId)
+            };
+        });
 
     return { type: RECEIVE_ENGAGEMENTS, pendingEngagements, sentEngagements };
 }
@@ -115,6 +159,21 @@ export function deleteEngagement(requestedItemId, matchedItemId, engagementId) {
             window.console.log('response:', response);
         }).catch((error) => {
             window.console.log('error:', error);
+        });
+    };
+}
+
+export function sendEngagements() {
+    return (dispatch, getState) => {
+        const quoteId = getState().itemsReducer.quoteId;
+        let sendToAll = {
+            data: [{
+                sendToAll: false
+            }]
+        };
+        axios.post(`searcher-quote-requests/${quoteId}/engagements`, sendToAll).then((response) => {
+            window.console.log('sent engagement', response);
+            dispatch(loadEngagements(quoteId));
         });
     };
 }

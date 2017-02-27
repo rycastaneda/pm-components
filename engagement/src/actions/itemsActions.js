@@ -2,6 +2,8 @@ import {
     UPDATE_QUOTE_ID,
     UPDATE_REQUESTED_ITEM_ID,
     UPDATE_MATCHED_ITEM_ID,
+    UPDATE_PANEL_ID,
+    UPDATE_ITEM_ID,
     LOAD_ITEMS_SUCCESS,
     LOAD_ITEMS_ERROR,
     RECEIVE_SUGGESTIONS,
@@ -171,6 +173,30 @@ export function updateMatchedItemId(riqiId) {
     return {
         type: UPDATE_MATCHED_ITEM_ID,
         riqiId
+    };
+}
+
+/**
+ *
+ * @param {string} panelId
+ * @returns {{type, panelId: *}}
+ */
+export function updatePanelId(panelId) {
+    return {
+        type: UPDATE_PANEL_ID,
+        panelId
+    };
+}
+
+/**
+ *
+ * @param {string} itemId
+ * @returns {{type, itemId: *}}
+ */
+export function updateItemId(itemId) {
+    return {
+        type: UPDATE_ITEM_ID,
+        itemId
     };
 }
 

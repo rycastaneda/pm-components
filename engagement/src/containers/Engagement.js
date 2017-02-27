@@ -5,9 +5,9 @@ import ItemDetails from './ItemDetails';
 import PendingEngagements from './PendingEngagements';
 import SentEngagements from './SentEngagements';
 
-import { updateQuoteId, updateRequestedItemId, updateMatchedItemId, loadItems } from '../actions/itemsActions';
+import { updateQuoteId, updateRequestedItemId, updateMatchedItemId, updatePanelId, updateItemId, loadItems } from '../actions/itemsActions';
 import { loadEngagements } from '../actions/engagementsActions';
-import { loadItemDetails } from '../actions/itemDetailsActions';
+import { loadItemDetails, loadItemDetailsPanel } from '../actions/itemDetailsActions';
 
 class Engagement extends Component {
 
@@ -16,18 +16,27 @@ class Engagement extends Component {
     }
 
     componentWillMount() {
-        const quoteId = document.getElementById('quote_id').value;
-        const rqId = document.getElementById('rq_id').value;
-        const riqiId = document.getElementById('riqi_id').value;
+        const quoteId = document.getElementById('quote_id') ? document.getElementById('quote_id').value : null;
+        const rqId = document.getElementById('rq_id') ? document.getElementById('rq_id').value : null;
+        const riqiId = document.getElementById('riqi_id') ? document.getElementById('riqi_id').value : null;
+        const itemId = document.getElementById('item_id') ? document.getElementById('item_id').value : null;
+        const panelId = document.getElementById('panel_id') ? document.getElementById('panel_id').value : null;
 
-        this.props.dispatch(updateQuoteId(quoteId));
-        this.props.dispatch(updateRequestedItemId(rqId));
-        this.props.dispatch(updateMatchedItemId(riqiId));
-        this.props.dispatch(loadEngagements(quoteId));
-        if (rqId && riqiId) {
-            this.props.dispatch(loadItemDetails(riqiId, rqId));
+        if (panelId && itemId) {
+            this.props.dispatch(updatePanelId(panelId));
+            this.props.dispatch(updateItemId(itemId));
+            this.props.dispatch(loadItemDetailsPanel(panelId, itemId));
         } else {
-            this.props.dispatch(loadItems(quoteId));
+            this.props.dispatch(updateQuoteId(quoteId));
+            this.props.dispatch(updateRequestedItemId(rqId));
+            this.props.dispatch(updateMatchedItemId(riqiId));
+            this.props.dispatch(loadEngagements(quoteId));
+
+            if (rqId && riqiId) {
+                this.props.dispatch(loadItemDetails(riqiId, rqId));
+            } else {
+                this.props.dispatch(loadItems(quoteId));
+            }
         }
     }
 
@@ -38,11 +47,15 @@ class Engagement extends Component {
         return (
             <div className="engagement">
                 {
-                    (itemsReducer.spot !== 'supplier-item') ? <ItemSuggestion /> : null
+                    (itemsReducer.spot === 'qr-details') ? <ItemSuggestion /> : null
                 }
                 <ItemDetails />
-                <PendingEngagements />
-                <SentEngagements />
+                {
+                    (itemsReducer.spot !== 'browse') ? <PendingEngagements /> : null
+                }
+                {
+                    (itemsReducer.spot !== 'browse') ? <SentEngagements /> : null
+                }
             </div>
         );
     }
