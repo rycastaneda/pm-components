@@ -5,17 +5,13 @@ import {
     ENGAGEMENT_DELETED
 } from '../constants/ActionTypes';
 
-import { setEndpointPath, readEndpoint, deleteEntity } from 'redux-json-api';
 import axios from 'axios';
 
 export function loadEngagements(quoteId) {
-    const endPoint = 'engagements?include=matchedItem.matchedSupplier,matchedItem.requestedItem';
-
     return (dispatch) => {
-        dispatch(setEndpointPath(`/searcher-quote-requests/${quoteId}`));
-        dispatch(readEndpoint(endPoint))
+        axios.get(`/searcher-quote-requests/${quoteId}/engagements?include=matchedItem.matchedSupplier,matchedItem.requestedItem`)
         .then((response) => {
-            dispatch(loadEngagementsSuccess(response));
+            dispatch(loadEngagementsSuccess(response.data));
         }).catch((error) => {
             window.console.log(error);
         });
@@ -41,7 +37,7 @@ export function loadEngagementsSuccess(engagements) {
         .filter(i => i.attributes.status === 1)
         .map((engagement) => {
             let matchedItemId = engagement.relationships.matchedItem.data.id;
-            let engagementDetailId = engagement.relationships.engagementDetails.data[0].id;
+            let engagementDetailId = engagement.relationships.engagementDetails.data.lenth ? engagement.relationships.engagementDetails.data[0].id : null;
             let userId = engagement.relationships.user.data.id;
             return {
                 'type': 'engagements',
@@ -135,12 +131,14 @@ export function deleteEngagement(requestedItemId, matchedItemId, engagementId) {
     return (dispatch, getState) => {
         const quoteId = getState().itemsReducer.quoteId;
         const currentEngagementId = getState().itemDetailsReducer.currentEngagement.id;
-        dispatch(setEndpointPath(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}`));
-        dispatch(deleteEntity({
-            type: 'engagements',
-            id: engagementId,
-            relationships: {}
-        }))
+        let engagement = {
+            data: [{
+                type: 'engagements',
+                id: engagementId,
+                relationships: {}
+            }]
+        };
+        axios.delete(`searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${engagementId}`, { data:engagement })
         .then((response) => {
             if (currentEngagementId === engagementId) {
                 dispatch({

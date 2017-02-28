@@ -10,10 +10,7 @@ import {
     RESET_SUGGESTIONS,
     UPDATE_SUGGESTION
 } from '../constants/ActionTypes';
-import {
-    setEndpointPath,
-    readEndpoint
-} from 'redux-json-api';
+import axios from 'axios';
 
 /**
  * source: http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
@@ -128,12 +125,10 @@ function getSuggestions(state, value) {
  * @returns {function(*, *)}
  */
 export function loadItems(quoteId) {
-    const endPoint = 'requested-items?filters[only_quoted_item]=1&include=quoteRequest,matchedItems.matchedSupplier';
     return (dispatch) => {
-        dispatch(setEndpointPath(`/searcher-quote-requests/${quoteId}`));
-        dispatch(readEndpoint(endPoint))
+        axios.get(`/searcher-quote-requests/${quoteId}/requested-items?filters[only_quoted_item]=1&include=quoteRequest,matchedItems.matchedSupplier`)
         .then((response) => {
-            dispatch(loadItemsSuccess(response));
+            dispatch(loadItemsSuccess(response.data));
         }).catch((error) => {
             dispatch(loadItemsError(error));
         });

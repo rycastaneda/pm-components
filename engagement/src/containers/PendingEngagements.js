@@ -22,7 +22,10 @@ class PendingEngagements extends Component {
 
     pendingEngagementsTotal(engagements) {
         return this.convertToCurrency(engagements.reduce(function(a, b) {
-            return a + (b.engagementDetails[0].attributes.rate_value * b.engagementDetails[0].attributes.unit * b.matchedItem.attributes.quantity);
+            if (b.engagementDetails.length) {
+                return a + (b.engagementDetails[0].attributes.rate_value * b.engagementDetails[0].attributes.unit * b.matchedItem.attributes.quantity);
+            }
+            return a;
         }, 0));
     }
 

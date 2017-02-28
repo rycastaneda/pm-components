@@ -67,7 +67,8 @@ class ItemDetails extends Component {
                 pricingOptions.length ?
                 <div className="item-details">
                     <h4 className="pad-top">{ editMode ? 'Edit Pending Engagement' : 'Create New Engagement' }</h4>
-                    { engagementTitle ? <h6>{engagementTitle}</h6> : <h6>{currentEngagement.relationships.supplier.attributes.title} - {currentEngagement.relationships.matchedItemTitle}</h6> }
+                    { engagementTitle ? <h6>{engagementTitle}</h6> : null }
+                    { !engagementTitle && currentEngagement.relationships ? <h6>{currentEngagement.relationships.supplier.attributes.title} - {currentEngagement.relationships.matchedItemTitle}</h6> : null }
                     <table className="table table-striped db-table">
                         <thead>
                             <tr>

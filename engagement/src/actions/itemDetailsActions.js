@@ -14,23 +14,20 @@ import {
     UPDATED_UNIT
 } from '../constants/ActionTypes';
 
-import { setEndpointPath, createEntity, readEndpoint, updateEntity } from 'redux-json-api';
 import axios from 'axios';
 import moment from 'moment';
 import { loadEngagements } from './engagementsActions';
 
 export function loadItemDetails(matchedItemId, requestedItemId, engagement) {
-    const endPoint = `${matchedItemId}?include=pricingOptions,matchedSupplier,quoteRequestEngagements,quoteRequestEngagements.createdBy,quoteRequestEngagements.engagementDetails,quoteRequestEngagements.matchedItem&fields[pricing-options]=title,value,standby_value&fields[engagement]=status,engagement_text,po_value`;
-
     return (dispatch, getState) => {
         const quoteId = getState().itemsReducer.quoteId;
 
-        dispatch(setEndpointPath(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items`));
-        dispatch(readEndpoint(endPoint))
+        axios.get(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}?include=pricingOptions,matchedSupplier,quoteRequestEngagements,quoteRequestEngagements.createdBy,quoteRequestEngagements.engagementDetails,quoteRequestEngagements.matchedItem&fields[pricing-options]=title,value,standby_value&fields[engagement]=status,engagement_text,po_value`)
         .then((response) => {
             let pricingOptions = [];
             let supplier = [];
             let matchedItemTitle = '';
+            response = response.data;
             if (engagement) {
                 pricingOptions = response.included.filter((i) => {
                     if (i.type === 'pricing-options') {
@@ -86,6 +83,7 @@ export function loadItemDetailsPanel(panelId, itemId) {
             let pricingOptions = [];
             let supplier = [];
             let matchedItemTitle = '';
+            response = response.data;
             supplier = response.included.filter((i) => {
                 if (i.type === 'supplier') {
                     return i;
@@ -221,13 +219,11 @@ export function createEngagement() {
             requestedItemId = currentEngagement.relationships['requested-items'].data.id,
             matchedItemId = currentEngagement.relationships['matched-items'].data.id,
             pricingOptions = getState().itemDetailsReducer.pricingOptions,
-            quoteId = getState().itemsReducer.quoteId,
-            newPath = `/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}`;
+            quoteId = getState().itemsReducer.quoteId;
 
-        dispatch(setEndpointPath(newPath));
-
-        dispatch(createEntity(currentEngagement))
+        axios.post(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements`, { data: currentEngagement })
         .then((response) => {
+            response = response.data;
             window.console.log('engagement created: ', response.data.id);
             dispatch(createEngagementDetails(pricingOptions, requestedItemId, matchedItemId, response.data.id, quoteId));
             dispatch({
@@ -242,8 +238,6 @@ export function createEngagement() {
 }
 
 export function createEngagementDetails(pricingOptions, requestedItemId, matchedItemId, engagementId, quoteId) {
-    const newPath = `/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${engagementId}`;
-
     const engagementDetails = pricingOptions.filter(function(pricingOption) {
         return (pricingOption.attributes.selected) ? true: false;
     }).map(function(pricingOption) {
@@ -272,10 +266,8 @@ export function createEngagementDetails(pricingOptions, requestedItemId, matched
     });
 
     return (dispatch, getState) => {
-        dispatch(setEndpointPath(newPath));
-
         engagementDetails.forEach(function(engagementDetail) {
-            dispatch(createEntity(engagementDetail))
+            axios.post(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${engagementId}/engagement-details`, { data: engagementDetail })
             .then((response) => {
                 window.console.log(response);
                 const quoteId = getState().itemsReducer.quoteId;
@@ -296,12 +288,9 @@ export function handleEngagementUpdate() {
         const currentEngagement = getState().itemDetailsReducer.currentEngagement,
             requestedItemId = currentEngagement.relationships['requested-items'].data.id,
             matchedItemId = currentEngagement.relationships['matched-items'].data.id,
-            quoteId = getState().itemsReducer.quoteId,
-            newPath = `/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}`;
+            quoteId = getState().itemsReducer.quoteId;
 
-        dispatch(setEndpointPath(newPath));
-
-        dispatch(updateEntity(currentEngagement))
+        axios.patch(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${currentEngagement.id}`, { data: currentEngagement })
         .then((response) => {
             dispatch ({
                 type: UPDATED_ENGAGEMENT,
@@ -326,8 +315,7 @@ export function handleEngagementDetailUpdate(pricingOption, value) {
                 matchedItemId = currentEngagement.relationships['matched-items'].data.id,
                 engagementDetailId = pricingOption.relationships['engagement-details'].data.id,
                 pricingOptions = getState().itemDetailsReducer.pricingOptions,
-                quoteId = getState().itemsReducer.quoteId,
-                newPath = `/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${engagementId}`;
+                quoteId = getState().itemsReducer.quoteId;
 
             const engagementDetails = {
                 'type': 'engagement-details',
@@ -337,9 +325,7 @@ export function handleEngagementDetailUpdate(pricingOption, value) {
                 }
             };
 
-            dispatch(setEndpointPath(newPath));
-
-            dispatch(updateEntity(engagementDetails))
+            axios.patch(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${engagementId}/engagement-details/${engagementDetailId}`, { data: engagementDetails })
             .then((response) => {
                 dispatch ({
                     type: UPDATED_ENGAGEMENT_DETAILS,

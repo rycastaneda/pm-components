@@ -4,7 +4,6 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
-import { setEndpointHost, setEndpointPath, setHeaders } from 'redux-json-api';
 import axios from 'axios';
 import api from '../../shared/api.config';
 import Engagement from './containers/Engagement';
@@ -29,10 +28,6 @@ let headers = api.configureHeaders();
 
 axios.defaults.baseURL = hostname;
 axios.defaults.headers.common = headers;
-
-store.dispatch(setEndpointHost(api.configureHostname()));
-store.dispatch(setHeaders(api.configureHeaders()));
-store.dispatch(setEndpointPath(''));
 
 if (document.querySelector('[data-component="engagement-supplier-item"')) {
     store.dispatch({
