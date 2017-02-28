@@ -28,7 +28,7 @@ class CommentsForm extends Component {
                         this.commentsInput = ref;
                     }}
                     className="comments-form__textarea valid"/>
-                <button onClick={this.handleSubmit} className="btn comments-form__submit" type="submit">Submit</button>
+                <button onClick={this.handleSubmit} className="btn comments-form__submit" type="button">Submit</button>
             </div>
         );
     }
