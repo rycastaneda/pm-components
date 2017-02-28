@@ -37,7 +37,7 @@ export function loadEngagementsSuccess(engagements) {
         .filter(i => i.attributes.status === 1)
         .map((engagement) => {
             let matchedItemId = engagement.relationships.matchedItem.data.id;
-            let engagementDetailId = engagement.relationships.engagementDetails.data.lenth ? engagement.relationships.engagementDetails.data[0].id : null;
+            let engagementDetailId = engagement.relationships.engagementDetails.data.length ? engagement.relationships.engagementDetails.data[0].id : null;
             let userId = engagement.relationships.user.data.id;
             return {
                 'type': 'engagements',
