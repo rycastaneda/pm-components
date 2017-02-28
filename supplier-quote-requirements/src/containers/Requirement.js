@@ -1,73 +1,74 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import {
-    handleCommentsUpdate,
-    handleButtonSelection,
-    toggleCommentsDisplay,
-    saveComments
+    updateSelection,
+    toggleCommentsDisplay
 } from '../actions/supplierQuoteRequirements';
-import Button from '../components/Button';
+import Responses from '../components/Responses';
 import CommentsForm from '../components/CommentsForm';
 
 class DisplayForm extends Component {
 
     constructor(props) {
         super(props);
-        this.handleButtonSelection = this.handleButtonSelection.bind(this);
-        this.handleCommentsSave = this.handleCommentsSave.bind(this);
-        this.handleCommentsUpdate = this.handleCommentsUpdate.bind(this);
+        this.updateSelection = this.updateSelection.bind(this);
         this.toggleCommentsFieldDisplay = this.toggleCommentsFieldDisplay.bind(this);
+        this.requirement = props.requirement;
     }
 
-    handleButtonSelection(button) {
-        return this.props.dispatch(handleButtonSelection(this.props.item, button));
-    }
+    updateSelection(response, comment) {
+        if (!response) {
+            response = this.requirement.response ? this.requirement.response.response : '';
+        } // set previous response
 
-    handleCommentsSave() {
-        return this.props.dispatch(saveComments(this.props.item));
-    }
+        if (!comment) {
+            comment = this.requirement.response ? this.requirement.response.comment : '';
+        } // set previous comment
 
-    handleCommentsUpdate(event) {
-        return this.props.dispatch(handleCommentsUpdate(this.props.item, event.target.value));
+        return this.props.dispatch(updateSelection(
+            this.requirement.response ? this.requirement.response.id : '', 
+            this.requirement.id, 
+            response,
+            comment
+        ));
     }
 
     toggleCommentsFieldDisplay() {
-        return this.props.dispatch(toggleCommentsDisplay(this.props.item));
+        return this.props.dispatch(toggleCommentsDisplay(this.props.requirement));
     }
 
-
     render() {
-        const { item } = this.props;
-        const supplierResponse = item.supplierResponse.attributes;
-
+        const { requirement } = this.props;
         return (
             <div className="display-form">
                 <div className="col-xs-9 display-form__left-block">
 
                     <div className="display-form__description">
-                        {item.attributes.text}
+                        {requirement.text}
                     </div>
-
                     {
-                        item.displayCommentsField
-                        ? <CommentsForm handleCommentsSave={this.handleCommentsSave}
-                                        handleCommentsUpdate={this.handleCommentsUpdate}
-                                        commentsText={supplierResponse ? supplierResponse.comment : ''} />
+                        requirement.displayComments
+                        ? <CommentsForm 
+                                updateSelection={this.updateSelection}
+                                comment={requirement.response ? requirement.response.comment : ''} />
                         : null
                     }
-
                 </div>
                 <div className="col-xs-3 display-form__right-block">
                     <div className="btn-group btn-group-justified display-form__buttons-container">
-                        { item.buttons.map(button =>
-                            <Button key={button.id}
-                                    isSelected={supplierResponse ? supplierResponse.response === button.value : false}
-                                    handleSelection={() => this.handleButtonSelection(button)}
-                                    label={button.value}/>)
-                        }
+                        <Responses 
+                            updateSelection={this.updateSelection} 
+                            response={requirement.response ? requirement.response.response : ''}>
+                        </Responses>
                     </div>
-                    <div><a className="display-form__link"
-                            onClick={this.toggleCommentsFieldDisplay}>+ Add comments</a></div>
+
+                    {requirement.response &&
+                        <div>
+                            <a className="display-form__link"
+                                onClick={this.toggleCommentsFieldDisplay}>{requirement.response.comment ? `View Comments` : `+ Add comments`}
+                            </a>
+                        </div>
+                    }
                 </div>
 
             </div>
@@ -77,7 +78,11 @@ class DisplayForm extends Component {
 
 DisplayForm.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    item: PropTypes.object.isRequired
+    requirement: PropTypes.object.isRequired
 };
 
-export default connect()(DisplayForm);
+function mapStateToProps(state) {
+    return state;
+}
+
+export default connect(mapStateToProps)(DisplayForm);

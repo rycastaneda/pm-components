@@ -1,13 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import DisplayForm from '../containers/DisplayForm';
-import {
-    updateQuoteId,
-    updateRequestItemId,
-    updateRequestByToItemId,
-    updateQuoteItemId,
-    getItems
-} from '../actions/supplierQuoteRequirements';
+import Requirement from '../containers/Requirement';
+import { getItems } from '../actions/supplierQuoteRequirements';
 
 class SupplierQuoteRequirements extends Component {
 
@@ -17,27 +11,23 @@ class SupplierQuoteRequirements extends Component {
 
     componentDidMount() {
         const self = this;
-        self.props.dispatch(updateQuoteId(document.querySelector('[data-component="supplier-quote-requirements"]').getAttribute('data-quote-id')));
-        self.props.dispatch(updateRequestItemId(document.querySelector('[data-component="supplier-quote-requirements"]').getAttribute('data-rqid')));
-        self.props.dispatch(updateRequestByToItemId(document.querySelector('[data-component="supplier-quote-requirements"]').getAttribute('data-qrbtid')));
-
-        self.props.dispatch(updateQuoteItemId(document.querySelector('[data-component="supplier-quote-requirements"]').getAttribute('data-riqi-id')));
-        self.props.dispatch(getItems());
+        this.quoteId = document.querySelector('[data-component="supplier-quote-requirements"]').getAttribute('data-quote-id');
+        this.requestItemId = document.querySelector('[data-component="supplier-quote-requirements"]').getAttribute('data-rqid');
+        this.matchedItemId = document.querySelector('[data-component="supplier-quote-requirements"]').getAttribute('data-riqi-id');
+        self.props.dispatch(getItems(this.quoteId, this.matchedItemId, this.requestItemId));
     }
 
     render() {
-        const { quoteRequirements } = this.props;
+        const { summary, requirements } = this.props;
         return (
             <div className="supplier-quote-requirements__form col-xs-12">
-                { quoteRequirements.items.length
-                    ?   <div>
-                            <label>Quote Requirements</label>
-                            { quoteRequirements.items.map(item =>
-                                <DisplayForm key={item.id}
-                                             item={item}/>
-                            )}
-                        </div>
-                    : null
+                {Object.keys(summary).map((requirementId) => {
+                    return <input key={requirementId} type="hidden" name={`quote-requirement-${requirementId}`} value={JSON.stringify(summary[requirementId])}/>;
+                })}
+                {
+                    requirements.map((requirement) => {
+                        return <Requirement key={requirement.id} requirement={requirement}/>;
+                    })
                 }
             </div>
         );
@@ -46,14 +36,32 @@ class SupplierQuoteRequirements extends Component {
 
 SupplierQuoteRequirements.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    quoteRequirements: PropTypes.object.isRequired
+    requirements: PropTypes.array.isRequired,
+    summary: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
-    const { quoteRequirements } = state;
+    const { requirements, responses } = state;
+    let summary = {};
+
+    let normalized = requirements.allIds.map((requirementId) => {
+        let requirement = requirements.byId[requirementId];
+        
+        requirement.response = responses.byId[requirementId] || false;
+
+        if (requirement.response) {
+            summary[requirementId] = {
+                response: requirement.response.response,
+                comment: requirement.response.comment
+            };
+        }
+
+        return requirement;
+    });
 
     return {
-        quoteRequirements
+        requirements: normalized,
+        summary
     };
 }
 

@@ -1,21 +1,47 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 
-const CommentsForm = ({ handleCommentsSave, handleCommentsUpdate, commentsText }) => (
-    <div className="comments-form">
-        <p className="comments-form__title">Comments</p>
-        <textarea className="comments-form__textarea"
-                  defaultValue={commentsText}
-                  onChange={handleCommentsUpdate}/>
-        <button className="btn comments-form__submit"
-                onClick={handleCommentsSave}>Save
-        </button>
-    </div>
-);
+class CommentsForm extends Component {
+
+    constructor(props) {
+        super(props);
+        this.commentsInput = null;
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit() {
+        if (!this.commentsInput.value) {
+            return;
+        }
+
+        return this.props.updateSelection(null, this.commentsInput.value);
+    }
+
+    render() {
+        const { comment } = this.props;
+
+        return (
+            <div className="comments-form">
+                <p className="comments-form__title">Comments</p>
+                <p>{comment}</p>
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    this.handleSubmit();
+                }}>
+                    <textarea 
+                        ref={(ref) => {
+                            this.commentsInput = ref;
+                        }}
+                        className="comments-form__textarea"/>
+                    <button className="btn comments-form__submit" type="submit">Submit</button>
+                </form>
+            </div>
+        );
+    }
+}
 
 CommentsForm.propTypes = {
-    handleCommentsSave: PropTypes.func.isRequired,
-    handleCommentsUpdate: PropTypes.func.isRequired,
-    commentsText: PropTypes.string
+    updateSelection: PropTypes.func.isRequired,
+    comment: PropTypes.string
 };
 
 export default CommentsForm;

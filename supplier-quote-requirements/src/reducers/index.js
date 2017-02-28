@@ -1,6 +1,9 @@
 import { combineReducers } from 'redux';
-import { quoteRequirements } from './quoteRequirements';
+import { requirements } from './requirements';
+import { responses } from './responses';
+
 
 export default combineReducers({
-    quoteRequirements
+    requirements,
+    responses
 });
