@@ -5,7 +5,7 @@ import ItemDetails from './ItemDetails';
 import PendingEngagements from './PendingEngagements';
 import SentEngagements from './SentEngagements';
 
-import { updateQuoteId, updateRequestedItemId, updateMatchedItemId, updatePanelId, updateItemId, loadItems } from '../actions/itemsActions';
+import { updateQuoteId, updateRequestedItemId, updateMatchedItemId, updatePanelId, updateItemId, updateRegionId, loadItems } from '../actions/itemsActions';
 import { loadEngagements } from '../actions/engagementsActions';
 import { loadItemDetails, loadItemDetailsPanel } from '../actions/itemDetailsActions';
 
@@ -21,11 +21,13 @@ class Engagement extends Component {
         const riqiId = document.getElementById('riqi_id') ? document.getElementById('riqi_id').value : null;
         const itemId = document.getElementById('item_id') ? document.getElementById('item_id').value : null;
         const panelId = document.getElementById('panel_id') ? document.getElementById('panel_id').value : null;
+        const regionId = document.getElementById('region_id') ? document.getElementById('region_id').value : null;
 
         if (panelId && itemId) {
             this.props.dispatch(updatePanelId(panelId));
+            this.props.dispatch(updateRegionId(regionId));
             this.props.dispatch(updateItemId(itemId));
-            this.props.dispatch(loadItemDetailsPanel(panelId, itemId));
+            this.props.dispatch(loadItemDetailsPanel(panelId, itemId, regionId));
         } else {
             this.props.dispatch(updateQuoteId(quoteId));
             this.props.dispatch(updateRequestedItemId(rqId));

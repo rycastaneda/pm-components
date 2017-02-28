@@ -16,7 +16,7 @@ import {
 
 import axios from 'axios';
 import moment from 'moment';
-import { loadEngagements } from './engagementsActions';
+import { loadEngagements, sendEngagementsBrowse } from './engagementsActions';
 
 export function loadItemDetails(matchedItemId, requestedItemId, engagement) {
     return (dispatch, getState) => {
@@ -76,9 +76,9 @@ export function loadItemDetails(matchedItemId, requestedItemId, engagement) {
     };
 }
 
-export function loadItemDetailsPanel(panelId, itemId) {
+export function loadItemDetailsPanel(panelId, itemId, regionId) {
     return (dispatch) => {
-        axios.get(`/browse-panels/${panelId}/items/${itemId}?include=supplier,standardRates`)
+        axios.get(`/browse-panels/${panelId}/items/${itemId}?include=standardRates,supplier&filters[regionId]=${regionId}&fields[pricing-options]=title,value,standby_value`)
         .then((response) => {
             let pricingOptions = [];
             let supplier = [];
@@ -266,16 +266,85 @@ export function createEngagementDetails(pricingOptions, requestedItemId, matched
     });
 
     return (dispatch, getState) => {
+        let numEngagementDetails = 0;
         engagementDetails.forEach(function(engagementDetail) {
             axios.post(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${engagementId}/engagement-details`, { data: engagementDetail })
             .then((response) => {
                 window.console.log(response);
-                const quoteId = getState().itemsReducer.quoteId;
-                dispatch(loadEngagements(quoteId));
-                dispatch({
-                    type: RESET_ITEM_DETAILS
-                });
+                numEngagementDetails += 1;
+                if (numEngagementDetails === engagementDetails.length) {
+                    const quoteId = getState().itemsReducer.quoteId;
+                    dispatch({
+                        type: RESET_ITEM_DETAILS
+                    });
+                    dispatch(loadEngagements(quoteId));
+                }
+            }).catch((error) => {
+                window.console.log(error);
+            });
+        });
+    };
+}
 
+export function createEngagementPanel() {
+    return (dispatch, getState) => {
+        const currentEngagement = getState().itemDetailsReducer.currentEngagement,
+            panelId = getState().itemsReducer.panelId,
+            itemId = getState().itemsReducer.itemId,
+            pricingOptions = getState().itemDetailsReducer.pricingOptions;
+
+        axios.post(`/browse-panels/${panelId}/items/${itemId}/engagements`, { data: currentEngagement })
+        .then((response) => {
+            let engagementId = response.data.data.id;
+            window.console.log('browse engagement created: ', response.data.data.id);
+            dispatch(createEngagementDetailsPanel(pricingOptions, panelId, itemId, engagementId));
+        }).catch((error) => {
+            window.console.log(error);
+        });
+    };
+}
+
+export function createEngagementDetailsPanel(pricingOptions, panelId, itemId, engagementId) {
+    const engagementDetails = pricingOptions.filter(function(pricingOption) {
+        return (pricingOption.attributes.selected) ? true: false;
+    }).map(function(pricingOption) {
+        let engagementDetail = {
+            'type': 'engagement-details',
+            'attributes': {
+                'rate_value': pricingOption.attributes.value,
+                'unit': pricingOption.attributes.unit
+            },
+            'relationships': {
+                'engagements': {
+                    'data': {
+                        'type': 'engagements',
+                        'id': engagementId
+                    }
+                },
+                'pricing-options': {
+                    'data': {
+                        'type': 'pricing-options',
+                        'id': pricingOption.id
+                    }
+                }
+            }
+        };
+        return engagementDetail;
+    });
+
+    return (dispatch) => {
+        let numEngagementDetails = 0;
+        engagementDetails.forEach(function(engagementDetail) {
+            axios.post(`/browse-panels/${panelId}/items/${itemId}/engagements/${engagementId}/engagement-details`, { data: engagementDetail })
+            .then((response) => {
+                window.console.log(response);
+                numEngagementDetails += 1;
+                if (numEngagementDetails === engagementDetails.length) {
+                    dispatch({
+                        type: RESET_ITEM_DETAILS
+                    });
+                    dispatch(sendEngagementsBrowse(engagementId));
+                }
             }).catch((error) => {
                 window.console.log(error);
             });

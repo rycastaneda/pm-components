@@ -11,6 +11,7 @@ export function loadEngagements(quoteId) {
     return (dispatch) => {
         axios.get(`/searcher-quote-requests/${quoteId}/engagements?include=matchedItem.matchedSupplier,matchedItem.requestedItem`)
         .then((response) => {
+            // response.data = { 'data':[{ 'type':'engagements', 'id':'7', 'attributes':{ 'status':1, 'po_number':'34535', 'po_value':'0', 'pre_start_date':'2017-03-02' }, 'relationships': { 'user': { 'data': { 'type':'user', 'id':'1' } }, 'matchedItem': { 'data': { 'type':'matched-item', 'id':'3698397' }  }, 'engagementDetails': { 'data':[{ 'type':'engagement-details', 'id':'8' }, { 'type':'engagement-details', 'id':'9' }] }  }  },  { 'type':'engagements', 'id':'9', 'attributes': { 'status':1, 'po_number':'WO-11650', 'po_value':'0', 'pre_start_date':'2017-02-28' }, 'relationships': { 'user': { 'data': { 'type':'user', 'id':'1' }  }, 'matchedItem': { 'data': { 'type':'matched-item', 'id':'3698397' }  }, 'engagementDetails': { 'data':[{ 'type':'engagement-details', 'id':'11' },  { 'type':'engagement-details', 'id':'12' },  { 'type':'engagement-details', 'id':'13' }] }  }  }], 'included':[{ 'type':'supplier', 'id':'537879', 'attributes': { 'title':'Coates Hire' }  }, { 'type':'requested-item', 'id':'64559', 'attributes': { 'title':'6 - 10 Tonne Excavator' }  }, { 'type':'pricing-option', 'id':'12', 'attributes': { 'title':'Demobilisation per Km' }  }, { 'type':'pricing-option', 'id':'10', 'attributes': { 'title':'Mobilisation per Km' }  }, { 'type':'pricing-option', 'id':'2', 'attributes': { 'title':'Dry Daily' }  }, { 'type':'user', 'id':'1', 'attributes': { 'first_name':'Troy', 'last_name':'Redden', 'mobile':'07 4130 4550', 'is_organisation_admin':1, 'position':'', 'staff_company':null, 'staff_phone':'07 4130 4550', 'state_id':10424 }  }, { 'type':'matched-item', 'id':'3698397', 'attributes': { 'quantity':1, 'title':'11650 - Excavator 7.0 - 8.0 Tonne' }, 'relationships': { 'matchedSupplier': { 'data':[{ 'type':'supplier', 'id':'537879' }] }, 'requestedItem': { 'data': { 'type':'requested-item', 'id':'64559' }  }  }  },  { 'type':'engagement-details', 'id':'8', 'attributes': { 'rate_value':'150', 'unit':1 }, 'relationships': { 'pricingOption': { 'data': { 'type':'pricing-option', 'id':'12' }  }  }  },  { 'type':'engagement-details', 'id':'9', 'attributes': { 'rate_value':'150', 'unit':1 }, 'relationships': { 'pricingOption': { 'data': { 'type':'pricing-option', 'id':'10' }  }  }  },  { 'type':'engagement-details', 'id':'11', 'attributes': { 'rate_value':'150', 'unit':100 }, 'relationships': { 'pricingOption': { 'data': { 'type':'pricing-option', 'id':'2' }  }  }  },  { 'type':'engagement-details', 'id':'12', 'attributes': { 'rate_value':'150', 'unit':300 }, 'relationships': { 'pricingOption': { 'data': { 'type':'pricing-option', 'id':'12' }  }  }  },  { 'type':'engagement-details', 'id':'13', 'attributes': { 'rate_value':'150', 'unit':200 }, 'relationships': { 'pricingOption': { 'data': { 'type':'pricing-option', 'id':'10' }  }  }  }] } ;
             dispatch(loadEngagementsSuccess(response.data));
         }).catch((error) => {
             window.console.log(error);
@@ -37,14 +38,15 @@ export function loadEngagementsSuccess(engagements) {
         .filter(i => i.attributes.status === 1)
         .map((engagement) => {
             let matchedItemId = engagement.relationships.matchedItem.data.id;
-            let engagementDetailId = engagement.relationships.engagementDetails.data.length ? engagement.relationships.engagementDetails.data[0].id : null;
             let userId = engagement.relationships.user.data.id;
+            let engagementDetailIds = engagement.relationships.engagementDetails.data.length ?
+                engagement.relationships.engagementDetails.data.map(engagementDetail => engagementDetail.id) : null;
             return {
                 'type': 'engagements',
                 'id': engagement.id,
                 'attributes': engagement.attributes,
                 'engagementDetails': engagements.included
-                    .filter(i => (i.type === 'engagement-details' && i.id === engagementDetailId))
+                    .filter(i => (i.type === 'engagement-details' && engagementDetailIds.indexOf(i.id) > -1))
                     .map((item) => {
                         let pricingOption = engagements.included.filter(
                             i => (i.type === 'pricing-option' && i.id === item.relationships.pricingOption.data.id)
@@ -82,14 +84,15 @@ export function loadEngagementsSuccess(engagements) {
     const sentEngagements = engagements.data.filter(i => i.attributes.status === 5)
         .map((engagement) => {
             let matchedItemId = engagement.relationships.matchedItem.data.id;
-            let engagementDetailId = engagement.relationships.engagementDetails.data[0].id;
+            let engagementDetailIds = engagement.relationships.engagementDetails.data.length ?
+                engagement.relationships.engagementDetails.data.map(engagementDetail => engagementDetail.id) : null;
             let userId = engagement.relationships.user.data.id;
             return {
                 'type': 'engagements',
                 'id': engagement.id,
                 'attributes': engagement.attributes,
                 'engagementDetails': engagements.included
-                    .filter(i => (i.type === 'engagement-details' && i.id === engagementDetailId))
+                    .filter(i => (i.type === 'engagement-details' && engagementDetailIds.indexOf(i.id) > -1))
                     .map((item) => {
                         let pricingOption = engagements.included.filter(
                             i => (i.type === 'pricing-option' && i.id === item.relationships.pricingOption.data.id)
@@ -172,6 +175,16 @@ export function sendEngagements() {
         axios.post(`searcher-quote-requests/${quoteId}/engagements`, sendToAll).then((response) => {
             window.console.log('sent engagement', response);
             dispatch(loadEngagements(quoteId));
+        });
+    };
+}
+
+export function sendEngagementsBrowse(engagementId) {
+    return (dispatch, getState) => {
+        const panelId = getState().itemsReducer.panelId;
+        const itemId = getState().itemsReducer.itemId;
+        axios.post(`browse-panels/${panelId}/items/${itemId}/engagements/${engagementId}`).then((response) => {
+            window.console.log('sent engagement', response);
         });
     };
 }

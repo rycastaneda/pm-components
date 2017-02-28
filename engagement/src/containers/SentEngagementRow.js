@@ -43,10 +43,10 @@ class SentEngagementRow extends Component {
                     Quantity: {engagement.matchedItem.attributes.quantity}
                     <br /><br />
                     {engagement.attributes.po_number ?
-                        <span>Purchase Order: {engagement.attributes.po_number}<br /></span> : null
+                        <span>Work Order: {engagement.attributes.po_number}<br /></span> : null
                     }
                     {engagement.attributes.pre_start_date ?
-                        <span>Purchase Order: {moment(engagement.attributes.pre_start_date).format('DD-MM-YYYY')}<br /></span> : null
+                        <span>Planned Start Date: {moment(engagement.attributes.pre_start_date).format('DD-MM-YYYY')}<br /></span> : null
                     }
                     Created by: {engagement.createdBy}
                 </div>

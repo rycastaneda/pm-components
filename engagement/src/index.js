@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
 import axios from 'axios';
+!window._babelPolyfill && require('babel-polyfill');
 import api from '../../shared/api.config';
 import Engagement from './containers/Engagement';
 import { COMPONENT_SPOT } from './constants/ActionTypes';

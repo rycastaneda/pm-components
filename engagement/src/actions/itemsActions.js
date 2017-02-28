@@ -3,6 +3,7 @@ import {
     UPDATE_REQUESTED_ITEM_ID,
     UPDATE_MATCHED_ITEM_ID,
     UPDATE_PANEL_ID,
+    UPDATE_REGION_ID,
     UPDATE_ITEM_ID,
     LOAD_ITEMS_SUCCESS,
     LOAD_ITEMS_ERROR,
@@ -180,6 +181,19 @@ export function updatePanelId(panelId) {
     return {
         type: UPDATE_PANEL_ID,
         panelId
+    };
+}
+
+
+/**
+ *
+ * @param {string} regionId
+ * @returns {{type, regionId: *}}
+ */
+export function updateRegionId(regionId) {
+    return {
+        type: UPDATE_REGION_ID,
+        regionId
     };
 }
 

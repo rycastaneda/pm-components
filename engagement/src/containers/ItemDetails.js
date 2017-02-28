@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Datetime  from 'react-datetime';
 import moment from 'moment';
 import Button from '../components/Button';
-import { handlePOChange, handleEngagementUpdate, handePlanDateChange, createEngagement } from '../actions/itemDetailsActions';
+import { handlePOChange, handleEngagementUpdate, handePlanDateChange, createEngagement, createEngagementPanel } from '../actions/itemDetailsActions';
 import PricingOptionRow from './PricingOptionRow';
 
 class ItemDetails extends Component {
@@ -14,6 +14,7 @@ class ItemDetails extends Component {
         this.handePlanDateChange = this.handePlanDateChange.bind(this);
         this.canCreateEngagement = this.canCreateEngagement.bind(this);
         this.handleSave = this.handleSave.bind(this);
+        this.handleSaveSendPanel = this.handleSaveSendPanel.bind(this);
     }
 
     handlePOChange(event) {
@@ -41,7 +42,7 @@ class ItemDetails extends Component {
     }
 
     canCreateEngagement(pricingOptions) {
-        let pricing = pricingOptions.filter(pricingOption => pricingOption.attributes.value !== null);
+        let pricing = pricingOptions.filter(pricingOption => (pricingOption.attributes.value !== null && pricingOption.attributes.value !== 0));
         return pricing.length ? false : true;
     }
 
@@ -49,8 +50,13 @@ class ItemDetails extends Component {
         return this.props.dispatch(createEngagement());
     }
 
+    handleSaveSendPanel() {
+        return this.props.dispatch(createEngagementPanel());
+    }
+
     render() {
         const { currentEngagement, pricingOptions } = this.props.itemDetailsReducer;
+        const { itemsReducer } = this.props;
         const purchaseOrder = (Object.keys(currentEngagement).length !== 0 && currentEngagement.attributes['purchase-order'] !== null)  ? currentEngagement.attributes['purchase-order'] : '';
         const defaultDate = (Object.keys(currentEngagement).length !== 0 && currentEngagement.attributes['plan-start-date'] !== null) ? moment(currentEngagement.attributes['plan-start-date']) : null;
         const editMode = currentEngagement.id !== null;
@@ -112,15 +118,25 @@ class ItemDetails extends Component {
                         </div>
                     }
                     {
-                        editMode || canCreateEngagement ? null :
-                        <div className="row">
-                            <div className="col-xs-12 align-right db-form-submit">
-                                <Button title="Create Engagement"
-                                        onClick={this.handleSave}
-                                        classNames="submit btn"
-                                />
-                            </div>
-                        </div>
+                        itemsReducer.spot === 'browse' ?
+                            <div className="row">
+                                <div className="col-xs-12 align-right db-form-submit">
+                                    <Button title="Create & Send Engagement"
+                                            onClick={this.handleSaveSendPanel}
+                                            classNames="submit btn"
+                                    />
+                                </div>
+                            </div> :
+                            (editMode || canCreateEngagement) ?
+                                null :
+                                <div className="row">
+                                    <div className="col-xs-12 align-right db-form-submit">
+                                        <Button title="Create Engagement"
+                                                onClick={this.handleSave}
+                                                classNames="submit btn"
+                                        />
+                                    </div>
+                                </div>
                     }
                 </div> : null
                 }
@@ -130,13 +146,14 @@ class ItemDetails extends Component {
 }
 
 ItemDetails.propTypes = {
+    itemsReducer: PropTypes.object.isRequired,
     itemDetailsReducer: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
-    const { itemDetailsReducer } = state;
-    return { itemDetailsReducer };
+    const { itemsReducer, itemDetailsReducer } = state;
+    return { itemsReducer, itemDetailsReducer };
 }
 
 export default connect(mapStateToProps)(ItemDetails);

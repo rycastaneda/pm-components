@@ -4,6 +4,7 @@ import {
     UPDATE_REQUESTED_ITEM_ID,
     UPDATE_MATCHED_ITEM_ID,
     UPDATE_PANEL_ID,
+    UPDATE_REGION_ID,
     UPDATE_ITEM_ID,
     LOAD_ITEMS_SUCCESS,
     LOAD_ITEMS_ERROR,
@@ -70,6 +71,10 @@ export function itemsReducer(state = INITIAL_ITEMS_STATE, action) {
         case UPDATE_PANEL_ID:
             return Object.assign({}, state, {
                 panelId: action.panelId
+            });
+        case UPDATE_REGION_ID:
+            return Object.assign({}, state, {
+                regionId: action.regionId
             });
         case UPDATE_ITEM_ID:
             return Object.assign({}, state, {

@@ -42,12 +42,13 @@ class PricingOptionRow extends Component {
                 <td className="checkbox" data-heading="Rates">
                     <label htmlFor={`pricingOption__${pricingOption.id}`}>
                     {
-                        (pricingOption.attributes.value !== null) ? <input name={`pricingOption-checkbox__${pricingOption.id}`}
-                                                                        id={`pricingOption__${pricingOption.id}`}
-                                                                        type="checkbox"
-                                                                        checked={pricingOption.attributes.selected}
-                                                                        onChange={this.handlePricingOptionChange}
-                                                                    /> : null
+                        (pricingOption.attributes.value !== null && pricingOption.attributes.value !== 0)
+                            ? <input name={`pricingOption-checkbox__${pricingOption.id}`}
+                                    id={`pricingOption__${pricingOption.id}`}
+                                    type="checkbox"
+                                    checked={pricingOption.attributes.selected}
+                                    onChange={this.handlePricingOptionChange}
+                                /> : null
                     }
                     {pricingOption.attributes.title}
                     </label>
@@ -59,12 +60,13 @@ class PricingOptionRow extends Component {
                 </td>
                 <td data-heading="Unit">
                     {
-                        (pricingOption.attributes.value !== null) ? <input type="number"
-                                                                className="form-control"
-                                                                value={defaultValue}
-                                                                onChange={this.handleUnitChange}
-                                                                onBlur={pricingOption.relationships ? this.handleEngagementDetailUpdate : null}
-                                                        /> : null
+                        (pricingOption.attributes.value !== null && pricingOption.attributes.value !== 0)
+                            ? <input type="number"
+                                    className="form-control"
+                                    value={defaultValue}
+                                    onChange={this.handleUnitChange}
+                                    onBlur={pricingOption.relationships ? this.handleEngagementDetailUpdate : null}
+                            /> : null
                     }
                 </td>
             </tr>
