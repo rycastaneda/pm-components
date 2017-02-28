@@ -23,17 +23,12 @@ class CommentsForm extends Component {
             <div className="comments-form">
                 <p className="comments-form__title">Comments</p>
                 <p>{comment}</p>
-                <form onSubmit={(e) => {
-                    e.preventDefault();
-                    this.handleSubmit();
-                }}>
-                    <textarea 
-                        ref={(ref) => {
-                            this.commentsInput = ref;
-                        }}
-                        className="comments-form__textarea valid"/>
-                    <button className="btn comments-form__submit" type="submit">Submit</button>
-                </form>
+                <textarea 
+                    ref={(ref) => {
+                        this.commentsInput = ref;
+                    }}
+                    className="comments-form__textarea valid"/>
+                <button onClick={this.handleSubmit} className="btn comments-form__submit" type="submit">Submit</button>
             </div>
         );
     }
