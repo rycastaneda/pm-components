@@ -17,7 +17,8 @@ class PricingOptionRow extends Component {
 
     handleUnitChange(event) {
         const pricingOption = this.props.pricingOption;
-
+        this.props.dispatch(handlePricingOptionSelection(pricingOption, event.target.value ? true : false));
+        
         return this.props.dispatch(handleTextChange(pricingOption, event.target.value));
     }
 
