@@ -36,6 +36,17 @@ export function updateSelection(responseId, requirementId, response, comment) {
         } = getState().requirements;
         const endpoint = `/supplier-quote-requests/${quoteId}/matched-items/${matchedItemId}/searcher-requirement-responses`;
 
+        if (!matchedItemId) {
+            return dispatch({
+                type: UPDATE_SELECTION,
+                requirementId,
+                matchedItemId,
+                responseId,
+                response,
+                comment
+            });
+        }
+
         if (!responseId) {
             // Do a POST request to create a new response object
             let searcherRequirementResponses = {
