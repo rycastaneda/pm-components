@@ -22,7 +22,7 @@ class SupplierQuoteRequirements extends Component {
         return (
             <div className="supplier-quote-requirements__form col-xs-12">
                 {Object.keys(summary).map((requirementId) => {
-                    return <input key={requirementId} type="hidden" name={`quote-requirement-${requirementId}`} value={JSON.stringify(summary[requirementId])}/>;
+                    return <input key={requirementId} type="hidden" name={`quote-requirement[${requirementId}]`} value={JSON.stringify(summary[requirementId])}/>;
                 })}
                 {
                     requirements.map((requirement) => {
