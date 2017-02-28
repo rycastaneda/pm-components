@@ -31,7 +31,7 @@ class CommentsForm extends Component {
                         ref={(ref) => {
                             this.commentsInput = ref;
                         }}
-                        className="comments-form__textarea"/>
+                        className="comments-form__textarea valid"/>
                     <button className="btn comments-form__submit" type="submit">Submit</button>
                 </form>
             </div>
