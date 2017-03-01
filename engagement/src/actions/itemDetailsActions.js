@@ -226,21 +226,21 @@ function isValidEngagement(dispatch, currentEngagement, pricingOptions) {
     if (pricingOptions && !pricing.length) {
         dispatch({
             type: VALIDATION_ERROR,
-            message: 'Please provide values for unit'
+            message: 'Please provide values for "Units"'
         });
         return false;
     }
     if (currentEngagement && !currentEngagement.attributes['purchase-order']) {
         dispatch({
             type: VALIDATION_ERROR,
-            message: 'Please provide values for Work Order'
+            message: 'Please provide a value for "Work Order"'
         });
         return false;
     }
     if (currentEngagement && !moment(currentEngagement.attributes['plan-start-date'], 'YYYY-MM-DD', true).isValid()) {
         dispatch({
             type: VALIDATION_ERROR,
-            message: 'Please provide correct values for Planned Start Date'
+            message: 'Please provide a valid date for "Planned Start Date"'
         });
         return false;
     }
@@ -319,7 +319,7 @@ export function createEngagementDetails(pricingOptions, requestedItemId, matched
                 numEngagementDetails += 1;
                 if (numEngagementDetails === engagementDetails.length) {
                     const quoteId = getState().itemsReducer.quoteId;
-                    dispatch({ type: DISPLAY_SUCCESS, message: `Engagement created #${engagementId}` });
+                    dispatch({ type: DISPLAY_SUCCESS, message: `Engagement #${engagementId} created` });
                     dispatch(resetItemDetails());
                     dispatch(loadEngagements(quoteId));
                 }

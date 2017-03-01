@@ -210,7 +210,7 @@ export function sendEngagementsBrowse(engagementId) {
         axios.post(`browse-panels/${panelId}/items/${itemId}/engagements/${engagementId}`).then((response) => {
             window.console.log('sent engagement', response);
             dispatch({ type: REQUEST_COMPLETED });
-            dispatch({ type: DISPLAY_SUCCESS, message: `Engagement created #${engagementId} and sent successfully` });
+            dispatch({ type: DISPLAY_SUCCESS, message: `Engagement #${engagementId} created and sent successfully` });
         }).catch((error) => {
             dispatch({ type: REQUEST_COMPLETED });
             dispatch({ type: REQUEST_ERROR, error: error.response.data });
