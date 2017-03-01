@@ -20,7 +20,7 @@ export function getItems(quoteId, matchedItemId, requestItemId) {
 
         axios.get(matchedItemId ? `${endpoint}.searcherRequirementResponses:matched_item_id(${matchedItemId})` : endpoint)
             .then((response) => {
-                if (response.status === 200) {
+                if (response.status === 200 && response.data.included) {
                     dispatch({
                         type: REQUIREMENTS_RECEIVED,
                         requirements: response.data.included
