@@ -33,18 +33,12 @@ class ItemDetails extends Component {
         if (!moment(date).isValid()) {
             return;
         }
-
-        if (this.props.itemDetailsReducer.currentEngagement.id) {
-            this.props.dispatch(handePlanDateChange(date));
-            this.props.dispatch(handleEngagementUpdate(date));
-        } else {
-            return this.props.dispatch(handePlanDateChange(date));
-        }
+        this.props.dispatch(handePlanDateChange(date));
     }
 
     handePlanDateUpdate(date) {
         if (this.props.itemDetailsReducer.currentEngagement.id && this.props.itemDetailsReducer.currentEngagement.attributes.oldPODate) {
-            window.console.log('handePlanDateUpdate date: ', date);
+            this.props.dispatch(handleEngagementUpdate(date));
         }
     }
 

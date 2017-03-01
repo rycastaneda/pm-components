@@ -117,6 +117,18 @@ export function engagementsReducer(state = INITIAL_ENGAGEMENTS_STATE, action) {
             return Object.assign({}, state, {
                 pendingEngagements: engagements(state.pendingEngagements, action)
             });
+        case UPDATED_ENGAGEMENT:
+            return Object.assign({}, state, {
+                pendingEngagements: engagements(state.pendingEngagements, action)
+            });
+            // return Object.assign({}, state, {
+            //     currentEngagement: { ...state.currentEngagement,
+            //         attributes: { ...state.currentEngagement.attributes,
+            //             'oldPOVal': null,
+            //             'oldPODate': null
+            //         }
+            //     }
+            // });
         case UPDATED_ENGAGEMENT_DETAILS:
             return Object.assign({}, state, {
                 pendingEngagements: engagements(state.pendingEngagements, action)
@@ -220,6 +232,15 @@ function engagements(state = [], action) {
     switch (action.type) {
         case ENGAGEMENT_DELETED:
             return state.filter(engagement => engagement.id !== action.id);
+        case UPDATED_ENGAGEMENT:
+            return state.map(engagement =>
+                engagement.id === action.engagementId ?
+                { ...engagement,
+                    attributes: Object.assign({}, engagement.attributes, {
+                        po_number: action['purchase-order'] || engagement.attributes.po_number,
+                        pre_start_date: action['plan-start-date'] || engagement.attributes.pre_start_date
+                    }) } : engagement
+            );
         case UPDATED_ENGAGEMENT_DETAILS:
             return state.map(engagement =>
                 engagement.id === action.engagementId ?

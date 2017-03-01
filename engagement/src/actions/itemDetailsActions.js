@@ -237,7 +237,7 @@ function isValidEngagement(dispatch, currentEngagement, pricingOptions) {
         });
         return false;
     }
-    if (currentEngagement && currentEngagement.attributes['plan-start-date'] !== null && !moment(currentEngagement.attributes['plan-start-date'], 'YYYY-MM-DD', true).isValid()) {
+    if (currentEngagement && !moment(currentEngagement.attributes['plan-start-date'], 'YYYY-MM-DD', true).isValid()) {
         dispatch({
             type: VALIDATION_ERROR,
             message: 'Please provide correct values for Planned Start Date'
@@ -414,6 +414,7 @@ export function handleEngagementUpdate() {
         const currentEngagement = getState().itemDetailsReducer.currentEngagement,
             requestedItemId = currentEngagement.relationships['requested-items'].data.id,
             matchedItemId = currentEngagement.relationships['matched-items'].data.id,
+            engagementId = currentEngagement.id,
             quoteId = getState().itemsReducer.quoteId;
 
         if (!isValidEngagement(dispatch, currentEngagement, null)) {
@@ -422,12 +423,15 @@ export function handleEngagementUpdate() {
 
         dispatch({ type: REQUEST_STARTED });
 
-        axios.patch(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${currentEngagement.id}`, { data: currentEngagement })
+        axios.patch(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${engagementId}`, { data: currentEngagement })
         .then((response) => {
             dispatch ({
                 type: UPDATED_ENGAGEMENT,
                 oldPOVal: null,
-                oldPODate: null
+                oldPODate: null,
+                'purchase-order': currentEngagement.attributes['purchase-order'],
+                'plan-start-date': currentEngagement.attributes['plan-start-date'],
+                engagementId
             });
             // dispatch(handlePOChange(currentEngagement.attributes['purchase-order']));
             // dispatch(handePlanDateChange(currentEngagement.attributes['plan-start-date']));
