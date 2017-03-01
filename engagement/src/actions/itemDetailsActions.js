@@ -237,10 +237,10 @@ function isValidEngagement(dispatch, currentEngagement, pricingOptions) {
         });
         return false;
     }
-    if (currentEngagement && !currentEngagement.attributes['plan-start-date']) {
+    if (currentEngagement && currentEngagement.attributes['plan-start-date'] !== null && !moment(currentEngagement.attributes['plan-start-date'], 'YYYY-MM-DD', true).isValid()) {
         dispatch({
             type: VALIDATION_ERROR,
-            message: 'Please provide values for Planned Start Date'
+            message: 'Please provide correct values for Planned Start Date'
         });
         return false;
     }
@@ -320,7 +320,7 @@ export function createEngagementDetails(pricingOptions, requestedItemId, matched
                 if (numEngagementDetails === engagementDetails.length) {
                     const quoteId = getState().itemsReducer.quoteId;
                     dispatch({ type: DISPLAY_SUCCESS, message: `Engagement created #${engagementId}` });
-                    dispatch({ type: RESET_ITEM_DETAILS });
+                    dispatch(resetItemDetails());
                     dispatch(loadEngagements(quoteId));
                 }
                 dispatch({ type: REQUEST_COMPLETED });
@@ -397,8 +397,7 @@ export function createEngagementDetailsPanel(pricingOptions, panelId, itemId, en
                 window.console.log(response);
                 numEngagementDetails += 1;
                 if (numEngagementDetails === engagementDetails.length) {
-                    dispatch({ type: RESET_ITEM_DETAILS });
-
+                    dispatch(resetItemDetails());
                     dispatch(sendEngagementsBrowse(engagementId));
                 }
                 dispatch({ type: REQUEST_COMPLETED });
@@ -430,6 +429,9 @@ export function handleEngagementUpdate() {
                 oldPOVal: null,
                 oldPODate: null
             });
+            // dispatch(handlePOChange(currentEngagement.attributes['purchase-order']));
+            // dispatch(handePlanDateChange(currentEngagement.attributes['plan-start-date']));
+
             window.console.log('engagement updated: ', response);
             dispatch({ type: REQUEST_COMPLETED });
         }).catch((error) => {
@@ -486,7 +488,7 @@ export function handleEngagementDetailUpdate(pricingOption, value) {
                     id: pricingOption.id,
                     oldUnit: value
                 });
-                window.console.log('engagement updated: ', response);
+                window.console.log('engagement detail updated: ', response);
                 dispatch({ type: REQUEST_COMPLETED });
             }).catch((error) => {
                 dispatch({ type: REQUEST_COMPLETED });
@@ -494,5 +496,11 @@ export function handleEngagementDetailUpdate(pricingOption, value) {
             });
             window.console.log(' requestedItemId: ', requestedItemId, ' matchedItemId: ', matchedItemId, ' pricingOptions: ', pricingOptions, ' engagementDetailId: ', engagementDetailId);
         }
+    };
+}
+
+export function resetItemDetails() {
+    return (dispatch) => {
+        dispatch({ type: RESET_ITEM_DETAILS });
     };
 }

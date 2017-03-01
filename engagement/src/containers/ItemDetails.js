@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Datetime  from 'react-datetime';
 import moment from 'moment';
 import Button from '../components/Button';
-import { handlePOChange, handleEngagementUpdate, handePlanDateChange, createEngagement, createEngagementPanel } from '../actions/itemDetailsActions';
+import { handlePOChange, handleEngagementUpdate, handePlanDateChange, createEngagement, createEngagementPanel, resetItemDetails } from '../actions/itemDetailsActions';
 import PricingOptionRow from './PricingOptionRow';
 
 class ItemDetails extends Component {
@@ -16,6 +16,7 @@ class ItemDetails extends Component {
         this.canCreateEngagement = this.canCreateEngagement.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleSaveSendPanel = this.handleSaveSendPanel.bind(this);
+        this.resetItemDetails = this.resetItemDetails.bind(this);
     }
 
     handlePOChange(event) {
@@ -50,6 +51,10 @@ class ItemDetails extends Component {
     canCreateEngagement(pricingOptions) {
         let pricing = pricingOptions.filter(pricingOption => (pricingOption.attributes.value !== null && pricingOption.attributes.value !== 0));
         return pricing.length ? false: true;
+    }
+
+    resetItemDetails() {
+        return this.props.dispatch(resetItemDetails());
     }
 
     handleSave() {
@@ -137,18 +142,24 @@ class ItemDetails extends Component {
                                             disabled={enableCreate}
                                     />
                                 </div>
-                            </div> :
-                            editMode ?
-                                null :
-                                <div className="row">
-                                    <div className="col-xs-12 align-right db-form-submit">
-                                        <Button title="Create Engagement"
-                                                onClick={this.handleSave}
-                                                classNames="submit btn"
-                                                disabled={enableCreate}
-                                        />
-                                    </div>
+                            </div>
+                            :
+                            <div className="row">
+                                <div className="col-xs-12 align-right db-form-submit">
+                                { editMode ?
+                                    <Button title="Done Editing"
+                                            onClick={this.resetItemDetails}
+                                            classNames="submit btn"
+                                    />
+                                    :
+                                    <Button title="Create Engagement"
+                                            onClick={this.handleSave}
+                                            classNames="submit btn"
+                                            disabled={enableCreate}
+                                    />
+                                }
                                 </div>
+                            </div>
                     }
                 </div> : null
                 }
