@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
+import Loader from '../components/Loader';
 import ItemSuggestion from './ItemSuggestion';
 import ItemDetails from './ItemDetails';
 import PendingEngagements from './PendingEngagements';
@@ -44,10 +45,15 @@ class Engagement extends Component {
 
 
     render() {
-        const { itemsReducer } = this.props;
+        const { ui, itemsReducer } = this.props;
 
         return (
-            <div className="engagement">
+            <div className="engagement-wrapper">
+                { ui.loadingCounter ? <Loader /> : null }
+                { ui.error ? <div className="bs-callout bs-callout-danger">
+                                <strong>{ ui.errorText }</strong>
+                            </div> : null
+                }
                 {
                     (itemsReducer.spot === 'qr-details') ? <ItemSuggestion /> : null
                 }
@@ -64,13 +70,14 @@ class Engagement extends Component {
 }
 
 Engagement.propTypes = {
+    ui: PropTypes.object.isRequired,
     itemsReducer: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
-    const { itemsReducer } = state;
-    return { itemsReducer };
+    const { ui, itemsReducer } = state;
+    return { ui, itemsReducer };
 }
 
 export default connect(mapStateToProps)(Engagement);

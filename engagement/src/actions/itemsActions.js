@@ -1,4 +1,7 @@
 import {
+    REQUEST_STARTED,
+    REQUEST_COMPLETED,
+    REQUEST_FAILED,
     UPDATE_QUOTE_ID,
     UPDATE_REQUESTED_ITEM_ID,
     UPDATE_MATCHED_ITEM_ID,
@@ -127,11 +130,15 @@ function getSuggestions(state, value) {
  */
 export function loadItems(quoteId) {
     return (dispatch) => {
+        dispatch({ type: REQUEST_STARTED });
         axios.get(`/searcher-quote-requests/${quoteId}/requested-items?filters[only_quoted_item]=1&include=quoteRequest,matchedItems.matchedSupplier`)
         .then((response) => {
             dispatch(loadItemsSuccess(response.data));
+            dispatch({ type: REQUEST_COMPLETED });
         }).catch((error) => {
             dispatch(loadItemsError(error));
+            dispatch({ type: REQUEST_COMPLETED });
+            dispatch({ type: REQUEST_FAILED, error: error.response.data });
         });
     };
 }

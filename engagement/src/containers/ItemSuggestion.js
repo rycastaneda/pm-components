@@ -84,8 +84,6 @@ class ItemSuggestion extends Component {
 
         return (
           <div className="autoSuggest">
-            {isApiError ? 'Sorry, an error occurred while trying to load details. Please refresh the page and try again.' : ''}
-            {isFetching ? <i className="fa fa-spinner fa-pulse fa-2x fa-fw"></i> : ''}
             {!isFetching && !isApiError ?
                 <Autosuggest
                   multiSection = {true}
