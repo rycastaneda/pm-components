@@ -2,14 +2,19 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import EngagementRow from './EngagementRow';
 import Button from '../components/Button';
-import { sendEngagements } from '../actions/engagementsActions';
+import { updateNotifyAll, sendEngagements } from '../actions/engagementsActions';
 
 class PendingEngagements extends Component {
     constructor(props) {
         super(props);
+        this.handleNotifyAll = this.handleNotifyAll.bind(this);
         this.handleSendEngagements = this.handleSendEngagements.bind(this);
         this.pendingEngagementsTotal = this.pendingEngagementsTotal.bind(this);
         this.convertToCurrency = this.convertToCurrency.bind(this);
+    }
+
+    handleNotifyAll(event) {
+        return this.props.dispatch(updateNotifyAll(event.target.checked));
     }
 
     handleSendEngagements() {
@@ -30,7 +35,7 @@ class PendingEngagements extends Component {
     }
 
     render() {
-        const { pendingEngagements, sentEngagements } = this.props.engagementsReducer;
+        const { pendingEngagements, sentEngagements, notifyAll } = this.props.engagementsReducer;
 
         return (
             <div>
@@ -54,7 +59,11 @@ class PendingEngagements extends Component {
                                                     <div className="col-xs-12 align-right db-form-submit">
                                                         <div className = "checkbox">
                                                             <label>
-                                                                <input type="checkbox" />
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={notifyAll}
+                                                                    onChange={this.handleNotifyAll}
+                                                                    />
                                                                 Notify all unsuccessful suppliers
                                                             </label>
                                                         </div>

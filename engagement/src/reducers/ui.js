@@ -7,6 +7,10 @@ import {
 const INITIAL_STATE = {
     loading: false,
     loadingCounter: 0,
+    info: false,
+    infoText: '',
+    success: false,
+    successText: '',
     error: false,
     errorText: 'Sorry, an error occurred. Please refresh the page and try again.'
 };
@@ -17,6 +21,7 @@ export function ui(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 loading: true,
+                error: false,
                 loadingCounter: state.loadingCounter + 1
             };
         case REQUEST_COMPLETED:
@@ -28,7 +33,7 @@ export function ui(state = INITIAL_STATE, action) {
         case REQUEST_FAILED:
             return {
                 ...state,
-                error: action.error,
+                error: true,
                 errorText: action.error.message || 'Sorry, an error occurred. Please refresh the page and try again.'
             };
         default:

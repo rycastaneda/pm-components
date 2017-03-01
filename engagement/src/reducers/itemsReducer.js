@@ -22,6 +22,7 @@ import {
     UPDATE_PURCHASE_ORDER,
     UPDATE_PLAN_DATE,
     UPDATED_ENGAGEMENT,
+    UPDATE_NOTIFY_ALL,
 
     RECEIVE_ENGAGEMENTS,
     ENGAGEMENT_DELETED,
@@ -47,7 +48,8 @@ const INITIAL_ITEM_DETAILS_STATE = {
 
 const INITIAL_ENGAGEMENTS_STATE = {
     pendingEngagements: [],
-    sentEngagements: []
+    sentEngagements: [],
+    notifyAll: false
 };
 
 export function itemsReducer(state = INITIAL_ITEMS_STATE, action) {
@@ -99,7 +101,6 @@ export function itemsReducer(state = INITIAL_ITEMS_STATE, action) {
             return Object.assign({}, state, {
                 value: action.value
             });
-
         default:
             return state;
     }
@@ -119,6 +120,10 @@ export function engagementsReducer(state = INITIAL_ENGAGEMENTS_STATE, action) {
         case UPDATED_ENGAGEMENT_DETAILS:
             return Object.assign({}, state, {
                 pendingEngagements: engagements(state.pendingEngagements, action)
+            });
+        case UPDATE_NOTIFY_ALL:
+            return Object.assign({}, state, {
+                notifyAll: action.notifyAll
             });
         default:
             return state;

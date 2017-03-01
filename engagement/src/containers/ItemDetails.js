@@ -43,7 +43,7 @@ class ItemDetails extends Component {
 
     canCreateEngagement(pricingOptions) {
         let pricing = pricingOptions.filter(pricingOption => (pricingOption.attributes.value !== null && pricingOption.attributes.value !== 0));
-        return pricing.length ? false : true;
+        return pricing.length ? false: true;
     }
 
     handleSave() {
@@ -61,10 +61,11 @@ class ItemDetails extends Component {
         const defaultDate = (Object.keys(currentEngagement).length !== 0 && currentEngagement.attributes['plan-start-date'] !== null) ? moment(currentEngagement.attributes['plan-start-date']) : null;
         const editMode = currentEngagement.id !== null;
         const engagementTitle = (Object.keys(currentEngagement).length !== 0) ? currentEngagement.attributes['title'] : null;
-        const canCreateEngagement = this.canCreateEngagement(pricingOptions);
+        const enableCreate = this.canCreateEngagement(pricingOptions);
 
         let inputPropsDate = {
-            placeholder : 'Click to select planned start date'
+            placeholder : 'Click to select planned start date',
+            disabled: enableCreate
         };
 
         return (
@@ -90,7 +91,6 @@ class ItemDetails extends Component {
                         </tbody>
                     </table>
                     {
-                        canCreateEngagement ? null :
                         <div>
                             <div className="row mar-top">
                                 <label className="col-md-3 control-label">Work Order *: </label>
@@ -100,7 +100,9 @@ class ItemDetails extends Component {
                                            placeholder="Enter Work Order number"
                                            value={purchaseOrder}
                                            onChange={this.handlePOChange}
-                                           onBlur={this.handlePOUpdate} />
+                                           onBlur={this.handlePOUpdate}
+                                           disabled={enableCreate}
+                                           />
                                 </div>
                             </div>
                             <div className="row mar-top">
@@ -112,7 +114,8 @@ class ItemDetails extends Component {
                                               inputProps={inputPropsDate}
                                               dateFormat="DD-MM-YYYY"
                                               value={defaultDate}
-                                              onChange={this.handePlanDateChange} />
+                                              onChange={this.handePlanDateChange}
+                                              />
                                 </div>
                             </div>
                         </div>
@@ -124,16 +127,18 @@ class ItemDetails extends Component {
                                     <Button title="Create & Send Engagement"
                                             onClick={this.handleSaveSendPanel}
                                             classNames="submit btn"
+                                            disabled={enableCreate}
                                     />
                                 </div>
                             </div> :
-                            (editMode || canCreateEngagement) ?
+                            editMode ?
                                 null :
                                 <div className="row">
                                     <div className="col-xs-12 align-right db-form-submit">
                                         <Button title="Create Engagement"
                                                 onClick={this.handleSave}
                                                 classNames="submit btn"
+                                                disabled={enableCreate}
                                         />
                                     </div>
                                 </div>

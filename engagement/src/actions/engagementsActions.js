@@ -5,7 +5,8 @@ import {
     RECEIVE_ENGAGEMENTS,
     RESET_CURRENT_ENGAGEMENT,
     RESET_PRICING_OPTIONS,
-    ENGAGEMENT_DELETED
+    ENGAGEMENT_DELETED,
+    UPDATE_NOTIFY_ALL
 } from '../constants/ActionTypes';
 
 import axios from 'axios';
@@ -178,7 +179,7 @@ export function sendEngagements() {
         const quoteId = getState().itemsReducer.quoteId;
         let sendToAll = {
             data: [{
-                sendToAll: false
+                'send-to-unsuccessful': getState().engagementsReducer.notifyAll
             }]
         };
         dispatch({ type: REQUEST_STARTED });
@@ -190,6 +191,13 @@ export function sendEngagements() {
             dispatch({ type: REQUEST_COMPLETED });
             dispatch({ type: REQUEST_FAILED, error: error.response.data });
         });
+        dispatch({ type: UPDATE_NOTIFY_ALL, notifyAll: false });
+    };
+}
+
+export function updateNotifyAll(notifyAll) {
+    return (dispatch) => {
+        dispatch({ type: UPDATE_NOTIFY_ALL, notifyAll });
     };
 }
 
