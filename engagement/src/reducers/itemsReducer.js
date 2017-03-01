@@ -164,7 +164,8 @@ export function itemDetailsReducer(state = INITIAL_ITEM_DETAILS_STATE, action) {
             return Object.assign({}, state, {
                 currentEngagement: { ...state.currentEngagement,
                     attributes: { ...state.currentEngagement.attributes,
-                        'oldPOVal': null
+                        'oldPOVal': null,
+                        'oldPODate': null
                     }
                 }
             });
@@ -172,6 +173,7 @@ export function itemDetailsReducer(state = INITIAL_ITEM_DETAILS_STATE, action) {
             return Object.assign({}, state, {
                 currentEngagement: { ...state.currentEngagement,
                     attributes: { ...state.currentEngagement.attributes,
+                        'oldPODate': state.currentEngagement.attributes.oldPODate ? state.currentEngagement.attributes.oldPODate : state.currentEngagement.attributes['plan-start-date'],
                         'plan-start-date': action['plan-start-date']
                     }
                 }

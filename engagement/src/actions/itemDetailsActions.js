@@ -1,7 +1,11 @@
 import {
     REQUEST_STARTED,
     REQUEST_COMPLETED,
-    REQUEST_FAILED,
+    REQUEST_ERROR,
+    VALIDATION_ERROR,
+    RESET_ERROR,
+    DISPLAY_SUCCESS,
+    RESET_SUCCESS,
     UPDATE_SUGGESTION,
     RECEIVE_NEW_ENGAGEMENT,
     RESET_ITEM_DETAILS,
@@ -22,6 +26,8 @@ import { loadEngagements, sendEngagementsBrowse } from './engagementsActions';
 export function loadItemDetails(matchedItemId, requestedItemId, engagement) {
     return (dispatch, getState) => {
         const quoteId = getState().itemsReducer.quoteId;
+        dispatch({ type: RESET_SUCCESS });
+        dispatch({ type: RESET_ERROR });
         dispatch({ type: REQUEST_STARTED });
 
         axios.get(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}?include=pricingOptions,matchedSupplier,quoteRequestEngagements,quoteRequestEngagements.createdBy,quoteRequestEngagements.engagementDetails,quoteRequestEngagements.matchedItem&fields[pricing-options]=title,value,standby_value&fields[engagement]=status,engagement_text,po_value`)
@@ -75,13 +81,15 @@ export function loadItemDetails(matchedItemId, requestedItemId, engagement) {
             dispatch({ type: REQUEST_COMPLETED });
         }).catch((error) => {
             dispatch({ type: REQUEST_COMPLETED });
-            dispatch({ type: REQUEST_FAILED, error: error.response.data });
+            dispatch({ type: REQUEST_ERROR, error: error.response.data });
         });
     };
 }
 
 export function loadItemDetailsPanel(panelId, itemId, regionId) {
     return (dispatch) => {
+        dispatch({ type: RESET_SUCCESS });
+        dispatch({ type: RESET_ERROR });
         dispatch({ type: REQUEST_STARTED });
         axios.get(`/browse-panels/${panelId}/items/${itemId}?include=standardRates,supplier&filters[regionId]=${regionId}&fields[pricing-options]=title,value,standby_value`)
         .then((response) => {
@@ -111,7 +119,7 @@ export function loadItemDetailsPanel(panelId, itemId, regionId) {
             dispatch({ type: REQUEST_COMPLETED });
         }).catch((error) => {
             dispatch({ type: REQUEST_COMPLETED });
-            dispatch({ type: REQUEST_FAILED, error: error.response.data });
+            dispatch({ type: REQUEST_ERROR, error: error.response.data });
         });
     };
 }
@@ -212,6 +220,33 @@ export function handlePricingOptionSelection(pricingOption, value) {
     };
 }
 
+function isValidEngagement(dispatch, currentEngagement, pricingOptions) {
+    dispatch({ type: RESET_ERROR });
+    let pricing = pricingOptions && pricingOptions.filter(pricingOption => pricingOption.attributes.selected);
+    if (pricingOptions && !pricing.length) {
+        dispatch({
+            type: VALIDATION_ERROR,
+            message: 'Please provide values for unit'
+        });
+        return false;
+    }
+    if (currentEngagement && !currentEngagement.attributes['purchase-order']) {
+        dispatch({
+            type: VALIDATION_ERROR,
+            message: 'Please provide values for Work Order'
+        });
+        return false;
+    }
+    if (currentEngagement && !currentEngagement.attributes['plan-start-date']) {
+        dispatch({
+            type: VALIDATION_ERROR,
+            message: 'Please provide values for Planned Start Date'
+        });
+        return false;
+    }
+    return true;
+}
+
 export function createEngagement() {
     return (dispatch, getState) => {
         const currentEngagement = getState().itemDetailsReducer.currentEngagement,
@@ -220,6 +255,12 @@ export function createEngagement() {
             pricingOptions = getState().itemDetailsReducer.pricingOptions,
             quoteId = getState().itemsReducer.quoteId;
 
+        if (!isValidEngagement(dispatch, currentEngagement, pricingOptions)) {
+            return;
+        }
+
+        dispatch({ type: RESET_SUCCESS });
+        dispatch({ type: RESET_ERROR });
         dispatch({ type: REQUEST_STARTED });
 
         axios.post(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements`, { data: currentEngagement })
@@ -235,7 +276,7 @@ export function createEngagement() {
 
         }).catch((error) => {
             dispatch({ type: REQUEST_COMPLETED });
-            dispatch({ type: REQUEST_FAILED, error: error.response.data });
+            dispatch({ type: REQUEST_ERROR, error: error.response.data });
         });
     };
 }
@@ -278,13 +319,14 @@ export function createEngagementDetails(pricingOptions, requestedItemId, matched
                 numEngagementDetails += 1;
                 if (numEngagementDetails === engagementDetails.length) {
                     const quoteId = getState().itemsReducer.quoteId;
+                    dispatch({ type: DISPLAY_SUCCESS, message: `Engagement created #${engagementId}` });
                     dispatch({ type: RESET_ITEM_DETAILS });
                     dispatch(loadEngagements(quoteId));
                 }
                 dispatch({ type: REQUEST_COMPLETED });
             }).catch((error) => {
                 dispatch({ type: REQUEST_COMPLETED });
-                dispatch({ type: REQUEST_FAILED, error: error.response.data });
+                dispatch({ type: REQUEST_ERROR, error: error.response.data });
             });
         });
     };
@@ -297,6 +339,12 @@ export function createEngagementPanel() {
             itemId = getState().itemsReducer.itemId,
             pricingOptions = getState().itemDetailsReducer.pricingOptions;
 
+        if (!isValidEngagement(dispatch, currentEngagement, pricingOptions)) {
+            return;
+        }
+
+        dispatch({ type: RESET_SUCCESS });
+        dispatch({ type: RESET_ERROR });
         dispatch({ type: REQUEST_STARTED });
 
         axios.post(`/browse-panels/${panelId}/items/${itemId}/engagements`, { data: currentEngagement })
@@ -307,7 +355,7 @@ export function createEngagementPanel() {
             dispatch({ type: REQUEST_COMPLETED });
         }).catch((error) => {
             dispatch({ type: REQUEST_COMPLETED });
-            dispatch({ type: REQUEST_FAILED, error: error.response.data });
+            dispatch({ type: REQUEST_ERROR, error: error.response.data });
         });
     };
 }
@@ -349,15 +397,14 @@ export function createEngagementDetailsPanel(pricingOptions, panelId, itemId, en
                 window.console.log(response);
                 numEngagementDetails += 1;
                 if (numEngagementDetails === engagementDetails.length) {
-                    dispatch({
-                        type: RESET_ITEM_DETAILS
-                    });
+                    dispatch({ type: RESET_ITEM_DETAILS });
+
                     dispatch(sendEngagementsBrowse(engagementId));
                 }
                 dispatch({ type: REQUEST_COMPLETED });
             }).catch((error) => {
                 dispatch({ type: REQUEST_COMPLETED });
-                dispatch({ type: REQUEST_FAILED, error: error.response.data });
+                dispatch({ type: REQUEST_ERROR, error: error.response.data });
             });
         });
     };
@@ -370,20 +417,25 @@ export function handleEngagementUpdate() {
             matchedItemId = currentEngagement.relationships['matched-items'].data.id,
             quoteId = getState().itemsReducer.quoteId;
 
+        if (!isValidEngagement(dispatch, currentEngagement, null)) {
+            return;
+        }
+
         dispatch({ type: REQUEST_STARTED });
 
         axios.patch(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${currentEngagement.id}`, { data: currentEngagement })
         .then((response) => {
             dispatch ({
                 type: UPDATED_ENGAGEMENT,
-                oldPOVal: null
+                oldPOVal: null,
+                oldPODate: null
             });
             window.console.log('engagement updated: ', response);
             dispatch({ type: REQUEST_COMPLETED });
         }).catch((error) => {
             dispatch({ type: REQUEST_COMPLETED });
             dispatch({
-                type: REQUEST_FAILED,
+                type: REQUEST_ERROR,
                 error: error.response && error.response.data || error
             });
         });
@@ -403,6 +455,13 @@ export function handleEngagementDetailUpdate(pricingOption, value) {
                 engagementDetailId = pricingOption.relationships['engagement-details'].data.id,
                 pricingOptions = getState().itemDetailsReducer.pricingOptions,
                 quoteId = getState().itemsReducer.quoteId;
+
+
+            if (!isValidEngagement(dispatch, null, pricingOptions)) {
+                return;
+            }
+
+            value = (value === '') ? null : value;
 
             const engagementDetails = {
                 'type': 'engagement-details',
@@ -431,7 +490,7 @@ export function handleEngagementDetailUpdate(pricingOption, value) {
                 dispatch({ type: REQUEST_COMPLETED });
             }).catch((error) => {
                 dispatch({ type: REQUEST_COMPLETED });
-                dispatch({ type: REQUEST_FAILED, error: error.response.data });
+                dispatch({ type: REQUEST_ERROR, error: error.response.data });
             });
             window.console.log(' requestedItemId: ', requestedItemId, ' matchedItemId: ', matchedItemId, ' pricingOptions: ', pricingOptions, ' engagementDetailId: ', engagementDetailId);
         }

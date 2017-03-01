@@ -1,7 +1,11 @@
 import {
     REQUEST_STARTED,
     REQUEST_COMPLETED,
-    REQUEST_FAILED
+    REQUEST_ERROR,
+    VALIDATION_ERROR,
+    RESET_ERROR,
+    DISPLAY_SUCCESS,
+    RESET_SUCCESS
 } from '../constants/ActionTypes';
 
 const INITIAL_STATE = {
@@ -10,9 +14,9 @@ const INITIAL_STATE = {
     info: false,
     infoText: '',
     success: false,
-    successText: '',
+    successMessage: '',
     error: false,
-    errorText: 'Sorry, an error occurred. Please refresh the page and try again.'
+    errorMessage: ''
 };
 
 export function ui(state = INITIAL_STATE, action) {
@@ -30,11 +34,35 @@ export function ui(state = INITIAL_STATE, action) {
                 loading: false,
                 loadingCounter: state.loadingCounter - 1
             };
-        case REQUEST_FAILED:
+        case REQUEST_ERROR:
             return {
                 ...state,
                 error: true,
-                errorText: action.error.message || 'Sorry, an error occurred. Please refresh the page and try again.'
+                errorMessage: action.error.status_code !== 401 && action.error.message || 'Sorry, an error occurred. Please refresh the page and try again.'
+            };
+        case VALIDATION_ERROR:
+            return {
+                ...state,
+                error: true,
+                errorMessage: action.message
+            };
+        case RESET_ERROR:
+            return {
+                ...state,
+                error: false,
+                errorMessage: ''
+            };
+        case DISPLAY_SUCCESS:
+            return {
+                ...state,
+                success: true,
+                successMessage: action.message
+            };
+        case RESET_SUCCESS:
+            return {
+                ...state,
+                success: false,
+                successMessage: ''
             };
         default:
             return state;

@@ -1,7 +1,7 @@
 import {
     REQUEST_STARTED,
     REQUEST_COMPLETED,
-    REQUEST_FAILED,
+    REQUEST_ERROR,
     UPDATE_QUOTE_ID,
     UPDATE_REQUESTED_ITEM_ID,
     UPDATE_MATCHED_ITEM_ID,
@@ -138,7 +138,7 @@ export function loadItems(quoteId) {
         }).catch((error) => {
             dispatch(loadItemsError(error));
             dispatch({ type: REQUEST_COMPLETED });
-            dispatch({ type: REQUEST_FAILED, error: error.response.data });
+            dispatch({ type: REQUEST_ERROR, error: error.response.data });
         });
     };
 }

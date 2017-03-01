@@ -51,9 +51,9 @@ class Engagement extends Component {
             <div className="engagement-wrapper">
                 { ui.loadingCounter ? <Loader /> : null }
                 { ui.info ? <div className="bs-callout bs-callout-info">{ ui.infoText }</div> : null }
-                { ui.success ? <div className="bs-callout bs-callout-success">{ ui.successText }</div> : null }
-                { ui.error ? <div className="bs-callout bs-callout-danger">{ ui.errorText }</div> : null }
-                
+                { ui.success ? <div className="bs-callout bs-callout-success">{ ui.successMessage }</div> : null }
+                { ui.error ? <div className="bs-callout bs-callout-danger">{ ui.errorMessage }</div> : null }
+
                 {
                     (itemsReducer.spot === 'qr-details') ? <ItemSuggestion /> : null
                 }

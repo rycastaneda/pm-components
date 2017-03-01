@@ -12,6 +12,7 @@ class ItemDetails extends Component {
         this.handlePOChange = this.handlePOChange.bind(this);
         this.handlePOUpdate = this.handlePOUpdate.bind(this);
         this.handePlanDateChange = this.handePlanDateChange.bind(this);
+        this.handePlanDateUpdate = this.handePlanDateUpdate.bind(this);
         this.canCreateEngagement = this.canCreateEngagement.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleSaveSendPanel = this.handleSaveSendPanel.bind(this);
@@ -38,6 +39,12 @@ class ItemDetails extends Component {
             this.props.dispatch(handleEngagementUpdate(date));
         } else {
             return this.props.dispatch(handePlanDateChange(date));
+        }
+    }
+
+    handePlanDateUpdate(date) {
+        if (this.props.itemDetailsReducer.currentEngagement.id && this.props.itemDetailsReducer.currentEngagement.attributes.oldPODate) {
+            window.console.log('handePlanDateUpdate date: ', date);
         }
     }
 
@@ -106,7 +113,7 @@ class ItemDetails extends Component {
                                 </div>
                             </div>
                             <div className="row mar-top">
-                                <label className="col-md-3 control-label">Planned Start Date: </label>
+                                <label className="col-md-3 control-label">Planned Start Date *: </label>
                                 <div className="col-md-9">
                                     <Datetime className="po-date"
                                               timeFormat={false}
@@ -115,6 +122,7 @@ class ItemDetails extends Component {
                                               dateFormat="DD-MM-YYYY"
                                               value={defaultDate}
                                               onChange={this.handePlanDateChange}
+                                              onBlur={this.handePlanDateUpdate}
                                               />
                                 </div>
                             </div>

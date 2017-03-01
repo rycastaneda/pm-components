@@ -1,7 +1,8 @@
 import {
     REQUEST_STARTED,
     REQUEST_COMPLETED,
-    REQUEST_FAILED,
+    REQUEST_ERROR,
+    DISPLAY_SUCCESS,
     RECEIVE_ENGAGEMENTS,
     RESET_CURRENT_ENGAGEMENT,
     RESET_PRICING_OPTIONS,
@@ -21,7 +22,7 @@ export function loadEngagements(quoteId) {
             dispatch({ type: REQUEST_COMPLETED });
         }).catch((error) => {
             dispatch({ type: REQUEST_COMPLETED });
-            dispatch({ type: REQUEST_FAILED, error: error.response.data });
+            dispatch({ type: REQUEST_ERROR, error: error.response.data });
         });
     };
 }
@@ -169,7 +170,7 @@ export function deleteEngagement(requestedItemId, matchedItemId, engagementId) {
             dispatch({ type: REQUEST_COMPLETED });
         }).catch((error) => {
             dispatch({ type: REQUEST_COMPLETED });
-            dispatch({ type: REQUEST_FAILED, error: error.response.data });
+            dispatch({ type: REQUEST_ERROR, error: error.response.data });
         });
     };
 }
@@ -178,9 +179,9 @@ export function sendEngagements() {
     return (dispatch, getState) => {
         const quoteId = getState().itemsReducer.quoteId;
         let sendToAll = {
-            data: [{
-                'send-to-unsuccessful': getState().engagementsReducer.notifyAll
-            }]
+            data: {
+                'notifyUnsuccessful': getState().engagementsReducer.notifyAll
+            }
         };
         dispatch({ type: REQUEST_STARTED });
         axios.post(`searcher-quote-requests/${quoteId}/engagements`, sendToAll).then((response) => {
@@ -189,7 +190,7 @@ export function sendEngagements() {
             dispatch({ type: REQUEST_COMPLETED });
         }).catch((error) => {
             dispatch({ type: REQUEST_COMPLETED });
-            dispatch({ type: REQUEST_FAILED, error: error.response.data });
+            dispatch({ type: REQUEST_ERROR, error: error.response.data });
         });
         dispatch({ type: UPDATE_NOTIFY_ALL, notifyAll: false });
     };
@@ -209,9 +210,10 @@ export function sendEngagementsBrowse(engagementId) {
         axios.post(`browse-panels/${panelId}/items/${itemId}/engagements/${engagementId}`).then((response) => {
             window.console.log('sent engagement', response);
             dispatch({ type: REQUEST_COMPLETED });
+            dispatch({ type: DISPLAY_SUCCESS, message: `Engagement created #${engagementId} and sent successfully` });
         }).catch((error) => {
             dispatch({ type: REQUEST_COMPLETED });
-            dispatch({ type: REQUEST_FAILED, error: error.response.data });
+            dispatch({ type: REQUEST_ERROR, error: error.response.data });
         });
     };
 }
