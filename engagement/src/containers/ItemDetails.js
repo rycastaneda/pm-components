@@ -30,7 +30,6 @@ class ItemDetails extends Component {
 
     handePlanDateChange(date) {
         if (!moment(date).isValid()) {
-            alert('invalid');
             return;
         }
 
