@@ -16,7 +16,9 @@ export function getItems(quoteId, matchedItemId, requestItemId) {
             requestItemId
         });
 
-        axios.get(`/supplier-quote-requests/${quoteId}/requested-items/${requestItemId}?include=searcherRequirements.searcherRequirementResponses`)
+        const endpoint = `/supplier-quote-requests/${quoteId}/requested-items/${requestItemId}?include=searcherRequirements`;
+
+        axios.get(matchedItemId ? `${endpoint}.searcherRequirementResponses:matched_item_id(${matchedItemId})` : endpoint)
             .then((response) => {
                 if (response.status === 200) {
                     dispatch({
