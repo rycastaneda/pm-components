@@ -24,8 +24,9 @@ class DocumentSelector extends Component {
         this.handleCopyItem = this.handleCopyItem.bind(this);
         this.handleSelectItem = this.handleSelectItem.bind(this);
         this.quote_id = document.querySelector('[data-quote-id]').getAttribute('data-quote-id');
+        this.requested_item_id = document.querySelector('[data-requested-item-id]').getAttribute('data-requested-item-id');
         this.field = document.querySelector('[data-field]').getAttribute('data-field');
-        this.props.dispatch(fetchDocuments(this.quote_id, document.querySelector('[data-all-items]')));
+        this.props.dispatch(fetchDocuments(this.quote_id, this.requested_item_id, document.querySelector('[data-all-items]')));
     }
 
     handleToggleDocument(document) {

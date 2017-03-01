@@ -3,12 +3,13 @@ import {
     DOCUMENTS_FETCHING,
     DOCUMENT_TOGGLE,
     GROUP_TOGGLE,
+    SELECT_ITEM,
     TOGGLE_LOADING
 } from '../constants/DocumentSelector';
 import { selectItems, fetchItems } from './requested-item';
 import axios from 'axios';
 
-export function fetchDocuments(quote_id) {
+export function fetchDocuments(quote_id, requested_item_id) {
     return (dispatch) => {
         
         dispatch({
@@ -28,6 +29,13 @@ export function fetchDocuments(quote_id) {
                     type: DOCUMENTS_RECEIVING, 
                     response: response.data
                 });
+            }).then(() => {
+                if (requested_item_id) {
+                    return dispatch({
+                        type: SELECT_ITEM,
+                        item: requested_item_id
+                    });
+                }
             });
     };
 }

@@ -19,6 +19,7 @@ export default class Group extends Component {
         });
 
         const requestedItems = items.allIds.map((id, key) => {
+            window.console.log(items.byId[id]);
             return <td className={index === 0 ? 'group-table__item' : 'group-table__item-invisible' } key={key}>
                 {items.byId[id].title}
             </td>;
