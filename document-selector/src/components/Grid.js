@@ -3,15 +3,17 @@ import Groups from './Groups';
 
 const Grid = ({ groups, items, toggleItem }) => {
     return (
-        <table className="table">
-            { groups.length ? 
-                <Groups groups={groups} items={items} toggleItem={toggleItem}/> 
-            :<tbody>
-                <tr>
-                    <td>No items found</td>
-                </tr>
-            </tbody>}
-        </table>
+        <div className="grid">
+            <table className="table">
+                { groups.length ? 
+                    <Groups groups={groups} items={items} toggleItem={toggleItem}/> 
+                :<tbody>
+                    <tr>
+                        <td>No items found</td>
+                    </tr>
+                </tbody>}
+            </table>
+        </div>
     );
 };
 
