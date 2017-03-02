@@ -47,6 +47,7 @@ class PricingOptionRow extends Component {
                             ? <input name={`pricingOption-checkbox__${pricingOption.id}`}
                                     id={`pricingOption__${pricingOption.id}`}
                                     type="checkbox"
+                                    disabled="true"
                                     checked={pricingOption.attributes.selected}
                                     onChange={this.handlePricingOptionChange}
                                 /> : null
