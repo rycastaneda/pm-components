@@ -121,6 +121,12 @@ function configureHostname() {
         return [protocol, apiHost].join('');
     }
 
+    if (hostname.indexOf('demo.pitclient.com') > -1) {
+        // var apiHostDemo = window.location.hostname.replace(/client/, 'api');
+        // return [protocol, apiHostDemo, '.au'].join('');
+        return 'https://bundaberg-regional-council-training.api.demo.plantminer.com.au';
+    }
+
     return [protocol, 'api.plantminer', countryHost].join('');
 }
 
