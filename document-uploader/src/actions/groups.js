@@ -1,4 +1,5 @@
 import {
+    API_READ_FAILED,
     GROUPS_LOADING,
     GROUPS_RECEIVING,
     GROUPS_RECEIVING_DEFAULTS,
@@ -33,11 +34,15 @@ export function fetchDocuments(quote_id) {
         axios.get(`/document-groups?include=documents&filter[defaults]=1`)
             .then((defaults) => {
                 return dispatch({ type: GROUPS_RECEIVING_DEFAULTS, defaults: defaults.data });
+            }).catch(() => {
+                return dispatch({ type: API_READ_FAILED });
             });
 
         axios.get(`/document-groups?include=documents&filter[quote_id]=${quote_id}`)
             .then((groups) => {
                 return dispatch({ type: GROUPS_RECEIVING, groups: groups.data });
+            }).catch(() => {
+                return dispatch({ type: API_READ_FAILED });
             });
 
     };
