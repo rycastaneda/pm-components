@@ -15,7 +15,14 @@ class SentEngagements extends Component {
 
     sentEngagementsTotal(engagements) {
         return this.convertToCurrency(engagements.reduce(function(a, b) {
-            return a + (b.engagementDetails[0].attributes.rate_value * b.engagementDetails[0].attributes.unit * b.matchedItem.attributes.quantity);
+
+            if (b.engagementDetails.length) {
+                const qty = b.matchedItem.attributes.quantity;
+                b.engagementDetails.forEach(
+                    engagementDetail => a += (engagementDetail.attributes.rate_value * engagementDetail.attributes.unit * qty)
+                );
+            }
+            return a;
         }, 0));
     }
 
