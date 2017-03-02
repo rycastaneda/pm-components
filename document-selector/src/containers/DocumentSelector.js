@@ -25,7 +25,7 @@ class DocumentSelector extends Component {
         this.handleSelectItem = this.handleSelectItem.bind(this);
         this.quote_id = document.querySelector('[data-quote-id]').getAttribute('data-quote-id');
         this.requested_item_id = document.querySelector('[data-requested-item-id]') ? 
-                document.querySelector('[data-requested-item-id]').getAttribute('data-requested-item-id') : false;
+                +document.querySelector('[data-requested-item-id]').getAttribute('data-requested-item-id') : false;
         this.field = document.querySelector('[data-field]').getAttribute('data-field');
         this.props.dispatch(fetchDocuments(
             this.quote_id, 
