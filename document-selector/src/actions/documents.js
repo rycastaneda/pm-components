@@ -33,7 +33,7 @@ export function fetchDocuments(quote_id, requested_item_id) {
                 if (requested_item_id) {
                     return dispatch({
                         type: SELECT_ITEM,
-                        item: requested_item_id
+                        item: `${requested_item_id}`
                     });
                 }
             });
