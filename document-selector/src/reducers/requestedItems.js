@@ -30,7 +30,13 @@ export function requestedItems(state = INITIAL_STATE, action) {
                 allIds
             };
         case REQUESTED_ITEMS_RECEIVING:
-            normalized = normalizeObject(action.items.data); // Replace all items with its own designated endpoint
+            if (!action.items.data.length) {
+                normalized = {
+                    0: {}
+                };
+            } else {
+                normalized = normalizeObject(action.items.data); // Replace all items with its own designated endpoint
+            }
 
             return Object.assign({}, state, {
                 byId: normalized,
