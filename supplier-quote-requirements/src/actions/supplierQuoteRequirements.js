@@ -36,6 +36,7 @@ export function updateSelection(responseId, requirementId, response, comment) {
             quoteId,
             matchedItemId
         } = getState().requirements;
+        
         const endpoint = `/supplier-quote-requests/${quoteId}/matched-items/${matchedItemId}/searcher-requirement-responses`;
 
         if (!matchedItemId) {
