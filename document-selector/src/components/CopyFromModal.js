@@ -45,7 +45,7 @@ export default class CopyFromModal extends Component {
 }
 
 CopyFromModal.propTypes = {
-    active: PropTypes.string,
+    active: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     items: PropTypes.object,
     isOpen: PropTypes.bool,
     closeModal: PropTypes.func,
