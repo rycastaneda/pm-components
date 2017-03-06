@@ -88,6 +88,11 @@ function getLocalHeaders() {
  * @returns {string}
  */
 function configureHostname() {
+
+    if (window.api_url) {
+        return window.api_url;
+    }
+
     var protocol = 'https://';
     var hostname = window.location.hostname.replace(/www./, '');
     var countryHost = hostname.indexOf('nz') > -1 ? '.co.nz' : '.com.au';
@@ -100,10 +105,6 @@ function configureHostname() {
             a[b[0]] = b[1];
             return a;
         }, {})['apiBranch'];
-
-    if (hostname.indexOf('local.dev') > -1 || process.env.NODE_ENV === 'develop') {
-        return window.api_url;
-    }
 
     if (apiBranch) {
         return [protocol, apiBranch.toLowerCase(), staging, countryHost].join('');
