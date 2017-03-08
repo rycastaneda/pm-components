@@ -42,7 +42,7 @@ class DocumentGroup extends Component {
     }
 
     handleDownloadFile(quote, index, filename) {
-        return this.props.dispatch(downloadFile(quote, index, filename));
+        return this.props.dispatch(downloadFile(this.quote_id, quote, index, filename));
     }
 
     handleDownloadDocumentGroup(group, index) {

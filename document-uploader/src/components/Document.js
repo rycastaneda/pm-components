@@ -14,7 +14,7 @@ const Document = ({ file, preview, groupIndex, onFileRemove, onDownloadFile }) =
                 {!preview ? 
                     <a key={`link-${file.id + 1}`} 
                         onClick={() => {
-                            onDownloadFile(file.links && file.links.self || '', groupIndex, file.attributes.name);
+                            onDownloadFile(file.id, groupIndex, file.attributes.name);
                         }}
                     ><i className="group-panel__actions fa fa-download"></i></a>
                 : null}

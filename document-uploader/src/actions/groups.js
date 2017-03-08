@@ -284,13 +284,13 @@ export function uploadFile(group_id, index, quote_id) {
     };
 }
 
-export function downloadFile(quote, index, filename) {
+export function downloadFile(quote_id, quote, index, filename) {
     return (dispatch) => {
         dispatch({ type: DOCUMENT_DOWNLOAD_STARTED });
         dispatch({ type: GROUP_TOGGLE_UPDATING, index, loading: true });
 
         downloadBlob(
-            quote, 
+            axios.defaults.baseURL + `/searcher-quote-requests/${quote_id}/documents/${quote}`, 
             filename, 
             () => {
                 dispatch({ type: DOCUMENT_DOWNLOADED });
@@ -341,7 +341,7 @@ function downloadBlob(url, filename, callback) {
         a.click();
         callback();
     };
-
+    
     xhr.open('GET', url);
     xhr.setRequestHeader('accept', axios.defaults.headers.common['Accept']);
     xhr.setRequestHeader('authorization', axios.defaults.headers.common['Authorization']);
