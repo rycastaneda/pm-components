@@ -20,6 +20,7 @@ import {
     DOCUMENT_REMOVED,
     DOCUMENT_DOWNLOAD_STARTED,
     DOCUMENT_DOWNLOADED,
+    DOCUMENT_ADDED_REMOVE,
     GROUPS_DOWNLOAD_STARTED,
     GROUPS_DOWNLOADED
 } from '../constants/ActionTypes';
@@ -163,6 +164,17 @@ export function catchFiles(index, id, documents) {
         id,
         index,
         documents
+    };
+}
+
+export function removeFilesToBeAdded(index, documentId) {
+    return (dispatch, getState) => {
+        const groupId = getState().documentGroups.data[index].id;
+        return dispatch({
+            type: DOCUMENT_ADDED_REMOVE,
+            groupId,
+            documentId
+        });
     };
 }
 

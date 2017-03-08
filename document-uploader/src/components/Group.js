@@ -65,14 +65,15 @@ const Group = ({
                     catchFiles(groupIndex, group.id, files);
                 }}>
                     <p className="text-center dropzone__placeholder"><i className="fa fa-cloud-upload"></i> Drop files here or click to select files.</p>
-                    {documentsAdded.length ?
-                    <Documents
-                        files={documentsAdded}
-                        groupIndex={groupIndex}
-                        preview={true}
-                        />
-                    : null}
                 </Dropzone>
+                {documentsAdded.length ?
+                <Documents
+                    files={documentsAdded}
+                    groupIndex={groupIndex}
+                    onFileRemove={onFileRemove}
+                    preview={true}
+                    />
+                : null}
                 {group.attributes.errors && group.attributes.errors.length ?
                 (<div className="alert alert-danger">
                     <ul>
@@ -85,7 +86,7 @@ const Group = ({
                 {documentsAdded.length ?
                     <div className="upload">
                         <button
-                            className="upload__button"
+                            className="btn db-function"
                             onClick={() => onFileUpload(group.id, groupIndex)}>Upload</button>
                     </div>
                 : null}

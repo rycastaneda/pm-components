@@ -4,6 +4,7 @@ import {
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_UPLOAD_SUCCESS_CLEAN,
     DOCUMENT_UPLOAD_FAILED,
+    DOCUMENT_ADDED_REMOVE,
     DOCUMENT_UPLOAD_IN_PROGRESS
 } from '../constants/ActionTypes';
 import { UPLOAD_IN_PROGRESS, UPLOAD_SUCCESS, UPLOAD_FAILED } from '../constants';
@@ -31,6 +32,10 @@ export function documentsToBeAdded(state ={}, action) {
                     });
                     return document;
                 })
+            });
+        case DOCUMENT_ADDED_REMOVE: 
+            return Object.assign({}, state, {
+                [action.groupId]: state[action.groupId].filter(document => document.id !== action.documentId)
             });
         case DOCUMENT_UPLOAD_IN_PROGRESS:
             return Object.assign({}, state, {

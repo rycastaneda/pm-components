@@ -8,6 +8,7 @@ import {
     toggleRenaming,
     catchFiles,
     removeFile,
+    removeFilesToBeAdded,
     downloadFile,
     downloadDocumentGroup,
     downloadDocumentGroups,
@@ -61,7 +62,11 @@ class DocumentGroup extends Component {
         this.props.dispatch(uploadFile(group_id, index, quote_id));
     }
 
-    handleRemoveFile(groupIndex, file) {
+    handleRemoveFile(groupIndex, file, preview) {
+        if (preview) {
+            return this.props.dispatch(removeFilesToBeAdded(groupIndex, file.id));
+        }
+
         return this.props.dispatch(removeFile(groupIndex, this.quote_id, file));
     }
 

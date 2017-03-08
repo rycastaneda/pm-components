@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import CSSTransitionGroup from 'react-addons-css-transition-group';
 import Document from './Document';
 
 class Documents extends Component { 
@@ -7,13 +6,8 @@ class Documents extends Component {
         const { files, groupIndex, onFileRemove, onDownloadFile, preview } = this.props;
 
         return (
-            <div className="files">
-                {!preview ? <h3>Documents</h3> : null}
-                <div className="row">
-                <CSSTransitionGroup
-                  transitionName="documents"
-                  transitionEnterTimeout={500}
-                  transitionLeaveTimeout={300}>
+            <ul className="list-group files">
+                {!preview ? <h3>Uploaded Documents</h3> : null}
                 {files.map(file => (
                     <Document
                         key={file.id}
@@ -24,9 +18,7 @@ class Documents extends Component {
                         onDownloadFile={onDownloadFile}
                     />
                 ))}
-                </CSSTransitionGroup>
-                </div>
-            </div>
+            </ul>
         );
     }
 }
@@ -38,8 +30,6 @@ Documents.propTypes = {
     onDownloadFile: PropTypes.func,
     preview: PropTypes.bool
 };
-
-
 
 export default Documents;
 
