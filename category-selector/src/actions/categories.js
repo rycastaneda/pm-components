@@ -7,9 +7,8 @@ import {
     ADD_DROPDOWN,
     REQUEST_FAILED
 } from '../constants/ActionTypes';
-import { createEntity, updateEntity, setEndpointPath } from 'redux-json-api';
+import axios from 'axios';
 import { resetDropDowns } from './suggestions';
-import api from '../../../shared/api.config';
 
 /**
  *
@@ -69,31 +68,13 @@ export function fetchCategories(categoryType) {
         // Dispatch a state change to indicate that categories are being fetched
         dispatch(requestCategories(type));
 
-        return new Promise(
-            function(resolve, reject) {
-                const apiHost = api.configureHostname();
-                const apiHeaders = api.configureHeaders();
-                const xhttp = new XMLHttpRequest();
-
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState === 4 && this.status === 200) {
-                        dispatch(receiveCategories(type, JSON.parse(this.responseText)));
-                        resolve();
-                    }
-                };
-
-                xhttp.onerror = function(error) {
-                    window.console.log('error', error);
-                    reject();
-                };
-
-                xhttp.open('GET', `${apiHost}/categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`, true);
-                for (let t in apiHeaders) {
-                    xhttp.setRequestHeader(t, apiHeaders[t]);
-                }
-                xhttp.send();
-            }
-        );
+        axios.get(`/categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`)
+            .then((response) => {
+                return dispatch(receiveCategories(type, response.data));
+            })
+            .catch(function() {
+                dispatch(reportError(type));
+            });
     };
 }
 
@@ -127,9 +108,7 @@ export function fetchCategoriesIfNeeded(categoryType) {
         // Check if categories are already available in the cache
         if (!categories) {
             // If not, make an API call to get categories
-            dispatch(fetchCategories(categoryType))
-            // Catch errors if API request failed
-            .catch(() => dispatch(reportError(type)));
+            dispatch(fetchCategories(categoryType));
         } else {
             // If they are, display an input with dropdown suggestions
             return dispatch(addDropDown());
@@ -170,12 +149,13 @@ export function selectType(categoryType) {
 /**
 * @param {Object} item
 * @param {string} categoryId
+* @param {string} quoteId
 * @returns {function(*)}
 */
-export function createItem(item, categoryId) {
+export function createItem(item, categoryId, quoteId) {
     return (dispatch, getState) => {
-        dispatch(createEntity(item)).then((response) => {
-            triggerDomChanges(response.data.id, categoryId, getState());
+        axios.post(`/searcher-quote-requests/${quoteId}/requested-items`, { data: item }).then((response) => {
+            triggerDomChanges(response.data.data.id, categoryId, getState());
         });
     };
 }
@@ -219,13 +199,12 @@ export function selectCategory(category, index) {
         // Trigger other onchange events
         // If user has finished selecting categories
         if (category.attributes.selectable) {
-            dispatch(setEndpointPath(`/searcher-quote-requests/${quoteId}`));
             // Make an api call to generate an item service
             if (!itemId) {
-                dispatch(createItem(item, category.id));
+                dispatch(createItem(item, category.id, quoteId));
                 // If item id is already generated, make an update call
             } else {
-                dispatch(updateEntity(item)).then(() => triggerDomChanges(null, category.id, getState()));
+                axios.patch(`/searcher-quote-requests/${quoteId}/requested-items/${itemId}`, { data: item }).then(() => triggerDomChanges(null, category.id, getState()));
             }
         }
 

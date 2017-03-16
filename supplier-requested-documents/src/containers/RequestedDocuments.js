@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { 
+import {
     fetchRequirements,
     catchDocuments,
     removeDocument
@@ -36,7 +36,7 @@ class RequestedDocuments extends Component {
     render() {
         const {
             requirements,
-            ui, 
+            ui,
             summary
         } = this.props;
 
@@ -48,25 +48,25 @@ class RequestedDocuments extends Component {
             content = <div>
                 <label htmlFor="">Requested Documents</label>
                 <hr className="mar-btm-sm mar-top-sm"/>
-                <Requirements 
-                    requirements={requirements} 
-                    onRemoveDocument={this.handleRemoveDocument} 
+                <Requirements
+                    requirements={requirements}
+                    onRemoveDocument={this.handleRemoveDocument}
                     onDropDocuments={this.handleCatchDocs}>
                 </Requirements>
             </div>;
         }
 
         return (
-            <div className="group-panel">
+            <div className="group-panel supplier-requested-documents">
                 <input type="hidden" name="requestedDocuments" value={JSON.stringify(summary)}/>
-                {ui.error === 'FETCH_FAILED' ? 
+                {ui.error === 'FETCH_FAILED' ?
                     <div className="alert alert-danger">
                         <strong>Something went wrong. Please try again later.</strong>
                     </div>
                 : ui.loading && !ui.error
                     ? <Loader block={true}></Loader>
                     : content
-                } 
+                }
             </div>
         );
     }
@@ -91,7 +91,7 @@ function mapStateToProps(state) {
     if (!requirementsDocuments.allIds.length) {
         return {
             requirements: [],
-            ui, 
+            ui,
             summary
         };
     }

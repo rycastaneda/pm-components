@@ -14,7 +14,7 @@ import {
     TOGGLE_VIEW_FULL_TEXT
 } from '../constants/ActionTypes';
 
-import { createEntity, readEndpoint, updateEntity, setEndpointPath } from 'redux-json-api';
+import axios from 'axios';
 
 const TYPE = 'searcher-requirements';
 
@@ -25,12 +25,13 @@ const TYPE = 'searcher-requirements';
  */
 export function createItem(item) {
     return (dispatch, getState) => {
-        dispatch(setEndpointPath(''));
-        dispatch(createEntity({
+        let newItem = {
             type: TYPE,
             attributes: item.attributes
-        }))
+        };
+        axios.post(`/${TYPE}`, { data: newItem })
             .then((response) => {
+                response = response.data;
                 const searcherRequirements = getState().quoteRequirements.requirementsRelationship;
                 const quoteId = getState().quoteRequirements.quoteId;
 
@@ -59,8 +60,7 @@ function linkRequirementsToQuote(quoteId, requirements) {
     return (dispatch) => {
         const itemId = document.getElementById('item_id') ? document.getElementById('item_id').value : null;
 
-        dispatch(setEndpointPath(`/searcher-quote-requests/${quoteId}`));
-        dispatch(updateEntity({
+        let updatedRequirements = {
             type: 'requested-items',
             id: itemId,
             relationships: {
@@ -68,7 +68,10 @@ function linkRequirementsToQuote(quoteId, requirements) {
                     data: requirements
                 }
             }
-        })).then(() => {
+        };
+
+        axios.patch(`/searcher-quote-requests/${quoteId}/requested-items/${itemId}`, { data: updatedRequirements })
+        .then(() => {
             dispatch(updateRequirementsRelationship(requirements));
         });
     };
@@ -85,8 +88,9 @@ function linkRequirementsToQuote(quoteId, requirements) {
 export function getItems(itemId, quoteId, categoryId = '', newCategory = false) {
     return (dispatch) => {
         // Request quote specific requirements
-        dispatch(readEndpoint(`searcher-quote-requests/${quoteId}/requested-items/${itemId}?include=searcherRequirements`))
+        axios.get(`/searcher-quote-requests/${quoteId}/requested-items/${itemId}?include=searcherRequirements`)
             .then((response) => {
+                response = response.data;
                 const relationships = response.data.relationships || {};
                 const quoteSpecificRequirements = relationships.searcherRequirements ? relationships.searcherRequirements.data : [];
 
@@ -97,8 +101,9 @@ export function getItems(itemId, quoteId, categoryId = '', newCategory = false) 
                 if (!quoteSpecificRequirements.length || newCategory) {
                     let searcherRequirements = [];
                     // Make a request to get all quote requirements which belong to the user
-                    dispatch(readEndpoint(`${TYPE}?filters[category_id]=${categoryId}`))
+                    axios.get(`/${TYPE}?filters[category_id]=${categoryId}`)
                         .then((list) => {
+                            list = list.data;
                             dispatch(receiveRequirements(list.data));
 
                             // Generate an array of quote requirements objects
@@ -128,8 +133,7 @@ export function getItems(itemId, quoteId, categoryId = '', newCategory = false) 
  */
 export function updateItem(item) {
     return (dispatch) => {
-        dispatch(setEndpointPath(''));
-        dispatch(updateEntity({
+        let updatedItem = {
             type: TYPE,
             id: item.id,
             attributes: {
@@ -138,8 +142,11 @@ export function updateItem(item) {
                 text: item.attributes.text,
                 'category_id': item.attributes.category_id
             }
-        }))
+        };
+
+        axios.patch(`/${TYPE}/${item.id}`, { data: updatedItem })
             .then((response) => {
+                response = response.data;
                 dispatch({
                     type: IS_SAVED,
                     id: response.data.id
@@ -166,6 +173,55 @@ export function deleteItem(item) {
 
     };
 }
+
+/**
+ *
+ * @param {Object HTMLElement} item
+ * @returns {function(*, *)}
+ */
+export function updateDropdownOption(id, title) {
+    const dropdownOption = {
+        'id': id,
+        'input': title,
+        'selectedCategory': {
+            'id': id
+        }
+    };
+    return dropdownOption;
+}
+
+/**
+ *
+ * @param {Object HTMLElement} item
+ * @returns {function(*, *)}
+ */
+export function updateDropdownOptions(categorySelectedField) {
+    return () => {
+        const  category_id = categorySelectedField.getAttribute('data-category-id'),
+            category_name = categorySelectedField.getAttribute('data-category-name'),
+            subcategory_id = categorySelectedField.getAttribute('data-subcategory-id'),
+            subcategory_name = categorySelectedField.getAttribute('data-subcategory-name'),
+            topcategory_id = categorySelectedField.getAttribute('data-topcategory-id'),
+            topcategory_name = categorySelectedField.getAttribute('data-topcategory-name');
+
+        let dropDownOptions = [];
+
+        if (topcategory_id) {
+            dropDownOptions.push(updateDropdownOption(topcategory_id, topcategory_name));
+        }
+
+        dropDownOptions.push(updateDropdownOption(category_id, category_name));
+
+        if (subcategory_id) {
+            dropDownOptions.push(updateDropdownOption(subcategory_id, subcategory_name));
+        }
+
+        window.PlantminerComponents = window.PlantminerComponents || {};
+        window.PlantminerComponents.categorySelector = window.PlantminerComponents.categorySelector || {};
+        window.PlantminerComponents.categorySelector.dropDowns = window.PlantminerComponents.categorySelector.dropDowns || dropDownOptions;
+    };
+}
+
 /**
  *
  * @param {Object} item

@@ -36,7 +36,8 @@ function configureHeaders() {
  * @returns {{Authorization: string, Accept: string}}
  */
 function getLocalHeaders() {
-    var tokenRequest = new Request('https:/api.pm.local.dev/authenticate',
+    var api_url = window.api_url || 'https:/api.pm.local.dev';
+    var tokenRequest = new Request(api_url + '/authenticate',
         {
             method: 'POST',
             headers: { 'Accept': 'application/vnd.pm.v1+json', 'Content-Type': 'application/vnd.pm.v1+json' },
@@ -88,6 +89,11 @@ function getLocalHeaders() {
  * @returns {string}
  */
 function configureHostname() {
+
+    if (window.api_url) {
+        return window.api_url;
+    }
+
     var protocol = 'https://';
     var hostname = window.location.hostname.replace(/www./, '');
     var countryHost = hostname.indexOf('nz') > -1 ? '.co.nz' : '.com.au';

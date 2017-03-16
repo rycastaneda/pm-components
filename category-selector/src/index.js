@@ -1,13 +1,13 @@
-require('es6-promise/auto');
-
 import React from 'react';
 import { render } from 'react-dom';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
-import { setEndpointHost, setEndpointPath, setHeaders } from 'redux-json-api';
 import api from '../../shared/api.config';
+import axios from 'axios';
+!window._babelPolyfill && require('babel-polyfill'); // prevent polyfill from importing twice
+
 import CategorySelection from './containers/CategorySelection';
 import './styles/index.scss';
 
@@ -23,9 +23,11 @@ const store = createStore(
     enhance
 );
 
-store.dispatch(setEndpointHost(api.configureHostname()));
-store.dispatch(setEndpointPath(''));
-store.dispatch(setHeaders(api.configureHeaders()));
+let hostname = api.configureHostname();
+let headers = api.configureHeaders();
+
+axios.defaults.baseURL = hostname;
+axios.defaults.headers.common = headers;
 
 render(
     <Provider store={store}>

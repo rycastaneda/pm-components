@@ -58,6 +58,7 @@ class EditForm extends Component {
             <div className="quote-inclusions__form edit-form">
                 <div className="col-md-8">
                     <textarea name="description"
+                              placeholder="Add New Quote requirement"
                               className="form-control edit-form__textarea"
                               defaultValue={defaultText}
                               onChange={this.handleDescriptionChange}
@@ -70,7 +71,7 @@ class EditForm extends Component {
                                    checked={item.attributes.mandatory}
                                    onChange={this.handleMandatoryChange}
                             />
-                            Mandatory for supplier
+                            Non negotiable
                         </label>
                     </div>
                 </div>
@@ -82,7 +83,7 @@ class EditForm extends Component {
                     <InclusionSelection options={options}
                                         handleChange={this.handleCategoryInclusionChange}
                                         include={item.attributes.include}
-                                        category_id={item.attributes.category_id}/>
+                                        category_id={`${item.attributes.category_id}`}/>
 
                     <button className="edit-form__button btn"
                             disabled={ !item.attributes.text }
