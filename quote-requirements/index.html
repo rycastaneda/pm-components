@@ -4,13 +4,18 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title><%= htmlWebpackPlugin.options.title %></title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+        <script>
+            window.api_url = "https://release.api.staging.plantminer.com.au";
+        </script>
     </head>
     <body>
-    <input type="hidden" id="quote_id" value="28680" />
-    <input type="hidden" id="qr_category_id" value="724" />
-    <input type="hidden" id="item_id" value="63232" />
+    <input type="hidden" id="quote_id" value="30949" />
+    <input type="hidden" id="qr_category_id" value="930" />
+    <input type="hidden" id="item_id" value="68083" />
+    <input type="hidden" name="category_selected" id="category_selected" data-category-id="208" data-category-name="Tow Truck" data-subcategory-id="210" data-subcategory-name="Tilt Tray Truck" data-topcategory-id="1347" data-topcategory-name="Truck">
     <!-- Change 'data-component' to the name of your component -->
     <div data-component="quote-requirements">Loading...</div>
     </body>

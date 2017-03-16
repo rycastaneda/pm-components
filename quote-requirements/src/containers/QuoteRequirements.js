@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import EditForm from '../containers/EditForm';
 import Viewer from '../containers/ViewForm';
-import { getItems, updateQuoteId } from '../actions/quoteRequirements';
+import { getItems, updateQuoteId, updateDropdownOptions } from '../actions/quoteRequirements';
 
 class QuoteRequirements extends Component {
 
@@ -16,7 +16,12 @@ class QuoteRequirements extends Component {
         const quoteId = document.getElementById('quote_id').value;
         const categoryIdField = document.getElementById('qr_category_id');
         const itemIdField = document.getElementById('item_id');
+        const categorySelectedField = document.getElementById('category_selected');
         const categoryId = categoryIdField.value;
+
+        if (categorySelectedField) {
+            this.props.dispatch(updateDropdownOptions(categorySelectedField));            
+        }
 
         this.props.dispatch(updateQuoteId(quoteId));
 

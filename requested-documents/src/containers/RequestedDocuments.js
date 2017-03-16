@@ -42,7 +42,7 @@ class RequestedDocuments extends Component {
                               handleChange={event => this.handleCheckboxChange(event, document)
                               }/>
                 )}
-                <div className="row">
+                <div className="row pad-top-sm">
                     <div className="col-md-4">
                         <DocumentSuggestion />
                     </div>

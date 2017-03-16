@@ -4,11 +4,12 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
-import RequestedDocuments from './containers/RequestedDocuments';
 import api from '../../shared/api.config';
-import './styles/index.scss';
-import 'babel-polyfill';
 import axios from 'axios';
+!window._babelPolyfill && require('babel-polyfill'); // prevent polyfill from importing twice
+
+import RequestedDocuments from './containers/RequestedDocuments';
+import './styles/index.scss';
 
 // Add redux dev tools unless we have a production build
 const enhance = process.env.NODE_ENV !== 'production' && window.devToolsExtension ? compose(

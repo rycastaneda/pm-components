@@ -42,7 +42,7 @@ class ViewForm extends Component {
                         : null
                     }
                     { item.attributes.mandatory
-                        ? (<div className="form__text view-form__text--mandatory">Mandatory for supplier</div>)
+                        ? (<div className="form__text view-form__text--mandatory">Non negotiable</div>)
                         : null
                     }
                 </div>
