@@ -44,7 +44,7 @@ function requirementsReceived(state, action) {
             state.byId[requirement.id] = Object.assign({}, requirement.attributes, {
                 id: requirement.id,
                 type: requirement.type,
-                displayComments: false
+                displayComments: true
             });
         });
 

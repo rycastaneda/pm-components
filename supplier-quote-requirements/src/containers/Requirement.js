@@ -66,7 +66,7 @@ class DisplayForm extends Component {
                     {requirement.response &&
                         <div>
                             <a className="display-form__link"
-                                onClick={this.toggleCommentsFieldDisplay}>{requirement.response.comment ? `View Comments` : `+ Add comments`}
+                                onClick={this.toggleCommentsFieldDisplay}>{requirement.response.comment ? `Edit Comments` : `+ Edit comments`}
                             </a>
                         </div>
                     }

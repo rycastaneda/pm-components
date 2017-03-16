@@ -24,7 +24,6 @@ class SupplierQuoteRequirements extends Component {
                 {requirements.length ? 
                     <div>
                         <label htmlFor="">Quote Requirements</label> 
-                        <hr className="mar-btm-sm mar-top-sm"/>
                     </div>
                 : null }
                 {Object.keys(summary).map((requirementId) => {
