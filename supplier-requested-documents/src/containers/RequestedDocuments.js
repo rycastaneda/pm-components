@@ -43,9 +43,11 @@ class RequestedDocuments extends Component {
         let content;
 
         if (ui.loading && !ui.error) {
-            content = <Loader></Loader>;
+            content = <Loader block={true}></Loader>;
         } else {
             content = <div>
+                <label htmlFor="">Requested Documents</label>
+                <hr className="mar-btm-sm mar-top-sm"/>
                 <Requirements 
                     requirements={requirements} 
                     onRemoveDocument={this.handleRemoveDocument} 
@@ -62,7 +64,7 @@ class RequestedDocuments extends Component {
                         <strong>Something went wrong. Please try again later.</strong>
                     </div>
                 : ui.loading && !ui.error
-                    ? <Loader></Loader>
+                    ? <Loader block={true}></Loader>
                     : content
                 } 
             </div>

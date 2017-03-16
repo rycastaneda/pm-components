@@ -21,6 +21,12 @@ class SupplierQuoteRequirements extends Component {
         const { summary, requirements } = this.props;
         return (
             <div className="supplier-quote-requirements__form col-xs-12">
+                {requirements.length ? 
+                    <div>
+                        <label htmlFor="">Quote Requirements</label> 
+                        <hr className="mar-btm-sm mar-top-sm"/>
+                    </div>
+                : null }
                 {Object.keys(summary).map((requirementId) => {
                     return <input key={requirementId} type="hidden" name={`quote-requirement[${requirementId}]`} value={JSON.stringify(summary[requirementId])}/>;
                 })}

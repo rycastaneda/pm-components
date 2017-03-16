@@ -41,6 +41,7 @@ class DisplayForm extends Component {
         const { requirement } = this.props;
         return (
             <div className="display-form">
+                <hr className="mar-btm-sm mar-top-sm"/>
                 <div className="col-xs-9 display-form__left-block">
 
                     <div className="display-form__description">
