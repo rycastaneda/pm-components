@@ -2,6 +2,7 @@ import {
     REQUIREMENTS_REQUESTED,
     REQUIREMENTS_RECEIVED,
     SAVE_COMMENTS,
+    UPDATE_SELECTION,
     TOGGLE_COMMENTS_DISPLAY
 } from '../constants/ActionTypes';
 
@@ -27,7 +28,10 @@ export function requirements(state = DEFAULT_STATE, action) {
         case REQUIREMENTS_RECEIVED: return requirementsReceived(state, action);
         case SAVE_COMMENTS:
         case TOGGLE_COMMENTS_DISPLAY:
-            state.byId[action.id].displayComments = !state.byId[action.id].displayComments;
+            state.byId[action.id].displayCommentsForm = !state.byId[action.id].displayCommentsForm;
+            return Object.assign({}, state);
+        case UPDATE_SELECTION: 
+            state.byId[action.requirementId].displayCommentsForm = false;
             return Object.assign({}, state);
         default:
             return state;
@@ -44,8 +48,14 @@ function requirementsReceived(state, action) {
             state.byId[requirement.id] = Object.assign({}, requirement.attributes, {
                 id: requirement.id,
                 type: requirement.type,
-                displayComments: true
+                displayCommentsForm: false
             });
+        });
+
+    requirements
+        .filter(requirement => requirement.type === 'searcher-requirement-response')
+        .map((response) => {
+            state.byId[response.attributes.searcher_requirement_id].displayCommentsForm = !!response.attributes.comment;
         });
 
     return Object.assign({}, state);

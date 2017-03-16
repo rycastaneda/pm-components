@@ -116,3 +116,5 @@ export function toggleCommentsDisplay(requirement) {
         id: requirement.id
     };
 }
+
+

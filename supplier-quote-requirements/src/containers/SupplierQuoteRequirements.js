@@ -17,10 +17,17 @@ class SupplierQuoteRequirements extends Component {
         self.props.dispatch(getItems(this.quoteId, this.matchedItemId, this.requestItemId));
     }
 
+    hasResponse(requirement) {
+        return requirement.response && requirement.response.response;
+    }
+
     render() {
-        const { summary, requirements } = this.props;
+        const { summary, requirements, mandatoryFilled } = this.props;
         return (
             <div className="supplier-quote-requirements__form col-xs-12">
+
+                <input type="hidden" id="requirementsHasResponse" value={requirements.some(this.hasResponse)}/>
+                <input type="hidden" id="mandatoryFilled" value={mandatoryFilled}/>
                 {requirements.length ? 
                     <div>
                         <label htmlFor="">Quote Requirements</label> 
@@ -42,6 +49,7 @@ class SupplierQuoteRequirements extends Component {
 SupplierQuoteRequirements.propTypes = {
     dispatch: PropTypes.func.isRequired,
     requirements: PropTypes.array.isRequired,
+    mandatoryFilled: PropTypes.bool.isRequired,
     summary: PropTypes.object.isRequired
 };
 
@@ -53,7 +61,6 @@ function mapStateToProps(state) {
         let requirement = requirements.byId[requirementId];
         
         requirement.response = responses.byId[requirementId] || false;
-
         if (requirement.response) {
             summary[requirementId] = {
                 response: requirement.response.response,
@@ -64,8 +71,19 @@ function mapStateToProps(state) {
         return requirement;
     });
 
+    let mandatories = normalized.filter(requirement => requirement.mandatory);
+
+    let mandatoryFilled = !!mandatories.length && mandatories.every((requirement) => {
+        return requirement.response && requirement.response.response === 'yes';
+    });
+
+    normalized = normalized.sort((a, b) => {
+        return +a.mandatory + +b.mandatory;
+    });
+
     return {
         requirements: normalized,
+        mandatoryFilled,
         summary
     };
 }

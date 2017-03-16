@@ -21,7 +21,8 @@ class DisplayForm extends Component {
             response = this.requirement.response ? this.requirement.response.response : '';
         } // set previous response
 
-        if (!comment) {
+        if (comment === null);
+        else if (!comment) {
             comment = this.requirement.response ? this.requirement.response.comment : '';
         } // set previous comment
 
@@ -44,21 +45,20 @@ class DisplayForm extends Component {
                 <hr className="mar-btm-sm mar-top-sm"/>
                 <div className="col-xs-9 display-form__left-block">
 
-                    <div className="display-form__description">
+                    <div className={`display-form__description ${requirement.mandatory ? 'mandatory' : ''}`}>
                         {requirement.text}
                     </div>
-                    {
-                        requirement.displayComments
-                        ? <CommentsForm 
-                                updateSelection={this.updateSelection}
-                                comment={requirement.response ? requirement.response.comment : ''} />
-                        : null
-                    }
+                    <CommentsForm showForm={requirement.displayCommentsForm}
+                        updateSelection={this.updateSelection}
+                        comment={requirement.response ? requirement.response.comment : ''} 
+                    />
+               
                 </div>
                 <div className="col-xs-3 display-form__right-block">
                     <div className="btn-group btn-group-justified display-form__buttons-container">
                         <Responses 
                             updateSelection={this.updateSelection} 
+                            mandatory={requirement.mandatory}
                             response={requirement.response ? requirement.response.response : ''}>
                         </Responses>
                     </div>
@@ -66,7 +66,7 @@ class DisplayForm extends Component {
                     {requirement.response &&
                         <div>
                             <a className="display-form__link"
-                                onClick={this.toggleCommentsFieldDisplay}>{requirement.response.comment ? `Edit Comments` : `+ Edit comments`}
+                                onClick={this.toggleCommentsFieldDisplay}>{requirement.response.comment ? `Edit Comments` : `+ Add comment`}
                             </a>
                         </div>
                     }
