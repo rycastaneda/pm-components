@@ -1,0 +1,130 @@
+.dropzone {
+    width: 100%;
+    min-height: 200px;
+    margin-bottom: 10px;
+    border: 2px dashed rgb(102, 102, 102);
+    border-radius: 5px;
+
+    &__placeholder {
+        margin: 70px auto;
+        font-size: 12px;
+        text-align: center;
+    }
+}
+
+.add-form {
+    position: relative;
+}
+
+.group-panel {
+    position: relative;
+
+    &__actions {
+        padding: 5px;
+        cursor: pointer;
+    }
+}
+
+.download-icon {
+    cursor: pointer;
+}
+
+.document {
+
+    &__image {
+        z-index: 2;
+        overflow: hidden;
+        margin-top: 30px;
+        font-size: 12px;
+        text-align: center;
+
+        &:after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 4;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            content: '';
+        }
+
+        &:hover, &:focus {
+
+            &:after {
+                padding: 15px;
+                background-color: rgba(0, 0, 0, 0.75);
+                visibility: visible;
+            }
+
+            .document__remove-icon {
+                top: 50%;
+                color: rgba(255, 255, 255, 0.75);
+                background-color: transparent;
+                border-color: rgba(255, 255, 255, 0.5);
+            }
+        }
+    }
+
+    &__remove-icon {
+        position: absolute;
+        top: 125%;
+        left: 50%;
+        z-index: 6;
+        width: 100%;
+        text-align: center;
+        transform: translateX(-50%) translateY(-50%);
+        transition: all 250ms cubic-bezier(0.19, 0.84, 0.64, 0.94) 0ms;
+    }
+
+    &__thumb {
+
+        &--added {
+            margin-top: 25px;
+        }
+    }
+
+    &__filename {
+        margin-top: 5px;
+    }
+
+    &__filesize, $__timestamp {
+        color: #999999;
+        font-size: 10px;
+        text-align: center;
+    }
+}
+
+.upload {
+    margin-top: 5px;
+    text-align: center;
+
+    &__button {
+        padding: 10px 50px;
+        color: #ffffff;
+        background: #414141;
+        border: 0;
+        border-radius: 3px;
+        box-shadow: 0 4 0 0 #eeeeee;
+        font-size: 18px;
+        font-weight: bold;
+    }
+}
+
+.progress {
+    margin-top: 5px;
+}
+
+.list-group {
+    margin-bottom: 20px;
+    padding-left: 0; // reset padding because ul and ol
+}
+
+.list-group-item {
+    position: relative;
+    display: block;
+    margin-bottom: -1px;
+    padding: 10px 15px;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+}

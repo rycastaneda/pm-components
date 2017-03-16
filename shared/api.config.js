@@ -20,11 +20,11 @@ function configureHeaders() {
                     return a;
                 }, {})[COOKIE_TOKEN];
 
-    return {
+    return Object.assign({}, {
         Authorization: 'Bearer ' + token,
         Accept: 'application/vnd.pm.v1+json',
         'Content-Type': 'application/vnd.pm.v1+json'
-    };
+    });
 }
 
 /**
