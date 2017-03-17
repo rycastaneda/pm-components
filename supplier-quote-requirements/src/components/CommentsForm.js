@@ -8,6 +8,7 @@ class CommentsForm extends Component {
             commentsInput: null
         };
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleEditDisplay = this.handleEditDisplay.bind(this);
         this.handleDeleteComment = this.handleDeleteComment.bind(this);
     }
 
@@ -16,35 +17,60 @@ class CommentsForm extends Component {
     }
 
     handleDeleteComment() {
+        this.setState({
+            commentsInput: ''
+        });
         return this.props.updateSelection(null, null);
+    }
+
+    handleEditDisplay() {
+        return this.props.toggleCommentsFieldDisplay();
     }
 
     render() {
         const { comment, showForm } = this.props;
         return (
             <div className="comments-form">
-                <p className="comments-form__title">Comments </p>
-                <div className="row">
-                    <div className="col-lg-11 comments-form__comment">{comment}</div>
-                    {comment && <div className="col-lg-1 text-center">
-                        <a className="fa fa-trash comments-form__delete" onClick={this.handleDeleteComment}></a>
-                    </div>}
-                    <div className="clearfix"></div>
-                </div>
-                {showForm ? 
+                {(comment || showForm) && <div>
+                        <p className="comments-form__title">Comments
+                            { comment &&
+                                <span>
+                                    <a onClick={this.handleEditDisplay}><i className="fa fa-edit comments-form__links"></i></a>
+                                    <a onClick={this.handleDeleteComment}><i className="fa fa-trash comments-form__links"></i></a>
+                                </span>
+                            }
+                         </p>
+                    </div>
+                }
+
+                {(comment && !showForm) && <div className="row">
+                        <div className="col-lg-11 comments-form__comment">
+                            {comment}
+                        </div>
+                    </div>
+                }
+
+                {showForm ?
                     <div>
-                        <textarea 
+                        <textarea
+                            placeholder="Add comment for quote requirement"
+                            value={(this.state.commentsInput && this.state.commentsInput) || (comment && comment) || ''}
                             onChange={(e) => {
                                 this.setState({
                                     commentsInput: e.target.value
                                 });
                             }}
                             className="comments-form__textarea valid"/>
-                        <button onClick={this.handleSubmit} 
-                            className="btn comments-form__submit" 
-                            type="button" 
+                        <button onClick={this.handleSubmit}
+                            className="btn comments-form__submit"
+                            type="button"
                             disabled={!this.state.commentsInput ? 'disabled' : '' }>
-                            Submit
+                            {comment ? `Update` : `Add`}
+                        </button>
+                        <button onClick={this.handleEditDisplay}
+                            className="btn btn-reverse comments-form__submit"
+                            type="button">
+                            Cancel
                         </button>
                     </div>
                 : null}
@@ -54,6 +80,7 @@ class CommentsForm extends Component {
 }
 
 CommentsForm.propTypes = {
+    toggleCommentsFieldDisplay: PropTypes.func.isRequired,
     updateSelection: PropTypes.func.isRequired,
     comment: PropTypes.string,
     showForm: PropTypes.bool.isRequired

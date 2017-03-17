@@ -28,9 +28,12 @@ class SupplierQuoteRequirements extends Component {
 
                 <input type="hidden" id="requirementsHasResponse" value={requirements.some(this.hasResponse)}/>
                 <input type="hidden" id="mandatoryFilled" value={mandatoryFilled}/>
-                {requirements.length ? 
+                {requirements.length ?
                     <div>
-                        <label htmlFor="">Quote Requirements</label> 
+                        <label htmlFor="">Quote Requirements</label>
+                        <div className="text-info">
+                            * Non negotiable - Steve to provide text for this place
+                        </div>
                     </div>
                 : null }
                 {Object.keys(summary).map((requirementId) => {
@@ -59,7 +62,7 @@ function mapStateToProps(state) {
 
     let normalized = requirements.allIds.map((requirementId) => {
         let requirement = requirements.byId[requirementId];
-        
+
         requirement.response = responses.byId[requirementId] || false;
         if (requirement.response) {
             summary[requirementId] = {

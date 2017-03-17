@@ -18,8 +18,8 @@ const DEFAULT_STATE = {
 export function requirements(state = DEFAULT_STATE, action) {
     switch (action.type) {
         case REQUIREMENTS_REQUESTED:
-            return { 
-                ...state, 
+            return {
+                ...state,
                 areLoading: true,
                 matchedItemId: action.matchedItemId, // initalize params in state
                 quoteId: action.quoteId,
@@ -30,7 +30,7 @@ export function requirements(state = DEFAULT_STATE, action) {
         case TOGGLE_COMMENTS_DISPLAY:
             state.byId[action.id].displayCommentsForm = !state.byId[action.id].displayCommentsForm;
             return Object.assign({}, state);
-        case UPDATE_SELECTION: 
+        case UPDATE_SELECTION:
             state.byId[action.requirementId].displayCommentsForm = false;
             return Object.assign({}, state);
         default:
@@ -53,11 +53,10 @@ function requirementsReceived(state, action) {
         });
 
     requirements
-        .filter(requirement => requirement.type === 'searcher-requirement-response')
-        .map((response) => {
-            state.byId[response.attributes.searcher_requirement_id].displayCommentsForm = !!response.attributes.comment;
-        });
+        .filter(requirement => requirement.type === 'searcher-requirement-response');
+        // .map((response) => {
+        //     state.byId[response.attributes.searcher_requirement_id].displayCommentsForm = !!response.attributes.comment;
+        // });
 
     return Object.assign({}, state);
 }
-
