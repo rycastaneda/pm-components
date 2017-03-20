@@ -41,7 +41,7 @@ class DisplayForm extends Component {
     render() {
         const { requirement } = this.props;
         return (
-            <div className={`display-form ${requirement.response && requirement.response.response ? 'responded' : 'not-responded' }`}>
+            <div className={`display-form ${requirement.response && requirement.response.response ? 'responded' : 'not-responded'}`}>
                 <div className="col-xs-9 display-form__left-block">
 
                     <div className={`display-form__description ${requirement.mandatory ? 'mandatory' : ''}`}>
@@ -62,7 +62,7 @@ class DisplayForm extends Component {
                             response={requirement.response ? requirement.response.response : ''}>
                         </Responses>
                         {requirement.mandatory && <div className="text-info">
-                            * Non negotiable
+                            * Non negotiable - This customer will only assess quotes that can comply with this requirement
                         </div>}
                     </div>
 
