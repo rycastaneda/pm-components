@@ -101,7 +101,7 @@ export function getItems(itemId, quoteId, categoryId = '', newCategory = false) 
                 if (!quoteSpecificRequirements.length || newCategory) {
                     let searcherRequirements = [];
                     // Make a request to get all quote requirements which belong to the user
-                    axios.get(`/${TYPE}?filters[category_id]=${categoryId}`)
+                    axios.get(`/${TYPE}?filters[category_id]=${categoryId}&filters[quote_id]=${quoteId}`)
                         .then((list) => {
                             list = list.data;
                             dispatch(receiveRequirements(list.data));

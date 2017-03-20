@@ -27,8 +27,8 @@ class DisplayForm extends Component {
         } // set previous comment
 
         return this.props.dispatch(updateSelection(
-            this.requirement.response ? this.requirement.response.id : '', 
-            this.requirement.id, 
+            this.requirement.response ? this.requirement.response.id : '',
+            this.requirement.id,
             response,
             comment
         ));
@@ -42,7 +42,6 @@ class DisplayForm extends Component {
         const { requirement } = this.props;
         return (
             <div className="display-form">
-                <hr className="mar-btm-sm mar-top-sm"/>
                 <div className="col-xs-9 display-form__left-block">
 
                     <div className={`display-form__description ${requirement.mandatory ? 'mandatory' : ''}`}>
@@ -50,23 +49,27 @@ class DisplayForm extends Component {
                     </div>
                     <CommentsForm showForm={requirement.displayCommentsForm}
                         updateSelection={this.updateSelection}
-                        comment={requirement.response ? requirement.response.comment : ''} 
+                        toggleCommentsFieldDisplay={this.toggleCommentsFieldDisplay}
+                        comment={requirement.response ? requirement.response.comment : ''}
                     />
-               
+
                 </div>
                 <div className="col-xs-3 display-form__right-block">
-                    <div className="btn-group btn-group-justified display-form__buttons-container">
-                        <Responses 
-                            updateSelection={this.updateSelection} 
+                    <div className="display-form__buttons-container">
+                        <Responses
+                            updateSelection={this.updateSelection}
                             mandatory={requirement.mandatory}
                             response={requirement.response ? requirement.response.response : ''}>
                         </Responses>
+                        {requirement.mandatory && <div className="text-info">
+                            * Non negotiable
+                        </div>}
                     </div>
 
-                    {requirement.response &&
+                    {requirement.response && !requirement.response.comment &&
                         <div>
                             <a className="display-form__link"
-                                onClick={this.toggleCommentsFieldDisplay}>{requirement.response.comment ? `Edit Comments` : `+ Add comment`}
+                                onClick={this.toggleCommentsFieldDisplay}>Add comments
                             </a>
                         </div>
                     }
