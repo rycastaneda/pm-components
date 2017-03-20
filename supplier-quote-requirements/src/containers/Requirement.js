@@ -62,7 +62,7 @@ class DisplayForm extends Component {
                             response={requirement.response ? requirement.response.response : ''}>
                         </Responses>
                         {requirement.mandatory && <div className="text-info">
-                            * Non negotiable - This customer will only assess quotes that can comply with this requirement
+                            * Non negotiable
                         </div>}
                     </div>
 
