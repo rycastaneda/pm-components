@@ -26,7 +26,7 @@ class SupplierQuoteRequirements extends Component {
         return (
             <div className="supplier-quote-requirements__form col-xs-12">
 
-                <input type="hidden" id="requirementsHasResponse" value={requirements.some(this.hasResponse)}/>
+                <input type="hidden" id="requirementsHasResponse" value={requirements.every(this.hasResponse)}/>
                 <input type="hidden" id="mandatoryFilled" value={mandatoryFilled}/>
                 {requirements.length ? 
                     <div>

@@ -25,8 +25,8 @@ class CommentsForm extends Component {
             <div className="comments-form">
                 <p className="comments-form__title">Comments </p>
                 <div className="row">
-                    <div className="col-lg-11 comments-form__comment">{comment}</div>
-                    {comment && <div className="col-lg-1 text-center">
+                    <div className="col-lg-11 col-xs-11 comments-form__comment">{comment}</div>
+                    {comment && <div className="col-lg-1 col-xs-1 text-center">
                         <a className="fa fa-trash comments-form__delete" onClick={this.handleDeleteComment}></a>
                     </div>}
                     <div className="clearfix"></div>
