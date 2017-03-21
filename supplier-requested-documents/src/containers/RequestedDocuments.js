@@ -47,6 +47,9 @@ class RequestedDocuments extends Component {
         } else {
             content = <div>
                 <label htmlFor="">Requested Documents</label>
+                <div className="text-info">
+                    The customer has requested that your provide the following documents as part of your quote
+                </div>
                 <hr className="mar-btm-sm mar-top-sm"/>
                 <Requirements
                     requirements={requirements}

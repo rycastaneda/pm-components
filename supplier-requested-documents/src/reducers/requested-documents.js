@@ -9,7 +9,7 @@ import {
 const INITIAL_STATE = {
     byId: {
         additional: {
-            title: 'Additional Documents',
+            title: 'Please add any of your own documents to support your quote',
             documentIds: [],
             docsToAdd: []
         }
