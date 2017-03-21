@@ -1,6 +1,7 @@
 import {
     REQUIREMENTS_RECEIVED,
-    UPDATE_SELECTION
+    UPDATE_SELECTION,
+    DELETE_SELECTION
 } from '../constants/ActionTypes';
 
 const DEFAULT_STATE = {
@@ -12,9 +13,27 @@ export function responses(state = DEFAULT_STATE, action) {
     switch (action.type) {
         case REQUIREMENTS_RECEIVED: return responsesReceived(state, action);
         case UPDATE_SELECTION: return updateSelection(state, action);
+        case DELETE_SELECTION: return deleteSelection(state, action);
         default:
             return state;
     }
+}
+
+function deleteSelection(state, action) {
+    const requirementIds = Object.keys(state.byId);
+    const requirements = {
+        ...state
+    };
+
+    requirements.byId = {};
+
+    requirementIds.map((id) => {
+        if (action.requirementId !== id) {
+            requirements.byId[id] = state.byId[id];
+        }
+    });
+
+    return Object.assign({}, requirements);
 }
 
 function responsesReceived(state, action) {

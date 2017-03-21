@@ -2,6 +2,7 @@ import {
     REQUIREMENTS_REQUESTED,
     REQUIREMENTS_RECEIVED,
     UPDATE_SELECTION,
+    DELETE_SELECTION,
     TOGGLE_COMMENTS_DISPLAY
 } from '../constants/ActionTypes';
 
@@ -95,6 +96,18 @@ export function updateSelection(responseId, requirementId, response, comment) {
                     }
                 }
             };
+
+            const previousReponse = getState().responses.byId[requirementId].response;
+
+            if (response === previousReponse) { // response to be removed on unclick
+                return axios.delete(endpoint + `/${responseId}`, supplierResponse).then(() => {
+                    dispatch({
+                        type: DELETE_SELECTION,
+                        requirementId,
+                        responseId
+                    });
+                });
+            }
 
             axios.patch(endpoint + `/${responseId}`, supplierResponse).then(() => {
                 dispatch({

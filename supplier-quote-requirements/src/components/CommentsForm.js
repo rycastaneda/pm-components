@@ -24,6 +24,9 @@ class CommentsForm extends Component {
     }
 
     handleEditDisplay() {
+        this.setState({
+            commentsInput: ''
+        });
         return this.props.toggleCommentsFieldDisplay();
     }
 
@@ -62,7 +65,7 @@ class CommentsForm extends Component {
                             }}
                             className="comments-form__textarea valid"/>
                         <button onClick={this.handleSubmit}
-                            className="btn comments-form__submit"
+                            className="btn comments-form__submit mar-l-sm"
                             type="button"
                             disabled={!this.state.commentsInput ? 'disabled' : '' }>
                             {comment ? `Update` : `Add`}
