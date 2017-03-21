@@ -14,6 +14,7 @@ class SupplierQuoteRequirements extends Component {
         this.quoteId = document.querySelector('[data-component="supplier-quote-requirements"]').getAttribute('data-quote-id');
         this.requestItemId = document.querySelector('[data-component="supplier-quote-requirements"]').getAttribute('data-rqid');
         this.matchedItemId = document.querySelector('[data-component="supplier-quote-requirements"]').getAttribute('data-riqi-id');
+        this.readOnly = !!document.querySelector('[data-component="supplier-quote-requirements"]').getAttribute('data-read-only');
         self.props.dispatch(getItems(this.quoteId, this.matchedItemId, this.requestItemId));
     }
 
@@ -41,7 +42,7 @@ class SupplierQuoteRequirements extends Component {
                 })}
                 {
                     requirements.map((requirement) => {
-                        return <Requirement key={requirement.id} requirement={requirement}/>;
+                        return <Requirement key={requirement.id} readOnly={this.readOnly} requirement={requirement}/>;
                     })
                 }
             </div>

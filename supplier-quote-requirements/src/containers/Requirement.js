@@ -35,11 +35,13 @@ class DisplayForm extends Component {
     }
 
     toggleCommentsFieldDisplay() {
-        return this.props.dispatch(toggleCommentsDisplay(this.props.requirement));
+        if (!this.props.readOnly) {
+            return this.props.dispatch(toggleCommentsDisplay(this.props.requirement));
+        }
     }
 
     render() {
-        const { requirement } = this.props;
+        const { requirement, readOnly } = this.props;
         return (
             <div className={`display-form ${requirement.response && requirement.response.response ? 'responded' : 'not-responded'}`}>
                 <div className="col-xs-9 display-form__left-block">
@@ -59,6 +61,7 @@ class DisplayForm extends Component {
                         <Responses
                             updateSelection={this.updateSelection}
                             mandatory={requirement.mandatory}
+                            readOnly={readOnly}
                             response={requirement.response ? requirement.response.response : ''}>
                         </Responses>
                         {requirement.mandatory && <div className="text-info">
@@ -66,7 +69,7 @@ class DisplayForm extends Component {
                         </div>}
                     </div>
 
-                    {requirement.response && !requirement.response.comment &&
+                    {(requirement.response && !requirement.response.comment && !readOnly) &&
                         <div>
                             <a className="display-form__link"
                                 onClick={this.toggleCommentsFieldDisplay}>Add comments
@@ -82,7 +85,8 @@ class DisplayForm extends Component {
 
 DisplayForm.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    requirement: PropTypes.object.isRequired
+    requirement: PropTypes.object.isRequired,
+    readOnly: PropTypes.bool
 };
 
 function mapStateToProps(state) {
