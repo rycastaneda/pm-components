@@ -84,7 +84,7 @@ class EditForm extends Component {
                     <div className="edit-form__category-select-label">
                         Apply to
                     </div>
-                    {`item.attributes.quote_request_id ${item.attributes.quote_request_id}`}
+
                     <InclusionSelection options={options}
                                         handleChange={this.handleCategoryInclusionChange}
                                         include={item.attributes.include}
