@@ -20,13 +20,17 @@ class EditForm extends Component {
     }
 
     handleCategoryInclusionChange(event) {
+        const quoteId = document.getElementById('quote_id').value;
         const item = this.props.item;
         const value = event.target.value;
 
-        const include = value !== 'none';
+        const include = value !== 'onlyQR' && value !== 'onlyService';
+
         const category_id = include && value !== 'all' ? parseInt(value, 10) : null;
 
-        return this.props.dispatch(handleCategoryInclusionChange(item, include, category_id));
+        const quote_request_id = value === 'onlyQR' ? parseInt(quoteId, 10) : null;
+
+        return this.props.dispatch(handleCategoryInclusionChange(item, include, category_id, quote_request_id));
     }
 
     handleDescriptionChange(event) {
@@ -80,10 +84,12 @@ class EditForm extends Component {
                     <div className="edit-form__category-select-label">
                         Apply to
                     </div>
+                    {`item.attributes.quote_request_id ${item.attributes.quote_request_id}`}
                     <InclusionSelection options={options}
                                         handleChange={this.handleCategoryInclusionChange}
                                         include={item.attributes.include}
-                                        category_id={`${item.attributes.category_id}`}/>
+                                        category_id={`${item.attributes.category_id}`}
+                                        quote_request_id={`${item.attributes.quote_request_id}`}/>
 
                     <button className="edit-form__button btn"
                             disabled={ !item.attributes.text }
