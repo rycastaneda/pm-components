@@ -2,6 +2,7 @@ import {
     REQUEST_DOCUMENTS,
     RECEIVE_DOCUMENTS,
     RECEIVE_SUGGESTIONS_DOCUMENTS,
+    REMOVE_SUGGESTIONS_DOCUMENT,
     UPDATE_QUOTE_ID,
     UPDATED_CHECKBOX_VALUE,
     UPDATING_STATUS,
@@ -20,7 +21,6 @@ export function getDocuments() {
         return axios.get(`/searcher-compliance-doc-types`)
             .then((response) => {
                 let complianceDocs = response.data.data;
-                window.console.log(complianceDocs);
 
                 axios.get(`/searcher-quote-requests/${quoteId}/requested-items/${itemId}?include=quoteRequestedDocuments`)
                     .then((response) => {
@@ -69,8 +69,7 @@ export function updateCheckbox(checked, doc) {
         };
 
         if (checked) {
-            axios.post(`searcher-quote-requests/${quoteId}/requested-items/${itemId}/relationships/requested-documents`, updatedDocument).then((response) => {
-                window.console.log(response);
+            axios.post(`searcher-quote-requests/${quoteId}/requested-items/${itemId}/relationships/requested-documents`, updatedDocument).then(() => {
                 return dispatch({
                     type: UPDATED_CHECKBOX_VALUE,
                     id: doc.id,
@@ -79,8 +78,7 @@ export function updateCheckbox(checked, doc) {
                 });
             });
         } else {
-            axios.delete(`searcher-quote-requests/${quoteId}/requested-items/${itemId}/relationships/requested-documents`, { data:updatedDocument }).then((response) => {
-                window.console.log(response);
+            axios.delete(`searcher-quote-requests/${quoteId}/requested-items/${itemId}/relationships/requested-documents`, { data:updatedDocument }).then(() => {
                 return dispatch({
                     type: UPDATED_CHECKBOX_VALUE,
                     id: doc.id,
@@ -100,8 +98,6 @@ export function addNewDocument() {
         let newDocument = {};
         let updatedDocument = {};
 
-        window.console.log(`ADD_NEW_DOCUMENT`, quoteId, itemId);
-
         if (documentSuggestions.selected.id) {
             updatedDocument = {
                 data: [{
@@ -111,9 +107,9 @@ export function addNewDocument() {
                 }]
             };
 
-            axios.post(`searcher-quote-requests/${quoteId}/requested-items/${itemId}/relationships/requested-documents`, updatedDocument).then((response) => {
-                window.console.log(response);
+            axios.post(`searcher-quote-requests/${quoteId}/requested-items/${itemId}/relationships/requested-documents`, updatedDocument).then(() => {
                 dispatch(updateInput(''));
+                dispatch(removeSuggestionsDocument(updatedDocument.data[0].id));
 
                 return dispatch({
                     type: ADD_NEW_DOCUMENT,
@@ -138,9 +134,9 @@ export function addNewDocument() {
                     }]
                 };
 
-                axios.post(`searcher-quote-requests/${quoteId}/requested-items/${itemId}/relationships/requested-documents`, updatedDocument).then((response) => {
-                    window.console.log(response);
+                axios.post(`searcher-quote-requests/${quoteId}/requested-items/${itemId}/relationships/requested-documents`, updatedDocument).then(() => {
                     dispatch(updateInput(''));
+                    dispatch(removeSuggestionsDocument(updatedDocument.data[0].id));
 
                     return dispatch({
                         type: ADD_NEW_DOCUMENT,
@@ -187,6 +183,15 @@ export function receiveSuggestionsDocuments(documents) {
         dispatch({
             type: RECEIVE_SUGGESTIONS_DOCUMENTS,
             response: documents
+        });
+    };
+}
+
+export function removeSuggestionsDocument(documentId) {
+    return (dispatch) => {
+        dispatch({
+            type: REMOVE_SUGGESTIONS_DOCUMENT,
+            id: documentId
         });
     };
 }

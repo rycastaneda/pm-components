@@ -16,15 +16,11 @@ function escapeRegexCharacters(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function filterSuggestions(state, value) {
+function sortArray(value, items) {
     const escapedValue = escapeRegexCharacters(value.trim());
-    // Create a new regex
     const regex = new RegExp(escapedValue, 'i');
 
-    const unfilteredSuggestions = state.requestedDocuments.docsSuggestions; // state.documentSuggestions.suggestions;
-
-    // Filter suggestions with the given value
-    return unfilteredSuggestions.filter(item => regex.test(item.attributes.title)).sort(function(a, b) {
+    return items.filter(item => regex.test(item.attributes.title)).sort(function(a, b) {
         const value = escapedValue.toLowerCase();
         const aTitle = a.attributes.title;
         const bTitle = b.attributes.title;
@@ -38,25 +34,18 @@ function filterSuggestions(state, value) {
     });
 }
 
+function filterSuggestions(state, value) {
+    const unfilteredSuggestionsDefault = sortArray(value, state.requestedDocuments.docsSuggestions.filter((suggestion => suggestion.attributes.created_by_user_id === 0)));
+    const unfilteredSuggestionsUser =  sortArray(value, state.requestedDocuments.docsSuggestions.filter((suggestion => suggestion.attributes.created_by_user_id !== 0)));
+
+    // Filter suggestions with the given value
+    return unfilteredSuggestionsDefault.concat(unfilteredSuggestionsUser);
+}
+
 export function fetchSuggestions(value) {
     return (dispatch, getState) => {
         const filtered = filterSuggestions(getState(), value);
         dispatch(receiveSuggestions(filtered));
-
-        // const quoteId = getState().requestedDocuments.quoteId;
-        // const itemId = document.getElementById('item_id') ? document.getElementById('item_id').value : null;
-
-        // if (!getState().documentSuggestions.suggestions.length) {
-            // dispatch(receiveSuggestions(getState().requestedDocuments.docsSuggestions));
-
-            // return axios.get(`/searcher-quote-requests/${quoteId}/requested-items/${itemId}?include=quoteRequestedDocuments`)
-            //     .then((response) => {
-            //         return dispatch(receiveSuggestions(response.data.data));
-            //     });
-        // } else {
-            // const filtered = filterSuggestions(getState(), value);
-            // dispatch(receiveSuggestions(filtered));
-        // }
     };
 }
 export function checkSelection(value) {
@@ -64,7 +53,6 @@ export function checkSelection(value) {
     return (dispatch, getState) => {
         const documentSuggestions = getState().documentSuggestions;
         if (documentSuggestions.selected.attributes && documentSuggestions.input !== documentSuggestions.selected.attributes.title) {
-            window.console.log('resetSelectedSuggestion');
             dispatch(resetSelectedSuggestion());
         }
     };

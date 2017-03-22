@@ -72,7 +72,8 @@ class DocumentSuggestions extends Component {
             className:'form-control',
             value: documentSuggestions.input || '',
             onChange: this.onChange(),
-            onBlur: this.onBlur()
+            onBlur: this.onBlur(),
+            placeholder: 'Search or Create document types'
         };
 
         return (
