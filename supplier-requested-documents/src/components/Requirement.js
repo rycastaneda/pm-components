@@ -24,7 +24,7 @@ class Requirement extends Component {
                         <div className="form-group mar-top-sm">
                             <label>{requirement.title}</label>
                             <Dropzone className="dropzone dz-clickable"
-                                accept="application/pdf,image/*,text/csv"
+                                accept="application/pdf,image/*,text/csv,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                 onDrop={(documents) => {
                                     onDropDocuments(requirement.id, documents);
                                 }}>
