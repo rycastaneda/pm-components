@@ -98,8 +98,9 @@ export function updateSelection(responseId, requirementId, response, comment) {
             };
 
             const previousReponse = getState().responses.byId[requirementId].response;
+            const previousComment = getState().responses.byId[requirementId].comment;
 
-            if (response === previousReponse) { // response to be removed on unclick
+            if (response === previousReponse && comment === previousComment) { // response to be removed on unclick
                 return axios.delete(endpoint + `/${responseId}`, supplierResponse).then(() => {
                     dispatch({
                         type: DELETE_SELECTION,
