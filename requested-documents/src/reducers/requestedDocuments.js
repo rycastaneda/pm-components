@@ -2,6 +2,7 @@ import {
     REQUEST_DOCUMENTS,
     RECEIVE_DOCUMENTS,
     RECEIVE_SUGGESTIONS_DOCUMENTS,
+    REMOVE_SUGGESTIONS_DOCUMENT,
     UPDATE_QUOTE_ID,
     UPDATED_CHECKBOX_VALUE,
     UPDATING_STATUS,
@@ -29,6 +30,10 @@ export function requestedDocuments(state = DEFAULT_STATE, action) {
             return Object.assign({}, state, {
                 docsSuggestions: action.response
             });
+        case REMOVE_SUGGESTIONS_DOCUMENT:
+            return Object.assign({}, state, {
+                docsSuggestions: suggestions(state.docsSuggestions, action)
+            });
         case UPDATE_QUOTE_ID:
             return Object.assign({}, state, {
                 quoteId: action.quoteId
@@ -42,6 +47,10 @@ export function requestedDocuments(state = DEFAULT_STATE, action) {
         default:
             return state;
     }
+}
+
+export function suggestions(state = [], action) {
+    return state.filter(docsSuggestion => docsSuggestion.id !== action.id);
 }
 
 export function document(state = [], action) {

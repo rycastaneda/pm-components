@@ -98,7 +98,7 @@ export function getItems(itemId, quoteId, categoryId = '', newCategory = false) 
                 // Global requirements are the ones user ticked with 'include to all quote requests'
                 // They are supposed to be displayed for the user and be automatically linked to the quote
                 // In order to do that we manually update the relationship to link all global requirements to the current quote
-                if (!quoteSpecificRequirements.length || newCategory) {
+                if (newCategory) {
                     let searcherRequirements = [];
                     // Make a request to get all quote requirements which belong to the user
                     axios.get(`/${TYPE}?filters[category_id]=${categoryId}&filters[quote_id]=${quoteId}`)
@@ -299,12 +299,13 @@ export function handleMandatorySelection(item, value) {
  * @param {number} category_id
  * @returns {{type, id: string, include: *, category_id: *}}
  */
-export function handleCategoryInclusionChange(item, include, category_id) {
+export function handleCategoryInclusionChange(item, include, category_id, quote_request_id) {
     return {
         type: UPDATE_INCLUSIONS_CATEGORY,
         id: item.id,
         include,
-        'category_id': category_id
+        'category_id': category_id,
+        'quote_request_id': quote_request_id
     };
 }
 /**

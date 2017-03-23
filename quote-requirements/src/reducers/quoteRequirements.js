@@ -22,7 +22,8 @@ const DEFAULT_EMPTY_ITEM = {
         mandatory: false,
         include: false,
         text: '',
-        category_id: null
+        category_id: null,
+        quote_request_id: null
     }
 };
 
@@ -121,7 +122,8 @@ function items(state = [], action) {
                 { ...item,
                     attributes: Object.assign({}, item.attributes, {
                         include: action.include,
-                        category_id: action.category_id
+                        category_id: action.category_id,
+                        quote_request_id: action.quote_request_id
                     }) } : item
             );
         default:

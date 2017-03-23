@@ -38,12 +38,14 @@ describe('Quote requirements actions: ', () => {
     it('handleCategoryInclusionChange function should update item\'s category_id value', () => {
         const item = { id: 'test' };
         const category_id = '44';
+        const quote_request_id = null;
 
-        expect(actions.handleCategoryInclusionChange(item, true, category_id)).to.deep.equal({
+        expect(actions.handleCategoryInclusionChange(item, true, category_id, quote_request_id)).to.deep.equal({
             type: types.UPDATE_INCLUSIONS_CATEGORY,
             id: 'test',
             include: true,
-            'category_id': '44'
+            'category_id': '44',
+            'quote_request_id': null
         });
     });
 
@@ -69,4 +71,3 @@ describe('Quote requirements actions: ', () => {
         });
     });
 });
-

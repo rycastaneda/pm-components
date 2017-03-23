@@ -43,7 +43,7 @@ class RequestedDocuments extends Component {
                               }/>
                 )}
                 <div className="row pad-top-sm">
-                    <div className="col-md-4">
+                    <div className="col-md-8 pad-btm-sm">
                         <DocumentSuggestion />
                     </div>
                     <div className="col-md-4">

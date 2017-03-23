@@ -20,7 +20,7 @@ class QuoteRequirements extends Component {
         const categoryId = categoryIdField.value;
 
         if (categorySelectedField) {
-            this.props.dispatch(updateDropdownOptions(categorySelectedField));            
+            this.props.dispatch(updateDropdownOptions(categorySelectedField));
         }
 
         this.props.dispatch(updateQuoteId(quoteId));
@@ -43,7 +43,7 @@ class QuoteRequirements extends Component {
         const { quoteRequirements } = this.props;
         return (
             <div className="quote-inclusions">
-                {quoteRequirements.items.map(item =>
+                {quoteRequirements.items && quoteRequirements.items.map(item =>
                     item.isEditing
                         ? <EditForm key={item.id}
                                     item={item}/>

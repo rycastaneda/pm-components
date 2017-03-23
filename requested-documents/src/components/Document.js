@@ -5,9 +5,10 @@ const Document = ({ handleChange, id, title, checked = false, updating = false }
         { updating ? <i className="fa fa-spinner fa-pulse fa-fw"></i> : null }
         <label htmlFor={`document-${id}`}>
             <input id={`document-${id}`}
-                   type={updating ? 'hidden':'checkbox'}
+                   type="checkbox"
                    checked={checked}
                    onChange={handleChange}
+                   className={updating ? 'hide':''}
             />
             {title}
         </label>

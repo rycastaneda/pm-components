@@ -232,7 +232,8 @@ export function selectCategory(category, index) {
 export function triggerDomChanges(itemId = 0, categoryId = 0, state = {}) {
     const categoryField = document.getElementById('qr_category_id') || {};
     const itemField = document.getElementById('item_id') || {};
-    const triggerChange = new Event('change');
+    const triggerChange = document.createEvent('HTMLEvents');
+    triggerChange.initEvent('change', false, true);
 
     categoryField.value = categoryId;
     itemField.value = itemField.value === '0' ? itemId : itemField.value;
