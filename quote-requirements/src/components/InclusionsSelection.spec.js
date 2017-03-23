@@ -23,7 +23,7 @@ const options = [
 ];
 
 describe('Inclusions selection component: ', () => {
-    it('should render select wrapper and default 3 options with \'onlyService\' being default value', () => {
+    it('should render select wrapper and default 3 options with \'onlyQR\' being default value', () => {
         const { component } = setup({ handleChange, quote_request_id: '1234' });
 
         expect(component.node.type).to.equal('select');
@@ -33,10 +33,10 @@ describe('Inclusions selection component: ', () => {
         expect(component.props().children[1].type).to.equal('option');
         expect(component.props().children[2].type).to.equal('option');
         expect(component.props().children[3]).to.equal(null);
-        expect(component.props().defaultValue).to.equal('onlyService');
+        expect(component.props().defaultValue).to.equal('onlyQR');
     });
 
-    it('should render select wrapper and default 3 options with \'onlyQR\' being default value', () => {
+    it('should render select wrapper and default 3 options with \'onlyService\' being default value', () => {
         const { component } = setup({ handleChange, include: false, quote_request_id: 'null' });
 
         expect(component.node.type).to.equal('select');
@@ -46,7 +46,7 @@ describe('Inclusions selection component: ', () => {
         expect(component.props().children[1].type).to.equal('option');
         expect(component.props().children[2].type).to.equal('option');
         expect(component.props().children[3]).to.equal(null);
-        expect(component.props().defaultValue).to.equal('onlyQR');
+        expect(component.props().defaultValue).to.equal('onlyService');
     });
 
     it('should render select wrapper and default 3 options with \'all\' being default value', () => {

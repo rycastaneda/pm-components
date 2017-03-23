@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
 const InclusionSelection = ({ handleChange, quote_request_id = null, category_id = null, include = false, options = [] }) => {
-    const defaultValue = quote_request_id !== 'null' ? 'onlyService' : include ? 'all' : 'onlyQR';
+    const defaultValue = (quote_request_id !== 'null') ? 'onlyQR' : include ? 'all' : 'onlyService';
     category_id = category_id !== 'null' ? category_id : null;
 
     return (
@@ -13,9 +13,11 @@ const InclusionSelection = ({ handleChange, quote_request_id = null, category_id
             <option value="onlyService">only this service</option>
             {
                 options.length ?
-                options.map((option) => {
+                options
+                .filter(option => option.input)
+                .map((option) => {
                     return (
-                        <option key={option.id}
+                        <option key={option.selectedCategory.id}
                                 value={option.selectedCategory.id}>{`any ${option.input}`}</option>
                     );
                 }) : null
