@@ -7,8 +7,8 @@ import {
     ADD_DROPDOWN,
     REQUEST_FAILED
 } from '../constants/ActionTypes';
+import axios from 'axios';
 import { resetDropDowns } from './suggestions';
-import api from '../../../shared/api.config';
 
 /**
  *
@@ -68,31 +68,13 @@ export function fetchCategories(categoryType) {
         // Dispatch a state change to indicate that categories are being fetched
         dispatch(requestCategories(type));
 
-        return new Promise(
-            function(resolve, reject) {
-                const apiHost = api.configureHostname();
-                const apiHeaders = api.configureHeaders();
-                const xhttp = new XMLHttpRequest();
-
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState === 4 && this.status === 200) {
-                        dispatch(receiveCategories(type, JSON.parse(this.responseText)));
-                        resolve();
-                    }
-                };
-
-                xhttp.onerror = function(error) {
-                    window.console.log('error', error);
-                    reject();
-                };
-
-                xhttp.open('GET', `${apiHost}/categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`, true);
-                for (let t in apiHeaders) {
-                    xhttp.setRequestHeader(t, apiHeaders[t]);
-                }
-                xhttp.send();
-            }
-        );
+        axios.get(`/categories?filters[service_type]=${service_type}&fields[categories]=title,selectable&include=categories.categories.categories`)
+            .then((response) => {
+                return dispatch(receiveCategories(type, response.data));
+            })
+            .catch(function() {
+                dispatch(reportError(type));
+            });
     };
 }
 
@@ -126,9 +108,7 @@ export function fetchCategoriesIfNeeded(categoryType) {
         // Check if categories are already available in the cache
         if (!categories) {
             // If not, make an API call to get categories
-            dispatch(fetchCategories(categoryType))
-            // Catch errors if API request failed
-            .catch(() => dispatch(reportError(type)));
+            dispatch(fetchCategories(categoryType));
         } else {
             // If they are, display an input with dropdown suggestions
             return dispatch(addDropDown());
@@ -167,6 +147,20 @@ export function selectType(categoryType) {
 }
 
 /**
+* @param {Object} item
+* @param {string} categoryId
+* @param {string} quoteId
+* @returns {function(*)}
+*/
+export function createItem(item, categoryId, quoteId) {
+    return (dispatch, getState) => {
+        axios.post(`/searcher-quote-requests/${quoteId}/requested-items`, { data: item }).then((response) => {
+            triggerDomChanges(response.data.data.id, categoryId, getState());
+        });
+    };
+}
+
+/**
  *
  * @description
  * This function dispatches select category action and
@@ -177,9 +171,25 @@ export function selectType(categoryType) {
  * @returns {function(*)}
  */
 export function selectCategory(category, index) {
-    return (dispatch, getState) => {
-        const hasSubcategories = category.relationships ? category.relationships.categories.data.length > 0 : false;
+    const hasSubcategories = category.relationships ? category.relationships.categories.data.length > 0 : false;
+    const quoteId =  document.getElementById('quote_id') ? document.getElementById('quote_id').value : null;
+    const itemId =  document.getElementById('item_id') ? parseInt(document.getElementById('item_id').value, 10) : null;
 
+    const item = {
+        type: 'requested-items',
+        id: itemId || null,
+        relationships: {
+            category: {
+                data: {
+                    type: 'categories',
+                    id: category.id
+                }
+            }
+        }
+
+    };
+
+    return (dispatch, getState) => {
         dispatch({
             type: SELECT_CATEGORY,
             category,
@@ -189,7 +199,13 @@ export function selectCategory(category, index) {
         // Trigger other onchange events
         // If user has finished selecting categories
         if (category.attributes.selectable) {
-            triggerDomChanges(category.id, getState());
+            // Make an api call to generate an item service
+            if (!itemId) {
+                dispatch(createItem(item, category.id, quoteId));
+                // If item id is already generated, make an update call
+            } else {
+                axios.patch(`/searcher-quote-requests/${quoteId}/requested-items/${itemId}`, { data: item }).then(() => triggerDomChanges(null, category.id, getState()));
+            }
         }
 
         if (hasSubcategories) {
@@ -197,7 +213,6 @@ export function selectCategory(category, index) {
         } else {
             return dispatch(resetDropDowns(index + 1));
         }
-
     };
 }
 
@@ -212,20 +227,23 @@ export function selectCategory(category, index) {
  * Also category selector need to interact with other react component.
  * As a temporary solution, global PlantminerComponents object is introduced
  *
- * @param {number} [id=0] - category id
+ * @param {number} [categoryId=0] - category id
  */
-export function triggerDomChanges(id = 0, state = {}) {
-    const el = document.getElementById('qr_category_id') || {};
+export function triggerDomChanges(itemId = 0, categoryId = 0, state = {}) {
+    const categoryField = document.getElementById('qr_category_id') || {};
+    const itemField = document.getElementById('item_id') || {};
     const triggerChange = document.createEvent('HTMLEvents');
     triggerChange.initEvent('change', false, true);
 
-    el.value = id;
-    el.dispatchEvent = el.dispatchEvent || function() {};
-    el.dispatchEvent(triggerChange);
+    categoryField.value = categoryId;
+    itemField.value = itemField.value === '0' ? itemId : itemField.value;
+
+    categoryField.dispatchEvent = categoryField.dispatchEvent || function() {};
+    categoryField.dispatchEvent(triggerChange);
 
     window.PlantminerComponents = window.PlantminerComponents || {};
     window.PlantminerComponents.categorySelector = {
-        selectedCategoryId: parseInt(id, 10),
+        selectedCategoryId: parseInt(categoryId, 10),
         dropDowns: state.categorySelector ? state.categorySelector.dropDowns : {}
     };
 }

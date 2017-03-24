@@ -1,0 +1,59 @@
+{
+  "data": {
+    "type": "matched-items",
+    "id": "9225",
+    "attributes": [],
+    "relationships": {
+      "searcherRequirements": {
+        "data": [
+          {
+            "type": "searcher-requirements",
+            "id": "1"
+          }
+        ]
+      },
+      "searcherRequirementResponses": {
+        "data": [
+          {
+            "type": "searcher-requirement-responses",
+            "id": "32"
+          },
+          {
+            "type": "searcher-requirement-responses",
+            "id": "31"
+          }
+        ]
+      }
+    }
+  },
+  "included": [
+    {
+      "type": "searcher-requirements",
+      "id": "1",
+      "attributes": {
+        "text": "Testing",
+        "category_id": null,
+        "include": true,
+        "mandatory": false
+      }
+    },
+    {
+      "type": "searcher-requirement-responses",
+      "id": "32",
+      "attributes": {
+        "searcher_requirement_id": 1,
+        "response": "Yes",
+        "comment": "Testing"
+      }
+    },
+    {
+      "type": "searcher-requirement-responses",
+      "id": "31",
+      "attributes": {
+        "searcher_requirement_id": 2,
+        "response": "Yes",
+        "comment": "Testing"
+      }
+    }
+  ]
+}

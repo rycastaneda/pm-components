@@ -1,0 +1,35 @@
+$background-color: #ffffff;
+$border-color: #eeeeee;
+
+.edit-form {
+    overflow: hidden;
+    width: 100%;
+    padding: 15px 0;
+    background: $background-color;
+    border-top: 1px solid $border-color;
+
+    &__checkbox {
+
+        label {
+            margin-bottom: 0;
+        }
+    }
+
+    &__button {
+        width: 100%;
+    }
+
+    &__category-select {
+        margin-bottom: 7px;
+    }
+
+    &__category-select-label {
+        margin-bottom: 3px;
+        font-size: 13px;
+    }
+
+    textarea {
+        height: 95px;
+        resize: none;
+    }
+}
