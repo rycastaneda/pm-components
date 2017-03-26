@@ -46,16 +46,20 @@ class RequestedDocuments extends Component {
             content = <Loader block={true}></Loader>;
         } else {
             content = <div>
-                <label htmlFor="">Requested Documents</label>
-                <div className="text-info">
-                    The customer has requested that your provide the following documents as part of your quote
+                { requirements.length ? <div>
+                    <label htmlFor="">Requested Documents</label>
+                        <div className="text-info">
+                            The customer has requested that your provide the following documents as part of your quote
+                        </div>
+                        <hr className="mar-btm-sm mar-top-sm"/>
+
+                        <Requirements
+                            requirements={requirements}
+                            onRemoveDocument={this.handleRemoveDocument}
+                            onDropDocuments={this.handleCatchDocs}>
+                        </Requirements>
                 </div>
-                <hr className="mar-btm-sm mar-top-sm"/>
-                <Requirements
-                    requirements={requirements}
-                    onRemoveDocument={this.handleRemoveDocument}
-                    onDropDocuments={this.handleCatchDocs}>
-                </Requirements>
+                : null }
             </div>;
         }
 
