@@ -24,11 +24,11 @@ class EditForm extends Component {
         const item = this.props.item;
         const value = event.target.value;
 
-        const include = value !== 'onlyQR' && value !== 'onlyService';
-
-        const category_id = include && value !== 'all' ? parseInt(value, 10) : null;
-
+        const include = value === 'all';
         const quote_request_id = value === 'onlyQR' ? parseInt(quoteId, 10) : null;
+
+        let category_id = parseInt(value, 10);
+        category_id = isNaN(category_id) ? null : category_id;
 
         return this.props.dispatch(handleCategoryInclusionChange(item, include, category_id, quote_request_id));
     }
@@ -75,7 +75,7 @@ class EditForm extends Component {
                                    checked={item.attributes.mandatory}
                                    onChange={this.handleMandatoryChange}
                             />
-                            Non negotiable
+                            Non-negotiable
                         </label>
                     </div>
                 </div>

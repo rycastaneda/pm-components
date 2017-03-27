@@ -140,7 +140,8 @@ export function updateItem(item) {
                 include: item.attributes.include,
                 mandatory: item.attributes.mandatory,
                 text: item.attributes.text,
-                'category_id': item.attributes.category_id
+                'category_id': item.attributes.category_id,
+                'quote_request_id': item.attributes.quote_request_id
             }
         };
 
