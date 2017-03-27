@@ -17,6 +17,7 @@ class RequestedDocuments extends Component {
         this.quote_id = document.querySelector('[data-component="supplier-requested-documents"]').getAttribute('data-quote-id');
         this.matched_id = document.querySelector('[data-component="supplier-requested-documents"]').getAttribute('data-matched-item');
         this.reqId = document.querySelector('[data-component="supplier-requested-documents"]').getAttribute('data-rqid');
+        this.readOnly = !!document.querySelector('[data-component="supplier-requested-documents"]').getAttribute('data-read-only');
         this.props.dispatch(fetchRequirements(this.quote_id, this.matched_id, this.reqId));
     }
 
@@ -45,18 +46,21 @@ class RequestedDocuments extends Component {
         if (ui.loading && !ui.error) {
             content = <Loader block={true}></Loader>;
         } else {
-            content = <div>
-                <label htmlFor="">Requested Documents</label>
-                <div className="text-info">
-                    The customer has requested that your provide the following documents as part of your quote
+            content = requirements.length ? 
+                <div>
+                    <label htmlFor="">Requested Documents</label>
+                    <div className="text-info">
+                        The customer has requested that your provide the following documents as part of your quote
+                    </div>
+                    <hr className="mar-btm-sm mar-top-sm"/>
+                    <Requirements
+                        readOnly={this.readOnly}
+                        requirements={requirements}
+                        onRemoveDocument={this.handleRemoveDocument}
+                        onDropDocuments={this.handleCatchDocs}>
+                    </Requirements>
                 </div>
-                <hr className="mar-btm-sm mar-top-sm"/>
-                <Requirements
-                    requirements={requirements}
-                    onRemoveDocument={this.handleRemoveDocument}
-                    onDropDocuments={this.handleCatchDocs}>
-                </Requirements>
-            </div>;
+            : null;
         }
 
         return (

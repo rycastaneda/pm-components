@@ -5,6 +5,7 @@ class Requirements extends Component {
     render() {
         const requirements = this.props.requirements.map((requirement, key) => {
             return <Requirement 
+                readOnly={this.props.readOnly}
                 key={key}
                 requirement={requirement} 
                 onRemoveDocument={this.props.onRemoveDocument}
@@ -22,6 +23,7 @@ class Requirements extends Component {
 
 Requirements.propTypes = {
     requirements: PropTypes.array.isRequired,
+    readOnly: PropTypes.bool,
     onRemoveDocument: PropTypes.func.isRequired,
     onDropDocuments: PropTypes.func.isRequired
 };

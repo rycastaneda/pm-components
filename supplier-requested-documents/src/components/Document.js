@@ -6,6 +6,7 @@ class Document extends Component {
         const {
             document,
             requirementId,
+            readOnly,
             onRemoveDocument
         } = this.props;
 
@@ -16,9 +17,9 @@ class Document extends Component {
                     : null
                 }
                 <span className="pull-left">{document.name}</span>
-                <span className="pull-right">
+                {!readOnly ? <span className="pull-right">
                     <i className="fa fa-times" onClick={() => onRemoveDocument(requirementId, document.id)}></i>
-                </span>
+                </span> : null}
                 <div className="clearfix"></div>
             </li>
         );
@@ -28,6 +29,7 @@ class Document extends Component {
 Document.propTypes = {
     document: PropTypes.object.isRequired,
     requirementId: PropTypes.node.isRequired,
+    readOnly: PropTypes.bool,
     onRemoveDocument: PropTypes.func.isRequired
 };
 

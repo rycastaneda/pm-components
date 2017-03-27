@@ -11,12 +11,13 @@ import {
 } from '../constants';
 import axios from 'axios';
 
-export function fetchRequirements(quoteId, itemId, reqId) {
+export function fetchRequirements(quoteId, itemId, reqId, readOnly) {
     return (dispatch) => {
         dispatch({
             type: FETCH_REQUIREMENTS,
             quoteId,
-            itemId
+            itemId,
+            readOnly
         });
 
         axios.get(`/supplier-quote-requests/${quoteId}/requested-items/${reqId}?include=complianceDocuments`)
