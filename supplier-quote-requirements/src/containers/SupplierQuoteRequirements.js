@@ -33,7 +33,7 @@ class SupplierQuoteRequirements extends Component {
                     <div>
                         <label htmlFor="">Quote Requirements</label>
                         <div className="text-info">
-                            * Non negotiable - This customer will only assess quotes that can comply with this requirement
+                            * Non-negotiable - This customer will only assess quotes that can comply with this requirement
                         </div>
                     </div>
                 : null }
