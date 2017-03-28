@@ -59,16 +59,21 @@ export function incrementProgress(docId, progress) {
 }
 
 export function removeDocument(quoteId, itemId, requirementId, docId) {
-    return (dispatch) => {
-        axios.delete(itemId ? `/supplier-quote-requests/${quoteId}/matched-items/${itemId}/documents/${docId}`
-            : `/supplier-quote-requests/${quoteId}/documents/${docId}`)
-            .then(() => {
-                dispatch({
-                    type: DOCUMENT_REMOVING,
-                    requirementId,
-                    docId
-                });
-            });
+    return (dispatch, getState) => {
+        dispatch({
+            type: DOCUMENT_REMOVING,
+            requirementId,
+            docId
+        });
+
+        if (getState().documentsToBeAdded.byId[docId].status === 'FAILED') {
+            return;
+        }
+
+        axios.delete(
+            itemId ? `/supplier-quote-requests/${quoteId}/matched-items/${itemId}/documents/${docId}`
+            : `/supplier-quote-requests/${quoteId}/documents/${docId}`
+        );
 
     };
 }
@@ -110,14 +115,12 @@ export function catchDocuments(quoteId, itemId, requirementId, docsToBeAdded) {
                 });
 
                 return response;
-            }).catch((response) => {
+            }).catch(() => {
                 dispatch({
-                    typ: DOCUMENT_UPLOAD_FAILED,
+                    type: DOCUMENT_UPLOAD_FAILED,
                     requirementId,
                     documentId: document.id
                 });
-
-                return response;
             });
 
         });
