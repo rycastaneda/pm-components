@@ -1,5 +1,6 @@
 import {
     REQUIREMENTS_REQUESTED,
+    IS_SAVING,
     REQUIREMENTS_RECEIVED,
     REQUIREMENTS_RELATIONSHIP_UPDATED,
     IS_EDITING,
@@ -29,6 +30,7 @@ export function createItem(item) {
             type: TYPE,
             attributes: item.attributes
         };
+        dispatch(requirementsSaving(0, true));
         axios.post(`/${TYPE}`, { data: newItem })
             .then((response) => {
                 response = response.data;
@@ -40,7 +42,7 @@ export function createItem(item) {
                     id: response.data.id
                 });
                 dispatch(linkRequirementsToQuote(quoteId, searcherRequirements));
-
+                dispatch(requirementsSaving(0, false));
                 dispatch({
                     type: IS_CREATED,
                     id: response.data.id
@@ -144,10 +146,12 @@ export function updateItem(item) {
                 'quote_request_id': item.attributes.quote_request_id
             }
         };
+        dispatch(requirementsSaving(item.id, true));
 
         axios.patch(`/${TYPE}/${item.id}`, { data: updatedItem })
             .then((response) => {
                 response = response.data;
+                dispatch(requirementsSaving(response.data.id, false));
                 dispatch({
                     type: IS_SAVED,
                     id: response.data.id
@@ -329,6 +333,20 @@ export function receiveRequirements(items) {
         items: items
     };
 }
+/**
+ *
+ * @param {boolean} isSaving
+ * @returns {{type, isSaving: *}}
+ */
+export function requirementsSaving(id, isSaving) {
+    return {
+        type: IS_SAVING,
+        id,
+        isSaving
+    };
+}
+
+
 /**
  *
  * @returns {{type}}

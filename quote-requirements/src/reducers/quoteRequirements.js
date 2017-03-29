@@ -1,5 +1,6 @@
 import {
     REQUIREMENTS_REQUESTED,
+    IS_SAVING,
     REQUIREMENTS_RECEIVED,
     REQUIREMENTS_RELATIONSHIP_UPDATED,
     IS_EDITING,
@@ -18,6 +19,7 @@ const DEFAULT_EMPTY_ITEM = {
     id: 0,
     isEditing: true,
     viewFullText: false,
+    isSaving: false,
     attributes: {
         mandatory: false,
         include: false,
@@ -58,6 +60,7 @@ export function quoteRequirements(state = DEFAULT_STATE, action) {
         case UPDATE_INCLUSIONS_CATEGORY:
         case UPDATE_MANDATORY_SELECTION:
         case IS_EMPTY_ADDED:
+        case IS_SAVING:
         case IS_SAVED:
         case IS_CREATED:
         case IS_DELETED:
@@ -76,6 +79,11 @@ function items(state = [], action) {
     switch (action.type) {
         case IS_EMPTY_ADDED:
             return [...state, DEFAULT_EMPTY_ITEM];
+        case IS_SAVING:
+            return state.map(item =>
+                item.id === action.id ?
+                { ...item, id: action.id, isSaving: action.isSaving } : item
+            );
         case IS_SAVED:
             return state.map(item =>
                 item.id === action.id ?
