@@ -181,7 +181,17 @@ DocumentGroup.propTypes = {
 
 
 function mapStateToProps(state) {
-    const { documentGroups, documents, documentsToBeAdded  } = state;
+    const { 
+        documentGroups: rawGroups, 
+        defaults: rawDefaults, 
+        documents: rawDocuments, 
+        documentsToBeAdded: rawDocumentsToBeAdded
+    } = state;
+
+    const defaultGroups = defaults.allIds.map(defaultId => defaults.byId[defaultId]);
+    const groups = documentGroups.allIds.map(documentGroupId => documentGroups.byId[documentGroupId]);
+
+
 
     return { documentGroups, documents, documentsToBeAdded };
 }

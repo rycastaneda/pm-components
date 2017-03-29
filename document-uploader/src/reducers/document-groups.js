@@ -14,50 +14,28 @@ import {
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_REMOVED
 } from '../constants/ActionTypes';
-import { uniq } from 'lodash'; 
 
 const INITIAL_STATE = {
-    data: [], // array of document groups
-    defaults: [],
     loading: false,
-    downloading: false
-};
-
-const DEFAULT_ERROR = 'Request failed. Please try again later.';
-
-const DEFAULT_GROUP_STATES = {
-    attributes: {
-        is_updating: false,
-        is_renaming: false,
-        errors: []
-    }
+    byId: {},
+    allIds: []
 };
 
 export function documentGroups(state = INITIAL_STATE, action) {
     let defaults;
 
     switch (action.type) {
-        case API_READ_FAILED:
-            return Object.assign({}, state, {
-                loading: false,
-                error: action.response || DEFAULT_ERROR
-            });
         case GROUPS_LOADING:
             return Object.assign({}, state, {
                 loading: true
             });
         case GROUPS_RECEIVING:
-            // ADD DEFAULT GROUP STATES
-            defaults = uniq(action.groups.data, group => group.attributes.title);
-            return Object.assign({}, state, {
-                loading: false,
-                data: action.groups.data.filter(group => group.attributes.user_id),
-                defaults: state.defaults.concat(defaults)
+            action.groups.data.map((group) => {
+                state.byId[group.id] = Object.assign({}, group.attributes, {id: defaultGroup.id});
             });
-        case GROUPS_RECEIVING_DEFAULTS: 
+
             return Object.assign({}, state, {
-                loading: false,
-                defaults: state.defaults.concat(action.defaults.data)
+                loading: false
             });
         case GROUP_ADDED:
             return Object.assign({}, state, {
