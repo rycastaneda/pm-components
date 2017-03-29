@@ -50,6 +50,7 @@ class DisplayForm extends Component {
                         {requirement.text}
                     </div>
                     <CommentsForm showForm={requirement.displayCommentsForm}
+                        readOnly={readOnly}
                         updateSelection={this.updateSelection}
                         toggleCommentsFieldDisplay={this.toggleCommentsFieldDisplay}
                         comment={requirement.response ? requirement.response.comment : ''}
