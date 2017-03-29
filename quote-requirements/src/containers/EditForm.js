@@ -92,9 +92,10 @@ class EditForm extends Component {
                                         quote_request_id={`${item.attributes.quote_request_id}`}/>
 
                     <button className="edit-form__button btn"
-                            disabled={ !item.attributes.text }
+                            disabled={ !item.attributes.text || item.isSaving }
                             type="submit"
                             onClick={this.handleSave}>
+                            {item.isSaving ? <i className="fa fa-spinner fa-spin mar-r-sm"></i> : null}
                         { item.id ? 'Save' : 'Add' }
                     </button>
 
