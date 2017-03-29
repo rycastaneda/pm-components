@@ -30,7 +30,7 @@ export function requirementsDocuments(state = INITIAL_STATE, action) {
 }
 
 function replaceDocument(state, action) {
-    let index = state.byId[action.requirementId].documentIds.indexOf(action.requirementId);
+    let index = state.byId[action.requirementId].documentIds.indexOf(action.documentId);
 
     state.byId[action.requirementId].documentIds.splice(index, 1);
     state.byId[action.requirementId].documentIds.push(action.newDocumentId);
