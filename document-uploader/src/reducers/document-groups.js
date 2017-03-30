@@ -1,5 +1,6 @@
 import {
     API_READ_FAILED,
+    GROUPS_FETCHING,
     GROUPS_LOADING,
     GROUPS_RECEIVING,
     GROUPS_RECEIVING_DEFAULTS,
@@ -25,24 +26,45 @@ export function documentGroups(state = INITIAL_STATE, action) {
     let defaults;
 
     switch (action.type) {
+        case GROUPS_FETCHING:
         case GROUPS_LOADING:
             return Object.assign({}, state, {
                 loading: true
             });
+        case GROUPS_RECEIVING_DEFAULTS: 
+            action.defaults.data.map((defaultGroup) => {
+                state.byId[defaultGroup.id] = Object.assign({}, defaultGroup.attributes, {
+                    id: defaultGroup.id,
+                    isDefault: true,
+                    isRenaming: false,
+                    documentIds: []
+                });
+
+                state.allIds.push(defaultGroup.id);
+            });
+
+            return Object.assign({}, state);
         case GROUPS_RECEIVING:
             action.groups.data.map((group) => {
-                state.byId[group.id] = Object.assign({}, group.attributes, {id: defaultGroup.id});
+                state.byId[group.id] = Object.assign({}, group.attributes, {
+                    id: group.id,
+                    isDefault: false,
+                    isRenaming: false,
+                    documentIds: []
+                });
+
+                state.allIds.push(group.id);
             });
 
             return Object.assign({}, state, {
                 loading: false
             });
         case GROUP_ADDED:
-            return Object.assign({}, state, {
-                loading: false,
-                defaults: state.defaults.concat(action.group.data),
-                data: groups(state.data, action)
+            state.byId[action.group.id] = Object.assign({}, action.group.attributes, {
+                id: action.group.id
             });
+            state.allIds.push(action.group.id);
+            return Object.assign({}, state);
         case GROUPS_DOWNLOAD_STARTED: 
             return Object.assign({}, state, {
                 downloading: true

@@ -1,6 +1,7 @@
 import {
-    API_READ_FAILED,
+    REQUEST_FAILED,
     GROUPS_LOADING,
+    GROUPS_FETCHING,
     GROUPS_RECEIVING,
     GROUPS_RECEIVING_DEFAULTS,
     GROUP_ADDED,
@@ -26,31 +27,33 @@ import {
 } from '../constants/ActionTypes';
 import axios from 'axios';
 
-export function fetchDocuments(quote_id) {
+export function fetchDocuments(quoteId) {
     return (dispatch) => {
         dispatch({
-            type: GROUPS_LOADING
+            type: GROUPS_FETCHING,
+            quoteId
         });
 
-        axios.get(`/document-groups?include=documents&filter[defaults]=1`)
+        axios.get(`/document-groups?filter[defaults]=1`)
             .then((defaults) => {
-                return dispatch({ type: GROUPS_RECEIVING_DEFAULTS, defaults: defaults.data });
-            }).catch(() => {
-                return dispatch({ type: API_READ_FAILED });
-            });
-
-        axios.get(`/document-groups?include=documents&filter[quote_id]=${quote_id}`)
-            .then((groups) => {
-                return dispatch({ type: GROUPS_RECEIVING, groups: groups.data });
-            }).catch(() => {
-                return dispatch({ type: API_READ_FAILED });
+                dispatch({ type: GROUPS_RECEIVING_DEFAULTS, defaults: defaults.data });
+                return axios.get(`/document-groups`);
+            }).then((groups) => {
+                dispatch({ type: GROUPS_RECEIVING, groups: groups.data });
+                return axios.get(`/searcher-quote-requests/${quoteId}/documents`);
+            }).then((documents) => {
+                return dispatch({ type: DOCUMENTS_RECEIVING, documents: documents.data });
+            }).catch((err) => {
+                return dispatch({ type: REQUEST_FAILED });
             });
 
     };
 }
 
-export function addGroup(title, isDefault, quote_id, callback) {
-    return (dispatch) => {
+export function addGroup(title) {
+    return (dispatch, getState) => {
+        const { quoteId } = getState().ui.quoteId;
+
         dispatch({
             type: GROUPS_LOADING
         });
@@ -60,19 +63,21 @@ export function addGroup(title, isDefault, quote_id, callback) {
                 type: 'document-groups',
                 attributes: {
                     title,
-                    default: isDefault,
-                    quote_id
+                    quoteId
                 },
                 relationships: {}
             }
         };
 
         axios.post('/document-groups', newGroup).then((response) => {
-            callback && callback();
-
             return dispatch({
                 type: GROUP_ADDED,
                 group: response.data
+            });
+        }).catch((error) => {
+            return dispatch({
+                type: REQUEST_FAILED,
+                message: error.response.data.message
             });
         });
     };

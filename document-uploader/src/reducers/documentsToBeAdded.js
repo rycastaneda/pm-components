@@ -1,5 +1,4 @@
 import {
-    DOCUMENTS_RECEIVING,
     DOCUMENTS_UPLOADING,
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_UPLOAD_SUCCESS_CLEAN,
@@ -11,19 +10,6 @@ import { UPLOAD_IN_PROGRESS, UPLOAD_SUCCESS, UPLOAD_FAILED } from '../constants'
 
 export function documentsToBeAdded(state ={}, action) {
     switch (action.type) {
-        case DOCUMENTS_RECEIVING:
-            return Object.assign({}, state, {
-                [action.id]: action.documents.map((document, index) => {
-                    let modified = {
-                        type: 'documents',
-                        id: +new Date() + index,
-                        attributes: Object.assign(document, {
-                            progress: 0, location: document.preview
-                        })
-                    };
-                    return modified;
-                })
-            });
         case DOCUMENTS_UPLOADING:
             return Object.assign({}, state, {
                 [action.id]: state[action.id].map((document) => {

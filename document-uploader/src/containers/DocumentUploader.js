@@ -3,9 +3,6 @@ import { connect } from 'react-redux';
 import {
     fetchDocuments,
     addGroup,
-    renamingGroup,
-    removeGroup,
-    toggleRenaming,
     catchFiles,
     removeFile,
     removeFilesToBeAdded,
@@ -14,11 +11,11 @@ import {
     downloadDocumentGroups,
     uploadFile
 } from '../actions/groups';
-import Group from '../components/Group';
+import Group from './Group';
 import Loader from '../components/Loader';
 import AddGroupForm from '../components/AddGroupForm';
 import GroupLists from '../components/GroupLists';
-import CSSTransitionGroup from 'react-addons-css-transition-group';
+import cloneDeep from 'lodash';
 
 class DocumentGroup extends Component {
 
@@ -28,14 +25,11 @@ class DocumentGroup extends Component {
         this.handleCatchFiles = this.handleCatchFiles.bind(this);
         this.handleRemoveFile = this.handleRemoveFile.bind(this);
         this.handleAddGroup = this.handleAddGroup.bind(this);
-        this.handleTogglingRename = this.handleTogglingRename.bind(this);
-        this.handleGroupRename = this.handleGroupRename.bind(this);
-        this.handleRemoveGroup = this.handleRemoveGroup.bind(this);
-        this.handleRemoveGroup = this.handleRemoveGroup.bind(this);
         this.handleFileUpload = this.handleFileUpload.bind(this);
         this.handleDownloadFile = this.handleDownloadFile.bind(this);
         this.handleDownloadDocumentGroup = this.handleDownloadDocumentGroup.bind(this);
         this.handleDownloadDocumentGroups = this.handleDownloadDocumentGroups.bind(this);
+        this.addGroupInput = null;
         this.quote_id = document.querySelector('[data-quote-id]').getAttribute('data-quote-id');
         this.readOnly = document.querySelector('[data-quote-id]').getAttribute('data-read-only');
         this.props.dispatch(fetchDocuments(this.quote_id));
@@ -70,24 +64,9 @@ class DocumentGroup extends Component {
         return this.props.dispatch(removeFile(groupIndex, this.quote_id, file));
     }
 
-    handleRemoveGroup(group, index) {
-        return this.props.dispatch(removeGroup(group, index));
-    }
-
-    handleAddGroup(value, isDefault, callback) {
-        return this.props.dispatch(addGroup(value, isDefault, this.quote_id, callback));
-    }
-
-    handleTogglingRename(index) {
-        return this.props.dispatch(toggleRenaming(index));
-    }
-
-    handleGroupRename(index, id, title) {
-        if (!title.value.length) {
-            return;
-        }
-
-        return this.props.dispatch(renamingGroup(index, id, title.value));
+    handleAddGroup(newGroup) {
+        
+        return this.props.dispatch(addGroup(newGroup.value));
     }
 
     getDocuments(group) {
@@ -105,6 +84,7 @@ class DocumentGroup extends Component {
     render() {
         let groups, error;
 
+
         const list = (
             <GroupLists 
                 groups={this.props.documentGroups} 
@@ -112,17 +92,15 @@ class DocumentGroup extends Component {
             />
         );
 
+        // console.log("this.props", this.props);
+
         const document_groups = this.props.documentGroups.map((group, key) => {
             return <Group
                 group={group}
-                documentsAdded={this.props.documentsToBeAdded[group.id] || []}
-                documents={this.getDocuments(group)}
                 key={key}
                 groupIndex={key}
                 onFileRemove={this.handleRemoveFile}
                 onFileUpload={this.handleFileUpload}
-                onGroupRename={this.handleGroupRename}
-                onGroupRemove={this.handleRemoveGroup}
                 onDownloadFile={this.handleDownloadFile}
                 toggleRenaming={this.handleTogglingRename}
                 onDownloadDocumentGroup={this.handleDownloadDocumentGroup}
@@ -134,10 +112,9 @@ class DocumentGroup extends Component {
             groups = this.readOnly ? list : document_groups;
         }
 
-        if (this.props.documentGroups.error) {
-            let message = this.props.documentGroups.error;
+        if (this.props.ui.error) {
             error = (
-                <div className="alert alert-danger">{message}</div>
+                <div className="alert alert-danger">{this.props.ui.error}</div>
             );
         }
         
@@ -154,12 +131,7 @@ class DocumentGroup extends Component {
                         : null}
                     <hr/>
                 </div>
-                <CSSTransitionGroup
-                  transitionName="documents"
-                  transitionEnterTimeout={500}
-                  transitionLeaveTimeout={300}>
                 {groups}
-                </CSSTransitionGroup>
                 {error}
                 {this.props.documentGroups.loading ? <Loader block={true}/> : ''}
                 {!this.readOnly ? 
@@ -175,30 +147,31 @@ class DocumentGroup extends Component {
 DocumentGroup.propTypes = {
     dispatch: PropTypes.func.isRequired,
     documentGroups: PropTypes.array,
-    defaults: PropTypes.array
+    documents: PropTypes.array,
+    ui: PropTypes.object
 };
 
 
 function mapStateToProps(state) {
     const { 
         documentGroups: rawGroups, 
-        defaults: rawDefaults 
-        // documents: rawDocuments, 
+        documents: rawDocuments,
+        ui
         // documentsToBeAdded: rawDocumentsToBeAdded
     } = state;
 
-    if (!rawDefaults.allIds.length) {
-        return { 
-            groups: [], 
-            defaults: []
-        };
-    }
 
-    const defaults = rawDefaults.allIds.map(defaultId => rawDefaults.byId[defaultId]);
-    const documentGroups = rawGroups.allIds.map(documentGroupId => rawGroups.byId[documentGroupId]);
+    const documentGroups = cloneDeep(rawGroups).value().allIds.map((documentGroupId) => {
+        let documentGroup = rawGroups.byId[documentGroupId];
 
+        documentGroup.documents = documentGroup.documentIds.map((documentId) => {
+            return rawDocuments.byId[documentId];
+        });
 
-    return { documentGroups, defaults };
+        return documentGroup;
+    });
+
+    return { documentGroups, documents: rawDocuments.allIds, ui };
 }
 
 export default connect(mapStateToProps)(DocumentGroup);  // adds dispatch prop
