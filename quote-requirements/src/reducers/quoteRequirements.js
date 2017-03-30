@@ -23,6 +23,7 @@ const DEFAULT_EMPTY_ITEM = {
     attributes: {
         mandatory: false,
         include: false,
+        can_edit:true,
         text: '',
         category_id: null,
         quote_request_id: null
