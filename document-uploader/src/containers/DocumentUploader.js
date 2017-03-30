@@ -107,12 +107,12 @@ class DocumentGroup extends Component {
 
         const list = (
             <GroupLists 
-                groups={this.props.documentGroups.data} 
+                groups={this.props.documentGroups} 
                 downloadDocumentGroup={this.handleDownloadDocumentGroup}
             />
         );
 
-        const document_groups = this.props.documentGroups.data.map((group, key) => {
+        const document_groups = this.props.documentGroups.map((group, key) => {
             return <Group
                 group={group}
                 documentsAdded={this.props.documentsToBeAdded[group.id] || []}
@@ -174,26 +174,31 @@ class DocumentGroup extends Component {
 
 DocumentGroup.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    documentGroups: PropTypes.object,
-    documents: PropTypes.array,
-    documentsToBeAdded: PropTypes.object
+    documentGroups: PropTypes.array,
+    defaults: PropTypes.array
 };
 
 
 function mapStateToProps(state) {
     const { 
         documentGroups: rawGroups, 
-        defaults: rawDefaults, 
-        documents: rawDocuments, 
-        documentsToBeAdded: rawDocumentsToBeAdded
+        defaults: rawDefaults 
+        // documents: rawDocuments, 
+        // documentsToBeAdded: rawDocumentsToBeAdded
     } = state;
 
-    const defaultGroups = defaults.allIds.map(defaultId => defaults.byId[defaultId]);
-    const groups = documentGroups.allIds.map(documentGroupId => documentGroups.byId[documentGroupId]);
+    if (!rawDefaults.allIds.length) {
+        return { 
+            groups: [], 
+            defaults: []
+        };
+    }
+
+    const defaults = rawDefaults.allIds.map(defaultId => rawDefaults.byId[defaultId]);
+    const documentGroups = rawGroups.allIds.map(documentGroupId => rawGroups.byId[documentGroupId]);
 
 
-
-    return { documentGroups, documents, documentsToBeAdded };
+    return { documentGroups, defaults };
 }
 
 export default connect(mapStateToProps)(DocumentGroup);  // adds dispatch prop
