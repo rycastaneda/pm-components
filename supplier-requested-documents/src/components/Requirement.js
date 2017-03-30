@@ -8,11 +8,13 @@ class Requirement extends Component {
             requirement,
             readOnly,
             onDropDocuments,
-            onRemoveDocument
+            onRemoveDocument,
+            downloadDocument
         } = this.props;
 
         const documents = requirement.documents && requirement.documents.length 
             ? <Documents onRemoveDocument={onRemoveDocument}
+                    downloadDocument={downloadDocument}
                     readOnly={readOnly} 
                     documents={requirement.documents} 
                     requirementId={requirement.id}>
@@ -47,7 +49,8 @@ Requirement.propTypes = {
     requirement: PropTypes.object.isRequired,
     readOnly: PropTypes.bool,
     onRemoveDocument: PropTypes.func.isRequired,
-    onDropDocuments: PropTypes.func.isRequired
+    onDropDocuments: PropTypes.func.isRequired,
+    downloadDocument: PropTypes.func.isRequired
 };
 
 export default Requirement;

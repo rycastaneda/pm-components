@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import {
     fetchRequirements,
     catchDocuments,
-    removeDocument
+    removeDocument,
+    downloadDocument
 } from '../actions/requested-documents';
 import Requirements from '../components/Requirements';
 import Loader from '../components/Loader';
@@ -14,6 +15,7 @@ class RequestedDocuments extends Component {
         super(props);
         this.handleCatchDocs = this.handleCatchDocs.bind(this);
         this.handleRemoveDocument = this.handleRemoveDocument.bind(this);
+        this.handleDownloadDocument = this.handleDownloadDocument.bind(this);
         this.quote_id = document.querySelector('[data-component="supplier-requested-documents"]').getAttribute('data-quote-id');
         this.matched_id = document.querySelector('[data-component="supplier-requested-documents"]').getAttribute('data-matched-item');
         this.reqId = document.querySelector('[data-component="supplier-requested-documents"]').getAttribute('data-rqid');
@@ -32,6 +34,10 @@ class RequestedDocuments extends Component {
 
     handleRemoveDocument(requirement_id, file_id) {
         this.props.dispatch(removeDocument(this.quote_id, this.matched_id, requirement_id, file_id));
+    }
+
+    handleDownloadDocument(documentId, filename) {
+        this.props.dispatch(downloadDocument(this.quote_id, documentId, this.matched_id, filename));
     }
 
     render() {
@@ -56,6 +62,7 @@ class RequestedDocuments extends Component {
                     <Requirements
                         readOnly={this.readOnly}
                         requirements={requirements}
+                        downloadDocument={this.handleDownloadDocument}
                         onRemoveDocument={this.handleRemoveDocument}
                         onDropDocuments={this.handleCatchDocs}>
                     </Requirements>

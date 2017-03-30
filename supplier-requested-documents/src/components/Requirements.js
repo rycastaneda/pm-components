@@ -9,6 +9,7 @@ class Requirements extends Component {
                 key={key}
                 requirement={requirement} 
                 onRemoveDocument={this.props.onRemoveDocument}
+                downloadDocument={this.props.downloadDocument}
                 onDropDocuments={this.props.onDropDocuments}>
             </Requirement>;
         });
@@ -25,6 +26,7 @@ Requirements.propTypes = {
     requirements: PropTypes.array.isRequired,
     readOnly: PropTypes.bool,
     onRemoveDocument: PropTypes.func.isRequired,
+    downloadDocument: PropTypes.func.isRequired,
     onDropDocuments: PropTypes.func.isRequired
 };
 

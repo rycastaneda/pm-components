@@ -7,7 +7,9 @@ import {
     RECEIVE_DOC_REQUIREMENTS,
     DOCUMENT_UPLOAD_FAILED,
     FETCH_FAILED,
-    DOCUMENT_REMOVING
+    DOCUMENT_REMOVING,
+    DOCUMENT_DOWNLOAD_STARTED,
+    DOCUMENT_DOWNLOAD_FINISHED
 } from '../constants';
 import axios from 'axios';
 
@@ -124,5 +126,43 @@ export function catchDocuments(quoteId, itemId, requirementId, docsToBeAdded) {
             });
 
         });
+    };
+}
+
+function downloadBlob(url, filename, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onload = function() {
+        var a = document.createElement('a');
+        a.href = window.URL.createObjectURL(xhr.response); // xhr.response is a blob
+        a.download = filename; // Set the file name.
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        callback();
+    };
+    
+    xhr.open('GET', url);
+    xhr.setRequestHeader('accept', axios.defaults.headers.common['Accept']);
+    xhr.setRequestHeader('authorization', axios.defaults.headers.common['Authorization']);
+    xhr.setRequestHeader('content-type', 'application/octet-stream');
+    xhr.send();
+}
+
+export function downloadDocument(quote_id, documentId, matched_item_id, filename) {
+    return (dispatch) => {
+        dispatch({
+            type: DOCUMENT_DOWNLOAD_STARTED
+        });
+
+        downloadBlob(
+            `${axios.defaults.baseURL}/supplier-quote-requests/${quote_id}/matched-items/${matched_item_id}/documents${documentId && '/' + documentId || ''}`,
+            filename,
+            () => {
+                dispatch({
+                    type: DOCUMENT_DOWNLOAD_FINISHED
+                });
+            }
+        );
     };
 }

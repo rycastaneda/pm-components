@@ -9,6 +9,7 @@ class Documents extends Component {
                         document={document} 
                         requirementId={this.props.requirementId} 
                         readOnly={this.props.readOnly}
+                        downloadDocument={this.props.downloadDocument}
                         onRemoveDocument={this.props.onRemoveDocument}>
                     </Document>;
         });
@@ -27,7 +28,8 @@ Documents.propTypes = {
     documents: PropTypes.array.isRequired,
     requirementId: PropTypes.node.isRequired,
     readOnly: PropTypes.bool,
-    onRemoveDocument: PropTypes.func.isRequired
+    onRemoveDocument: PropTypes.func.isRequired,
+    downloadDocument: PropTypes.func.isRequired
 };
 
 export default Documents;
