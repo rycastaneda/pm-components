@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import Dropzone from 'react-dropzone';
 import Documents from '../components/Documents';
 
-class Requirement extends Component { 
+class Requirement extends Component {
     render() {
         const {
             requirement,
@@ -11,19 +11,19 @@ class Requirement extends Component {
             onRemoveDocument
         } = this.props;
 
-        const documents = requirement.documents && requirement.documents.length 
+        const documents = requirement.documents && requirement.documents.length
             ? <Documents onRemoveDocument={onRemoveDocument}
-                    readOnly={readOnly} 
-                    documents={requirement.documents} 
+                    readOnly={readOnly}
+                    documents={requirement.documents}
                     requirementId={requirement.id}>
                  </Documents>
-            : null;
+            : readOnly ? <li className="list-group-item">N/A</li> : null;
 
         return (
             <li>
                 <ul>
                     <li>
-                        <div className="form-group mar-top-sm">
+                        <div className="form-group mar-top-sm mar-btm-no">
                             <label>{requirement.title}</label>
                             {!readOnly ? <Dropzone className="dropzone dz-clickable"
                                 accept="application/pdf,image/*,text/csv,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
@@ -51,4 +51,3 @@ Requirement.propTypes = {
 };
 
 export default Requirement;
-
