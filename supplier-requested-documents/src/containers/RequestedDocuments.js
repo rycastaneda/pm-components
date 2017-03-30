@@ -52,13 +52,15 @@ class RequestedDocuments extends Component {
         if (ui.loading && !ui.error) {
             content = <Loader block={true}></Loader>;
         } else {
-            content = requirements.length ? 
+            content = requirements.length ?
                 <div>
-                    <label htmlFor="">Requested Documents</label>
-                    <div className="text-info">
-                        The customer has requested that your provide the following documents as part of your quote
-                    </div>
-                    <hr className="mar-btm-sm mar-top-sm"/>
+                    {requirements.length > 1 ? <div>
+                        <label htmlFor="">Requested Documents</label>
+                        <div className="text-info mar-btm-sm">
+                            The customer has requested that your provide the following documents as part of your quote
+                        </div>
+                        <hr className="mar-btm-sm mar-top-sm"/>
+                    </div> : null}
                     <Requirements
                         readOnly={this.readOnly}
                         requirements={requirements}

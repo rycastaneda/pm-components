@@ -90,7 +90,7 @@ function linkRequirementsToQuote(quoteId, requirements) {
 export function getItems(itemId, quoteId, categoryId = '', newCategory = false) {
     return (dispatch) => {
         // Request quote specific requirements
-        axios.get(`/searcher-quote-requests/${quoteId}/requested-items/${itemId}?include=searcherRequirements`)
+        axios.get(`/searcher-quote-requests/${quoteId}/requested-items/${itemId}?include=searcherRequirements&fields[searcher-requirements]=text,category_id,include,mandatory,quote_request_id,can_edit`)
             .then((response) => {
                 response = response.data;
                 const relationships = response.data.relationships || {};
@@ -103,7 +103,7 @@ export function getItems(itemId, quoteId, categoryId = '', newCategory = false) 
                 if (newCategory) {
                     let searcherRequirements = [];
                     // Make a request to get all quote requirements which belong to the user
-                    axios.get(`/${TYPE}?filters[category_id]=${categoryId}&filters[quote_id]=${quoteId}`)
+                    axios.get(`/${TYPE}?filters[category_id]=${categoryId}&filters[quote_id]=${quoteId}&fields[searcher-requirements]=text,category_id,include,mandatory,quote_request_id,can_edit`)
                         .then((list) => {
                             list = list.data;
                             dispatch(receiveRequirements(list.data));
