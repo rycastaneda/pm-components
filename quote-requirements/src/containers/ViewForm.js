@@ -46,18 +46,18 @@ class ViewForm extends Component {
                         : null
                     }
                 </div>
-                { item.attributes.can_edit ?
-                    <div className="view-form__buttons-container">
+                <div className="view-form__buttons-container">
+                    { item.attributes.can_edit ?
                         <div className="view-form__button view-form__button--update">
                             <i className="view-form__icon fa fa-pencil-square-o"
                                onClick={this.handleUpdate}/>
-                        </div>
-                        <div className="view-form__button view-form__button--delete">
-                            <i className="view-form__icon fa fa-trash-o"
-                               onClick={this.handleDelete}/>
-                        </div>
-                    </div> : null
-                }
+                        </div> : null
+                    }
+                    <div className="view-form__button view-form__button--delete">
+                        <i className="view-form__icon fa fa-trash-o"
+                        onClick={this.handleDelete}/>
+                    </div>
+                </div>
             </div>
         );
     }
