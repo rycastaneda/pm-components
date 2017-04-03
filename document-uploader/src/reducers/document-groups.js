@@ -1,5 +1,4 @@
 import {
-    API_READ_FAILED,
     GROUPS_FETCHING,
     GROUPS_LOADING,
     GROUPS_RECEIVING,
@@ -7,14 +6,11 @@ import {
     GROUP_ADDED,
     GROUP_RENAME_TOGGLE,
     GROUP_TOGGLE_UPDATING,
-    GROUP_UPDATE_FAILED,
     GROUP_REMOVED,
     GROUP_RENAMED,
     GROUP_ENABLED,
-    GROUPS_DOWNLOAD_STARTED, 
-    GROUPS_DOWNLOADED,
-    DOCUMENT_UPLOAD_SUCCESS,
-    DOCUMENT_REMOVED
+    GROUPS_DOWNLOAD_STARTED,
+    GROUPS_DOWNLOADED
 } from '../constants/ActionTypes';
 
 const INITIAL_STATE = {
@@ -24,7 +20,6 @@ const INITIAL_STATE = {
 };
 
 export function documentGroups(state = INITIAL_STATE, action) {
-    let defaults;
 
     switch (action.type) {
         case GROUPS_FETCHING:

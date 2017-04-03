@@ -71,13 +71,11 @@ export function addGroup(title) {
         };
 
         axios.post('/document-groups', newGroup).then((response) => {
-            console.log("response", response);
             return dispatch({
                 type: GROUP_ADDED,
                 group: response.data.data
             });
         }).catch((error) => {
-            console.log("error", error);
             return dispatch({
                 type: REQUEST_FAILED,
                 message: error.response.data.message
