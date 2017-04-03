@@ -10,6 +10,7 @@ import {
     GROUP_UPDATE_FAILED,
     GROUP_REMOVED,
     GROUP_RENAMED,
+    GROUP_ENABLED,
     GROUP_DOWNLOAD_STARTED,
     GROUP_DOWNLOADED,
     DOCUMENTS_RECEIVING,
@@ -43,7 +44,7 @@ export function fetchDocuments(quoteId) {
                 return axios.get(`/searcher-quote-requests/${quoteId}/documents`);
             }).then((documents) => {
                 return dispatch({ type: DOCUMENTS_RECEIVING, documents: documents.data });
-            }).catch((err) => {
+            }).catch(() => {
                 return dispatch({ type: REQUEST_FAILED });
             });
 
@@ -52,7 +53,7 @@ export function fetchDocuments(quoteId) {
 
 export function addGroup(title) {
     return (dispatch, getState) => {
-        const { quoteId } = getState().ui.quoteId;
+        const { quoteId } = getState().ui;
 
         dispatch({
             type: GROUPS_LOADING
@@ -70,11 +71,13 @@ export function addGroup(title) {
         };
 
         axios.post('/document-groups', newGroup).then((response) => {
+            console.log("response", response);
             return dispatch({
                 type: GROUP_ADDED,
-                group: response.data
+                group: response.data.data
             });
         }).catch((error) => {
+            console.log("error", error);
             return dispatch({
                 type: REQUEST_FAILED,
                 message: error.response.data.message
@@ -83,81 +86,79 @@ export function addGroup(title) {
     };
 }
 
-export function removeGroup(group, index) {
+export function enableGroup(groupId) {
+    return (dispatch) => {
+        dispatch({
+            type: GROUP_ENABLED,
+            groupId
+        });
+    };
+}
+
+export function removeGroup(groupId) {
     return (dispatch) => {
         dispatch({
             type: GROUP_TOGGLE_UPDATING,
-            loading: true,
-            index
+            groupId
         });
 
-        axios.delete(`/document-groups/${group.id}`, {
-            data: group
-        })
-        .then(() => {
+        axios.delete(`/document-groups/${groupId}`).then(() => {
             return dispatch({
                 type: GROUP_REMOVED,
-                id: group.id
+                groupId
             });
         }).catch(() => {
             dispatch({
                 type: GROUP_TOGGLE_UPDATING,
-                loading: false,
-                index
+                groupId
             });
 
             return dispatch({
-                type: GROUP_UPDATE_FAILED,
-                index,
-                errors: ['Something went wrong while removing document group. Please try again later']
+                type: REQUEST_FAILED
             });
         });
     };
 }
 
-export function toggleRenaming(index) {
+export function toggleRenaming(groupId) {
     return {
         type: GROUP_RENAME_TOGGLE,
-        index
+        groupId
     };
 }
 
-export function renamingGroup(index, id, title) {
+export function renamingGroup(groupId, newTitle) {
     return (dispatch) => {
         dispatch({
             type: GROUP_TOGGLE_UPDATING,
-            loading: true,
-            index
+            groupId
         });
 
         const newGroup = {
             data: {
                 type: 'document-groups',
-                id,
+                id: groupId,
                 attributes: {
-                    title
+                    title: newTitle
                 }
             }
         };
 
-        axios.patch('/document-groups/' + id, newGroup)
-        .then(() => {
-            return dispatch({
-                type: GROUP_RENAMED,
-                index,
-                title
-            });
-        }).catch(() => {
+        axios.patch('/document-groups/' + groupId, newGroup).then(() => {
             dispatch({
                 type: GROUP_TOGGLE_UPDATING,
-                loading: false,
-                index
+                groupId
+            });
+
+            dispatch({
+                type: GROUP_RENAME_TOGGLE,
+                groupId
             });
 
             return dispatch({
-                type: GROUP_UPDATE_FAILED,
-                index,
-                errors: ['Something went wrong while renaming document group. Please try again later']
+                type: GROUP_RENAMED,
+                groupId,
+                newTitle
             });
         });
     };

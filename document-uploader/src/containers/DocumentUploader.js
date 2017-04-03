@@ -2,7 +2,6 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import {
     fetchDocuments,
-    addGroup,
     catchFiles,
     removeFile,
     removeFilesToBeAdded,
@@ -13,8 +12,8 @@ import {
 } from '../actions/groups';
 import Group from './Group';
 import Loader from '../components/Loader';
-import AddGroupForm from '../components/AddGroupForm';
 import GroupLists from '../components/GroupLists';
+import AddGroupForm from './AddGroupForm';
 import cloneDeep from 'lodash';
 
 class DocumentGroup extends Component {
@@ -24,11 +23,11 @@ class DocumentGroup extends Component {
         // We do this because of ES6 class properties do not automatically bind to the React class instance
         this.handleCatchFiles = this.handleCatchFiles.bind(this);
         this.handleRemoveFile = this.handleRemoveFile.bind(this);
-        this.handleAddGroup = this.handleAddGroup.bind(this);
         this.handleFileUpload = this.handleFileUpload.bind(this);
         this.handleDownloadFile = this.handleDownloadFile.bind(this);
         this.handleDownloadDocumentGroup = this.handleDownloadDocumentGroup.bind(this);
         this.handleDownloadDocumentGroups = this.handleDownloadDocumentGroups.bind(this);
+        this.options = [];
         this.addGroupInput = null;
         this.quote_id = document.querySelector('[data-quote-id]').getAttribute('data-quote-id');
         this.readOnly = document.querySelector('[data-quote-id]').getAttribute('data-read-only');
@@ -64,11 +63,6 @@ class DocumentGroup extends Component {
         return this.props.dispatch(removeFile(groupIndex, this.quote_id, file));
     }
 
-    handleAddGroup(newGroup) {
-        
-        return this.props.dispatch(addGroup(newGroup.value));
-    }
-
     getDocuments(group) {
         if (!group.relationships || !group.relationships.documents) {
             return [];
@@ -82,63 +76,68 @@ class DocumentGroup extends Component {
     }
 
     render() {
-        let groups, error;
+        let error;
 
+        const {
+            documentGroups,
+            documents,
+            ui
+        } = this.props;
+
+        this.options = documentGroups.reduce((options, group) => {
+            if (!group.default) {
+                options.push(group.title);
+            }
+            return options;
+        }, []);
+
+        const visibleDocumentGroups = documentGroups.reduce((groupElements, group) => {
+            if (group.showGroup) {
+                groupElements.push(
+                    <Group group={group}
+                        key={group.id}
+                        onFileRemove={this.handleRemoveFile}
+                        onFileUpload={this.handleFileUpload}
+                        onDownloadFile={this.handleDownloadFile}
+                        toggleRenaming={this.handleTogglingRename}
+                        onDownloadDocumentGroup={this.handleDownloadDocumentGroup}
+                        catchFiles={this.handleCatchFiles}/>
+                );
+            }
+
+            return groupElements;
+        }, []);
 
         const list = (
             <GroupLists 
-                groups={this.props.documentGroups} 
+                groups={documentGroups} 
                 downloadDocumentGroup={this.handleDownloadDocumentGroup}
             />
         );
 
-        // console.log("this.props", this.props);
-
-        const document_groups = this.props.documentGroups.map((group, key) => {
-            return <Group
-                group={group}
-                key={key}
-                groupIndex={key}
-                onFileRemove={this.handleRemoveFile}
-                onFileUpload={this.handleFileUpload}
-                onDownloadFile={this.handleDownloadFile}
-                toggleRenaming={this.handleTogglingRename}
-                onDownloadDocumentGroup={this.handleDownloadDocumentGroup}
-                catchFiles={this.handleCatchFiles}
-            />;
-        });
-
-        if (this.props.documentGroups) {
-            groups = this.readOnly ? list : document_groups;
-        }
-
-        if (this.props.ui.error) {
+        if (ui.error) {
             error = (
-                <div className="alert alert-danger">{this.props.ui.error}</div>
+                <div className="alert alert-danger">{ui.error}</div>
             );
         }
         
         return (
             <div className="group-panel">
                 <div className="row container text-center">
-                    {this.props.documents.length ?
+                    {documents.length ?
                         <button className="db-function" onClick={() => {
                             this.handleDownloadDocumentGroups();
                         }}>
-                            <i className={`fa ${this.props.documentGroups.downloading ? 'fa-spin fa-spinner' : 'fa-download'}`}></i>
+                            <i className={`fa ${documentGroups.downloading ? 'fa-spin fa-spinner' : 'fa-download'}`}></i>
                             &nbsp; Download All
                         </button>
                         : null}
                     <hr/>
                 </div>
-                {groups}
+                {this.readOnly ? list : visibleDocumentGroups}
                 {error}
-                {this.props.documentGroups.loading ? <Loader block={true}/> : ''}
-                {!this.readOnly ? 
-                <AddGroupForm 
-                    onAddGroup={this.handleAddGroup}
-                    documentGroups={this.props.documentGroups}/> 
-                : null }
+                {documentGroups.loading ? <Loader block={true}/> : ''}
+                <AddGroupForm readOnly={this.readOnly} />
             </div>
         );
     }
@@ -160,10 +159,8 @@ function mapStateToProps(state) {
         // documentsToBeAdded: rawDocumentsToBeAdded
     } = state;
 
-
     const documentGroups = cloneDeep(rawGroups).value().allIds.map((documentGroupId) => {
         let documentGroup = rawGroups.byId[documentGroupId];
-
         documentGroup.documents = documentGroup.documentIds.map((documentId) => {
             return rawDocuments.byId[documentId];
         });

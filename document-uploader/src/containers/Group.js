@@ -13,23 +13,23 @@ class Group extends Component {
 
     constructor(props) {
         super(props);
+        this.handleRenameGroup = this.handleRenameGroup.bind(this);
+        this.handleRemoveGroup = this.handleRemoveGroup.bind(this);
+        this.handleToggleRename = this.handleToggleRename.bind(this);
+        this.handleDownloadDocumentGroup = this.handleDownloadDocumentGroup.bind(this);
         this.renameInput = null;
     }
 
-    handleRenameGroup(e) {
-        if (e) {
-            e.preventDefault();
-        }
-
-        if (!this.renameInput.value.length) {
+    handleRenameGroup(title) {
+        if (!title || title === this.props.group.title) { 
             return;
         }
-
-        return this.props.dispatch(renamingGroup(this.props.group.id));
+        
+        return this.props.dispatch(renamingGroup(this.props.group.id, title));
     }
 
     handleRemoveGroup() {
-        return this.props.dispatch(removeGroup());
+        return this.props.dispatch(removeGroup(this.props.group.id));
     }
 
     handleToggleRename() {
@@ -51,7 +51,7 @@ class Group extends Component {
                 {group.isUpdating ? <Loader /> : ''}
                 <GroupHeader 
                     isRenaming={group.isRenaming}
-                    isDefault={group.isDefault}
+                    isDefault={!!group.default}
                     title={group.title}
                     showDownload={!!group.documents.length}
                     handleRenameGroup={this.handleRenameGroup}
@@ -60,7 +60,6 @@ class Group extends Component {
                     handleDownloadDocumentGroup={this.handleDownloadDocumentGroup}
                     renameInput={this.renameInput}
                     readOnly={readOnly}/>
-
             </div>
         );
     }

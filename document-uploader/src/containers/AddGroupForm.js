@@ -1,74 +1,46 @@
 import React, { PropTypes, Component } from 'react';
+import { connect } from 'react-redux';
 import Select from 'react-select';
-import { uniqBy } from 'lodash';
+import { addGroup, enableGroup } from '../actions/groups';
 
 class AddGroupForm extends Component {
     constructor(props) {
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleAddGroup = this.handleAddGroup.bind(this);
         // Set default value to input
-        this.defValue = {
+        this.state = {
             value: '', 
-            default: 0, 
             label: ''
         };
     }
 
-    handleSubmit(group) {
-        const { onAddGroup, documentGroups } = this.props;
-
-        if (!group.value.length) {
-            return;
-        }
-
-        /* Check if selected document group is in defaults if it has been added 
-            then change the selectbox input
-        */
-        let added = documentGroups.defaults.some((defaultGroup) => {
-            return defaultGroup.attributes.title === group.label && defaultGroup.attributes.user_id;
-        });
-
-        if (added) {
+    handleAddGroup(newGroup) {
+        if (this.props.values.includes(newGroup.label)) {
             this.setState({
-                defValue: group
+                label: newGroup.label,
+                value: newGroup.value
             });
-            return group;
+            return this.props.dispatch(enableGroup(newGroup.value));
         }
 
-        let fromDefaults = documentGroups.defaults.find((defaultGroup) => {
-            return defaultGroup.attributes.title === group.label;
-        });
-
-        /* On adding a group, automatically set it as one of defaults if it is from defaults meaning user_id is null*/
-        group.default = fromDefaults;
-
-        onAddGroup(group.label, !!group.default);
+        return this.props.dispatch(addGroup(newGroup.label));
     }
 
     render()  {
-        /* Populate select input by filtering defaults with unique titles 
-           as default can have same titles but with null user_ids
-        */
-        let options = uniqBy(this.props.documentGroups.defaults, group => group.attributes.title).map((group) => {
-            return {
-                value: group.id,
-                default: 0,
-                label: group.attributes.title
-            };
-        });
+        const {
+            readOnly,
+            options
+        } = this.props;
 
-        return (
+        return readOnly ? null : (
             <div>
                 <Select.Creatable
-                    ref={(ref) => {
-                        this.input = ref;
-                    }}
-                    value={this.state && this.state.defValue}
+                    value={this.state}
                     onBlurResetsInput={false}
                     arrowRenderer={() => <span>+</span>}
                     placeholder="Add new group"
                     options={options}
-                    onChange={this.handleSubmit}
+                    onChange={this.handleAddGroup}
                 />
             </div>
         );
@@ -76,8 +48,34 @@ class AddGroupForm extends Component {
 }
 
 AddGroupForm.propTypes = {
-    onAddGroup: PropTypes.func.isRequired,
-    documentGroups: PropTypes.object
+    dispatch: PropTypes.func.isRequired,
+    options: PropTypes.array.isRequired,
+    values: PropTypes.array.isRequired,
+    readOnly: PropTypes.bool
 };
 
-export default AddGroupForm;
+function mapStateToProps(state) {
+    const { 
+        documentGroups
+    } = state;
+
+    // get groups that are not default and are not enabled for uploading in a plain single value array
+    const values = [];
+    const options = documentGroups.allIds.reduce((newGroup, groupId) => {
+        let group = documentGroups.byId[groupId];
+
+        if (!group.default && !group.showGroup) {
+            newGroup.push({
+                label: group.title,
+                value: group.id
+            });
+            values.push(group.title);
+        }
+
+        return newGroup;
+    }, []);
+
+    return { options, values };
+}
+
+export default connect(mapStateToProps)(AddGroupForm);  // adds dispatch prop

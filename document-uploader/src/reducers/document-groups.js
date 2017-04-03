@@ -10,6 +10,7 @@ import {
     GROUP_UPDATE_FAILED,
     GROUP_REMOVED,
     GROUP_RENAMED,
+    GROUP_ENABLED,
     GROUPS_DOWNLOAD_STARTED, 
     GROUPS_DOWNLOADED,
     DOCUMENT_UPLOAD_SUCCESS,
@@ -35,8 +36,9 @@ export function documentGroups(state = INITIAL_STATE, action) {
             action.defaults.data.map((defaultGroup) => {
                 state.byId[defaultGroup.id] = Object.assign({}, defaultGroup.attributes, {
                     id: defaultGroup.id,
-                    isDefault: true,
                     isRenaming: false,
+                    isUpdating: false,
+                    showGroup: true,
                     documentIds: []
                 });
 
@@ -48,8 +50,9 @@ export function documentGroups(state = INITIAL_STATE, action) {
             action.groups.data.map((group) => {
                 state.byId[group.id] = Object.assign({}, group.attributes, {
                     id: group.id,
-                    isDefault: false,
                     isRenaming: false,
+                    isUpdating: false,
+                    showGroup: false,
                     documentIds: []
                 });
 
@@ -59,12 +62,6 @@ export function documentGroups(state = INITIAL_STATE, action) {
             return Object.assign({}, state, {
                 loading: false
             });
-        case GROUP_ADDED:
-            state.byId[action.group.id] = Object.assign({}, action.group.attributes, {
-                id: action.group.id
-            });
-            state.allIds.push(action.group.id);
-            return Object.assign({}, state);
         case GROUPS_DOWNLOAD_STARTED: 
             return Object.assign({}, state, {
                 downloading: true
@@ -73,100 +70,50 @@ export function documentGroups(state = INITIAL_STATE, action) {
             return Object.assign({}, state, {
                 downloading: false
             });
-        case GROUP_REMOVED:
-        case GROUP_TOGGLE_UPDATING:
-        case GROUP_UPDATE_FAILED:
-        case GROUP_RENAMED:
-        case GROUP_RENAME_TOGGLE:
-        case DOCUMENT_REMOVED:
-            defaults = state.defaults.map((def) => {
-                if (def.id  === action.id) {
-                    def.attributes.user_id = null;
-                }
+        case GROUP_ADDED:
+            state.byId[action.group.id] = Object.assign({}, action.group.attributes, {
+                id: action.group.id,
+                isRenaming: false,
+                isUpdating: false,
+                showGroup: true,
+                documentIds: []
+            });
+            state.allIds.push(action.group.id);
+            return Object.assign({}, state);
+        case GROUP_REMOVED: return removeGroup(state, action);
+        case GROUP_ENABLED: 
+            state.byId[action.groupId].showGroup = true;
+            return Object.assign({}, state);
+        case GROUP_TOGGLE_UPDATING: 
+            state.byId[action.groupId].isUpdating = !state.byId[action.groupId].isUpdating;
+            return Object.assign({}, state);
+        case GROUP_RENAME_TOGGLE: 
+            state.byId[action.groupId].isRenaming = !state.byId[action.groupId].isRenaming;
+            return Object.assign({}, state);
+        case GROUP_RENAMED: 
+            state.byId[action.groupId].title = action.newTitle;
+            return Object.assign({}, state);
 
-                return def;
-            });
-
-            return Object.assign({}, state, {
-                loading: false,
-                data: groups(state.data, action),
-                defaults
-            });
-        case DOCUMENT_UPLOAD_SUCCESS:
-            return Object.assign({}, state, {
-                loading: false,
-                data: groups(state.data, action)
-            });
         default:
             return state;
     }
 }
 
-function groups(state = [], action) {
-    function updatingGroup(toUpdate, index = action.index) {
-        return [
-            ...state.slice(0, index),
-            Object.assign({}, state[index], toUpdate),
-            ...state.slice(index + 1)
-        ];
-    }
+function removeGroup(state, action) {
+    const ids = {};
 
-    switch (action.type) {
-        case GROUP_ADDED:
-            Object.assign(action.group.data.attributes, DEFAULT_GROUP_STATES.attributes);
-            return state.concat(action.group.data);
-        case GROUP_RENAME_TOGGLE:
-            return updatingGroup({
-                attributes: Object.assign({}, state[action.index].attributes, {
-                    is_renaming: !state[action.index].attributes.is_renaming
-                })
-            });
-        case GROUP_TOGGLE_UPDATING:
-            return updatingGroup({
-                attributes: Object.assign({}, state[action.index].attributes, {
-                    is_updating: action.loading
-                })
-            });
-        case GROUP_UPDATE_FAILED: 
-            return updatingGroup({
-                attributes: Object.assign({}, state[action.index].attributes, {
-                    errors: action.errors
-                })
-            }); 
-        case GROUP_RENAMED:
-            return updatingGroup({
-                attributes: Object.assign({}, state[action.index].attributes, {
-                    is_updating: false,
-                    is_renaming: false,
-                    title: action.title
-                })
-            });
-        case GROUP_REMOVED:
-            return state.filter((group) => {
-                return group.id !== action.id;
-            });
-        case DOCUMENT_UPLOAD_SUCCESS:
-            return state.map((group) => {
-                if (group.id === action.id) {
-                    let { id, type } = action.file;
-                    
-                    if (!group.relationships.documents) { // add documents to relationship if does not exists
-                        group.relationships.documents = {
-                            data: []
-                        };
-                    }
+    Object.keys(state.byId).map((groupId) => {
+        if (groupId === action.groupId) {
+            return;
+        }
 
-                    group.relationships.documents.data = group.relationships.documents.data.concat({ id, type });
-                }
+        ids[groupId] = state.byId[groupId];
+    });
 
-                return group;
-            });
-        case DOCUMENT_REMOVED:
-            return updatingGroup({
-                attributes: Object.assign({}, state[action.index].attributes, {
-                    is_updating: false
-                })
-            });
-        default: return state;
-    }
+    let index = state.allIds.indexOf(action.groupId); 
+    state.allIds.splice(index, 1);
+
+    return Object.assign({}, state, {
+        byId: ids
+    });
 }
