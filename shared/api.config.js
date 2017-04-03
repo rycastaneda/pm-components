@@ -17,6 +17,7 @@ function configureHeaders() {
                     a[b[0]] = b[1];
                     return a;
                 }, {})[COOKIE_TOKEN];
+
     if (process.env.NODE_ENV === 'develop' && !token) return getLocalHeaders();
 
     return {

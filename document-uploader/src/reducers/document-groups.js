@@ -1,5 +1,6 @@
 import {
     API_READ_FAILED,
+    GROUPS_FETCHING,
     GROUPS_LOADING,
     GROUPS_RECEIVING,
     GROUPS_RECEIVING_DEFAULTS,
@@ -14,57 +15,56 @@ import {
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_REMOVED
 } from '../constants/ActionTypes';
-import { uniq } from 'lodash'; 
 
 const INITIAL_STATE = {
-    data: [], // array of document groups
-    defaults: [],
     loading: false,
-    downloading: false
-};
-
-const DEFAULT_ERROR = 'Request failed. Please try again later.';
-
-const DEFAULT_GROUP_STATES = {
-    attributes: {
-        is_updating: false,
-        is_renaming: false,
-        errors: []
-    }
+    byId: {},
+    allIds: []
 };
 
 export function documentGroups(state = INITIAL_STATE, action) {
     let defaults;
 
     switch (action.type) {
-        case API_READ_FAILED:
-            return Object.assign({}, state, {
-                loading: false,
-                error: action.response || DEFAULT_ERROR
-            });
+        case GROUPS_FETCHING:
         case GROUPS_LOADING:
             return Object.assign({}, state, {
                 loading: true
             });
-        case GROUPS_RECEIVING:
-            // ADD DEFAULT GROUP STATES
-            defaults = uniq(action.groups.data, group => group.attributes.title);
-            return Object.assign({}, state, {
-                loading: false,
-                data: action.groups.data.filter(group => group.attributes.user_id),
-                defaults: state.defaults.concat(defaults)
-            });
         case GROUPS_RECEIVING_DEFAULTS: 
+            action.defaults.data.map((defaultGroup) => {
+                state.byId[defaultGroup.id] = Object.assign({}, defaultGroup.attributes, {
+                    id: defaultGroup.id,
+                    isDefault: true,
+                    isRenaming: false,
+                    documentIds: []
+                });
+
+                state.allIds.push(defaultGroup.id);
+            });
+
+            return Object.assign({}, state);
+        case GROUPS_RECEIVING:
+            action.groups.data.map((group) => {
+                state.byId[group.id] = Object.assign({}, group.attributes, {
+                    id: group.id,
+                    isDefault: false,
+                    isRenaming: false,
+                    documentIds: []
+                });
+
+                state.allIds.push(group.id);
+            });
+
             return Object.assign({}, state, {
-                loading: false,
-                defaults: state.defaults.concat(action.defaults.data)
+                loading: false
             });
         case GROUP_ADDED:
-            return Object.assign({}, state, {
-                loading: false,
-                defaults: state.defaults.concat(action.group.data),
-                data: groups(state.data, action)
+            state.byId[action.group.id] = Object.assign({}, action.group.attributes, {
+                id: action.group.id
             });
+            state.allIds.push(action.group.id);
+            return Object.assign({}, state);
         case GROUPS_DOWNLOAD_STARTED: 
             return Object.assign({}, state, {
                 downloading: true

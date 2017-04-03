@@ -1,0 +1,79 @@
+import React, { PropTypes } from 'react';
+
+const GroupHeader = ({ 
+    title,
+    isRenaming,
+    isDefault,
+    showDownload,
+    handleRenameGroup, 
+    handleToggleRename,
+    handleRemoveGroup,
+    handleDownloadDocumentGroup,
+    renameInput,
+    readOnly 
+}) => {
+    const renameForm = (
+        <form onSubmit={handleRenameGroup} className="pull-left">
+            <input 
+                className="form-control"
+                type="text"
+                ref={(ref) => {
+                    renameInput = ref;
+                    renameInput && renameInput.focus();
+                }}
+                defaultValue={title}/>
+        </form>
+    );
+
+    const confirmationButtons = (
+        <span>
+            <i onClick={() => handleRenameGroup()}
+                className="group-panel__actions fa fa-check"></i>
+            <i onClick={() => handleToggleRename()}
+                className="group-panel__actions fa fa-times"></i>
+        </span>
+    );
+
+    const renameToggleButton = (
+        <i onClick={() => handleToggleRename()} 
+           className="group-panel__actions fa fa-pencil">
+        </i>
+    );
+
+    const actions = (
+        <aside className="pull-right">
+            {isRenaming ? confirmationButtons : renameToggleButton}
+            <i className="group-panel__actions fa fa-trash" onClick={() => handleRemoveGroup()}></i>
+            {showDownload ?
+                <i className="group-panel__actions fa fa-download" onClick={() => handleDownloadDocumentGroup()}></i>
+            : null}
+        </aside>
+    );
+
+    return (
+        <div className="db-form-title clearfix">
+            <aside className="pull-left">
+                {isRenaming ? renameForm : title}
+            </aside>
+            <aside className="pull-right">
+                {readOnly || isDefault ? null : actions}
+            </aside>
+        </div>
+    );
+};
+
+GroupHeader.propTypes = {
+    title: PropTypes.string,
+    isRenaming: PropTypes.bool.isRequired,
+    isDefault: PropTypes.bool.isRequired,
+    showDownload: PropTypes.bool.isRequired,
+    handleRenameGroup: PropTypes.func.isRequired, 
+    handleToggleRename: PropTypes.func.isRequired,
+    handleRemoveGroup: PropTypes.func.isRequired,
+    handleDownloadDocumentGroup: PropTypes.func.isRequired,
+    renameInput:PropTypes.any,
+    readOnly: PropTypes.bool
+};
+
+export default GroupHeader;
+

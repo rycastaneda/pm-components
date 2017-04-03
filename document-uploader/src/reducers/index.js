@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
-import { reducer as api } from 'redux-json-api';
 import { documentGroups } from './document-groups';
 import { documents } from './documents';
 import { documentsToBeAdded } from './documentsToBeAdded';
+import { ui } from './ui';
 
 export default combineReducers({
-    api,
     documentGroups,
     documents,
-    documentsToBeAdded
+    documentsToBeAdded,
+    ui
 });
