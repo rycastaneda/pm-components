@@ -66,7 +66,7 @@ class DisplayForm extends Component {
                             response={requirement.response ? requirement.response.response : ''}>
                         </Responses>
                         {requirement.mandatory && <div className="text-info">
-                            * Non negotiable
+                            * Non-negotiable
                         </div>}
                     </div>
 
