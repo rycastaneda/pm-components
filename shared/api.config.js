@@ -107,22 +107,26 @@ function configureHostname() {
             return a;
         }, {})['apiBranch'];
 
-    if (hostname.indexOf('local.dev') > -1 || process.env.NODE_ENV === 'develop') {
-        return protocol + 'api.pm.local.dev';
-    }
-
     if (apiBranch) {
         return [protocol, apiBranch.toLowerCase(), staging, countryHost].join('');
     }
 
     if (hostname.indexOf('staging.pitclient') > -1) {
-        var apiHostPIT = window.location.hostname.replace(/client.staging.pitclient.com/, 'api.staging.plantminer.com.au');
+        var apiHostPIT = (hostname.indexOf('nz.staging.pitclient') > -1)
+                            ? window.location.hostname.replace(/client.nz.staging.pitclient.com/, 'api.staging.plantminer.co.nz')
+                            : window.location.hostname.replace(/client.staging.pitclient.com/, 'api.staging.plantminer.com.au');
         return [protocol, apiHostPIT].join('');
     }
 
     if (hostname.indexOf('staging') > -1) {
         var apiHost = window.location.hostname.replace(/www/, 'api');
         return [protocol, apiHost].join('');
+    }
+
+    if (hostname.indexOf('demo.pitclient.com') > -1) {
+        // var apiHostDemo = window.location.hostname.replace(/client/, 'api');
+        // return [protocol, apiHostDemo, '.au'].join('');
+        return 'https://bundaberg-regional-council-training.api.demo.plantminer.com.au';
     }
 
     return [protocol, 'api.plantminer', countryHost].join('');
