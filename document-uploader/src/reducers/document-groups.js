@@ -10,7 +10,11 @@ import {
     GROUP_RENAMED,
     GROUP_ENABLED,
     GROUPS_DOWNLOAD_STARTED,
-    GROUPS_DOWNLOADED
+    GROUPS_DOWNLOADED,
+    DOCUMENTS_RECEIVING,
+    DOCUMENTS_UPLOADING,
+    DOCUMENT_REMOVED,
+    DOCUMENT_UPLOAD_SUCCESS
 } from '../constants/ActionTypes';
 
 const INITIAL_STATE = {
@@ -59,11 +63,11 @@ export function documentGroups(state = INITIAL_STATE, action) {
             });
         case GROUPS_DOWNLOAD_STARTED: 
             return Object.assign({}, state, {
-                downloading: true
+                loading: true
             });
         case GROUPS_DOWNLOADED: 
             return Object.assign({}, state, {
-                downloading: false
+                loading: false
             });
         case GROUP_ADDED:
             state.byId[action.group.id] = Object.assign({}, action.group.attributes, {
@@ -88,7 +92,22 @@ export function documentGroups(state = INITIAL_STATE, action) {
         case GROUP_RENAMED: 
             state.byId[action.groupId].title = action.newTitle;
             return Object.assign({}, state);
+        case DOCUMENTS_RECEIVING:
+            action.documents.data.map((document) => {
+                state.byId[document.relationships.groups.data.id].showGroup = true;
+                state.byId[document.relationships.groups.data.id].documentIds.push(document.id);
+            });
 
+            return Object.assign({}, state);
+        case DOCUMENTS_UPLOADING:
+            action.documents.map((document) => {
+                state.byId[action.groupId].documentIds.push(document.id);
+            });
+            return Object.assign({}, state);
+        case DOCUMENT_REMOVED:
+            return removeDocument(state, action);
+        case DOCUMENT_UPLOAD_SUCCESS: 
+            return uploadDocumentSuccess(state, action);
         default:
             return state;
     }
@@ -111,4 +130,20 @@ function removeGroup(state, action) {
     return Object.assign({}, state, {
         byId: ids
     });
+}
+
+function removeDocument(state, action) {
+    const group = state.byId[action.groupId];
+    let index = group.documentIds.indexOf(action.documentId);
+    group.documentIds.splice(index, 1);
+
+    return Object.assign({}, state);
+}
+
+function uploadDocumentSuccess(state, action) {
+    const group = state.byId[action.groupId];
+    let index = group.documentIds.indexOf(action.documentId);
+    group.documentIds.splice(index, 1, action.newDocumentId);
+
+    return Object.assign({}, state);
 }

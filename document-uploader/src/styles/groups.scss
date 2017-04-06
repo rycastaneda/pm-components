@@ -1,12 +1,6 @@
 .dropzone {
-    width: 100%;
-    min-height: 200px;
-    margin-bottom: 10px;
-    border: 2px dashed rgb(102, 102, 102);
-    border-radius: 5px;
 
     &__placeholder {
-        margin: 70px auto;
         font-size: 12px;
         text-align: center;
     }
@@ -116,7 +110,8 @@
 }
 
 .list-group {
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 0;
     padding-left: 0; // reset padding because ul and ol
 }
 
@@ -124,7 +119,7 @@
     position: relative;
     display: block;
     margin-bottom: -1px;
-    padding: 10px 15px;
+    padding: 5px 10px;
     background-color: #ffffff;
     border: 1px solid #dddddd;
 }

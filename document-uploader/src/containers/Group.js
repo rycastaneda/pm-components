@@ -4,10 +4,15 @@ import {
     renamingGroup,
     toggleRenaming,
     downloadDocumentGroup,
-    removeGroup
+    removeGroup,
+    dropDocuments,
+    removeDocument,
+    downloadDocument
 } from '../actions/groups';
 import Loader from '../components/Loader';
 import GroupHeader from '../components/GroupHeader';
+import Documents from '../components/Documents';
+import Dropzone from 'react-dropzone';
 
 class Group extends Component {
 
@@ -17,6 +22,9 @@ class Group extends Component {
         this.handleRemoveGroup = this.handleRemoveGroup.bind(this);
         this.handleToggleRename = this.handleToggleRename.bind(this);
         this.handleDownloadDocumentGroup = this.handleDownloadDocumentGroup.bind(this);
+        this.handleDropDocuments = this.handleDropDocuments.bind(this);
+        this.handleRemoveDocument = this.handleRemoveDocument.bind(this);
+        this.handleDownloadDocument = this.handleDownloadDocument.bind(this);
         this.renameInput = null;
     }
 
@@ -40,12 +48,29 @@ class Group extends Component {
         return this.props.dispatch(downloadDocumentGroup(this.props.group.id));
     }
 
+    handleDropDocuments(files) {
+        const documents = files.map((file, key) => {
+            file.id = +new Date() + key;
+            return file;
+        });
+
+        return this.props.dispatch(dropDocuments(this.props.group.id, documents));
+    }
+
+    handleRemoveDocument(documentId) {
+        return this.props.dispatch(removeDocument(this.props.group.id, documentId));
+    }
+
+    handleDownloadDocument(documentId) {
+        return this.props.dispatch(downloadDocument(this.props.group.id, documentId));
+    }
+
     render() {
         const {
             group, 
             readOnly
         } = this.props;
-
+        
         return (
             <div className="db-form-section group-panel" >
                 {group.isUpdating ? <Loader /> : ''}
@@ -60,6 +85,20 @@ class Group extends Component {
                     handleDownloadDocumentGroup={this.handleDownloadDocumentGroup}
                     renameInput={this.renameInput}
                     readOnly={readOnly}/>
+                <div className="panel-body">
+                    <Dropzone className="dropzone" accept="application/pdf" onDrop={(files) => {
+                        this.handleDropDocuments(files);
+                    }}>
+                        <p className="text-center dropzone__placeholder"><i className="fa fa-cloud-upload"></i> Drop files here or click to select files.</p>
+                    </Dropzone>
+                    {group.documents && group.documents.length ?
+                    <Documents
+                        files={group.documents}
+                        preview={false}
+                        onFileRemove={this.handleRemoveDocument}
+                        onDownloadFile={this.handleDownloadDocument}/>
+                    : null}
+                </div>
             </div>
         );
     }

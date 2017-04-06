@@ -1,36 +1,42 @@
 import React, { PropTypes } from 'react';
 import Progress from './Progress';
+import { 
+    UPLOAD_IN_PROGRESS,
+    UPLOAD_SUCCESS, 
+    UPLOAD_FAILED 
+} from '../constants';
 
-const Document = ({ file, preview, groupIndex, onFileRemove, onDownloadFile }) => {
+const Document = ({ file, onFileRemove, onDownloadFile }) => {
     return (
         <li className="list-group-item document">
-            <div className="pull-left">
-                <span className="document__filename">{file.attributes.name}</span>
+            <div className="pull-left document__filename">
+                {file.name} 
+                {file.status === UPLOAD_FAILED ? ' - Something went wrong. Please try again' : null}
             </div>
             <div className="pull-right">
-                <a onClick={() => onFileRemove(groupIndex, file, preview)}>
+                <a onClick={() => onFileRemove(file.id)}>
                     <i className="fa fa-times"></i>
                 </a>
-                {!preview ? 
+                {file.status === UPLOAD_SUCCESS ? 
                     <a key={`link-${file.id + 1}`} 
                         onClick={() => {
-                            onDownloadFile(file.id, groupIndex, file.attributes.name);
+                            onDownloadFile(file.id);
                         }}
                     ><i className="group-panel__actions fa fa-download"></i></a>
                 : null}
             </div>
             <div className="clearfix"></div>
-            {preview && file.attributes.progress ? <Progress key={file.id}
-                status={file.attributes.status}
-                progress={file.attributes.progress}/> : null}
+            {file.status === UPLOAD_IN_PROGRESS ? 
+                <Progress key={file.id}
+                    status={file.status}
+                    progress={file.progress}/> 
+            : null}
         </li>
     );
 };
 
 Document.propTypes = {
     file: PropTypes.object.isRequired,
-    preview: PropTypes.bool.isRequired,
-    groupIndex: PropTypes.number.isRequired,
     onFileRemove: PropTypes.func,
     onDownloadFile: PropTypes.func
 };

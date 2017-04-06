@@ -7,25 +7,22 @@ import {
     GROUP_ADDED,
     GROUP_RENAME_TOGGLE,
     GROUP_TOGGLE_UPDATING,
-    GROUP_UPDATE_FAILED,
     GROUP_REMOVED,
     GROUP_RENAMED,
     GROUP_ENABLED,
-    GROUP_DOWNLOAD_STARTED,
-    GROUP_DOWNLOADED,
     DOCUMENTS_RECEIVING,
     DOCUMENTS_UPLOADING,
     DOCUMENT_UPLOAD_IN_PROGRESS,
-    DOCUMENT_UPLOAD_FAILED,
     DOCUMENT_UPLOAD_SUCCESS,
-    DOCUMENT_UPLOAD_SUCCESS_CLEAN,
     DOCUMENT_REMOVED,
-    DOCUMENT_DOWNLOAD_STARTED,
-    DOCUMENT_DOWNLOADED,
-    DOCUMENT_ADDED_REMOVE,
     GROUPS_DOWNLOAD_STARTED,
     GROUPS_DOWNLOADED
 } from '../constants/ActionTypes';
+
+import {
+    UPLOAD_FAILED
+} from '../constants';
+
 import axios from 'axios';
 
 export function fetchDocuments(quoteId) {
@@ -41,11 +38,13 @@ export function fetchDocuments(quoteId) {
                 return axios.get(`/document-groups`);
             }).then((groups) => {
                 dispatch({ type: GROUPS_RECEIVING, groups: groups.data });
-                return axios.get(`/searcher-quote-requests/${quoteId}/documents`);
+                return axios.get(`/searcher-quote-requests/${quoteId}/documents?include=groups`);
             }).then((documents) => {
                 return dispatch({ type: DOCUMENTS_RECEIVING, documents: documents.data });
             }).catch(() => {
-                return dispatch({ type: REQUEST_FAILED });
+                dispatch({
+                    type: REQUEST_FAILED
+                });
             });
 
     };
@@ -158,175 +157,157 @@ export function renamingGroup(groupId, newTitle) {
                 groupId,
                 newTitle
             });
+        }).catch(() => {
+            return dispatch({
+                type: REQUEST_FAILED
+            });
         });
     };
 }
 
-export function catchFiles(index, id, documents) {
-    return {
-        type: DOCUMENTS_RECEIVING,
-        id,
-        index,
-        documents
-    };
-}
-
-export function removeFilesToBeAdded(index, documentId) {
+export function removeDocument(groupId, documentId) {
     return (dispatch, getState) => {
-        const groupId = getState().documentGroups.data[index].id;
-        return dispatch({
-            type: DOCUMENT_ADDED_REMOVE,
-            groupId,
-            documentId
-        });
-    };
-}
+        const { quoteId } = getState().ui;
+        const document = getState().documents.byId[documentId];
 
-export function removeFile(index, quote_id, file) {
-    // TODO DISPATCH REMOVING_FILE_ENDPOINT
-    return (dispatch) => {
+        if (document.status === UPLOAD_FAILED) {
+            return dispatch({
+                type: DOCUMENT_REMOVED,
+                groupId,
+                documentId
+            });
+        }
+
         dispatch({
             type: GROUP_TOGGLE_UPDATING,
-            loading: true,
-            index
+            groupId
         });
 
-        axios.delete(`/searcher-quote-requests/${quote_id}/documents/${file.id}`)
+        axios.delete(`/searcher-quote-requests/${quoteId}/documents/${documentId}`)
             .then((response) => {
-                return dispatch({
+                dispatch({
                     type: DOCUMENT_REMOVED,
-                    index,
-                    id: response.data.data.id
+                    groupId,
+                    documentId
                 });
+
+                dispatch({
+                    type: GROUP_TOGGLE_UPDATING,
+                    groupId
+                });
+
+                return response;
             }).catch(() => {
                 dispatch({
                     type: GROUP_TOGGLE_UPDATING,
-                    loading: false,
-                    index
+                    groupId
                 });
 
                 return dispatch({
-                    type: GROUP_UPDATE_FAILED,
-                    index,
-                    errors: ['Something went wrong while removing the document. Please try again later']
+                    type: REQUEST_FAILED
                 });
             });
     };
 }
 
 
-export function incrementProgress(id, file_id, progress) {
+export function incrementProgress(id, documentId, progress) {
     return {
         type: DOCUMENT_UPLOAD_IN_PROGRESS,
-        id,
-        file_id,
+        documentId,
         progress
     };
 }
 
-export function uploadFile(group_id, index, quote_id) {
+export function dropDocuments(groupId, documents) {
     return (dispatch, getState) => {
-        const errors = [], filesToBeAdded = getState().documentsToBeAdded[group_id];
-
         dispatch({
             type: DOCUMENTS_UPLOADING,
-            id: group_id
+            groupId,
+            documents
         });
 
-        axios.all(
-            filesToBeAdded.map((file) => {
-                file.loop = true;
+        const { quoteId } = getState().ui;
 
+        axios.all(
+            documents.map((document) => {
                 let data = new FormData();
 
-                data.append('document', file.attributes);
-                data.append('group_id', group_id);
+                data.append('document', document);
+                data.append('group_id', groupId);
 
-                return axios.post('/searcher-quote-requests/' + quote_id + '/documents', data, {
+                return axios.post('/searcher-quote-requests/' + quoteId + '/documents', data, {
                     onUploadProgress: function(progressEvent) {
                         var percentCompleted = progressEvent.loaded / progressEvent.total;
 
-                        dispatch(incrementProgress(group_id, file.id, Math.ceil(percentCompleted * 100)));
+                        dispatch(incrementProgress(groupId, document.id, Math.ceil(percentCompleted * 100)));
                     }
                 }).then((response) => {
                     dispatch({
                         type: DOCUMENT_UPLOAD_SUCCESS,
-                        id: group_id,
-                        file: Object.assign({}, file, {
-                            id: response.data.data.id
-                        })
+                        groupId,
+                        documentId: document.id, 
+                        newDocumentId: response.data.data.id
                     });
 
-                    setTimeout(() => {
-                        dispatch({
-                            type: DOCUMENT_UPLOAD_SUCCESS_CLEAN,
-                            id: group_id,
-                            file
-                        });
-                    }, 1000);
-
-                    return response;
-                }).catch((response) => {
-                    errors.push(`The file ${file.attributes.name} failed to upload. Please try again`);
-                    dispatch({
-                        type: DOCUMENT_UPLOAD_FAILED,
-                        id: group_id,
-                        file
-                    });
                     return response;
                 });
             })
         ).then((response) => {
             if (!response.every(response => response.status === 200)) { // Respond to error if necessary
                 dispatch({
-                    type: GROUP_UPDATE_FAILED,
-                    index,
-                    errors: errors
+                    type: REQUEST_FAILED
                 });
             }
+
+            return response;
         });
     };
 }
 
-export function downloadFile(quote_id, quote, index, filename) {
-    return (dispatch) => {
-        dispatch({ type: DOCUMENT_DOWNLOAD_STARTED });
-        dispatch({ type: GROUP_TOGGLE_UPDATING, index, loading: true });
+export function downloadDocument(groupId, documentId) {
+    return (dispatch, getState) => {
+        const { quoteId } = getState().ui;
+        const filename = getState().documents.byId[documentId].name;
+
+        dispatch({ type: GROUP_TOGGLE_UPDATING, groupId });
 
         downloadBlob(
-            axios.defaults.baseURL + `/searcher-quote-requests/${quote_id}/documents/${quote}`, 
+            axios.defaults.baseURL + `/searcher-quote-requests/${quoteId}/documents/${documentId}`, 
             filename, 
             () => {
-                dispatch({ type: DOCUMENT_DOWNLOADED });
-                dispatch({ type: GROUP_TOGGLE_UPDATING, index, loading: false });
+                dispatch({ type: GROUP_TOGGLE_UPDATING, groupId });
             }
         );
     };
 }
 
-export function downloadDocumentGroup(quote_id, group, index) {
-    return (dispatch) => {
-        dispatch({ type: GROUP_DOWNLOAD_STARTED });
-        dispatch({ type: GROUP_TOGGLE_UPDATING, index, loading: true });
+export function downloadDocumentGroup(groupId) {
+    return (dispatch, getState) => {
+        const { quoteId } = getState().ui;
+        const title = getState().documentGroups.byId[groupId].title;
+
+        dispatch({ type: GROUP_TOGGLE_UPDATING, groupId });
 
         downloadBlob(
-            axios.defaults.baseURL + `/searcher-quote-requests/${quote_id}/documents?filters[group_id]=${group.id}`, 
-            group.attributes.title,
+            axios.defaults.baseURL + `/searcher-quote-requests/${quoteId}/documents?filters[group_id]=${groupId}`, 
+            title.toLowerCase().split(' ').join('-'),
             () => {
-                dispatch({ type: GROUP_DOWNLOADED });
-                dispatch({ type: GROUP_TOGGLE_UPDATING, index, loading: false });
+                dispatch({ type: GROUP_TOGGLE_UPDATING, groupId });
             }
         );
     };
 }
 
-export function downloadDocumentGroups(quote_id, filename) {
-    return (dispatch) => {
+export function downloadDocumentGroups() {
+    return (dispatch, getState) => {
+        const { quoteId } = getState().ui;
+
         dispatch({ type: GROUPS_DOWNLOAD_STARTED });
 
         downloadBlob(
-            axios.defaults.baseURL + `/searcher-quote-requests/${quote_id}/documents`, 
-            filename,
+            axios.defaults.baseURL + `/searcher-quote-requests/${quoteId}/documents`, 
+            `SearcherQR-${quoteId}`,
             () => dispatch({ type: GROUPS_DOWNLOADED })
         );
     };
