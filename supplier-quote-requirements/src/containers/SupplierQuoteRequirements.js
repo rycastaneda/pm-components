@@ -23,7 +23,7 @@ class SupplierQuoteRequirements extends Component {
     }
 
     render() {
-        const { summary, requirements, mandatoryFilled } = this.props;
+        const { summary, requirements, mandatoryFilled, hasMandatory } = this.props;
         return (
             <div className="supplier-quote-requirements__form col-xs-12">
 
@@ -32,9 +32,11 @@ class SupplierQuoteRequirements extends Component {
                 {requirements.length ?
                     <div>
                         <label htmlFor="">Quote Requirements</label>
-                        <div className="text-info">
-                            * Non negotiable - This customer will only assess quotes that can comply with this requirement
-                        </div>
+                        {hasMandatory ?
+                            <div className="text-info">
+                                * Non-negotiable - This customer will only assess quotes that can comply with this requirement
+                            </div>
+                        :null }
                     </div>
                 : null }
                 {Object.keys(summary).map((requirementId) => {
@@ -54,6 +56,7 @@ SupplierQuoteRequirements.propTypes = {
     dispatch: PropTypes.func.isRequired,
     requirements: PropTypes.array.isRequired,
     mandatoryFilled: PropTypes.bool.isRequired,
+    hasMandatory: PropTypes.bool.isRequired,
     summary: PropTypes.object.isRequired
 };
 
@@ -81,6 +84,8 @@ function mapStateToProps(state) {
         return requirement.response && requirement.response.response === 'yes';
     });
 
+    let hasMandatory = mandatories.length > 0;
+
     normalized = normalized.sort((a, b) => {
         return +a.mandatory + +b.mandatory;
     });
@@ -88,6 +93,7 @@ function mapStateToProps(state) {
     return {
         requirements: normalized,
         mandatoryFilled,
+        hasMandatory,
         summary
     };
 }

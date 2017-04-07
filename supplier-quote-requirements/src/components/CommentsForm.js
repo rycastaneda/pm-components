@@ -31,17 +31,18 @@ class CommentsForm extends Component {
     }
 
     render() {
-        const { comment, showForm } = this.props;
+        const { comment, showForm, readOnly } = this.props;
+        
         return (
             <div className="comments-form">
                 {(comment || showForm) && <div>
                         <p className="comments-form__title">Comments
-                            { comment &&
+                            { comment && !readOnly ?
                                 <span>
                                     <a onClick={this.handleEditDisplay}><i className="fa fa-edit comments-form__links"></i></a>
                                     <a onClick={this.handleDeleteComment}><i className="fa fa-trash comments-form__links"></i></a>
                                 </span>
-                            }
+                            : null}
                          </p>
                     </div>
                 }
@@ -86,7 +87,8 @@ CommentsForm.propTypes = {
     toggleCommentsFieldDisplay: PropTypes.func.isRequired,
     updateSelection: PropTypes.func.isRequired,
     comment: PropTypes.string,
-    showForm: PropTypes.bool.isRequired
+    showForm: PropTypes.bool.isRequired,
+    readOnly: PropTypes.bool.isRequired
 };
 
 export default CommentsForm;

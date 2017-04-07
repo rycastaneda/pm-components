@@ -14,7 +14,8 @@ export function ui(state = INITIAL_STATE, action) {
         case FETCH_REQUIREMENTS: 
             return {
                 ...state,
-                loading: true
+                loading: true,
+                readOnly: action.readOnly
             };
         case RECEIVE_REQUIREMENTS: 
             return {

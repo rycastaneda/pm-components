@@ -37,11 +37,14 @@ function configureHeaders() {
  */
 function getLocalHeaders() {
     var api_url = window.api_url || 'https:/api.pm.local.dev';
-    var tokenRequest = new Request(api_url + '/authenticate',
-        {
-            method: 'POST',
-            headers: { 'Accept': 'application/vnd.pm.v1+json', 'Content-Type': 'application/vnd.pm.v1+json' },
-            body: '{"email":"sara1@plantminer.com.au", "password": "password"}' });
+    var tokenRequest = new Request(api_url + '/authenticate', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/vnd.pm.v1+json',
+            'Content-Type': 'application/vnd.pm.v1+json'
+        },
+        body: '{"email":"sara1@plantminer.com.au", "password": "password"}'
+    });
 
     fetch(tokenRequest)
         .then(function(response) {

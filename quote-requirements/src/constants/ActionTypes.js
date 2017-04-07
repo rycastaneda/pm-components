@@ -4,6 +4,7 @@ export const REQUIREMENTS_RELATIONSHIP_UPDATED = 'REQUIREMENTS_RELATIONSHIP_UPDA
 
 export const IS_EDITING = 'IS_EDITING';
 export const IS_DELETED = 'IS_DELETED';
+export const IS_SAVING = 'IS_SAVING';
 export const IS_SAVED = 'IS_SAVED';
 export const IS_CREATED = 'IS_CREATED';
 export const IS_EMPTY_ADDED = 'IS_EMPTY_ADDED';
