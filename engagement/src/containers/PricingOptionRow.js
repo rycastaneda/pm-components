@@ -35,10 +35,11 @@ class PricingOptionRow extends Component {
     }
 
     render() {
-        const { pricingOption } = this.props;
+        const { spot, pricingOption } = this.props;
         const defaultValue = pricingOption.attributes.unit || '';
 
         return (
+            pricingOption.attributes.value !== null && pricingOption.attributes.value !== 0 || spot !== 'browse' ?
             <tr>
                 <td className="checkbox" data-heading="Rates">
                     <label htmlFor={`pricingOption__${pricingOption.id}`}>
@@ -71,14 +72,15 @@ class PricingOptionRow extends Component {
                             /> : null
                     }
                 </td>
-            </tr>
+            </tr> : null
         );
     }
 }
 
 PricingOptionRow.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    pricingOption: PropTypes.object.isRequired
+    pricingOption: PropTypes.object.isRequired,
+    spot: PropTypes.string.isRequired
 };
 
 export default connect()(PricingOptionRow);  // adds dispatch prop

@@ -86,12 +86,12 @@ class ItemDetails extends Component {
                             <tr>
                                 <th>Rates</th>
                                 <th>Quote</th>
-                                <th>Units</th>
+                                <th>Estimated Units/QTY</th>
                             </tr>
                         </thead>
                         <tbody>
                         {pricingOptions.map(pricingOption =>
-                            <PricingOptionRow key={pricingOption.id} pricingOption={pricingOption} />
+                            <PricingOptionRow key={pricingOption.id} pricingOption={pricingOption} spot={itemsReducer.spot} />
                         )}
                         </tbody>
                     </table>

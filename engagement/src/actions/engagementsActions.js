@@ -46,7 +46,7 @@ export function loadEngagementsSuccess(engagements) {
         .filter(i => i.attributes.status === 1)
         .map((engagement) => {
             let matchedItemId = engagement.relationships.matchedItem.data.id;
-            let userId = engagement.relationships.user.data.id;
+            let userId = engagement.relationships.staff && engagement.relationships.staff.data.id || engagement.relationships.user && engagement.relationships.user.data.id;
             let engagementDetailIds = engagement.relationships.engagementDetails.data.length ?
                 engagement.relationships.engagementDetails.data.map(engagementDetail => engagementDetail.id) : null;
             return {
@@ -81,7 +81,7 @@ export function loadEngagementsSuccess(engagements) {
                         return item.relationships.requestedItem.data;
                     }).reduce(a => a),
                 'createdBy': engagements.included
-                    .filter(i => (i.type === 'user' && i.id === userId))
+                    .filter(i => ((i.type === 'staff' || i.type === 'user') && i.id === userId))
                     .map((user) => {
                         return user.attributes.first_name + ' ' + user.attributes.last_name;
                     }).reduce(a => a),
@@ -170,7 +170,7 @@ export function deleteEngagement(requestedItemId, matchedItemId, engagementId) {
             dispatch({ type: REQUEST_COMPLETED });
         }).catch((error) => {
             dispatch({ type: REQUEST_COMPLETED });
-            dispatch({ type: REQUEST_ERROR, error: error.response.data });
+            dispatch({ type: REQUEST_ERROR, error: error.response && error.response.data || error });
         });
     };
 }

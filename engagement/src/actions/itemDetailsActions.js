@@ -226,7 +226,7 @@ function isValidEngagement(dispatch, currentEngagement, pricingOptions) {
     if (pricingOptions && !pricing.length) {
         dispatch({
             type: VALIDATION_ERROR,
-            message: 'Please provide values for "Units"'
+            message: 'Please provide values for "Estimated Units/QTY"'
         });
         return false;
     }
