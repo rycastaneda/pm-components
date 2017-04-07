@@ -1,24 +1,24 @@
 import React, { PropTypes } from 'react';
 import Progress from './Progress';
-import { 
-    UPLOAD_IN_PROGRESS,
-    UPLOAD_SUCCESS, 
-    UPLOAD_FAILED 
+import {
+  UPLOAD_IN_PROGRESS,
+  UPLOAD_SUCCESS,
+  UPLOAD_FAILED
 } from '../constants';
 
 const Document = ({ file, onFileRemove, onDownloadFile }) => {
     return (
         <li className="list-group-item document">
             <div className="pull-left document__filename">
-                {file.name} 
+                {file.name}
                 {file.status === UPLOAD_FAILED ? ' - Something went wrong. Please try again' : null}
             </div>
             <div className="pull-right">
                 <a onClick={() => onFileRemove(file.id)}>
                     <i className="fa fa-times"></i>
                 </a>
-                {file.status === UPLOAD_SUCCESS ? 
-                    <a key={`link-${file.id + 1}`} 
+                {file.status === UPLOAD_SUCCESS ?
+                    <a key={`link-${file.id + 1}`}
                         onClick={() => {
                             onDownloadFile(file.id);
                         }}
@@ -26,10 +26,10 @@ const Document = ({ file, onFileRemove, onDownloadFile }) => {
                 : null}
             </div>
             <div className="clearfix"></div>
-            {file.status === UPLOAD_IN_PROGRESS ? 
+            {file.status === UPLOAD_IN_PROGRESS ?
                 <Progress key={file.id}
                     status={file.status}
-                    progress={file.progress}/> 
+                    progress={file.progress}/>
             : null}
         </li>
     );
@@ -42,4 +42,3 @@ Document.propTypes = {
 };
 
 export default Document;
-

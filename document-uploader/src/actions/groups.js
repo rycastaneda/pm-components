@@ -31,8 +31,8 @@ export function fetchDocuments(quoteId) {
             type: GROUPS_FETCHING,
             quoteId
         });
-
-        axios.get(`/document-groups?filter[defaults]=1`)
+        
+        axios.get(`/document-groups?filter[defaults]=1`, {})
             .then((defaults) => {
                 dispatch({ type: GROUPS_RECEIVING_DEFAULTS, defaults: defaults.data });
                 return axios.get(`/document-groups`);
@@ -246,7 +246,7 @@ export function dropDocuments(groupId, documents) {
                     dispatch({
                         type: DOCUMENT_UPLOAD_SUCCESS,
                         groupId,
-                        documentId: document.id, 
+                        documentId: document.id,
                         newDocumentId: response.data.data.id
                     });
 
@@ -273,8 +273,8 @@ export function downloadDocument(groupId, documentId) {
         dispatch({ type: GROUP_TOGGLE_UPDATING, groupId });
 
         downloadBlob(
-            axios.defaults.baseURL + `/searcher-quote-requests/${quoteId}/documents/${documentId}`, 
-            filename, 
+            axios.defaults.baseURL + `/searcher-quote-requests/${quoteId}/documents/${documentId}`,
+            filename,
             () => {
                 dispatch({ type: GROUP_TOGGLE_UPDATING, groupId });
             }
@@ -290,7 +290,7 @@ export function downloadDocumentGroup(groupId) {
         dispatch({ type: GROUP_TOGGLE_UPDATING, groupId });
 
         downloadBlob(
-            axios.defaults.baseURL + `/searcher-quote-requests/${quoteId}/documents?filters[group_id]=${groupId}`, 
+            axios.defaults.baseURL + `/searcher-quote-requests/${quoteId}/documents?filters[group_id]=${groupId}`,
             title.toLowerCase().split(' ').join('-'),
             () => {
                 dispatch({ type: GROUP_TOGGLE_UPDATING, groupId });
@@ -306,7 +306,7 @@ export function downloadDocumentGroups() {
         dispatch({ type: GROUPS_DOWNLOAD_STARTED });
 
         downloadBlob(
-            axios.defaults.baseURL + `/searcher-quote-requests/${quoteId}/documents`, 
+            axios.defaults.baseURL + `/searcher-quote-requests/${quoteId}/documents`,
             `SearcherQR-${quoteId}`,
             () => dispatch({ type: GROUPS_DOWNLOADED })
         );
@@ -326,7 +326,7 @@ function downloadBlob(url, filename, callback) {
         a.click();
         callback();
     };
-    
+
     xhr.open('GET', url);
     xhr.setRequestHeader('accept', axios.defaults.headers.common['Accept']);
     xhr.setRequestHeader('authorization', axios.defaults.headers.common['Authorization']);

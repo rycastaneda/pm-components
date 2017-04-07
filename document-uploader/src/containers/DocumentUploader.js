@@ -43,7 +43,7 @@ class DocumentGroup extends Component {
         } = this.props;
 
         // filter groups with default as options
-        this.options = documentGroups.reduce((options, group) => { 
+        this.options = documentGroups.reduce((options, group) => {
             if (!group.default) {
                 options.push(group.title);
             }
@@ -73,7 +73,7 @@ class DocumentGroup extends Component {
 
         // for read only
         const list = (
-            <GroupLists groups={lists} 
+            <GroupLists groups={lists}
                 downloadDocumentGroup={this.handleDownloadDocumentGroup}/>
         );
 
@@ -82,7 +82,7 @@ class DocumentGroup extends Component {
                 <div className="alert alert-danger">{ui.error}</div>
             );
         }
-        
+
         return (
             <div className="group-panel">
                 <div className="row container text-center">
@@ -114,8 +114,8 @@ DocumentGroup.propTypes = {
 
 
 function mapStateToProps(state) {
-    const { 
-        documentGroups: rawGroups, 
+    const {
+        documentGroups: rawGroups,
         documents: rawDocuments,
         ui
         // documentsToBeAdded: rawDocumentsToBeAdded
