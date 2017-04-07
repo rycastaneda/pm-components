@@ -34,7 +34,7 @@ class AddGroupForm extends Component {
 
         return readOnly ? null : (
             <div className="row">
-                <div className="col-md-4">
+                <div className="col-md-4 pull-right">
                     <Select.Creatable
                         value={this.state.value}
                         onBlurResetsInput={false}
