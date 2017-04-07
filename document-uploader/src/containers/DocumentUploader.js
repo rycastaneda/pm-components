@@ -112,7 +112,6 @@ DocumentGroup.propTypes = {
     ui: PropTypes.object
 };
 
-
 function mapStateToProps(state) {
     const {
         documentGroups: rawGroups,
