@@ -1,10 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchDocuments, toggleDocument, toggleGroup } from '../actions/documents';
-import { 
-    toggleItem, 
-    openItemModal, 
-    closeItemModal, 
+import {
+    toggleItem,
+    openItemModal,
+    closeItemModal,
     copyItem,
     selectItem
 } from '../actions/requested-item';
@@ -24,12 +24,12 @@ class DocumentSelector extends Component {
         this.handleCopyItem = this.handleCopyItem.bind(this);
         this.handleSelectItem = this.handleSelectItem.bind(this);
         this.quote_id = document.querySelector('[data-quote-id]').getAttribute('data-quote-id');
-        this.requested_item_id = document.querySelector('[data-requested-item-id]') ? 
+        this.requested_item_id = document.querySelector('[data-requested-item-id]') ?
                 +document.querySelector('[data-requested-item-id]').getAttribute('data-requested-item-id') : false;
         this.field = document.querySelector('[data-field]').getAttribute('data-field');
         this.props.dispatch(fetchDocuments(
-            this.quote_id, 
-            this.requested_item_id, 
+            this.quote_id,
+            this.requested_item_id,
             document.querySelector('[data-all-items]')
         ));
     }
@@ -66,7 +66,7 @@ class DocumentSelector extends Component {
     }
 
     render() {
-        const copyModal = (
+        const copyModal = this.props.requestedItems.allIds.length ? (
             <div className="pull-right">
                 <button className="db-function copy-from" onClick={(e) => {
                     e.preventDefault();
@@ -82,32 +82,32 @@ class DocumentSelector extends Component {
                     >
                 </CopyFromModal>
             </div>
-        );
+        ) : null;
 
         return (
             <div className="db-form-section">
                 <div>
                     <h6 className="db-form-title">
-                        <span className="pull-left">Documents</span> 
+                        <span className="pull-left">Documents</span>
                         {document.querySelector('[data-all-items]')? copyModal : ''}
                         <div className="clearfix"></div>
                     </h6>
                 </div>
-                {document.querySelector('[data-all-items]') ? 
+                {document.querySelector('[data-all-items]') ?
                 <div>
-                    <input 
-                        type="hidden" 
-                        name={this.field} 
+                    <input
+                        type="hidden"
+                        name={this.field}
                         value={this.props.addedDocuments.join(',')}/>
-                    <DocumentGroupSelector 
-                        groups={this.props.groups} 
+                    <DocumentGroupSelector
+                        groups={this.props.groups}
                         items={this.props.requestedItems}
                         toggleGroup={this.handleToggleGroup}
                         toggleDocument={this.handleToggleDocument}>
                     </DocumentGroupSelector>
                 </div>
-                : <Grid 
-                    groups={this.props.groups} 
+                : <Grid
+                    groups={this.props.groups}
                     items={this.props.requestedItems}
                     toggleItem={this.handleToggleItem}/>
                 }
@@ -130,9 +130,9 @@ function mapStateToProps(state) {
     if (!groups.allIds.length) { // return defaults on empty load
         return { groups: [], addedDocuments, requestedItems, ui };
     }
-    // Get groups with documents 
-    const normalized = groups.allIds.map((groupId) => { 
-        let group = groups.byId[groupId]; 
+    // Get groups with documents
+    const normalized = groups.allIds.map((groupId) => {
+        let group = groups.byId[groupId];
 
         group.documents = documents.allIds.map((documentId) => { // fetch groups with documents
             if (documents.byId[documentId].groups === groupId) {
