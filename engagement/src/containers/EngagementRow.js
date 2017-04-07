@@ -69,6 +69,9 @@ class EngagementRow extends Component {
                     {engagement.attributes.pre_start_date ?
                         <span>Planned Start Date: {moment(engagement.attributes.pre_start_date).format('DD-MM-YYYY')}<br /></span> : null
                     }
+                    {engagement.attributes.engagement_text ?
+                        <span>Engagement Instructions: {engagement.attributes.engagement_text}<br /></span> : null
+                    }
                     Created by: {engagement.createdBy}
                 </div>
                 <div className="col-md-3 text-center">

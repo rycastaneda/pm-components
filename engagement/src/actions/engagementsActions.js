@@ -22,7 +22,7 @@ export function loadEngagements(quoteId) {
             dispatch({ type: REQUEST_COMPLETED });
         }).catch((error) => {
             dispatch({ type: REQUEST_COMPLETED });
-            dispatch({ type: REQUEST_ERROR, error: error.response.data });
+            dispatch({ type: REQUEST_ERROR, error: error.response && error.response.data || error });
         });
     };
 }
@@ -190,7 +190,7 @@ export function sendEngagements() {
             dispatch({ type: REQUEST_COMPLETED });
         }).catch((error) => {
             dispatch({ type: REQUEST_COMPLETED });
-            dispatch({ type: REQUEST_ERROR, error: error.response.data });
+            dispatch({ type: REQUEST_ERROR, error: error.response && error.response.data || error });
         });
         dispatch({ type: UPDATE_NOTIFY_ALL, notifyAll: false });
     };
@@ -213,7 +213,7 @@ export function sendEngagementsBrowse(engagementId) {
             dispatch({ type: DISPLAY_SUCCESS, message: `Engagement #${engagementId} created and sent successfully` });
         }).catch((error) => {
             dispatch({ type: REQUEST_COMPLETED });
-            dispatch({ type: REQUEST_ERROR, error: error.response.data });
+            dispatch({ type: REQUEST_ERROR, error: error.response && error.response.data || error });
         });
     };
 }

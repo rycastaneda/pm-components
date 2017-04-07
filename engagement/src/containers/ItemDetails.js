@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Datetime  from 'react-datetime';
 import moment from 'moment';
 import Button from '../components/Button';
-import { handlePOChange, handleEngagementUpdate, handePlanDateChange, createEngagement, createEngagementPanel, resetItemDetails } from '../actions/itemDetailsActions';
+import { handlePOChange, handleEngagementUpdate, handePlanDateChange, handleEngagementTextChange, createEngagement, createEngagementPanel, resetItemDetails } from '../actions/itemDetailsActions';
 import PricingOptionRow from './PricingOptionRow';
 
 class ItemDetails extends Component {
@@ -13,6 +13,8 @@ class ItemDetails extends Component {
         this.handlePOUpdate = this.handlePOUpdate.bind(this);
         this.handePlanDateChange = this.handePlanDateChange.bind(this);
         this.handePlanDateUpdate = this.handePlanDateUpdate.bind(this);
+        this.handleEngagementTextChange = this.handleEngagementTextChange.bind(this);
+        this.handleEngagementTextUpdate = this.handleEngagementTextUpdate.bind(this);
         this.canCreateEngagement = this.canCreateEngagement.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleSaveSendPanel = this.handleSaveSendPanel.bind(this);
@@ -23,9 +25,9 @@ class ItemDetails extends Component {
         return this.props.dispatch(handlePOChange(event.target.value));
     }
 
-    handlePOUpdate(event) {
+    handlePOUpdate() {
         if (this.props.itemDetailsReducer.currentEngagement.id && this.props.itemDetailsReducer.currentEngagement.attributes.oldPOVal) {
-            return this.props.dispatch(handleEngagementUpdate(event.target.value));
+            return this.props.dispatch(handleEngagementUpdate());
         }
     }
 
@@ -36,9 +38,20 @@ class ItemDetails extends Component {
         this.props.dispatch(handePlanDateChange(date));
     }
 
-    handePlanDateUpdate(date) {
+    handePlanDateUpdate() {
         if (this.props.itemDetailsReducer.currentEngagement.id && this.props.itemDetailsReducer.currentEngagement.attributes.oldPODate) {
-            this.props.dispatch(handleEngagementUpdate(date));
+            this.props.dispatch(handleEngagementUpdate());
+        }
+    }
+
+    handleEngagementTextChange(event) {
+        return this.props.dispatch(handleEngagementTextChange(event.target.value));
+    }
+
+    handleEngagementTextUpdate() {
+        window.console.log('oldEngagementText', this.props.itemDetailsReducer.currentEngagement.attributes.oldEngagementText);
+        if (this.props.itemDetailsReducer.currentEngagement.id && this.props.itemDetailsReducer.currentEngagement.attributes.oldEngagementText) {
+            return this.props.dispatch(handleEngagementUpdate());
         }
     }
 
@@ -63,6 +76,7 @@ class ItemDetails extends Component {
         const { currentEngagement, pricingOptions } = this.props.itemDetailsReducer;
         const { itemsReducer } = this.props;
         const purchaseOrder = (Object.keys(currentEngagement).length !== 0 && currentEngagement.attributes['purchase-order'] !== null)  ? currentEngagement.attributes['purchase-order'] : '';
+        const engagementText = (Object.keys(currentEngagement).length !== 0 && currentEngagement.attributes['engagement_text'] !== null)  ? currentEngagement.attributes['engagement_text'] : '';
         const defaultDate = (Object.keys(currentEngagement).length !== 0 && currentEngagement.attributes['plan-start-date'] !== null) ? moment(currentEngagement.attributes['plan-start-date']) : null;
         const editMode = currentEngagement.id !== null;
         const engagementTitle = (Object.keys(currentEngagement).length !== 0) ? currentEngagement.attributes['title'] : null;
@@ -122,6 +136,22 @@ class ItemDetails extends Component {
                                               onChange={this.handePlanDateChange}
                                               onBlur={this.handePlanDateUpdate}
                                               />
+                                </div>
+                            </div>
+                            <div className="row mar-top">
+                                <label className="col-md-3 control-label">Engagement Instructions: </label>
+                                <div className="col-md-9">
+                                    <textarea className="form-control"
+                                           rows="4"
+                                           cols="50"
+                                           maxLength="500"
+                                           placeholder="Enter Engagement Instructions"
+                                           value={engagementText}
+                                           onChange={this.handleEngagementTextChange}
+                                           onBlur={this.handleEngagementTextUpdate}
+                                           disabled={enableCreate}
+                                           >
+                                           </textarea>
                                 </div>
                             </div>
                         </div>

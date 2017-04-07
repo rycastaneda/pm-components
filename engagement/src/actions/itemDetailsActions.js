@@ -14,6 +14,7 @@ import {
     UPDATE_PRICING_OPTION,
     UPDATE_PURCHASE_ORDER,
     UPDATE_PLAN_DATE,
+    UPDATE_ENGAGEMENT_TEXT,
     UPDATED_ENGAGEMENT,
     UPDATED_ENGAGEMENT_DETAILS,
     UPDATED_UNIT
@@ -161,11 +162,13 @@ export function updateCurrentEngagement(matchedItemId, requestedItemId, engageme
             'title': engagementTitle ? engagementTitle.substr(engagementTitle.lastIndexOf('>')+1) : engagementTitle,
             'status': 1,
             'purchase-order': engagement.attributes.po_number,
-            'plan-start-date': engagement.attributes.pre_start_date
+            'plan-start-date': engagement.attributes.pre_start_date,
+            'engagement_text': engagement.attributes.engagement_text
         } : {
             'status': 1,
             'purchase-order': null,
-            'plan-start-date': null
+            'plan-start-date': null,
+            'engagement_text': ''
         },
         'relationships': {
             'matched-items': {
@@ -196,11 +199,16 @@ export function handlePOChange(value) {
 
 export function handePlanDateChange(changedDate) {
     let updatedDate = moment(changedDate).format('YYYY-MM-DD');
-    window.console.log(updatedDate);
-    // const updatedDate = changedDate.getFullYear() + '-' + (changedDate.getMonth() + 1) + '-' + changedDate.getDate();
     return {
         type: UPDATE_PLAN_DATE,
         'plan-start-date': updatedDate
+    };
+}
+
+export function handleEngagementTextChange(value) {
+    return {
+        type: UPDATE_ENGAGEMENT_TEXT,
+        engagement_text: value
     };
 }
 
@@ -429,13 +437,12 @@ export function handleEngagementUpdate() {
                 type: UPDATED_ENGAGEMENT,
                 oldPOVal: null,
                 oldPODate: null,
+                oldEngagementText: '',
                 'purchase-order': currentEngagement.attributes['purchase-order'],
                 'plan-start-date': currentEngagement.attributes['plan-start-date'],
+                'engagement_text': currentEngagement.attributes['engagement_text'],
                 engagementId
             });
-            // dispatch(handlePOChange(currentEngagement.attributes['purchase-order']));
-            // dispatch(handePlanDateChange(currentEngagement.attributes['plan-start-date']));
-
             window.console.log('engagement updated: ', response);
             dispatch({ type: REQUEST_COMPLETED });
         }).catch((error) => {

@@ -21,6 +21,7 @@ import {
     RESET_PRICING_OPTIONS,
     UPDATE_PURCHASE_ORDER,
     UPDATE_PLAN_DATE,
+    UPDATE_ENGAGEMENT_TEXT,
     UPDATED_ENGAGEMENT,
     UPDATE_NOTIFY_ALL,
 
@@ -172,12 +173,22 @@ export function itemDetailsReducer(state = INITIAL_ITEM_DETAILS_STATE, action) {
                     }
                 }
             });
+        case UPDATE_ENGAGEMENT_TEXT:
+            return Object.assign({}, state, {
+                currentEngagement: { ...state.currentEngagement,
+                    attributes: { ...state.currentEngagement.attributes,
+                        'oldEngagementText': state.currentEngagement.attributes.oldEngagementText ? state.currentEngagement.attributes.oldEngagementText : state.currentEngagement.attributes['engagement_text'],
+                        'engagement_text': action.engagement_text
+                    }
+                }
+            });
         case UPDATED_ENGAGEMENT:
             return Object.assign({}, state, {
                 currentEngagement: { ...state.currentEngagement,
                     attributes: { ...state.currentEngagement.attributes,
                         'oldPOVal': null,
-                        'oldPODate': null
+                        'oldPODate': null,
+                        'oldEngagementText': ''
                     }
                 }
             });
@@ -238,7 +249,8 @@ function engagements(state = [], action) {
                 { ...engagement,
                     attributes: Object.assign({}, engagement.attributes, {
                         po_number: action['purchase-order'] || engagement.attributes.po_number,
-                        pre_start_date: action['plan-start-date'] || engagement.attributes.pre_start_date
+                        pre_start_date: action['plan-start-date'] || engagement.attributes.pre_start_date,
+                        engagement_text: action['engagement_text'] || engagement.attributes.engagement_text || ''
                     }) } : engagement
             );
         case UPDATED_ENGAGEMENT_DETAILS:
