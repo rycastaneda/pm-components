@@ -115,7 +115,7 @@ class DocumentSelector extends Component {
                         toggleDocument={this.handleToggleDocument}>
                     </DocumentGroupSelector>
                     {this.props.requestedItems.length? copyModal :null}
-                    {!this.props.requestedItems.length? documentsButton :null}
+                    {!this.props.groups.length? documentsButton :null}
                 </div>
                 : <Grid
                     groups={this.props.groups}
