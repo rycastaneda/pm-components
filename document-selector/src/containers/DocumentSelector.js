@@ -98,7 +98,6 @@ class DocumentSelector extends Component {
                 <div>
                     <h6 className="db-form-title">
                         <span className="pull-left">Documents</span>
-                        {document.querySelector('[data-all-items]')? copyModal : ''}
                         <div className="clearfix"></div>
                     </h6>
                 </div>
@@ -114,8 +113,8 @@ class DocumentSelector extends Component {
                         toggleGroup={this.handleToggleGroup}
                         toggleDocument={this.handleToggleDocument}>
                     </DocumentGroupSelector>
-                    {this.props.requestedItems.length? copyModal :null}
-                    {!this.props.groups.length? documentsButton :null}
+                    {this.props.requestedItems.allIds.length >=2 ? copyModal :null}
+                    {!this.props.requestedItems.allIds.length ? documentsButton : null}
                 </div>
                 : <Grid
                     groups={this.props.groups}
