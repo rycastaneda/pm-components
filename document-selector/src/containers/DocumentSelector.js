@@ -84,6 +84,15 @@ class DocumentSelector extends Component {
             </div>
         ) : null;
 
+        const documentsButton = (
+            <div className="pull-right">
+                <a className="db-function copy-from"
+                    href={`/searcher/quotes/add_quote_machine/${this.quote_id}`}>
+                    Return to step 2 to add documents
+                </a>
+            </div>
+        );
+
         return (
             <div className="db-form-section">
                 <div>
@@ -105,6 +114,8 @@ class DocumentSelector extends Component {
                         toggleGroup={this.handleToggleGroup}
                         toggleDocument={this.handleToggleDocument}>
                     </DocumentGroupSelector>
+                    {this.props.requestedItems.length? copyModal :null}
+                    {!this.props.requestedItems.length? documentsButton :null}
                 </div>
                 : <Grid
                     groups={this.props.groups}
