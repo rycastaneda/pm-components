@@ -1,0 +1,38 @@
+.display-form {
+    overflow: hidden;
+    padding: 15px 0;
+    background-color: $background-color;
+    border-top: 1px solid $border-color;
+
+    &:last-of-type {
+        border-bottom: none;
+    }
+
+    &__right-block {
+        text-align: right;
+    }
+
+    &__link {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    &__description {
+        font-style: italic;
+        word-wrap: break-word;
+    }
+
+    &__buttons-container {
+        margin-bottom: 5px;
+    }
+
+    &__button {
+        min-width: 50px;
+        margin-left: 5px;
+        text-align: center;
+    }
+
+    .btn.btn-reverse {
+        color: $color-grey;
+    }
+}

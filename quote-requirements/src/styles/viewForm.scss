@@ -1,0 +1,66 @@
+$main-color: #e68020;
+$hover-color: #9c4e04;
+$padding: 15px;
+
+.view-form {
+    position: relative;
+    padding: $padding;
+
+    &--favourite {
+        background-color: rgba(230, 128, 32, 0.09);
+        border-top: 1px solid #f9c696;
+    }
+
+    &__description {
+        position: relative;
+        padding-right: 75px;
+    }
+
+    &__text {
+        word-wrap: break-word;
+
+        &--mandatory {
+            font-size: 12px;
+            font-weight: 900;
+        }
+    }
+
+    &__read-more {
+        display: block;
+        width: 100%;
+        margin-top: -3px;
+
+        font-size: 12px;
+
+        text-align: center;
+        text-decoration: underline;
+
+        cursor: pointer;
+    }
+
+    &__buttons-container {
+        position: absolute;
+        top: $padding;
+        right: $padding;
+
+    }
+
+    &__button {
+        display: inline-block;
+        margin-right: 10px;
+        color: $main-color;
+
+        &:last-of-type {
+            margin-right: 0;
+        }
+
+        &:hover {
+            color: $hover-color;
+        }
+    }
+
+    &__icon {
+        font-size: 20px;
+        cursor: pointer;
+    }
+}

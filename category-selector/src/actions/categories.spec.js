@@ -22,7 +22,7 @@ describe('Categories actions: ', () => {
         expect(dispatch.calledWith(resetSelectedTypes)).to.equal(true);
     });
 
-    it('selectCategory function should dispatch 2 actions when there are subcategories', () => {
+    it('selectCategory function should dispatch 3 actions when there are subcategories', () => {
         const test = {
             id: 1,
             type: 'categories',
@@ -45,11 +45,11 @@ describe('Categories actions: ', () => {
         fn(dispatch, getState);
 
         expect(fn).is.a('function');
-        expect(dispatch.callCount).to.equal(2);
+        expect(dispatch.callCount).to.equal(3);
         expect(dispatch.calledWith({ type: types.SELECT_CATEGORY, category: test, index: 0 })).to.equal(true);
     });
 
-    it('selectCategory function should dispatch 2 action when there are no subcategories', () => {
+    it('selectCategory function should dispatch 3 action when there are no subcategories', () => {
         const test = {
             id: 1,
             type: 'categories',
@@ -63,7 +63,7 @@ describe('Categories actions: ', () => {
         fn(dispatch, getState);
 
         expect(fn).is.a('function');
-        expect(dispatch.callCount).to.equal(2);
+        expect(dispatch.callCount).to.equal(3);
         expect(dispatch.calledWith({ type: types.SELECT_CATEGORY, category: test, index: 1 })).to.equal(true);
     });
 
@@ -182,4 +182,3 @@ describe('Categories actions: ', () => {
         });
     });
 });
-

@@ -1,0 +1,9 @@
+/* This styles file should only have @imports and NEVER include styles here directly */
+$border-color: #eeeeee;
+$background-color: #fafafa;
+$button-selected-color: #be6715;
+$color-grey: #666666;
+
+@import 'supplierQuoteRequirements';
+@import 'displayForm';
+@import 'commentsForm';
