@@ -7,11 +7,11 @@ export class GroupList extends Component {
             <li className="list-group-item">
                 <a className="pull-right download-icon"
                     onClick={() => {
-                        downloadDocumentGroup(group.id, group.attributes.title);
+                        downloadDocumentGroup(group.id);
                     }}>
                     <span className="badge"><i className="fa fa-download"></i></span>
                 </a>
-                {group.attributes.title}
+                {group.title}
             </li>
         );
     }

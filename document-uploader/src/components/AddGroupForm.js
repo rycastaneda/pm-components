@@ -16,7 +16,12 @@ const AddGroupForm = ({
                 onBlurResetsInput={false}
                 arrowRenderer={() => <span>+</span>}
                 placeholder="Add new group"
-                options={options}
+                options={options.map((option) => {
+                    return {
+                        label: option,
+                        value: option
+                    };
+                })}
                 onChange={onAddGroup}
             />
         </div>

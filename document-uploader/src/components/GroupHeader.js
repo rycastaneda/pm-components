@@ -13,7 +13,10 @@ const GroupHeader = ({
     readOnly 
 }) => {
     const renameForm = (
-        <form onSubmit={handleRenameGroup} className="pull-left">
+        <form onSubmit={(e) => {
+            e.preventDefault();
+            handleRenameGroup(renameInput.value);
+        }} className="pull-left">
             <input 
                 className="form-control"
                 type="text"
@@ -27,7 +30,7 @@ const GroupHeader = ({
 
     const confirmationButtons = (
         <span>
-            <i onClick={() => handleRenameGroup()}
+            <i onClick={() => handleRenameGroup(renameInput.value)}
                 className="group-panel__actions fa fa-check"></i>
             <i onClick={() => handleToggleRename()}
                 className="group-panel__actions fa fa-times"></i>
@@ -44,9 +47,6 @@ const GroupHeader = ({
         <aside className="pull-right">
             {isRenaming ? confirmationButtons : renameToggleButton}
             <i className="group-panel__actions fa fa-trash" onClick={() => handleRemoveGroup()}></i>
-            {showDownload ?
-                <i className="group-panel__actions fa fa-download" onClick={() => handleDownloadDocumentGroup()}></i>
-            : null}
         </aside>
     );
 
@@ -57,6 +57,9 @@ const GroupHeader = ({
             </aside>
             <aside className="pull-right">
                 {readOnly || isDefault ? null : actions}
+                {showDownload ?
+                    <i className="group-panel__actions fa fa-download" onClick={() => handleDownloadDocumentGroup()}></i>
+                : null}
             </aside>
         </div>
     );
