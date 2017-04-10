@@ -5,6 +5,7 @@ import {
     UPDATE_MATCHED_ITEM_ID,
     UPDATE_PANEL_ID,
     UPDATE_REGION_ID,
+    UPDATE_ENGAGEMENT_LIMIT,
     UPDATE_ITEM_ID,
     LOAD_ITEMS_SUCCESS,
     LOAD_ITEMS_ERROR,
@@ -78,6 +79,10 @@ export function itemsReducer(state = INITIAL_ITEMS_STATE, action) {
         case UPDATE_REGION_ID:
             return Object.assign({}, state, {
                 regionId: action.regionId
+            });
+        case UPDATE_ENGAGEMENT_LIMIT:
+            return Object.assign({}, state, {
+                engagementLimit: action.engagementLimit
             });
         case UPDATE_ITEM_ID:
             return Object.assign({}, state, {

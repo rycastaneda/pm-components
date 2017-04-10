@@ -6,7 +6,7 @@ import ItemDetails from './ItemDetails';
 import PendingEngagements from './PendingEngagements';
 import SentEngagements from './SentEngagements';
 
-import { updateQuoteId, updateRequestedItemId, updateMatchedItemId, updatePanelId, updateItemId, updateRegionId, loadItems } from '../actions/itemsActions';
+import { updateQuoteId, updateRequestedItemId, updateMatchedItemId, updatePanelId, updateItemId, updateRegionId, updateEngagemetLimit, loadItems } from '../actions/itemsActions';
 import { loadEngagements } from '../actions/engagementsActions';
 import { loadItemDetails, loadItemDetailsPanel } from '../actions/itemDetailsActions';
 
@@ -23,10 +23,12 @@ class Engagement extends Component {
         const itemId = document.getElementById('item_id') ? document.getElementById('item_id').value : null;
         const panelId = document.getElementById('panel_id') ? document.getElementById('panel_id').value : null;
         const regionId = document.getElementById('region_id') ? document.getElementById('region_id').value : null;
+        const engagemetLimit = document.getElementById('engagement_limit') ? document.getElementById('engagement_limit').value : null;
 
         if (panelId && itemId) {
             this.props.dispatch(updatePanelId(panelId));
             this.props.dispatch(updateRegionId(regionId));
+            this.props.dispatch(updateEngagemetLimit(+engagemetLimit));
             this.props.dispatch(updateItemId(itemId));
             this.props.dispatch(loadItemDetailsPanel(panelId, itemId, regionId));
         } else {

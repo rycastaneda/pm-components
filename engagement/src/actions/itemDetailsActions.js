@@ -111,10 +111,6 @@ export function loadItemDetailsPanel(panelId, itemId, regionId) {
                 }
             });
 
-            window.console.log(pricingOptions);
-            window.console.log(supplier);
-            window.console.log(matchedItemTitle);
-
             dispatch(updateCurrentEngagementPanel(supplier, matchedItemTitle));
             dispatch(receivePricingOptions(pricingOptions));
             dispatch({ type: REQUEST_COMPLETED });
@@ -141,7 +137,8 @@ export function updateCurrentEngagementPanel(supplier, matchedItemTitle) {
         'attributes': {
             'status': 1,
             'purchase-order': null,
-            'plan-start-date': null
+            'plan-start-date': null,
+            'engagement_text': null
         },
         'relationships': {
             'supplier': supplierDetails,
@@ -168,7 +165,7 @@ export function updateCurrentEngagement(matchedItemId, requestedItemId, engageme
             'status': 1,
             'purchase-order': null,
             'plan-start-date': null,
-            'engagement_text': ''
+            'engagement_text': null
         },
         'relationships': {
             'matched-items': {
@@ -228,7 +225,7 @@ export function handlePricingOptionSelection(pricingOption, value) {
     };
 }
 
-function isValidEngagement(dispatch, currentEngagement, pricingOptions) {
+function isValidEngagement(dispatch, currentEngagement, pricingOptions, engagementLimit) {
     dispatch({ type: RESET_ERROR });
     let pricing = pricingOptions && pricingOptions.filter(pricingOption => pricingOption.attributes.selected);
     if (pricingOptions && !pricing.length) {
@@ -237,6 +234,20 @@ function isValidEngagement(dispatch, currentEngagement, pricingOptions) {
             message: 'Please provide values for "Estimated Units/QTY"'
         });
         return false;
+    }
+    if (engagementLimit) {
+        let totalPrice = pricing.map(function(price) {
+            return +price.attributes.value * +price.attributes.unit;
+        }).reduce(function(total, price) {
+            return total + price;
+        }, 0);
+        if (totalPrice > engagementLimit) {
+            dispatch({
+                type: VALIDATION_ERROR,
+                message: `This value exceeds the approved limit for spot engagements. Please create a Quote Request to facilitate engagements greater than ${engagementLimit} in value.`
+            });
+            return false;
+        }
     }
     if (currentEngagement && !currentEngagement.attributes['purchase-order']) {
         dispatch({
@@ -345,9 +356,10 @@ export function createEngagementPanel() {
         const currentEngagement = getState().itemDetailsReducer.currentEngagement,
             panelId = getState().itemsReducer.panelId,
             itemId = getState().itemsReducer.itemId,
+            engagementLimit = getState().itemsReducer.engagementLimit,
             pricingOptions = getState().itemDetailsReducer.pricingOptions;
 
-        if (!isValidEngagement(dispatch, currentEngagement, pricingOptions)) {
+        if (!isValidEngagement(dispatch, currentEngagement, pricingOptions, engagementLimit)) {
             return;
         }
 

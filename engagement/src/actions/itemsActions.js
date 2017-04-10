@@ -7,6 +7,7 @@ import {
     UPDATE_MATCHED_ITEM_ID,
     UPDATE_PANEL_ID,
     UPDATE_REGION_ID,
+    UPDATE_ENGAGEMENT_LIMIT,
     UPDATE_ITEM_ID,
     LOAD_ITEMS_SUCCESS,
     LOAD_ITEMS_ERROR,
@@ -191,7 +192,6 @@ export function updatePanelId(panelId) {
     };
 }
 
-
 /**
  *
  * @param {string} regionId
@@ -201,6 +201,18 @@ export function updateRegionId(regionId) {
     return {
         type: UPDATE_REGION_ID,
         regionId
+    };
+}
+
+/**
+ *
+ * @param {string} engagementLimit
+ * @returns {{type, engagementLimit: *}}
+ */
+export function updateEngagemetLimit(engagementLimit) {
+    return {
+        type: UPDATE_ENGAGEMENT_LIMIT,
+        engagementLimit
     };
 }
 
