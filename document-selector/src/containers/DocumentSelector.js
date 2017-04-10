@@ -94,34 +94,25 @@ class DocumentSelector extends Component {
         );
 
         return (
-            <div className="db-form-section">
-                <div>
-                    <h6 className="db-form-title">
-                        <span className="pull-left">Documents</span>
-                        <div className="clearfix"></div>
-                    </h6>
-                </div>
-                {document.querySelector('[data-all-items]') ?
-                <div>
-                    <input
-                        type="hidden"
-                        name={this.field}
-                        value={this.props.addedDocuments.join(',')}/>
-                    <DocumentGroupSelector
-                        groups={this.props.groups}
-                        items={this.props.requestedItems}
-                        toggleGroup={this.handleToggleGroup}
-                        toggleDocument={this.handleToggleDocument}>
-                    </DocumentGroupSelector>
-                    {this.props.requestedItems.allIds.length >=2 ? copyModal :null}
-                    {!this.props.requestedItems.allIds.length ? documentsButton : null}
-                </div>
-                : <Grid
+            document.querySelector('[data-all-items]') ?
+            <div>
+                <input
+                    type="hidden"
+                    name={this.field}
+                    value={this.props.addedDocuments.join(',')}/>
+                <DocumentGroupSelector
                     groups={this.props.groups}
                     items={this.props.requestedItems}
-                    toggleItem={this.handleToggleItem}/>
-                }
+                    toggleGroup={this.handleToggleGroup}
+                    toggleDocument={this.handleToggleDocument}>
+                </DocumentGroupSelector>
+                {this.props.requestedItems.allIds.length >=2 ? copyModal :null}
+                {!this.props.requestedItems.allIds.length ? documentsButton : null}
             </div>
+            : <Grid
+                groups={this.props.groups}
+                items={this.props.requestedItems}
+                toggleItem={this.handleToggleItem}/>
         );
     }
 }
