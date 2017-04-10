@@ -9,10 +9,6 @@ export default class Document extends Component {
         } = this.props;
 
         let checked = document.requesteditems ? document.requesteditems.length : 0; // Add check if all items are checked, else set this to false
-        
-        if (!checked && (document.saveditems && document.saveditems.length)) {
-            checked = true;
-        }
 
         return (
             <tr className="group-table__document-row">

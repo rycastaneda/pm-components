@@ -8,9 +8,15 @@ export default class RequestedItems extends Component {
             toggleItem
         } = this.props;
 
+
         const requestedItems = items.allIds.map((itemId, key) => {
             let item = items.byId[itemId];
-            let checked = document.saveditems.includes(itemId);
+            let checked = document.requesteditems.includes(itemId);
+
+            if (document.saveditems.includes(itemId)) {
+                checked = true;
+            }
+
             return <RequestedItem document={document} checked={checked} item={item} key={key} toggleItem={toggleItem}/>;
         });
 

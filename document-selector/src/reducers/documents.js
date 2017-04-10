@@ -52,6 +52,14 @@ export function documents(state = INITIAL_STATE, action) {
                 ...state
             };
         case REQUESTED_ITEM_TOGGLE:
+            index = action.document.requesteditems.indexOf(action.item.id);
+
+            if (index < 0) {
+                action.document.requesteditems.push(action.item.id);
+            } else {
+                action.document.requesteditems.splice(index, 1);
+            }
+
             index = action.document.saveditems.indexOf(action.item.id);
 
             if (index < 0) {
@@ -66,6 +74,7 @@ export function documents(state = INITIAL_STATE, action) {
                     ...state.byId,
                     [action.document.id]: {
                         ...state.byId[action.document.id],
+                        requesteditems: action.document.requesteditems,
                         saveditems: action.document.saveditems // toggle requested item
                     }
                 }
