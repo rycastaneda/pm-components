@@ -31,7 +31,7 @@ export function fetchDocuments(quoteId) {
             type: GROUPS_FETCHING,
             quoteId
         });
-        
+
         axios.get(`/document-groups?filter[defaults]=1`, {})
             .then((defaults) => {
                 dispatch({ type: GROUPS_RECEIVING_DEFAULTS, defaults: defaults.data });
@@ -315,21 +315,30 @@ export function downloadDocumentGroups() {
 
 
 function downloadBlob(url, filename, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'blob';
-    xhr.onload = function() {
+    var downloader = axios.create({
+        baseURL: url
+    });
+    downloader.defaults.headers.common['Authorization'] = axios.defaults.headers.common['Authorization'];
+    downloader.request({
+        method:'get',
+        url,
+        data:{},
+        responseType:'blob',
+        headers: {
+            'Content-Type': 'application/octet-stream'
+        }
+    }).then((response) => {
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(response.data, filename);
+            return callback();
+        }
+
         var a = document.createElement('a');
-        a.href = window.URL.createObjectURL(xhr.response); // xhr.response is a blob
+        a.href = window.URL.createObjectURL(response.data); // xhr.response is a blob
         a.download = filename; // Set the file name.
         a.style.display = 'none';
         document.body.appendChild(a);
         a.click();
         callback();
-    };
-
-    xhr.open('GET', url);
-    xhr.setRequestHeader('accept', axios.defaults.headers.common['Accept']);
-    xhr.setRequestHeader('authorization', axios.defaults.headers.common['Authorization']);
-    xhr.setRequestHeader('content-type', 'application/octet-stream');
-    xhr.send();
+    });
 }
