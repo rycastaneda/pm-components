@@ -177,7 +177,7 @@ export function itemDetailsReducer(state = INITIAL_ITEM_DETAILS_STATE, action) {
             return Object.assign({}, state, {
                 currentEngagement: { ...state.currentEngagement,
                     attributes: { ...state.currentEngagement.attributes,
-                        'oldEngagementText': state.currentEngagement.attributes.oldEngagementText ? state.currentEngagement.attributes.oldEngagementText : state.currentEngagement.attributes['engagement_text'],
+                        'oldEngagementText': state.currentEngagement.attributes.oldEngagementText ? state.currentEngagement.attributes.oldEngagementText : state.currentEngagement.attributes['engagement_text'] || action.engagement_text,
                         'engagement_text': action.engagement_text
                     }
                 }
@@ -188,7 +188,7 @@ export function itemDetailsReducer(state = INITIAL_ITEM_DETAILS_STATE, action) {
                     attributes: { ...state.currentEngagement.attributes,
                         'oldPOVal': null,
                         'oldPODate': null,
-                        'oldEngagementText': ''
+                        'oldEngagementText': null
                     }
                 }
             });
@@ -244,13 +244,14 @@ function engagements(state = [], action) {
         case ENGAGEMENT_DELETED:
             return state.filter(engagement => engagement.id !== action.id);
         case UPDATED_ENGAGEMENT:
+            window.console.log(action['purchase-order'], action['plan-start-date'], action['engagement_text']);
             return state.map(engagement =>
                 engagement.id === action.engagementId ?
                 { ...engagement,
                     attributes: Object.assign({}, engagement.attributes, {
                         po_number: action['purchase-order'] || engagement.attributes.po_number,
                         pre_start_date: action['plan-start-date'] || engagement.attributes.pre_start_date,
-                        engagement_text: action['engagement_text'] || engagement.attributes.engagement_text || ''
+                        engagement_text: action['engagement_text'] === '' ? null : action['engagement_text'] || engagement.attributes.engagement_text
                     }) } : engagement
             );
         case UPDATED_ENGAGEMENT_DETAILS:

@@ -49,7 +49,6 @@ class ItemDetails extends Component {
     }
 
     handleEngagementTextUpdate() {
-        window.console.log('oldEngagementText', this.props.itemDetailsReducer.currentEngagement.attributes.oldEngagementText);
         if (this.props.itemDetailsReducer.currentEngagement.id && this.props.itemDetailsReducer.currentEngagement.attributes.oldEngagementText) {
             return this.props.dispatch(handleEngagementUpdate());
         }

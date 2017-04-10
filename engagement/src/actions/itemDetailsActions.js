@@ -437,7 +437,7 @@ export function handleEngagementUpdate() {
                 type: UPDATED_ENGAGEMENT,
                 oldPOVal: null,
                 oldPODate: null,
-                oldEngagementText: '',
+                oldEngagementText: null,
                 'purchase-order': currentEngagement.attributes['purchase-order'],
                 'plan-start-date': currentEngagement.attributes['plan-start-date'],
                 'engagement_text': currentEngagement.attributes['engagement_text'],
