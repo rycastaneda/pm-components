@@ -71,6 +71,8 @@ class Group extends Component {
             readOnly
         } = this.props;
 
+        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx'];
+
         return (
             <div className="db-form-section group-panel" >
                 {group.isUpdating ? <Loader /> : ''}
@@ -87,10 +89,12 @@ class Group extends Component {
                     readOnly={readOnly}/>
                 <div className="panel-body">
                     <Dropzone className="dropzone"
-                        accept="application/pdf,image/*,text/csv,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                         onDrop={(files) => {
-                            console.log("files", files);
-                            this.handleDropDocuments(files);
+                            let filteredFiles = files.filter((file) => {
+                                let extension = file.name.split('.')[1];
+                                return !!~allowedExtenstions.indexOf(`.${extension}`)
+                            });
+                            this.handleDropDocuments(filteredFiles);
                         }}>
                         <p className="text-center dropzone__placeholder"><i className="fa fa-cloud-upload"></i> Drop files here or click to select files.</p>
                     </Dropzone>
