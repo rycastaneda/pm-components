@@ -54,10 +54,11 @@ export function toggleItem(document, item, checked, fromGrid) {
 }
 
 export function selectItem(item) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         dispatch({
             type: SELECT_ITEM,
-            item
+            item,
+            requestedItems: getState().requestedItems.allIds
         });
     };
 }

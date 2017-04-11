@@ -45,14 +45,22 @@ class DocumentSelector extends Component {
     }
 
     render() {
-        const copyModal = this.props.requestedItems.allIds.length ? (
-            <div className="col-xs-6 col-xs-offset-6">
-                <CopyFrom items={this.props.requestedItems}
-                    active={this.props.ui.selectedItem}
-                    selectItem={this.handleSelectItem}/>
+        const copyFrom = this.props.requestedItems.allIds.length ? (
+            <div>
+                <div className="col-xs-4 mar-btm-sm mar-top-sm">
+                    <label className="mar-top-sm">Copy From Item</label>
+                </div>
+                <div className="col-xs-8 mar-btm-sm">
+                    <CopyFrom items={this.props.requestedItems}
+                        active={this.props.ui.selectedItem}
+                        selectItem={this.handleSelectItem}/>
+                </div>
             </div>
         ) : null;
 
+        const showCopyFrom = !!this.props.groups.length && !!this.props.requestedItems.allIds.filter((id) => {
+            return this.props.requestedItems.byId[id].service.toLowerCase() === 'hire';
+        }).length;
 
         return (
             document.querySelector('[data-all-items]') ?
@@ -62,6 +70,8 @@ class DocumentSelector extends Component {
                     type="hidden"
                     name={this.field}
                     value={this.props.addedDocuments.join(',')}/>
+                {showCopyFrom ? copyFrom :null}
+
                 <DocumentGroupSelector
                     quote_id={this.quote_id}
                     groups={this.props.groups}
@@ -69,7 +79,6 @@ class DocumentSelector extends Component {
                     toggleGroup={this.handleToggleGroup}
                     toggleDocument={this.handleToggleDocument}>
                 </DocumentGroupSelector>
-                {this.props.requestedItems.allIds.length >=2 ? copyModal :null}
             </div>
             : <Grid
                 groups={this.props.groups}

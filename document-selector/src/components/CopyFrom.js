@@ -17,8 +17,11 @@ export default class CopyFromModal extends Component {
         });
 
         options.push({
-            label: 'All Items',
+            label: 'Select All',
             value: 'all'
+        }, {
+            label: 'Select None',
+            value: 'none'
         });
 
         return (

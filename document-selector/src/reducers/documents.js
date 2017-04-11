@@ -86,7 +86,12 @@ export function documents(state = INITIAL_STATE, action) {
         case SELECT_ITEM:
             state.allIds.map((id) => {
                 if (action.item.value === 'all') {
-                    state.byId[id].requesteditems = state.byId[id].saveditems;
+                    state.byId[id].requesteditems = action.requestedItems;
+                    return;
+                }
+
+                if (action.item.value === 'none') {
+                    state.byId[id].requesteditems = [];
                     return;
                 }
 

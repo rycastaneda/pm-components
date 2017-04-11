@@ -6,7 +6,7 @@ const DocumentGroupSelector = ({ quote_id, groups, items, toggleGroup, toggleDoc
         <div>
             <div className="pull-right">
                 <a className="db-function copy-from"
-                    href={`/searcher/quotes/add_quote_machine/${quote_id}`}>
+                    href={`/searcher/quotes/documents/${quote_id}`}>
                     Return to step 2 to add documents
                 </a>
             </div>
@@ -15,15 +15,14 @@ const DocumentGroupSelector = ({ quote_id, groups, items, toggleGroup, toggleDoc
     );
 
     return (
-            groups.length ?
-                <table className="table">
-                    <Groups groups={groups} items={items} toggleGroup={toggleGroup} toggleDocument={toggleDocument}/>
-                </table>
-            :
-                <div  className="form-group">
-                    No documents found
-                    {documentsButton}
-                </div>
+        groups.length ?
+            <table className="table">
+                <Groups groups={groups} items={items} toggleGroup={toggleGroup} toggleDocument={toggleDocument}/>
+            </table>
+        :   <div className="col-xs-12">
+                No documents found
+                {documentsButton}
+            </div>
     );
 };
 
