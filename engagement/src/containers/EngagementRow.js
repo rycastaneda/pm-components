@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import IconButton from '../components/IconButton';
-import { deleteEngagement } from '../actions/engagementsActions';
+import { toggleEngagementText, deleteEngagement } from '../actions/engagementsActions';
 import { loadItemDetails } from '../actions/itemDetailsActions';
 import moment from 'moment';
 
@@ -13,6 +13,7 @@ class EngagementRow extends Component {
         this.handleDeleteEngagement = this.handleDeleteEngagement.bind(this);
         this.convertToCurrency = this.convertToCurrency.bind(this);
         this.engagementTotal = this.engagementTotal.bind(this);
+        this.toggleTextVisibility = this.toggleTextVisibility.bind(this);
     }
 
     handleEditEngagement() {
@@ -30,6 +31,12 @@ class EngagementRow extends Component {
             engagementId = engagement.id;
 
         return this.props.dispatch(deleteEngagement(requestedItemId, matchedItemId, engagementId));
+    }
+
+    toggleTextVisibility() {
+        const engagementId = this.props.engagement.id;
+
+        return this.props.dispatch(toggleEngagementText(engagementId));
     }
 
     convertToCurrency(value) {
@@ -69,10 +76,16 @@ class EngagementRow extends Component {
                     {engagement.attributes.pre_start_date ?
                         <span>Planned Start Date: {moment(engagement.attributes.pre_start_date).format('DD-MM-YYYY')}<br /></span> : null
                     }
+                    <div>Created by: {engagement.createdBy}</div>
                     {engagement.attributes.engagement_text ?
-                        <span>Engagement Instructions: {engagement.attributes.engagement_text}<br /></span> : null
+                        <IconButton
+                            title={`${engagement.attributes.showEngagementText ? 'Hide' : 'See'} Engagement Instructions`}
+                            classNames="db-function"
+                            onClick={this.toggleTextVisibility}
+                            iconClass={`fa fa-${engagement.attributes.showEngagementText ? 'minus' : 'plus'} Engagement Instructions`}
+                        /> : null
                     }
-                    Created by: {engagement.createdBy}
+                    {engagement.attributes.showEngagementText ? <div>{engagement.attributes.engagement_text}</div> : null}
                 </div>
                 <div className="col-md-3 text-center">
                     <div className="txt-small">Amount Awarded Total (ex GST)</div>

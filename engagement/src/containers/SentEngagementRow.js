@@ -1,6 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import IconButton from '../components/IconButton';
+import { toggleEngagementText, cancelEngagement } from '../actions/engagementsActions';
 
 class SentEngagementRow extends Component {
 
@@ -8,6 +10,14 @@ class SentEngagementRow extends Component {
         super(props);
         this.convertToCurrency = this.convertToCurrency.bind(this);
         this.engagementTotal = this.engagementTotal.bind(this);
+        this.handleCancelEngagement = this.handleCancelEngagement.bind(this);
+        this.toggleTextVisibility = this.toggleTextVisibility.bind(this);
+    }
+
+    toggleTextVisibility() {
+        const engagementId = this.props.engagement.id;
+
+        return this.props.dispatch(toggleEngagementText(engagementId));
     }
 
     convertToCurrency(value) {
@@ -25,12 +35,21 @@ class SentEngagementRow extends Component {
         return this.convertToCurrency(total);
     }
 
+    handleCancelEngagement() {
+        const engagement = this.props.engagement,
+            requestedItemId = engagement.requestedItem.id,
+            matchedItemId = engagement.matchedItem.id,
+            engagementId = engagement.id;
+
+        return this.props.dispatch(cancelEngagement(requestedItemId, matchedItemId, engagementId));
+    }
+
     render() {
         const { engagement } = this.props;
 
         return (
             <div className="row engagement-row">
-                <div className="col-md-9 separator-vertical">
+                <div className="col-md-7 separator-vertical">
                     Engagement:<strong> #{engagement.id}</strong> <br />
                     <strong>{engagement.supplier.attributes.title}</strong> <br />
                     {engagement.matchedItem.attributes.title}<br /><br />
@@ -48,7 +67,16 @@ class SentEngagementRow extends Component {
                     {engagement.attributes.pre_start_date ?
                         <span>Planned Start Date: {moment(engagement.attributes.pre_start_date).format('DD-MM-YYYY')}<br /></span> : null
                     }
-                    Created by: {engagement.createdBy}
+                    <div>Created by: {engagement.createdBy}</div>
+                    {engagement.attributes.engagement_text ?
+                        <IconButton
+                            title={`${engagement.attributes.showEngagementText ? 'Hide' : 'See'} Engagement Instructions`}
+                            classNames="db-function"
+                            onClick={this.toggleTextVisibility}
+                            iconClass={`fa fa-${engagement.attributes.showEngagementText ? 'minus' : 'plus'} Engagement Instructions`}
+                        /> : null
+                    }
+                    {engagement.attributes.showEngagementText ? <div>{engagement.attributes.engagement_text}</div> : null}
                 </div>
                 <div className="col-md-3 text-center">
                     <div className="txt-small">Amount Awarded Total (ex GST)</div>
@@ -56,6 +84,17 @@ class SentEngagementRow extends Component {
                         ${this.engagementTotal(engagement)}
                     </div>
                 </div>
+                <div className="col-md-2 text-right">
+                    {engagement.attributes.status === 2 && <span className="label label-danger">Cancelled</span>}
+                    {engagement.attributes.can_cancel && engagement.attributes.status === 5 ?
+                    <IconButton
+                        title="Cancel"
+                        classNames="db-function"
+                        onClick={this.handleCancelEngagement}
+                        iconClass="fa fa-ban"
+                    /> : null }
+                </div>
+
             </div>
         );
     }

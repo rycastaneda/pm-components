@@ -28,7 +28,9 @@ import {
 
     RECEIVE_ENGAGEMENTS,
     ENGAGEMENT_DELETED,
+    ENGAGEMENT_CANCELLED,
     UPDATED_ENGAGEMENT_DETAILS,
+    TOGGLE_ENGAGEMENT_TEXT,
     UPDATED_UNIT
 } from '../constants/ActionTypes';
 
@@ -119,25 +121,22 @@ export function engagementsReducer(state = INITIAL_ENGAGEMENTS_STATE, action) {
                 pendingEngagements: action.pendingEngagements,
                 sentEngagements: action.sentEngagements
             });
+        case UPDATED_ENGAGEMENT:
+        case UPDATED_ENGAGEMENT_DETAILS:
         case ENGAGEMENT_DELETED:
             return Object.assign({}, state, {
                 pendingEngagements: engagements(state.pendingEngagements, action)
             });
-        case UPDATED_ENGAGEMENT:
+
+        case TOGGLE_ENGAGEMENT_TEXT:
             return Object.assign({}, state, {
-                pendingEngagements: engagements(state.pendingEngagements, action)
+                pendingEngagements: engagements(state.pendingEngagements, action),
+                sentEngagements: engagements(state.sentEngagements, action)
             });
-            // return Object.assign({}, state, {
-            //     currentEngagement: { ...state.currentEngagement,
-            //         attributes: { ...state.currentEngagement.attributes,
-            //             'oldPOVal': null,
-            //             'oldPODate': null
-            //         }
-            //     }
-            // });
-        case UPDATED_ENGAGEMENT_DETAILS:
+
+        case ENGAGEMENT_CANCELLED:
             return Object.assign({}, state, {
-                pendingEngagements: engagements(state.pendingEngagements, action)
+                sentEngagements: engagements(state.sentEngagements, action)
             });
         case UPDATE_NOTIFY_ALL:
             return Object.assign({}, state, {
@@ -249,7 +248,6 @@ function engagements(state = [], action) {
         case ENGAGEMENT_DELETED:
             return state.filter(engagement => engagement.id !== action.id);
         case UPDATED_ENGAGEMENT:
-            window.console.log(action['purchase-order'], action['plan-start-date'], action['engagement_text']);
             return state.map(engagement =>
                 engagement.id === action.engagementId ?
                 { ...engagement,
@@ -257,6 +255,22 @@ function engagements(state = [], action) {
                         po_number: action['purchase-order'] || engagement.attributes.po_number,
                         pre_start_date: action['plan-start-date'] || engagement.attributes.pre_start_date,
                         engagement_text: action['engagement_text'] === '' ? null : action['engagement_text'] || engagement.attributes.engagement_text
+                    }) } : engagement
+            );
+        case TOGGLE_ENGAGEMENT_TEXT:
+            return state.map(engagement =>
+                engagement.id === action.id ?
+                { ...engagement,
+                    attributes: Object.assign({}, engagement.attributes, {
+                        showEngagementText: engagement.attributes.showEngagementText === undefined ? true : !engagement.attributes.showEngagementText
+                    }) } : engagement
+            );
+        case ENGAGEMENT_CANCELLED:
+            return state.map(engagement =>
+                engagement.id === action.id ?
+                { ...engagement,
+                    attributes: Object.assign({}, engagement.attributes, {
+                        status: 2
                     }) } : engagement
             );
         case UPDATED_ENGAGEMENT_DETAILS:
