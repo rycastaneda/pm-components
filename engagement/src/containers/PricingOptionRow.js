@@ -35,41 +35,37 @@ class PricingOptionRow extends Component {
     }
 
     render() {
-        const { spot, pricingOption } = this.props;
+        const { pricingOption } = this.props;
         const defaultValue = pricingOption.attributes.unit || '';
 
         return (
-            pricingOption.attributes.value !== null && pricingOption.attributes.value !== 0 || spot !== 'browse' ?
+            pricingOption.attributes.value !== null && pricingOption.attributes.value !== 0 ?
             <tr>
                 <td className="checkbox" data-heading="Rates">
                     <label htmlFor={`pricingOption__${pricingOption.id}`}>
                     {
-                        (pricingOption.attributes.value !== null && pricingOption.attributes.value !== 0)
-                            ? <input name={`pricingOption-checkbox__${pricingOption.id}`}
-                                    id={`pricingOption__${pricingOption.id}`}
-                                    type="checkbox"
-                                    disabled="true"
-                                    checked={pricingOption.attributes.selected}
-                                    onChange={this.handlePricingOptionChange}
-                                /> : null
+                        <input name={`pricingOption-checkbox__${pricingOption.id}`}
+                            id={`pricingOption__${pricingOption.id}`}
+                            type="checkbox"
+                            disabled="true"
+                            checked={pricingOption.attributes.selected}
+                            onChange={this.handlePricingOptionChange}
+                        />
                     }
                     {pricingOption.attributes.title}
                     </label>
                 </td>
                 <td data-heading="Quote">
-                    {
-                        (pricingOption.attributes.value !== null) ? `$${pricingOption.attributes.value}` : null
-                    }
+                    {`$${pricingOption.attributes.value}`}
                 </td>
                 <td data-heading="Unit">
                     {
-                        (pricingOption.attributes.value !== null && pricingOption.attributes.value !== 0)
-                            ? <input type="number"
-                                    className="form-control"
-                                    value={defaultValue}
-                                    onChange={this.handleUnitChange}
-                                    onBlur={pricingOption.relationships ? this.handleEngagementDetailUpdate : null}
-                            /> : null
+                        <input type="number"
+                            className="form-control"
+                            value={defaultValue}
+                            onChange={this.handleUnitChange}
+                            onBlur={pricingOption.relationships ? this.handleEngagementDetailUpdate : null}
+                        />
                     }
                 </td>
             </tr> : null
@@ -79,8 +75,7 @@ class PricingOptionRow extends Component {
 
 PricingOptionRow.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    pricingOption: PropTypes.object.isRequired,
-    spot: PropTypes.string.isRequired
+    pricingOption: PropTypes.object.isRequired
 };
 
 export default connect()(PricingOptionRow);  // adds dispatch prop
