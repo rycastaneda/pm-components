@@ -17,16 +17,18 @@ export function normalizeObject(collections, callback) {
             }
         }
 
-        Object.assign(normalized, {
+        collection.relationships = relationships;
+
+        normalized = Object.assign({}, normalized, {
             [collection.id]: {
                 id: collection.id,
                 type: collection.type,
                 ...collection.attributes,
-                ...relationships
+                ...collection.relationships
             }
         });
+
     });
 
     return normalized;
 }
-
