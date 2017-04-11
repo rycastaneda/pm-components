@@ -92,7 +92,7 @@ class Group extends Component {
                         onDrop={(files) => {
                             let filteredFiles = files.filter((file) => {
                                 let extension = file.name.split('.')[1];
-                                return !!~allowedExtenstions.indexOf(`.${extension}`)
+                                return !!~allowedExtenstions.indexOf(`.${extension}`);
                             });
                             this.handleDropDocuments(filteredFiles);
                         }}>
