@@ -71,7 +71,7 @@ class SentEngagementRow extends Component {
                     {engagement.attributes.engagement_text ?
                         <IconButton
                             title={`${engagement.attributes.showEngagementText ? 'Hide' : 'See'} Engagement Instructions`}
-                            classNames="db-function"
+                            classNames="db-function mar-top-sm"
                             onClick={this.toggleTextVisibility}
                             iconClass={`fa fa-${engagement.attributes.showEngagementText ? 'minus' : 'plus'} Engagement Instructions`}
                         /> : null
@@ -85,7 +85,7 @@ class SentEngagementRow extends Component {
                     </div>
                 </div>
                 <div className="col-md-2 text-right">
-                    {engagement.attributes.status === 2 && <span className="label label-danger">Cancelled</span>}
+                    {engagement.attributes.status === 2 && <span className="bs-label bs-label-danger">Cancelled</span>}
                     {engagement.attributes.can_cancel && engagement.attributes.status === 5 ?
                     <IconButton
                         title="Cancel"

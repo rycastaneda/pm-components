@@ -80,7 +80,7 @@ class EngagementRow extends Component {
                     {engagement.attributes.engagement_text ?
                         <IconButton
                             title={`${engagement.attributes.showEngagementText ? 'Hide' : 'See'} Engagement Instructions`}
-                            classNames="db-function"
+                            classNames="db-function mar-top-sm"
                             onClick={this.toggleTextVisibility}
                             iconClass={`fa fa-${engagement.attributes.showEngagementText ? 'minus' : 'plus'} Engagement Instructions`}
                         /> : null
