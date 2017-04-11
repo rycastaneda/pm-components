@@ -46,7 +46,7 @@ class DocumentSelector extends Component {
 
     render() {
         const copyModal = this.props.requestedItems.allIds.length ? (
-            <div className="col-xs-4 col-xs-offset-8">
+            <div className="col-xs-6 col-xs-offset-6">
                 <CopyFrom items={this.props.requestedItems}
                     active={this.props.ui.selectedItem}
                     selectItem={this.handleSelectItem}/>
