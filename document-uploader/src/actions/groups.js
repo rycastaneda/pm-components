@@ -104,14 +104,15 @@ export function removeGroup(groupId) {
                 type: GROUP_REMOVED,
                 groupId
             });
-        }).catch(() => {
+        }).catch((err) => {
             dispatch({
                 type: GROUP_TOGGLE_UPDATING,
                 groupId
             });
 
             return dispatch({
-                type: REQUEST_FAILED
+                type: REQUEST_FAILED,
+                message: err.response.data.message
             });
         });
     };
