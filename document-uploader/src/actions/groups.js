@@ -235,7 +235,7 @@ export function dropDocuments(groupId, documents) {
 
                 data.append('document', document);
                 data.append('group_id', groupId);
-                
+
                 return axios.post('/searcher-quote-requests/' + quoteId + '/documents', data, {
                     onUploadProgress: function(progressEvent) {
                         var percentCompleted = progressEvent.loaded / progressEvent.total;

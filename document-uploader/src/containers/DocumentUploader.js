@@ -84,7 +84,7 @@ class DocumentGroup extends Component {
         }
 
         const disclaimer =  (
-            <div className="db-form-section group-panel" >
+            <div className="db-form-section group-panel" key={this.quote_id}>
                 <div className="panel-body">
                     <p>
                         Upload all of the relevant documents you have for this RFQ.  Arrange them using the groups provided, or create your own.  You will specify which service(s) each document will apply to in the next step.
@@ -98,7 +98,7 @@ class DocumentGroup extends Component {
                 </div>
             </div>
         );
-
+        
         return (
             <div className="group-panel">
                 <div className="row container text-center">
