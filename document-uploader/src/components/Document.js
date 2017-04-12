@@ -13,18 +13,18 @@ const Document = ({ file, onFileRemove, onDownloadFile }) => {
                 {file.name}
                 {file.status === UPLOAD_FAILED ? ' - Something went wrong. Please try again' : null}
             </div>
+            {file.status === UPLOAD_SUCCESS ?
             <div className="pull-right">
                 <a onClick={() => onFileRemove(file.id)}>
                     <i className="fa fa-times"></i>
                 </a>
-                {file.status === UPLOAD_SUCCESS ?
                     <a key={`link-${file.id + 1}`}
                         onClick={() => {
                             onDownloadFile(file.id);
                         }}
                     ><i className="group-panel__actions fa fa-download"></i></a>
-                : null}
             </div>
+            : null}
             <div className="clearfix"></div>
             {file.status === UPLOAD_IN_PROGRESS ?
                 <Progress key={file.id}

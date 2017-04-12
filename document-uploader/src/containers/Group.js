@@ -69,7 +69,7 @@ class Group extends Component {
         const {
             group
         } = this.props;
-        
+
         const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx'];
 
         return (
@@ -89,7 +89,7 @@ class Group extends Component {
                     <Dropzone className="dropzone"
                         onDrop={(files) => {
                             let filteredFiles = files.filter((file) => {
-                                let extension = file.name.split('.')[1];
+                                let extension = file.name.split('.').pop();
                                 return !!~allowedExtenstions.indexOf(`.${extension}`);
                             });
                             this.handleDropDocuments(filteredFiles);

@@ -14,6 +14,7 @@ import {
     DOCUMENTS_UPLOADING,
     DOCUMENT_UPLOAD_IN_PROGRESS,
     DOCUMENT_UPLOAD_SUCCESS,
+    DOCUMENT_UPLOAD_FAILED,
     DOCUMENT_REMOVED,
     GROUPS_DOWNLOAD_STARTED,
     GROUPS_DOWNLOADED
@@ -218,7 +219,7 @@ export function removeDocument(groupId, documentId) {
 }
 
 
-export function incrementProgress(id, documentId, progress) {
+export function incrementProgress(documentId, progress) {
     return {
         type: DOCUMENT_UPLOAD_IN_PROGRESS,
         documentId,
@@ -247,7 +248,7 @@ export function dropDocuments(groupId, documents) {
                     onUploadProgress: function(progressEvent) {
                         var percentCompleted = progressEvent.loaded / progressEvent.total;
 
-                        dispatch(incrementProgress(groupId, document.id, Math.ceil(percentCompleted * 100)));
+                        dispatch(incrementProgress(document.id, Math.ceil(percentCompleted * 100)));
                     }
                 }).then((response) => {
                     dispatch({
@@ -258,6 +259,11 @@ export function dropDocuments(groupId, documents) {
                     });
 
                     return response;
+                }).catch(() => {
+                    dispatch({
+                        type: DOCUMENT_UPLOAD_FAILED,
+                        documentId: document.id
+                    });
                 });
             })
         ).then((response) => {
