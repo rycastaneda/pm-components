@@ -1,21 +1,21 @@
-import { 
+import {
     REQUESTED_ITEMS_RECEIVING,
     DOCUMENTS_RECEIVING
 } from '../constants/DocumentSelector';
 import { normalizeObject } from '../utility/utils';
 
-const INITIAL_STATE = { 
+const INITIAL_STATE = {
     byId: {},
     allIds: []
 };
 
 export function requestedItems(state = INITIAL_STATE, action) {
-    let items = {}; 
+    let items = {};
     let allIds = [], normalized = {};
     switch (action.type) {
-        case DOCUMENTS_RECEIVING: 
+        case DOCUMENTS_RECEIVING:
             if (action.response.data.length) {
-                action.response.included.map((include) => { // get all items from the documents endpoint 
+                action.response.included.map((include) => { // get all items from the documents endpoint
                     if (include.type === 'requesteditems') {
                         Object.assign(items, {
                             [include.id]: include.attributes
@@ -32,7 +32,9 @@ export function requestedItems(state = INITIAL_STATE, action) {
         case REQUESTED_ITEMS_RECEIVING:
             if (!action.items.data.length) {
                 normalized = {
-                    0: {}
+                    0: {
+                        service: ''
+                    }
                 };
             } else {
                 normalized = normalizeObject(action.items.data); // Replace all items with its own designated endpoint
@@ -46,5 +48,3 @@ export function requestedItems(state = INITIAL_STATE, action) {
             return state;
     }
 }
-
-
