@@ -87,7 +87,6 @@ export function documentGroups(state = INITIAL_STATE, action) {
         case DOCUMENTS_RECEIVING:
             action.documents.data.map((document) => {
                 state.byId[document.relationships.groups.data.id].showGroup = true;
-                state.byId[document.relationships.groups.data.id].isReadOnly = true;
                 state.byId[document.relationships.groups.data.id].documentIds.push(document.id);
             });
 
@@ -152,7 +151,6 @@ function removeDocument(state, action) {
     let index = group.documentIds.indexOf(action.documentId);
     group.documentIds.splice(index, 1);
 
-    group.isReadOnly = !!group.documentIds.length;
 
     return Object.assign({}, state);
 }
@@ -161,7 +159,6 @@ function uploadDocumentSuccess(state, action) {
     const group = state.byId[action.groupId];
     let index = group.documentIds.indexOf(action.documentId);
     group.documentIds.splice(index, 1, action.newDocumentId);
-    group.isReadOnly = !!group.documentIds.length;
-    
+
     return Object.assign({}, state);
 }
