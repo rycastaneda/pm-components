@@ -103,9 +103,10 @@ class ItemDetails extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                        {pricingOptions.map(pricingOption =>
-                            <PricingOptionRow key={pricingOption.id} pricingOption={pricingOption} spot={itemsReducer.spot} />
-                        )}
+                        {enableCreate ?
+                            <tr><td colSpan="3">No quotes provided from supplier</td></tr>
+                            : pricingOptions.map(pricingOption => <PricingOptionRow key={pricingOption.id} pricingOption={pricingOption} spot={itemsReducer.spot} />)
+                        }
                         </tbody>
                     </table>
                     {
