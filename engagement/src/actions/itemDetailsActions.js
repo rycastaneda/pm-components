@@ -244,7 +244,7 @@ function isValidEngagement(dispatch, currentEngagement, pricingOptions, engageme
         if (totalPrice > engagementLimit) {
             dispatch({
                 type: VALIDATION_ERROR,
-                message: `This value exceeds the approved limit for spot engagements. Please create a Quote Request to facilitate engagements greater than ${engagementLimit} in value.`
+                message: `This value exceeds the approved limit for spot engagements. Please create a Quote Request to facilitate engagements greater than $${engagementLimit} in value.`
             });
             return false;
         }
