@@ -79,7 +79,7 @@ class DocumentGroup extends Component {
 
         if (ui.error) {
             error = (
-                <div className="alert alert-danger">{ui.error}</div>
+                <div className="bs-callout bs-callout-danger">{ui.error}</div>
             );
         }
 
@@ -98,7 +98,7 @@ class DocumentGroup extends Component {
                 </div>
             </div>
         );
-        
+
         return (
             <div className="group-panel">
                 <div className="row container text-center">
