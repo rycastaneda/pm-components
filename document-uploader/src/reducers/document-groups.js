@@ -34,6 +34,9 @@ export function documentGroups(state = INITIAL_STATE, action) {
         case GROUPS_RECEIVING_DEFAULTS: return receiveDefaults(state, action);
         case GROUPS_RECEIVING:
             action.groups.data.map((group) => {
+                if (state.byId[group.id]) {
+                    return;
+                }
                 state.byId[group.id] = Object.assign({}, group.attributes, {
                     id: group.id,
                     isRenaming: false,
@@ -84,6 +87,7 @@ export function documentGroups(state = INITIAL_STATE, action) {
         case DOCUMENTS_RECEIVING:
             action.documents.data.map((document) => {
                 state.byId[document.relationships.groups.data.id].showGroup = true;
+                state.byId[document.relationships.groups.data.id].isReadOnly = true;
                 state.byId[document.relationships.groups.data.id].documentIds.push(document.id);
             });
 
@@ -109,7 +113,7 @@ function receiveDefaults(state, action) {
             userid not null, default 1 - user default group (dropzone)
             userid = null, default = 0 - global group (readonly)
         */
-        
+
         state.byId[defaultGroup.id] = Object.assign({}, defaultGroup.attributes, {
             id: defaultGroup.id,
             isRenaming: false,
