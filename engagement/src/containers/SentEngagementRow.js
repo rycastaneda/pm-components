@@ -55,8 +55,8 @@ class SentEngagementRow extends Component {
                     {engagement.matchedItem.attributes.title}<br /><br />
                     Pricing:
                     {engagement.engagementDetails.map(pricing =>
-                        <span key={pricing.id}> ${this.convertToCurrency(pricing.attributes.rate_value)} ({pricing.pricingOption.attributes.title} Rate)
-                         x {pricing.attributes.unit} Estimated Unit(s)</span>
+                        <div key={pricing.id}> ${this.convertToCurrency(pricing.attributes.rate_value)} ({pricing.pricingOption.attributes.title} Rate)
+                         x {pricing.attributes.unit} Estimated Units/Qty</div>
                     )}
                     <br />
                     Quantity: {engagement.matchedItem.attributes.quantity}
