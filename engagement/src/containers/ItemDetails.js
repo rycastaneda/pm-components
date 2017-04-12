@@ -104,7 +104,7 @@ class ItemDetails extends Component {
                         </thead>
                         <tbody>
                         {enableCreate ?
-                            <tr><td colSpan="3">No quotes provided from supplier</td></tr>
+                            <tr><td colSpan="3">This supplier has not responded the Request for Quotation</td></tr>
                             : pricingOptions.map(pricingOption => <PricingOptionRow key={pricingOption.id} pricingOption={pricingOption} spot={itemsReducer.spot} />)
                         }
                         </tbody>
