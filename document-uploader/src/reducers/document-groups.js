@@ -31,26 +31,17 @@ export function documentGroups(state = INITIAL_STATE, action) {
             return Object.assign({}, state, {
                 loading: true
             });
-        case GROUPS_RECEIVING_DEFAULTS: 
-            action.defaults.data.map((defaultGroup) => {
-                state.byId[defaultGroup.id] = Object.assign({}, defaultGroup.attributes, {
-                    id: defaultGroup.id,
-                    isRenaming: false,
-                    isUpdating: false,
-                    showGroup: true,
-                    documentIds: []
-                });
-
-                state.allIds.push(defaultGroup.id);
-            });
-
-            return Object.assign({}, state);
+        case GROUPS_RECEIVING_DEFAULTS: return receiveDefaults(state, action);
         case GROUPS_RECEIVING:
             action.groups.data.map((group) => {
+                if (state.byId[group.id]) {
+                    return;
+                }
                 state.byId[group.id] = Object.assign({}, group.attributes, {
                     id: group.id,
                     isRenaming: false,
                     isUpdating: false,
+                    isReadOnly: false,
                     showGroup: false,
                     documentIds: []
                 });
@@ -61,11 +52,11 @@ export function documentGroups(state = INITIAL_STATE, action) {
             return Object.assign({}, state, {
                 loading: false
             });
-        case GROUPS_DOWNLOAD_STARTED: 
+        case GROUPS_DOWNLOAD_STARTED:
             return Object.assign({}, state, {
                 loading: true
             });
-        case GROUPS_DOWNLOADED: 
+        case GROUPS_DOWNLOADED:
             return Object.assign({}, state, {
                 loading: false
             });
@@ -74,22 +65,23 @@ export function documentGroups(state = INITIAL_STATE, action) {
                 id: action.group.id,
                 isRenaming: false,
                 isUpdating: false,
+                isReadOnly: false,
                 showGroup: true,
                 documentIds: []
             });
             state.allIds.push(action.group.id);
             return Object.assign({}, state);
         case GROUP_REMOVED: return removeGroup(state, action);
-        case GROUP_ENABLED: 
+        case GROUP_ENABLED:
             state.byId[action.groupId].showGroup = true;
             return Object.assign({}, state);
-        case GROUP_TOGGLE_UPDATING: 
+        case GROUP_TOGGLE_UPDATING:
             state.byId[action.groupId].isUpdating = !state.byId[action.groupId].isUpdating;
             return Object.assign({}, state);
-        case GROUP_RENAME_TOGGLE: 
+        case GROUP_RENAME_TOGGLE:
             state.byId[action.groupId].isRenaming = !state.byId[action.groupId].isRenaming;
             return Object.assign({}, state);
-        case GROUP_RENAMED: 
+        case GROUP_RENAMED:
             state.byId[action.groupId].title = action.newTitle;
             return Object.assign({}, state);
         case DOCUMENTS_RECEIVING:
@@ -106,11 +98,33 @@ export function documentGroups(state = INITIAL_STATE, action) {
             return Object.assign({}, state);
         case DOCUMENT_REMOVED:
             return removeDocument(state, action);
-        case DOCUMENT_UPLOAD_SUCCESS: 
+        case DOCUMENT_UPLOAD_SUCCESS:
             return uploadDocumentSuccess(state, action);
         default:
             return state;
     }
+}
+
+function receiveDefaults(state, action) {
+    action.defaults.data.map((defaultGroup) => {
+        /*
+            userid = null, default = 1  - global default group (dropzone, readonly)
+            userid not null, default 1 - user default group (dropzone)
+            userid = null, default = 0 - global group (readonly)
+        */
+
+        state.byId[defaultGroup.id] = Object.assign({}, defaultGroup.attributes, {
+            id: defaultGroup.id,
+            isRenaming: false,
+            isUpdating: false,
+            isReadOnly: !defaultGroup.attributes.user_id,
+            showGroup: !!defaultGroup.attributes.default,
+            documentIds: []
+        });
+        state.allIds.push(defaultGroup.id);
+    });
+
+    return Object.assign({}, state);
 }
 
 function removeGroup(state, action) {
@@ -124,7 +138,7 @@ function removeGroup(state, action) {
         ids[groupId] = state.byId[groupId];
     });
 
-    let index = state.allIds.indexOf(action.groupId); 
+    let index = state.allIds.indexOf(action.groupId);
     state.allIds.splice(index, 1);
 
     return Object.assign({}, state, {
@@ -136,6 +150,7 @@ function removeDocument(state, action) {
     const group = state.byId[action.groupId];
     let index = group.documentIds.indexOf(action.documentId);
     group.documentIds.splice(index, 1);
+
 
     return Object.assign({}, state);
 }

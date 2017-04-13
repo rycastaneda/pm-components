@@ -79,9 +79,25 @@ class DocumentGroup extends Component {
 
         if (ui.error) {
             error = (
-                <div className="alert alert-danger">{ui.error}</div>
+                <div className="bs-callout bs-callout-danger">{ui.error}</div>
             );
         }
+
+        const disclaimer =  (
+            <div className="db-form-section group-panel" key={this.quote_id}>
+                <div className="panel-body">
+                    <p>
+                        Upload all of the relevant documents you have for this RFQ.  Arrange them using the groups provided, or create your own.  You will specify which service(s) each document will apply to in the next step.
+                    </p>
+                    <p className="mar-top-sm">
+                        No documents to upload? You can&nbsp;
+                        <a href={`/searcher/quotes/add_quote_machine/${this.quote_id}`}>
+                            skip this step
+                        </a> right now
+                    </p>
+                </div>
+            </div>
+        );
 
         return (
             <div className="group-panel">
@@ -96,7 +112,7 @@ class DocumentGroup extends Component {
                         : null}
                     <hr/>
                 </div>
-                {this.readOnly ? list : visibleDocumentGroups}
+                {this.readOnly ? list : [disclaimer, visibleDocumentGroups]}
                 {error}
                 {documentGroups.loading ? <Loader block={true}/> : ''}
                 <AddGroupForm readOnly={this.readOnly} />

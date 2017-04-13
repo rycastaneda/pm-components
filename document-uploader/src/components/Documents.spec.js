@@ -3,6 +3,11 @@ import { shallow } from 'enzyme';
 import Documents from './Documents';
 import Document from './Document';
 import { expect } from 'chai';
+import {
+  UPLOAD_IN_PROGRESS,
+  UPLOAD_SUCCESS,
+  UPLOAD_FAILED
+} from '../constants';
 
 const setup = (props) => {
     const component = shallow(
@@ -12,37 +17,28 @@ const setup = (props) => {
     return { component };
 };
 
-const onFileRemove = () => true;
 
 const files = [{
-    id: 1, 
-    attributes: {
-        name: 'Mt Hood',
-        preview: 'https://i.redd.it/90zxujjyv7wx.jpg',
-        size: 15000,
-        type: 'image/png',
-        progress: 0,
-        created: +new Date()
-    }
+    id: 1,
+    name: 'Mt Hood.png',
+    progress: 50,
+    status: UPLOAD_SUCCESS
 }, {
-    id: 2, 
-    attributes: {
-        name: 'Mt Hood',
-        preview: 'https://i.redd.it/90zxujjyv7wx.jpg',
-        size: 15000,
-        type: 'image/png',
-        progress: 0,
-        created: +new Date()
-    }
+    id: 2,
+    name: 'Mt Hood.png',
+    progress: 50,
+    status: UPLOAD_IN_PROGRESS
 }];
 
 describe('Documents component: ', () => {
-    it('should render 2 documents', () => {
+    it('should render multiple documents', () => {
+        const onFileRemove = () => true;
+        const onDownloadFile = () => true;
+
         const { component } = setup({
             files,
-            groupIndex: 1,
-            preview: true,
-            onFileRemove 
+            onFileRemove,
+            onDownloadFile
         });
 
         const nodes = component.find(Document);
@@ -53,4 +49,3 @@ describe('Documents component: ', () => {
         });
     });
 });
-

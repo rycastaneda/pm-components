@@ -1,58 +1,92 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import Document from './Document';
+import { mount } from 'enzyme';
 import { expect } from 'chai';
+import {
+  UPLOAD_IN_PROGRESS,
+  UPLOAD_SUCCESS,
+  UPLOAD_FAILED
+} from '../constants';
+import sinon from 'sinon';
+
+import Document from './Document';
+import Progress from './Progress';
 
 const setup = (props) => {
-    const component = shallow(
+    const component = mount(
         <Document {...props} />
     );
 
     return { component };
 };
 
-const onFileRemove = () => true;
-
-const file = {
-    id: 1, 
-    attributes: {
-        name: 'Mt Hood',
-        preview: 'https://i.redd.it/90zxujjyv7wx.jpg',
-        size: 15000,
-        type: 'image/png',
-        progress: 0,
-        created: +new Date()
-    }
-};
-
 describe('Document component: ', () => {
-    it('should render an image on a preview setup', () => {
-        const { component } = setup({
-            file,
-            preview: true,
-            groupIndex: 1,
-            onFileRemove 
-        });
+    it('should render an document with delete button and download link', () => {
+        const file = {
+            name: 'Mt Hood.png',
+            progress: 100,
+            status: UPLOAD_SUCCESS,
+            onFileRemove: () => true,
+            onDownloadFile: () => true
+        };
+        const onFileRemove = sinon.spy(file.onFileRemove);
+        const onDownloadFile = sinon.spy(file.onDownloadFile);
 
-        expect(component.find('img').prop('src')).to.equal(file.attributes.preview);
-        expect(component.find('.document__filename').text()).to.equal('Mt Hood');
-        expect(component.find('.document__filesize').text()).to.equal('14.65 KB');
-        expect(component.find('.document__timestamp').text()).to.equal('a few seconds ago');
+        const { component } = setup({ file, onFileRemove, onDownloadFile });
+
+        expect(component.find('.document__filename').text()).to.equal('Mt Hood.png');
+
+        component.find('.fa-times').simulate('click');
+        expect(onFileRemove.calledOnce).to.equal(true);
+
+        component.find('.fa-download').simulate('click');
+        expect(onDownloadFile.calledOnce).to.equal(true);
+
+        expect(component.find(Progress)).to.have.lengthOf(0);
     });
 
-    it('should render an attachment icon if file is not image', () => {
+    it('should render a failed upload document', () => {
+        const file = {
+            name: 'Mt Hood.png',
+            progress: 100,
+            status: UPLOAD_FAILED,
+            onFileRemove: () => true,
+            onDownloadFile: () => true
+        };
 
-        file.attributes.type = 'file/';
+        const onFileRemove = sinon.spy(file.onFileRemove);
+        const onDownloadFile = sinon.spy(file.onDownloadFile);
 
-        const { component } = setup({
-            file,
-            preview: true,
-            groupIndex: 1,
-            onFileRemove 
-        });
+        const { component } = setup({ file, onFileRemove, onDownloadFile });
 
-        expect(component.find('.document__thumb').prop('className')).to.have.string('fa-file-o');
+        const expectedMessage = 'Mt Hood.png - Something went wrong. Please try again';
+
+        expect(component.find('.document__filename').text()).to.equal(expectedMessage);
+
+        expect(component.find('.fa-times')).to.have.lengthOf(0);
+        expect(component.find('.fa-download')).to.have.lengthOf(0);
+
+        expect(component.find(Progress)).to.have.lengthOf(0);
     });
 
+    it('should render an uploading document', () => {
+        const file = {
+            name: 'Mt Hood.png',
+            progress: 50,
+            status: UPLOAD_IN_PROGRESS,
+            onFileRemove: () => true,
+            onDownloadFile: () => true
+        };
+
+        const onFileRemove = sinon.spy(file.onFileRemove);
+        const onDownloadFile = sinon.spy(file.onDownloadFile);
+
+        const { component } = setup({ file, onFileRemove, onDownloadFile });
+
+        expect(component.find('.document__filename').text()).to.equal('Mt Hood.png');
+
+        expect(component.find('.fa-times')).to.have.lengthOf(0);
+        expect(component.find('.fa-download')).to.have.lengthOf(0);
+
+        expect(component.find(Progress).prop('status')).to.equal(UPLOAD_IN_PROGRESS);
+    });
 });
-

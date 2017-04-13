@@ -3,14 +3,11 @@ import { connect } from 'react-redux';
 import { fetchDocuments, toggleDocument, toggleGroup } from '../actions/documents';
 import {
     toggleItem,
-    openItemModal,
-    closeItemModal,
-    copyItem,
     selectItem
 } from '../actions/requested-item';
 import Grid from '../components/Grid';
 import DocumentGroupSelector from '../components/DocumentGroupSelector';
-import CopyFromModal from '../components/CopyFromModal';
+import CopyFrom from '../components/CopyFrom';
 
 class DocumentSelector extends Component {
     constructor(props) {
@@ -19,9 +16,6 @@ class DocumentSelector extends Component {
         this.handleToggleDocument = this.handleToggleDocument.bind(this);
         this.handleToggleGroup = this.handleToggleGroup.bind(this);
         this.handleToggleItem = this.handleToggleItem.bind(this);
-        this.handleOpenItemModal = this.handleOpenItemModal.bind(this);
-        this.handleCloseItemModal = this.handleCloseItemModal.bind(this);
-        this.handleCopyItem = this.handleCopyItem.bind(this);
         this.handleSelectItem = this.handleSelectItem.bind(this);
         this.quote_id = document.querySelector('[data-quote-id]').getAttribute('data-quote-id');
         this.requested_item_id = document.querySelector('[data-requested-item-id]') ?
@@ -42,23 +36,8 @@ class DocumentSelector extends Component {
         return this.props.dispatch(toggleGroup(group, checked));
     }
 
-    handleToggleItem(document, item, checked) {
-        return this.props.dispatch(toggleItem(document, item, checked));
-    }
-
-    handleOpenItemModal() {
-        return this.props.dispatch(openItemModal());
-    }
-
-    handleCloseItemModal() {
-        return this.props.dispatch(closeItemModal());
-    }
-
-    handleCopyItem(item) {
-        if (item) {
-            this.handleCloseItemModal();
-            return this.props.dispatch(copyItem(item));
-        }
+    handleToggleItem(document, item, checked, fromGrid) {
+        return this.props.dispatch(toggleItem(document, item, checked, fromGrid));
     }
 
     handleSelectItem(item) {
@@ -66,48 +45,40 @@ class DocumentSelector extends Component {
     }
 
     render() {
-        const copyModal = this.props.requestedItems.allIds.length ? (
-            <div className="pull-right">
-                <button className="db-function copy-from" onClick={(e) => {
-                    e.preventDefault();
-                    this.handleOpenItemModal();
-                }}>Copy From</button>
-                <CopyFromModal
-                    items={this.props.requestedItems}
-                    isOpen={this.props.ui.isOpen}
-                    active={this.props.ui.selectedItem}
-                    closeModal={this.handleCloseItemModal}
-                    copyItem={this.handleCopyItem}
-                    selectItem={this.handleSelectItem}
-                    >
-                </CopyFromModal>
+        const copyFrom = this.props.requestedItems.allIds.length ? (
+            <div>
+                <div className="col-xs-4 mar-btm-sm mar-top-sm">
+                    <label className="mar-top-sm">Copy From Item</label>
+                </div>
+                <div className="col-xs-8 mar-btm-sm">
+                    <CopyFrom items={this.props.requestedItems}
+                        active={this.props.ui.selectedItem}
+                        selectItem={this.handleSelectItem}/>
+                </div>
             </div>
         ) : null;
 
-        const documentsButton = (
-            <div className="pull-right">
-                <a className="db-function copy-from"
-                    href={`/searcher/quotes/add_quote_machine/${this.quote_id}`}>
-                    Return to step 2 to add documents
-                </a>
-            </div>
-        );
+        const showCopyFrom = !!this.props.groups.length && !!this.props.requestedItems.allIds.filter((id) => {
+            return this.props.requestedItems.byId[id].service.toLowerCase() === 'hire';
+        }).length;
 
         return (
             document.querySelector('[data-all-items]') ?
-            <div>
+            <div className="db-form-section">
+                <h6 className="db-form-title">Documents</h6>
                 <input
                     type="hidden"
                     name={this.field}
                     value={this.props.addedDocuments.join(',')}/>
+                {showCopyFrom ? copyFrom :null}
+
                 <DocumentGroupSelector
+                    quote_id={this.quote_id}
                     groups={this.props.groups}
                     items={this.props.requestedItems}
                     toggleGroup={this.handleToggleGroup}
                     toggleDocument={this.handleToggleDocument}>
                 </DocumentGroupSelector>
-                {this.props.requestedItems.allIds.length >=2 ? copyModal :null}
-                {!this.props.requestedItems.allIds.length ? documentsButton : null}
             </div>
             : <Grid
                 groups={this.props.groups}

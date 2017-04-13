@@ -4,7 +4,7 @@ import GroupList from './GroupList';
 const GroupLists = ({ groups, downloadDocumentGroup }) => {
     const lists = groups.map((group, key) => {
         return (
-            <GroupList 
+            <GroupList
                 key={key}
                 group={group}
                 downloadDocumentGroup={downloadDocumentGroup}/>
@@ -13,7 +13,10 @@ const GroupLists = ({ groups, downloadDocumentGroup }) => {
 
     return (
         <ul className="list-group">
-            {lists}
+            {groups.length ? lists :
+            <li>
+                No documents yet
+            </li>}
         </ul>
     );
 };

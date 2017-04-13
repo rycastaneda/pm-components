@@ -52,20 +52,22 @@ export function documents(state = INITIAL_STATE, action) {
                 ...state
             };
         case REQUESTED_ITEM_TOGGLE:
-            index = action.document.requesteditems.indexOf(action.item.id);
-
-            if (index < 0) {
-                action.document.requesteditems.push(action.item.id);
+            if (action.fromGrid) {
+                index = action.document.saveditems.indexOf(action.item.id);
+                if (index < 0) {
+                    action.document.saveditems.push(action.item.id);
+                } else {
+                    action.document.saveditems.splice(index, 1);
+                }
             } else {
-                action.document.requesteditems.splice(index, 1);
-            }
+                index = action.document.requesteditems.indexOf(action.item.id);
 
-            index = action.document.saveditems.indexOf(action.item.id);
-
-            if (index < 0) {
-                action.document.saveditems.push(action.item.id);
-            } else {
-                action.document.saveditems.splice(index, 1);
+                if (index < 0) {
+                    action.document.requesteditems.push(action.item.id);
+                    index = action.document.saveditems.indexOf(action.item.id);
+                } else {
+                    action.document.requesteditems.splice(index, 1);
+                }
             }
 
             return {
@@ -83,11 +85,22 @@ export function documents(state = INITIAL_STATE, action) {
 
         case SELECT_ITEM:
             state.allIds.map((id) => {
-                if (!state.byId[id].saveditems.includes(action.item)) {
+                if (action.item.value === 'all') {
+                    state.byId[id].requesteditems = action.requestedItems;
+                    return;
+                }
+
+                if (action.item.value === 'none') {
+                    state.byId[id].requesteditems = [];
+                    return;
+                }
+
+                if (!state.byId[id].saveditems.includes(action.item.value)) {
                     state.byId[id].requesteditems = [];
                 } else {
                     state.byId[id].requesteditems = state.byId[id].saveditems;
                 }
+
             });
 
             return { ...state };

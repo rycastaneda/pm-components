@@ -1,5 +1,5 @@
-import { 
-    DOCUMENTS_RECEIVING, 
+import {
+    DOCUMENTS_RECEIVING,
     DOCUMENTS_FETCHING,
     DOCUMENT_TOGGLE,
     GROUP_TOGGLE,
@@ -11,7 +11,7 @@ import axios from 'axios';
 
 export function fetchDocuments(quote_id, requested_item_id) {
     return (dispatch) => {
-        
+
         dispatch({
             type: DOCUMENTS_FETCHING
         });
@@ -25,14 +25,17 @@ export function fetchDocuments(quote_id, requested_item_id) {
                 // call endpoint to requested items if mode is not allItems
                 dispatch(fetchItems(quote_id, response.data.included));
 
-                return dispatch({ 
-                    type: DOCUMENTS_RECEIVING, 
+                return dispatch({
+                    type: DOCUMENTS_RECEIVING,
                     response: response.data
                 });
             }).then(() => {
                 return dispatch({
                     type: SELECT_ITEM,
-                    item: `${requested_item_id}`
+                    item: {
+                        label: '',
+                        value: `${requested_item_id}`
+                    }
                 });
             });
     };
@@ -77,6 +80,3 @@ export function selectAllDocuments() {
         }));
     };
 }
-
-
-
