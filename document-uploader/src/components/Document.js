@@ -18,11 +18,11 @@ const Document = ({ file, onFileRemove, onDownloadFile }) => {
                 <a onClick={() => onFileRemove(file.id)}>
                     <i className="fa fa-times"></i>
                 </a>
-                    <a key={`link-${file.id + 1}`}
-                        onClick={() => {
-                            onDownloadFile(file.id);
-                        }}
-                    ><i className="group-panel__actions fa fa-download"></i></a>
+                <a key={`link-${file.id + 1}`}
+                    onClick={() => {
+                        onDownloadFile(file.id);
+                    }}
+                ><i className="group-panel__actions fa fa-download"></i></a>
             </div>
             : null}
             <div className="clearfix"></div>

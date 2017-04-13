@@ -16,9 +16,6 @@
     "type": "git",
     "repo": "git@bitbucket.org:minergroup/plantminer-components.git"
   },
-  "dependencies": {
-    "lodash": "^4.17.4"
-  },
   "devDependencies": {
     "axios": "^0.15.3",
     "babel-core": "6.14.0",
@@ -52,6 +49,7 @@
     "redux": "3.6.0",
     "redux-thunk": "2.1.0",
     "sass-loader": "4.0.2",
+    "sinon": "^2.1.0",
     "style-loader": "0.13.1",
     "stylelint-webpack-plugin": "0.4.2",
     "webpack": "1.13.2",
