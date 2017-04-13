@@ -11,7 +11,7 @@ export default class RequestedItem extends Component {
 
         return (
             <td className="group-table__document-checkbox">
-                <input type="checkbox" checked={checked} onChange={() => toggleItem(document, item, checked)}/>
+                <input type="checkbox" checked={checked} onChange={() => toggleItem(document, item, checked, true)}/>
             </td>
         );
     }
@@ -23,4 +23,3 @@ RequestedItem.propTypes = {
     item: PropTypes.object,
     toggleItem: PropTypes.func
 };
-

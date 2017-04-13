@@ -2,10 +2,7 @@ import {
     REQUESTED_ITEMS_FETCHING,
     REQUESTED_ITEMS_RECEIVING,
     REQUESTED_ITEM_TOGGLE,
-    OPEN_COPY_MODAL,
-    CLOSE_COPY_MODAL,
-    SELECT_ITEM,
-    COPY_ITEM
+    SELECT_ITEM
 } from '../constants/DocumentSelector';
 import axios from 'axios';
 
@@ -27,21 +24,21 @@ export function fetchItems(quote_id, addedItems) {
     };
 }
 
-export function toggleItem(document, item, checked) {
+export function toggleItem(document, item, checked, fromGrid) {
     return (dispatch) => {
         const data = Object.assign({}, document, {
             relationships : {
-                'requesteditems': {
-                    data: [{
-                        type: 'requesteditems',
+                'requested-items': {
+                    data: {
+                        type: 'requested-items',
                         id: item.id
-                    }]
+                    }
                 }
             }
         });
 
         axios({
-            url: `searcher-quote-requests/${document.quote_id}/documents/${document.id}/relationships/requesteditems`,
+            url: `searcher-quote-requests/${document.quote_id}/documents/${document.id}/relationships/requested-items`,
             data: { data },
             method: checked ? 'DELETE' : 'PATCH'
         }).then((response) => {
@@ -49,43 +46,19 @@ export function toggleItem(document, item, checked) {
                 type: REQUESTED_ITEM_TOGGLE,
                 item,
                 document,
-                response
+                response,
+                fromGrid
             });
         });
     };
 }
 
-
-export function openItemModal() {
-    return (dispatch) => {
-        dispatch({
-            type: OPEN_COPY_MODAL
-        });
-    };
-}
-
-export function closeItemModal() {
-    return (dispatch) => {
-        dispatch({
-            type: CLOSE_COPY_MODAL
-        });
-    };
-}
-
-export function copyItem(item) {
-    return (dispatch) => {
-        dispatch({
-            type: COPY_ITEM,
-            item
-        });
-    };
-}
-
 export function selectItem(item) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         dispatch({
             type: SELECT_ITEM,
-            item
+            item,
+            requestedItems: getState().requestedItems.allIds
         });
     };
 }

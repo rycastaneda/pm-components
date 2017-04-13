@@ -67,8 +67,7 @@ class Group extends Component {
 
     render() {
         const {
-            group,
-            readOnly
+            group
         } = this.props;
 
         const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx'];
@@ -78,7 +77,6 @@ class Group extends Component {
                 {group.isUpdating ? <Loader /> : ''}
                 <GroupHeader
                     isRenaming={group.isRenaming}
-                    isDefault={!!group.default}
                     title={group.title}
                     showDownload={!!group.documents.length}
                     handleRenameGroup={this.handleRenameGroup}
@@ -86,13 +84,13 @@ class Group extends Component {
                     handleRemoveGroup={this.handleRemoveGroup}
                     handleDownloadDocumentGroup={this.handleDownloadDocumentGroup}
                     renameInput={this.renameInput}
-                    readOnly={readOnly}/>
+                    isReadOnly={group.isReadOnly}/>
                 <div className="panel-body">
                     <Dropzone className="dropzone"
                         onDrop={(files) => {
                             let filteredFiles = files.filter((file) => {
-                                let extension = file.name.split('.')[1];
-                                return !!~allowedExtenstions.indexOf(`.${extension}`)
+                                let extension = file.name.split('.').pop();
+                                return !!~allowedExtenstions.indexOf(`.${extension}`);
                             });
                             this.handleDropDocuments(filteredFiles);
                         }}>
@@ -113,8 +111,7 @@ class Group extends Component {
 
 Group.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    group: PropTypes.object,
-    readOnly: PropTypes.bool
+    group: PropTypes.object
 };
 
 

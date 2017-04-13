@@ -1,23 +1,22 @@
 import React, { PropTypes } from 'react';
 
-const GroupHeader = ({ 
+const GroupHeader = ({
     title,
     isRenaming,
-    isDefault,
+    isReadOnly,
     showDownload,
-    handleRenameGroup, 
+    handleRenameGroup,
     handleToggleRename,
     handleRemoveGroup,
     handleDownloadDocumentGroup,
-    renameInput,
-    readOnly 
+    renameInput
 }) => {
     const renameForm = (
         <form onSubmit={(e) => {
             e.preventDefault();
             handleRenameGroup(renameInput.value);
         }} className="pull-left">
-            <input 
+            <input
                 className="form-control"
                 type="text"
                 ref={(ref) => {
@@ -38,7 +37,7 @@ const GroupHeader = ({
     );
 
     const renameToggleButton = (
-        <i onClick={() => handleToggleRename()} 
+        <i onClick={() => handleToggleRename()}
            className="group-panel__actions fa fa-pencil">
         </i>
     );
@@ -56,7 +55,7 @@ const GroupHeader = ({
                 {isRenaming ? renameForm : title}
             </aside>
             <aside className="pull-right">
-                {readOnly || isDefault ? null : actions}
+                {isReadOnly ? null : actions}
                 {showDownload ?
                     <i className="group-panel__actions fa fa-download" onClick={() => handleDownloadDocumentGroup()}></i>
                 : null}
@@ -68,15 +67,13 @@ const GroupHeader = ({
 GroupHeader.propTypes = {
     title: PropTypes.string,
     isRenaming: PropTypes.bool.isRequired,
-    isDefault: PropTypes.bool.isRequired,
+    isReadOnly: PropTypes.bool.isRequired,
     showDownload: PropTypes.bool.isRequired,
-    handleRenameGroup: PropTypes.func.isRequired, 
+    handleRenameGroup: PropTypes.func.isRequired,
     handleToggleRename: PropTypes.func.isRequired,
     handleRemoveGroup: PropTypes.func.isRequired,
     handleDownloadDocumentGroup: PropTypes.func.isRequired,
-    renameInput:PropTypes.any,
-    readOnly: PropTypes.bool
+    renameInput:PropTypes.any
 };
 
 export default GroupHeader;
-
