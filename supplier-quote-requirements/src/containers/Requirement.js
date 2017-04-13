@@ -50,6 +50,7 @@ class DisplayForm extends Component {
                         {requirement.text}
                     </div>
                     <CommentsForm showForm={requirement.displayCommentsForm}
+                        readOnly={readOnly}
                         updateSelection={this.updateSelection}
                         toggleCommentsFieldDisplay={this.toggleCommentsFieldDisplay}
                         comment={requirement.response ? requirement.response.comment : ''}
@@ -65,7 +66,7 @@ class DisplayForm extends Component {
                             response={requirement.response ? requirement.response.response : ''}>
                         </Responses>
                         {requirement.mandatory && <div className="text-info">
-                            * Non negotiable
+                            * Non-negotiable
                         </div>}
                     </div>
 

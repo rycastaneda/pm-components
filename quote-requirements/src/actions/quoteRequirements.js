@@ -1,5 +1,6 @@
 import {
     REQUIREMENTS_REQUESTED,
+    IS_SAVING,
     REQUIREMENTS_RECEIVED,
     REQUIREMENTS_RELATIONSHIP_UPDATED,
     IS_EDITING,
@@ -29,6 +30,7 @@ export function createItem(item) {
             type: TYPE,
             attributes: item.attributes
         };
+        dispatch(requirementsSaving(0, true));
         axios.post(`/${TYPE}`, { data: newItem })
             .then((response) => {
                 response = response.data;
@@ -40,7 +42,7 @@ export function createItem(item) {
                     id: response.data.id
                 });
                 dispatch(linkRequirementsToQuote(quoteId, searcherRequirements));
-
+                dispatch(requirementsSaving(0, false));
                 dispatch({
                     type: IS_CREATED,
                     id: response.data.id
@@ -88,7 +90,7 @@ function linkRequirementsToQuote(quoteId, requirements) {
 export function getItems(itemId, quoteId, categoryId = '', newCategory = false) {
     return (dispatch) => {
         // Request quote specific requirements
-        axios.get(`/searcher-quote-requests/${quoteId}/requested-items/${itemId}?include=searcherRequirements`)
+        axios.get(`/searcher-quote-requests/${quoteId}/requested-items/${itemId}?include=searcherRequirements&fields[searcher-requirements]=text,category_id,include,mandatory,quote_request_id,can_edit`)
             .then((response) => {
                 response = response.data;
                 const relationships = response.data.relationships || {};
@@ -101,7 +103,7 @@ export function getItems(itemId, quoteId, categoryId = '', newCategory = false) 
                 if (newCategory) {
                     let searcherRequirements = [];
                     // Make a request to get all quote requirements which belong to the user
-                    axios.get(`/${TYPE}?filters[category_id]=${categoryId}&filters[quote_id]=${quoteId}`)
+                    axios.get(`/${TYPE}?filters[category_id]=${categoryId}&filters[quote_id]=${quoteId}&fields[searcher-requirements]=text,category_id,include,mandatory,quote_request_id,can_edit`)
                         .then((list) => {
                             list = list.data;
                             dispatch(receiveRequirements(list.data));
@@ -144,10 +146,12 @@ export function updateItem(item) {
                 'quote_request_id': item.attributes.quote_request_id
             }
         };
+        dispatch(requirementsSaving(item.id, true));
 
         axios.patch(`/${TYPE}/${item.id}`, { data: updatedItem })
             .then((response) => {
                 response = response.data;
+                dispatch(requirementsSaving(response.data.id, false));
                 dispatch({
                     type: IS_SAVED,
                     id: response.data.id
@@ -329,6 +333,20 @@ export function receiveRequirements(items) {
         items: items
     };
 }
+/**
+ *
+ * @param {boolean} isSaving
+ * @returns {{type, isSaving: *}}
+ */
+export function requirementsSaving(id, isSaving) {
+    return {
+        type: IS_SAVING,
+        id,
+        isSaving
+    };
+}
+
+
 /**
  *
  * @returns {{type}}
