@@ -8,7 +8,7 @@ export default class Document extends Component {
             toggleDocument
         } = this.props;
 
-        const checked = document.requesteditems ? document.requesteditems.length : 0; // Add check if all items are checked, else set this to false
+        let checked = document.requesteditems ? document.requesteditems.length : 0; // Add check if all items are checked, else set this to false
 
         return (
             <tr className="group-table__document-row">
@@ -23,4 +23,3 @@ Document.propTypes = {
     document: PropTypes.object,
     toggleDocument: PropTypes.func
 };
-

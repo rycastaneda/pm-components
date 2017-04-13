@@ -9,7 +9,7 @@ class AddGroupForm extends Component {
         this.handleAddGroup = this.handleAddGroup.bind(this);
         // Set default value to input
         this.state = {
-            value: '', 
+            value: '',
             label: ''
         };
     }
@@ -33,15 +33,17 @@ class AddGroupForm extends Component {
         } = this.props;
 
         return readOnly ? null : (
-            <div>
-                <Select.Creatable
-                    value={this.state}
-                    onBlurResetsInput={false}
-                    arrowRenderer={() => <span>+</span>}
-                    placeholder="Add new group"
-                    options={options}
-                    onChange={this.handleAddGroup}
-                />
+            <div className="row">
+                <div className="col-md-4 pull-right">
+                    <Select.Creatable
+                        value={this.state.value}
+                        onBlurResetsInput={false}
+                        arrowRenderer={() => <span>+</span>}
+                        placeholder={`Add new group`}
+                        options={options}
+                        onChange={this.handleAddGroup}
+                    />
+                </div>
             </div>
         );
     }
@@ -55,7 +57,7 @@ AddGroupForm.propTypes = {
 };
 
 function mapStateToProps(state) {
-    const { 
+    const {
         documentGroups
     } = state;
 

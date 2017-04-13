@@ -1,5 +1,5 @@
 // globals Plantminer
-import { 
+import {
     DOCUMENTS_RECEIVING,
     DOCUMENT_TOGGLE,
     GROUP_TOGGLE,
@@ -27,23 +27,23 @@ export function documents(state = INITIAL_STATE, action) {
                 byId: normalized,
                 allIds: Object.keys(normalized)
             });
-        case DOCUMENT_TOGGLE: 
+        case DOCUMENT_TOGGLE:
             return {
                 ...state,
                 byId: {
                     ...state.byId,
                     [action.document.id]: {
                         ...state.byId[action.document.id],
-                        requesteditems: action.document.requesteditems && action.document.requesteditems.length 
+                        requesteditems: action.document.requesteditems && action.document.requesteditems.length
                         ? []
                         : action.items, // toggle requested items with all item ids
-                        saveditems: action.document.requesteditems && action.document.requesteditems.length 
+                        saveditems: action.document.requesteditems && action.document.requesteditems.length
                         ? []
-                        : action.items 
+                        : action.items
                     }
                 }
             };
-        case GROUP_TOGGLE: 
+        case GROUP_TOGGLE:
             action.group.documents.map((document) => {
                 state.byId[document.id].requesteditems = action.checked ? [] : action.items; // add requested items to relationships
             });
@@ -51,7 +51,7 @@ export function documents(state = INITIAL_STATE, action) {
             return {
                 ...state
             };
-        case REQUESTED_ITEM_TOGGLE: 
+        case REQUESTED_ITEM_TOGGLE:
             index = action.document.requesteditems.indexOf(action.item.id);
 
             if (index < 0) {
@@ -60,13 +60,22 @@ export function documents(state = INITIAL_STATE, action) {
                 action.document.requesteditems.splice(index, 1);
             }
 
+            index = action.document.saveditems.indexOf(action.item.id);
+
+            if (index < 0) {
+                action.document.saveditems.push(action.item.id);
+            } else {
+                action.document.saveditems.splice(index, 1);
+            }
+
             return {
                 ...state,
                 byId: {
                     ...state.byId,
                     [action.document.id]: {
                         ...state.byId[action.document.id],
-                        requesteditems: action.document.requesteditems // toggle requested item
+                        requesteditems: action.document.requesteditems,
+                        saveditems: action.document.saveditems // toggle requested item
                     }
                 }
 
@@ -86,4 +95,3 @@ export function documents(state = INITIAL_STATE, action) {
             return state;
     }
 }
-

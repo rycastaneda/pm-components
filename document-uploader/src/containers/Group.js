@@ -29,10 +29,10 @@ class Group extends Component {
     }
 
     handleRenameGroup(title) {
-        if (!title || title === this.props.group.title) { 
+        if (!title || title === this.props.group.title) {
             return;
         }
-        
+
         return this.props.dispatch(renamingGroup(this.props.group.id, title));
     }
 
@@ -67,14 +67,16 @@ class Group extends Component {
 
     render() {
         const {
-            group, 
+            group,
             readOnly
         } = this.props;
-        
+
+        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx'];
+
         return (
             <div className="db-form-section group-panel" >
                 {group.isUpdating ? <Loader /> : ''}
-                <GroupHeader 
+                <GroupHeader
                     isRenaming={group.isRenaming}
                     isDefault={!!group.default}
                     title={group.title}
@@ -86,9 +88,14 @@ class Group extends Component {
                     renameInput={this.renameInput}
                     readOnly={readOnly}/>
                 <div className="panel-body">
-                    <Dropzone className="dropzone" accept="application/pdf" onDrop={(files) => {
-                        this.handleDropDocuments(files);
-                    }}>
+                    <Dropzone className="dropzone"
+                        onDrop={(files) => {
+                            let filteredFiles = files.filter((file) => {
+                                let extension = file.name.split('.')[1];
+                                return !!~allowedExtenstions.indexOf(`.${extension}`)
+                            });
+                            this.handleDropDocuments(filteredFiles);
+                        }}>
                         <p className="text-center dropzone__placeholder"><i className="fa fa-cloud-upload"></i> Drop files here or click to select files.</p>
                     </Dropzone>
                     {group.documents && group.documents.length ?

@@ -1,5 +1,5 @@
-import { 
-    REQUESTED_ITEMS_FETCHING, 
+import {
+    REQUESTED_ITEMS_FETCHING,
     REQUESTED_ITEMS_RECEIVING,
     REQUESTED_ITEM_TOGGLE,
     OPEN_COPY_MODAL,
@@ -29,7 +29,7 @@ export function fetchItems(quote_id, addedItems) {
 
 export function toggleItem(document, item, checked) {
     return (dispatch) => {
-        const data = Object.assign({}, document, { 
+        const data = Object.assign({}, document, {
             relationships : {
                 'requesteditems': {
                     data: [{
@@ -41,7 +41,7 @@ export function toggleItem(document, item, checked) {
         });
 
         axios({
-            url: `searcher-quote-requests/${document.quote_id}/documents/${document.id}/relationships/requesteditems`, 
+            url: `searcher-quote-requests/${document.quote_id}/documents/${document.id}/relationships/requesteditems`,
             data: { data },
             method: checked ? 'DELETE' : 'PATCH'
         }).then((response) => {

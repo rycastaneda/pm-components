@@ -11,7 +11,7 @@ export default class CopyFromModal extends Component {
     render() {
         const {
             active,
-            items, 
+            items,
             isOpen,
             closeModal,
             selectItem
@@ -19,8 +19,8 @@ export default class CopyFromModal extends Component {
 
         const list = items.allIds.map((id, key) => {
             return (
-                <li 
-                    key={key} 
+                <li
+                    key={key}
                     onClick={() => selectItem(id)}
                     className={`list-group-item ${id === active ? 'active' : ''}`}>
                     {items.byId[id].title}
@@ -37,7 +37,7 @@ export default class CopyFromModal extends Component {
                 <ModalBody>
                     <ul className="requestedItems">
                         {list}
-                    </ul>            
+                    </ul>
                 </ModalBody>
             </Modal>
         );
@@ -51,4 +51,3 @@ CopyFromModal.propTypes = {
     closeModal: PropTypes.func,
     selectItem: PropTypes.func
 };
-

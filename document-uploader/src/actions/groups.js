@@ -32,7 +32,7 @@ export function fetchDocuments(quoteId) {
             quoteId
         });
 
-        axios.get(`/document-groups?filter[defaults]=1`)
+        axios.get(`/document-groups?filter[defaults]=1`, {})
             .then((defaults) => {
                 dispatch({ type: GROUPS_RECEIVING_DEFAULTS, defaults: defaults.data });
                 return axios.get(`/document-groups`);
@@ -235,7 +235,7 @@ export function dropDocuments(groupId, documents) {
 
                 data.append('document', document);
                 data.append('group_id', groupId);
-
+                
                 return axios.post('/searcher-quote-requests/' + quoteId + '/documents', data, {
                     onUploadProgress: function(progressEvent) {
                         var percentCompleted = progressEvent.loaded / progressEvent.total;
@@ -246,7 +246,7 @@ export function dropDocuments(groupId, documents) {
                     dispatch({
                         type: DOCUMENT_UPLOAD_SUCCESS,
                         groupId,
-                        documentId: document.id, 
+                        documentId: document.id,
                         newDocumentId: response.data.data.id
                     });
 
@@ -273,8 +273,8 @@ export function downloadDocument(groupId, documentId) {
         dispatch({ type: GROUP_TOGGLE_UPDATING, groupId });
 
         downloadBlob(
-            axios.defaults.baseURL + `/searcher-quote-requests/${quoteId}/documents/${documentId}`, 
-            filename, 
+            axios.defaults.baseURL + `/searcher-quote-requests/${quoteId}/documents/${documentId}`,
+            filename,
             () => {
                 dispatch({ type: GROUP_TOGGLE_UPDATING, groupId });
             }
@@ -290,7 +290,7 @@ export function downloadDocumentGroup(groupId) {
         dispatch({ type: GROUP_TOGGLE_UPDATING, groupId });
 
         downloadBlob(
-            axios.defaults.baseURL + `/searcher-quote-requests/${quoteId}/documents?filters[group_id]=${groupId}`, 
+            axios.defaults.baseURL + `/searcher-quote-requests/${quoteId}/documents?filters[group_id]=${groupId}`,
             title.toLowerCase().split(' ').join('-'),
             () => {
                 dispatch({ type: GROUP_TOGGLE_UPDATING, groupId });
@@ -306,7 +306,7 @@ export function downloadDocumentGroups() {
         dispatch({ type: GROUPS_DOWNLOAD_STARTED });
 
         downloadBlob(
-            axios.defaults.baseURL + `/searcher-quote-requests/${quoteId}/documents`, 
+            axios.defaults.baseURL + `/searcher-quote-requests/${quoteId}/documents`,
             `SearcherQR-${quoteId}`,
             () => dispatch({ type: GROUPS_DOWNLOADED })
         );
@@ -315,21 +315,30 @@ export function downloadDocumentGroups() {
 
 
 function downloadBlob(url, filename, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'blob';
-    xhr.onload = function() {
+    var downloader = axios.create({
+        baseURL: url
+    });
+    downloader.defaults.headers.common['Authorization'] = axios.defaults.headers.common['Authorization'];
+    downloader.request({
+        method:'get',
+        url,
+        data:{},
+        responseType:'blob',
+        headers: {
+            'Content-Type': 'application/octet-stream'
+        }
+    }).then((response) => {
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(response.data, filename);
+            return callback();
+        }
+
         var a = document.createElement('a');
-        a.href = window.URL.createObjectURL(xhr.response); // xhr.response is a blob
+        a.href = window.URL.createObjectURL(response.data); // xhr.response is a blob
         a.download = filename; // Set the file name.
         a.style.display = 'none';
         document.body.appendChild(a);
         a.click();
         callback();
-    };
-    
-    xhr.open('GET', url);
-    xhr.setRequestHeader('accept', axios.defaults.headers.common['Accept']);
-    xhr.setRequestHeader('authorization', axios.defaults.headers.common['Authorization']);
-    xhr.setRequestHeader('content-type', 'application/octet-stream');
-    xhr.send();
+    });
 }
