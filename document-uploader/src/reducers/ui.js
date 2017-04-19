@@ -19,7 +19,10 @@ export function ui(state = INITIAL_STATE, action) {
             return Object.assign({}, state, {
                 error: action.message || 'Something went wrong. Please try again later.'
             });
+
         default:
-            return state;
+            return Object.assign({}, state, {
+                error: ''
+            });
     }
 }

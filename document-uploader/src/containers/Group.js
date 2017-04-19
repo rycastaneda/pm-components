@@ -26,6 +26,9 @@ class Group extends Component {
         this.handleRemoveDocument = this.handleRemoveDocument.bind(this);
         this.handleDownloadDocument = this.handleDownloadDocument.bind(this);
         this.renameInput = null;
+        this.state = {
+            error: ''
+        };
     }
 
     handleRenameGroup(title) {
@@ -88,10 +91,30 @@ class Group extends Component {
                 <div className="panel-body">
                     <Dropzone className="dropzone"
                         onDrop={(files) => {
+                            let invalid = [];
+
                             let filteredFiles = files.filter((file) => {
                                 let extension = file.name.split('.').pop();
+
+                                if (!~allowedExtenstions.indexOf(`.${extension}`)) {
+                                    invalid.push(file.name);
+                                }
+
                                 return !!~allowedExtenstions.indexOf(`.${extension}`);
                             });
+
+                            if (filteredFiles.length !== files.length) {
+                                this.setState({
+                                    error: invalid.join(', ') + ' - file type not supported'
+                                });
+
+                                return;
+                            }
+
+                            this.setState({
+                                error: ''
+                            });
+
                             this.handleDropDocuments(filteredFiles);
                         }}>
                         <p className="text-center dropzone__placeholder"><i className="fa fa-cloud-upload"></i> Drop files here or click to select files.</p>
@@ -102,6 +125,9 @@ class Group extends Component {
                         preview={false}
                         onFileRemove={this.handleRemoveDocument}
                         onDownloadFile={this.handleDownloadDocument}/>
+                    : null}
+                    {this.state.error ?
+                        <div className="bs-callout bs-callout-danger">{this.state.error}</div>
                     : null}
                 </div>
             </div>
