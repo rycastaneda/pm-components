@@ -60,7 +60,7 @@ class DocumentSelector extends Component {
 
 
 
-        const showCopyFrom = this.props.groups.length >= 2 && !!this.props.requestedItems.allIds.filter((id) => {
+        const showCopyFrom = !!this.props.groups.length && !!this.props.requestedItems.allIds.filter((id) => {
             return !!~['hire', 'trade'].indexOf(this.props.requestedItems.byId[id].service.toLowerCase());
         }).length;
 
