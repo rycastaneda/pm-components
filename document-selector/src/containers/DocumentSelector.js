@@ -58,8 +58,10 @@ class DocumentSelector extends Component {
             </div>
         ) : null;
 
-        const showCopyFrom = !!this.props.groups.length && !!this.props.requestedItems.allIds.filter((id) => {
-            return this.props.requestedItems.byId[id].service.toLowerCase() === 'hire';
+
+
+        const showCopyFrom = this.props.groups.length >= 2 && !!this.props.requestedItems.allIds.filter((id) => {
+            return !!~['hire', 'trade'].indexOf(this.props.requestedItems.byId[id].service.toLowerCase());
         }).length;
 
         return (
