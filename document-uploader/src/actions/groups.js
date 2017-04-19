@@ -94,13 +94,15 @@ export function enableGroup(groupId) {
 }
 
 export function removeGroup(groupId) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         dispatch({
             type: GROUP_TOGGLE_UPDATING,
             groupId
         });
 
-        axios.delete(`/document-groups/${groupId}`).then(() => {
+        const quoteId = getState().ui.quoteId;
+
+        axios.delete(`/document-groups/${groupId}?quoteId=${quoteId}`).then(() => {
             return dispatch({
                 type: GROUP_REMOVED,
                 groupId
