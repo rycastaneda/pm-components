@@ -86,8 +86,24 @@ export function documentGroups(state = INITIAL_STATE, action) {
             return Object.assign({}, state);
         case DOCUMENTS_RECEIVING:
             action.documents.data.map((document) => {
-                state.byId[document.relationships.groups.data.id].showGroup = true;
-                state.byId[document.relationships.groups.data.id].documentIds.push(document.id);
+                // If document group is not existent it means document group does not belong to user but still should be added due to organizations
+                if (!state.byId[document.relationships.groups.data.id]) {
+                    let groupId = document.relationships.groups.data.id;
+                    let group = action.documents.included.filter(include => include.id === groupId && include.type === 'document-group').pop();
+                    state.byId[groupId] = Object.assign({}, group.attributes, {
+                        id: groupId,
+                        isRenaming: false,
+                        isUpdating: false,
+                        isReadOnly: false,
+                        showGroup: true,
+                        documentIds: [document.id]
+                    });
+
+                    state.allIds.push(groupId);
+                } else {
+                    state.byId[document.relationships.groups.data.id].showGroup = true;
+                    state.byId[document.relationships.groups.data.id].documentIds.push(document.id);
+                }
             });
 
             return Object.assign({}, state);

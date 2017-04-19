@@ -74,7 +74,7 @@ class Group extends Component {
         } = this.props;
 
         const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx'];
-
+        
         return (
             <div className="db-form-section group-panel" >
                 {group.isUpdating ? <Loader /> : ''}
