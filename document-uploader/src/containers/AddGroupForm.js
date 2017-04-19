@@ -38,10 +38,12 @@ class AddGroupForm extends Component {
                     <Select.Creatable
                         value={this.state.value}
                         onBlurResetsInput={false}
+                        promptTextCreator={label => `Create group ${label}` }
                         arrowRenderer={() => <span>+</span>}
                         placeholder={`Add new group`}
                         options={options}
                         onChange={this.handleAddGroup}
+                        clearable={false}
                     />
                 </div>
             </div>

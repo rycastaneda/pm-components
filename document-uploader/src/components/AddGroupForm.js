@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Select from 'react-select';
 
-const AddGroupForm = ({ 
+const AddGroupForm = ({
     addGroupInput,
     options,
     onAddGroup
@@ -14,6 +14,7 @@ const AddGroupForm = ({
                     addGroupInput && addGroupInput.select.focus();
                 }}
                 onBlurResetsInput={false}
+                promptTextCreator={label => `Create group ${label}` }
                 arrowRenderer={() => <span>+</span>}
                 placeholder="Add new group"
                 options={options.map((option) => {
