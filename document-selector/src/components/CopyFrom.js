@@ -6,12 +6,14 @@ export default class CopyFromModal extends Component {
         const {
             items,
             active,
-            selectItem
+            selectItem,
+            requestedItem
         } = this.props;
 
-        const options = items.allIds.map((id) => {
+        // filter items except this item
+        const options = items.allIds.filter(itemId => +itemId !== requestedItem).map((id) => {
             return {
-                label: items.byId[id].title,
+                label: 'Copy from ' + items.byId[id].title,
                 value: id
             };
         });
@@ -28,7 +30,7 @@ export default class CopyFromModal extends Component {
             <div>
                 <Select
                     value={active}
-                    placeholder={`Copy From`}
+                    placeholder={`Select...`}
                     options={options}
                     onChange={selectItem}
                 />
@@ -38,6 +40,7 @@ export default class CopyFromModal extends Component {
 }
 
 CopyFromModal.propTypes = {
+    requestedItem: PropTypes.number,
     items: PropTypes.object,
     active: PropTypes.any,
     selectItem: PropTypes.func

@@ -48,21 +48,17 @@ class DocumentSelector extends Component {
         const copyFrom = this.props.requestedItems.allIds.length ? (
             <div>
                 <div className="col-xs-4 mar-btm-sm mar-top-sm">
-                    <label className="mar-top-sm">Copy From Item</label>
+                    <label className="mar-top-sm">Select</label>
                 </div>
                 <div className="col-xs-8 mar-btm-sm">
                     <CopyFrom items={this.props.requestedItems}
+                        requestedItem={this.requested_item_id}
                         active={this.props.ui.selectedItem}
                         selectItem={this.handleSelectItem}/>
                 </div>
             </div>
         ) : null;
 
-
-
-        const showCopyFrom = !!this.props.groups.length && !!this.props.requestedItems.allIds.filter((id) => {
-            return !!~['hire', 'trade'].indexOf(this.props.requestedItems.byId[id].service.toLowerCase());
-        }).length;
 
         return (
             document.querySelector('[data-all-items]') ?
@@ -72,7 +68,7 @@ class DocumentSelector extends Component {
                     type="hidden"
                     name={this.field}
                     value={this.props.addedDocuments.join(',')}/>
-                {showCopyFrom ? copyFrom :null}
+                {copyFrom}
 
                 <DocumentGroupSelector
                     quote_id={this.quote_id}
