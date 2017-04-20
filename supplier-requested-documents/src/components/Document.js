@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import Progress from './Progress';
 
-class Document extends Component { 
+class Document extends Component {
     render() {
         const {
             document,
@@ -12,13 +12,13 @@ class Document extends Component {
         } = this.props;
 
         return (
-            <li className={`list-group-item ${document.status === 'FAILED' && 'bs-callout-danger'}`}>
-                {document.progress !== 100 
+            <li className={`list-group-item filelist__item ${document.status === 'FAILED' && 'bs-callout-danger'}`}>
+                {document.progress !== 100
                     ? <Progress progress={document.progress} status={document.status}></Progress>
                     : null
                 }
-                <span className="pull-left">
-                    {document.status === 'SUCCESS' ? 
+                <span className="pull-left filelist__file">
+                    {document.status === 'SUCCESS' ?
                         <i className="fa fa-download mar-r-sm" onClick={() => downloadDocument(document.id, document.name)}></i>
                     : null }
                     {`${document.name} ${document.status === 'FAILED' && ' - failed to upload. Please try again later.' || ''}`}
@@ -41,4 +41,3 @@ Document.propTypes = {
 };
 
 export default Document;
-

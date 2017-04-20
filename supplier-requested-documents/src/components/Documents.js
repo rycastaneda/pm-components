@@ -1,13 +1,13 @@
 import React, { PropTypes, Component } from 'react';
 import Document from './Document';
 
-class Documents extends Component { 
+class Documents extends Component {
     render() {
         const documents = this.props.documents.map((document, key) => {
-            return <Document 
+            return <Document
                         key={key}
-                        document={document} 
-                        requirementId={this.props.requirementId} 
+                        document={document}
+                        requirementId={this.props.requirementId}
                         readOnly={this.props.readOnly}
                         downloadDocument={this.props.downloadDocument}
                         onRemoveDocument={this.props.onRemoveDocument}>
@@ -15,9 +15,9 @@ class Documents extends Component {
         });
 
         return (
-            <div>
-                {documents.length 
-                ? documents 
+            <div className="filelist">
+                {documents.length
+                ? documents
                 : null }
             </div>
         );
@@ -33,4 +33,3 @@ Documents.propTypes = {
 };
 
 export default Documents;
-
