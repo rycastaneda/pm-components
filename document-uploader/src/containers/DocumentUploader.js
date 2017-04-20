@@ -101,7 +101,7 @@ class DocumentGroup extends Component {
 
         return (
             <div className="group-panel">
-                <div className="row container text-center">
+                <div className="row container text-right">
                     {documents.length ?
                         <button className="db-function" onClick={() => {
                             this.handleDownloadDocumentGroups();
