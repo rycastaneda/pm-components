@@ -12,22 +12,22 @@ class Document extends Component {
         } = this.props;
 
         return (
-            <li className={`list-group-item filelist__item ${document.status === 'FAILED' && 'bs-callout-danger'}`}>
+            <div className={`filelist__item mar-top-tiny ${document.status === 'FAILED' && 'bs-callout-danger'}`}>
                 {document.progress !== 100
                     ? <Progress progress={document.progress} status={document.status}></Progress>
                     : null
                 }
-                <span className="pull-left filelist__file">
+                <a className="pull-left filelist__file">
                     {document.status === 'SUCCESS' ?
                         <i className="fa fa-download mar-r-sm" onClick={() => downloadDocument(document.id, document.name)}></i>
                     : null }
                     {`${document.name} ${document.status === 'FAILED' && ' - failed to upload. Please try again later.' || ''}`}
-                </span>
+                </a>
                 {!readOnly ? <span className="pull-right">
                     <i className="fa fa-times" onClick={() => onRemoveDocument(requirementId, document.id)}></i>
                 </span> : null}
                 <div className="clearfix"></div>
-            </li>
+            </div>
         );
     }
 }
