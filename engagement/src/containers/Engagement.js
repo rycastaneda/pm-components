@@ -37,9 +37,15 @@ class Engagement extends Component {
             this.props.dispatch(updateMatchedItemId(riqiId));
             this.props.dispatch(loadEngagements(quoteId));
 
-            if (rqId && riqiId) {
+            if (this.props.itemsReducer.spot === 'supplier-item') {
                 this.props.dispatch(loadItemDetails(riqiId, rqId));
             } else {
+                const engagementsUpdatedField = document.getElementById('engagements_updated');
+                engagementsUpdatedField.addEventListener('change', (event) => {
+                    if (event.target.value !== '0') {
+                        this.props.dispatch(loadEngagements(quoteId));
+                    }
+                });
                 this.props.dispatch(loadItems(quoteId));
             }
         }
