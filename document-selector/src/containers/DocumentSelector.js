@@ -59,6 +59,7 @@ class DocumentSelector extends Component {
             </div>
         ) : null;
 
+        const showCopyFrom = !!this.props.groups.length;
 
         return (
             document.querySelector('[data-all-items]') ?
@@ -68,7 +69,7 @@ class DocumentSelector extends Component {
                     type="hidden"
                     name={this.field}
                     value={this.props.addedDocuments.join(',')}/>
-                {copyFrom}
+                {showCopyFrom ? copyFrom : null}
 
                 <DocumentGroupSelector
                     quote_id={this.quote_id}

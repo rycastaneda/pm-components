@@ -31,6 +31,7 @@ export default class CopyFromModal extends Component {
                 <Select
                     value={active}
                     placeholder={`Select...`}
+                    clearable={false}
                     options={options}
                     onChange={selectItem}
                 />
