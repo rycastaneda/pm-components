@@ -68,7 +68,6 @@ class EngagementRow extends Component {
                         <div key={pricing.id}> ${this.convertToCurrency(pricing.attributes.rate_value)} ({pricing.pricingOption.attributes.title} Rate)
                          x {pricing.attributes.unit} Estimated Units/QTY</div>
                     )}
-                    Quantity: {engagement.matchedItem.attributes.quantity}
                     <br /><br />
                     {engagement.attributes.po_number ?
                         <span>Work Order: {engagement.attributes.po_number}<br /></span> : null
