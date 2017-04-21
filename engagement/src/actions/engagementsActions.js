@@ -18,7 +18,7 @@ import axios from 'axios';
 export function loadEngagements(quoteId) {
     return (dispatch) => {
         dispatch({ type: REQUEST_STARTED });
-        axios.get(`/searcher-quote-requests/${quoteId}/engagements?include=matchedItem.matchedSupplier,matchedItem.requestedItem&fields[engagements]=status,engagement_text,item_id,po_number,po_file_id,po_value,auto_decline_flag,pre_start_date,created_at,updated_at,can_cancel`)
+        axios.get(`/searcher-quote-requests/${quoteId}/engagements?include=matchedItem.matchedSupplier,matchedItem.requestedItem,item.category&fields[engagements]=status,engagement_text,item_id,po_number,po_file_id,po_value,auto_decline_flag,pre_start_date,created_at,updated_at,can_cancel&fields[categories]=title`)
         .then((response) => {
             // response.data = { 'data':[{ 'type':'engagements', 'id':'33', 'attributes':{ 'status':1, 'po_number':'W55392', 'po_value':'0', 'pre_start_date':'2017-03-15'  }, 'relationships':{ 'user':{ 'data':{ 'type':'user', 'id':'1' }  }, 'engagementDetails':{ 'data':[{ 'type':'engagement-details', 'id':'39' }, { 'type':'engagement-details', 'id':'40' }, { 'type':'engagement-details', 'id':'41' }]  }, 'matchedItem':{ 'data':{ 'type':'matched-item', 'id':'3704028' } } } }], 'included':[{ 'type':'pricing-option', 'id':'9', 'attributes':{ 'title':'Mobilisation Total' } }, { 'type':'pricing-option', 'id':'1', 'attributes':{ 'title':'Dry Hourly' } }, { 'type':'pricing-option', 'id':'11', 'attributes':{ 'title':'Demobilisation Total' } }, { 'type':'supplier', 'id':'540890', 'attributes':{ 'title':'Coates Hire' } }, { 'type':'requested-item', 'id':'64747', 'attributes':{ 'title':'Wheeled Skid Steer' } }, { 'type':'user', 'id':'1', 'attributes':{ 'first_name':'Troy', 'last_name':'Redden', 'mobile':'07 4130 4550', 'is_organisation_admin':1, 'position':'', 'staff_company':null, 'staff_phone':'07 4130 4550', 'state_id':10424 } }, { 'type':'engagement-details', 'id':'39', 'attributes':{ 'rate_value':'110', 'unit':1  }, 'relationships':{ 'pricingOption':{ 'data':{ 'type':'pricing-option', 'id':'9' } } } }, { 'type':'engagement-details', 'id':'40', 'attributes':{ 'rate_value':'60', 'unit':6 }, 'relationships':{ 'pricingOption':{ 'data':{ 'type':'pricing-option', 'id':'1' } } } }, { 'type':'engagement-details', 'id':'41', 'attributes':{ 'rate_value':'110', 'unit':1 }, 'relationships':{ 'pricingOption':{ 'data':{ 'type':'pricing-option', 'id':'11' } } } }, { 'type':'matched-item', 'id':'3704028', 'attributes':{ 'quantity':1, 'title':'12005 - Skid Steer Loader - iii - Large'  }, 'relationships':{ 'matchedSupplier':{ 'data':[{ 'type':'supplier', 'id':'540890' }] }, 'requestedItem':{ 'data':{ 'type':'requested-item', 'id':'64747' } } } }] };
             dispatch(loadEngagementsSuccess(response.data));
@@ -44,10 +44,22 @@ function getSupplier(included, matchedItemId) {
     return supplierDetails;
 }
 
+function getCategory(included, categoryId) {
+    let category = included.filter(function(i) {
+        return i.id === categoryId;
+    }).reduce((a, b) => b, {});
+
+    let categoryDetails = included.filter(i =>
+        i.type === 'category' && i.id === category.relationships.category.data.id
+    ).reduce(a => a);
+    return categoryDetails;
+}
+
 export function loadEngagementsSuccess(engagements) {
     const pendingEngagements = engagements.data
         .filter(i => i.attributes.status === 1)
         .map((engagement) => {
+            let itemId = engagement.relationships.item.data.id;
             let matchedItemId = engagement.relationships.matchedItem.data.id;
             let userId = engagement.relationships.staff && engagement.relationships.staff.data.id || engagement.relationships.user && engagement.relationships.user.data.id;
             let engagementDetailIds = engagement.relationships.engagementDetails.data.length ?
@@ -88,12 +100,14 @@ export function loadEngagementsSuccess(engagements) {
                     .map((user) => {
                         return user.attributes.first_name + ' ' + user.attributes.last_name;
                     }).reduce(a => a),
-                'supplier': getSupplier(engagements.included, matchedItemId)
+                'supplier': getSupplier(engagements.included, matchedItemId),
+                'category': getCategory(engagements.included, itemId)
             };
         });
 
     const sentEngagements = engagements.data.filter(i => i.attributes.status === 5 || i.attributes.status === 2)
         .map((engagement) => {
+            let itemId = engagement.relationships.item.data.id;
             let matchedItemId = engagement.relationships.matchedItem.data.id;
             let engagementDetailIds = engagement.relationships.engagementDetails.data.length ?
                 engagement.relationships.engagementDetails.data.map(engagementDetail => engagementDetail.id) : null;
@@ -134,7 +148,8 @@ export function loadEngagementsSuccess(engagements) {
                     .map((user) => {
                         return user.attributes.first_name + ' ' + user.attributes.last_name;
                     }).reduce(a => a),
-                'supplier': getSupplier(engagements.included, matchedItemId)
+                'supplier': getSupplier(engagements.included, matchedItemId),
+                'category': getCategory(engagements.included, itemId)
             };
         });
 

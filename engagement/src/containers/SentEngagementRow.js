@@ -48,8 +48,9 @@ class SentEngagementRow extends Component {
             <div className="row engagement-row">
                 <div className="col-md-7 separator-vertical">
                     Engagement:<strong> #{engagement.id}</strong> <br />
-                    <strong>{engagement.supplier.attributes.title}</strong> <br />
-                    {engagement.matchedItem.attributes.title}<br /><br />
+                    Requested Category:<strong> {engagement.category.attributes.title}</strong> <br /><br />
+                    Supplier: <strong>{engagement.supplier.attributes.title}</strong> <br />
+                    Service Name: <strong>{engagement.matchedItem.attributes.title}</strong><br /><br />
                     Pricing:
                     {engagement.engagementDetails.map(pricing =>
                         <div key={pricing.id}> ${this.convertToCurrency(pricing.attributes.rate_value)} ({pricing.pricingOption.attributes.title} Rate)
@@ -74,7 +75,7 @@ class SentEngagementRow extends Component {
                     {engagement.attributes.showEngagementText ? <div>{engagement.attributes.engagement_text}</div> : null}
                 </div>
                 <div className="col-md-3 text-center">
-                    <div className="txt-small">Amount Awarded Total (ex GST)</div>
+                    <div className="txt-small">Estimated Total (ex GST)</div>
                     <div className="txt-large pad-top-sm">
                         ${this.engagementTotal(engagement)}
                     </div>
