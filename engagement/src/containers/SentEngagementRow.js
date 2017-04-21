@@ -2,7 +2,8 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import IconButton from '../components/IconButton';
-import { toggleEngagementText, cancelEngagement } from '../actions/engagementsActions';
+import { toggleEngagementText, activateCancelEngagement } from '../actions/engagementsActions';
+import { showModal } from '../actions/modalActions';
 
 class SentEngagementRow extends Component {
 
@@ -10,8 +11,8 @@ class SentEngagementRow extends Component {
         super(props);
         this.convertToCurrency = this.convertToCurrency.bind(this);
         this.engagementTotal = this.engagementTotal.bind(this);
-        this.handleCancelEngagement = this.handleCancelEngagement.bind(this);
         this.toggleTextVisibility = this.toggleTextVisibility.bind(this);
+        this.showModal = this.showModal.bind(this);
     }
 
     toggleTextVisibility() {
@@ -35,13 +36,9 @@ class SentEngagementRow extends Component {
         return this.convertToCurrency(total);
     }
 
-    handleCancelEngagement() {
-        const engagement = this.props.engagement,
-            requestedItemId = engagement.requestedItem.id,
-            matchedItemId = engagement.matchedItem.id,
-            engagementId = engagement.id;
-
-        return this.props.dispatch(cancelEngagement(requestedItemId, matchedItemId, engagementId));
+    showModal() {
+        this.props.dispatch(activateCancelEngagement(this.props.engagement));
+        return this.props.dispatch(showModal());
     }
 
     render() {
@@ -90,7 +87,7 @@ class SentEngagementRow extends Component {
                     <IconButton
                         title="Cancel"
                         classNames="db-function"
-                        onClick={this.handleCancelEngagement}
+                        onClick={this.showModal}
                         iconClass="fa fa-ban"
                     /> : null }
                 </div>

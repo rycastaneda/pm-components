@@ -9,7 +9,8 @@ import {
     ENGAGEMENT_DELETED,
     ENGAGEMENT_CANCELLED,
     TOGGLE_ENGAGEMENT_TEXT,
-    UPDATE_NOTIFY_ALL
+    UPDATE_NOTIFY_ALL,
+    ACTIVATE_CANCEL_ENGAGEMENT
 } from '../constants/ActionTypes';
 
 import axios from 'axios';
@@ -236,6 +237,12 @@ export function toggleEngagementText(engagementId) {
 export function updateNotifyAll(notifyAll) {
     return (dispatch) => {
         dispatch({ type: UPDATE_NOTIFY_ALL, notifyAll });
+    };
+}
+
+export function activateCancelEngagement(engagement) {
+    return (dispatch) => {
+        dispatch({ type: ACTIVATE_CANCEL_ENGAGEMENT, engagement });
     };
 }
 

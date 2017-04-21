@@ -1,16 +1,36 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import SentEngagementRow from './SentEngagementRow';
+import ConfirmModal from './ConfirmModal';
+import { hideModal } from '../actions/modalActions';
+import { activateCancelEngagement, cancelEngagement } from '../actions/engagementsActions';
 
 class SentEngagements extends Component {
     constructor(props) {
         super(props);
         this.sentEngagementsTotal = this.sentEngagementsTotal.bind(this);
         this.convertToCurrency = this.convertToCurrency.bind(this);
+        this.handleCancelEngagement = this.handleCancelEngagement.bind(this);
+        this.hideModal = this.hideModal.bind(this);
     }
 
     convertToCurrency(value) {
         return parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+    }
+
+    hideModal() {
+        this.props.dispatch(activateCancelEngagement({}));
+        return this.props.dispatch(hideModal());
+    }
+
+    handleCancelEngagement() {
+        const engagement = this.props.engagementsReducer.activateCancelEngagement,
+            requestedItemId = engagement.requestedItem.id,
+            matchedItemId = engagement.matchedItem.id,
+            engagementId = engagement.id;
+
+        this.props.dispatch(hideModal());
+        return this.props.dispatch(cancelEngagement(requestedItemId, matchedItemId, engagementId));
     }
 
     sentEngagementsTotal(engagements) {
@@ -47,6 +67,12 @@ class SentEngagements extends Component {
                             <span className="txt-large">${this.sentEngagementsTotal(sentEngagements)}</span>
                         </div>
                     </div>
+                    <ConfirmModal
+                        title="Cancel Engagement"
+                        message="Cancelling this engagement will notify the supplier not to supply these services. This action cannot be undone. Are you sure you want to continue?"
+                        onConfirm={this.handleCancelEngagement}
+                        onCancel={this.hideModal}>
+                    </ConfirmModal>
                 </div> : null
                 }
             </div>

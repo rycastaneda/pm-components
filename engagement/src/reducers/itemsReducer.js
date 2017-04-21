@@ -25,6 +25,7 @@ import {
     UPDATE_ENGAGEMENT_TEXT,
     UPDATED_ENGAGEMENT,
     UPDATE_NOTIFY_ALL,
+    ACTIVATE_CANCEL_ENGAGEMENT,
 
     RECEIVE_ENGAGEMENTS,
     ENGAGEMENT_DELETED,
@@ -53,6 +54,7 @@ const INITIAL_ITEM_DETAILS_STATE = {
 const INITIAL_ENGAGEMENTS_STATE = {
     pendingEngagements: [],
     sentEngagements: [],
+    activateCancelEngagement: {},
     notifyAll: false
 };
 
@@ -141,6 +143,10 @@ export function engagementsReducer(state = INITIAL_ENGAGEMENTS_STATE, action) {
         case UPDATE_NOTIFY_ALL:
             return Object.assign({}, state, {
                 notifyAll: action.notifyAll
+            });
+        case ACTIVATE_CANCEL_ENGAGEMENT:
+            return Object.assign({}, state, {
+                activateCancelEngagement: action.engagement
             });
         default:
             return state;
