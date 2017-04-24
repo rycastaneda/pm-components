@@ -17,7 +17,9 @@ import {
     UPDATE_ENGAGEMENT_TEXT,
     UPDATED_ENGAGEMENT,
     UPDATED_ENGAGEMENT_DETAILS,
-    UPDATED_UNIT
+    ADD_ENGAGEMENT_DETAILS,
+    UPDATED_UNIT,
+    ADD_RELATIONSHIPS
 } from '../constants/ActionTypes';
 
 import axios from 'axios';
@@ -44,22 +46,31 @@ export function loadItemDetails(matchedItemId, requestedItemId, engagement) {
                         return i;
                     }
                 }).map(function(pricingOption) {
-                    let pricingOptionUpdated = { ...pricingOption,
-                        attributes: { ...pricingOption.attributes,
-                            'value': engagement.engagementDetails[0].attributes.rate_value,
-                            'unit': engagement.engagementDetails[0].attributes.unit,
-                            'oldUnit': engagement.engagementDetails[0].attributes.unit,
-                            'selected': true
-                        },
-                        'relationships': {
-                            'engagement-details': {
-                                'data': {
-                                    'type': 'engagement-details',
-                                    'id': engagement.engagementDetails[0].id
+                    let pricingOptionUpdated = {};
+                    let engagementDetail = engagement.engagementDetails.filter(i => pricingOption.id === i.pricingOption.id);
+                    pricingOptionUpdated = engagementDetail.length ?
+                        { ...pricingOption,
+                            attributes: { ...pricingOption.attributes,
+                                'value': engagementDetail[0].attributes.rate_value,
+                                'unit': engagementDetail[0].attributes.unit,
+                                'oldUnit': engagementDetail[0].attributes.unit,
+                                'selected': true
+                            },
+                            'relationships': {
+                                'engagement-details': {
+                                    'data': {
+                                        'type': 'engagement-details',
+                                        'id': engagementDetail[0].id
+                                    }
                                 }
                             }
-                        }
-                    };
+                        } :
+                        { ...pricingOption,
+                            attributes: { ...pricingOption.attributes,
+                                'oldUnit': pricingOption.attributes.unit || '',
+                                'selected': false
+                            }
+                        };
                     return pricingOptionUpdated;
                 });
             } else {
@@ -235,7 +246,7 @@ function isValidEngagement(dispatch, currentEngagement, pricingOptions, engageme
     if (pricingOptions && !pricing.length) {
         dispatch({
             type: VALIDATION_ERROR,
-            message: 'Please provide values for "Estimated Units/QTY"'
+            message: 'Please provide values for "Estimated Unit(s)"'
         });
         return false;
     }
@@ -471,8 +482,90 @@ export function handleEngagementUpdate() {
     };
 }
 
-export function handleEngagementDetailUpdate(pricingOption, value) {
-    const valueChanged = pricingOption.attributes.oldUnit !== parseInt(value);
+export function handleEngagementDetailCreate(pricingOption, unit) {
+    const valueChanged = +pricingOption.attributes.oldUnit !== +unit;
+
+    return (dispatch, getState) => {
+        const currentEngagement = getState().itemDetailsReducer.currentEngagement,
+            engagementId = currentEngagement.id;
+
+        if (engagementId && valueChanged) {
+            const requestedItemId = currentEngagement.relationships['requested-items'].data.id,
+                matchedItemId = currentEngagement.relationships['matched-items'].data.id,
+                pricingOptions = getState().itemDetailsReducer.pricingOptions,
+                quoteId = getState().itemsReducer.quoteId;
+
+
+            if (!isValidEngagement(dispatch, null, pricingOptions)) {
+                return;
+            }
+
+            let engagementDetail = {
+                'type': 'engagement-details',
+                'attributes': {
+                    'rate_value': pricingOption.attributes.value,
+                    'unit': pricingOption.attributes.unit
+                },
+                'relationships': {
+                    'engagements': {
+                        'data': {
+                            'type': 'engagements',
+                            'id': engagementId
+                        }
+                    },
+                    'pricing-options': {
+                        'data': {
+                            'type': 'pricing-options',
+                            'id': pricingOption.id
+                        }
+                    }
+                }
+            };
+
+            dispatch({ type: REQUEST_STARTED });
+            axios.post(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${engagementId}/engagement-details`, { data: engagementDetail })
+            .then((response) => {
+                engagementDetail = {
+                    'type': 'engagement-details',
+                    'id':response.data.data.id,
+                    'attributes': {
+                        'pricing_option': pricingOption.attributes.title,
+                        'rate_value': pricingOption.attributes.value,
+                        'unit': pricingOption.attributes.unit
+                    },
+                    'pricingOption': pricingOption
+                };
+                dispatch ({
+                    type: ADD_ENGAGEMENT_DETAILS,
+                    engagementDetail,
+                    engagementId
+                });
+                dispatch({
+                    type: ADD_RELATIONSHIPS,
+                    id: pricingOption.id,
+                    'engagement-details':{
+                        'data': {
+                            'type': 'engagement-details',
+                            'id': engagementDetail.id
+                        }
+                    }
+                });
+                dispatch({
+                    type: UPDATED_UNIT,
+                    id: pricingOption.id,
+                    oldUnit: unit
+                });
+                dispatch({ type: REQUEST_COMPLETED });
+            }).catch((error) => {
+                dispatch({ type: REQUEST_COMPLETED });
+                dispatch({ type: REQUEST_ERROR, error: error.response.data });
+            });
+        }
+    };
+}
+
+export function handleEngagementDetailUpdate(pricingOption, unit) {
+    const valueChanged = +pricingOption.attributes.oldUnit !== +unit;
 
     return (dispatch, getState) => {
         const currentEngagement = getState().itemDetailsReducer.currentEngagement,
@@ -490,13 +583,13 @@ export function handleEngagementDetailUpdate(pricingOption, value) {
                 return;
             }
 
-            value = (value === '') ? null : value;
+            unit = (unit === '') ? 0 : unit;
 
             const engagementDetails = {
                 'type': 'engagement-details',
                 'id': engagementDetailId,
                 'attributes': {
-                    'unit': value
+                    'unit': unit
                 }
             };
 
@@ -506,14 +599,14 @@ export function handleEngagementDetailUpdate(pricingOption, value) {
             .then((response) => {
                 dispatch ({
                     type: UPDATED_ENGAGEMENT_DETAILS,
-                    unit: value,
+                    unit,
                     id: engagementDetailId,
                     engagementId
                 });
                 dispatch({
                     type: UPDATED_UNIT,
                     id: pricingOption.id,
-                    oldUnit: value
+                    oldUnit: unit
                 });
                 window.console.log('engagement detail updated: ', response);
                 dispatch({ type: REQUEST_COMPLETED });

@@ -67,7 +67,7 @@ class EngagementRow extends Component {
                     Pricing:
                     {engagement.engagementDetails.map(pricing =>
                         <div key={pricing.id}> ${this.convertToCurrency(pricing.attributes.rate_value)} ({pricing.pricingOption.attributes.title} Rate)
-                         x {pricing.attributes.unit} Estimated Units/QTY</div>
+                         x {pricing.attributes.unit} Estimated Unit(s)</div>
                     )}
                     <br />
                     {engagement.attributes.po_number ?

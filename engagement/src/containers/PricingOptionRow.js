@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import {
     handleTextChange,
     handlePricingOptionSelection,
-    handleEngagementDetailUpdate
+    handleEngagementDetailUpdate,
+    handleEngagementDetailCreate
 } from '../actions/itemDetailsActions';
 
 class PricingOptionRow extends Component {
@@ -30,12 +31,15 @@ class PricingOptionRow extends Component {
 
     handleEngagementDetailUpdate(event) {
         const pricingOption = this.props.pricingOption;
-
-        return this.props.dispatch(handleEngagementDetailUpdate(pricingOption, event.target.value));
+        if (pricingOption.relationships) {
+            return this.props.dispatch(handleEngagementDetailUpdate(pricingOption, event.target.value));
+        } else {
+            return this.props.dispatch(handleEngagementDetailCreate(pricingOption, event.target.value));
+        }
     }
 
     render() {
-        const { pricingOption } = this.props;
+        const { pricingOption, editMode } = this.props;
         const defaultValue = pricingOption.attributes.unit || '';
 
         return (
@@ -64,7 +68,7 @@ class PricingOptionRow extends Component {
                             className="form-control"
                             value={defaultValue}
                             onChange={this.handleUnitChange}
-                            onBlur={pricingOption.relationships ? this.handleEngagementDetailUpdate : null}
+                            onBlur={editMode ? this.handleEngagementDetailUpdate : null}
                         />
                     }
                 </td>
@@ -75,7 +79,8 @@ class PricingOptionRow extends Component {
 
 PricingOptionRow.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    pricingOption: PropTypes.object.isRequired
+    pricingOption: PropTypes.object.isRequired,
+    editMode: PropTypes.bool.isRequired
 };
 
 export default connect()(PricingOptionRow);  // adds dispatch prop

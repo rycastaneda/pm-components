@@ -99,13 +99,13 @@ class ItemDetails extends Component {
                             <tr>
                                 <th>Rates</th>
                                 <th>Quote</th>
-                                <th>Estimated Units/QTY</th>
+                                <th>Estimated Unit(s)</th>
                             </tr>
                         </thead>
                         <tbody>
                         {enableCreate ?
                             <tr><td colSpan="3">This supplier has not responded the Request for Quotation</td></tr>
-                            : pricingOptions.map(pricingOption => <PricingOptionRow key={pricingOption.id} pricingOption={pricingOption} spot={itemsReducer.spot} />)
+                            : pricingOptions.map(pricingOption => <PricingOptionRow key={pricingOption.id} pricingOption={pricingOption} spot={itemsReducer.spot} editMode={editMode}  />)
                         }
                         </tbody>
                     </table>

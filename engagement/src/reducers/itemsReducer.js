@@ -31,8 +31,10 @@ import {
     ENGAGEMENT_DELETED,
     ENGAGEMENT_CANCELLED,
     UPDATED_ENGAGEMENT_DETAILS,
+    ADD_ENGAGEMENT_DETAILS,
     TOGGLE_ENGAGEMENT_TEXT,
-    UPDATED_UNIT
+    UPDATED_UNIT,
+    ADD_RELATIONSHIPS
 } from '../constants/ActionTypes';
 
 const INITIAL_ITEMS_STATE = {
@@ -125,6 +127,7 @@ export function engagementsReducer(state = INITIAL_ENGAGEMENTS_STATE, action) {
             });
         case UPDATED_ENGAGEMENT:
         case UPDATED_ENGAGEMENT_DETAILS:
+        case ADD_ENGAGEMENT_DETAILS:
         case ENGAGEMENT_DELETED:
             return Object.assign({}, state, {
                 pendingEngagements: engagements(state.pendingEngagements, action)
@@ -171,6 +174,7 @@ export function itemDetailsReducer(state = INITIAL_ITEM_DETAILS_STATE, action) {
         case UPDATE_TEXT:
         case UPDATE_PRICING_OPTION:
         case UPDATED_UNIT:
+        case ADD_RELATIONSHIPS:
             return Object.assign({}, state, {
                 pricingOptions: pricingOptions(state.pricingOptions, action)
             });
@@ -243,6 +247,14 @@ function pricingOptions(state = [], action) {
                         oldUnit: action.oldUnit
                     }) } : pricingOption
             );
+        case ADD_RELATIONSHIPS:
+            return state.map(pricingOption =>
+                pricingOption.id === action.id ?
+                { ...pricingOption,
+                    relationships: Object.assign({}, pricingOption.relationships, {
+                        'engagement-details': action['engagement-details']
+                    }) } : pricingOption
+            );
 
         default:
             return state;
@@ -286,6 +298,13 @@ function engagements(state = [], action) {
                     engagementDetails: engagementDetails(engagement.engagementDetails, action)
                 } : engagement
             );
+        case ADD_ENGAGEMENT_DETAILS:
+            return state.map(engagement =>
+                engagement.id === action.engagementId ?
+                { ...engagement,
+                    engagementDetails: engagementDetails(engagement.engagementDetails, action)
+                } : engagement
+            );
         default:
             return state;
     }
@@ -301,6 +320,8 @@ function engagementDetails(state = [], action) {
                         unit: action.unit
                     }) } : engagementDetail
             );
+        case ADD_ENGAGEMENT_DETAILS:
+            return [...state, action.engagementDetail];
         default:
             return state;
     }
