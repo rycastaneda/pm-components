@@ -100,7 +100,7 @@ function getSuggestions(state, value) {
         for (const matchedItem of matchedItems) {
             // Get details of matchedItem from included
             matchedItemsDetails = matchedItemsDetails.concat(included.filter((i) => {
-                if (i.id === matchedItem.id) {
+                if (i.id === matchedItem.id && i.type === 'matched-items') {
                     return i;
                 }
             }));
