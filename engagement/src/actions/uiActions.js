@@ -44,7 +44,9 @@ export function requestCompleted() {
 
 export function requestError(error) {
     const errorMessage = error.response && error.response.data || error;
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        const spot = getState().itemsReducer.spot;
+        scrollToError(spot);
         dispatch({
             type: REQUEST_ERROR,
             error: errorMessage
