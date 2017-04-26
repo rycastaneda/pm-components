@@ -30,7 +30,7 @@ let headers = api.configureHeaders();
 axios.defaults.baseURL = hostname;
 axios.defaults.headers.common = headers;
 
-if (document.querySelector('[data-component="engagement-supplier-item"')) {
+if (document.querySelector('[data-component="engagement-supplier-item"]')) {
     store.dispatch({
         type: COMPONENT_SPOT,
         spot: 'supplier-item'
@@ -39,9 +39,9 @@ if (document.querySelector('[data-component="engagement-supplier-item"')) {
         <Provider store={store}>
             <Engagement/>
         </Provider>,
-        document.querySelector('[data-component="engagement-supplier-item"')
+        document.querySelector('[data-component="engagement-supplier-item"]')
     );
-} else if (document.querySelector('[data-component="engagement-browse"')) {
+} else if (document.querySelector('[data-component="engagement-browse"]')) {
     store.dispatch({
         type: COMPONENT_SPOT,
         spot: 'browse'
@@ -50,7 +50,7 @@ if (document.querySelector('[data-component="engagement-supplier-item"')) {
         <Provider store={store}>
             <Engagement/>
         </Provider>,
-        document.querySelector('[data-component="engagement-browse"')
+        document.querySelector('[data-component="engagement-browse"]')
     );
 } else {
     store.dispatch({
@@ -61,6 +61,6 @@ if (document.querySelector('[data-component="engagement-supplier-item"')) {
         <Provider store={store}>
             <Engagement/>
         </Provider>,
-        document.querySelector('[data-component="engagement"')
+        document.querySelector('[data-component="engagement"]')
     );
 }
