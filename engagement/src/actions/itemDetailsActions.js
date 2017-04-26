@@ -1,11 +1,4 @@
 import {
-    REQUEST_STARTED,
-    REQUEST_COMPLETED,
-    REQUEST_ERROR,
-    VALIDATION_ERROR,
-    RESET_ERROR,
-    DISPLAY_SUCCESS,
-    RESET_SUCCESS,
     UPDATE_SUGGESTION,
     RECEIVE_NEW_ENGAGEMENT,
     RESET_ITEM_DETAILS,
@@ -25,112 +18,7 @@ import {
 import axios from 'axios';
 import moment from 'moment';
 import { loadEngagements, sendEngagementsBrowse } from './engagementsActions';
-
-export function loadItemDetails(matchedItemId, requestedItemId, engagement) {
-    return (dispatch, getState) => {
-        const quoteId = getState().itemsReducer.quoteId;
-        dispatch({ type: RESET_SUCCESS });
-        dispatch({ type: RESET_ERROR });
-        dispatch({ type: REQUEST_STARTED });
-
-        axios.get(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}?include=pricingOptions,matchedSupplier,quoteRequestEngagements,quoteRequestEngagements.createdBy,quoteRequestEngagements.engagementDetails,quoteRequestEngagements.matchedItem&fields[pricing-options]=title,value,standby_value&fields[engagement]=status,engagement_text,po_value`)
-        .then((response) => {
-            let pricingOptions = [];
-            let supplier = [];
-            let matchedItemTitle = '';
-            response = response.data;
-            if (engagement) {
-                pricingOptions = response.included.filter((i) => {
-                    if (i.type === 'pricing-options') {
-                        i.attributes.selected = i.attributes.selected ? i.attributes.selected : false;
-                        return i;
-                    }
-                }).map(function(pricingOption) {
-                    let pricingOptionUpdated = {};
-                    let engagementDetail = engagement.engagementDetails.filter(i => pricingOption.id === i.pricingOption.id);
-                    pricingOptionUpdated = engagementDetail.length ?
-                        { ...pricingOption,
-                            attributes: { ...pricingOption.attributes,
-                                'value': engagementDetail[0].attributes.rate_value,
-                                'unit': engagementDetail[0].attributes.unit,
-                                'oldUnit': engagementDetail[0].attributes.unit,
-                                'selected': true
-                            },
-                            'relationships': {
-                                'engagement-details': {
-                                    'data': {
-                                        'type': 'engagement-details',
-                                        'id': engagementDetail[0].id
-                                    }
-                                }
-                            }
-                        } :
-                        { ...pricingOption,
-                            attributes: { ...pricingOption.attributes,
-                                'oldUnit': pricingOption.attributes.unit || '',
-                                'selected': false
-                            }
-                        };
-                    return pricingOptionUpdated;
-                });
-            } else {
-                supplier = response.included.filter((i) => {
-                    if (i.type === 'supplier') {
-                        return i;
-                    }
-                });
-                matchedItemTitle = response.data.attributes.title;
-                pricingOptions = response.included.filter((i) => {
-                    if (i.type === 'pricing-options') {
-                        i.attributes.selected = i.attributes.selected ? i.attributes.selected : false;
-                        return i;
-                    }
-                });
-            }
-
-            dispatch(updateCurrentEngagement(matchedItemId, requestedItemId, engagement, supplier, matchedItemTitle));
-            dispatch(receivePricingOptions(pricingOptions));
-            dispatch({ type: REQUEST_COMPLETED });
-        }).catch((error) => {
-            dispatch({ type: REQUEST_COMPLETED });
-            dispatch({ type: REQUEST_ERROR, error: error.response.data });
-        });
-    };
-}
-
-export function loadItemDetailsPanel(panelId, itemId, regionId) {
-    return (dispatch) => {
-        dispatch({ type: RESET_SUCCESS });
-        dispatch({ type: RESET_ERROR });
-        dispatch({ type: REQUEST_STARTED });
-        axios.get(`/browse-panels/${panelId}/items/${itemId}?include=standardRates,supplier&filters[regionId]=${regionId}&fields[pricing-options]=title,value,standby_value`)
-        .then((response) => {
-            let pricingOptions = [];
-            let supplier = [];
-            let matchedItemTitle = '';
-            response = response.data;
-            supplier = response.included.filter((i) => {
-                if (i.type === 'supplier') {
-                    return i;
-                }
-            });
-            matchedItemTitle = response.data.attributes.title;
-            pricingOptions = response.included.filter((i) => {
-                if (i.type === 'pricing-options') {
-                    i.attributes.selected = i.attributes.selected ? i.attributes.selected : false;
-                    return i;
-                }
-            });
-
-            dispatch(updateCurrentEngagementPanel(supplier, matchedItemTitle));
-            dispatch(receivePricingOptions(pricingOptions));
-            dispatch({ type: REQUEST_COMPLETED });
-        }).catch((error) => {
-            dispatch({ type: REQUEST_COMPLETED });
-            dispatch({ type: REQUEST_ERROR, error: error.response.data });
-        });
-    };
-}
+import { isValidEngagement, displaySuccess, resetSuccess, resetError, requestStarted, requestCompleted, requestError } from './uiActions';
 
 export function receivePricingOptions(pricingOptions) {
     return {
@@ -140,7 +28,6 @@ export function receivePricingOptions(pricingOptions) {
 }
 
 export function updateCurrentEngagementPanel(supplier, matchedItemTitle) {
-    window.console.log(supplier);
     const supplierDetails = supplier.length ? supplier[0] : {};
     let currentEngagement = {
         'type': 'engagements',
@@ -160,7 +47,6 @@ export function updateCurrentEngagementPanel(supplier, matchedItemTitle) {
 }
 
 export function updateCurrentEngagement(matchedItemId, requestedItemId, engagement, supplier, matchedItemTitle) {
-    window.console.log(supplier);
     const supplierDetails = supplier.length ? supplier[0] : {};
     const engagementTitle = engagement ? `${engagement.supplier.attributes.title} - ${engagement.matchedItem.attributes.title}` : null;
     let currentEngagement = {
@@ -236,49 +122,116 @@ export function handlePricingOptionSelection(pricingOption, value) {
     };
 }
 
-function convertToCurrency(value) {
-    return parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+export function resetItemDetails() {
+    return (dispatch) => {
+        dispatch({ type: RESET_ITEM_DETAILS });
+    };
 }
 
-function isValidEngagement(dispatch, currentEngagement, pricingOptions, engagementLimit) {
-    dispatch({ type: RESET_ERROR });
-    let pricing = pricingOptions && pricingOptions.filter(pricingOption => pricingOption.attributes.selected);
-    if (pricingOptions && !pricing.length) {
-        dispatch({
-            type: VALIDATION_ERROR,
-            message: 'Please provide values for "Estimated Unit(s)"'
+export function loadItemDetails(matchedItemId, requestedItemId, engagement) {
+    return (dispatch, getState) => {
+        const quoteId = getState().itemsReducer.quoteId;
+        dispatch(resetSuccess());
+        dispatch(resetError());
+        dispatch(requestStarted());
+
+        axios.get(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}?include=pricingOptions,matchedSupplier,quoteRequestEngagements,quoteRequestEngagements.createdBy,quoteRequestEngagements.engagementDetails,quoteRequestEngagements.matchedItem&fields[pricing-options]=title,value,standby_value&fields[engagement]=status,engagement_text,po_value`)
+        .then((response) => {
+            let pricingOptions = [];
+            let supplier = [];
+            let matchedItemTitle = '';
+            response = response.data;
+            if (engagement) {
+                pricingOptions = response.included.filter((i) => {
+                    if (i.type === 'pricing-options') {
+                        i.attributes.selected = i.attributes.selected ? i.attributes.selected : false;
+                        return i;
+                    }
+                }).map(function(pricingOption) {
+                    let pricingOptionUpdated = {};
+                    let engagementDetail = engagement.engagementDetails.filter(i => pricingOption.id === i.pricingOption.id);
+                    pricingOptionUpdated = engagementDetail.length ?
+                        { ...pricingOption,
+                            attributes: { ...pricingOption.attributes,
+                                'value': engagementDetail[0].attributes.rate_value,
+                                'unit': engagementDetail[0].attributes.unit,
+                                'oldUnit': engagementDetail[0].attributes.unit,
+                                'selected': true
+                            },
+                            'relationships': {
+                                'engagement-details': {
+                                    'data': {
+                                        'type': 'engagement-details',
+                                        'id': engagementDetail[0].id
+                                    }
+                                }
+                            }
+                        } :
+                        { ...pricingOption,
+                            attributes: { ...pricingOption.attributes,
+                                'oldUnit': pricingOption.attributes.unit || '',
+                                'selected': false
+                            }
+                        };
+                    return pricingOptionUpdated;
+                });
+            } else {
+                supplier = response.included.filter((i) => {
+                    if (i.type === 'supplier') {
+                        return i;
+                    }
+                });
+                matchedItemTitle = response.data.attributes.title;
+                pricingOptions = response.included.filter((i) => {
+                    if (i.type === 'pricing-options') {
+                        i.attributes.selected = i.attributes.selected ? i.attributes.selected : false;
+                        return i;
+                    }
+                });
+            }
+
+            dispatch(updateCurrentEngagement(matchedItemId, requestedItemId, engagement, supplier, matchedItemTitle));
+            dispatch(receivePricingOptions(pricingOptions));
+            dispatch(requestCompleted());
+        }).catch((error) => {
+            dispatch(requestCompleted());
+            dispatch(requestError(error));
         });
-        return false;
-    }
-    if (engagementLimit) {
-        let totalPrice = pricing.map(function(price) {
-            return +price.attributes.value * +price.attributes.unit;
-        }).reduce(function(total, price) {
-            return total + price;
-        }, 0);
-        if (totalPrice > engagementLimit) {
-            dispatch({
-                type: VALIDATION_ERROR,
-                message: `This value exceeds the approved limit for spot engagements. Please create a Quote Request to facilitate engagements greater than $${convertToCurrency(engagementLimit)} in value.`
+    };
+}
+
+export function loadItemDetailsPanel(panelId, itemId, regionId) {
+    return (dispatch) => {
+        dispatch(resetSuccess());
+        dispatch(resetError());
+        dispatch(requestStarted());
+        axios.get(`/browse-panels/${panelId}/items/${itemId}?include=standardRates,supplier&filters[regionId]=${regionId}&fields[pricing-options]=title,value,standby_value`)
+        .then((response) => {
+            let pricingOptions = [];
+            let supplier = [];
+            let matchedItemTitle = '';
+            response = response.data;
+            supplier = response.included.filter((i) => {
+                if (i.type === 'supplier') {
+                    return i;
+                }
             });
-            return false;
-        }
-    }
-    if (currentEngagement && !currentEngagement.attributes['purchase-order']) {
-        dispatch({
-            type: VALIDATION_ERROR,
-            message: 'Please provide a value for "Work Order"'
+            matchedItemTitle = response.data.attributes.title;
+            pricingOptions = response.included.filter((i) => {
+                if (i.type === 'pricing-options') {
+                    i.attributes.selected = i.attributes.selected ? i.attributes.selected : false;
+                    return i;
+                }
+            });
+
+            dispatch(updateCurrentEngagementPanel(supplier, matchedItemTitle));
+            dispatch(receivePricingOptions(pricingOptions));
+            dispatch(requestCompleted());
+        }).catch((error) => {
+            dispatch(requestCompleted());
+            dispatch(requestError(error));
         });
-        return false;
-    }
-    if (currentEngagement && !moment(currentEngagement.attributes['plan-start-date'], 'YYYY-MM-DD', true).isValid()) {
-        dispatch({
-            type: VALIDATION_ERROR,
-            message: 'Please provide a valid date for "Planned Start Date"'
-        });
-        return false;
-    }
-    return true;
+    };
 }
 
 export function createEngagement() {
@@ -293,9 +246,9 @@ export function createEngagement() {
             return;
         }
 
-        dispatch({ type: RESET_SUCCESS });
-        dispatch({ type: RESET_ERROR });
-        dispatch({ type: REQUEST_STARTED });
+        dispatch(resetSuccess());
+        dispatch(resetError());
+        dispatch(requestStarted());
 
         axios.post(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements`, { data: currentEngagement })
         .then((response) => {
@@ -306,11 +259,11 @@ export function createEngagement() {
                 type: UPDATE_SUGGESTION,
                 value: ''
             });
-            dispatch({ type: REQUEST_COMPLETED });
+            dispatch(requestCompleted());
 
         }).catch((error) => {
-            dispatch({ type: REQUEST_COMPLETED });
-            dispatch({ type: REQUEST_ERROR, error: error.response.data });
+            dispatch(requestCompleted());
+            dispatch(requestError(error));
         });
     };
 }
@@ -346,21 +299,21 @@ export function createEngagementDetails(pricingOptions, requestedItemId, matched
     return (dispatch, getState) => {
         let numEngagementDetails = 0;
         engagementDetails.forEach(function(engagementDetail) {
-            dispatch({ type: REQUEST_STARTED });
+            dispatch(requestStarted());
             axios.post(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${engagementId}/engagement-details`, { data: engagementDetail })
             .then((response) => {
                 window.console.log(response);
                 numEngagementDetails += 1;
                 if (numEngagementDetails === engagementDetails.length) {
                     const quoteId = getState().itemsReducer.quoteId;
-                    dispatch({ type: DISPLAY_SUCCESS, message: `Engagement #${engagementId} created` });
+                    dispatch(displaySuccess(`Engagement #${engagementId} created`));
                     dispatch(resetItemDetails());
                     dispatch(loadEngagements(quoteId));
                 }
-                dispatch({ type: REQUEST_COMPLETED });
+                dispatch(requestCompleted());
             }).catch((error) => {
-                dispatch({ type: REQUEST_COMPLETED });
-                dispatch({ type: REQUEST_ERROR, error: error.response.data });
+                dispatch(requestCompleted());
+                dispatch(requestError(error));
             });
         });
     };
@@ -378,19 +331,19 @@ export function createEngagementPanel() {
             return;
         }
 
-        dispatch({ type: RESET_SUCCESS });
-        dispatch({ type: RESET_ERROR });
-        dispatch({ type: REQUEST_STARTED });
+        dispatch(resetSuccess());
+        dispatch(resetError());
+        dispatch(requestStarted());
 
         axios.post(`/browse-panels/${panelId}/items/${itemId}/engagements`, { data: currentEngagement })
         .then((response) => {
             let engagementId = response.data.data.id;
             window.console.log('browse engagement created: ', response.data.data.id);
             dispatch(createEngagementDetailsPanel(pricingOptions, panelId, itemId, engagementId));
-            dispatch({ type: REQUEST_COMPLETED });
+            dispatch(requestCompleted());
         }).catch((error) => {
-            dispatch({ type: REQUEST_COMPLETED });
-            dispatch({ type: REQUEST_ERROR, error: error.response.data });
+            dispatch(requestCompleted());
+            dispatch(requestError(error));
         });
     };
 }
@@ -426,7 +379,7 @@ export function createEngagementDetailsPanel(pricingOptions, panelId, itemId, en
     return (dispatch) => {
         let numEngagementDetails = 0;
         engagementDetails.forEach(function(engagementDetail) {
-            dispatch({ type: REQUEST_STARTED });
+            dispatch(requestStarted());
             axios.post(`/browse-panels/${panelId}/items/${itemId}/engagements/${engagementId}/engagement-details`, { data: engagementDetail })
             .then((response) => {
                 window.console.log(response);
@@ -435,10 +388,10 @@ export function createEngagementDetailsPanel(pricingOptions, panelId, itemId, en
                     dispatch(resetItemDetails());
                     dispatch(sendEngagementsBrowse(engagementId));
                 }
-                dispatch({ type: REQUEST_COMPLETED });
+                dispatch(requestCompleted());
             }).catch((error) => {
-                dispatch({ type: REQUEST_COMPLETED });
-                dispatch({ type: REQUEST_ERROR, error: error.response.data });
+                dispatch(requestCompleted());
+                dispatch(requestError(error));
             });
         });
     };
@@ -456,7 +409,7 @@ export function handleEngagementUpdate() {
             return;
         }
 
-        dispatch({ type: REQUEST_STARTED });
+        dispatch(requestStarted());
 
         axios.patch(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${engagementId}`, { data: currentEngagement })
         .then((response) => {
@@ -471,13 +424,10 @@ export function handleEngagementUpdate() {
                 engagementId
             });
             window.console.log('engagement updated: ', response);
-            dispatch({ type: REQUEST_COMPLETED });
+            dispatch(requestCompleted());
         }).catch((error) => {
-            dispatch({ type: REQUEST_COMPLETED });
-            dispatch({
-                type: REQUEST_ERROR,
-                error: error.response && error.response.data || error
-            });
+            dispatch(requestCompleted());
+            dispatch(requestError(error));
         });
     };
 }
@@ -522,7 +472,7 @@ export function handleEngagementDetailCreate(pricingOption, unit) {
                 }
             };
 
-            dispatch({ type: REQUEST_STARTED });
+            dispatch(requestStarted());
             axios.post(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${engagementId}/engagement-details`, { data: engagementDetail })
             .then((response) => {
                 engagementDetail = {
@@ -555,10 +505,10 @@ export function handleEngagementDetailCreate(pricingOption, unit) {
                     id: pricingOption.id,
                     oldUnit: unit
                 });
-                dispatch({ type: REQUEST_COMPLETED });
+                dispatch(requestCompleted());
             }).catch((error) => {
-                dispatch({ type: REQUEST_COMPLETED });
-                dispatch({ type: REQUEST_ERROR, error: error.response.data });
+                dispatch(requestCompleted());
+                dispatch(requestError(error));
             });
         }
     };
@@ -593,10 +543,10 @@ export function handleEngagementDetailUpdate(pricingOption, unit) {
                 }
             };
 
-            dispatch({ type: REQUEST_STARTED });
+            dispatch(requestStarted());
 
             axios.patch(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${engagementId}/engagement-details/${engagementDetailId}`, { data: engagementDetails })
-            .then((response) => {
+            .then(() => {
                 dispatch ({
                     type: UPDATED_ENGAGEMENT_DETAILS,
                     unit,
@@ -608,19 +558,11 @@ export function handleEngagementDetailUpdate(pricingOption, unit) {
                     id: pricingOption.id,
                     oldUnit: unit
                 });
-                window.console.log('engagement detail updated: ', response);
-                dispatch({ type: REQUEST_COMPLETED });
+                dispatch(requestCompleted());
             }).catch((error) => {
-                dispatch({ type: REQUEST_COMPLETED });
-                dispatch({ type: REQUEST_ERROR, error: error.response.data });
+                dispatch(requestCompleted());
+                dispatch(requestError(error));
             });
-            window.console.log(' requestedItemId: ', requestedItemId, ' matchedItemId: ', matchedItemId, ' pricingOptions: ', pricingOptions, ' engagementDetailId: ', engagementDetailId);
         }
-    };
-}
-
-export function resetItemDetails() {
-    return (dispatch) => {
-        dispatch({ type: RESET_ITEM_DETAILS });
     };
 }

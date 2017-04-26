@@ -1,7 +1,4 @@
 import {
-    REQUEST_STARTED,
-    REQUEST_COMPLETED,
-    REQUEST_ERROR,
     UPDATE_QUOTE_ID,
     UPDATE_REQUESTED_ITEM_ID,
     UPDATE_MATCHED_ITEM_ID,
@@ -15,7 +12,9 @@ import {
     RESET_SUGGESTIONS,
     UPDATE_SUGGESTION
 } from '../constants/ActionTypes';
+
 import axios from 'axios';
+import { requestStarted, requestCompleted, requestError } from './uiActions';
 
 /**
  * source: http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
@@ -131,15 +130,15 @@ function getSuggestions(state, value) {
  */
 export function loadItems(quoteId) {
     return (dispatch) => {
-        dispatch({ type: REQUEST_STARTED });
+        dispatch(requestStarted());
         axios.get(`/searcher-quote-requests/${quoteId}/requested-items?filters[only_quoted_item]=1&include=quoteRequest,matchedItems.matchedSupplier`)
         .then((response) => {
             dispatch(loadItemsSuccess(response.data));
-            dispatch({ type: REQUEST_COMPLETED });
+            dispatch(requestCompleted());
         }).catch((error) => {
             dispatch(loadItemsError(error));
-            dispatch({ type: REQUEST_COMPLETED });
-            dispatch({ type: REQUEST_ERROR, error: error.response.data });
+            dispatch(requestCompleted());
+            dispatch(requestError(error));
         });
     };
 }
