@@ -5,7 +5,7 @@ const Document = ({ document, handleToggleRevisions, handleDownloadDocument, ite
     function revisions() {
         return document.showRevisions ?
             <ul className="filelist">
-                {document.revisions.map(revision => <Revision key={revision.id} handleDownloadDocument={handleDownloadDocument} document={revision}/> )}
+                {document.revisions.map(revision => <Revision key={revision.id} handleDownloadDocument={handleDownloadDocument} document={revision}/>)}
             </ul>
         : null;
     }

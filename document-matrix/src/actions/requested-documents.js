@@ -56,6 +56,7 @@ function downloadBlob(url, filename, callback, error) {
         }
 
         var a = document.createElement('a');
+
         a.href = window.URL.createObjectURL(response.data); // xhr.response is a blob
         a.download = filename; // Set the file name.
         a.style.display = 'none';
@@ -105,7 +106,7 @@ export function downloadDocumentGroups() {
 
         downloadBlob(
             axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents`,
-            `SearcherQR-${quoteId}`,
+            `QR-${quoteId}`,
             () => dispatch({ type: TOGGLE_LOADING }),
             () => dispatch({ type: REQUEST_FAILED })
         );
@@ -120,7 +121,7 @@ export function downloadRequestedItemDocuments(requestedItemId) {
 
         downloadBlob(
             axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents?filters[requested_item_id]=${requestedItemId}`,
-            `SearcherQR-${quoteId}`,
+            `QR-${requestedItemId}-${quoteId}`,
             () => dispatch({ type: TOGGLE_LOADING }),
             () => dispatch({ type: REQUEST_FAILED })
         );
