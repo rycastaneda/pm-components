@@ -1,23 +1,24 @@
-.group-table {
+.document-table {
     width: 100%;
     max-width: 100%;
 
-    &__header {
+    &__header, &__group-header {
         padding: 6px 10px;
-        background: #eeeeee;
         border-bottom: 1px #000000;
         font-weight: bold;
         line-height: 30px;
-
-        &-item {
-            background: none;
-        }
+        text-align: center;
     }
 
-    &__title {
-        width: 100%;
-        padding: 6px 10px;
-        font-size: 12px;
+    &__group-header {
+        background: #eeeeee;
+
+        &-title {
+            width: 100%;
+            padding: 6px 10px;
+            font-size: 12px;
+            text-align: left;
+        }
     }
 
     &__item, &__item-invisible {
@@ -28,17 +29,9 @@
         text-overflow: ellipsis;
         text-align: center;
         white-space: nowrap;
-
-        &-invisible {
-            color: #eeeeee;
-        }
-
-        &-group {
-            text-align: left;
-        }
     }
 
-    &__checkbox, &__document-checkbox {
+    &__document-checkbox {
         width: 50%;
         margin-top: 10px;
         padding-right: 10px;

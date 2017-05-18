@@ -4,8 +4,8 @@ import Document from './Document';
 const Group = ({ group, items, handleDownloadDocument, handleDownloadDocumentGroup, handleToggleRevisions }) => {
     return (
         <tbody>
-            <tr className="group-table__header">
-                <td className="group-table__item group-table__item-group filelist__file" colSpan={items.length+1}>
+            <tr className="document-table__group-header">
+                <td className="document-table__group-header-title filelist__file" colSpan={items.length+1}>
                     <a onClick={() => handleDownloadDocumentGroup(group.id)}>
                         <i className="fa fa-download"></i>
                     </a>

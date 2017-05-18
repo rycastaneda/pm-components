@@ -12,7 +12,7 @@ const Document = ({ document, handleToggleRevisions, handleDownloadDocument, ite
 
     return (
         <tr className="group-table__document-row">
-            <td className="group-table__document-name">
+            <td className="document-table__document-name">
                 <a className="filelist__file" onClick={() => handleDownloadDocument(document.id)}>
                     <i className="fa fa-download"></i>
                 </a>
@@ -29,7 +29,7 @@ const Document = ({ document, handleToggleRevisions, handleDownloadDocument, ite
             </td>
             {items.map((item) => {
                 return (
-                    <td className="group-table__document-checkbox" key={document.id + item.id}>
+                    <td className="document-table__document-checkbox" key={document.id + item.id}>
                         <input type="checkbox" readOnly checked={!!~document.included.indexOf(item.id)}/>
                     </td>
                 );

@@ -64,11 +64,11 @@ class RequestedDocuments extends Component {
                         &nbsp;Download All
                     </button>
 
-                    <table className="group-table filelist">
+                    <table className="document-table filelist">
                         <tbody>
-                            <tr className="group-table__header">
-                                <td className="group-table__header-item"></td>
-                                {items.map(item => <td className="group-table__header-item" key={item.id}>
+                            <tr className="document-table__header">
+                                <td ></td>
+                                {items.map(item => <td  key={item.id}>
                                     <a className="filelist__file" onClick={() => this.handleDownloadRequestedItemDocuments(item.id)}>
                                         <i className="fa fa-download"></i>
                                     </a>
