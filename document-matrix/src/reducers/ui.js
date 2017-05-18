@@ -35,6 +35,9 @@ export function ui(state = INITIAL_STATE, action) {
                 loading: !state.loading
             };
         default:
-            return state;
+            return Object.assign({}, state, {
+                loading: false,
+                error: false
+            });
     }
 }

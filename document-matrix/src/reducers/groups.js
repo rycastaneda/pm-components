@@ -11,21 +11,20 @@ export function groups(state = INITIAL_STATE, action) {
 
     switch (action.type) {
         case RECEIVE_REQUIREMENTS:
-            action.requirements.included.map((doc) => {
-                if (doc.type === 'document-group') {
-                    state.byId[doc.id] = Object.assign({}, doc.attributes, {
-                        id: doc.id
+            action.documents.included.map((include) => {
+                if (include.type === 'document-group') {
+                    state.byId[include.id] = Object.assign({}, include.attributes, {
+                        id: include.id,
+                        documentIds: []
                     });
-                    state.allIds.push(doc.id);
-
-                } else if (doc.type === 'quote-documents') {
-                    if (state.byId[doc.relationships.groups.data.id].documentIds) {
-                        state.byId[doc.relationships.groups.data.id].documentIds.push(doc.id);
-                    } else {
-                        state.byId[doc.relationships.groups.data.id].documentIds = [doc.id];
-                    }
+                    state.allIds.push(include.id);
 
                 }
+            });
+
+            action.documents.data.map((doc) => {
+                let groupId = doc.relationships.groups.data.id;
+                state.byId[groupId].documentIds.push(doc.id);
             });
 
             return Object.assign({}, state);

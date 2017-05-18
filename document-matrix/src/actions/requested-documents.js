@@ -15,14 +15,13 @@ export function fetchRequirements(quoteId, userType) {
             userType
         });
 
-        axios.get(`/${userType}-quote-requests/${quoteId}/requested-items?include=quoteDocuments.groups,quoteDocuments.revisions`)
+        axios.get(`/${userType}-quote-requests/${quoteId}/documents?include=requesteditems,groups,revisions`)
             .then((response) => {
                 return dispatch({
                     type: RECEIVE_REQUIREMENTS,
-                    requirements: response.data
+                    documents: response.data
                 });
-            })
-            .catch(() => dispatch({ type: REQUEST_FAILED }));
+            });
 
     };
 }

@@ -67,8 +67,8 @@ class RequestedDocuments extends Component {
                     <table className="group-table filelist">
                         <tbody>
                             <tr className="group-table__header">
-                                <td></td>
-                                {items.map(item => <td className="group-table__item" key={item.id}>
+                                <td className="group-table__header-item"></td>
+                                {items.map(item => <td className="group-table__header-item" key={item.id}>
                                     <a className="filelist__file" onClick={() => this.handleDownloadRequestedItemDocuments(item.id)}>
                                         <i className="fa fa-download"></i>
                                     </a>
@@ -91,11 +91,12 @@ class RequestedDocuments extends Component {
 
         return (
             <div className="group-panel">
-                {ui.error === 'FETCH_FAILED' ?
+                {ui.error === 'REQUEST_FAILED' ?
                     <div className="alert alert-danger">
                         <strong>Something went wrong. Please try again later.</strong>
                     </div>
-                : ui.loading && !ui.error
+                : null }
+                {ui.loading && !ui.error
                     ? <Loader block={true}></Loader>
                     : content
                 }
@@ -132,14 +133,16 @@ function mapStateToProps(state) {
     }
 
     requirements.allIds.map((requirementId) => {
-        if (requirements.byId[requirementId].hasDocuments) {
+        if (requirements.byId[requirementId].documentIds.length) {
             items.push(requirements.byId[requirementId]);
         }
     });
 
     groups = rawGroups.allIds.map((groupId) => {
         let group = rawGroups.byId[groupId];
-        group.documents = group.documentIds.map((documentId) => {
+        group.documents = group.documentIds.filter((doc) => {
+            return rawDocuments.byId[doc].included.length;
+        }).map((documentId) => {
             let doc = rawDocuments.byId[documentId];
             doc.revisions = doc.revisionIds.map(revisionId => rawDocuments.byId[revisionId]);
             return doc;

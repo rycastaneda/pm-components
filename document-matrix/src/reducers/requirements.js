@@ -18,13 +18,23 @@ export function requirements(state = INITIAL_STATE, action) {
 }
 
 function receiveRequirements(state, action) {
-    action.requirements.data && action.requirements.data.map((requirement) => {
-        state.byId[requirement.id] = {
-            ...requirement.attributes,
-            id: requirement.id,
-            hasDocuments: !!requirement.relationships.quoteDocuments.data.length
+    action.documents.included && action.documents.included.map((include) => {
+        if (include.type !== 'requested-items') {
+            return;
+        }
+
+        state.byId[include.id] = {
+            ...include.attributes,
+            id: include.id,
+            documentIds: []
         };
-        state.allIds.push(requirement.id);
+        state.allIds.push(include.id);
+    });
+
+    action.documents.data.map((doc) => {
+        doc.relationships.requesteditems.data.map((item) => {
+            state.byId[item.id].documentIds.push(doc.id);
+        });
     });
 
     return Object.assign({}, state);
