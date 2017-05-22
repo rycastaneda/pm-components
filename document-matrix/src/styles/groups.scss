@@ -10,8 +10,14 @@
     }
 
     &__header {
+        background: #ffffff;
+
+        th {
+            vertical-align: bottom;
+        }
 
         .rotate {
+            border: none;
             height: 140px;
             white-space: nowrap;
             vertical-align: middle;

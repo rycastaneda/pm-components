@@ -2,7 +2,6 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import {
     fetchRequirements,
-    toggleRevisions,
     downloadDocument,
     downloadDocumentGroup,
     downloadDocumentGroups,
@@ -15,7 +14,6 @@ class RequestedDocuments extends Component {
 
     constructor(props) {
         super(props);
-        this.handleToggleRevisions = this.handleToggleRevisions.bind(this);
         this.handleDownloadDocument = this.handleDownloadDocument.bind(this);
         this.handleDownloadDocumentGroup = this.handleDownloadDocumentGroup.bind(this);
         this.handleDownloadDocumentGroups = this.handleDownloadDocumentGroups.bind(this);
@@ -41,10 +39,6 @@ class RequestedDocuments extends Component {
         return this.props.dispatch(downloadRequestedItemDocuments(requestedItemId));
     }
 
-    handleToggleRevisions(documentId) {
-        return this.props.dispatch(toggleRevisions(documentId));
-    }
-
     render() {
         const {
             items,
@@ -64,10 +58,12 @@ class RequestedDocuments extends Component {
                         &nbsp;Download All
                     </button>
 
-                    <table className="document-table filelist">
+                    <table className="table document-table db-table filelist">
                         <thead>
                             <tr className="document-table__header">
-                                <th></th>
+                                <th>Document</th>
+                                <th className="text-center">Added</th>
+                                <th className="text-center">Revisions</th>
                                 {items.map(item => <th className="rotate" key={item.id}>
                                     <div>
                                         <span>
@@ -81,7 +77,7 @@ class RequestedDocuments extends Component {
                             <Group key={group.id}
                                 group={group}
                                 items={items}
-                                handleToggleRevisions={this.handleToggleRevisions}
+                                handleDownloadRequestedItemDocuments={this.handleDownloadRequestedItemDocuments}
                                 handleDownloadDocumentGroup={this.handleDownloadDocumentGroup}
                                 handleDownloadDocument={this.handleDownloadDocument} />
                         )}

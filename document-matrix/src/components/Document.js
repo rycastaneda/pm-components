@@ -1,14 +1,7 @@
 import React, { PropTypes } from 'react';
-import Revision from './Revision';
+import moment from 'moment';
 
-const Document = ({ document, handleToggleRevisions, handleDownloadDocument, items }) => {
-    function revisions() {
-        return document.showRevisions ?
-            <ul className="filelist">
-                {document.revisions.map(revision => <Revision key={revision.id} handleDownloadDocument={handleDownloadDocument} document={revision}/>)}
-            </ul>
-        : null;
-    }
+const Document = ({ document, handleDownloadDocument, items }) => {
 
     return (
         <tr className="group-table__document-row">
@@ -17,16 +10,11 @@ const Document = ({ document, handleToggleRevisions, handleDownloadDocument, ite
                     <i className="fa fa-download"></i>
                 </a>
 
-                {document.revisionIds.length ? 'Current Version: ' : null}
                 {document.name}
 
-                {document.revisionIds.length ?
-                    <a className="mar-l-sm" onClick={() => handleToggleRevisions(document.id)}>
-                        {document.showRevisions ? 'Hide History' : 'View History'}
-                    </a> : null}
-
-                {revisions()}
             </td>
+            <td className="text-center">{moment(document.created_at).format('MMMM Do, YYYY h:mm a')}</td>
+            <td className="text-center"><span data-document-id={document.id} className="badge revision-badge">{document.revisionIds.length}</span></td>
             {items.map((item) => {
                 return (
                     <td className="document-table__document-checkbox" key={document.id + item.id}>
@@ -40,7 +28,6 @@ const Document = ({ document, handleToggleRevisions, handleDownloadDocument, ite
 
 Document.propTypes = {
     document: PropTypes.object.isRequired,
-    handleToggleRevisions: PropTypes.func.isRequired,
     handleDownloadDocument: PropTypes.func.isRequired,
     items: PropTypes.array.isRequired
 };

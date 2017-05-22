@@ -2,7 +2,6 @@ import {
     FETCH_REQUIREMENTS,
     RECEIVE_REQUIREMENTS,
     TOGGLE_LOADING,
-    TOGGLE_REVISIONS,
     REQUEST_FAILED
 } from '../constants';
 import axios from 'axios';
@@ -23,13 +22,6 @@ export function fetchRequirements(quoteId, userType) {
                 });
             });
 
-    };
-}
-
-export function toggleRevisions(documentId) {
-    return {
-        type: TOGGLE_REVISIONS,
-        documentId
     };
 }
 
