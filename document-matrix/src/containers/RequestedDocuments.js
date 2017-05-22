@@ -65,17 +65,18 @@ class RequestedDocuments extends Component {
                     </button>
 
                     <table className="document-table filelist">
-                        <tbody>
+                        <thead>
                             <tr className="document-table__header">
-                                <td ></td>
-                                {items.map(item => <td  key={item.id}>
-                                    <a className="filelist__file" onClick={() => this.handleDownloadRequestedItemDocuments(item.id)}>
-                                        <i className="fa fa-download"></i>
-                                    </a>
-                                    &nbsp;{item.title}
-                                </td>)}
+                                <th></th>
+                                {items.map(item => <th className="rotate" key={item.id}>
+                                    <div>
+                                        <span>
+                                            &nbsp;{item.title}
+                                        </span>
+                                    </div>
+                                </th>)}
                             </tr>
-                        </tbody>
+                        </thead>
                         {groups.map(group =>
                             <Group key={group.id}
                                 group={group}
