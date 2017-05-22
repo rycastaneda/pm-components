@@ -20,14 +20,14 @@ function receiveRevisions(state, action) {
     let counter = 1;
     let revisionCount = action.documents.included.length;
 
-    state.byId[action.documents.data.id] = {
+    state.byId[action.documents.data.attributes.upload_id] = {
         ...action.documents.data.attributes,
-        id: action.documents.data.id,
+        id: action.documents.data.attributes.upload_id,
         status: 'Current Revision',
         number: revisionCount + 1
     };
 
-    state.allIds = [action.documents.data.id];
+    state.allIds = [action.documents.data.attributes.upload_id];
 
     action.documents.included.map((revision) => {
         state.byId[revision.id] = {

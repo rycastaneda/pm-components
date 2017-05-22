@@ -1,35 +1,28 @@
 import {
-    FETCH_REQUIREMENTS,
-    RECEIVE_REQUIREMENTS,
+    FETCH_REVISIONS,
+    RECEIVE_REVISIONS,
     TOGGLE_LOADING,
-    TOGGLE_REVISIONS,
     REQUEST_FAILED
 } from '../constants';
 import axios from 'axios';
 
-export function fetchRequirements(quoteId, userType) {
+export function fetchRevisions(quoteId, documentId, userType) {
+
     return (dispatch) => {
         dispatch({
-            type: FETCH_REQUIREMENTS,
+            type: FETCH_REVISIONS,
             quoteId,
+            documentId,
             userType
         });
 
-        axios.get(`/${userType}-quote-requests/${quoteId}/documents?include=requesteditems,groups,revisions`)
+        axios.get(`/${userType}-quote-requests/${quoteId}/documents/${documentId}?include=revisions`)
             .then((response) => {
                 return dispatch({
-                    type: RECEIVE_REQUIREMENTS,
+                    type: RECEIVE_REVISIONS,
                     documents: response.data
                 });
             });
-
-    };
-}
-
-export function toggleRevisions(documentId) {
-    return {
-        type: TOGGLE_REVISIONS,
-        documentId
     };
 }
 
@@ -62,18 +55,18 @@ function downloadBlob(url, filename, callback, error) {
         document.body.appendChild(a);
         a.click();
         callback();
+
     }).catch(error);
 }
 
-export function downloadDocument(documentId) {
+export function downloadRevision(documentId) {
     return (dispatch, getState) => {
-        const { quoteId, userType } = getState().ui;
-        const filename = getState().documents.byId[documentId].name;
+        const filename = getState().revisions.byId[documentId].name;
 
         dispatch({ type: TOGGLE_LOADING });
 
         downloadBlob(
-            axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents/${documentId}`,
+            axios.defaults.baseURL + `/documents/${documentId}`,
             filename,
             () => dispatch({ type: TOGGLE_LOADING }),
             () => dispatch({ type: REQUEST_FAILED })
@@ -81,46 +74,15 @@ export function downloadDocument(documentId) {
     };
 }
 
-export function downloadDocumentGroup(groupId) {
-    return (dispatch, getState) => {
-        const { quoteId, userType } = getState().ui;
-        const title = getState().groups.byId[groupId].title;
-
-        dispatch({ type: TOGGLE_LOADING });
-
-        downloadBlob(
-            axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents?filters[group_id]=${groupId}`,
-            title.toLowerCase().split(' ').join('-'),
-            () => dispatch({ type: TOGGLE_LOADING }),
-            () => dispatch({ type: REQUEST_FAILED })
-        );
-    };
-}
-
-export function downloadDocumentGroups() {
+export function downloadRevisions(documentId) {
     return (dispatch, getState) => {
         const { quoteId, userType } = getState().ui;
 
         dispatch({ type: TOGGLE_LOADING });
 
         downloadBlob(
-            axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents`,
-            `QR-${quoteId}`,
-            () => dispatch({ type: TOGGLE_LOADING }),
-            () => dispatch({ type: REQUEST_FAILED })
-        );
-    };
-}
-
-export function downloadRequestedItemDocuments(requestedItemId) {
-    return (dispatch, getState) => {
-        const { quoteId, userType } = getState().ui;
-
-        dispatch({ type: TOGGLE_LOADING });
-
-        downloadBlob(
-            axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents?filters[requested_item_id]=${requestedItemId}`,
-            `QR-${requestedItemId}-${quoteId}`,
+            axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents/${documentId}?revisions=1`,
+            documentId,
             () => dispatch({ type: TOGGLE_LOADING }),
             () => dispatch({ type: REQUEST_FAILED })
         );

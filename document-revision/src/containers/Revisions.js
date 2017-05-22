@@ -4,7 +4,7 @@ import {
     fetchRevisions,
     downloadRevision,
     downloadRevisions
-} from '../actions/requested-documents';
+} from '../actions/revisions';
 import Revision from '../components/Revision';
 import Loader from '../components/Loader';
 
