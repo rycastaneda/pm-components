@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import moment from 'moment';
 
-const Document = ({ document, handleDownloadDocument, items }) => {
+const Document = ({ document, handleDownloadDocument, handleToggleRevisions, items }) => {
 
     return (
         <tr className="group-table__document-row">
@@ -15,7 +15,8 @@ const Document = ({ document, handleDownloadDocument, items }) => {
             </td>
             <td className="text-center">{moment(document.created_at).format('MMMM Do, YYYY h:mm a')}</td>
             <td className="text-center">
-                <span data-document-id={document.id} data-size="modal-lg" data-title={`Revision History for ${document.name}`}
+                <span onClick={() => handleToggleRevisions()}
+                    data-document-id={document.id} data-size="modal-lg" data-title={`Revision History for ${document.name}`}
                     data-target="#revision-history"
                     className="badge revision-badge">
                     {document.revisionIds.length}
@@ -35,6 +36,7 @@ const Document = ({ document, handleDownloadDocument, items }) => {
 Document.propTypes = {
     document: PropTypes.object.isRequired,
     handleDownloadDocument: PropTypes.func.isRequired,
+    handleToggleRevisions: PropTypes.func.isRequired,
     items: PropTypes.array.isRequired
 };
 

@@ -6,6 +6,7 @@ const Group = ({
     items,
     handleDownloadDocument,
     handleDownloadDocumentGroup,
+    handleToggleRevisions,
     handleDownloadRequestedItemDocuments
 }) => {
     return (
@@ -21,6 +22,7 @@ const Group = ({
             {group.documents.map((document) => {
                 return <Document key={document.id}
                             document={document} items={items}
+                            handleToggleRevisions={handleToggleRevisions}
                             handleDownloadDocument={handleDownloadDocument}/>;
             })}
             <tr>
@@ -45,6 +47,7 @@ Group.propTypes = {
     items: PropTypes.array.isRequired,
     handleDownloadDocumentGroup: PropTypes.func.isRequired,
     handleDownloadRequestedItemDocuments: PropTypes.func.isRequired,
+    handleToggleRevisions: PropTypes.func.isRequired,
     handleDownloadDocument: PropTypes.func.isRequired
 };
 
