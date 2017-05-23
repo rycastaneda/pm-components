@@ -46,9 +46,9 @@ class RequestedDocuments extends Component {
                         <thead>
                             <tr>
                                 <th className="text-center">Revision</th>
-                                <th className="text-center">Document Status</th>
+                                <th>Document Status</th>
                                 <th className="text-center">Added</th>
-                                <th className="text-center">File name</th>
+                                <th>File name</th>
                                 <th className="text-center">
                                     <a onClick={() => this.handleDownloadRevisions(ui.documentId)}>
                                         <i className="fa fa-download"></i>

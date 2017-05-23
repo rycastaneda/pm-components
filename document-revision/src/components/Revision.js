@@ -4,12 +4,12 @@ import moment from 'moment';
 const Revision = ({ revision, handleDownloadRevision }) => {
 
     return (
-        <tr className="text-center">
-            <td>{revision.number}</td>
+        <tr>
+            <td className="text-center">{revision.number}</td>
             <td>{revision.status}</td>
-            <td>{moment(revision.created_at).format('MMMM Do YYYY, h:mm a')}</td>
+            <td className="text-center">{moment(revision.created_at).format('MMMM Do YYYY, h:mm a')}</td>
             <td>{revision.name}</td>
-            <td>
+            <td className="text-center">
                 <a onClick={() => handleDownloadRevision(revision.id)}>
                     <i className="fa fa-download"></i>
                 </a>
