@@ -15,10 +15,10 @@ const Document = ({ document, handleDownloadDocument, handleToggleRevisions, ite
             </td>
             <td className="text-center">{moment(document.created_at).format('MMMM Do, YYYY h:mm a')}</td>
             <td className="text-center">
-                <span onClick={() => handleToggleRevisions()}
+                <span onClick={() => document.revisionIds.length && handleToggleRevisions()}
                     data-document-id={document.id} data-size="modal-lg" data-title={`Revision History for ${document.name}`}
                     data-target="#revision-history"
-                    className="badge revision-badge">
+                    className={`badge ${document.revisionIds.length && 'revision-badge'}`}>
                     {document.revisionIds.length}
                 </span>
             </td>
