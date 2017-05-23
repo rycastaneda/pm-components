@@ -11,9 +11,9 @@ const Group = ({
     return (
         <tbody>
             <tr className="document-table__group-header">
-                <td className="document-table__group-header-title filelist__file" colSpan={items.length+3}>
+                <td className="document-table__group-header-title" colSpan={items.length+3}>
                     <a onClick={() => handleDownloadDocumentGroup(group.id)}>
-                        <i className="fa fa-download"></i>
+                        <i className="fa fa-download icon-link"></i>
                     </a>
                     &nbsp;{group.title}
                 </td>

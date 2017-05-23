@@ -6,8 +6,8 @@ const Document = ({ document, handleDownloadDocument, items }) => {
     return (
         <tr className="group-table__document-row">
             <td className="document-table__document-name">
-                <a className="filelist__file" onClick={() => handleDownloadDocument(document.id)}>
-                    <i className="fa fa-download"></i>
+                <a className="" onClick={() => handleDownloadDocument(document.id)}>
+                    <i className="fa fa-download icon-link"></i>
                 </a>
 
                 {document.name}
