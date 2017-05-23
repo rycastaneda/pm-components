@@ -51,7 +51,7 @@ class RequestedDocuments extends Component {
                                 <th>File name</th>
                                 <th className="text-center">
                                     <a onClick={() => this.handleDownloadRevisions(ui.documentId)}>
-                                        <i className="fa fa-download"></i>
+                                        <i className="fa fa-download icon-link"></i>
                                     </a>
                                 </th>
                             </tr>

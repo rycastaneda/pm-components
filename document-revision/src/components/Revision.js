@@ -11,7 +11,7 @@ const Revision = ({ revision, handleDownloadRevision }) => {
             <td>{revision.name}</td>
             <td className="text-center">
                 <a onClick={() => handleDownloadRevision(revision.id)}>
-                    <i className="fa fa-download"></i>
+                    <i className="fa fa-download icon-link"></i>
                 </a>
             </td>
         </tr>

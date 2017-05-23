@@ -30,7 +30,7 @@ const Group = ({
                     return (
                         <td key={item.id} className="text-center">
                             <a onClick={() => handleDownloadRequestedItemDocuments(item.id)}>
-                                <i className="fa fa-download"></i>
+                                <i className="fa fa-download icon-link"></i>
                             </a>
                         </td>
                     );
