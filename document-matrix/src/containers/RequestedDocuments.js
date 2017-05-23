@@ -17,11 +17,14 @@ class RequestedDocuments extends Component {
         this.handleDownloadDocument = this.handleDownloadDocument.bind(this);
         this.handleDownloadDocumentGroup = this.handleDownloadDocumentGroup.bind(this);
         this.handleDownloadDocumentGroups = this.handleDownloadDocumentGroups.bind(this);
-        this.handleToggleRevisions = this.handleToggleRevisions.bind(this);
         this.handleDownloadRequestedItemDocuments = this.handleDownloadRequestedItemDocuments.bind(this);
         this.quote_id = document.querySelector('[data-component="document-matrix"]').getAttribute('data-quote-id');
         this.userType = document.querySelector('[data-component="document-matrix"]').getAttribute('data-user-type');
         this.props.dispatch(fetchRequirements(this.quote_id, this.userType));
+
+        if (Plantminer && Plantminer.initRevisions) {
+            Plantminer.initRevisions();
+        }
     }
 
     handleDownloadDocument(documentId) {
@@ -38,10 +41,6 @@ class RequestedDocuments extends Component {
 
     handleDownloadRequestedItemDocuments(requestedItemId) {
         return this.props.dispatch(downloadRequestedItemDocuments(requestedItemId));
-    }
-
-    handleToggleRevisions() {
-        Plantminer.initRevisions();
     }
 
     render() {
@@ -82,7 +81,6 @@ class RequestedDocuments extends Component {
                             <Group key={group.id}
                                 group={group}
                                 items={items}
-                                handleToggleRevisions={this.handleToggleRevisions}
                                 handleDownloadRequestedItemDocuments={this.handleDownloadRequestedItemDocuments}
                                 handleDownloadDocumentGroup={this.handleDownloadDocumentGroup}
                                 handleDownloadDocument={this.handleDownloadDocument} />
