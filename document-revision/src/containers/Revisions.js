@@ -42,7 +42,7 @@ class RequestedDocuments extends Component {
         } else {
             content = revisions.length ?
                 <div>
-                    <table className="table db-table">
+                    <table className="table db-table mar-top-sm">
                         <thead>
                             <tr>
                                 <th className="text-center">Revision</th>
