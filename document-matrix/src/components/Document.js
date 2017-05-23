@@ -14,7 +14,13 @@ const Document = ({ document, handleDownloadDocument, items }) => {
 
             </td>
             <td className="text-center">{moment(document.created_at).format('MMMM Do, YYYY h:mm a')}</td>
-            <td className="text-center"><span data-document-id={document.id} className="badge revision-badge">{document.revisionIds.length}</span></td>
+            <td className="text-center">
+                <span data-document-id={document.id} data-size="modal-lg" data-title={`Revision History for ${document.name}`}
+                    data-target="#revision-history"
+                    className="badge revision-badge">
+                    {document.revisionIds.length}
+                </span>
+            </td>
             {items.map((item) => {
                 return (
                     <td className="document-table__document-checkbox" key={document.id + item.id}>
