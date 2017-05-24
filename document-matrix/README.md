@@ -1,9 +1,8 @@
-# Supplier Details - Requested Documents
+# Document Matrix
 
-Component that handles different required items that contains dropzones for files to be uploaded. Mainly used for Supplier Details 
+Component that shows a grid matrix containing services with their corresponding documents
 
 # How to run
 
- - Change the `quote-id` in `index.html` to any quote ID that the default searcher has.
- - Change the `matched-item-id` to the selected matched item in the ui 
- - Run `npm install` and `npm start` then go to http://pm.local.dev:8000 
+ - Change the `quote-id` in `index.html` to any quote ID that the default searcher/supplier has.
+ - Run `npm install` and `npm start` then go to http://pm.local.dev:8000

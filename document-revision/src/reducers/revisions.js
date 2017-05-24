@@ -24,7 +24,7 @@ function receiveRevisions(state, action) {
         ...action.documents.data.attributes,
         id: action.documents.data.attributes.upload_id,
         status: 'Current Revision',
-        number: revisionCount + 1
+        number: revisionCount
     };
 
     state.allIds = [action.documents.data.attributes.upload_id];
@@ -35,7 +35,7 @@ function receiveRevisions(state, action) {
             id: revision.id,
             created_at: revision.attributes.created_at.date,
             status: counter === revisionCount ? 'Original' : 'Superceded',
-            number: revisionCount + 1 - counter
+            number: revisionCount - counter
         };
 
         counter++;

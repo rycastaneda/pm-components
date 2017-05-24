@@ -1,0 +1,31 @@
+.revision-table {
+    margin-top: 25px;
+
+    .revision {
+        @media (min-width: 768px) {
+            width: 50px;
+            text-align: center;
+        }
+    }
+
+    .status {
+        @media (min-width: 768px) {
+            width: 120px;
+        }
+    }
+
+    .added {
+        @media (min-width: 768px) {
+            width: 200px;
+        }
+    }
+
+    .added, .download {
+        text-align: left;
+
+        @media (min-width: 768px) {
+            text-align: center;
+        }
+    }
+
+}

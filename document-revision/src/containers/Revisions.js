@@ -42,14 +42,14 @@ class RequestedDocuments extends Component {
         } else {
             content = revisions.length ?
                 <div>
-                    <table className="table db-table mar-top-sm">
+                    <table className="table db-table revision-table">
                         <thead>
                             <tr>
-                                <th className="text-center">Revision</th>
-                                <th>Document Status</th>
-                                <th className="text-center">Added</th>
-                                <th>File name</th>
-                                <th className="text-center">
+                                <th className="revision">Revision</th>
+                                <th className="status">Document Status</th>
+                                <th className="added">Added</th>
+                                <th className="filename">File name</th>
+                                <th className="download">
                                     <a onClick={() => this.handleDownloadRevisions(ui.documentId)}>
                                         <i className="fa fa-download icon-link"></i>
                                     </a>
