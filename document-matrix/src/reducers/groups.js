@@ -11,14 +11,13 @@ export function groups(state = INITIAL_STATE, action) {
 
     switch (action.type) {
         case RECEIVE_REQUIREMENTS:
-            action.documents.included.map((include) => {
+            action.documents.included && action.documents.included.map((include) => {
                 if (include.type === 'document-group') {
                     state.byId[include.id] = Object.assign({}, include.attributes, {
                         id: include.id,
                         documentIds: []
                     });
                     state.allIds.push(include.id);
-
                 }
             });
 

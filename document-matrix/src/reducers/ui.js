@@ -22,7 +22,8 @@ export function ui(state = INITIAL_STATE, action) {
         case RECEIVE_REQUIREMENTS:
             return {
                 ...state,
-                loading: false
+                loading: false,
+                error: action.documents.included ? false : REQUEST_FAILED
             };
         case REQUEST_FAILED:
             return {

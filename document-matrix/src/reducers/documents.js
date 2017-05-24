@@ -26,8 +26,7 @@ export function documents(state = INITIAL_STATE, action) {
                 state.allIds.push(doc.id);
             });
 
-
-            action.documents.included.map((doc) => {
+            action.documents.included && action.documents.included.map((doc) => {
                 if (doc.type !== 'quote-document-revision') {
                     return;
                 }
@@ -37,8 +36,6 @@ export function documents(state = INITIAL_STATE, action) {
                 });
 
                 state.allIds.push(doc.id);
-            //         state.byId[document.id].included.push(requirement.id);
-            //     });
             });
 
             return Object.assign({}, state);
