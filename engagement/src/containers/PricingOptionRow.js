@@ -45,7 +45,7 @@ class PricingOptionRow extends Component {
         return (
             pricingOption.attributes.value !== null && pricingOption.attributes.value !== 0 ?
             <tr>
-                <td className="checkbox" data-heading="Rates">
+                <td className="checkbox col-rates" data-heading="Rates">
                     <label htmlFor={`pricingOption__${pricingOption.id}`}>
                     {
                         <input name={`pricingOption-checkbox__${pricingOption.id}`}
@@ -62,7 +62,7 @@ class PricingOptionRow extends Component {
                 <td data-heading="Quote">
                     {`$${pricingOption.attributes.value}`}
                 </td>
-                <td data-heading="Unit">
+                <td data-heading="Estimate">
                     {
                         <input type="number"
                             className="form-control"
@@ -71,6 +71,9 @@ class PricingOptionRow extends Component {
                             onBlur={editMode ? this.handleEngagementDetailUpdate : null}
                         />
                     }
+                </td>
+                <td data-heading="Unit">
+                    {`${pricingOption.attributes.unit_of_measure}s`}
                 </td>
             </tr> : null
         );

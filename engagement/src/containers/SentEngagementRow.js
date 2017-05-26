@@ -46,51 +46,63 @@ class SentEngagementRow extends Component {
 
         return (
             <div className="row engagement-row">
-                <div className="col-md-7 separator-vertical">
-                    Engagement:<strong> #{engagement.id}</strong> <br />
-                    Requested Category:<strong> {engagement.category.attributes.title}</strong> <br /><br />
-                    Supplier: <strong>{engagement.supplier.attributes.title}</strong> <br />
-                    Service Name: <strong>{engagement.matchedItem.attributes.title}</strong><br /><br />
-                    Pricing:
-                    {engagement.engagementDetails.map(pricing =>
-                        <div key={pricing.id}> ${this.convertToCurrency(pricing.attributes.rate_value)} ({pricing.pricingOption.attributes.title} Rate)
-                         x {pricing.attributes.unit} Estimated Unit(s)</div>
-                    )}
-                    <br />
-                    {engagement.attributes.po_number ?
-                        <span>Work Order: {engagement.attributes.po_number}<br /></span> : null
-                    }
-                    {engagement.attributes.pre_start_date ?
-                        <span>Planned Start Date: {moment(engagement.attributes.pre_start_date).format('DD-MM-YYYY')}<br /></span> : null
-                    }
-                    <div>Created by: {engagement.createdBy}</div>
-                    {engagement.attributes.engagement_text ?
-                        <IconButton
-                            title={`${engagement.attributes.showEngagementText ? 'Hide' : 'See'} Engagement Instructions`}
-                            classNames="db-function mar-top-sm"
-                            onClick={this.toggleTextVisibility}
-                            iconClass={`fa fa-${engagement.attributes.showEngagementText ? 'minus' : 'plus'} Engagement Instructions`}
-                        /> : null
-                    }
-                    {engagement.attributes.showEngagementText ? <div>{engagement.attributes.engagement_text}</div> : null}
-                </div>
-                <div className="col-md-3 text-center">
-                    <div className="txt-small">Estimated Total (ex GST)</div>
-                    <div className="txt-large pad-top-sm">
-                        ${this.engagementTotal(engagement)}
+                <div className="col-xs-12 engagement-header">
+                    <div className="row">
+                        <div className="col-sm-6">
+                            <span className="txt-small">Engagement:</span><strong> #{engagement.id}</strong> <br />
+                            <span className="txt-small">Requested Category:</span><strong> {engagement.category.attributes.title}</strong>
+                        </div>
+                        <div className="col-sm-6 text-right">
+                            {engagement.attributes.status === 2 && <span className="bs-label bs-label-danger">Cancelled</span>}
+                            {engagement.attributes.can_cancel && engagement.attributes.status === 5 ?
+                                <IconButton
+                                    title="Cancel"
+                                    classNames="db-function"
+                                    onClick={this.showModal}
+                                    iconClass="fa fa-ban"
+                                    iconPlacement="left"
+                                /> : null }
+                        </div>
                     </div>
                 </div>
-                <div className="col-md-2 text-right">
-                    {engagement.attributes.status === 2 && <span className="bs-label bs-label-danger">Cancelled</span>}
-                    {engagement.attributes.can_cancel && engagement.attributes.status === 5 ?
-                    <IconButton
-                        title="Cancel"
-                        classNames="db-function"
-                        onClick={this.showModal}
-                        iconClass="fa fa-ban"
-                    /> : null }
-                </div>
+                <div className="col-xs-12 engagement-detail">
+                    <div className="row">
+                        <div className="col-sm-7 separator-vertical mar-top-10 mar-btm-10">
+                            <span className="txt-small">Supplier:</span><strong> {engagement.supplier.attributes.title}</strong><br />
+                            <span className="txt-small">Service Name:</span><strong> {engagement.matchedItem.attributes.title}</strong><br /><br />
+                            {engagement.attributes.po_number ?
+                                <span><span className="txt-small">Work Order:</span> {engagement.attributes.po_number}<br /></span> : null
+                            }
+                            {engagement.attributes.pre_start_date ?
+                                <span><span className="txt-small">Planned Start Date:</span> {moment(engagement.attributes.pre_start_date).format('DD-MM-YYYY')}<br /></span> : null
+                            }
+                            <div><span className="txt-small">Created by:</span> {engagement.createdBy}</div>
+                            {engagement.attributes.engagement_text ?
+                                <IconButton
+                                    title={`${engagement.attributes.showEngagementText ? 'Hide' : 'Show'} Engagement Instructions`}
+                                    classNames="db-function mar-top-sm"
+                                    onClick={this.toggleTextVisibility}
+                                    iconClass={`fa fa-caret-${engagement.attributes.showEngagementText ? 'up' : 'down'}`}
+                                    iconPlacement="right"
+                                /> : null
+                            }
+                            {engagement.attributes.showEngagementText ? <div className="pad-all-xs">{engagement.attributes.engagement_text}</div> : null}
+                        </div>
+                        <div className="col-sm-5 mar-top-10 mar-btm-10">
+                            <div className="txt-small">Pricing:</div>
+                            {engagement.engagementDetails.map(pricing =>
+                                <div key={pricing.id}> ${this.convertToCurrency(pricing.attributes.rate_value)} ({pricing.pricingOption.attributes.title} Rate)
+                                 x {pricing.attributes.unit} Estimated {pricing.pricingOption.attributes.unit_of_measure}{pricing.attributes.unit > 1 ? 's': ''}</div>
+                            )}
+                            <br />
 
+                            <div className="txt-small">Estimated Total (ex GST)</div>
+                            <div className="txt-large pad-top-sm">
+                                ${this.engagementTotal(engagement)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }

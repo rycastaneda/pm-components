@@ -94,7 +94,7 @@ export function isValidEngagement(dispatch, currentEngagement, pricingOptions, e
     dispatch(resetError());
     let pricing = pricingOptions && pricingOptions.filter(pricingOption => pricingOption.attributes.selected);
     if (pricingOptions && !pricing.length) {
-        dispatch(validationError('Please provide values for "Estimated Unit(s)"'));
+        dispatch(validationError('Please provide Estimate'));
         return false;
     }
     if (engagementLimit) {

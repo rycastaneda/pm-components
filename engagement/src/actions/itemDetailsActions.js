@@ -135,7 +135,7 @@ export function loadItemDetails(matchedItemId, requestedItemId, engagement) {
         dispatch(resetError());
         dispatch(requestStarted());
 
-        axios.get(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}?include=pricingOptions,matchedSupplier,quoteRequestEngagements,quoteRequestEngagements.createdBy,quoteRequestEngagements.engagementDetails,quoteRequestEngagements.matchedItem&fields[pricing-options]=title,value,standby_value&fields[engagement]=status,engagement_text,po_value`)
+        axios.get(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}?include=pricingOptions,matchedSupplier,quoteRequestEngagements,quoteRequestEngagements.createdBy,quoteRequestEngagements.engagementDetails,quoteRequestEngagements.matchedItem&fields[pricing-options]=title,value,standby_value,unit_of_measure&fields[engagement]=status,engagement_text,po_value`)
         .then((response) => {
             let pricingOptions = [];
             let supplier = [];
@@ -205,7 +205,7 @@ export function loadItemDetailsPanel(panelId, itemId, regionId) {
         dispatch(resetSuccess());
         dispatch(resetError());
         dispatch(requestStarted());
-        axios.get(`/browse-panels/${panelId}/items/${itemId}?include=standardRates,supplier&filters[regionId]=${regionId}&fields[pricing-options]=title,value,standby_value`)
+        axios.get(`/browse-panels/${panelId}/items/${itemId}?include=standardRates,supplier&filters[regionId]=${regionId}&fields[pricing-options]=title,value,standby_value,unit_of_measure`)
         .then((response) => {
             let pricingOptions = [];
             let supplier = [];

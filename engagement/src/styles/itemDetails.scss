@@ -19,8 +19,13 @@
 
 .engagement-row {
     margin: 5px 0 10px;
-    padding: 10px 0;
     border: 1px solid #dddddd;
+
+    .engagement-header {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background: #f6f6f6;
+    }
 }
 
 .close-suggestion {
@@ -40,10 +45,26 @@
     font-size: 22px;
 }
 
+.col-rates {
+    width: 200px;
+}
+
 @media (min-width: 480px) {
 
     .engagement-row .separator-vertical {
         border-right: 1px solid #dddddd;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .engagement-total .text-left-xs {
+        text-align: left;
+    }
+
+    .col-rates {
+        width: auto;
+        margin: 0;
     }
 }
 

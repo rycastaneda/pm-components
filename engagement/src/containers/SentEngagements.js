@@ -58,12 +58,12 @@ class SentEngagements extends Component {
                     {sentEngagements.map(pendingEngagement =>
                         <SentEngagementRow key={pendingEngagement.id} engagement={pendingEngagement} />
                     )}
-                    <div className="row">
-                        <div className="col-md-9 text-right">
+                    <div className="row engagement-total">
+                        <div className="col-sm-7 text-right text-left-xs">
                             <strong className="txt-small">Total Estimated Amount (ex GST)</strong>
                             <div className="txt-small">x {sentEngagements.length} Engagement(s)</div>
                         </div>
-                        <div className="col-md-3 text-center">
+                        <div className="col-sm-5 pad-top-sm">
                             <span className="txt-large">${this.sentEngagementsTotal(sentEngagements)}</span>
                         </div>
                     </div>

@@ -90,99 +90,108 @@ class ItemDetails extends Component {
             <div>
             {
                 pricingOptions.length ?
-                <div className="item-details">
-                    <h4 className="pad-top">{ editMode ? 'Edit Pending Engagement' : 'Create New Engagement' }</h4>
-                    { engagementTitle ? <h6>{engagementTitle}</h6> : null }
-                    { !engagementTitle && currentEngagement.relationships ? <h6>{currentEngagement.relationships.supplier.attributes.title} - {currentEngagement.relationships.matchedItemTitle}</h6> : null }
-                    <table className="table table-striped db-table">
-                        <thead>
-                            <tr>
-                                <th>Rates</th>
-                                <th>Quote</th>
-                                <th>Estimated Unit(s)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {enableCreate ?
-                            <tr><td colSpan="3">This supplier has not responded the Request for Quotation</td></tr>
-                            : pricingOptions.map(pricingOption => <PricingOptionRow key={pricingOption.id} pricingOption={pricingOption} spot={itemsReducer.spot} editMode={editMode}  />)
-                        }
-                        </tbody>
-                    </table>
-                    {
-                        <div>
-                            <div className="row mar-top">
-                                <label className="col-md-3 control-label">Work Order *: </label>
-                                <div className="col-md-9">
-                                    <input className="form-control"
-                                           type="text"
-                                           placeholder="Enter Work Order number"
-                                           value={purchaseOrder}
-                                           onChange={this.handlePOChange}
-                                           onBlur={this.handlePOUpdate}
-                                           disabled={enableCreate}
-                                           />
+                <div className="item-details row">
+                    <h4 className="pad-top col-xs-12">
+                        { editMode ? 'Edit Pending Engagement ' : 'Create New Engagement ' }
+                        <br className="visible-xs" />
+                        <span className="txt-small"> (
+                            { engagementTitle && `${engagementTitle}` }
+                            { !engagementTitle && currentEngagement.relationships && `${currentEngagement.relationships.supplier.attributes.title} - ${currentEngagement.relationships.matchedItemTitle}`}
+                            )
+                        </span>
+                    </h4>
+                    <div className="col-sm-6">
+                        <table className="table table-striped db-table">
+                            <thead>
+                                <tr>
+                                    <th>Rates</th>
+                                    <th>Quote</th>
+                                    <th>Estimate</th>
+                                    <th>Units</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {enableCreate ?
+                                <tr>
+                                    <td colSpan="3">This supplier has not responded the Request for Quotation</td>
+                                </tr>
+                                : pricingOptions.map(pricingOption => <PricingOptionRow key={pricingOption.id} pricingOption={pricingOption} spot={itemsReducer.spot} editMode={editMode}  />)
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+
+                        <div className="col-sm-6">
+                            <div className="db-form-section form-horizontal">
+                                <h6 className="db-form-title">Engagement Details</h6>
+                                <div className="form-group">
+                                    <label className="col-md-4 control-label">Work Order<span className="required">*</span></label>
+                                    <div className="col-md-8">
+                                        <input className="form-control"
+                                            type="text"
+                                            placeholder="Enter Work Order number"
+                                            value={purchaseOrder}
+                                            onChange={this.handlePOChange}
+                                            onBlur={this.handlePOUpdate}
+                                            disabled={enableCreate}
+                                            />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="row mar-top">
-                                <label className="col-md-3 control-label">Planned Start Date *: </label>
-                                <div className="col-md-9">
-                                    <Datetime className="po-date"
-                                              timeFormat={false}
-                                              closeOnSelect={true}
-                                              inputProps={inputPropsDate}
-                                              dateFormat="DD-MM-YYYY"
-                                              value={defaultDate}
-                                              onChange={this.handePlanDateChange}
-                                              onBlur={this.handePlanDateUpdate}
-                                              />
+                                <div className="form-group">
+                                    <label className="col-md-4 control-label">Planned Start Date<span className="required">*</span></label>
+                                    <div className="col-md-8">
+                                        <Datetime className="po-date"
+                                            timeFormat={false}
+                                            closeOnSelect={true}
+                                            inputProps={inputPropsDate}
+                                            dateFormat="DD-MM-YYYY"
+                                            value={defaultDate}
+                                            onChange={this.handePlanDateChange}
+                                            onBlur={this.handePlanDateUpdate}
+                                            />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="row mar-top">
-                                <label className="col-md-3 control-label">Engagement Instructions: </label>
-                                <div className="col-md-9">
-                                    <textarea className="form-control"
-                                           rows="4"
-                                           cols="50"
-                                           maxLength="500"
-                                           placeholder="Enter Engagement Instructions"
-                                           value={engagementText}
-                                           onChange={this.handleEngagementTextChange}
-                                           onBlur={this.handleEngagementTextUpdate}
-                                           disabled={enableCreate}
-                                           >
-                                           </textarea>
+                                <div className="form-group">
+                                    <label className="col-md-4 control-label">Engagement Instructions</label>
+                                    <div className="col-md-8">
+                                        <textarea className="form-control"
+                                            rows="4"
+                                            cols="50"
+                                            maxLength="500"
+                                            placeholder="Enter Engagement Instructions"
+                                            value={engagementText}
+                                            onChange={this.handleEngagementTextChange}
+                                            onBlur={this.handleEngagementTextUpdate}
+                                            disabled={enableCreate}
+                                        ></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    }
+
                     {
                         itemsReducer.spot === 'browse' ?
-                            <div className="row">
-                                <div className="col-xs-12 align-right db-form-submit">
-                                    <Button title="Create & Send Engagement"
-                                            onClick={this.handleSaveSendPanel}
-                                            classNames="submit btn"
-                                            disabled={enableCreate}
-                                    />
-                                </div>
+                            <div className="col-xs-12 align-right">
+                                <Button title="Create & Send Engagement"
+                                        onClick={this.handleSaveSendPanel}
+                                        classNames="submit btn"
+                                        disabled={enableCreate}
+                                />
                             </div>
                             :
-                            <div className="row">
-                                <div className="col-xs-12 align-right db-form-submit">
-                                { editMode ?
-                                    <Button title="Done Editing"
-                                            onClick={this.resetItemDetails}
-                                            classNames="submit btn"
-                                    />
-                                    :
-                                    <Button title="Create Engagement"
-                                            onClick={this.handleSave}
-                                            classNames="submit btn"
-                                            disabled={enableCreate}
-                                    />
-                                }
-                                </div>
+                            <div className="col-xs-12 align-right">
+                            { editMode ?
+                                <Button title="Done Editing"
+                                        onClick={this.resetItemDetails}
+                                        classNames="submit btn"
+                                />
+                                :
+                                <Button title="Create Engagement"
+                                        onClick={this.handleSave}
+                                        classNames="submit btn"
+                                        disabled={enableCreate}
+                                />
+                            }
                             </div>
                     }
                 </div> : null
