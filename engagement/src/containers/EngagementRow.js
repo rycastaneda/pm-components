@@ -65,7 +65,7 @@ class EngagementRow extends Component {
                             <span className="txt-small">Engagement:</span><strong> #{engagement.id}</strong> <br />
                             <span className="txt-small">Requested Category:</span><strong> {engagement.category.attributes.title}</strong>
                         </div>
-                        <div className="col-sm-6 text-right">
+                        <div className="col-sm-6 text-right text-left-xs">
                             <IconButton
                                 title="Edit"
                                 classNames="db-function"
