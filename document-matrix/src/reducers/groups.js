@@ -1,5 +1,5 @@
 import {
-    RECEIVE_REQUIREMENTS
+    RECEIVE_DOCUMENTS
 } from '../constants';
 
 const INITIAL_STATE = {
@@ -10,7 +10,7 @@ const INITIAL_STATE = {
 export function groups(state = INITIAL_STATE, action) {
 
     switch (action.type) {
-        case RECEIVE_REQUIREMENTS:
+        case RECEIVE_DOCUMENTS:
             action.documents.included && action.documents.included.map((include) => {
                 if (include.type === 'document-group') {
                     state.byId[include.id] = Object.assign({}, include.attributes, {

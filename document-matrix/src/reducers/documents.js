@@ -1,5 +1,5 @@
 import {
-    RECEIVE_REQUIREMENTS,
+    RECEIVE_DOCUMENTS,
     TOGGLE_REVISIONS
 } from '../constants';
 
@@ -11,7 +11,7 @@ const INITIAL_STATE = {
 export function documents(state = INITIAL_STATE, action) {
 
     switch (action.type) {
-        case RECEIVE_REQUIREMENTS:
+        case RECEIVE_DOCUMENTS:
             action.documents.data.map((doc) => {
                 let included = doc.relationships.requesteditems.data.map(item => item.id);
                 let revisionIds = doc.relationships.revisions.data.map(revision => revision.id);

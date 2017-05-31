@@ -17,7 +17,7 @@ const Document = ({ document, handleDownloadDocument, items }) => {
             <td className="text-center">
                 <span data-document-id={document.id} data-size="modal-lg" data-title={`Revision History for ${document.name}`}
                     data-target="#revision-history"
-                    className={`badge ${document.revisionIds.length && 'revision-badge'}`}>
+                    className={`badge pointer ${document.revisionIds.length && 'revision-badge'}`}>
                     {document.revisionIds.length}
                 </span>
             </td>

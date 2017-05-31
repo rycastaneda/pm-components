@@ -19,12 +19,6 @@ export function ui(state = INITIAL_STATE, action) {
                 quoteId: action.quoteId,
                 userType: action.userType
             };
-        case RECEIVE_REQUIREMENTS:
-            return {
-                ...state,
-                loading: false,
-                error: action.documents.included ? false : REQUEST_FAILED
-            };
         case REQUEST_FAILED:
             return {
                 ...state,

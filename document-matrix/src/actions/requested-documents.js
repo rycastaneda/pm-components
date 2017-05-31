@@ -1,6 +1,6 @@
 import {
-    FETCH_REQUIREMENTS,
-    RECEIVE_REQUIREMENTS,
+    FETCH_DOCUMENTS,
+    RECEIVE_DOCUMENTS,
     TOGGLE_LOADING,
     REQUEST_FAILED
 } from '../constants';
@@ -9,7 +9,7 @@ import axios from 'axios';
 export function fetchRequirements(quoteId, userType) {
     return (dispatch) => {
         dispatch({
-            type: FETCH_REQUIREMENTS,
+            type: FETCH_DOCUMENTS,
             quoteId,
             userType
         });
@@ -17,7 +17,7 @@ export function fetchRequirements(quoteId, userType) {
         axios.get(`/${userType}-quote-requests/${quoteId}/documents?include=requesteditems,groups,revisions`)
             .then((response) => {
                 return dispatch({
-                    type: RECEIVE_REQUIREMENTS,
+                    type: RECEIVE_DOCUMENTS,
                     documents: response.data
                 });
             });

@@ -58,7 +58,7 @@ class RequestedDocuments extends Component {
                         &nbsp;Download All
                     </button>
 
-                    <table className="table document-table db-table filelist">
+                    <table className="table db-table document-table filelist">
                         <thead>
                             <tr className="document-table__header">
                                 <th>Document</th>
@@ -83,13 +83,30 @@ class RequestedDocuments extends Component {
                         )}
                     </table>
                 </div>
-            : null;
+            : <div>
+                <table className="table db-table document-table filelist">
+                    <thead>
+                        <tr className="document-table__header">
+                        <th>Document</th>
+                        <th className="text-center">Added</th>
+                        <th className="text-center">Revisions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colSpan="3" className="text-center">
+                                <i className="fa fa-warning"></i>&nbsp;There are no documents to be displayed.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>;
         }
 
         return (
             <div className="group-panel">
                 {ui.error === 'REQUEST_FAILED' ?
-                    <div className="alert alert-danger">
+                    <div className="bs-callout bs-callout-danger">
                         <strong>Something went wrong. Please try again later.</strong>
                     </div>
                 : null }

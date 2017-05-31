@@ -1,17 +1,15 @@
 import {
-    RECEIVE_REQUIREMENTS
+    RECEIVE_DOCUMENTS
 } from '../constants';
 
 const INITIAL_STATE = {
-    byId: {
-
-    }, // array of document groups
+    byId: {},
     allIds: []
 };
 
 export function requirements(state = INITIAL_STATE, action) {
     switch (action.type) {
-        case RECEIVE_REQUIREMENTS: return receiveRequirements(state, action);
+        case RECEIVE_DOCUMENTS: return receiveRequirements(state, action);
         default:
             return state;
     }
