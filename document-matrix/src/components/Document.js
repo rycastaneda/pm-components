@@ -17,14 +17,14 @@ const Document = ({ document, handleDownloadDocument, items }) => {
             <td className="text-center">
                 <span data-document-id={document.id} data-size="modal-lg" data-title={`Revision History for ${document.name}`}
                     data-target="#revision-history"
-                    className={`badge badge--brand ${document.revisionIds.length && 'pointer revision-badge'}`}>
+                    className={`badge ${document.revisionIds.length && 'badge--brand pointer revision-badge'}`}>
                     {document.revisionIds.length}
                 </span>
             </td>
             {items.map((item) => {
                 return (
                     <td key={document.id + item.id}>
-                        {!!~document.included.indexOf(item.id) ? <i className="fa fa-check"></i> : null}
+                        {!~document.included.indexOf(item.id) ? <i className="fa fa-check"></i> : null}
                     </td>
                 );
             })}
