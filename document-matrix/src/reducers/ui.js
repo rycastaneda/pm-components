@@ -1,8 +1,7 @@
 import {
-    FETCH_REQUIREMENTS,
+    FETCH_DOCUMENTS,
     REQUEST_FAILED,
-    TOGGLE_LOADING,
-    RECEIVE_REQUIREMENTS
+    TOGGLE_LOADING
 } from '../constants';
 
 const INITIAL_STATE = {
@@ -12,7 +11,7 @@ const INITIAL_STATE = {
 
 export function ui(state = INITIAL_STATE, action) {
     switch (action.type) {
-        case FETCH_REQUIREMENTS:
+        case FETCH_DOCUMENTS:
             return {
                 ...state,
                 loading: true,
