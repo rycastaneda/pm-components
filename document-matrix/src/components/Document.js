@@ -4,8 +4,8 @@ import moment from 'moment';
 const Document = ({ document, handleDownloadDocument, items }) => {
 
     return (
-        <tr className="group-table__document-row">
-            <td className="document-table__document-name">
+        <tr>
+            <td>
                 <a className="" onClick={() => handleDownloadDocument(document.id)}>
                     <i className="fa fa-download icon-link"></i>
                 </a>
@@ -17,14 +17,14 @@ const Document = ({ document, handleDownloadDocument, items }) => {
             <td className="text-center">
                 <span data-document-id={document.id} data-size="modal-lg" data-title={`Revision History for ${document.name}`}
                     data-target="#revision-history"
-                    className={`badge pointer ${document.revisionIds.length && 'revision-badge'}`}>
+                    className={`badge badge--brand ${document.revisionIds.length && 'pointer revision-badge'}`}>
                     {document.revisionIds.length}
                 </span>
             </td>
             {items.map((item) => {
                 return (
-                    <td className="document-table__document-checkbox" key={document.id + item.id}>
-                        <input type="checkbox" readOnly checked={!!~document.included.indexOf(item.id)}/>
+                    <td key={document.id + item.id}>
+                        {!!~document.included.indexOf(item.id) ? <i className="fa fa-check"></i> : null}
                     </td>
                 );
             })}

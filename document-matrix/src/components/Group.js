@@ -10,8 +10,8 @@ const Group = ({
 }) => {
     return (
         <tbody>
-            <tr className="document-table__group-header">
-                <td className="document-table__group-header-title" colSpan={items.length+3}>
+            <tr>
+                <td className="group" colSpan={items.length+3}>
                     <a onClick={() => handleDownloadDocumentGroup(group.id)}>
                         <i className="fa fa-download icon-link"></i>
                     </a>
@@ -24,11 +24,11 @@ const Group = ({
                             handleDownloadDocument={handleDownloadDocument}/>;
             })}
             <tr>
-                <td colSpan="3">Download By Service</td>
+                <td colSpan="3" className="group">Download By Service</td>
 
                 {items.map((item) => {
                     return (
-                        <td key={item.id} className="text-center">
+                        <td key={item.id} className="group text-center">
                             <a onClick={() => handleDownloadRequestedItemDocuments(item.id)}>
                                 <i className="fa fa-download icon-link"></i>
                             </a>

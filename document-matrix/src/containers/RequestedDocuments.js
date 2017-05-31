@@ -58,13 +58,13 @@ class RequestedDocuments extends Component {
                         &nbsp;Download All
                     </button>
 
-                    <table className="table db-table document-table filelist">
+                    <table className={`table db-table db-table-sort db-table-sort-nojs ${items.length > 3 ? 'db-angle-table' : ''}`}>
                         <thead>
-                            <tr className="document-table__header">
-                                <th>Document</th>
+                            <tr>
+                                <th className="pad-left-sm">Document</th>
                                 <th className="text-center">Added</th>
                                 <th className="text-center">Revisions</th>
-                                {items.map(item => <th className="rotate" key={item.id}>
+                                {items.map(item => <th key={item.id}>
                                     <div>
                                         <span>
                                             &nbsp;{item.title}
