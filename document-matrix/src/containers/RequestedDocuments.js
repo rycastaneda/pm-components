@@ -38,52 +38,10 @@ class RequestedDocuments extends Component {
     handleDownloadRequestedItemDocuments(requestedItemId) {
         return this.props.dispatch(downloadRequestedItemDocuments(requestedItemId));
     }
-
-    render() {
-        const {
-            items,
-            groups,
-            ui
-        } = this.props;
-
-        let content;
-
-        if (ui.loading && !ui.error) {
-            content = <Loader block={true}></Loader>;
-        } else {
-            content = items.length ?
-                <div>
-                    <button className="db-function pull-right mar-btm-sm" onClick={() => this.handleDownloadDocumentGroups()}>
-                        <i className="fa fa-download"></i>
-                        &nbsp;Download All
-                    </button>
-
-                    <table className={`table db-table db-table-sort db-table-sort-nojs ${items.length > 3 ? 'db-angle-table' : ''}`}>
-                        <thead>
-                            <tr>
-                                <th className="pad-left-sm">Document</th>
-                                <th className="text-center">Added</th>
-                                <th className="text-center">Revisions</th>
-                                {items.map(item => <th key={item.id}>
-                                    <div>
-                                        <span>
-                                            &nbsp;{item.title}
-                                        </span>
-                                    </div>
-                                </th>)}
-                            </tr>
-                        </thead>
-                        {groups.map(group =>
-                            <Group key={group.id}
-                                group={group}
-                                items={items}
-                                handleDownloadRequestedItemDocuments={this.handleDownloadRequestedItemDocuments}
-                                handleDownloadDocumentGroup={this.handleDownloadDocumentGroup}
-                                handleDownloadDocument={this.handleDownloadDocument} />
-                        )}
-                    </table>
-                </div>
-            : <div>
+    
+    noDocuments() {
+        return (
+            <div>
                 <table className="table db-table document-table filelist">
                     <thead>
                         <tr className="document-table__header">
@@ -100,9 +58,51 @@ class RequestedDocuments extends Component {
                         </tr>
                     </tbody>
                 </table>
-            </div>;
-        }
+            </div>
+        );
+    }
 
+    render() {
+        const {
+            items,
+            groups,
+            ui
+        } = this.props;
+
+        let content = items.length ?
+            <div>
+                <button className="db-function pull-right mar-btm-sm" onClick={() => this.handleDownloadDocumentGroups()}>
+                    <i className="fa fa-download"></i>
+                    &nbsp;Download All
+                </button>
+
+                <table className={`table db-table db-table-sort db-table-sort-nojs ${items.length > 3 ? 'db-angle-table' : ''}`}>
+                    <thead>
+                        <tr>
+                            <th className="pad-left-sm">Document</th>
+                            <th className="text-center">Added</th>
+                            <th className="text-center">Revisions</th>
+                            {items.map(item => <th key={item.id}>
+                                <div>
+                                    <span>
+                                        &nbsp;{item.title}
+                                    </span>
+                                </div>
+                            </th>)}
+                        </tr>
+                    </thead>
+                    {groups.map(group =>
+                        <Group key={group.id}
+                            group={group}
+                            items={items}
+                            handleDownloadRequestedItemDocuments={this.handleDownloadRequestedItemDocuments}
+                            handleDownloadDocumentGroup={this.handleDownloadDocumentGroup}
+                            handleDownloadDocument={this.handleDownloadDocument} />
+                    )}
+                </table>
+            </div>
+        : this.noDocuments();
+        
         return (
             <div className="group-panel">
                 {ui.error === 'REQUEST_FAILED' ?
@@ -110,10 +110,10 @@ class RequestedDocuments extends Component {
                         <strong>Something went wrong. Please try again later.</strong>
                     </div>
                 : null }
-                {ui.loading && !ui.error
-                    ? <Loader block={true}></Loader>
-                    : content
-                }
+                {ui.loading && !ui.error ? 
+                    <Loader></Loader>
+                : null}
+                {content}
             </div>
         );
     }

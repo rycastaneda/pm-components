@@ -8,10 +8,7 @@ const Document = ({ document, handleDownloadDocument, items }) => {
             <td>
                 <a className="" onClick={() => handleDownloadDocument(document.id)}>
                     <i className="fa fa-download icon-link"></i>
-                </a>
-
-                {document.name}
-
+                </a>&nbsp;{document.name}
             </td>
             <td className="text-center">{moment(document.created_at).format('MMMM Do, YYYY h:mm a')}</td>
             <td className="text-center">

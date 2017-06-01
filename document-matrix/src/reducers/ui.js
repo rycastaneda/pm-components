@@ -21,11 +21,13 @@ export function ui(state = INITIAL_STATE, action) {
         case REQUEST_FAILED:
             return {
                 ...state,
-                error: REQUEST_FAILED
+                error: REQUEST_FAILED,
+                loading: false
             };
         case TOGGLE_LOADING:
             return {
                 ...state,
+                error: false,
                 loading: !state.loading
             };
         default:

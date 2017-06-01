@@ -20,8 +20,7 @@ export function fetchRequirements(quoteId, userType) {
                     type: RECEIVE_DOCUMENTS,
                     documents: response.data
                 });
-            });
-
+            }).catch(() => dispatch({ type: REQUEST_FAILED }));
     };
 }
 
