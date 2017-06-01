@@ -5,8 +5,7 @@ const Group = ({
     group,
     items,
     handleDownloadDocument,
-    handleDownloadDocumentGroup,
-    handleDownloadRequestedItemDocuments
+    handleDownloadDocumentGroup
 }) => {
     return (
         <tbody>
@@ -31,7 +30,6 @@ Group.propTypes = {
     group: PropTypes.object.isRequired,
     items: PropTypes.array.isRequired,
     handleDownloadDocumentGroup: PropTypes.func.isRequired,
-    handleDownloadRequestedItemDocuments: PropTypes.func.isRequired,
     handleDownloadDocument: PropTypes.func.isRequired
 };
 
