@@ -23,19 +23,6 @@ const Group = ({
                             document={document} items={items}
                             handleDownloadDocument={handleDownloadDocument}/>;
             })}
-            <tr>
-                <td colSpan="3" className="group">Download By Service</td>
-
-                {items.map((item) => {
-                    return (
-                        <td key={item.id} className="group text-center">
-                            <a onClick={() => handleDownloadRequestedItemDocuments(item.id)}>
-                                <i className="fa fa-download icon-link"></i>
-                            </a>
-                        </td>
-                    );
-                })}
-            </tr>
         </tbody>
     );
 };
