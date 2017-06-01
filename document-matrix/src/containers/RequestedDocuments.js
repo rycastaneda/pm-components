@@ -51,10 +51,10 @@ class RequestedDocuments extends Component {
                 <table className="table db-table document-table filelist">
                     <thead>
                         <tr className="document-table__header">
-                        <th>Document</th>
-                        <th className="text-center">Added</th>
-                        <th className="text-center">Revisions</th>
-                    </tr>
+                            <th>Documents</th>
+                            <th className="text-center">Added</th>
+                            <th className="text-center">Revisions</th>
+                        </tr>
                     </thead>
                     <tbody>
                         <tr>

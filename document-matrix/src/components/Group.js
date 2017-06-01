@@ -11,10 +11,10 @@ const Group = ({
         <tbody>
             <tr>
                 <td data-heading="Group" className="group" colSpan={items.length+3}>
-                    <a onClick={() => handleDownloadDocumentGroup(group.id)}>
-                        <i className="fa fa-download icon-link"></i>
+                    <a className="detail-link" onClick={() => handleDownloadDocumentGroup(group.id)}>
+                        <i className="fa fa-download icon-link mar-r-sm"></i>
+                        {group.title}
                     </a>
-                    &nbsp;{group.title}
                 </td>
             </tr>
             {group.documents.map((document) => {

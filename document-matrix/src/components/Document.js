@@ -6,9 +6,11 @@ const Document = ({ document, handleDownloadDocument, items }) => {
     return (
         <tr>
             <td data-heading="Document">
-                <a className="" onClick={() => handleDownloadDocument(document.id)}>
-                    <i className="fa fa-download icon-link"></i>
-                </a>&nbsp;{document.name}
+                <span className="mar-left-25 hidden-xs"></span>
+                <a className="detail-link" onClick={() => handleDownloadDocument(document.id)}>
+                    <i className="fa fa-download mar-r-sm icon-link"></i>
+                    {document.name}
+                </a>
             </td>
             <td data-heading="Added" className="text-center">{moment(document.created_at).format('MMMM Do, YYYY h:mm a')}</td>
             <td data-heading="Revisions" className="text-center">
