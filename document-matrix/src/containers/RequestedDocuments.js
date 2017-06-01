@@ -22,6 +22,12 @@ class RequestedDocuments extends Component {
         this.userType = document.querySelector('[data-component="document-matrix"]').getAttribute('data-user-type');
         this.props.dispatch(fetchRequirements(this.quote_id, this.userType));
     }
+    
+    componentDidUpdate() {
+        if (Plantminer.initRevisions) {
+            Plantminer.initRevisions();
+        }
+    }
 
     handleDownloadDocument(documentId) {
         return this.props.dispatch(downloadDocument(documentId));
