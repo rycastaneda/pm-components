@@ -10,7 +10,7 @@ const Group = ({
     return (
         <tbody>
             <tr>
-                <td className="group" colSpan={items.length+3}>
+                <td data-heading="Group" className="group" colSpan={items.length+3}>
                     <a onClick={() => handleDownloadDocumentGroup(group.id)}>
                         <i className="fa fa-download icon-link"></i>
                     </a>

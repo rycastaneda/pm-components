@@ -22,7 +22,7 @@ class RequestedDocuments extends Component {
         this.userType = document.querySelector('[data-component="document-matrix"]').getAttribute('data-user-type');
         this.props.dispatch(fetchRequirements(this.quote_id, this.userType));
     }
-    
+
     componentDidUpdate() {
         if (Plantminer.initRevisions) {
             Plantminer.initRevisions();
@@ -44,7 +44,7 @@ class RequestedDocuments extends Component {
     handleDownloadRequestedItemDocuments(requestedItemId) {
         return this.props.dispatch(downloadRequestedItemDocuments(requestedItemId));
     }
-    
+
     noDocuments() {
         return (
             <div>
@@ -107,8 +107,8 @@ class RequestedDocuments extends Component {
                     )}
                     <tbody>
                         <tr>
-                            <td colSpan="3" className="group">Download By Service</td>
-                        
+                            <td colSpan="3" data-heading="Action" className="group">Download By Service</td>
+
                             {items.map((item) => {
                                 return (
                                     <td key={item.id} className="group text-center">
@@ -123,15 +123,15 @@ class RequestedDocuments extends Component {
                 </table>
             </div>
         : this.noDocuments();
-        
+
         return (
             <div className="group-panel">
                 {ui.error === 'REQUEST_FAILED' ?
                     <div className="bs-callout bs-callout-danger">
-                        <strong>Something went wrong. Please try again later.</strong>
+                        Something went wrong. Please try again later.
                     </div>
                 : null }
-                {ui.loading && !ui.error ? 
+                {ui.loading && !ui.error ?
                     <Loader></Loader>
                 : null}
                 {content}
