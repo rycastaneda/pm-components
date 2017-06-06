@@ -9,6 +9,13 @@ import {
     ACTIVATE_CANCEL_ENGAGEMENT
 } from '../constants/ActionTypes';
 
+import {
+    KEY_PENDING,
+    KEY_SENT,
+    KEY_CANCELLED,
+    KEY_REJECTED
+} from '../constants/EngagementTypes';
+
 import axios from 'axios';
 import { displaySuccess, requestStarted, requestCompleted, requestError } from './uiActions';
 
@@ -51,104 +58,60 @@ function getCategory(included, categoryId) {
     return categoryDetails;
 }
 
+function engagementMapper(engagements, engagementArray) {
+    const engagementMapped = engagementArray.map((engagement) => {
+        let itemId = engagement.relationships.item.data.id;
+        let matchedItemId = engagement.relationships.matchedItem.data.id;
+        let userId = engagement.relationships.staff && engagement.relationships.staff.data.id || engagement.relationships.user && engagement.relationships.user.data.id;
+        let engagementDetailIds = engagement.relationships.engagementDetails.data.length ?
+            engagement.relationships.engagementDetails.data.map(engagementDetail => engagementDetail.id) : null;
+        return {
+            'type': 'engagements',
+            'id': engagement.id,
+            'attributes': engagement.attributes,
+            'engagementDetails': engagements.included
+                .filter(i => (i.type === 'engagement-details' && engagementDetailIds.indexOf(i.id) > -1))
+                .map((item) => {
+                    let pricingOption = engagements.included.filter(
+                        i => (i.type === 'pricing-option' && i.id === item.relationships.pricingOption.data.id)
+                    ).reduce(a => a);
+                    return {
+                        type: item.type,
+                        id: item.id,
+                        attributes: item.attributes,
+                        pricingOption: pricingOption
+                    };
+                }),
+            'matchedItem': engagements.included
+                .filter(i => (i.type === 'matched-item' && i.id === matchedItemId))
+                .map((item) => {
+                    return {
+                        type: item.type,
+                        id: item.id,
+                        attributes: item.attributes
+                    };
+                }).reduce(a => a),
+            'requestedItem': engagements.included
+                .filter(i => (i.type === 'matched-item' && i.id === matchedItemId))
+                .map((item) => {
+                    return item.relationships.requestedItem.data;
+                }).reduce(a => a),
+            'createdBy': engagements.included
+                .filter(i => ((i.type === 'staff' || i.type === 'user') && i.id === userId))
+                .map((user) => {
+                    return user.attributes.first_name + ' ' + user.attributes.last_name;
+                }).reduce(a => a),
+            'supplier': getSupplier(engagements.included, matchedItemId),
+            'category': getCategory(engagements.included, itemId)
+        };
+    });
+
+    return engagementMapped;
+}
+
 export function loadEngagementsSuccess(engagements) {
-    const pendingEngagements = engagements.data
-        .filter(i => i.attributes.status === 1)
-        .map((engagement) => {
-            let itemId = engagement.relationships.item.data.id;
-            let matchedItemId = engagement.relationships.matchedItem.data.id;
-            let userId = engagement.relationships.staff && engagement.relationships.staff.data.id || engagement.relationships.user && engagement.relationships.user.data.id;
-            let engagementDetailIds = engagement.relationships.engagementDetails.data.length ?
-                engagement.relationships.engagementDetails.data.map(engagementDetail => engagementDetail.id) : null;
-            return {
-                'type': 'engagements',
-                'id': engagement.id,
-                'attributes': engagement.attributes,
-                'engagementDetails': engagements.included
-                    .filter(i => (i.type === 'engagement-details' && engagementDetailIds.indexOf(i.id) > -1))
-                    .map((item) => {
-                        let pricingOption = engagements.included.filter(
-                            i => (i.type === 'pricing-option' && i.id === item.relationships.pricingOption.data.id)
-                        ).reduce(a => a);
-                        return {
-                            type: item.type,
-                            id: item.id,
-                            attributes: item.attributes,
-                            pricingOption: pricingOption
-                        };
-                    }),
-                'matchedItem': engagements.included
-                    .filter(i => (i.type === 'matched-item' && i.id === matchedItemId))
-                    .map((item) => {
-                        return {
-                            type: item.type,
-                            id: item.id,
-                            attributes: item.attributes
-                        };
-                    }).reduce(a => a),
-                'requestedItem': engagements.included
-                    .filter(i => (i.type === 'matched-item' && i.id === matchedItemId))
-                    .map((item) => {
-                        return item.relationships.requestedItem.data;
-                    }).reduce(a => a),
-                'createdBy': engagements.included
-                    .filter(i => ((i.type === 'staff' || i.type === 'user') && i.id === userId))
-                    .map((user) => {
-                        return user.attributes.first_name + ' ' + user.attributes.last_name;
-                    }).reduce(a => a),
-                'supplier': getSupplier(engagements.included, matchedItemId),
-                'category': getCategory(engagements.included, itemId)
-            };
-        });
-
-    const sentEngagements = engagements.data.filter(i => i.attributes.status === 5 || i.attributes.status === 2)
-        .map((engagement) => {
-            let itemId = engagement.relationships.item.data.id;
-            let matchedItemId = engagement.relationships.matchedItem.data.id;
-            let engagementDetailIds = engagement.relationships.engagementDetails.data.length ?
-                engagement.relationships.engagementDetails.data.map(engagementDetail => engagementDetail.id) : null;
-            let userId = engagement.relationships.staff && engagement.relationships.staff.data.id || engagement.relationships.user && engagement.relationships.user.data.id;
-            return {
-                'type': 'engagements',
-                'id': engagement.id,
-                'attributes': engagement.attributes,
-                'engagementDetails': engagements.included
-                    .filter(i => (i.type === 'engagement-details' && engagementDetailIds.indexOf(i.id) > -1))
-                    .map((item) => {
-                        let pricingOption = engagements.included.filter(
-                            i => (i.type === 'pricing-option' && i.id === item.relationships.pricingOption.data.id)
-                        ).reduce(a => a);
-                        return {
-                            type: item.type,
-                            id: item.id,
-                            attributes: item.attributes,
-                            pricingOption: pricingOption
-                        };
-                    }),
-                'matchedItem': engagements.included
-                    .filter(i => (i.type === 'matched-item' && i.id === matchedItemId))
-                    .map((item) => {
-                        return {
-                            type: item.type,
-                            id: item.id,
-                            attributes: item.attributes
-                        };
-                    }).reduce(a => a),
-                'requestedItem': engagements.included
-                    .filter(i => (i.type === 'matched-item' && i.id === matchedItemId))
-                    .map((item) => {
-                        return item.relationships.requestedItem.data;
-                    }).reduce(a => a),
-                'createdBy': engagements.included
-                    .filter(i => ((i.type === 'staff' || i.type === 'user') && i.id === userId))
-                    .map((user) => {
-                        return user.attributes.first_name + ' ' + user.attributes.last_name;
-                    }).reduce(a => a),
-                'supplier': getSupplier(engagements.included, matchedItemId),
-                'category': getCategory(engagements.included, itemId)
-            };
-        });
-
+    const pendingEngagements = engagementMapper(engagements, engagements.data.filter(i => i.attributes.status === KEY_PENDING));
+    const sentEngagements = engagementMapper(engagements, engagements.data.filter(i => i.attributes.status === KEY_SENT || i.attributes.status === KEY_REJECTED || i.attributes.status === KEY_CANCELLED));
     return { type: RECEIVE_ENGAGEMENTS, pendingEngagements, sentEngagements };
 }
 

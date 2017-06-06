@@ -9,7 +9,6 @@ class PendingEngagements extends Component {
         super(props);
         this.handleNotifyAll = this.handleNotifyAll.bind(this);
         this.handleSendEngagements = this.handleSendEngagements.bind(this);
-        this.pendingEngagementsTotal = this.pendingEngagementsTotal.bind(this);
         this.convertToCurrency = this.convertToCurrency.bind(this);
     }
 
@@ -25,21 +24,8 @@ class PendingEngagements extends Component {
         return parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
     }
 
-    pendingEngagementsTotal(engagements) {
-        return this.convertToCurrency(engagements.reduce(function(a, b) {
-
-            if (b.engagementDetails.length) {
-                const qty = b.matchedItem.attributes.quantity;
-                b.engagementDetails.forEach(
-                    engagementDetail => a += (engagementDetail.attributes.rate_value * engagementDetail.attributes.unit * qty)
-                );
-            }
-            return a;
-        }, 0));
-    }
-
     render() {
-        const { pendingEngagements, sentEngagements, notifyAll } = this.props.engagementsReducer;
+        const { pendingEngagements, sentEngagements, notifyAll, grandTotalPending } = this.props.engagementsReducer;
 
         return (
             <div>
@@ -51,29 +37,31 @@ class PendingEngagements extends Component {
                         <EngagementRow key={pendingEngagement.id} engagement={pendingEngagement} />
                     )}
                     <div className="row engagement-total">
-                        <div className="col-sm-7 text-right text-left-xs">
-                            <strong className="txt-small">Total Estimated Amount (ex GST)</strong>
-                            <div className="txt-small">x {pendingEngagements.length} Engagement(s)</div>
-                        </div>
-                        <div className="col-sm-5 pad-top-sm">
-                            <span className="txt-large">${this.pendingEngagementsTotal(pendingEngagements)}</span>
+                        <div className="col-sm-5 col-sm-offset-7">
+                            <div className="row">
+                                <label className="col-sm-4 control-label">
+                                    Estimated Grand Total: <br /><span className="txt-small">x {pendingEngagements.length} Engagement(s)</span>
+                                </label>
+                                <div className="col-sm-8 txt-large pad-top-sm">${this.convertToCurrency(grandTotalPending)}</div>
+                            </div>
                         </div>
                     </div>
-                    {sentEngagements.length === 0 ?  <div className="row">
-                                                    <div className="col-xs-12 align-right db-form-submit">
-                                                        <div className = "checkbox">
-                                                            <label>
-                                                                <input
-                                                                    type="checkbox"
-                                                                    checked={notifyAll}
-                                                                    onChange={this.handleNotifyAll}
-                                                                    />
-                                                                Notify all unsuccessful suppliers
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                  </div>
-                                                : null
+
+                    {sentEngagements.length === 0 &&
+                        <div className="row">
+                            <div className="col-xs-12 align-right db-form-submit">
+                                <div className = "checkbox">
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            checked={notifyAll}
+                                            onChange={this.handleNotifyAll}
+                                            />
+                                        Notify all unsuccessful suppliers
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     }
 
                     <div className="row">
