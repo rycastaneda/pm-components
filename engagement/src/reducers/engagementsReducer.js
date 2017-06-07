@@ -21,6 +21,7 @@ const INITIAL_ENGAGEMENTS_STATE = {
     sentEngagements: [],
     activateCancelEngagement: {},
     notifyAll: false,
+    grandTotalPending:0,
     grandTotal: 0,
     cancelledTotal: 0,
     rejectedTotal: 0
@@ -32,46 +33,10 @@ export function engagementsReducer(state = INITIAL_ENGAGEMENTS_STATE, action) {
             return Object.assign({}, state, {
                 pendingEngagements: action.pendingEngagements,
                 sentEngagements: action.sentEngagements,
-                grandTotalPending: action.pendingEngagements.reduce(function(a, b) {
-
-                    if (b.engagementDetails.length) {
-                        const qty = b.matchedItem.attributes.quantity;
-                        b.engagementDetails.forEach(
-                            engagementDetail => a += (engagementDetail.attributes.rate_value * engagementDetail.attributes.unit * qty)
-                        );
-                    }
-                    return a;
-                }, 0),
-                grandTotal: action.sentEngagements.reduce(function(a, b) {
-
-                    if (b.engagementDetails.length) {
-                        const qty = b.matchedItem.attributes.quantity;
-                        b.engagementDetails.forEach(
-                            engagementDetail => a += (engagementDetail.attributes.rate_value * engagementDetail.attributes.unit * qty)
-                        );
-                    }
-                    return a;
-                }, 0),
-                cancelledTotal: action.sentEngagements.reduce(function(a, b) {
-
-                    if (b.attributes.status === KEY_CANCELLED && b.engagementDetails.length) {
-                        const qty = b.matchedItem.attributes.quantity;
-                        b.engagementDetails.forEach(
-                            engagementDetail => a += (engagementDetail.attributes.rate_value * engagementDetail.attributes.unit * qty)
-                        );
-                    }
-                    return a;
-                }, 0),
-                rejectedTotal: action.sentEngagements.reduce(function(a, b) {
-
-                    if (b.attributes.status === KEY_REJECTED && b.engagementDetails.length) {
-                        const qty = b.matchedItem.attributes.quantity;
-                        b.engagementDetails.forEach(
-                            engagementDetail => a += (engagementDetail.attributes.rate_value * engagementDetail.attributes.unit * qty)
-                        );
-                    }
-                    return a;
-                }, 0)
+                grandTotalPending: getTotal(action.pendingEngagements, 'all'),
+                grandTotal: getTotal(action.sentEngagements, 'all'),
+                cancelledTotal: getTotal(action.sentEngagements, KEY_CANCELLED),
+                rejectedTotal: getTotal(action.sentEngagements, KEY_REJECTED)
             });
         case UPDATED_ENGAGEMENT:
         case UPDATED_ENGAGEMENT_DETAILS:
@@ -168,4 +133,20 @@ function engagementDetails(state = [], action) {
         default:
             return state;
     }
+}
+
+function getTotal(engagementsForTotal, status) {
+    let total = engagementsForTotal.reduce(function(a, b) {
+        let statusToInclude = (status === 'all') ? true : (b.attributes.status === status);
+
+        if (b.engagementDetails.length && statusToInclude) {
+            const qty = b.matchedItem.attributes.quantity;
+            b.engagementDetails.forEach(
+                engagementDetail => a += (engagementDetail.attributes.rate_value * engagementDetail.attributes.unit * qty)
+            );
+        }
+        return a;
+    }, 0);
+
+    return total;
 }

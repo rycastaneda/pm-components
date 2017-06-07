@@ -54,7 +54,7 @@ class SentEngagements extends Component {
                                 <div className="col-sm-8 txt-large pad-top-sm">${this.convertToCurrency(grandTotal)}</div>
                             </div>
 
-                            {cancelledTotal &&
+                            {+cancelledTotal > 0 &&
                                 <div className="row">
                                     <label className="col-sm-4 control-label">Cancelled Total: </label>
                                     <div className="col-sm-8">
@@ -63,7 +63,7 @@ class SentEngagements extends Component {
                                 </div>
                             }
 
-                            {rejectedTotal &&
+                            {+rejectedTotal > 0 &&
                                 <div className="row">
                                     <label className="col-sm-4 control-label">Rejected Total: </label>
                                     <div className="col-sm-8">
@@ -72,7 +72,7 @@ class SentEngagements extends Component {
                                 </div>
                             }
 
-                            {(cancelledTotal || rejectedTotal) &&
+                            {(+cancelledTotal > 0 || +rejectedTotal > 0) &&
                                 <div className="row">
                                     <label className="col-sm-4 control-label">Remaining Total: </label>
                                     <div className="col-sm-8 txt-large pad-top-sm">
