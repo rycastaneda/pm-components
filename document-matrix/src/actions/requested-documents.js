@@ -41,7 +41,11 @@ function downloadBlob(url, filename, callback, error) {
         }
     }).then((response) => {
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-            window.navigator.msSaveOrOpenBlob(response.data, filename);
+            let data = response.data;
+            if(!!~filename.indexOf('.zip')) { // eslint-disable-line 
+                data = new Blob(response.data, { type: 'application/zip' });
+            }
+            window.navigator.msSaveOrOpenBlob(data, filename);
             return callback();
         }
 
@@ -80,7 +84,7 @@ export function downloadDocumentGroup(groupId) {
         dispatch({ type: TOGGLE_LOADING });
 
         downloadBlob(
-            axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents?filters[group_id]=${groupId}`,
+            axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents.zip?filters[group_id]=${groupId}`,
             title.toLowerCase().split(' ').join('-'),
             () => dispatch({ type: TOGGLE_LOADING }),
             () => dispatch({ type: REQUEST_FAILED })
