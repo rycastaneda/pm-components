@@ -14,7 +14,13 @@ export function fetchRequirements(quoteId, userType) {
             userType
         });
 
-        axios.get(`/${userType}-quote-requests/${quoteId}/documents?include=requesteditems,groups,revisions`)
+        let endpoint = `/${userType}-quote-requests/${quoteId}/documents?include=requesteditems,groups,revisions`;
+
+        if (userType === 'supplier') {
+            endpoint = `/${userType}-quote-requests/${quoteId}/documents?include=requesteditems,groups,revisions&filters[matched_item_only]=1`;
+        }
+
+        axios.get(endpoint)
             .then((response) => {
                 return dispatch({
                     type: RECEIVE_DOCUMENTS,
@@ -42,7 +48,7 @@ function downloadBlob(url, filename, callback, error) {
     }).then((response) => {
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
             let data = response.data;
-            if(!!~filename.indexOf('.zip')) { // eslint-disable-line 
+            if (!!~filename.indexOf('.zip')) { // eslint-disable-line
                 data = new Blob(response.data, { type: 'application/zip' });
             }
             window.navigator.msSaveOrOpenBlob(data, filename);
