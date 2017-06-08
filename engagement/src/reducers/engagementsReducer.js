@@ -8,7 +8,8 @@ import {
     ENGAGEMENT_CANCELLED,
     UPDATED_ENGAGEMENT_DETAILS,
     ADD_ENGAGEMENT_DETAILS,
-    TOGGLE_ENGAGEMENT_TEXT
+    TOGGLE_ENGAGEMENT_TEXT,
+    UPDATE_TOTALS
 } from '../constants/ActionTypes';
 
 import {
@@ -32,11 +33,7 @@ export function engagementsReducer(state = INITIAL_ENGAGEMENTS_STATE, action) {
         case RECEIVE_ENGAGEMENTS:
             return Object.assign({}, state, {
                 pendingEngagements: action.pendingEngagements,
-                sentEngagements: action.sentEngagements,
-                grandTotalPending: getTotal(action.pendingEngagements, 'all'),
-                grandTotal: getTotal(action.sentEngagements, 'all'),
-                cancelledTotal: getTotal(action.sentEngagements, KEY_CANCELLED),
-                rejectedTotal: getTotal(action.sentEngagements, KEY_REJECTED)
+                sentEngagements: action.sentEngagements
             });
         case UPDATED_ENGAGEMENT:
         case UPDATED_ENGAGEMENT_DETAILS:
@@ -44,6 +41,13 @@ export function engagementsReducer(state = INITIAL_ENGAGEMENTS_STATE, action) {
         case ENGAGEMENT_DELETED:
             return Object.assign({}, state, {
                 pendingEngagements: engagements(state.pendingEngagements, action)
+            });
+        case UPDATE_TOTALS:
+            return Object.assign({}, state, {
+                grandTotalPending: getTotal(state.pendingEngagements, 'all'),
+                grandTotal: getTotal(state.sentEngagements, 'all'),
+                cancelledTotal: getTotal(state.sentEngagements, KEY_CANCELLED),
+                rejectedTotal: getTotal(state.sentEngagements, KEY_REJECTED)
             });
 
         case TOGGLE_ENGAGEMENT_TEXT:

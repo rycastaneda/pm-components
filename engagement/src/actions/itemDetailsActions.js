@@ -135,7 +135,7 @@ export function loadItemDetails(matchedItemId, requestedItemId, engagement) {
         dispatch(resetError());
         dispatch(requestStarted());
 
-        axios.get(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}?include=pricingOptions,matchedSupplier,quoteRequestEngagements,quoteRequestEngagements.createdBy,quoteRequestEngagements.engagementDetails,quoteRequestEngagements.matchedItem&fields[pricing-options]=title,value,standby_value,unit_of_measure&fields[engagement]=status,engagement_text,po_value`)
+        axios.get(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}?include=pricingOptions,matchedSupplier,quoteRequestEngagements,quoteRequestEngagements.createdBy,quoteRequestEngagements.engagementDetails,quoteRequestEngagements.matchedItem&fields[pricing-options]=title,value,standby_value,unit_of_measure&fields[engagement]=status,engagement_text,po_value&filters[pricing-options][active]=1`)
         .then((response) => {
             let pricingOptions = [];
             let supplier = [];

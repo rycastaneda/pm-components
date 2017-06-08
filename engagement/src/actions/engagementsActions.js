@@ -6,7 +6,8 @@ import {
     ENGAGEMENT_CANCELLED,
     TOGGLE_ENGAGEMENT_TEXT,
     UPDATE_NOTIFY_ALL,
-    ACTIVATE_CANCEL_ENGAGEMENT
+    ACTIVATE_CANCEL_ENGAGEMENT,
+    UPDATE_TOTALS
 } from '../constants/ActionTypes';
 
 import {
@@ -22,9 +23,10 @@ import { displaySuccess, requestStarted, requestCompleted, requestError } from '
 export function loadEngagements(quoteId) {
     return (dispatch) => {
         dispatch(requestStarted());
-        axios.get(`/searcher-quote-requests/${quoteId}/engagements?include=matchedItem.matchedSupplier,matchedItem.requestedItem,item.category&fields[engagements]=status,engagement_text,item_id,po_number,po_file_id,po_value,auto_decline_flag,pre_start_date,created_at,updated_at,can_cancel&fields[categories]=title`)
+        axios.get(`/searcher-quote-requests/${quoteId}/engagements?include=matchedItem.matchedSupplier,matchedItem.requestedItem,matchedItem.requestedItem.category,item.category&fields[engagements]=status,engagement_text,item_id,po_number,po_file_id,po_value,auto_decline_flag,pre_start_date,created_at,updated_at,can_cancel&fields[categories]=title`)
         .then((response) => {
             dispatch(loadEngagementsSuccess(response.data));
+            dispatch(updateTotals());
             dispatch(requestCompleted());
         }).catch((error) => {
             dispatch(requestCompleted());
@@ -47,20 +49,27 @@ function getSupplier(included, matchedItemId) {
     return supplierDetails;
 }
 
-function getCategory(included, categoryId) {
+function getCategory(included, matchedItemId) {
+    let matchedItem = included.filter(function(i) {
+        return i.id === matchedItemId;
+    }).reduce((a, b) => b, {});
+
+    let requestedItem = included.filter(function(i) {
+        return i.id === matchedItem.relationships.requestedItem.data.id;
+    }).reduce((a, b) => b, {});
+
     let category = included.filter(function(i) {
-        return i.id === categoryId;
+        return i.id === requestedItem.relationships.category.data.id;
     }).reduce((a, b) => b, {});
 
     let categoryDetails = included.filter(i =>
-        i.type === 'category' && i.id === category.relationships.category.data.id
+        i.type === 'category' && i.id === category.id
     ).reduce(a => a);
     return categoryDetails;
 }
 
 function engagementMapper(engagements, engagementArray) {
     const engagementMapped = engagementArray.map((engagement) => {
-        let itemId = engagement.relationships.item.data.id;
         let matchedItemId = engagement.relationships.matchedItem.data.id;
         let userId = engagement.relationships.staff && engagement.relationships.staff.data.id || engagement.relationships.user && engagement.relationships.user.data.id;
         let engagementDetailIds = engagement.relationships.engagementDetails.data.length ?
@@ -102,7 +111,7 @@ function engagementMapper(engagements, engagementArray) {
                     return user.attributes.first_name + ' ' + user.attributes.last_name;
                 }).reduce(a => a),
             'supplier': getSupplier(engagements.included, matchedItemId),
-            'category': getCategory(engagements.included, itemId)
+            'category': getCategory(engagements.included, matchedItemId)
         };
     });
 
@@ -113,6 +122,9 @@ export function loadEngagementsSuccess(engagements) {
     const pendingEngagements = engagementMapper(engagements, engagements.data.filter(i => i.attributes.status === KEY_PENDING));
     const sentEngagements = engagementMapper(engagements, engagements.data.filter(i => i.attributes.status === KEY_SENT || i.attributes.status === KEY_REJECTED || i.attributes.status === KEY_CANCELLED));
     return { type: RECEIVE_ENGAGEMENTS, pendingEngagements, sentEngagements };
+}
+export function updateTotals() {
+    return { type: UPDATE_TOTALS };
 }
 
 export function deleteEngagement(requestedItemId, matchedItemId, engagementId) {
@@ -168,6 +180,7 @@ export function cancelEngagement(requestedItemId, matchedItemId, engagementId) {
                 type: ENGAGEMENT_CANCELLED,
                 id: engagementId
             });
+            dispatch(updateTotals());
             dispatch(requestCompleted());
         }).catch((error) => {
             dispatch(requestCompleted());
