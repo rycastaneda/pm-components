@@ -46,19 +46,19 @@ function downloadBlob(url, filename, callback, error) {
             'Content-Type': 'application/octet-stream'
         }
     }).then((response) => {
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-            let data = response.data;
-            if (!!~filename.indexOf('.zip')) { // eslint-disable-line
-                data = new Blob(response.data, { type: 'application/zip' });
-            }
-            window.navigator.msSaveOrOpenBlob(data, filename);
-            return callback();
-        }
-
+        // if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        //     let data = response.data;
+        //     if (!!~filename.indexOf('.zip')) { // eslint-disable-line
+        //         data = new Blob(response.data, { type: 'application/zip' });
+        //     }
+        //     window.navigator.msSaveOrOpenBlob(data, filename);
+        //     return callback();
+        // }
+        //
         var a = document.createElement('a');
-
+        //
         a.href = window.URL.createObjectURL(response.data); // xhr.response is a blob
-        a.download = filename; // Set the file name.
+        // a.download = filename; // Set the file name.
         a.style.display = 'none';
         document.body.appendChild(a);
         a.click();
