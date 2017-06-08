@@ -23,7 +23,7 @@ const Document = ({ document, handleDownloadDocument, items }) => {
             {items.map((item) => {
                 return (
                     <td key={document.id + item.id} className="text-center" data-heading={item.title}>
-                        {!~document.included.indexOf(item.id) ? <i className="fa fa-check"></i> : null}
+                        {document.included.includes(item.id) ? <i className="fa fa-check"></i> : null}
                     </td>
                 );
             })}
