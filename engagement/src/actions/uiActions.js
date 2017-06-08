@@ -16,13 +16,13 @@ function convertToCurrency(value) {
 
 function scrollToError(spot) {
     if (spot === 'qr-details') {
-        window.jQuery('html, body').animate({
-            scrollTop: window.jQuery('#engagements').offset().top
-        }, 500);
+        // window.jQuery('html, body').animate({
+        //     scrollTop: window.jQuery('#engagements').offset().top
+        // }, 500);
     } else {
-        window.jQuery('.quote-modal-overflow').animate({
-            scrollTop: 0
-        }, 500);
+        // window.jQuery('.quote-modal-overflow').animate({
+        //     scrollTop: 0
+        // }, 500);
     }
 }
 

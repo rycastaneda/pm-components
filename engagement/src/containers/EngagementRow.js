@@ -61,11 +61,17 @@ class EngagementRow extends Component {
             <div className="row engagement-row">
                 <div className="col-xs-12 engagement-header">
                     <div className="row">
-                        <div className="col-sm-6">
-                            <span className="txt-small">Engagement:</span><strong> #{engagement.id}</strong> <br />
-                            <span className="txt-small">Requested Category:</span><strong> {engagement.category.attributes.title}</strong>
+                        <div className="col-sm-7">
+                            <div className="row">
+                                <label className="col-sm-4 control-label">Engagement: </label>
+                                <div className="col-sm-8">#{engagement.id}</div>
+                            </div>
+                            <div className="row">
+                                <label className="col-sm-4 control-label">Requested Category: </label>
+                                <div className="col-sm-8">{engagement.category.attributes.title}</div>
+                            </div>
                         </div>
-                        <div className="col-sm-6 text-right text-left-xs">
+                        <div className="col-sm-5 text-right text-left-xs">
                             <IconButton
                                 title="Edit"
                                 classNames="db-function"
@@ -86,37 +92,60 @@ class EngagementRow extends Component {
                 <div className="col-xs-12 engagement-detail">
                     <div className="row">
                         <div className="col-sm-7 separator-vertical mar-top-10 mar-btm-10">
-                            <span className="txt-small">Supplier:</span><strong> {engagement.supplier.attributes.title}</strong><br />
-                            <span className="txt-small">Service Name:</span><strong> {engagement.matchedItem.attributes.title}</strong><br /><br />
-                            {engagement.attributes.po_number ?
-                                <span><span className="txt-small">Work Order:</span> {engagement.attributes.po_number}<br /></span> : null
-                            }
-                            {engagement.attributes.pre_start_date ?
-                                <span><span className="txt-small">Planned Start Date:</span> {moment(engagement.attributes.pre_start_date).format('DD-MM-YYYY')}<br /></span> : null
-                            }
-                            <div><span className="txt-small">Created by:</span> {engagement.createdBy}</div>
-                            {engagement.attributes.engagement_text ?
+                            <div className="row">
+                                <label className="col-sm-4 control-label">Supplier: </label>
+                                <div className="col-sm-8">{engagement.supplier.attributes.title}</div>
+                            </div>
+
+                            <div className="row">
+                                <label className="col-sm-4 control-label">Service Name: </label>
+                                <div className="col-sm-8">{engagement.matchedItem.attributes.title}</div>
+                            </div>
+                            <br />
+
+                            {engagement.attributes.po_number && <div className="row">
+                                <label className="col-sm-4 control-label">Work Order: </label>
+                                <div className="col-sm-8">{engagement.attributes.po_number}</div>
+                            </div>}
+
+                            {engagement.attributes.pre_start_date && <div className="row">
+                                <label className="col-sm-4 control-label">Planned Start Date: </label>
+                                <div className="col-sm-8">{moment(engagement.attributes.pre_start_date).format('DD-MM-YYYY')}</div>
+                            </div>}
+
+                            <div className="row">
+                                <label className="col-sm-4 control-label">Created by: </label>
+                                <div className="col-sm-8">{engagement.createdBy}</div>
+                            </div>
+
+                            {engagement.attributes.engagement_text &&
                                 <IconButton
                                     title={`${engagement.attributes.showEngagementText ? 'Hide' : 'Show'} Engagement Instructions`}
                                     classNames="db-function mar-top-sm"
                                     onClick={this.toggleTextVisibility}
                                     iconClass={`fa fa-caret-${engagement.attributes.showEngagementText ? 'up' : 'down'}`}
                                     iconPlacement="right"
-                                /> : null
+                                />
                             }
-                            {engagement.attributes.showEngagementText ? <div className="pad-all-xs">{engagement.attributes.engagement_text}</div> : null}
+                            {engagement.attributes.showEngagementText && <div className="pad-all-xs">{engagement.attributes.engagement_text}</div>}
                         </div>
                         <div className="col-sm-5 mar-top-10 mar-btm-10">
                             <div className="txt-small">Pricing:</div>
                             {engagement.engagementDetails.map(pricing =>
-                                <div key={pricing.id}> ${this.convertToCurrency(pricing.attributes.rate_value)} ({pricing.pricingOption.attributes.title} Rate)
-                                 x {pricing.attributes.unit} Estimated {pricing.pricingOption.attributes.unit_of_measure}{pricing.attributes.unit > 1 ? 's': ''}</div>
+                                <div className="row" key={pricing.id}>
+                                    <label className="col-sm-4 control-label">{pricing.pricingOption.attributes.title} Rate: </label>
+                                    <div className="col-sm-8">
+                                        ${this.convertToCurrency(pricing.attributes.rate_value)} x {pricing.attributes.unit} Estimated {pricing.pricingOption.attributes.unit_of_measure}{pricing.attributes.unit > 1 ? 's': ''}
+                                    </div>
+                                </div>
                             )}
                             <br />
 
-                            <div className="txt-small">Estimated Total (ex GST)</div>
-                            <div className="txt-large pad-top-sm">
-                                ${this.engagementTotal(engagement)}
+                            <div className="row">
+                                <label className="col-sm-4 control-label">Estimated Total (ex GST) </label>
+                                <div className="col-sm-8 txt-large pad-top-sm">
+                                    ${this.engagementTotal(engagement)}
+                                </div>
                             </div>
                         </div>
                     </div>

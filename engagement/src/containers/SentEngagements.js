@@ -5,10 +5,10 @@ import ConfirmModal from './ConfirmModal';
 import { hideModal } from '../actions/modalActions';
 import { activateCancelEngagement, cancelEngagement } from '../actions/engagementsActions';
 
+
 class SentEngagements extends Component {
     constructor(props) {
         super(props);
-        this.sentEngagementsTotal = this.sentEngagementsTotal.bind(this);
         this.convertToCurrency = this.convertToCurrency.bind(this);
         this.handleCancelEngagement = this.handleCancelEngagement.bind(this);
         this.hideModal = this.hideModal.bind(this);
@@ -33,21 +33,8 @@ class SentEngagements extends Component {
         return this.props.dispatch(cancelEngagement(requestedItemId, matchedItemId, engagementId));
     }
 
-    sentEngagementsTotal(engagements) {
-        return this.convertToCurrency(engagements.reduce(function(a, b) {
-
-            if (b.engagementDetails.length) {
-                const qty = b.matchedItem.attributes.quantity;
-                b.engagementDetails.forEach(
-                    engagementDetail => a += (engagementDetail.attributes.rate_value * engagementDetail.attributes.unit * qty)
-                );
-            }
-            return a;
-        }, 0));
-    }
-
     render() {
-        const { sentEngagements } = this.props.engagementsReducer;
+        const { sentEngagements, grandTotal, cancelledTotal, rejectedTotal } = this.props.engagementsReducer;
 
         return (
             <div>
@@ -59,14 +46,43 @@ class SentEngagements extends Component {
                         <SentEngagementRow key={pendingEngagement.id} engagement={pendingEngagement} />
                     )}
                     <div className="row engagement-total">
-                        <div className="col-sm-7 text-right text-left-xs">
-                            <strong className="txt-small">Total Estimated Amount (ex GST)</strong>
-                            <div className="txt-small">x {sentEngagements.length} Engagement(s)</div>
-                        </div>
-                        <div className="col-sm-5 pad-top-sm">
-                            <span className="txt-large">${this.sentEngagementsTotal(sentEngagements)}</span>
+                        <div className="col-sm-5 col-sm-offset-7">
+                            <div className="row">
+                                <label className="col-sm-4 control-label">
+                                    Estimated Grand Total: <br /><span className="txt-small">x {sentEngagements.length} Engagement(s)</span>
+                                </label>
+                                <div className="col-sm-8 txt-large pad-top-sm">${this.convertToCurrency(grandTotal)}</div>
+                            </div>
+
+                            {+cancelledTotal > 0 &&
+                                <div className="row">
+                                    <label className="col-sm-4 control-label">Cancelled Total: </label>
+                                    <div className="col-sm-8">
+                                        ${this.convertToCurrency(cancelledTotal)}
+                                    </div>
+                                </div>
+                            }
+
+                            {+rejectedTotal > 0 &&
+                                <div className="row">
+                                    <label className="col-sm-4 control-label">Rejected Total: </label>
+                                    <div className="col-sm-8">
+                                        ${this.convertToCurrency(rejectedTotal)}
+                                    </div>
+                                </div>
+                            }
+
+                            {(+cancelledTotal > 0 || +rejectedTotal > 0) &&
+                                <div className="row">
+                                    <label className="col-sm-4 control-label">Remaining Total: </label>
+                                    <div className="col-sm-8 txt-large pad-top-sm">
+                                        ${this.convertToCurrency(grandTotal - cancelledTotal - rejectedTotal)}
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
+
                     <ConfirmModal
                         title="Cancel Engagement"
                         message="Cancelling this engagement will notify the supplier not to supply these services. This action cannot be undone. Are you sure you want to continue?"

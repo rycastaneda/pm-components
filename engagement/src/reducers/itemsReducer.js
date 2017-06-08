@@ -24,15 +24,6 @@ import {
     UPDATE_PLAN_DATE,
     UPDATE_ENGAGEMENT_TEXT,
     UPDATED_ENGAGEMENT,
-    UPDATE_NOTIFY_ALL,
-    ACTIVATE_CANCEL_ENGAGEMENT,
-
-    RECEIVE_ENGAGEMENTS,
-    ENGAGEMENT_DELETED,
-    ENGAGEMENT_CANCELLED,
-    UPDATED_ENGAGEMENT_DETAILS,
-    ADD_ENGAGEMENT_DETAILS,
-    TOGGLE_ENGAGEMENT_TEXT,
     UPDATED_UNIT,
     ADD_RELATIONSHIPS
 } from '../constants/ActionTypes';
@@ -51,13 +42,6 @@ const INITIAL_ITEMS_STATE = {
 const INITIAL_ITEM_DETAILS_STATE = {
     currentEngagement: {},
     pricingOptions: []
-};
-
-const INITIAL_ENGAGEMENTS_STATE = {
-    pendingEngagements: [],
-    sentEngagements: [],
-    activateCancelEngagement: {},
-    notifyAll: false
 };
 
 export function itemsReducer(state = INITIAL_ITEMS_STATE, action) {
@@ -117,45 +101,6 @@ export function itemsReducer(state = INITIAL_ITEMS_STATE, action) {
             return state;
     }
 }
-
-export function engagementsReducer(state = INITIAL_ENGAGEMENTS_STATE, action) {
-    switch (action.type) {
-        case RECEIVE_ENGAGEMENTS:
-            return Object.assign({}, state, {
-                pendingEngagements: action.pendingEngagements,
-                sentEngagements: action.sentEngagements
-            });
-        case UPDATED_ENGAGEMENT:
-        case UPDATED_ENGAGEMENT_DETAILS:
-        case ADD_ENGAGEMENT_DETAILS:
-        case ENGAGEMENT_DELETED:
-            return Object.assign({}, state, {
-                pendingEngagements: engagements(state.pendingEngagements, action)
-            });
-
-        case TOGGLE_ENGAGEMENT_TEXT:
-            return Object.assign({}, state, {
-                pendingEngagements: engagements(state.pendingEngagements, action),
-                sentEngagements: engagements(state.sentEngagements, action)
-            });
-
-        case ENGAGEMENT_CANCELLED:
-            return Object.assign({}, state, {
-                sentEngagements: engagements(state.sentEngagements, action)
-            });
-        case UPDATE_NOTIFY_ALL:
-            return Object.assign({}, state, {
-                notifyAll: action.notifyAll
-            });
-        case ACTIVATE_CANCEL_ENGAGEMENT:
-            return Object.assign({}, state, {
-                activateCancelEngagement: action.engagement
-            });
-        default:
-            return state;
-    }
-}
-
 
 export function itemDetailsReducer(state = INITIAL_ITEM_DETAILS_STATE, action) {
     switch (action.type) {
@@ -256,72 +201,6 @@ function pricingOptions(state = [], action) {
                     }) } : pricingOption
             );
 
-        default:
-            return state;
-    }
-}
-
-function engagements(state = [], action) {
-    switch (action.type) {
-        case ENGAGEMENT_DELETED:
-            return state.filter(engagement => engagement.id !== action.id);
-        case UPDATED_ENGAGEMENT:
-            return state.map(engagement =>
-                engagement.id === action.engagementId ?
-                { ...engagement,
-                    attributes: Object.assign({}, engagement.attributes, {
-                        po_number: action['purchase-order'] || engagement.attributes.po_number,
-                        pre_start_date: action['plan-start-date'] || engagement.attributes.pre_start_date,
-                        engagement_text: action['engagement_text'] === '' ? null : action['engagement_text'] || engagement.attributes.engagement_text
-                    }) } : engagement
-            );
-        case TOGGLE_ENGAGEMENT_TEXT:
-            return state.map(engagement =>
-                engagement.id === action.id ?
-                { ...engagement,
-                    attributes: Object.assign({}, engagement.attributes, {
-                        showEngagementText: engagement.attributes.showEngagementText === undefined ? true : !engagement.attributes.showEngagementText
-                    }) } : engagement
-            );
-        case ENGAGEMENT_CANCELLED:
-            return state.map(engagement =>
-                engagement.id === action.id ?
-                { ...engagement,
-                    attributes: Object.assign({}, engagement.attributes, {
-                        status: 2
-                    }) } : engagement
-            );
-        case UPDATED_ENGAGEMENT_DETAILS:
-            return state.map(engagement =>
-                engagement.id === action.engagementId ?
-                { ...engagement,
-                    engagementDetails: engagementDetails(engagement.engagementDetails, action)
-                } : engagement
-            );
-        case ADD_ENGAGEMENT_DETAILS:
-            return state.map(engagement =>
-                engagement.id === action.engagementId ?
-                { ...engagement,
-                    engagementDetails: engagementDetails(engagement.engagementDetails, action)
-                } : engagement
-            );
-        default:
-            return state;
-    }
-}
-
-function engagementDetails(state = [], action) {
-    switch (action.type) {
-        case UPDATED_ENGAGEMENT_DETAILS:
-            return state.map(engagementDetail =>
-                engagementDetail.id === action.id ?
-                { ...engagementDetail,
-                    attributes: Object.assign({}, engagementDetail.attributes, {
-                        unit: action.unit
-                    }) } : engagementDetail
-            );
-        case ADD_ENGAGEMENT_DETAILS:
-            return [...state, action.engagementDetail];
         default:
             return state;
     }

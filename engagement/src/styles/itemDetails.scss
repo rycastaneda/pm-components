@@ -3,13 +3,13 @@
     min-height: 150px;
 }
 
-.engagements,
 .item-details {
     margin-top: 15px;
+}
 
-    .control-label {
-        padding-top: 12px;
-    }
+.strikethrough {
+    text-decoration-line: line-through;
+    text-decoration-color: rgba(255, 0, 0, 0.5);
 }
 
 .engagement-btns{
@@ -18,13 +18,20 @@
 }
 
 .engagement-row {
-    margin: 5px 0 10px;
     border: 1px solid #dddddd;
 
     .engagement-header {
         padding-top: 10px;
         padding-bottom: 10px;
         background: #f6f6f6;
+    }
+}
+
+.engagement-row, .engagement-total {
+    margin: 5px 0 10px;
+
+    .control-label {
+        padding-top: 2px;
     }
 }
 
@@ -47,6 +54,10 @@
 
 .col-rates {
     width: 200px;
+}
+
+.form-rejection-engagement {
+    display: none;
 }
 
 @media (min-width: 480px) {

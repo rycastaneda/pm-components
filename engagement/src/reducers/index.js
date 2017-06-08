@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
-import { itemsReducer, itemDetailsReducer, engagementsReducer } from './itemsReducer';
+import { itemsReducer, itemDetailsReducer } from './itemsReducer';
+import { engagementsReducer } from './engagementsReducer';
 import { ui } from './ui';
 import { modal } from './modal';
 
