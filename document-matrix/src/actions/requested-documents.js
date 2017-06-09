@@ -22,11 +22,17 @@ export function fetchRequirements(quoteId, userType) {
 
         axios.get(endpoint)
             .then((response) => {
-                return dispatch({
+                dispatch({
                     type: RECEIVE_DOCUMENTS,
                     documents: response.data
                 });
-            }).catch(() => dispatch({ type: REQUEST_FAILED }));
+
+                return axios.get(`/${userType}-quote-requests/${quoteId}/matched-items?include=requestedItem`);
+            })
+            // .then((response) => {
+            //     console.log("response", response);
+            // })
+            .catch(() => dispatch({ type: REQUEST_FAILED }));
     };
 }
 
@@ -46,22 +52,22 @@ function downloadBlob(url, filename, callback, error) {
             'Content-Type': 'application/octet-stream'
         }
     }).then((response) => {
-        // if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-        //     let data = response.data;
-        //     if (!!~filename.indexOf('.zip')) { // eslint-disable-line
-        //         data = new Blob(response.data, { type: 'application/zip' });
-        //     }
-        //     window.navigator.msSaveOrOpenBlob(data, filename);
-        //     return callback();
-        // }
-        //
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            let data = response.data;
+            if (!!~filename.indexOf('.zip')) { // eslint-disable-line
+                data = new Blob(response.data, { type: 'application/zip' });
+            }
+            window.navigator.msSaveOrOpenBlob(data, filename);
+            return callback();
+        }
+
         var a = document.createElement('a');
-        //
         a.href = window.URL.createObjectURL(response.data); // xhr.response is a blob
-        // a.download = filename; // Set the file name.
+        a.download = filename; // Set the file name.
         a.style.display = 'none';
         document.body.appendChild(a);
         a.click();
+
         callback();
     }).catch(error);
 }
@@ -90,8 +96,8 @@ export function downloadDocumentGroup(groupId) {
         dispatch({ type: TOGGLE_LOADING });
 
         downloadBlob(
-            axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents.zip?filters[group_id]=${groupId}`,
-            title.toLowerCase().split(' ').join('-'),
+            axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents?filters[group_id]=${groupId}`,
+            `${title.toLowerCase().split(' ').join('-')}.zip`,
             () => dispatch({ type: TOGGLE_LOADING }),
             () => dispatch({ type: REQUEST_FAILED })
         );
@@ -106,7 +112,7 @@ export function downloadDocumentGroups() {
 
         downloadBlob(
             axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents`,
-            `QR-${quoteId}`,
+            `QR-${quoteId}.zip`,
             () => dispatch({ type: TOGGLE_LOADING }),
             () => dispatch({ type: REQUEST_FAILED })
         );
@@ -121,7 +127,7 @@ export function downloadRequestedItemDocuments(requestedItemId) {
 
         downloadBlob(
             axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents?filters[requested_item_id]=${requestedItemId}`,
-            `QR-${requestedItemId}-${quoteId}`,
+            `QR-${requestedItemId}-${quoteId}.zip`,
             () => dispatch({ type: TOGGLE_LOADING }),
             () => dispatch({ type: REQUEST_FAILED })
         );
