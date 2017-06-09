@@ -69,12 +69,12 @@ class RequestedDocuments extends Component {
     }
 
     render() {
-        const {
+        let {
             items,
             groups,
             ui
         } = this.props;
-
+        
         let content = items.length ?
             <div>
                 <button className="db-function pull-right mar-btm-sm" onClick={() => this.handleDownloadDocumentGroups()}>
@@ -88,7 +88,7 @@ class RequestedDocuments extends Component {
                             <th className="pad-left-sm">Document</th>
                             <th className="text-center">Added</th>
                             <th className="text-center">Revisions</th>
-                            {items.map(item => <th key={item.id}>
+                            {items.map((item, key) => <th key={key}>
                                 <div>
                                     <span>
                                         &nbsp;{item.title}
