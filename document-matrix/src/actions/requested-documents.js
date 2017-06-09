@@ -58,9 +58,6 @@ function downloadBlob(url, filename, callback, error) {
     }).then((response) => {
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
             let data = response.data;
-            if (!!~filename.indexOf('.zip')) { // eslint-disable-line
-                data = new Blob(response.data, { type: 'application/zip' });
-            }
             window.navigator.msSaveOrOpenBlob(data, filename);
             return callback();
         }
@@ -101,7 +98,7 @@ export function downloadDocumentGroup(groupId) {
 
         downloadBlob(
             axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents?filters[group_id]=${groupId}`,
-            `${title.toLowerCase().split(' ').join('-')}.zip`,
+            `${title.toLowerCase().split(' ').join('-')}`,
             () => dispatch({ type: TOGGLE_LOADING }),
             () => dispatch({ type: REQUEST_FAILED })
         );
@@ -116,7 +113,7 @@ export function downloadDocumentGroups() {
 
         downloadBlob(
             axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents`,
-            `QR-${quoteId}.zip`,
+            `QR-${quoteId}`,
             () => dispatch({ type: TOGGLE_LOADING }),
             () => dispatch({ type: REQUEST_FAILED })
         );
@@ -131,7 +128,7 @@ export function downloadRequestedItemDocuments(requestedItemId) {
 
         downloadBlob(
             axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents?filters[requested_item_id]=${requestedItemId}`,
-            `QR-${requestedItemId}-${quoteId}.zip`,
+            `QR-${requestedItemId}-${quoteId}`,
             () => dispatch({ type: TOGGLE_LOADING }),
             () => dispatch({ type: REQUEST_FAILED })
         );
