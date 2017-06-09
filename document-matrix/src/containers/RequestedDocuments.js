@@ -69,7 +69,7 @@ class RequestedDocuments extends Component {
     }
 
     render() {
-        let {
+        const {
             items,
             groups,
             ui

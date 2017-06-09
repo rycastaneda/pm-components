@@ -5,7 +5,7 @@ const Document = ({ document, handleDownloadDocument, items }) => {
 
     return (
         <tr>
-            <td data-heading="Document" className="label-nowrap">
+            <td data-heading="Document" className="pad-left-sm label-nowrap">
                 <span className="mar-left-25 hidden-xs"></span>
                 <a className="detail-link" onClick={() => handleDownloadDocument(document.id)}>
                     <i className="fa fa-download mar-r-sm icon-link"></i>
