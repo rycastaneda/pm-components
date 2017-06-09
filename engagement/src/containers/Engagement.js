@@ -25,7 +25,7 @@ class Engagement extends Component {
         const regionId = document.getElementById('region_id') ? document.getElementById('region_id').value : null;
         const engagemetLimit = document.getElementById('engagement_limit') ? document.getElementById('engagement_limit').value : null;
 
-        if (panelId && itemId) {
+        if (this.props.itemsReducer.spot === 'browse') {
             this.props.dispatch(updatePanelId(panelId));
             this.props.dispatch(updateRegionId(regionId));
             this.props.dispatch(updateEngagemetLimit(+engagemetLimit));
@@ -35,11 +35,12 @@ class Engagement extends Component {
             this.props.dispatch(updateQuoteId(quoteId));
             this.props.dispatch(updateRequestedItemId(rqId));
             this.props.dispatch(updateMatchedItemId(riqiId));
-            this.props.dispatch(loadEngagements(quoteId));
 
             if (this.props.itemsReducer.spot === 'supplier-item') {
                 this.props.dispatch(loadItemDetails(riqiId, rqId));
             } else {
+                this.props.dispatch(loadEngagements(quoteId));
+                
                 const engagementsUpdatedField = document.getElementById('engagements_updated');
                 engagementsUpdatedField.addEventListener('change', (event) => {
                     if (event.target.value !== '0') {
@@ -67,10 +68,10 @@ class Engagement extends Component {
                 }
                 <ItemDetails />
                 {
-                    (itemsReducer.spot !== 'browse') ? <PendingEngagements /> : null
+                    (itemsReducer.spot === 'qr-details') ? <PendingEngagements /> : null
                 }
                 {
-                    (itemsReducer.spot !== 'browse') ? <SentEngagements /> : null
+                    (itemsReducer.spot === 'qr-details') ? <SentEngagements /> : null
                 }
             </div>
         );
