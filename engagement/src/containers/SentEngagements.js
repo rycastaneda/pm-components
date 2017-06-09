@@ -65,7 +65,7 @@ class SentEngagements extends Component {
 
                             {+rejectedTotal > 0 &&
                                 <div className="row">
-                                    <label className="col-sm-4 control-label">Rejected Total: </label>
+                                    <label className="col-sm-4 control-label">Declined Total: </label>
                                     <div className="col-sm-8">
                                         ${this.convertToCurrency(rejectedTotal)}
                                     </div>
