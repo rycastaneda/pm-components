@@ -20,7 +20,6 @@ export function documents(state = INITIAL_STATE, action) {
                     id: doc.id,
                     showRevisions: false,
                     included,
-                    name: 'AIM Building Group - Warehouse Slab - Laser screeding.csv',
                     revisionIds
                 });
 

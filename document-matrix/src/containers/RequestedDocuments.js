@@ -77,10 +77,13 @@ class RequestedDocuments extends Component {
         
         let content = items.length ?
             <div>
-                <button className="db-function pull-right mar-btm-sm" onClick={() => this.handleDownloadDocumentGroups()}>
-                    <i className="fa fa-download"></i>
-                    &nbsp;Download All
-                </button>
+                <h3>
+                    Documents
+                    <button className="mar-left-25 db-function mar-btm-sm" onClick={() => this.handleDownloadDocumentGroups()}>
+                        <i className="fa fa-download"></i>
+                        &nbsp;Download All
+                    </button>
+                </h3>
 
                 <table className={`table db-table db-table-sort db-table-sort-nojs ${items.length > 3 ? 'db-angle-table' : ''}`}>
                     <thead>
