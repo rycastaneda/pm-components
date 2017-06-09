@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import EngagementRow from './EngagementRow';
 import Button from '../components/Button';
 import { updateNotifyAll, sendEngagements } from '../actions/engagementsActions';
+import { resetItemDetails } from '../actions/itemDetailsActions';
 
 class PendingEngagements extends Component {
     constructor(props) {
@@ -10,6 +11,7 @@ class PendingEngagements extends Component {
         this.handleNotifyAll = this.handleNotifyAll.bind(this);
         this.handleSendEngagements = this.handleSendEngagements.bind(this);
         this.convertToCurrency = this.convertToCurrency.bind(this);
+        this.resetItemDetails = this.resetItemDetails.bind(this);
     }
 
     handleNotifyAll(event) {
@@ -17,7 +19,12 @@ class PendingEngagements extends Component {
     }
 
     handleSendEngagements() {
+        this.resetItemDetails();
         return this.props.dispatch(sendEngagements());
+    }
+
+    resetItemDetails() {
+        return this.props.dispatch(resetItemDetails());
     }
 
     convertToCurrency(value) {

@@ -1,3 +1,5 @@
+/* global $ */
+
 import {
     REQUEST_STARTED,
     REQUEST_COMPLETED,
@@ -14,15 +16,15 @@ function convertToCurrency(value) {
     return parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
 }
 
-function scrollToError(spot) {
-    if (spot === 'qr-details') {
-        // window.jQuery('html, body').animate({
-        //     scrollTop: window.jQuery('#engagements').offset().top
-        // }, 500);
+export function scrollToTop(spot) {
+    if (spot === 'supplier-item') {
+        $('.quote-modal-overflow').animate({
+            scrollTop: 0
+        }, 500);
     } else {
-        // window.jQuery('.quote-modal-overflow').animate({
-        //     scrollTop: 0
-        // }, 500);
+        $('html, body').animate({
+            scrollTop: window.jQuery('#engagements').offset().top
+        }, 500);
     }
 }
 
@@ -46,7 +48,7 @@ export function requestError(error) {
     const errorMessage = error.response && error.response.data || error;
     return (dispatch, getState) => {
         const spot = getState().itemsReducer.spot;
-        scrollToError(spot);
+        scrollToTop(spot);
         dispatch({
             type: REQUEST_ERROR,
             error: errorMessage
@@ -57,7 +59,7 @@ export function requestError(error) {
 export function validationError(message) {
     return (dispatch, getState) => {
         const spot = getState().itemsReducer.spot;
-        scrollToError(spot);
+        scrollToTop(spot);
         dispatch({
             type: VALIDATION_ERROR,
             message

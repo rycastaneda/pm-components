@@ -308,7 +308,9 @@ export function createEngagementDetails(pricingOptions, requestedItemId, matched
                     const quoteId = getState().itemsReducer.quoteId;
                     dispatch(displaySuccess(`Engagement #${engagementId} created`));
                     dispatch(resetItemDetails());
-                    dispatch(loadEngagements(quoteId));
+                    if (getState().itemsReducer.spot === 'qr-details') {                        
+                        dispatch(loadEngagements(quoteId));
+                    }
                 }
                 dispatch(requestCompleted());
             }).catch((error) => {

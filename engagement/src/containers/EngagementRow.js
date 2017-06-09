@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import IconButton from '../components/IconButton';
 import { toggleEngagementText, deleteEngagement } from '../actions/engagementsActions';
 import { loadItemDetails } from '../actions/itemDetailsActions';
+import { scrollToTop } from '../actions/uiActions';
 import moment from 'moment';
 
 class EngagementRow extends Component {
@@ -14,6 +15,7 @@ class EngagementRow extends Component {
         this.convertToCurrency = this.convertToCurrency.bind(this);
         this.engagementTotal = this.engagementTotal.bind(this);
         this.toggleTextVisibility = this.toggleTextVisibility.bind(this);
+        this.scrollToTop = this.scrollToTop.bind(this);
     }
 
     handleEditEngagement() {
@@ -21,6 +23,7 @@ class EngagementRow extends Component {
             matchedItemId = engagement.matchedItem.id,
             requestedItemId = engagement.requestedItem.id;
 
+        this.props.dispatch(scrollToTop());
         return this.props.dispatch(loadItemDetails(matchedItemId, requestedItemId, engagement));
     }
 
@@ -37,6 +40,10 @@ class EngagementRow extends Component {
         const engagementId = this.props.engagement.id;
 
         return this.props.dispatch(toggleEngagementText(engagementId));
+    }
+
+    scrollToTop() {
+        return this.props.dispatch(scrollToTop());
     }
 
     convertToCurrency(value) {
