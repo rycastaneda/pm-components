@@ -1,6 +1,7 @@
 import {
     FETCH_DOCUMENTS,
     RECEIVE_DOCUMENTS,
+    RECEIVE_MATCHED_ITEMS,
     TOGGLE_LOADING,
     REQUEST_FAILED
 } from '../constants';
@@ -29,9 +30,12 @@ export function fetchRequirements(quoteId, userType) {
 
                 return axios.get(`/${userType}-quote-requests/${quoteId}/matched-items?include=requestedItem`);
             })
-            // .then((response) => {
-            //     console.log("response", response);
-            // })
+            .then((response) => {
+                dispatch({
+                    type: RECEIVE_MATCHED_ITEMS,
+                    matchedItem: response.data
+                });
+            })
             .catch(() => dispatch({ type: REQUEST_FAILED }));
     };
 }

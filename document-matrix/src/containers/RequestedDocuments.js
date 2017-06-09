@@ -168,7 +168,7 @@ function mapStateToProps(state) {
     }
 
     requirements.allIds.map((requirementId) => {
-        if (requirements.byId[requirementId].documentIds.length) {
+        if (requirements.byId[requirementId].documentIds.length && requirements.byId[requirementId].showItem) {
             items.push(requirements.byId[requirementId]);
         }
     });
