@@ -25,18 +25,20 @@ export function fetchRequirements(quoteId, userType) {
             .then((response) => {
                 dispatch({
                     type: RECEIVE_DOCUMENTS,
-                    documents: response.data
+                    documents: response.data,
+                    userType
                 });
 
-                return axios.get(`/${userType}-quote-requests/${quoteId}/matched-items?include=requestedItem`);
-            })
-            .then((response) => {
-                dispatch({
-                    type: RECEIVE_MATCHED_ITEMS,
-                    matchedItem: response.data
-                });
-            })
-            .catch(() => dispatch({ type: REQUEST_FAILED }));
+                if (userType === 'supplier') {
+                    return axios.get(`/${userType}-quote-requests/${quoteId}/matched-items?include=requestedItem`)
+                        .then((response) => {
+                            dispatch({
+                                type: RECEIVE_MATCHED_ITEMS,
+                                matchedItem: response.data
+                            });
+                        });
+                }
+            }).catch(() => dispatch({ type: REQUEST_FAILED }));
     };
 }
 
@@ -98,7 +100,7 @@ export function downloadDocumentGroup(groupId) {
 
         downloadBlob(
             axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents?filters[group_id]=${groupId}`,
-            `${title.toLowerCase().split(' ').join('-')}`,
+            `${title.toLowerCase().split(' ').join('-')}.zip`,
             () => dispatch({ type: TOGGLE_LOADING }),
             () => dispatch({ type: REQUEST_FAILED })
         );
@@ -113,7 +115,7 @@ export function downloadDocumentGroups() {
 
         downloadBlob(
             axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents`,
-            `QR-${quoteId}`,
+            `QR-${quoteId}.zip`,
             () => dispatch({ type: TOGGLE_LOADING }),
             () => dispatch({ type: REQUEST_FAILED })
         );
@@ -128,7 +130,7 @@ export function downloadRequestedItemDocuments(requestedItemId) {
 
         downloadBlob(
             axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents?filters[requested_item_id]=${requestedItemId}`,
-            `QR-${requestedItemId}-${quoteId}`,
+            `QR-${requestedItemId}-${quoteId}.zip`,
             () => dispatch({ type: TOGGLE_LOADING }),
             () => dispatch({ type: REQUEST_FAILED })
         );

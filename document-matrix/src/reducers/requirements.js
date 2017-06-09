@@ -26,7 +26,7 @@ function receiveRequirements(state, action) {
         state.byId[include.id] = {
             ...include.attributes,
             id: include.id,
-            showItem: false,
+            showItem: action.userType === 'searcher' ? true: false,
             documentIds: []
         };
         state.allIds.push(include.id);
