@@ -79,7 +79,7 @@ class RequestedDocuments extends Component {
             <div>
                 <h3>
                     Documents
-                    <button className="mar-left-25 db-function mar-btm-sm" onClick={() => this.handleDownloadDocumentGroups()}>
+                    <button className="mar-l-sm db-function mar-btm-sm" onClick={() => this.handleDownloadDocumentGroups()}>
                         <i className="fa fa-download"></i>
                         &nbsp;Download All
                     </button>
