@@ -113,7 +113,7 @@ class ItemDetails extends Component {
                             <tbody>
                             {enableCreate ?
                                 <tr>
-                                    <td colSpan="3">{itemsReducer.spot === 'browse' ? 'This supplier does not have standard rates' : 'This supplier has not responded the Request for Quotation'}</td>
+                                    <td colSpan="3">{itemsReducer.spot === 'browse' ? 'This supplier does not have standard rates' : 'This supplier has not responded to the Request for Quotation'}</td>
                                 </tr>
                                 : pricingOptions.map(pricingOption => <PricingOptionRow key={pricingOption.id} pricingOption={pricingOption} spot={itemsReducer.spot} editMode={editMode}  />)
                             }
