@@ -110,11 +110,11 @@ class RequestedDocuments extends Component {
                     )}
                     <tbody>
                         <tr>
-                            <td colSpan="3" data-heading="Action" className="group">Download By Service</td>
+                            <td colSpan="3" data-heading="Action" className="document-group">Download By Service</td>
 
                             {items.map((item) => {
                                 return (
-                                    <td key={item.id} className="group text-center">
+                                    <td key={item.id} className="document-group text-center">
                                         <a onClick={() => this.handleDownloadRequestedItemDocuments(item.id)}>
                                             <i className="fa fa-download icon-link"></i>
                                         </a>

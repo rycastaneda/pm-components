@@ -12,8 +12,8 @@ const Document = ({ document, handleDownloadDocument, items }) => {
                     {document.name}
                 </a>
             </td>
-            <td data-heading="Added" className="label-nowrap text-center">{moment(document.created_at).format('MMMM Do, YYYY h:mm a')}</td>
-            <td data-heading="Revisions" className="text-center">
+            <td data-heading="Added" className="label-nowrap text-center bordered">{moment(document.created_at).format('MMMM Do, YYYY h:mm a')}</td>
+            <td data-heading="Revisions" className="text-center bordered">
                 <span data-document-id={document.id} data-size="modal-lg" data-title={`Revision History for ${document.name}`}
                     data-target="#revision-history"
                     className={`badge ${document.revisionIds.length && 'badge--brand pointer revision-badge'}`}>
@@ -22,7 +22,7 @@ const Document = ({ document, handleDownloadDocument, items }) => {
             </td>
             {items.map((item, key) => {
                 return (
-                    <td key={document.id + item.id + key} className="text-center" data-heading={item.title}>
+                    <td key={document.id + item.id + key} className="bordered text-center" data-heading={item.title}>
                         {document.included.includes(item.id) ? <i className="fa fa-check"></i> : null}
                     </td>
                 );
