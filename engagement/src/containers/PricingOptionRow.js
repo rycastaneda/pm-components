@@ -43,7 +43,7 @@ class PricingOptionRow extends Component {
         const defaultValue = pricingOption.attributes.unit || '';
 
         return (
-            pricingOption.attributes.value !== null && pricingOption.attributes.value !== 0 ?
+            pricingOption.attributes.value !== null && +pricingOption.attributes.value !== 0 ?
             <tr>
                 <td className="checkbox col-rates" data-heading="Rates">
                     <label htmlFor={`pricingOption__${pricingOption.id}`}>
