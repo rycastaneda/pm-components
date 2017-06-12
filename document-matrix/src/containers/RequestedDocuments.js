@@ -85,7 +85,7 @@ class RequestedDocuments extends Component {
                     </button>
                 </h3>
 
-                <table className={`table db-table db-table-sort db-table-sort-nojs ${items.length > 3 ? 'db-angle-table' : ''}`}>
+                <table className={`table document-table db-table db-table-sort db-table-sort-nojs ${items.length > 3 ? 'db-angle-table' : ''}`}>
                     <thead>
                         <tr>
                             <th className="pad-left-sm">Document</th>
