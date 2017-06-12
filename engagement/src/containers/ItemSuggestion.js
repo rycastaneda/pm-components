@@ -28,9 +28,10 @@ class ItemSuggestion extends Component {
         this.props.dispatch(resetSuggestions());
     }
 
-    onSuggestionSelected(sections) {
-        return (event, { suggestion, sectionIndex }) => {
-            this.props.dispatch(loadItemDetails(suggestion.id, sections[sectionIndex].id));
+    onSuggestionSelected() {
+        return (event, { suggestion }) => {
+            const requestedItemId = suggestion.relationships.requestedItem.data.id;
+            this.props.dispatch(loadItemDetails(suggestion.id, requestedItemId));
         };
     }
 
