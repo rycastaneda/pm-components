@@ -23,7 +23,7 @@ export function scrollToTop(spot) {
         }, 500);
     } else {
         $('html, body').animate({
-            scrollTop: window.jQuery('#engagements').offset().top
+            scrollTop: $('#engagements').offset().top - 70
         }, 500);
     }
 }
