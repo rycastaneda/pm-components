@@ -75,7 +75,7 @@ class RequestedDocuments extends Component {
             ui
         } = this.props;
         
-        let content = items.length ?
+        let content = items.length && groups.length ?
             <div>
                 <h3>
                     Documents
@@ -100,7 +100,7 @@ class RequestedDocuments extends Component {
                             </th>)}
                         </tr>
                     </thead>
-                    {groups.map(group =>
+                    {groups.filter(group => group.documents.length).map(group =>
                         <Group key={group.id}
                             group={group}
                             items={items}
@@ -163,6 +163,7 @@ function mapStateToProps(state) {
 
     let groups = [];
     let items = [];
+    let rawItems = [];
 
     if (!requirements && !requirements.allIds.length) {
         return {
@@ -176,16 +177,25 @@ function mapStateToProps(state) {
         if (requirements.byId[requirementId].showItem) {
             items.push(requirements.byId[requirementId]);
         }
+        rawItems.push(requirements.byId[requirementId]);
     });
 
     groups = rawGroups.allIds.map((groupId) => {
         let group = rawGroups.byId[groupId];
-        group.documents = group.documentIds.filter((doc) => {
-            return rawDocuments.byId[doc].included.length;
+        group.documents = group.documentIds.filter((docId) => {
+            let document = rawDocuments.byId[docId];
+            // check if some of document's items are to be displayed else hide the document
+            let showDocument = document.included.length && document.included.some((itemId) => {
+                let includedItem = rawItems.filter((item) => {
+                    return item.id === itemId;
+                }).pop();
+                return includedItem && includedItem.showItem;
+            });
+            return document.included.length && showDocument;
         }).map((documentId) => {
-            let doc = rawDocuments.byId[documentId];
-            doc.revisions = doc.revisionIds.map(revisionId => rawDocuments.byId[revisionId]);
-            return doc;
+            let document = rawDocuments.byId[documentId];
+            document.revisions = document.revisionIds.map(revisionId => rawDocuments.byId[revisionId]);
+            return document;
         });
         return group;
     });

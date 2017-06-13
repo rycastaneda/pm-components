@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import moment from 'moment';
 
 const Document = ({ document, handleDownloadDocument, items }) => {
-
     return (
         <tr>
             <td data-heading="Document" className="pad-left-sm label-nowrap">
