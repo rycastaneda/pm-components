@@ -18,7 +18,7 @@ export function fetchRequirements(quoteId, userType) {
         let endpoint = `/${userType}-quote-requests/${quoteId}/documents?include=requesteditems,groups,revisions`;
 
         if (userType === 'supplier') {
-            endpoint = `/${userType}-quote-requests/${quoteId}/documents?include=requesteditems,groups,revisions&filters[matched_item_only]=1`;
+            endpoint = `/${userType}-quote-requests/${quoteId}/documents?include=requesteditems,groups,revisions`;
         }
 
         axios.get(endpoint)
@@ -38,7 +38,7 @@ export function fetchRequirements(quoteId, userType) {
                             });
                         });
                 }
-            }).catch(() => dispatch({ type: REQUEST_FAILED }));
+            });
     };
 }
 

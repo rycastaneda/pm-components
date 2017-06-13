@@ -110,14 +110,16 @@ class RequestedDocuments extends Component {
                     )}
                     <tbody>
                         <tr>
-                            <td colSpan="3" data-heading="Action" className="document-group">Download By Service</td>
+                            <td colSpan="3" data-heading="Action" className="bordered document-group">Download By Service</td>
 
                             {items.map((item) => {
                                 return (
-                                    <td key={item.id} className="document-group text-center">
-                                        <a onClick={() => this.handleDownloadRequestedItemDocuments(item.id)}>
-                                            <i className="fa fa-download icon-link"></i>
-                                        </a>
+                                    <td key={item.id} className="document-group text-center bordered">
+                                        { item.documentIds.length ?
+                                            <a onClick={() => this.handleDownloadRequestedItemDocuments(item.id)}>
+                                                <i className="fa fa-download icon-link"></i>
+                                            </a>
+                                        : null }
                                     </td>
                                 );
                             })}
@@ -171,7 +173,7 @@ function mapStateToProps(state) {
     }
 
     requirements.allIds.map((requirementId) => {
-        if (requirements.byId[requirementId].documentIds.length && requirements.byId[requirementId].showItem) {
+        if (requirements.byId[requirementId].showItem) {
             items.push(requirements.byId[requirementId]);
         }
     });
