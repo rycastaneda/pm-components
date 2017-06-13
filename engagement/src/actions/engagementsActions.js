@@ -23,7 +23,7 @@ import { displaySuccess, requestStarted, requestCompleted, requestError } from '
 export function loadEngagements(quoteId) {
     return (dispatch) => {
         dispatch(requestStarted());
-        axios.get(`/searcher-quote-requests/${quoteId}/engagements?include=matchedItem.matchedSupplier,matchedItem.requestedItem,matchedItem.requestedItem.category,item.category&fields[engagements]=status,engagement_text,item_id,po_number,po_file_id,po_value,auto_decline_flag,pre_start_date,created_at,updated_at,can_cancel&fields[categories]=title`)
+        axios.get(`/searcher-quote-requests/${quoteId}/engagements?include=matchedItem.matchedSupplier,matchedItem.requestedItem,matchedItem.requestedItem.category,item.category&fields[engagements]=status,engagement_text,item_id,po_number,po_file_id,po_value,auto_decline_flag,pre_start_date,created_at,updated_at,can_action&fields[categories]=title`)
         .then((response) => {
             dispatch(loadEngagementsSuccess(response.data));
             dispatch(updateTotals());

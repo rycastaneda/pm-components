@@ -67,7 +67,7 @@ class SentEngagementRow extends Component {
                         <div className="col-sm-5 text-right text-left-xs">
                             {engagement.attributes.status === KEY_CANCELLED && <span className="bs-label bs-label-danger">Cancelled</span>}
                             {engagement.attributes.status === KEY_REJECTED && <span className="bs-label bs-label-danger">Declined</span>}
-                            {engagement.attributes.can_cancel && engagement.attributes.status === KEY_SENT &&
+                            {engagement.attributes.can_action && engagement.attributes.status === KEY_SENT &&
                                 <IconButton
                                     title="Cancel"
                                     classNames="db-function"

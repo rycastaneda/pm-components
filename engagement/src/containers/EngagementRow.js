@@ -78,22 +78,24 @@ class EngagementRow extends Component {
                                 <div className="col-sm-8">{engagement.category.attributes.title}</div>
                             </div>
                         </div>
-                        <div className="col-sm-5 text-right text-left-xs">
-                            <IconButton
-                                title="Edit"
-                                classNames="db-function"
-                                onClick={this.handleEditEngagement}
-                                iconClass="fa fa-edit"
-                                iconPlacement="left"
-                            />
-                            <IconButton
-                                title="Delete"
-                                classNames="db-function mar-l-sm"
-                                onClick={this.handleDeleteEngagement}
-                                iconClass="fa fa-trash"
-                                iconPlacement="left"
-                            />
-                        </div>
+                        {engagement.attributes.can_action && engagement.attributes.status &&
+                            <div className="col-sm-5 text-right text-left-xs">
+                                <IconButton
+                                    title="Edit"
+                                    classNames="db-function"
+                                    onClick={this.handleEditEngagement}
+                                    iconClass="fa fa-edit"
+                                    iconPlacement="left"
+                                />
+                                <IconButton
+                                    title="Delete"
+                                    classNames="db-function mar-l-sm"
+                                    onClick={this.handleDeleteEngagement}
+                                    iconClass="fa fa-trash"
+                                    iconPlacement="left"
+                                />
+                            </div>
+                        }
                     </div>
                 </div>
                 <div className="col-xs-12 engagement-detail">
