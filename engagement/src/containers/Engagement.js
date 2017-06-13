@@ -1,3 +1,4 @@
+/* global $ */
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Loader from '../components/Loader';
@@ -14,6 +15,7 @@ class Engagement extends Component {
 
     constructor(props) {
         super(props);
+        this.navigateToEngagement = this.navigateToEngagement.bind(this);
     }
 
     componentWillMount() {
@@ -40,7 +42,7 @@ class Engagement extends Component {
                 this.props.dispatch(loadItemDetails(riqiId, rqId));
             } else {
                 this.props.dispatch(loadEngagements(quoteId));
-                
+
                 const engagementsUpdatedField = document.getElementById('engagements_updated');
                 engagementsUpdatedField.addEventListener('change', (event) => {
                     if (event.target.value !== '0') {
@@ -52,6 +54,13 @@ class Engagement extends Component {
         }
     }
 
+    navigateToEngagement() {
+        const navToEngagement = document.getElementById('navigate_engagement');
+        navToEngagement.value = 1;
+
+        $('button.close').trigger('click');
+    }
+
 
     render() {
         const { ui, itemsReducer } = this.props;
@@ -60,6 +69,7 @@ class Engagement extends Component {
             <div className="engagement-wrapper">
                 { ui.loadingCounter ? <Loader /> : null }
                 { ui.info ? <div className="bs-callout bs-callout-info">{ ui.infoText }</div> : null }
+                { ui.successQuoteModal ? <div className="bs-callout bs-callout-success">{ ui.successMessage }<br/>When you are ready, you can view and send all your pending <a id="navToEngagement" onClick={this.navigateToEngagement}>engagements here</a>.</div> : null }
                 { ui.success ? <div className="bs-callout bs-callout-success">{ ui.successMessage }</div> : null }
                 { ui.error ? <div className="bs-callout bs-callout-danger">{ ui.errorMessage }</div> : null }
 

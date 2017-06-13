@@ -112,7 +112,7 @@ class EngagementRow extends Component {
 
                             {engagement.attributes.po_number && <div className="row">
                                 <label className="col-sm-4 control-label">Work Order: </label>
-                                <div className="col-sm-8">{engagement.attributes.po_number}</div>
+                                <div className="col-sm-8 force-wrap">{engagement.attributes.po_number}</div>
                             </div>}
 
                             {engagement.attributes.pre_start_date && <div className="row">

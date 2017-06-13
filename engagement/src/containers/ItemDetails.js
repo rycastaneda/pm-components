@@ -130,6 +130,7 @@ class ItemDetails extends Component {
                                         <input className="form-control"
                                             type="text"
                                             placeholder="Enter Work Order number"
+                                            maxLength="100"
                                             value={purchaseOrder}
                                             onChange={this.handlePOChange}
                                             onBlur={this.handlePOUpdate}
