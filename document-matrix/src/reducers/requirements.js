@@ -56,6 +56,7 @@ function receiveMatchedItems(state, action) {
         if (item.type === 'requested-item' && !state.byId[item.id]) {
             state.byId[item.id] = {
                 ...item.attributes,
+                id: item.id,
                 showItem: true,
                 documentIds: []
             };
