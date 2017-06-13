@@ -82,7 +82,7 @@ export function downloadRevisions(documentId) {
 
         downloadBlob(
             axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents/${documentId}?revisions=1`,
-            `documentId.zip`,
+            `${documentId}.zip`,
             () => dispatch({ type: TOGGLE_LOADING }),
             () => dispatch({ type: REQUEST_FAILED })
         );
