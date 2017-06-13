@@ -1,7 +1,8 @@
 import {
     FETCH_DOCUMENTS,
     REQUEST_FAILED,
-    TOGGLE_LOADING
+    TOGGLE_LOADING,
+    RECEIVE_DOCUMENTS
 } from '../constants';
 
 const INITIAL_STATE = {
@@ -29,6 +30,11 @@ export function ui(state = INITIAL_STATE, action) {
                 ...state,
                 error: false,
                 loading: !state.loading
+            };
+        case RECEIVE_DOCUMENTS:
+            return {
+                ...state,
+                loading: state.userType === 'supplier' // if supplier continue loading else
             };
         default:
             return Object.assign({}, state, {
