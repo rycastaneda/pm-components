@@ -23,7 +23,7 @@ class EngagementRow extends Component {
             matchedItemId = engagement.matchedItem.id,
             requestedItemId = engagement.requestedItem.id;
 
-        this.props.dispatch(scrollToTop());
+        scrollToTop();
         return this.props.dispatch(loadItemDetails(matchedItemId, requestedItemId, engagement));
     }
 
