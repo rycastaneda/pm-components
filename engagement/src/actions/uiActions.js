@@ -22,7 +22,7 @@ export function scrollToTop(spot) {
         $('.quote-modal-overflow').animate({
             scrollTop: 0
         }, 500);
-    } else if (spot === 'qr-details') {
+    } else if ($('#engagements').length) {
         $('html, body').animate({
             scrollTop: $('#engagements').offset().top - 70
         }, 500);
