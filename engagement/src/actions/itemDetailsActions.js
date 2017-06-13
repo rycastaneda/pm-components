@@ -18,7 +18,7 @@ import {
 import axios from 'axios';
 import moment from 'moment';
 import { loadEngagements, sendEngagementsBrowse } from './engagementsActions';
-import { isValidEngagement, displaySuccess, resetSuccess, resetError, requestStarted, requestCompleted, requestError } from './uiActions';
+import { isValidEngagement, displaySuccess, displaySuccessQuoteModal, resetSuccess, resetError, requestStarted, requestCompleted, requestError } from './uiActions';
 
 export function receivePricingOptions(pricingOptions) {
     return {
@@ -306,9 +306,15 @@ export function createEngagementDetails(pricingOptions, requestedItemId, matched
                 numEngagementDetails += 1;
                 if (numEngagementDetails === engagementDetails.length) {
                     const quoteId = getState().itemsReducer.quoteId;
-                    dispatch(displaySuccess(`Engagement #${engagementId} created`));
+
+                    if (getState().itemsReducer.spot === 'qr-details') {
+                        dispatch(displaySuccess(`Engagement #${engagementId} created`));
+                    } else {
+                        dispatch(displaySuccessQuoteModal(`Engagement #${engagementId} created and is now pending. You can continue to add pending engagements prior to sending.`));
+                    }
+
                     dispatch(resetItemDetails());
-                    if (getState().itemsReducer.spot === 'qr-details') {                        
+                    if (getState().itemsReducer.spot === 'qr-details') {
                         dispatch(loadEngagements(quoteId));
                     }
                 }

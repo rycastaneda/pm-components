@@ -7,6 +7,7 @@ import {
     VALIDATION_ERROR,
     RESET_ERROR,
     DISPLAY_SUCCESS,
+    DISPLAY_SUCCESS_QUOTEMODAL,
     RESET_SUCCESS
 } from '../constants/ActionTypes';
 
@@ -21,7 +22,7 @@ export function scrollToTop(spot) {
         $('.quote-modal-overflow').animate({
             scrollTop: 0
         }, 500);
-    } else {
+    } else if ($('#engagements').length) {
         $('html, body').animate({
             scrollTop: $('#engagements').offset().top - 70
         }, 500);
@@ -79,6 +80,15 @@ export function displaySuccess(message) {
     return (dispatch) => {
         dispatch({
             type: DISPLAY_SUCCESS,
+            message
+        });
+    };
+}
+
+export function displaySuccessQuoteModal(message) {
+    return (dispatch) => {
+        dispatch({
+            type: DISPLAY_SUCCESS_QUOTEMODAL,
             message
         });
     };

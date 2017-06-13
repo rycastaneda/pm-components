@@ -5,6 +5,7 @@ import {
     VALIDATION_ERROR,
     RESET_ERROR,
     DISPLAY_SUCCESS,
+    DISPLAY_SUCCESS_QUOTEMODAL,
     RESET_SUCCESS
 } from '../constants/ActionTypes';
 
@@ -14,6 +15,7 @@ const INITIAL_STATE = {
     info: false,
     infoText: '',
     success: false,
+    successQuoteModal: false,
     successMessage: '',
     error: false,
     errorMessage: ''
@@ -58,10 +60,17 @@ export function ui(state = INITIAL_STATE, action) {
                 success: true,
                 successMessage: action.message
             };
+        case DISPLAY_SUCCESS_QUOTEMODAL:
+            return {
+                ...state,
+                successQuoteModal: true,
+                successMessage: action.message
+            };
         case RESET_SUCCESS:
             return {
                 ...state,
                 success: false,
+                successQuoteModal: false,
                 successMessage: ''
             };
         default:

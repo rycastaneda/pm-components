@@ -12,8 +12,17 @@ class PricingOptionRow extends Component {
     constructor(props) {
         super(props);
         this.handleUnitChange = this.handleUnitChange.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
         this.handlePricingOptionChange = this.handlePricingOptionChange.bind(this);
         this.handleEngagementDetailUpdate = this.handleEngagementDetailUpdate.bind(this);
+    }
+
+    handleKeyPress(event) {
+        if (event.which < 48 || event.which > 57) {
+            event.preventDefault();
+            event.stopPropagation();
+            return (false);  // stop processing
+        }
     }
 
     handleUnitChange(event) {
@@ -67,6 +76,7 @@ class PricingOptionRow extends Component {
                         <input type="number"
                             className="form-control"
                             value={defaultValue}
+                            onKeyPress={this.handleKeyPress}
                             onChange={this.handleUnitChange}
                             onBlur={editMode ? this.handleEngagementDetailUpdate : null}
                         />
