@@ -30,15 +30,13 @@ export function fetchRequirements(quoteId, userType) {
                 });
 
                 if (userType === 'supplier') {
-                    setTimeout(function() {
-                        return axios.get(`/${userType}-quote-requests/${quoteId}/matched-items?include=requestedItem`)
-                            .then((response) => {
-                                dispatch({
-                                    type: RECEIVE_MATCHED_ITEMS,
-                                    matchedItem: response.data
-                                });
+                    return axios.get(`/${userType}-quote-requests/${quoteId}/matched-items?include=requestedItem`)
+                        .then((response) => {
+                            dispatch({
+                                type: RECEIVE_MATCHED_ITEMS,
+                                matchedItem: response.data
                             });
-                    }, 5000);
+                        });
                 }
             });
     };
