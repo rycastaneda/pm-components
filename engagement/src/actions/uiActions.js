@@ -110,7 +110,7 @@ export function isValidEngagement(dispatch, currentEngagement, pricingOptions, e
         dispatch(validationError('Please provide Estimate'));
         return false;
     }
-    if (invalidPrices.length) {
+    if (invalidPrices && invalidPrices.length) {
         dispatch(validationError('Please provide correct Estimate values'));
         return false;
     }
