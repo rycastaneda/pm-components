@@ -242,7 +242,7 @@ export function createEngagement() {
             pricingOptions = getState().itemDetailsReducer.pricingOptions,
             quoteId = getState().itemsReducer.quoteId;
 
-        if (!isValidEngagement(dispatch, currentEngagement, pricingOptions)) {
+        if (!isValidEngagement(dispatch, currentEngagement, pricingOptions, false, false)) {
             return;
         }
 
@@ -335,7 +335,7 @@ export function createEngagementPanel() {
             engagementLimit = getState().itemsReducer.engagementLimit,
             pricingOptions = getState().itemDetailsReducer.pricingOptions;
 
-        if (!isValidEngagement(dispatch, currentEngagement, pricingOptions, engagementLimit)) {
+        if (!isValidEngagement(dispatch, currentEngagement, pricingOptions, engagementLimit, false)) {
             return;
         }
 
@@ -413,14 +413,12 @@ export function handleEngagementUpdate() {
             engagementId = currentEngagement.id,
             quoteId = getState().itemsReducer.quoteId;
 
-        if (!isValidEngagement(dispatch, currentEngagement, null)) {
+        if (!isValidEngagement(dispatch, currentEngagement, null, false, true)) {
             return;
         }
 
-        dispatch(requestStarted());
-
         axios.patch(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${engagementId}`, { data: currentEngagement })
-        .then((response) => {
+        .then(() => {
             dispatch ({
                 type: UPDATED_ENGAGEMENT,
                 oldPOVal: null,
@@ -431,10 +429,7 @@ export function handleEngagementUpdate() {
                 'engagement_text': currentEngagement.attributes['engagement_text'],
                 engagementId
             });
-            window.console.log('engagement updated: ', response);
-            dispatch(requestCompleted());
         }).catch((error) => {
-            dispatch(requestCompleted());
             dispatch(requestError(error));
         });
     };
@@ -454,7 +449,7 @@ export function handleEngagementDetailCreate(pricingOption, unit) {
                 quoteId = getState().itemsReducer.quoteId;
 
 
-            if (!isValidEngagement(dispatch, null, pricingOptions)) {
+            if (!isValidEngagement(dispatch, null, pricingOptions, false, false)) {
                 return;
             }
 
@@ -537,7 +532,7 @@ export function handleEngagementDetailUpdate(pricingOption, unit) {
                 quoteId = getState().itemsReducer.quoteId;
 
 
-            if (!isValidEngagement(dispatch, null, pricingOptions)) {
+            if (!isValidEngagement(dispatch, null, pricingOptions, false, true)) {
                 return;
             }
 
@@ -550,8 +545,6 @@ export function handleEngagementDetailUpdate(pricingOption, unit) {
                     'unit': unit
                 }
             };
-
-            dispatch(requestStarted());
 
             axios.patch(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${engagementId}/engagement-details/${engagementDetailId}`, { data: engagementDetails })
             .then(() => {
@@ -566,9 +559,7 @@ export function handleEngagementDetailUpdate(pricingOption, unit) {
                     id: pricingOption.id,
                     oldUnit: unit
                 });
-                dispatch(requestCompleted());
             }).catch((error) => {
-                dispatch(requestCompleted());
                 dispatch(requestError(error));
             });
         }

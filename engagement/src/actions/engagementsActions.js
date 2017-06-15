@@ -202,6 +202,7 @@ export function sendEngagements() {
         .then(() => {
             dispatch(loadEngagements(quoteId));
             dispatch(requestCompleted());
+            dispatch(displaySuccess(`Engagement(s) sent successfully`));
         }).catch((error) => {
             dispatch(requestCompleted());
             dispatch(requestError(error));
