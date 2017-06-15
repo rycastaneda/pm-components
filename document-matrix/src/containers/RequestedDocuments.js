@@ -74,7 +74,7 @@ class RequestedDocuments extends Component {
             groups,
             ui
         } = this.props;
-        
+
         let content = items.length && groups.length ?
             <div>
                 <h3>
@@ -174,10 +174,13 @@ function mapStateToProps(state) {
     }
 
     requirements.allIds.map((requirementId) => {
-        if (requirements.byId[requirementId].showItem) {
-            items.push(requirements.byId[requirementId]);
+        let item = requirements.byId[requirementId];
+
+        if (item.showItem && item.documentIds.length) {
+            items.push(item);
         }
-        rawItems.push(requirements.byId[requirementId]);
+
+        rawItems.push(item);
     });
 
     groups = rawGroups.allIds.map((groupId) => {
