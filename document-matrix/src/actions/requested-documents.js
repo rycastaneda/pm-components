@@ -30,13 +30,15 @@ export function fetchRequirements(quoteId, userType) {
                 });
 
                 if (userType === 'supplier') {
-                    return axios.get(`/${userType}-quote-requests/${quoteId}/matched-items?include=requestedItem`)
-                        .then((response) => {
-                            dispatch({
-                                type: RECEIVE_MATCHED_ITEMS,
-                                matchedItem: response.data
+                    setTimeout(function() {
+                        return axios.get(`/${userType}-quote-requests/${quoteId}/matched-items?include=requestedItem`)
+                            .then((response) => {
+                                dispatch({
+                                    type: RECEIVE_MATCHED_ITEMS,
+                                    matchedItem: response.data
+                                });
                             });
-                        });
+                    }, 5000);
                 }
             });
     };
@@ -99,7 +101,7 @@ export function downloadDocumentGroup(groupId) {
         dispatch({ type: TOGGLE_LOADING });
 
         downloadBlob(
-            axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents?filters[group_id]=${groupId}`,
+            axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents?filters[group_id]=${groupId}&filters[matched_item_only]=1`,
             `${title.toLowerCase().split(' ').join('-')}.zip`,
             () => dispatch({ type: TOGGLE_LOADING }),
             () => dispatch({ type: REQUEST_FAILED })
@@ -114,7 +116,7 @@ export function downloadDocumentGroups() {
         dispatch({ type: TOGGLE_LOADING });
 
         downloadBlob(
-            axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents`,
+            axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents?filters[matched_item_only]=1`,
             `QR-${quoteId}.zip`,
             () => dispatch({ type: TOGGLE_LOADING }),
             () => dispatch({ type: REQUEST_FAILED })
@@ -129,7 +131,7 @@ export function downloadRequestedItemDocuments(requestedItemId) {
         dispatch({ type: TOGGLE_LOADING });
 
         downloadBlob(
-            axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents?filters[requested_item_id]=${requestedItemId}`,
+            axios.defaults.baseURL + `/${userType}-quote-requests/${quoteId}/documents?filters[requested_item_id]=${requestedItemId}&filters[matched_item_only]=1`,
             `QR-${requestedItemId}-${quoteId}.zip`,
             () => dispatch({ type: TOGGLE_LOADING }),
             () => dispatch({ type: REQUEST_FAILED })
