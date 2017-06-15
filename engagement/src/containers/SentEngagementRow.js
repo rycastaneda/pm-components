@@ -119,24 +119,24 @@ class SentEngagementRow extends Component {
                             {engagement.attributes.showEngagementText && <div className="pad-all-xs">{engagement.attributes.engagement_text}</div>}
                         </div>
                         <div className="col-sm-5 mar-top-10 mar-btm-10">
-                            <div className="txt-small">Pricing:</div>
+                            <div className="txt-small">Pricing Estimate:</div>
                             {engagement.engagementDetails.map(pricing =>
                                 <div className="row" key={pricing.id}>
                                     <label className="col-sm-4 control-label">{pricing.pricingOption.attributes.title} Rate: </label>
                                     <div className="col-sm-8">
-                                        ${this.convertToCurrency(pricing.attributes.rate_value)} x {pricing.attributes.unit} Estimated {pricing.pricingOption.attributes.unit_of_measure}{pricing.attributes.unit > 1 ? 's': ''}
+                                        ${this.convertToCurrency(pricing.attributes.rate_value)} x {pricing.attributes.unit} {pricing.pricingOption.attributes.unit_of_measure}{pricing.attributes.unit > 1 ? 's': ''}
                                     </div>
                                 </div>
                             )}
                             <br />
 
                             <div className="row">
-                                <label className="col-sm-4 control-label">Estimated Total (ex GST): </label>
+                                <label className="col-sm-4 control-label">Estimated Total: </label>
                                 <div className={`col-sm-8 txt-large pad-top-sm ${(engagement.attributes.status === KEY_CANCELLED || engagement.attributes.status === KEY_REJECTED) && 'strikethrough'}`}>
                                     ${this.engagementTotal(engagement)}
                                 </div>
                             </div>
-
+                            <div className="row pad-top-sm"><span className="col-xs-12 txt-small">*All quantities are estimates.  &nbsp;All prices are ex GST</span></div>
                         </div>
                     </div>
                 </div>
