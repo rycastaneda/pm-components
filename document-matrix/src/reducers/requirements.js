@@ -52,18 +52,20 @@ function receiveMatchedItems(state, action) {
 
 
     // looped matched items to get those that are not matched in qr
-    action.matchedItem.included.map((item) => {
-        if (item.type === 'requested-item' && !state.byId[item.id]) {
-            state.byId[item.id] = {
-                ...item.attributes,
-                id: item.id,
-                showItem: true,
-                documentIds: []
-            };
+    if (action.matchedItem.included && action.matchedItem.included.length) {
+        action.matchedItem.included.map((item) => {
+            if (item.type === 'requested-item' && !state.byId[item.id]) {
+                state.byId[item.id] = {
+                    ...item.attributes,
+                    id: item.id,
+                    showItem: true,
+                    documentIds: []
+                };
 
-            state.allIds.push(item.id);
-        }
-    });
+                state.allIds.push(item.id);
+            }
+        });
+    }
 
     return Object.assign({}, state);
 }
