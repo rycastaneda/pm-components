@@ -74,7 +74,7 @@ class Engagement extends Component {
                 { ui.error ? <div className="bs-callout bs-callout-danger">{ ui.errorMessage }</div> : null }
 
                 {
-                    (itemsReducer.spot === 'qr-details') ? <ItemSuggestion /> : null
+                    (itemsReducer.spot === 'qr-details' && itemsReducer.userType !== 'view-only') ? <ItemSuggestion /> : null
                 }
                 <ItemDetails />
                 {

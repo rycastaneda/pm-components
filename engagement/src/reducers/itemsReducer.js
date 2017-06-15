@@ -1,5 +1,6 @@
 import {
     COMPONENT_SPOT,
+    USER_TYPE,
     UPDATE_QUOTE_ID,
     UPDATE_REQUESTED_ITEM_ID,
     UPDATE_MATCHED_ITEM_ID,
@@ -36,7 +37,8 @@ const INITIAL_ITEMS_STATE = {
     quoteId: null,
     rqId: null,
     riqiId: null,
-    spot: ''
+    spot: '',
+    userType: ''
 };
 
 const INITIAL_ITEM_DETAILS_STATE = {
@@ -49,6 +51,10 @@ export function itemsReducer(state = INITIAL_ITEMS_STATE, action) {
         case COMPONENT_SPOT:
             return Object.assign({}, state, {
                 spot: action.spot
+            });
+        case USER_TYPE:
+            return Object.assign({}, state, {
+                userType: action.userType
             });
         case UPDATE_QUOTE_ID:
             return Object.assign({}, state, {

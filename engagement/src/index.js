@@ -1,3 +1,5 @@
+/* global $ */
+
 import React from 'react';
 import { render } from 'react-dom';
 import { createStore, applyMiddleware, compose } from 'redux';
@@ -8,7 +10,7 @@ import axios from 'axios';
 !window._babelPolyfill && require('babel-polyfill');
 import api from '../../shared/api.config';
 import Engagement from './containers/Engagement';
-import { COMPONENT_SPOT } from './constants/ActionTypes';
+import { COMPONENT_SPOT, USER_TYPE } from './constants/ActionTypes';
 
 import './styles/index.scss';
 
@@ -35,6 +37,13 @@ if (document.querySelector('[data-component="engagement-supplier-item"]')) {
         type: COMPONENT_SPOT,
         spot: 'supplier-item'
     });
+    if ($(document.querySelector('[data-component="engagement-supplier-item"]')).data('pit-view-only') === 1) {
+        store.dispatch({
+            type: USER_TYPE,
+            userType: 'view-only'
+        });
+    }
+
     render(
         <Provider store={store}>
             <Engagement/>
@@ -46,6 +55,13 @@ if (document.querySelector('[data-component="engagement-supplier-item"]')) {
         type: COMPONENT_SPOT,
         spot: 'browse'
     });
+    if ($(document.querySelector('[data-component="engagement-browse"]')).data('pit-view-only') === 1) {
+        store.dispatch({
+            type: USER_TYPE,
+            userType: 'view-only'
+        });
+    }
+
     render(
         <Provider store={store}>
             <Engagement/>
@@ -57,6 +73,13 @@ if (document.querySelector('[data-component="engagement-supplier-item"]')) {
         type: COMPONENT_SPOT,
         spot: 'qr-details'
     });
+    if ($(document.querySelector('[data-component="engagement"]')).data('pit-view-only') === 1) {
+        store.dispatch({
+            type: USER_TYPE,
+            userType: 'view-only'
+        });
+    }
+
     render(
         <Provider store={store}>
             <Engagement/>

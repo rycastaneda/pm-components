@@ -33,6 +33,7 @@ class PendingEngagements extends Component {
 
     render() {
         const { pendingEngagements, sentEngagements, notifyAll, grandTotalPending } = this.props.engagementsReducer;
+        const { userType } = this.props.itemsReducer;
 
         return (
             <div>
@@ -54,7 +55,7 @@ class PendingEngagements extends Component {
                         </div>
                     </div>
 
-                    {sentEngagements.length === 0 &&
+                    {(sentEngagements.length === 0 && userType !== 'view-only') &&
                         <div className="row">
                             <div className="col-xs-12 align-right db-form-submit">
                                 <div className = "checkbox">
@@ -71,13 +72,15 @@ class PendingEngagements extends Component {
                         </div>
                     }
 
-                    <div className="row">
-                        <div className="col-xs-12 align-right db-form-submit">
-                            <Button classNames="submit btn" title="Send Engagements"
-                                    onClick={this.handleSendEngagements}
-                            />
+                    {userType !== 'view-only' &&
+                        <div className="row">
+                            <div className="col-xs-12 align-right db-form-submit">
+                                <Button classNames="submit btn" title="Send Engagements"
+                                        onClick={this.handleSendEngagements}
+                                />
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div> : null
             }
             </div>
@@ -87,12 +90,13 @@ class PendingEngagements extends Component {
 
 PendingEngagements.propTypes = {
     engagementsReducer: PropTypes.object.isRequired,
+    itemsReducer: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
-    const { engagementsReducer } = state;
-    return { engagementsReducer };
+    const { engagementsReducer, itemsReducer } = state;
+    return { engagementsReducer, itemsReducer };
 }
 
 export default connect(mapStateToProps)(PendingEngagements);
