@@ -25,6 +25,7 @@ class Group extends Component {
         this.handleDropDocuments = this.handleDropDocuments.bind(this);
         this.handleRemoveDocument = this.handleRemoveDocument.bind(this);
         this.handleDownloadDocument = this.handleDownloadDocument.bind(this);
+        this.handleFilterDropDocuments = this.handleFilterDropDocuments.bind(this);
         this.renameInput = null;
         this.state = {
             error: ''
@@ -68,13 +69,40 @@ class Group extends Component {
         return this.props.dispatch(downloadDocument(this.props.group.id, documentId));
     }
 
+    handleFilterDropDocuments(files) {
+        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx'];
+        let invalid = [];
+
+        let filteredFiles = files.filter((file) => {
+            let extension = file.name.split('.').pop().toLowerCase();
+
+            if (!~allowedExtenstions.indexOf(`.${extension}`)) {
+                invalid.push(file.name);
+            }
+
+            return !!~allowedExtenstions.indexOf(`.${extension}`);
+        });
+
+        if (filteredFiles.length !== files.length) {
+            this.setState({
+                error: invalid.join(', ') + ' - file type not supported'
+            });
+
+            return;
+        }
+
+        this.setState({
+            error: ''
+        });
+
+        this.handleDropDocuments(filteredFiles);
+    }
+
     render() {
         const {
             group
         } = this.props;
 
-        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx'];
-        
         return (
             <div className="db-form-section group-panel" >
                 {group.isUpdating ? <Loader /> : ''}
@@ -90,33 +118,7 @@ class Group extends Component {
                     isReadOnly={group.isReadOnly}/>
                 <div className="panel-body">
                     <Dropzone className="dropzone"
-                        onDrop={(files) => {
-                            let invalid = [];
-
-                            let filteredFiles = files.filter((file) => {
-                                let extension = file.name.split('.').pop();
-
-                                if (!~allowedExtenstions.indexOf(`.${extension}`)) {
-                                    invalid.push(file.name);
-                                }
-
-                                return !!~allowedExtenstions.indexOf(`.${extension}`);
-                            });
-
-                            if (filteredFiles.length !== files.length) {
-                                this.setState({
-                                    error: invalid.join(', ') + ' - file type not supported'
-                                });
-
-                                return;
-                            }
-
-                            this.setState({
-                                error: ''
-                            });
-
-                            this.handleDropDocuments(filteredFiles);
-                        }}>
+                        onDrop={this.handleFilterDropDocuments}>
                         <p className="text-center dropzone__placeholder"><i className="fa fa-cloud-upload"></i> Drop files here or click to select files.</p>
                     </Dropzone>
                     {group.documents && group.documents.length ?

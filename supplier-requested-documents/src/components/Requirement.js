@@ -3,6 +3,44 @@ import Dropzone from 'react-dropzone';
 import Documents from '../components/Documents';
 
 class Requirement extends Component {
+    constructor(props) {
+        super(props);
+        this.handleFilterDropDocuments = this.handleFilterDropDocuments.bind(this);
+
+        this.state = {
+            error: ''
+        };
+    }
+
+    handleFilterDropDocuments(files, callback) {
+        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx'];
+        let invalid = [];
+
+        let filteredFiles = files.filter((file) => {
+            let extension = file.name.split('.').pop().toLowerCase();
+
+            if (!~allowedExtenstions.indexOf(`.${extension}`)) {
+                invalid.push(file.name);
+            }
+
+            return !!~allowedExtenstions.indexOf(`.${extension}`);
+        });
+
+        if (filteredFiles.length !== files.length) {
+            this.setState({
+                error: invalid.join(', ') + ' - file type not supported'
+            });
+
+            return;
+        }
+
+        this.setState({
+            error: ''
+        });
+
+        callback();
+    }
+
     render() {
         const {
             requirement,
@@ -15,8 +53,8 @@ class Requirement extends Component {
         const documents = requirement.documents && requirement.documents.length
             ? <Documents onRemoveDocument={onRemoveDocument}
                     downloadDocument={downloadDocument}
-                    readOnly={readOnly} 
-                    documents={requirement.documents} 
+                    readOnly={readOnly}
+                    documents={requirement.documents}
                     requirementId={requirement.id}>
                  </Documents>
             : readOnly ? <li className="list-group-item">N/A</li> : null;
@@ -30,12 +68,15 @@ class Requirement extends Component {
                             {!readOnly ? <Dropzone className="dropzone dz-clickable"
                                 accept="application/pdf,image/*,text/csv,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                 onDrop={(documents) => {
-                                    onDropDocuments(requirement.id, documents);
+                                    this.handleFilterDropDocuments(documents, () => onDropDocuments(requirement.id, documents));
                                 }}>
                                     <p className="text-center dz-default dz-message">
                                         <i className="fa fa-cloud-upload"></i> Drop documents here or click to select files.
                                     </p>
                             </Dropzone> : null}
+                            {this.state.error ?
+                                <div className="bs-callout bs-callout-danger">{this.state.error}</div>
+                            : null}
                         </div>
                     </li>
                     {documents}
