@@ -49,6 +49,7 @@ class PricingOptionRow extends Component {
 
     render() {
         const { pricingOption, editMode } = this.props;
+        // const defaultValue = pricingOption.attributes.unit === 0 ? 0 : (pricingOption.attributes.unit || '');
         const defaultValue = pricingOption.attributes.unit || '';
 
         return (
@@ -61,7 +62,7 @@ class PricingOptionRow extends Component {
                             id={`pricingOption__${pricingOption.id}`}
                             type="checkbox"
                             disabled="true"
-                            checked={pricingOption.attributes.selected}
+                            checked={pricingOption.attributes.unit && pricingOption.attributes.selected}
                             onChange={this.handlePricingOptionChange}
                         />
                     }

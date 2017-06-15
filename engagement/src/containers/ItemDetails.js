@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Datetime  from 'react-datetime';
 import moment from 'moment';
 import Button from '../components/Button';
+import { resetError } from '../actions/uiActions';
 import { handlePOChange, handleEngagementUpdate, handePlanDateChange, handleEngagementTextChange, createEngagement, createEngagementPanel, resetItemDetails } from '../actions/itemDetailsActions';
 import PricingOptionRow from './PricingOptionRow';
 
@@ -60,6 +61,7 @@ class ItemDetails extends Component {
     }
 
     resetItemDetails() {
+        this.props.dispatch(resetError());
         return this.props.dispatch(resetItemDetails());
     }
 
