@@ -120,14 +120,14 @@ export function isValidEngagement(dispatch, currentEngagement, pricingOptions, e
         dispatch(validationError('Please provide correct Estimate values'));
         return false;
     }
-    if (engagementLimit) {
+    if (engagementLimit !== null) {
         let totalPrice = pricing.map(function(price) {
             return +price.attributes.value * +price.attributes.unit;
         }).reduce(function(total, price) {
             return total + price;
         }, 0);
         if (totalPrice > engagementLimit) {
-            dispatch(validationError(`This value exceeds the approved limit for spot engagements. Please create a Quote Request to facilitate engagements greater than $${convertToCurrency(engagementLimit)} in value.`));
+            dispatch(validationError(`This value exceeds the approved limit for spot engagements. Please create a Request for Quotation to facilitate engagements greater than $${convertToCurrency(engagementLimit)} in value.`));
             return false;
         }
     }

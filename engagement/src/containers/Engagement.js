@@ -25,12 +25,13 @@ class Engagement extends Component {
         const itemId = document.getElementById('item_id') ? document.getElementById('item_id').value : null;
         const panelId = document.getElementById('panel_id') ? document.getElementById('panel_id').value : null;
         const regionId = document.getElementById('region_id') ? document.getElementById('region_id').value : null;
-        const engagemetLimit = document.getElementById('engagement_limit') ? document.getElementById('engagement_limit').value : null;
+
 
         if (this.props.itemsReducer.spot === 'browse') {
+            const engagemetLimit = document.getElementById('engagement_limit').value ? +(document.getElementById('engagement_limit').value) : null;
             this.props.dispatch(updatePanelId(panelId));
             this.props.dispatch(updateRegionId(regionId));
-            this.props.dispatch(updateEngagemetLimit(+engagemetLimit));
+            this.props.dispatch(updateEngagemetLimit(engagemetLimit));
             this.props.dispatch(updateItemId(itemId));
             this.props.dispatch(loadItemDetailsPanel(panelId, itemId, regionId));
         } else {
