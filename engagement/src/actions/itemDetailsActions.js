@@ -417,6 +417,8 @@ export function handleEngagementUpdate() {
             return;
         }
 
+        dispatch(resetError());
+
         axios.patch(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${engagementId}`, { data: currentEngagement })
         .then(() => {
             dispatch ({
@@ -537,7 +539,6 @@ export function handleEngagementDetailUpdate(pricingOption, unit) {
             }
 
             unit = (unit === '') ? 0 : unit;
-
             const engagementDetails = {
                 'type': 'engagement-details',
                 'id': engagementDetailId,
@@ -545,6 +546,8 @@ export function handleEngagementDetailUpdate(pricingOption, unit) {
                     'unit': unit
                 }
             };
+
+            dispatch(resetError());
 
             axios.patch(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${engagementId}/engagement-details/${engagementDetailId}`, { data: engagementDetails })
             .then(() => {
