@@ -511,9 +511,7 @@ export function handleEngagementDetailCreate(pricingOption, unit) {
                     oldUnit: unit
                 });
                 dispatch(updateTotals());
-                dispatch(requestCompleted());
             }).catch((error) => {
-                dispatch(requestCompleted());
                 dispatch(requestError(error));
             });
         }
