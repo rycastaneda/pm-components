@@ -9,7 +9,7 @@ const InclusionSelection = ({ handleChange, quote_request_id = null, category_id
                 className={'form-control edit-form__category-select'}
                 onChange={handleChange}>
             <option value="all">any quote requests</option>
-            <option value="onlyQR">only this quote request</option>
+            <option value="onlyQR">only this RFQ</option>
             <option value="onlyService">only this service</option>
             {
                 options.length ?
