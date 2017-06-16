@@ -478,7 +478,6 @@ export function handleEngagementDetailCreate(pricingOption, unit) {
                 }
             };
 
-            dispatch(requestStarted());
             axios.post(`/searcher-quote-requests/${quoteId}/requested-items/${requestedItemId}/matched-items/${matchedItemId}/engagements/${engagementId}/engagement-details`, { data: engagementDetail })
             .then((response) => {
                 engagementDetail = {
@@ -511,6 +510,7 @@ export function handleEngagementDetailCreate(pricingOption, unit) {
                     id: pricingOption.id,
                     oldUnit: unit
                 });
+                dispatch(updateTotals());
                 dispatch(requestCompleted());
             }).catch((error) => {
                 dispatch(requestCompleted());
