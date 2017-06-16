@@ -123,6 +123,7 @@ export function loadEngagementsSuccess(engagements) {
     const sentEngagements = engagementMapper(engagements, engagements.data.filter(i => i.attributes.status === KEY_SENT || i.attributes.status === KEY_REJECTED || i.attributes.status === KEY_CANCELLED));
     return { type: RECEIVE_ENGAGEMENTS, pendingEngagements, sentEngagements };
 }
+
 export function updateTotals() {
     return { type: UPDATE_TOTALS };
 }
@@ -155,6 +156,7 @@ export function deleteEngagement(requestedItemId, matchedItemId, engagementId) {
                 type: ENGAGEMENT_DELETED,
                 id: engagementId
             });
+            dispatch(updateTotals());
             dispatch(requestCompleted());
         }).catch((error) => {
             dispatch(requestCompleted());

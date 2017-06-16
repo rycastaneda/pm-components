@@ -17,7 +17,7 @@ import {
 
 import axios from 'axios';
 import moment from 'moment';
-import { loadEngagements, sendEngagementsBrowse } from './engagementsActions';
+import { loadEngagements, sendEngagementsBrowse, updateTotals } from './engagementsActions';
 import { isValidEngagement, displaySuccess, displaySuccessQuoteModal, resetSuccess, resetError, requestStarted, requestCompleted, requestError } from './uiActions';
 
 export function receivePricingOptions(pricingOptions) {
@@ -431,6 +431,7 @@ export function handleEngagementUpdate() {
                 'engagement_text': currentEngagement.attributes['engagement_text'],
                 engagementId
             });
+            dispatch(updateTotals());
         }).catch((error) => {
             dispatch(requestError(error));
         });
@@ -562,6 +563,7 @@ export function handleEngagementDetailUpdate(pricingOption, unit) {
                     id: pricingOption.id,
                     oldUnit: unit
                 });
+                dispatch(updateTotals());
             }).catch((error) => {
                 dispatch(requestError(error));
             });
