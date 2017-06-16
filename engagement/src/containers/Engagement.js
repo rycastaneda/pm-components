@@ -49,7 +49,9 @@ class Engagement extends Component {
                         this.props.dispatch(loadEngagements(quoteId));
                     }
                 });
-                this.props.dispatch(loadItems(quoteId));
+                if (this.props.itemsReducer.userType !== 'view-only') {
+                    this.props.dispatch(loadItems(quoteId));
+                }
             }
         }
     }

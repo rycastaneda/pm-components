@@ -13,7 +13,6 @@ class PricingOptionRow extends Component {
         super(props);
         this.handleUnitChange = this.handleUnitChange.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
-        this.handlePricingOptionChange = this.handlePricingOptionChange.bind(this);
         this.handleEngagementDetailUpdate = this.handleEngagementDetailUpdate.bind(this);
     }
 
@@ -30,12 +29,6 @@ class PricingOptionRow extends Component {
         this.props.dispatch(handlePricingOptionSelection(pricingOption, event.target.value ? true : false));
 
         return this.props.dispatch(handleTextChange(pricingOption, event.target.value));
-    }
-
-    handlePricingOptionChange(event) {
-        const pricingOption = this.props.pricingOption;
-
-        return this.props.dispatch(handlePricingOptionSelection(pricingOption, event.target.checked));
     }
 
     handleEngagementDetailUpdate(event) {
@@ -62,8 +55,7 @@ class PricingOptionRow extends Component {
                             id={`pricingOption__${pricingOption.id}`}
                             type="checkbox"
                             disabled="true"
-                            checked={pricingOption.attributes.unit && pricingOption.attributes.selected}
-                            onChange={this.handlePricingOptionChange}
+                            checked={+pricingOption.attributes.unit && pricingOption.attributes.selected}
                         />
                     }
                     {pricingOption.attributes.title}

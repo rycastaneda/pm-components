@@ -104,7 +104,13 @@ export function resetSuccess() {
 
 export function isValidEngagement(dispatch, currentEngagement, pricingOptions, engagementLimit, editMode) {
     dispatch(resetError());
-    let pricing = pricingOptions && pricingOptions.filter(pricingOption => (+pricingOption.attributes.unit && pricingOption.attributes.selected));
+    let pricing = pricingOptions && pricingOptions.filter((pricingOption) => {
+        if (editMode) {
+            return +pricingOption.attributes.unit && pricingOption.attributes.selected;
+        } else {
+            return pricingOption.attributes.unit && pricingOption.attributes.selected;
+        }
+    });
     let invalidPrices = pricing && pricing.filter(pricingOption => +pricingOption.attributes.unit <= 0);
     if (pricingOptions && !pricing.length) {
         dispatch(validationError('Please provide Estimate'));
