@@ -120,7 +120,7 @@ export function isValidEngagement(dispatch, currentEngagement, pricingOptions, e
         dispatch(validationError('Please provide correct Estimate values'));
         return false;
     }
-    if (engagementLimit !== null) {
+    if (engagementLimit !== false && engagementLimit !== null) {
         let totalPrice = pricing.map(function(price) {
             return +price.attributes.value * +price.attributes.unit;
         }).reduce(function(total, price) {
