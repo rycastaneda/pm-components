@@ -84,48 +84,49 @@ class RequestedDocuments extends Component {
                         &nbsp;Download All
                     </button>
                 </h3>
+                <div className="scroll-auto">
+                    <table className={`table document-table db-table db-table-sort db-table-sort-nojs ${items.length > 3 ? 'db-angle-table' : ''}`}>
+                        <thead>
+                            <tr>
+                                <th className="pad-left-sm wid-50">Document</th>
+                                <th className="text-center">Added</th>
+                                <th className="text-center">Revisions</th>
+                                {items.map((item, key) => <th key={key}>
+                                    <div>
+                                        <span>
+                                            &nbsp;{item.title}
+                                        </span>
+                                    </div>
+                                </th>)}
+                            </tr>
+                        </thead>
+                        {groups.filter(group => group.documents.length).map(group =>
+                            <Group key={group.id}
+                                group={group}
+                                items={items}
+                                handleDownloadRequestedItemDocuments={this.handleDownloadRequestedItemDocuments}
+                                handleDownloadDocumentGroup={this.handleDownloadDocumentGroup}
+                                handleDownloadDocument={this.handleDownloadDocument} />
+                        )}
+                        <tbody>
+                            <tr>
+                                <td colSpan="3" data-heading="Action" className="bordered document-group">Download By Service</td>
 
-                <table className={`table document-table db-table db-table-sort db-table-sort-nojs ${items.length > 3 ? 'db-angle-table' : ''}`}>
-                    <thead>
-                        <tr>
-                            <th className="pad-left-sm">Document</th>
-                            <th className="text-center">Added</th>
-                            <th className="text-center">Revisions</th>
-                            {items.map((item, key) => <th key={key}>
-                                <div>
-                                    <span>
-                                        &nbsp;{item.title}
-                                    </span>
-                                </div>
-                            </th>)}
-                        </tr>
-                    </thead>
-                    {groups.filter(group => group.documents.length).map(group =>
-                        <Group key={group.id}
-                            group={group}
-                            items={items}
-                            handleDownloadRequestedItemDocuments={this.handleDownloadRequestedItemDocuments}
-                            handleDownloadDocumentGroup={this.handleDownloadDocumentGroup}
-                            handleDownloadDocument={this.handleDownloadDocument} />
-                    )}
-                    <tbody>
-                        <tr>
-                            <td colSpan="3" data-heading="Action" className="bordered document-group">Download By Service</td>
-
-                            {items.map((item) => {
-                                return (
-                                    <td key={item.id} className="document-group text-center bordered">
-                                        { item.documentIds.length ?
-                                            <a onClick={() => this.handleDownloadRequestedItemDocuments(item.id)}>
-                                                <i className="fa fa-download icon-link"></i>
-                                            </a>
-                                        : null }
-                                    </td>
-                                );
-                            })}
-                        </tr>
-                    </tbody>
-                </table>
+                                {items.map((item) => {
+                                    return (
+                                        <td key={item.id} className="document-group text-center bordered">
+                                            { item.documentIds.length ?
+                                                <a onClick={() => this.handleDownloadRequestedItemDocuments(item.id)}>
+                                                    <i className="fa fa-download icon-link"></i>
+                                                </a>
+                                            : null }
+                                        </td>
+                                    );
+                                })}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         : this.noDocuments();
 
