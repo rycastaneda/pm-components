@@ -3,11 +3,44 @@ import Dropzone from 'react-dropzone';
 import Documents from '../components/Documents';
 
 class Requirement extends Component {
+    constructor(props) {
+        super(props);
+        this.handleFilterDropDocuments = this.handleFilterDropDocuments.bind(this);
+    }
+
+    handleFilterDropDocuments(requirementId, files) {
+        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx'];
+        let invalid = [];
+    
+        let filteredFiles = files.filter((file) => {
+            let extension = file.name.split('.').pop().toLowerCase();
+    
+            if (!~allowedExtenstions.indexOf(`.${extension}`)) {
+                invalid.push(file.name);
+            }
+    
+            return !!~allowedExtenstions.indexOf(`.${extension}`);
+        });
+    
+        if (filteredFiles.length !== files.length) {
+            this.setState({
+                error: invalid.join(', ') + ' - file type not supported'
+            });
+    
+            return;
+        }
+    
+        this.setState({
+            error: ''
+        });
+    
+        this.props.onDropDocuments(requirementId, filteredFiles);
+    }
+
     render() {
         const {
             requirement,
             readOnly,
-            onDropDocuments,
             onRemoveDocument,
             downloadDocument
         } = this.props;
@@ -28,14 +61,16 @@ class Requirement extends Component {
                         <div className="form-group mar-top-sm mar-btm-no">
                             <label>{requirement.title}</label>
                             {!readOnly ? <Dropzone className="dropzone dz-clickable"
-                                accept="application/pdf,image/*,text/csv,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                 onDrop={(documents) => {
-                                    onDropDocuments(requirement.id, documents);
+                                    this.handleFilterDropDocuments(requirement.id, documents);
                                 }}>
                                     <p className="text-center dz-default dz-message">
                                         <i className="fa fa-cloud-upload"></i> Drop documents here or click to select files.
                                     </p>
                             </Dropzone> : null}
+                            {this.state.error ?
+                                <div className="bs-callout bs-callout-danger">{this.state.error}</div>
+                            : null}
                         </div>
                     </li>
                     {documents}
