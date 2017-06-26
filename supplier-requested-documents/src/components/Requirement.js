@@ -6,6 +6,9 @@ class Requirement extends Component {
     constructor(props) {
         super(props);
         this.handleFilterDropDocuments = this.handleFilterDropDocuments.bind(this);
+        this.state = {
+            error: ''
+        };
     }
 
     handleFilterDropDocuments(requirementId, files) {
