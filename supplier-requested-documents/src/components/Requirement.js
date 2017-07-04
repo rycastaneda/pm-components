@@ -12,7 +12,7 @@ class Requirement extends Component {
     }
 
     handleFilterDropDocuments(requirementId, files) {
-        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx'];
+        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx', '.dwg'];
         let invalid = [];
     
         let filteredFiles = files.filter((file) => {
