@@ -43,8 +43,8 @@ class DisplayForm extends Component {
     render() {
         const { requirement, readOnly } = this.props;
         return (
-            <div className={`display-form ${requirement.response && requirement.response.response ? 'responded' : 'not-responded'}`}>
-                <div className="col-xs-9 display-form__left-block">
+            <div className={`row display-form ${requirement.response && requirement.response.response ? 'responded' : 'not-responded'}`}>
+                <div className="col-xs-9 col-sm-8 display-form__left-block">
 
                     <div className={`display-form__description ${requirement.mandatory ? 'mandatory' : ''}`}>
                         {requirement.text}
@@ -57,7 +57,7 @@ class DisplayForm extends Component {
                     />
 
                 </div>
-                <div className="col-xs-3 display-form__right-block">
+                <div className="col-xs-3 col-sm-4 display-form__right-block">
                     <div className="display-form__buttons-container">
                         <Responses
                             updateSelection={this.updateSelection}
