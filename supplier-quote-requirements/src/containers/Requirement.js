@@ -43,7 +43,7 @@ class DisplayForm extends Component {
     render() {
         const { requirement, readOnly } = this.props;
         return (
-            <div className={`row display-form ${requirement.response && requirement.response.response ? 'responded' : 'not-responded'}`}>
+            <div className={`display-form ${requirement.response && requirement.response.response ? 'responded' : 'not-responded'}`}>
                 <div className="col-xs-9 col-sm-8 display-form__left-block">
 
                     <div className={`display-form__description ${requirement.mandatory ? 'mandatory' : ''}`}>
