@@ -1,0 +1,75 @@
+{
+  "data": [
+    {
+      "type": "matched-item-documents",
+      "id": "18245",
+      "attributes": {
+        "name": "Safe Work Method Statements for all high risk tasks",
+        "quote_item_id": 3692800,
+        "requested_document_id": 115,
+        "upload_id": 48600,
+        "location": "documents\/2b4e56d792985",
+        "type": "txt",
+        "size": 4,
+        "documentIds": [],
+        "created_at": {
+          "date": "2017-02-02 02:22:14.000000",
+          "timezone_type": 3,
+          "timezone": "UTC"
+        }
+      }
+    },
+    {
+      "type": "matched-item-documents",
+      "id": "18246",
+      "attributes": {
+        "name": "Safe Work Method Statements for all high risk tasks",
+        "quote_item_id": 3692800,
+        "requested_document_id": null,
+        "upload_id": 48601,
+        "location": "documents\/e1fd66d792985",
+        "type": "txt",
+        "size": 4,
+        "documentIds": [],
+        "created_at": {
+          "date": "2017-02-02 02:22:14.000000",
+          "timezone_type": 3,
+          "timezone": "UTC"
+        }
+      }
+    },
+    {
+      "type": "matched-item-documents",
+      "id": "18247",
+      "attributes": {
+        "name": "Safe Work Method Statements for all high risk tasks",
+        "quote_item_id": 3692800,
+        "requested_document_id": 115,
+        "upload_id": 48602,
+        "location": "documents\/a86e76d792985",
+        "type": "txt",
+        "size": 4,
+        "documentIds": [],
+        "created_at": {
+          "date": "2017-02-02 02:22:14.000000",
+          "timezone_type": 3,
+          "timezone": "UTC"
+        }
+      }
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "total": 3,
+      "count": 3,
+      "per_page": 15,
+      "current_page": 1,
+      "total_pages": 1
+    }
+  },
+  "links": {
+    "self": "http:\/\/localhost\/supplier-quote-requests\/29953\/matched-items\/3692800\/documents?page=1",
+    "first": "http:\/\/localhost\/supplier-quote-requests\/29953\/matched-items\/3692800\/documents?page=1",
+    "last": "http:\/\/localhost\/supplier-quote-requests\/29953\/matched-items\/3692800\/documents?page=1"
+  }
+}

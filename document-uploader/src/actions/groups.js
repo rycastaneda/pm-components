@@ -306,7 +306,7 @@ export function downloadDocumentGroup(groupId) {
 
         downloadBlob(
             axios.defaults.baseURL + `/searcher-quote-requests/${quoteId}/documents?filters[group_id]=${groupId}`,
-            title.toLowerCase().split(' ').join('-'),
+            `${title.toLowerCase().split(' ').join('-')}.zip`,
             () => {
                 dispatch({ type: GROUP_TOGGLE_UPDATING, groupId });
             }
@@ -322,7 +322,7 @@ export function downloadDocumentGroups() {
 
         downloadBlob(
             axios.defaults.baseURL + `/searcher-quote-requests/${quoteId}/documents`,
-            `SearcherQR-${quoteId}`,
+            `SearcherQR-${quoteId}.zip`,
             () => dispatch({ type: GROUPS_DOWNLOADED })
         );
     };

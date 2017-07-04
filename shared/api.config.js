@@ -36,7 +36,7 @@ function configureHeaders() {
  * @returns {{Authorization: string, Accept: string}}
  */
 function getLocalHeaders() {
-    var api_url = window.api_url || 'https:/api.pm.local.dev';
+    var api_url = window.api_url || 'https://api.pm.local.dev';
     var tokenRequest = new Request(api_url + '/authenticate', {
         method: 'POST',
         headers: {
