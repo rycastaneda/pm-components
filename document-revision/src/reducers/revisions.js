@@ -33,7 +33,7 @@ function receiveRevisions(state, action) {
         state.byId[revision.id] = {
             ...revision.attributes,
             id: revision.id,
-            created_at: revision.attributes.created_at.date,
+            created_at: revision.attributes.created_at,
             status: counter === revisionCount ? 'Original' : 'Superceded',
             number: revisionCount - counter
         };
