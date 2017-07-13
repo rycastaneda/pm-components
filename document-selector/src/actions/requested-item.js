@@ -13,7 +13,7 @@ export function fetchItems(quote_id, addedItems) {
             type: REQUESTED_ITEMS_FETCHING
         });
 
-        return axios(`searcher-quote-requests/${quote_id}/requested-items`)
+        return axios(`searcher-quote-requests/${quote_id}/requested-items?filters[locked_in]=0`)
             .then((items) => {
                 if (items && (items.response && !items.response.ok)) { // error check
                     return;
