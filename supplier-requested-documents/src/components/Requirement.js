@@ -12,7 +12,7 @@ class Requirement extends Component {
     }
 
     handleFilterDropDocuments(requirementId, files) {
-        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx'];
+        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx', '.dwg'];
         let invalid = [];
     
         let filteredFiles = files.filter((file) => {
@@ -51,8 +51,8 @@ class Requirement extends Component {
         const documents = requirement.documents && requirement.documents.length
             ? <Documents onRemoveDocument={onRemoveDocument}
                     downloadDocument={downloadDocument}
-                    readOnly={readOnly} 
-                    documents={requirement.documents} 
+                    readOnly={readOnly}
+                    documents={requirement.documents}
                     requirementId={requirement.id}>
                  </Documents>
             : readOnly ? <li className="list-group-item">N/A</li> : null;
