@@ -15,9 +15,11 @@ const Document = ({ file, onFileRemove, onDownloadFile }) => {
             </div>
             {file.status === UPLOAD_SUCCESS ?
             <div className="pull-right">
-                <a onClick={() => onFileRemove(file.id)}>
-                    <i className="fa fa-times"></i>
-                </a>
+                {file.locked_in !== 1 &&
+                    <a onClick={() => onFileRemove(file.id)}>
+                        <i className="fa fa-times"></i>
+                    </a>
+                }
                 <a key={`link-${file.id + 1}`}
                     onClick={() => {
                         onDownloadFile(file.id);
