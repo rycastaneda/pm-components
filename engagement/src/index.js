@@ -31,7 +31,6 @@ let headers = api.configureHeaders();
 
 axios.defaults.baseURL = hostname;
 axios.defaults.headers.common = headers;
-
 if (document.querySelector('[data-component="engagement-supplier-item"]')) {
     store.dispatch({
         type: COMPONENT_SPOT,
