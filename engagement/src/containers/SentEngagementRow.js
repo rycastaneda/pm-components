@@ -61,7 +61,7 @@ class SentEngagementRow extends Component {
                             </div>
                             <div className="row">
                                 <label className="col-sm-4 control-label">Requested Category: </label>
-                                <div className="col-sm-8">{`${engagement.category.attributes.title} ${serviceTitle && ' - ' + serviceTitle || ''}`}</div>
+                                <div className="col-sm-8">{`${engagement.can_actiontegory.attributes.title} ${serviceTitle && ' - ' + serviceTitle || ''}`}</div>
                             </div>
                         </div>
                         <div className="col-sm-5 text-right text-left-xs">

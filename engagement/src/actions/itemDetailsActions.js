@@ -15,6 +15,8 @@ import {
     ADD_RELATIONSHIPS
 } from '../constants/ActionTypes';
 
+import { loadItemsSuccess } from './itemsActions';
+
 import axios from 'axios';
 import moment from 'moment';
 import { loadEngagements, sendEngagementsBrowse, updateTotals } from './engagementsActions';
@@ -140,6 +142,7 @@ export function loadItemDetails(matchedItemId, requestedItemId, engagement) {
             let pricingOptions = [];
             let supplier = [];
             let matchedItemTitle = '';
+            let items = [];
             response = response.data;
             if (engagement) {
                 pricingOptions = response.included.filter((i) => {
@@ -190,6 +193,11 @@ export function loadItemDetails(matchedItemId, requestedItemId, engagement) {
                 });
             }
 
+            items = response.included.filter((i) => {
+                return i.type === 'requested-item';
+            });
+
+            dispatch(loadItemsSuccess(items));
             dispatch(updateCurrentEngagement(matchedItemId, requestedItemId, engagement, supplier, matchedItemTitle));
             dispatch(receivePricingOptions(pricingOptions));
             dispatch(requestCompleted());
