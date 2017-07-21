@@ -35,16 +35,18 @@ class SentEngagements extends Component {
 
     render() {
         const { sentEngagements, grandTotal, cancelledTotal, rejectedTotal } = this.props.engagementsReducer;
-
+        const { items } = this.props.itemsReducer;
+        let serviceTitles = items.included ? items.included.filter(include => include.type === 'requested-item') : [];
         return (
             <div>
             {
                 sentEngagements.length > 0 ?
                 <div className="engagements">
                     <h4 className="pad-top">Sent Engagements: </h4>
-                    {sentEngagements.map(pendingEngagement =>
-                        <SentEngagementRow key={pendingEngagement.id} engagement={pendingEngagement} />
-                    )}
+                    {sentEngagements.map((pendingEngagement) => {
+                        let title = serviceTitles.filter(title => title.id ===  pendingEngagement.requestedItem.id).pop().attributes.service_title;
+                        return <SentEngagementRow serviceTitle={title} key={pendingEngagement.id} engagement={pendingEngagement} />;
+                    })}
                     <div className="row engagement-total">
                         <div className="col-sm-5 col-sm-offset-7">
                             <div className="row">
@@ -98,12 +100,13 @@ class SentEngagements extends Component {
 
 SentEngagements.propTypes = {
     engagementsReducer: PropTypes.object.isRequired,
+    itemsReducer: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
-    const { engagementsReducer } = state;
-    return { engagementsReducer };
+    const { engagementsReducer, itemsReducer } = state;
+    return { engagementsReducer, itemsReducer };
 }
 
 export default connect(mapStateToProps)(SentEngagements);
