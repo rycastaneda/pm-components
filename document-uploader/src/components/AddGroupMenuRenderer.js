@@ -35,22 +35,26 @@ const AddGroupMenuRenderer = ({
         let containerClassName = null;
         let className = null;
         let title = '';
+        let titleTag = null;
+
         if (i === 0) {
             containerClassName = 'suggestionsGroup';
             className ='selectMenuTitle';
             title ='Suggestion';
         }
+
         if (option.className === 'Select-create-option-placeholder') {
             containerClassName = 'newOptionGroup';
             className = 'selectMenuTitle';
             title = 'Create new';
         }
-        let titleTag = null;
+
         if (title.length) {
             titleTag = <label className={className}>{title}</label>;
         }
+
         return (
-			<div className={containerClassName} key={`option-container-${i}-${option[valueKey]}`}>
+         <div className={containerClassName} key={`option-container-${i}-${option[valueKey]}`}>
             {titleTag}
             <Option
                 className={optionClass}
@@ -68,7 +72,7 @@ const AddGroupMenuRenderer = ({
                 }}
               >
                 {optionRenderer(option, i)}
-                </Option>
+              </Option>
 				</div>
 			);
     });
