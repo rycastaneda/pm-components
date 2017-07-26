@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-const AddGroupMenuRenderer=({
+const AddGroupMenuRenderer = ({
 	focusedOption,
 	instancePrefix,
 	onFocus,
@@ -14,40 +14,40 @@ const AddGroupMenuRenderer=({
 	onOptionRef
 }) => {
     let Option = optionComponent;
-    if (options[0].className==='Select-create-option-placeholder') {
+    if (options[0].className === 'Select-create-option-placeholder') {
         // if proposed item is the only item available add 'no suggestion available'
-        if (options.length===1) {
+        if (options.length === 1) {
             options.push({ label:'No suggestions available', value:null, disabled:true });
         }
     // the default iterater addes new item to first, push it to last.
-        var firstItem = options.shift();
+        let firstItem = options.shift();
         options.push(firstItem);
     }
-    let optionsTag= options.map((option, i) => {
-        let isSelected = valueArray && valueArray.indexOf(option) > -1;
-        let isFocused = option === focusedOption;
+    let optionsTag = options.map((option, i) => {
+        let isSelected = (valueArray && (valueArray.indexOf(option) > -1));
+        let isFocused = (option === focusedOption);
         let optionClass = classNames(optionClassName, {
             'Select-option': true,
             'is-selected': isSelected,
             'is-focused': isFocused,
             'is-disabled': option.disabled
         });
-        let containerClassName=null;
-        let className=null;
-        let title='';
-        if  (i===0) {
+        let containerClassName = null;
+        let className = null;
+        let title = '';
+        if (i === 0) {
             containerClassName = 'suggestionsGroup';
             className ='selectMenuTitle';
             title ='Suggestion';
         }
-        if (option.className==='Select-create-option-placeholder') {
+        if (option.className === 'Select-create-option-placeholder') {
             containerClassName = 'newOptionGroup';
-            className ='selectMenuTitle';
-            title ='Create new';
+            className = 'selectMenuTitle';
+            title = 'Create new';
         }
-        let titleTag=null;
+        let titleTag = null;
         if (title.length) {
-            titleTag =<label className={className}>{title}</label>;
+            titleTag = <label className={className}>{title}</label>;
         }
         return (
 			<div className={containerClassName} key={`option-container-${i}-${option[valueKey]}`}>
