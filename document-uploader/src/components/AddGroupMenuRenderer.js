@@ -32,8 +32,8 @@ const AddGroupMenuRenderer=({
             'is-focused': isFocused,
             'is-disabled': option.disabled
         });
-        let containerClassName='';
-        let className='';
+        let containerClassName=null;
+        let className=null;
         let title='';
         if  (i===0) {
             containerClassName = 'suggestionsGroup';
@@ -50,25 +50,25 @@ const AddGroupMenuRenderer=({
             titleTag =<label className={className}>{title}</label>;
         }
         return (
-			<div className={containerClassName}>
-				{titleTag}
-				<Option
-					className={optionClass}
-					instancePrefix={instancePrefix}
-					isDisabled={option.disabled}
-					isFocused={isFocused}
-					isSelected={isSelected}
-					key={`option-${i}-${option[valueKey]}`}
-					onFocus={onFocus}
-					onSelect={onSelect}
-					option={option}
-					optionIndex={i}
-					ref={(ref) => {
-    onOptionRef(ref, isFocused);
-					}}
-				>
-					{optionRenderer(option, i)}
-				</Option>
+			<div className={containerClassName} key={`option-container-${i}-${option[valueKey]}`}>
+            {titleTag}
+            <Option
+                className={optionClass}
+                instancePrefix={instancePrefix}
+                isDisabled={option.disabled}
+                isFocused={isFocused}
+                isSelected={isSelected}
+                key={`option-${i}-${option[valueKey]}`}
+                onFocus={onFocus}
+                onSelect={onSelect}
+                option={option}
+                optionIndex={i}
+                ref={(ref) => {
+                    onOptionRef(ref, isFocused);
+                }}
+              >
+                {optionRenderer(option, i)}
+                </Option>
 				</div>
 			);
     });
