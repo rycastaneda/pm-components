@@ -6,7 +6,6 @@ import { addGroup, enableGroup } from '../actions/groups';
 
 import AddGroupMenuRenderer from '../components/AddGroupMenuRenderer';
 class AddGroupForm extends Component {
-
     constructor(props) {
         super(props);
         this.handleAddGroup = this.handleAddGroup.bind(this);
@@ -28,14 +27,14 @@ class AddGroupForm extends Component {
         return this.props.dispatch(addGroup(newGroup.label));
     }
 
-    menuRenderOption(option,currReff) {
-		return (
-            <Highlighter
-			  searchWords={[currReff._inputValue]}
-			  textToHighlight={option.label}
+    menuRenderOption(option, currReff) {
+        return (
+         <Highlighter
+            searchWords={[currReff._inputValue]}
+            textToHighlight={option.label}
 			/>
 		);
-	}
+    }
 
     render()  {
         const {
@@ -52,9 +51,9 @@ class AddGroupForm extends Component {
                         promptTextCreator={label => ` ${label} (new label)` }
                         options={options}
                         placeholder={`Start typing to search or create groups`}
-                        onInputChange={(inputValue) => this._inputValue = inputValue}
+                        onInputChange={inputValue => this._inputValue = inputValue}
                         menuRenderer={AddGroupMenuRenderer}
-                        optionRenderer={(option)=>this.menuRenderOption(option,this)}
+                        optionRenderer={option => this.menuRenderOption(option, this)}
                         onChange={this.handleAddGroup}
                         clearable={false}
                     />
