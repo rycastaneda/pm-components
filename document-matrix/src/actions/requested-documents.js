@@ -15,10 +15,10 @@ export function fetchRequirements(quoteId, userType) {
             userType
         });
 
-        let endpoint = `/${userType}-quote-requests/${quoteId}/documents?include=requesteditems,groups,revisions`;
+        let endpoint = `/${userType}-quote-requests/${quoteId}/documents?include=requesteditems,groups,revisions&filters[locked_in]=1`;
 
         if (userType === 'supplier') {
-            endpoint = `/${userType}-quote-requests/${quoteId}/documents?include=requesteditems,groups,revisions`;
+            endpoint = `/${userType}-quote-requests/${quoteId}/documents?include=requesteditems,groups,revisions&filters[locked_in]=1`;
         }
 
         axios.get(endpoint)
