@@ -54,27 +54,27 @@ const AddGroupMenuRenderer = ({
         }
 
         return (
-         <div className={containerClassName} key={`option-container-${i}-${option[valueKey]}`}>
-            {titleTag}
-            <Option
-                className={optionClass}
-                instancePrefix={instancePrefix}
-                isDisabled={option.disabled}
-                isFocused={isFocused}
-                isSelected={isSelected}
-                key={`option-${i}-${option[valueKey]}`}
-                onFocus={onFocus}
-                onSelect={onSelect}
-                option={option}
-                optionIndex={i}
-                ref={(ref) => {
-                    onOptionRef(ref, isFocused);
-                }}
-              >
-                {optionRenderer(option, i)}
-              </Option>
-				</div>
-			);
+            <div className={containerClassName}  key={`option-container-${i}-${option[valueKey]}`}>
+                {titleTag}
+                <Option
+                    className={optionClass}
+                    instancePrefix={instancePrefix}
+                    isDisabled={option.disabled}
+                    isFocused={isFocused}
+                    isSelected={isSelected}
+                    key={`option-${i}-${option[valueKey]}`}
+                    onFocus={onFocus}
+                    onSelect={onSelect}
+                    option={option}
+                    optionIndex={i}
+                    ref={(ref) => {
+                        onOptionRef(ref, isFocused);
+                    }}
+                >
+                    {optionRenderer(option, i)}
+                </Option>
+            </div>
+        );
     });
     return optionsTag;
 };
