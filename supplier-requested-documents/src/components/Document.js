@@ -19,7 +19,8 @@ class Document extends Component {
                 }
                 <a className="pull-left filelist__file">
                     {document.status === 'SUCCESS' ?
-                        <i className="fa fa-download mar-r-sm" onClick={() => downloadDocument(document.id, document.name)}></i>`${document.name}`
+                        <span  onClick={() => downloadDocument(document.id, document.name)}><i className="fa fa-download mar-r-sm"></i><span>{document.name}</span>
+                        </span>
                     : `${document.name} ${document.status === 'FAILED' && ' - failed to upload. Please try again later.' || ''}` }
 
                 </a>
