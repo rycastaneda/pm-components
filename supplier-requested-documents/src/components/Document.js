@@ -19,9 +19,9 @@ class Document extends Component {
                 }
                 <a className="pull-left filelist__file">
                     {document.status === 'SUCCESS' ?
-                        <i className="fa fa-download mar-r-sm" onClick={() => downloadDocument(document.id, document.name)}></i>
-                    : null }
-                    {`${document.name} ${document.status === 'FAILED' && ' - failed to upload. Please try again later.' || ''}`}
+                        <i className="fa fa-download mar-r-sm" onClick={() => downloadDocument(document.id, document.name)}></i>`${document.name}`
+                    : `${document.name} ${document.status === 'FAILED' && ' - failed to upload. Please try again later.' || ''}` }
+
                 </a>
                 {!readOnly ? <span className="pull-right">
                     <i className="fa fa-times" onClick={() => onRemoveDocument(requirementId, document.id)}></i>
