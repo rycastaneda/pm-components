@@ -25,7 +25,7 @@ class Document extends Component {
 
                 </a>
                 {!readOnly ? <span className="pull-right">
-                    <i className="fa fa-times" onClick={() => onRemoveDocument(requirementId, document.id)}></i>
+                    <span className="pointer"><i className="fa fa-times" onClick={() => onRemoveDocument(requirementId, document.id)}></i></span>
                 </span> : null}
                 <div className="clearfix"></div>
             </div>
