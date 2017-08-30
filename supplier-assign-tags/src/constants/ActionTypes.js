@@ -1,0 +1,9 @@
+
+export const FETCH_INITIAL_DATA = 'FETCH_INITIAL_DATA';
+export const FETCH_TAGS = 'FETCH_TAGS';
+export const INITIAL_STATE = 'INITIAL_STATE';
+export const DROPDOWN_SELECT  = 'DROPDOWN_SELECT';
+export const DROPDOWN_UPDATE  = 'DROPDOWN_UPDATE';
+export const RENDER_TAGS = 'RENDER_TAGS';
+export const IS_BUSY = 'IS_BUSY';
+export const TAG_SELECTIONS_SAVED = 'TAG_SELECTIONS_SAVED';
