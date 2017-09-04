@@ -1,4 +1,9 @@
-import { IS_CLICKED, INITIAL_STATE } from '../constants/ActionTypes';
+import {
+    IS_CLICKED,
+    INITIAL_STATE,
+    INCREMENT_COUNTER,
+    DECREMENT_COUNTER
+} from '../constants/ActionTypes';
 
 export function updateState() {
     return (dispatch, getState) => {
@@ -13,5 +18,17 @@ export function updateState() {
 export function resetState() {
     return {
         type: INITIAL_STATE
+    };
+}
+
+export function incrementCounter() {
+    return {
+        type: INCREMENT_COUNTER
+    };
+}
+
+export function decrementCounter() {
+    return {
+        type: DECREMENT_COUNTER
     };
 }
