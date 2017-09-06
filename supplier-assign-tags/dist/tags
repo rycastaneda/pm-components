@@ -1,0 +1,31 @@
+{
+  "links": {
+    "self": "https://api.plantminer.com.au/tags"
+  },
+  "data": [
+    {
+      "type": "tags",
+      "id": "1",
+      "attributes": {
+        "name": "Tag 1",
+        "icon": "fa-arrow-left"
+      }
+    },
+    {
+      "type": "tags",
+      "id": "2",
+      "attributes": {
+        "name": "Tag 2",
+        "icon": "fa-arrow-right"
+      }
+    },
+    {
+      "type": "tags",
+      "id": "3",
+      "attributes": {
+        "name": "Tag 3",
+        "icon": "flag-uk"
+      }
+    }
+  ]
+}
