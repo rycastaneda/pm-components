@@ -1,33 +1,38 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import  Select  from 'react-select';
-import { selectItemInDropDown, fetchTags, saveTags } from '../actions/manageTags';
+import { selectItemInDropDown, fetchTags, saveTags } from '../actions/manageTagsActions';
 class ManageTags extends Component {
+
     constructor(props) {
         super(props);
         this.handleSelectChange = this.handleSelectChange.bind(this);
-        this.getOptions = this.getOptions.bind(this);
+        this.handleSelectClose = this.handleSelectClose.bind(this);
     }
-    getOptions(value) {
-        this.props.dispatch(fetchTags(value));
+
+    componentDidMount() {
+        let selector = document.querySelector('[data-component="supplier-manage-tags"]');
+        this.props.dispatch(fetchTags(selector.getAttribute('data-supplier-id')));
     }
+
     handleSelectChange(value) {
         this.props.dispatch(selectItemInDropDown(value));
     }
-    handleMenuClose(selectedTags) {
-        window.console.log(selectedTags);
-        this.props.dispatch(saveTags(selectedTags));
+
+    handleSelectClose() {
+        this.props.dispatch(saveTags(this.props.selectedTags));
     }
+
     renderValue(option) {
         return <span><span className={`tag-icon fa ${option.iconClass}`}></span><span>{option.label}</span></span>;
     }
     render() {
-        const { availableTags, selectedTags }  = this.props;
+        const { availableTags, selectedTags, isBusy, errorMessage }  = this.props;
         return (
              <div>
-                <label>Manage Tags</label>
-                <Select name="form-field-name" multi value={selectedTags} options={availableTags} valueRenderer={this.renderValue}
-                onChange={this.handleSelectChange} onClose={this.handleMenuClose(selectedTags)} />
+                <Select name="form-field-name" multi value={selectedTags} options={availableTags} isLoading={isBusy} valueRenderer={this.renderValue}
+                onChange={this.handleSelectChange} onClose={this.handleSelectClose} />
+                {errorMessage?<div className="bs-callout bs-callout-danger">{errorMessage}</div>:null}
             </div>
         );
     }
@@ -36,10 +41,12 @@ class ManageTags extends Component {
 ManageTags.propTypes = {
     availableTags:PropTypes.array.isRequired,
     selectedTags:PropTypes.array.isRequired,
+    isBusy:PropTypes.bool.isRequired,
+    errorMessage:PropTypes.string,
     dispatch: PropTypes.func.isRequired
 };
 function mapStateToProps(state) {
-    const { availableTags, selectedTags } = state.manageTags;
-    return { availableTags, selectedTags };
+    const { availableTags, selectedTags, isBusy, errorMessage } = state.manageTags;
+    return { availableTags, selectedTags, isBusy, errorMessage };
 }
 export default connect(mapStateToProps)(ManageTags);

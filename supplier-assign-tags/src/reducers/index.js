@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { manageTags } from './manageTags';
+import { manageTags } from './manageTagsReducers';
 export default combineReducers({
     manageTags
 });

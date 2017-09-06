@@ -32,5 +32,5 @@ render(
     <Provider store={store}>
         <ManageTags/>
     </Provider>,
-    document.querySelector('[data-component="manage-tags"]')
+    document.querySelector('[data-component="supplier-manage-tags"]')
 );
