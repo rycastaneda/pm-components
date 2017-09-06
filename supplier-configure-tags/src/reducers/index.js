@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import { boilerplate } from './boilerplate';
+import { configureTags } from './configureTagsReducers';
 
 export default combineReducers({
-    boilerplate
+    configureTags
 });

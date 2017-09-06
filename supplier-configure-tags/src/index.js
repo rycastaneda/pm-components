@@ -8,7 +8,7 @@ import api from '../../shared/api.config';
 import axios from 'axios';
 !window._babelPolyfill && require('babel-polyfill'); // prevent polyfill from importing twice
 
-import Boilerplate from './containers/Boilerplate';
+import ConfigureTags from './containers/ConfigureTags';
 import './styles/index.scss';
 
 // Add redux dev tools unless we have a production build
@@ -31,7 +31,7 @@ axios.defaults.headers.common = headers;
 
 render(
     <Provider store={store}>
-        <Boilerplate/>
+        <ConfigureTags/>
     </Provider>,
-    document.querySelector('[data-component="boilerplate"]')
+    document.querySelector('[data-component="supplier-configure-tags"]')
 );

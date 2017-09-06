@@ -7,7 +7,7 @@
     "npm": ">=3.0.0"
   },
   "scripts": {
-    "build": "npm run test && webpack --config webpack.production.config.js --progress --profile --colors",
+    "build": "webpack --config webpack.production.config.js --progress --profile --colors",
     "start": "webpack-dev-server --progress --profile --colors",
     "lint": "eslint src",
     "test": "mocha tests.config.js src/**/*.spec.js"
@@ -43,6 +43,7 @@
     "react-dom": "15.3.2",
     "react-hot-loader": "3.0.0-beta.4",
     "react-redux": "4.4.5",
+    "react-simple-colorpicker": "^1.4.2",
     "redux": "3.6.0",
     "redux-thunk": "2.1.0",
     "sass-loader": "4.0.2",
