@@ -1,6 +1,7 @@
 import React, { PropTypes,  Component } from 'react';
 import { connect } from 'react-redux';
 import { updateUsersAllowed } from '../actions/configureTagsActions';
+import TagsList from './TagsList';
 class ConfigureTags extends Component {
 
     constructor(props) {
@@ -11,9 +12,8 @@ class ConfigureTags extends Component {
     componentDidMount() {
     //    let selector = document.querySelector('[data-component="supplier-configure-tags"]');
     }
-    onUserAllowedCheckboxChange(value) {
-        window.console.log(value);
-        this.props.dispatch(updateUsersAllowed(value));
+    onUserAllowedCheckboxChange() {
+        this.props.dispatch(updateUsersAllowed(!this.props.isUsersAllowed));
     }
     render() {
         const { isUsersAllowed } = this.props;
@@ -22,6 +22,10 @@ class ConfigureTags extends Component {
                 <div className="col-xs-12">
                     <label><input type="checkbox" checked={isUsersAllowed} value={isUsersAllowed} onChange={this.onUserAllowedCheckboxChange}/>Allow standard users to apply tags to suppliers</label>
                 </div>
+                    <div className="col-xs-12">
+                        <h5>Tags Available </h5>
+                        <TagsList></TagsList>
+                    </div>
             </div>
         );
     }
