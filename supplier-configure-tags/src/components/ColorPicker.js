@@ -1,19 +1,15 @@
 'use strict';
 
-import React from 'react';
+import React, { PropTypes, Component } from 'react';
 import { ChromePicker  } from 'react-color';
 
-class ColorPicker extends React.Component {
+class ColorPicker extends Component {
     constructor(props) {
         super(props);
+        window.console.log(props.color);
         this.state = {
             displayColorPicker: false,
-            color: {
-                r: '241',
-                g: '112',
-                b: '19',
-                a: '1'
-            }
+            color: props.color
         };
         this.handleClick = this.handleClick.bind(this);
         this.handleClose = this.handleClose.bind(this);
@@ -26,30 +22,29 @@ class ColorPicker extends React.Component {
 
     handleClose() {
         this.setState({ displayColorPicker: false });
+        this.props.onChange(this.state.color);
     }
 
     handleChange(color) {
-        this.setState({ color: color.rgb });
+        this.setState({ color: color.hex });
     }
 
     render() {
-        const color ={
-            background: `rgba(${this.state.color.r}, ${this.state.color.g}, ${this.state.color.b}, ${this.state.color.a})`
-        };
+        const color = { backgroundColor: this.state.color };
 
         return (
               <div className="color-picker">
-                <div className={'swatch'} onClick={ this.handleClick }>
-                  <div className={'color' } style={color}/>
-                </div>
-                { this.state.displayColorPicker ? <div className={'popover' }>
+                <button className="btn btn-md" style={color} onClick={ this.handleClick }><i></i></button>
+                { this.state.displayColorPicker ? <div className="popover show mar-top-lg">
                   <div className={'cover' } onClick={ this.handleClose }/>
                   <ChromePicker  disableAlpha={true} color={ this.state.color } onChange={ this.handleChange } />
                 </div> : null }
-
               </div>
           );
     }
 }
-
+ColorPicker.propTypes = {
+    color : PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired
+};
 export default ColorPicker;

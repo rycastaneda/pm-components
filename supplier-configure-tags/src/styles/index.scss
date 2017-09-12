@@ -1,22 +1,17 @@
-.color-picker{
-    position: relative;
+.tag-list{
 
-    .swatch{
-
-        .color{
-            width: 36px;
-            height: 14px;
-            border-radius: 2px;
-            cursor: pointer;
-        }
+    .tag-icon{
+        padding: 5px 10px;
+        text-shadow: 0 0 1px #000000;
     }
 
-    .popover{
-        position: absolute;
-        z-index: 2;
-        display: block;
-        margin-top: 60px;
-        margin-left: 30px;
+    .color-picker{
+        position: relative;
+
+        .btn{
+            width: 28px;
+            height: 28px;
+        }
     }
 
     .cover{
@@ -25,5 +20,55 @@
         right: 0;
         bottom: 0;
         left: 0;
+    }
+
+    .icon-picker{
+        position: relative;
+
+        .btn.btn-sm .fa, .fa {
+            font-size: 1.3em;
+        }
+
+        .icon-group{
+            position: relative;
+            overflow: hidden;
+            overflow-y: auto;
+            float: none;
+            clear: both;
+            width: 216px;
+            max-height: 246px;
+            min-height: 49px;
+
+            .icon-item{
+                float: left;
+                width: 15px;
+                height: 15px;
+                margin: 15px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+
+    .horizontal-block{
+
+        .item{
+            margin-top: 5px;
+        }
+    }
+}
+
+@media screen and (min-width: 480px) {
+
+    .horizontal-block{
+
+        .item{
+            display: inline-block;
+
+            &:not(:first-of-type) {
+                margin-left: 5px;
+            }
+        }
     }
 }

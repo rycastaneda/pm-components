@@ -9,9 +9,6 @@ class ConfigureTags extends Component {
         this.onUserAllowedCheckboxChange = this.onUserAllowedCheckboxChange.bind(this);
     }
 
-    componentDidMount() {
-    //    let selector = document.querySelector('[data-component="supplier-configure-tags"]');
-    }
     onUserAllowedCheckboxChange() {
         this.props.dispatch(updateUsersAllowed(!this.props.isUsersAllowed));
     }
