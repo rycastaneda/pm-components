@@ -107,5 +107,5 @@ export const ICONS = [
     'fa-window-close-o', 'fa-window-maximize', 'fa-window-minimize', 'fa-window-restore', 'fa-windows', 'fa-won', 'fa-wordpress',
     'fa-wpbeginner', 'fa-wpexplorer', 'fa-wpforms', 'fa-wrench', 'fa-xing', 'fa-xing-square', 'fa-y-combinator',
     'fa-y-combinator-square', 'fa-yahoo', 'fa-yc', 'fa-yc-square', 'fa-yelp', 'fa-yen', 'fa-yoast', 'fa-youtube',
-    'fa-youtube-play', 'fa-youtube-square'
+    'fa-youtube-play', 'fa-youtube-square', 'flag-aborginal', 'flag-eu', 'flag-us', 'flag-uk', 'flag-aus'
 ];

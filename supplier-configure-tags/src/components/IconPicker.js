@@ -21,7 +21,9 @@ class IconPicker extends Component {
 
     handleClose() {
         this.setState({ displayIconPicker: false });
-        this.props.onChange(this.state.selectedIconClass);
+        if (this.props.onChange) {
+            this.props.onChange(this.state.selectedIconClass);
+        }
     }
 
     handleChange(className) {
@@ -32,7 +34,7 @@ class IconPicker extends Component {
 
         return (
                 <div className="icon-picker">
-                    <button type="button" className="btn btn-sm dropdown-toggle" onClick={ this.handleClick }><i className={`fa ${this.state.selectedIconClass}`}></i><span className="caret"></span></button>
+                    <button type="button" className="btn btn-xs" onClick={ this.handleClick }><i className={`fa ${this.state.selectedIconClass}`}></i><span className="caret"></span></button>
                     { this.state.displayIconPicker ? <div className="popover show mar-top-lg" >
                         <div className="cover"  onClick={ this.handleClose }/>
                         <div className="icon-group">{ICONS.map(function(item) {
@@ -46,7 +48,7 @@ class IconPicker extends Component {
 
 IconPicker.propTypes = {
     icon : PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func
 };
 
 export default IconPicker;

@@ -26,7 +26,6 @@ class ConfigureTags extends Component {
             </div>
         );
     }
-
 }
 
 ConfigureTags.propTypes = {

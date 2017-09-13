@@ -5,8 +5,7 @@ import { ChromePicker  } from 'react-color';
 
 class ColorPicker extends Component {
     constructor(props) {
-        super(props);
-        window.console.log(props.color);
+        super(props);        
         this.state = {
             displayColorPicker: false,
             color: props.color
@@ -22,7 +21,9 @@ class ColorPicker extends Component {
 
     handleClose() {
         this.setState({ displayColorPicker: false });
-        this.props.onChange(this.state.color);
+        if (this.props.onChange) {
+            this.props.onChange(this.state.color);
+        }
     }
 
     handleChange(color) {
@@ -45,6 +46,6 @@ class ColorPicker extends Component {
 }
 ColorPicker.propTypes = {
     color : PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func
 };
 export default ColorPicker;

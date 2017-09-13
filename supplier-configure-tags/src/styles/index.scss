@@ -5,15 +5,6 @@
         text-shadow: 0 0 1px #000000;
     }
 
-    .color-picker{
-        position: relative;
-
-        .btn{
-            width: 28px;
-            height: 28px;
-        }
-    }
-
     .cover{
         position: fixed;
         top: 0;
@@ -25,8 +16,13 @@
     .icon-picker{
         position: relative;
 
-        .btn.btn-sm .fa, .fa {
-            font-size: 1.3em;
+        .btn{
+
+            .fa{
+                width: 30px;
+                height: 18px;
+                font-size: 1.5em;
+            }
         }
 
         .icon-group{
@@ -38,12 +34,16 @@
             width: 216px;
             max-height: 246px;
             min-height: 49px;
+        }
 
-            .icon-item{
-                float: left;
-                width: 15px;
-                height: 15px;
-                margin: 15px;
+        .icon-item{
+            float: left;
+            width: 30px;
+            height: 30px;
+            margin: 15px;
+
+            .fa{
+                font-size: 2em;
             }
         }
     }
@@ -66,9 +66,44 @@
         .item{
             display: inline-block;
 
-            &:not(:first-of-type) {
+            &:not(:first-child) {
                 margin-left: 5px;
             }
         }
     }
+}
+
+.flag-aborginal{
+    width: 30px;
+    height: 30px;
+    background: url('/country-flags/aborginal.png') no-repeat center center;
+    background-size: contain;
+}
+
+.flag-eu{
+    width: 30px;
+    height: 30px;
+    background: url('/country-flags/eu.png') no-repeat center center;
+    background-size: contain;
+}
+
+.flag-us{
+    width: 30px;
+    height: 30px;
+    background: url('/country-flags/us.png') no-repeat center center;
+    background-size: contain;
+}
+
+.flag-uk{
+    width: 30px;
+    height: 30px;
+    background: url('/country-flags/uk.png') no-repeat center center;
+    background-size: contain;
+}
+
+.flag-aus{
+    width: 30px;
+    height: 30px;
+    background: url('/country-flags/aus.png') no-repeat center center;
+    background-size: contain;
 }
