@@ -1,8 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
+import Highlighter from 'react-highlight-words';
 import { addGroup, enableGroup } from '../actions/groups';
 
+import AddGroupMenuRenderer from '../components/AddGroupMenuRenderer';
 class AddGroupForm extends Component {
     constructor(props) {
         super(props);
@@ -22,8 +24,16 @@ class AddGroupForm extends Component {
             });
             return this.props.dispatch(enableGroup(newGroup.value));
         }
-
         return this.props.dispatch(addGroup(newGroup.label));
+    }
+
+    menuRenderOption(option, currReff) {
+        return (
+         <Highlighter
+            searchWords={[currReff._inputValue]}
+            textToHighlight={option.label}
+			/>
+		);
     }
 
     render()  {
@@ -38,10 +48,12 @@ class AddGroupForm extends Component {
                     <Select.Creatable
                         value={this.state.value}
                         onBlurResetsInput={false}
-                        promptTextCreator={label => `Create group ${label}` }
-                        arrowRenderer={() => <span>+</span>}
-                        placeholder={`Add new group`}
+                        promptTextCreator={label => ` ${label} (new label)` }
                         options={options}
+                        placeholder={`Start typing to search or create groups`}
+                        onInputChange={inputValue => this._inputValue = inputValue}
+                        menuRenderer={AddGroupMenuRenderer}
+                        optionRenderer={option => this.menuRenderOption(option, this)}
                         onChange={this.handleAddGroup}
                         clearable={false}
                     />
@@ -65,6 +77,7 @@ function mapStateToProps(state) {
 
     // get groups that are not default and are not enabled for uploading in a plain single value array
     const values = [];
+
     const options = documentGroups.allIds.reduce((newGroup, groupId) => {
         let group = documentGroups.byId[groupId];
 
@@ -78,7 +91,6 @@ function mapStateToProps(state) {
 
         return newGroup;
     }, []);
-
     return { options, values };
 }
 

@@ -1,3 +1,4 @@
+
 .dropzone {
 
     &__placeholder {
@@ -17,6 +18,19 @@
         padding: 5px;
         cursor: pointer;
     }
+
+    .newOptionGroup{
+        border-top: 1px solid #e68020;
+    }
+
+    .newOptionGroup, .suggestionsGroup{
+
+        label.selectMenuTitle{
+            padding: 5px;
+            font-size: 16px;
+        }
+    }
+
 }
 
 .download-icon {
