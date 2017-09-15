@@ -9,19 +9,25 @@ import {  USERS_ALLOWED_UPDATE,
     TAG_ICON_UPDATE,
     TAG_COLOR_UPDATE,
     TAG_ISACTIVE_UPDATE } from '../constants/ActionTypes';
+import { MOCK_TAGS } from '../mocks/Tags';
+const INITIAL_DATA = { isUsersAllowed:false, availableTags:[], errorMessage:null };
 
-const INITIAL_DATA = { isUsersAllowed:false, availableTags:[{ id:1, iconClass:'fa-tag', color:'#ff0000', description:'testsere 1', title:'1', isEdited:false, isActive:false, previous:null }, { id:2, iconClass:'fa-arrow-right', color:'#000000', description:'testsere 2', title:'2', isEdited:false, isActive:true, previous:null }], errorMessage:null };
+INITIAL_DATA.availableTags =[...MOCK_TAGS];
 
-const TAG_SKELETON ={ iconClass:'', color:'#000', title:'', description:'', id:null, isActive:false, isEdited:true, previous:null };
+
+const TAG_SKELETON ={ iconClass:'fa-tag', color:'#000', title:'', description:'', id:null, isActive:true, isEdited:true, previous:null };
 
 export function configureTags(state = INITIAL_DATA, action) {
+
     switch (action.type) {
         case USERS_ALLOWED_UPDATE:
             state.isUsersAllowed = action.isUsersAllowed;
             return Object.assign({}, state);
+
         case REQUEST_FAILED:
             state.errorMessage = action.errorMessage;
             return Object.assign({}, state);
+
         case TAG_EDIT_START:
             {
                 let  newAvailableTags = state.availableTags.map(function(item) {
@@ -37,6 +43,7 @@ export function configureTags(state = INITIAL_DATA, action) {
                 newState.availableTags = newAvailableTags;
                 return newState;
             }
+
         case TAG_SAVE:
             {
                 let  newAvailableTags = state.availableTags.map(function(item) {
@@ -52,19 +59,29 @@ export function configureTags(state = INITIAL_DATA, action) {
                 newState.availableTags = newAvailableTags;
                 return newState;
             }
+
         case TAG_EDIT_CANCEL:
             {
-                let  newAvailableTags = state.availableTags.map(function(item) {
-                    if (item.id === action.id) {
-                        return item.previous;
-                    } else {
-                        return item;
-                    }
-                });
-                const newState = Object.assign({}, state);
+                let  newAvailableTags;
+                let newState;
+                if (action.id===null) {
+                    newAvailableTags=JSON.parse(JSON.stringify(state.availableTags));
+                    newAvailableTags.shift();
+                } else {
+                    newAvailableTags = state.availableTags.map(function(item) {
+                        if (item.id === action.id) {
+                            return item.previous;
+                        } else {
+                            return item;
+                        }
+                    });
+
+                }
+                newState = Object.assign({}, state);
                 newState.availableTags = newAvailableTags;
                 return newState;
             }
+
         case TAG_TITLE_UPDATE:
             {
                 let  newAvailableTags = state.availableTags.map(function(item) {
@@ -79,6 +96,7 @@ export function configureTags(state = INITIAL_DATA, action) {
                 newState.availableTags = newAvailableTags;
                 return newState;
             }
+
         case TAG_DESCRIPTION_UPDATE:
             {
                 let  newAvailableTags = state.availableTags.map(function(item) {
@@ -93,6 +111,7 @@ export function configureTags(state = INITIAL_DATA, action) {
                 newState.availableTags = newAvailableTags;
                 return newState;
             }
+
         case TAG_ICON_UPDATE:
             {
                 let  newAvailableTags = state.availableTags.map(function(item) {
@@ -107,6 +126,7 @@ export function configureTags(state = INITIAL_DATA, action) {
                 newState.availableTags = newAvailableTags;
                 return newState;
             }
+
         case TAG_COLOR_UPDATE:
             {
                 let  newAvailableTags = state.availableTags.map(function(item) {
@@ -121,6 +141,7 @@ export function configureTags(state = INITIAL_DATA, action) {
                 newState.availableTags = newAvailableTags;
                 return newState;
             }
+
         case TAG_ISACTIVE_UPDATE:
             {
                 let  newAvailableTags = state.availableTags.map(function(item) {
@@ -135,9 +156,20 @@ export function configureTags(state = INITIAL_DATA, action) {
                 newState.availableTags = newAvailableTags;
                 return newState;
             }
+
         case TAG_CREATE:
-            state.availableTags.push(getNewTag());
-            return Object.assign({}, state);
+            {
+                var addedTag= state.availableTags.find(value => value.id===null);
+                if (addedTag===undefined) {
+                    // state.availableTags.push(getNewTag());
+                    let availableTagsNew = [getNewTag(), ...state.availableTags];
+
+                    return Object.assign({}, state, { availableTags:availableTagsNew });
+                } else {
+                    return state;
+                }
+
+            }
         default:
             return state;
     }

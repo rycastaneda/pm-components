@@ -1,4 +1,5 @@
 import {  USERS_ALLOWED_UPDATE,
+    TAG_CREATE,
      TAG_EDIT_START,
      TAG_EDIT_CANCEL,
      TAG_SAVE,
@@ -12,7 +13,9 @@ export function updateUsersAllowed(isUsersAllowed) {
     return { type:USERS_ALLOWED_UPDATE,
     isUsersAllowed };
 }
-
+export function addTag() {
+    return { type:TAG_CREATE };
+}
 export function startTagEdit(id) {
     return { type:TAG_EDIT_START,
     id  };

@@ -1,9 +1,8 @@
-'use strict';
-import React, { PropTypes,  Component } from 'react';
+import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import ColorPicker from '../components/ColorPicker';
 import IconPicker from '../components/IconPicker';
-import { startTagEdit, cancelTagEdit, saveTag, setIsActiveForTag, setIconForTag, setColorForTag, setTitleForTag, setDescriptionForTag } from '../actions/configureTagsActions';
+import { startTagEdit, cancelTagEdit, addTag, saveTag, setIsActiveForTag, setIconForTag, setColorForTag, setTitleForTag, setDescriptionForTag } from '../actions/configureTagsActions';
 /**
  * @description: Manages supplier Tags as a table
  */
@@ -17,7 +16,21 @@ class TagsList extends Component {
 
     render() {
         const { availableTags } = this.props;
-        return (<div className="tag-list"><table  className="table table-striped col-xs-12"><tbody>{availableTags.map(this.populateTagsRow, this)}</tbody></table></div>);
+        return (
+            <div className="tag-list">
+                <button className="btn btn-sm pull-right mar-btm-md" onClick = { () => this.props.dispatch(addTag()) }><i className="fa fa-plus"></i>Add</button>
+                <table  className="table table-responsive">
+                     <thead>
+                            <tr>
+                                  <th >Active</th>
+                                  <th >Icon</th>
+                                  <th >Title</th>
+                                  <th >Description</th>
+                                  <th ></th>
+                            </tr>
+                        </thead>
+                    <tbody>{availableTags.map(this.populateTagsRow, this)}</tbody></table>
+            </div>);
     }
 
     onTagTitleChange(id, value) {
@@ -28,14 +41,14 @@ class TagsList extends Component {
         this.props.dispatch(setDescriptionForTag(id, value));
     }
 
-    renderActive(item) {
+    renderActiveStatusCell(item) {
         return item.isActive?<i className="fa fa-check text-success"></i>:<i className="fa fa-ban text-danger"></i>;
     }
 
-    renderIcon(item) {
+    renderIconCell(item) {
         if (item.isEdited) {
             return <div className="horizontal-block">
-                    <div className="item"><IconPicker  icon={item.iconClass} onChange={icon => this.props.dispatch(setIconForTag(item.id, icon))}/></div>
+                <div className="item"><IconPicker  icon={item.iconClass} onChange={icon => this.props.dispatch(setIconForTag(item.id, icon))}/></div>
                     <div className="item"><ColorPicker color={item.color} onChange={color => this.props.dispatch(setColorForTag(item.id, color))}/></div>
             </div>;
         } else {
@@ -56,35 +69,36 @@ class TagsList extends Component {
         }
     }
     renderTitleCell(item) {
+        window.console.log(item.title);
         if (item.isEdited) {
             return <input value={item.title} onChange={event => this.onTagTitleChange(item.id, event.target.value) }/>;
         } else {
-            <span>{item.title}</span>;
+            return <span>{item.title}</span>;
         }
     }
     renderDescriptionCell(item) {
         if (item.isEdited) {
             return <input value={item.description} onChange={event => this.onTagDescriptionChange(item.id, event.target.value) }/>;
         } else {
-            <span>{item.description}</span>;
+            return <span>{item.description}</span>;
         }
     }
     populateTagsRow(item, index) {
         return (
-                 <tr key={index} className="row">
-                     <td className="col-xs-1">
-                        {this.renderActive(item)}
+                 <tr key={index}>
+                     <td>
+                        {this.renderActiveStatusCell(item)}
                      </td>
-                    <td className="col-xs-2">
-                            {this.renderIcon(item)}
+                    <td>
+                            {this.renderIconCell(item)}
                     </td>
-                    <td  className="col-xs-3">
+                    <td >
                             {this.renderTitleCell(item)}
                     </td>
-                    <td className="col-xs-3">
+                    <td>
                         {this.renderDescriptionCell(item)}
                     </td>
-                    <td className="col-xs-3">
+                    <td>
                         {this.renderButtonCell(item)}
                     </td>
                 </tr>);
