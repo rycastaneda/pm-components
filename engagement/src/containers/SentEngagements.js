@@ -37,6 +37,7 @@ class SentEngagements extends Component {
         const { sentEngagements, grandTotal, cancelledTotal, rejectedTotal } = this.props.engagementsReducer;
         const { items } = this.props.itemsReducer;
         let serviceTitles = items.included ? items.included.filter(include => include.type === 'requested-item') : [];
+        console.log("serviceTitles", serviceTitles); // eslint-disable-line no-console, quotes 
         return (
             <div>
             {
@@ -44,7 +45,7 @@ class SentEngagements extends Component {
                 <div className="engagements">
                     <h4 className="pad-top">Sent Engagements: </h4>
                     {sentEngagements.map((pendingEngagement) => {
-                        let title = serviceTitles.filter(title => title.id ===  pendingEngagement.requestedItem.id).pop().attributes.service_title;
+                        let title = serviceTitles.length ? serviceTitles.filter(title => title.id ===  pendingEngagement.requestedItem.id).pop().attributes.service_title : '';
                         return <SentEngagementRow serviceTitle={title} key={pendingEngagement.id} engagement={pendingEngagement} />;
                     })}
                     <div className="row engagement-total">
