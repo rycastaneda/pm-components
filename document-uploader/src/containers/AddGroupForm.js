@@ -9,6 +9,7 @@ class AddGroupForm extends Component {
     constructor(props) {
         super(props);
         this.handleAddGroup = this.handleAddGroup.bind(this);
+        this.menuRenderOption = this.menuRenderOption.bind(this);
         // Set default value to input
         this.state = {
             value: '',
@@ -47,7 +48,7 @@ class AddGroupForm extends Component {
                 <div className="col-md-4 col-xs-4 pull-right">
                     <Select.Creatable
                         value={this.state.value}
-                        onBlurResetsInput={false}
+                        onBlurResetsInput={true}
                         promptTextCreator={label => ` ${label} (new label)` }
                         options={options}
                         placeholder={`Start typing to search or create groups`}
@@ -55,6 +56,12 @@ class AddGroupForm extends Component {
                         menuRenderer={AddGroupMenuRenderer}
                         optionRenderer={option => this.menuRenderOption(option, this)}
                         onChange={this.handleAddGroup}
+                        onClose={() => {
+                            if (this.selector) {
+                                this.selector.inputValue='';
+                                this._inputValue ='';
+                            }}}
+                        ref={c => this.selector = c}
                         clearable={false}
                     />
                 </div>
