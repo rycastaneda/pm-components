@@ -24,7 +24,8 @@ class ManageTags extends Component {
     }
 
     renderValue(option) {
-        return <span><span className={`tag-icon fa ${option.iconClass}`}></span><span>{option.label}</span></span>;
+        const color = { color: option.color };
+        return <span><span className={`tag-icon fa ${option.iconClass}`} style={color}></span><span>{option.label}</span></span>;
     }
     render() {
         const { availableTags, selectedTags, isBusy, errorMessage }  = this.props;

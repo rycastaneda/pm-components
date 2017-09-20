@@ -28,7 +28,6 @@ export function updateSupplierId(supplierId) {
 
 export function saveTags(tags) {
     return (dispatch, getState) => {
-        window.console.log(getState().manageTags.supplierId);
         dispatch(isBusy(true));
         axios.patch('/preferred-suppliers/'+getState().manageTags.supplierId+'/relationships/tags', formatDataForSaveTagService(tags))
         .then(() => {
