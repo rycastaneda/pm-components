@@ -1,15 +1,12 @@
-import { INITIAL_STATE, AVAILABLE_TAGS_UPDATE, SELECTED_TAGS_UPDATE, IS_BUSY, REQUEST_FAILED } from '../constants/ActionTypes';
+import { ALL_TAGS_UPDATE, SELECTED_TAGS_UPDATE, IS_BUSY, REQUEST_FAILED } from '../constants/ActionTypes';
 
-const INITIAL_DATA = { availableTags: [], selectedTags:[], isBusy:false, supplierId:null, errorMessage:null };
+const INITIAL_DATA = { availableTags: [], selectedTags:[], isBusy:false, errorMessage:null };
 
 export function manageTags(state = INITIAL_DATA, action) {
     switch (action.type) {
-        case INITIAL_STATE:
-            return Object.assign({}, state, INITIAL_DATA);
-
-        case AVAILABLE_TAGS_UPDATE:
+        case ALL_TAGS_UPDATE:
             state.availableTags = action.availableTags;
-            state.supplierId = action.supplierId;
+            state.selectedTags = action.selectedTags;
             state.isBusy = false;
             return Object.assign({}, state);
 
@@ -22,7 +19,8 @@ export function manageTags(state = INITIAL_DATA, action) {
             return Object.assign({}, state);
 
         case REQUEST_FAILED:
-            state.errorMessage = action.errorMessage;
+            state.isBusy = false;
+            state.errorMessage = action.message;
             return Object.assign({}, state);
         default:
             return state;

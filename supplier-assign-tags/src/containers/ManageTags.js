@@ -11,8 +11,7 @@ class ManageTags extends Component {
     }
 
     componentDidMount() {
-        let selector = document.querySelector('[data-component="supplier-manage-tags"]');
-        this.props.dispatch(fetchTags(selector.getAttribute('data-supplier-id')));
+        this.props.dispatch(fetchTags());
     }
 
     handleSelectChange(value) {

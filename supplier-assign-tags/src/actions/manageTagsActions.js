@@ -1,18 +1,20 @@
-import { INITIAL_STATE, SELECTED_TAGS_UPDATE, AVAILABLE_TAGS_UPDATE, IS_BUSY, SUPPLIER_ID_UPDATE, REQUEST_FAILED } from '../constants/ActionTypes';
+import { SELECTED_TAGS_UPDATE, ALL_TAGS_UPDATE, IS_BUSY, SUPPLIER_ID_UPDATE, REQUEST_FAILED } from '../constants/ActionTypes';
 import axios from 'axios';
-import { formatServiceResponse, formatDataForSaveTagService } from '../utils/dataParserUtil';
-export function initialiseState() {
-    return { type:INITIAL_STATE };
-}
+import { formatTagsFromInitialService, formatDataForSaveTagService } from '../utils/dataParserUtil';
+
 export function selectItemInDropDown(selectedItems) {
     return updateSelectedItems(selectedItems);
 }
-export function fetchTags(supplierId) {
 
+export function fetchTags() {
     return (dispatch) => {
-        axios.get('/tags')
+        dispatch(isBusy(true));
+        axios.all([axios.get('/preferred-supplier-tags'), axios.get('preferred-suppliers/8/relationships/tags')])
         .then((response) => {
-            dispatch(updateAvailableItems(formatServiceResponse(response.data.data), supplierId));
+            dispatch(updateAllTagData(formatTagsFromInitialService(response)));
+        })
+        .catch((error) => {
+            dispatch({ type:REQUEST_FAILED, message: error.message });
         });
     };
 }
@@ -23,17 +25,16 @@ export function updateSupplierId(supplierId) {
         supplierId
     };
 }
+
 export function saveTags(tags) {
-    let arr = Array.from(tags, function(element) {
-        return element.id;
-    });
     return (dispatch) => {
-        axios.post('/saveTags', formatDataForSaveTagService(arr))
-        .then((response) => {
-            dispatch(updateSelectedItems(response.data.data));
+        dispatch(isBusy(true));
+        axios.patch('/preferred-suppliers/8/relationships/tags', formatDataForSaveTagService(tags))
+        .then(() => {
+            dispatch(isBusy(false));
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.response.data.message });
+            dispatch({ type:REQUEST_FAILED, message: error.message });
         });
     };
 }
@@ -45,15 +46,16 @@ export function isBusy(status) {
     };
 }
 
-function updateAvailableItems(items, supplierId) {
+function updateAllTagData(tags, supplierId) {
+    const { availableTags, selectedTags } =tags;
     return {
-        type: AVAILABLE_TAGS_UPDATE,
-        availableTags:items,
+        type: ALL_TAGS_UPDATE,
+        availableTags,
+        selectedTags,
         supplierId:supplierId
     };
 }
 function updateSelectedItems(items) {
-
     return {
         type: SELECTED_TAGS_UPDATE,
         selectedTags:items
