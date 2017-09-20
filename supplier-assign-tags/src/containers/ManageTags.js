@@ -31,7 +31,7 @@ class ManageTags extends Component {
         const { availableTags, selectedTags, isBusy, errorMessage }  = this.props;
         return (
              <div className="manage-tags">
-                <Select name="form-field-name" multi value={selectedTags} options={availableTags} isLoading={isBusy} valueRenderer={this.renderValue}
+                <Select name="form-field-name" multi value={selectedTags} options={availableTags} isLoading={isBusy} valueRenderer={this.renderValue} backspaceToRemoveMessage={''}
                 onChange={this.handleSelectChange} onClose={this.handleSelectClose} />
                 {errorMessage?<div className="bs-callout bs-callout-danger">{errorMessage}</div>:null}
             </div>
