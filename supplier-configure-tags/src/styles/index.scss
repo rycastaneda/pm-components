@@ -51,24 +51,30 @@
 
 @media screen and (max-width: 480px) {
 
-    .horizontal-block{
+    .tag-list{
 
-        .item{
-            display: block;
-            margin-top: 5px;
+        .horizontal-block{
+
+            .item{
+                display: block;
+                margin-top: 5px;
+            }
         }
     }
 }
 
 @media screen and (min-width: 480px) {
 
-    .horizontal-block{
+    .tag-list{
 
-        .item{
-            display: inline-block;
+        .horizontal-block{
 
-            &:not(:first-child) {
-                margin-left: 5px;
+            .item{
+                display: inline-block;
+
+                &:not(:first-child) {
+                    margin-left: 5px;
+                }
             }
         }
     }
