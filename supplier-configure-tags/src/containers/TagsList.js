@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import ColorPicker from '../components/ColorPicker';
 import IconPicker from '../components/IconPicker';
-import { startTagEdit, cancelTagEdit, addTag, saveTag, setIsActiveForTag, setIconForTag, setColorForTag, setTitleForTag, setDescriptionForTag } from '../actions/configureTagsActions';
+import { fetchAllTags, startTagEdit, cancelTagEdit, addTag, saveTag, setIsActiveForTag, setIconForTag, setColorForTag, setTitleForTag, setDescriptionForTag } from '../actions/configureTagsActions';
 /**
  * @description: Manages supplier Tags as a table
  */
@@ -14,19 +14,21 @@ class TagsList extends Component {
         this.onTagDescriptionChange = this.onTagDescriptionChange.bind(this);
     }
 
+    componentDidMount() {
+        this.props.dispatch(fetchAllTags());
+    }
     render() {
         const { availableTags } = this.props;
         return (
             <div className="tag-list">
                 <button className="btn btn-sm pull-right mar-btm-md" onClick = { () => this.props.dispatch(addTag()) }><i className="fa fa-plus"></i>Add</button>
-                <table  className="table table-responsive">
+                <table  className="table db-table">
                      <thead>
-                            <tr>
-                                  <th >Active</th>
-                                  <th >Icon</th>
-                                  <th >Title</th>
-                                  <th >Description</th>
-                                  <th ></th>
+                            <tr className="row" >
+                                  <th className="col-sm-1">Active</th>
+                                  <th className="col-sm-4">Icon</th>
+                                  <th className="col-sm-3">Title</th>
+                                  <th className="col-sm-4"></th>
                             </tr>
                         </thead>
                     <tbody>{availableTags.map(this.populateTagsRow, this)}</tbody></table>
@@ -58,18 +60,17 @@ class TagsList extends Component {
     renderButtonCell(item) {
         if (item.isEdited) {
             return <div className="horizontal-block">
-                <button className="btn btn-sm item btn-success"  onClick={() => this.props.dispatch(saveTag(item.id))}><i className="fa fa-save"></i>Save</button>
+                <button className="btn btn-sm item btn-success"  onClick={() => this.props.dispatch(saveTag(item))}><i className="fa fa-save"></i>Save</button>
                 <button className="btn btn-sm item btn-danger"  onClick={() => this.props.dispatch(cancelTagEdit(item.id))}><i className="fa fa-times"></i>Cancel</button>
             </div>;
         } else {
             return <div className="horizontal-block">
                 <button className="btn btn-sm item" onClick={() => this.props.dispatch(startTagEdit(item.id))}><i className="fa fa-edit"></i>Edit</button>
-                {item.isActive?<button className="btn btn-sm item" onClick={() => this.props.dispatch(setIsActiveForTag(item.id, false))}><i className="fa fa-ban"></i>Deactivate</button>:<button className="btn btn-sm item" onClick={() => this.props.dispatch(setIsActiveForTag(item.id, true))}><i className="fa fa-undo"></i>Reactivate</button>}
+                {item.isActive?<button className="btn btn-sm item" onClick={() => this.props.dispatch(setIsActiveForTag(item, false))}><i className="fa fa-ban"></i>Deactivate</button>:<button className="btn btn-sm item" onClick={() => this.props.dispatch(setIsActiveForTag(item, true))}><i className="fa fa-undo"></i>Reactivate</button>}
             </div>;
         }
     }
     renderTitleCell(item) {
-        window.console.log(item.title);
         if (item.isEdited) {
             return <input value={item.title} onChange={event => this.onTagTitleChange(item.id, event.target.value) }/>;
         } else {
@@ -85,20 +86,17 @@ class TagsList extends Component {
     }
     populateTagsRow(item, index) {
         return (
-                 <tr key={index}>
-                     <td>
+                 <tr className="row" key={index}>
+                     <td className="col-sm-1">
                         {this.renderActiveStatusCell(item)}
                      </td>
-                    <td>
+                    <td className="col-sm-4">
                             {this.renderIconCell(item)}
                     </td>
-                    <td >
+                    <td className="col-sm-3">
                             {this.renderTitleCell(item)}
                     </td>
-                    <td>
-                        {this.renderDescriptionCell(item)}
-                    </td>
-                    <td>
+                    <td className="col-sm-4">
                         {this.renderButtonCell(item)}
                     </td>
                 </tr>);

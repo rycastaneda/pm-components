@@ -1,4 +1,5 @@
-import {  USERS_ALLOWED_UPDATE,
+import {
+    ALL_TAGS_UPDATE,
     REQUEST_FAILED,
     TAG_CREATE,
     TAG_SAVE,
@@ -9,21 +10,16 @@ import {  USERS_ALLOWED_UPDATE,
     TAG_ICON_UPDATE,
     TAG_COLOR_UPDATE,
     TAG_ISACTIVE_UPDATE } from '../constants/ActionTypes';
-import { MOCK_TAGS } from '../mocks/Tags';
-const INITIAL_DATA = { isUsersAllowed:false, availableTags:[], errorMessage:null };
-
-INITIAL_DATA.availableTags =[...MOCK_TAGS];
-
+const INITIAL_DATA = { availableTags:[], errorMessage:null };
 
 const TAG_SKELETON ={ iconClass:'fa-tag', color:'#000', title:'', description:'', id:null, isActive:true, isEdited:true, previous:null };
 
 export function configureTags(state = INITIAL_DATA, action) {
 
     switch (action.type) {
-        case USERS_ALLOWED_UPDATE:
-            state.isUsersAllowed = action.isUsersAllowed;
+        case ALL_TAGS_UPDATE:
+            state.availableTags = action.availableTags;
             return Object.assign({}, state);
-
         case REQUEST_FAILED:
             state.errorMessage = action.errorMessage;
             return Object.assign({}, state);

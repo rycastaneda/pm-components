@@ -1,4 +1,7 @@
-import {  USERS_ALLOWED_UPDATE,
+import axios from 'axios';
+import { formatAvailableTagsFromInitialService, formatDataForSaveTagService } from '../utils/dataParserUtil';
+import {
+    ALL_TAGS_UPDATE,
     TAG_CREATE,
      TAG_EDIT_START,
      TAG_EDIT_CANCEL,
@@ -9,10 +12,6 @@ import {  USERS_ALLOWED_UPDATE,
      TAG_DESCRIPTION_UPDATE,
      TAG_ISACTIVE_UPDATE } from '../constants/ActionTypes';
 
-export function updateUsersAllowed(isUsersAllowed) {
-    return { type:USERS_ALLOWED_UPDATE,
-    isUsersAllowed };
-}
 export function addTag() {
     return { type:TAG_CREATE };
 }
@@ -21,7 +20,23 @@ export function startTagEdit(id) {
     id  };
 }
 
-export function saveTag(id) {
+export function saveTag(item) {
+    return (dispatch) => {
+        if (item.id===null) {
+            axios.post('/preferred-supplier-tags', formatDataForSaveTagService(item))
+            .then(() => {
+                dispatch(onSaveTag(item.id));
+            });
+        } else {
+            axios.patch('/preferred-supplier-tags', formatDataForSaveTagService(item))
+            .then(() => {
+                dispatch(onSaveTag(item.id));
+            });
+        }
+    };
+
+}
+function onSaveTag(id) {
     return { type:TAG_SAVE,
     id  };
 }
@@ -51,7 +66,38 @@ export function setDescriptionForTag(id, description) {
     id, description  };
 }
 
-export function setIsActiveForTag(id, status) {
+export function setIsActiveForTag(item, status) {
+    return (dispatch) => {
+        axios.patch('/preferred-supplier-tags', formatDataForSaveTagService(item))
+        .then((response) => {
+            window.console.log(response.data.data);
+            dispatch(onActiveStatusChanged(item.id, status));
+
+        })
+        .catch(() => {
+
+        });
+    };
+}
+function onActiveStatusChanged(id, status) {
     return { type:TAG_ISACTIVE_UPDATE,
-    id, status  };
+        id, status  };
+}
+export function fetchAllTags() {
+    return (dispatch) => {
+        axios.get('/preferred-supplier-tags')
+        .then((response) => {
+            window.console.log(response.data.data);
+            dispatch(onAllTagsAvailable(formatAvailableTagsFromInitialService(response.data.data)));
+
+        })
+        .catch(() => {
+
+        });
+    };
+}
+
+function onAllTagsAvailable(availableTags) {
+    return { type:ALL_TAGS_UPDATE,
+    availableTags };
 }
