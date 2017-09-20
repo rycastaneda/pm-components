@@ -1,9 +1,28 @@
-.tag-icon{
-    margin-right: 5px;
-}
+.manage-tags{
 
-.Select-value{
-    position: inherit;
-    margin: 5px;
-    padding: 5px 10px 5px 5px;
+    .tag-icon{
+        margin-right: 5px;
+    }
+
+    .Select-value{
+        display: inline-block;
+        margin: 5px;
+        padding: 5px 10px 5px 5px;
+        border: 1px solid;
+        border-radius: 2px;
+        font-size: 0.9em;
+        line-height: 1.4;
+        vertical-align: top;
+    }
+
+    .Select-value-label {
+        padding: 2px 5px;
+        cursor: default;
+    }
+
+    .Select-value-icon{
+        padding: 1px 5px 3px;
+        border-right: 1px solid;
+        cursor: pointer;
+    }
 }

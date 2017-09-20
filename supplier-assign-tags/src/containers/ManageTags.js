@@ -11,7 +11,8 @@ class ManageTags extends Component {
     }
 
     componentDidMount() {
-        this.props.dispatch(fetchTags());
+        let selector = document.querySelector('[data-component="supplier-manage-tags"]');
+        this.props.dispatch(fetchTags(selector.getAttribute('data-supplier-id')));
     }
 
     handleSelectChange(value) {
@@ -28,7 +29,7 @@ class ManageTags extends Component {
     render() {
         const { availableTags, selectedTags, isBusy, errorMessage }  = this.props;
         return (
-             <div>
+             <div className="manage-tags">
                 <Select name="form-field-name" multi value={selectedTags} options={availableTags} isLoading={isBusy} valueRenderer={this.renderValue}
                 onChange={this.handleSelectChange} onClose={this.handleSelectClose} />
                 {errorMessage?<div className="bs-callout bs-callout-danger">{errorMessage}</div>:null}

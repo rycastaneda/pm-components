@@ -6,12 +6,12 @@ export function selectItemInDropDown(selectedItems) {
     return updateSelectedItems(selectedItems);
 }
 
-export function fetchTags() {
+export function fetchTags(supplierId) {
     return (dispatch) => {
         dispatch(isBusy(true));
-        axios.all([axios.get('/preferred-supplier-tags'), axios.get('preferred-suppliers/8/relationships/tags')])
+        axios.all([axios.get('/preferred-supplier-tags'), axios.get('preferred-suppliers/'+supplierId+'/relationships/tags')])
         .then((response) => {
-            dispatch(updateAllTagData(formatTagsFromInitialService(response)));
+            dispatch(updateAllTagData(formatTagsFromInitialService(response), supplierId));
         })
         .catch((error) => {
             dispatch({ type:REQUEST_FAILED, message: error.message });
@@ -27,9 +27,10 @@ export function updateSupplierId(supplierId) {
 }
 
 export function saveTags(tags) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        window.console.log(getState().manageTags.supplierId);
         dispatch(isBusy(true));
-        axios.patch('/preferred-suppliers/8/relationships/tags', formatDataForSaveTagService(tags))
+        axios.patch('/preferred-suppliers/'+getState().manageTags.supplierId+'/relationships/tags', formatDataForSaveTagService(tags))
         .then(() => {
             dispatch(isBusy(false));
         })
