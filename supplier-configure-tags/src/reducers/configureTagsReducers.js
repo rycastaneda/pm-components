@@ -1,6 +1,7 @@
 import {
     ALL_TAGS_UPDATE,
     REQUEST_FAILED,
+    NEW_TAG_SAVE,
     TAG_CREATE,
     TAG_SAVE,
     TAG_EDIT_START,
@@ -40,7 +41,22 @@ export function configureTags(state = INITIAL_DATA, action) {
                 newState.availableTags = newAvailableTags;
                 return newState;
             }
-
+        case NEW_TAG_SAVE:
+            {
+                let  newAvailableTags = state.availableTags.map(function(item) {
+                    if (item.id === null) {
+                        item.previous = null;
+                        item.isEdited = false;
+                        item.id=action.id;
+                        return item;
+                    } else {
+                        return item;
+                    }
+                });
+                const newState = Object.assign({}, state);
+                newState.availableTags = newAvailableTags;
+                return newState;
+            }
         case TAG_SAVE:
             {
                 let  newAvailableTags = state.availableTags.map(function(item) {

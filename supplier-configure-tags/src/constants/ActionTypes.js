@@ -9,3 +9,4 @@ export const  TAG_COLOR_UPDATE = 'TAG_COLOR_UPDATE';
 export const TAG_SAVE = 'TAG_SAVE';
 export const TAG_ISACTIVE_UPDATE ='TAG_ISACTIVE_UPDATE';
 export const ALL_TAGS_UPDATE='ALL_TAGS_UPDATE';
+export const NEW_TAG_SAVE = 'NEW_TAG_SAVE';

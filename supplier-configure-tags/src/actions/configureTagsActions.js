@@ -11,6 +11,7 @@ import {
      TAG_TITLE_UPDATE,
      TAG_DESCRIPTION_UPDATE,
      TAG_ISACTIVE_UPDATE,
+     NEW_TAG_SAVE,
      REQUEST_FAILED } from '../constants/ActionTypes';
 
 export function addTag() {
@@ -26,8 +27,7 @@ export function saveTag(item) {
         if (item.id===null) {
             axios.post('/preferred-supplier-tags', formatDataForNewTagService(item))
             .then((response) => {
-                window.console.log(response);
-                dispatch(onSaveTag(item.id));
+                dispatch({ type:NEW_TAG_SAVE, id: response.data.data.id });
             })
             .catch((error) => {
                 dispatch({ type:REQUEST_FAILED, message: error.message });
@@ -35,18 +35,13 @@ export function saveTag(item) {
         } else {
             axios.patch('/preferred-supplier-tags/'+item.id, formatDataForSaveTagService(item))
             .then(() => {
-                dispatch(onSaveTag(item.id));
+                dispatch({ type:TAG_SAVE, id:item.id });
             })
             .catch((error) => {
                 dispatch({ type:REQUEST_FAILED, message: error.message });
             });
         }
     };
-
-}
-function onSaveTag(id) {
-    return { type:TAG_SAVE,
-    id  };
 }
 
 export function cancelTagEdit(id) {
