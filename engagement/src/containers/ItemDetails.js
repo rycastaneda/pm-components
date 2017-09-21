@@ -78,7 +78,7 @@ class ItemDetails extends Component {
         const { itemsReducer } = this.props;
         const { items } = itemsReducer;
 
-        let serviceTitle = currentEngagement.relationships ? items.filter(title => title.id === currentEngagement.relationships['requested-items'].data['id']).pop().attributes.service_title : [];
+        let serviceTitle = currentEngagement.relationships && items.length ? items.filter(title => title.id === currentEngagement.relationships['requested-items'].data['id']).pop().attributes.service_title : [];
 
         const purchaseOrder = (Object.keys(currentEngagement).length !== 0 && currentEngagement.attributes['purchase-order'] !== null)  ? currentEngagement.attributes['purchase-order'] : '';
         const engagementText = (Object.keys(currentEngagement).length !== 0 && currentEngagement.attributes['engagement_text'] !== null)  ? currentEngagement.attributes['engagement_text'] : '';
