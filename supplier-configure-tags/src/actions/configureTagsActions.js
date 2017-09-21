@@ -71,7 +71,7 @@ export function setDescriptionForTag(id, description) {
 
 export function setIsActiveForTag(item, status) {
     return (dispatch) => {
-        axios.patch('/preferred-supplier-tags'+item.id, formatDataForSaveTagService(item))
+        axios.patch('/preferred-supplier-tags/'+item.id, formatDataForSaveTagService(item))
         .then(() => {
             dispatch(onActiveStatusChanged(item.id, status));
         })
