@@ -18,10 +18,11 @@ class TagsList extends Component {
         this.props.dispatch(fetchAllTags());
     }
     render() {
-        const { availableTags } = this.props;
+        const { errorMessage, availableTags } = this.props;
         return (
             <div className="tag-list">
                 <button className="btn btn-sm pull-right mar-btm-md" onClick = { () => this.props.dispatch(addTag()) }><i className="fa fa-plus"></i>Add</button>
+                <div className="clear">{errorMessage?<div className="bs-callout bs-callout-danger">{errorMessage}</div>:null}</div>
                 <table  className="table db-table">
                      <thead>
                             <tr className="row" >
@@ -51,7 +52,7 @@ class TagsList extends Component {
         if (item.isEdited) {
             return <div className="horizontal-block">
                 <div className="item"><IconPicker  icon={item.iconClass} onChange={icon => this.props.dispatch(setIconForTag(item.id, icon))}/></div>
-                    <div className="item"><ColorPicker color={item.color} onChange={color => this.props.dispatch(setColorForTag(item.id, color))}/></div>
+                    <div className="item item-colorpicker"><ColorPicker color={item.color} onChange={color => this.props.dispatch(setColorForTag(item.id, color))}/></div>
             </div>;
         } else {
             return  <i className={`tag-icon fa ${item.iconClass}`} style={ { color :item.color } } ></i>;
@@ -106,11 +107,12 @@ class TagsList extends Component {
 
 TagsList.propTypes = {
     availableTags : PropTypes.array.isRequired,
-    dispatch : PropTypes.func.isRequired
+    dispatch : PropTypes.func.isRequired,
+    errorMessage: PropTypes.string
 };
 
 function mapStateToProps(state) {
-    const { availableTags } = state.configureTags;
-    return { availableTags };
+    const { errorMessage, availableTags } = state.configureTags;
+    return { errorMessage, availableTags };
 }
 export default connect(mapStateToProps)(TagsList);

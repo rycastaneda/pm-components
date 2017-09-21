@@ -21,9 +21,10 @@ export function configureTags(state = INITIAL_DATA, action) {
             state.availableTags = action.availableTags;
             return Object.assign({}, state);
         case REQUEST_FAILED:
-            state.errorMessage = action.errorMessage;
-            return Object.assign({}, state);
-
+            {
+                state.errorMessage = action.message;
+                return Object.assign({}, state);
+            }
         case TAG_EDIT_START:
             {
                 let  newAvailableTags = state.availableTags.map(function(item) {

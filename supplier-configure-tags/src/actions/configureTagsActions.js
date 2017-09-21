@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { formatAvailableTagsFromInitialService, formatDataForSaveTagService } from '../utils/dataParserUtil';
+import { formatAvailableTagsFromInitialService, formatDataForSaveTagService, formatDataForNewTagService } from '../utils/dataParserUtil';
 import {
     ALL_TAGS_UPDATE,
     TAG_CREATE,
@@ -10,7 +10,8 @@ import {
      TAG_COLOR_UPDATE,
      TAG_TITLE_UPDATE,
      TAG_DESCRIPTION_UPDATE,
-     TAG_ISACTIVE_UPDATE } from '../constants/ActionTypes';
+     TAG_ISACTIVE_UPDATE,
+     REQUEST_FAILED } from '../constants/ActionTypes';
 
 export function addTag() {
     return { type:TAG_CREATE };
@@ -23,14 +24,21 @@ export function startTagEdit(id) {
 export function saveTag(item) {
     return (dispatch) => {
         if (item.id===null) {
-            axios.post('/preferred-supplier-tags', formatDataForSaveTagService(item))
-            .then(() => {
+            axios.post('/preferred-supplier-tags', formatDataForNewTagService(item))
+            .then((response) => {
+                window.console.log(response);
                 dispatch(onSaveTag(item.id));
+            })
+            .catch((error) => {
+                dispatch({ type:REQUEST_FAILED, message: error.message });
             });
         } else {
-            axios.patch('/preferred-supplier-tags', formatDataForSaveTagService(item))
+            axios.patch('/preferred-supplier-tags/'+item.id, formatDataForSaveTagService(item))
             .then(() => {
                 dispatch(onSaveTag(item.id));
+            })
+            .catch((error) => {
+                dispatch({ type:REQUEST_FAILED, message: error.message });
             });
         }
     };
@@ -68,14 +76,13 @@ export function setDescriptionForTag(id, description) {
 
 export function setIsActiveForTag(item, status) {
     return (dispatch) => {
-        axios.patch('/preferred-supplier-tags', formatDataForSaveTagService(item))
-        .then((response) => {
-            window.console.log(response.data.data);
+        axios.patch('/preferred-supplier-tags'+item.id, formatDataForSaveTagService(item))
+        .then(() => {
             dispatch(onActiveStatusChanged(item.id, status));
-
         })
-        .catch(() => {
-
+        .catch((error) => {
+            window.console.log(error);
+            dispatch({ type:REQUEST_FAILED, message: error.message });
         });
     };
 }
@@ -87,12 +94,10 @@ export function fetchAllTags() {
     return (dispatch) => {
         axios.get('/preferred-supplier-tags')
         .then((response) => {
-            window.console.log(response.data.data);
             dispatch(onAllTagsAvailable(formatAvailableTagsFromInitialService(response.data.data)));
-
         })
-        .catch(() => {
-
+        .catch((error) => {
+            dispatch({ type:REQUEST_FAILED, message: error.message });
         });
     };
 }
