@@ -75,8 +75,7 @@ export function setIsActiveForTag(item, status) {
         .then(() => {
             dispatch(onActiveStatusChanged(item.id, status));
         })
-        .catch((error) => {
-            window.console.log(error);
+        .catch((error) => {        
             dispatch({ type:REQUEST_FAILED, message: error.message });
         });
     };

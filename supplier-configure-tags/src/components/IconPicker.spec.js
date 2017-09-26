@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import IconPicker from './IconPicker';
 import { expect } from 'chai';
+import sinon from 'sinon';
 
 const setup = (props) => {
     const component = shallow(
@@ -28,11 +29,13 @@ describe('IconPicker component: ', () => {
     });
 
     it('should close and dispatch change when closed', () => {
+        let onChange = sinon.spy();
         const { component } = setup({ id: 1,  icon: 'fa-arrow-right', onChange });
         component.find('.icon-picker .btn').simulate('click');
         expect(component.find('.icon-picker .popover.show .cover')).to.have.length(1);
         component.find('.cover').simulate('click');
         expect(component.find('.icon-picker button.btn')).to.have.length(1);
         expect(component.find('.icon-picker popover.show')).to.have.length(0);
+        expect(onChange.called).to.be.true;
     });
 });
