@@ -1,0 +1,104 @@
+{
+    "data": [{
+        "id": 1,
+        "type": "sections",
+        "attributes": {
+            "name": "Company Size"
+        },
+        "relationships": {
+            "staffs": {
+                "data": [{
+                    "id": 1,
+                    "type": "staff-response",
+                    "attributes": {
+                        "staffId": 1,
+                        "status": "In Progress"
+                    }
+                }, {
+                    "id": 2,
+                    "type": "staff-response",
+                    "attributes": {
+                        "staffId": 2,
+                        "status": "Approved"
+                    }
+                }]
+            },
+            "questions": {
+                "data": [{
+                    "id": 1,
+                    "type": "question",
+                    "answer": "Spaghetti"
+                }, {
+                    "id": 2,
+                    "type": "question",
+                    "answer": "Iorveth"
+                }]
+            }
+        }
+    }, {
+        "id": 2,
+        "type": "sections",
+        "attributes": {
+            "name": "Company Location"
+        },
+        "relationships": {
+            "staffs": {
+                "data": [{
+                    "id": 3,
+                    "type": "staff-response",
+                    "attributes": {
+                        "staffId": 1,
+                        "status": "Approved"
+                    }
+                }]
+            },
+            "questions": {
+                "data": [{
+                    "id": 1,
+                    "type": "question",
+                    "answer": "Pizza"
+                }]
+            }
+        }
+    }, {
+        "id": 3,
+        "type": "sections",
+        "attributes": {
+            "name": "Health & Safety"
+        },
+        "relationships": {
+            "questions": {
+                "data": [{
+                    "id": 1,
+                    "type": "question",
+                    "answer": "Chocolates"
+                }]
+            }
+        }
+    }],
+    "included": [{
+        "id": 1,
+        "type": "question",
+        "attributes": {
+            "question": "What is your favorite food?"
+        }
+    }, {
+        "id": 2,
+        "type": "question",
+        "attributes": {
+            "question": "What is your pet's name?"
+        }
+    }, {
+        "id": 1,
+        "type": "staff",
+        "attributes": {
+            "name": "Reese"
+        }
+    }, {
+        "id": 2,
+        "type": "staff",
+        "attributes": {
+            "name": "Oreo"
+        }
+    }]
+}
