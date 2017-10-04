@@ -27,9 +27,10 @@ class TagsList extends Component {
                      <thead>
                             <tr className="row" >
                                   <th className="col-sm-1">Active</th>
-                                  <th className="col-sm-4">Icon</th>
+                                  <th className="col-sm-2">Icon</th>
                                   <th className="col-sm-3">Title</th>
-                                  <th className="col-sm-4"></th>
+                                  <th className="col-sm-3">Description</th>
+                                  <th className="col-sm-3"></th>
                             </tr>
                         </thead>
                     <tbody>{availableTags.map(this.populateTagsRow, this)}</tbody></table>
@@ -91,13 +92,16 @@ class TagsList extends Component {
                      <td className="col-sm-1">
                         {this.renderActiveStatusCell(item)}
                      </td>
-                    <td className="col-sm-4">
+                    <td className="col-sm-2">
                             {this.renderIconCell(item)}
                     </td>
                     <td className="col-sm-3">
                             {this.renderTitleCell(item)}
                     </td>
-                    <td className="col-sm-4">
+                    <td className="col-sm-2">
+                            {this.renderDescriptionCell(item)}
+                    </td>
+                    <td className="col-sm-3">
                         {this.renderButtonCell(item)}
                     </td>
                 </tr>);
