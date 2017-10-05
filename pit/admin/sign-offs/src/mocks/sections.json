@@ -1,0 +1,176 @@
+{
+    "data": [{
+        "id": 1,
+        "type": "sections",
+        "attributes": {
+            "name": "Company Size"
+        },
+        "relationships": {
+            "staff-response": {
+                "id": 1,
+                "type": "staff-response",
+                "attributes": {
+                    "staffId": 1,
+                    "status": "In Progress"
+                }
+            },
+            "questions": {
+                "data": [{
+                    "id": 1,
+                    "type": "question",
+                    "answer": "Spaghetti"
+                }, {
+                    "id": 2,
+                    "type": "question",
+                    "answer": "Iorveth"
+                }]
+            },
+            "comments": {
+                "data": [{
+                    "id": 1,
+                    "type": "comment"
+                }, {
+                    "id": 2,
+                    "type": "comment"
+                }]
+            }
+        }
+    }, {
+        "id": 2,
+        "type": "sections",
+        "attributes": {
+            "name": "Company Location"
+        },
+        "relationships": {
+            "staff-response": {
+                "id": 1,
+                "type": "staff-response",
+                "attributes": {
+                    "staffId": 1,
+                    "status": "Approved"
+                }
+            },
+            "questions": {
+                "data": [{
+                    "id": 1,
+                    "type": "question",
+                    "answer": "Pizza"
+                }]
+            },
+            "comments": {
+                "data": [{
+                    "id": 3,
+                    "type": "comment"
+                }]
+            }
+        }
+    }, {
+        "id": 3,
+        "type": "sections",
+        "attributes": {
+            "name": "Health & Safety"
+        },
+        "relationships": {
+            "staff-response": {
+                "id": 1,
+                "type": "staff-response",
+                "attributes": {
+                    "staffId": 1,
+                    "status": "Pending"
+                }
+            },
+            "questions": {
+                "data": [{
+                    "id": 1,
+                    "type": "question",
+                    "answer": "Chocolates"
+                }]
+            }
+        }
+    }, {
+        "id": 4,
+        "type": "sections",
+        "attributes": {
+            "name": "Health & Safety not assigned"
+        },
+        "relationships": {
+            "questions": {
+                "data": [{
+                    "id": 1,
+                    "type": "question",
+                    "answer": "Chocolates"
+                }]
+            }
+        }
+    }],
+    "included": [{
+        "id": 1,
+        "type": "question",
+        "attributes": {
+            "question": "What is your favorite food?"
+        }
+    }, {
+        "id": 2,
+        "type": "question",
+        "attributes": {
+            "question": "What is your pet's name?"
+        }
+    }, {
+        "id": 1,
+        "type": "staff",
+        "attributes": {
+            "name": "Reese"
+        }
+    }, {
+        "id": 2,
+        "type": "staff",
+        "attributes": {
+            "name": "Oreo"
+        }
+    }, {
+        "id": 3,
+        "type": "staff",
+        "attributes": {
+            "name": "Chips Ahoy"
+        }
+    }, {
+        "id": 1,
+        "type": "comment",
+        "attributes": {
+            "comment": "Company size is too small, still considering",
+            "date": "09-17-2017 9:20:00 AM"
+        },
+        "relationships": {
+            "staff": {
+                "id": 1,
+                "type": "staff"
+            }
+        }
+    }, {
+        "id": 2,
+        "type": "comment",
+        "attributes": {
+            "comment": "I don't like his pet's name, sounds elf-ish",
+            "date": "09-17-2017 9:20:00 AM"
+        },
+        "relationships": {
+            "staff": {
+                "id": 2,
+                "type": "staff"
+            }
+        }
+    }, {
+        "id": 3,
+        "type": "comment",
+        "attributes": {
+            "comment": "Company too far",
+            "date": "09-17-2017 9:20:00 AM"
+        },
+        "relationships": {
+            "staff": {
+                "id": 3,
+                "type": "staff"
+            }
+        }
+    }]
+}
