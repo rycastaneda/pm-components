@@ -1,16 +1,62 @@
 import React, { PropTypes } from 'react';
+import Loader from './Loader';
+import NewComment from './NewComment';
+import Question from './Question';
+import Comment from './Comment';
 
-const Tab = ({ text, active, switchTab }) => (
-    <div className="pointer" onClick={switchTab}>
-        <i className={`fa fa-chevron-${active ? 'down' : 'right'}`}></i> 
-        {text}
-    </div>
-);
+const Tab = ({ 
+    currentTab, comments, 
+    questions, 
+    isReadOnly,
+    currentStaffId,
+    toggleCommentEdit, 
+    submitComment,
+    deleteComment
+}) => {
+
+    const tabs = {
+        questions: questions.map((question, index) => {
+            return (
+                <div key={index}>
+                    <Question {...question}/>
+                </div>
+            );
+        }),
+        comments: comments.map((comment, index) => {
+            let loader = <Loader icon="-small"></Loader>;
+            let content = comment.isEditing ?
+                <NewComment  
+                    comment={comment.comment} 
+                    getNewCommentRef={input => comment.ref = input} 
+                    cancelNewComment={toggleCommentEdit(comment)}
+                    submitComment={submitComment(comment)}/>
+                : <Comment
+                    isReadOnly={isReadOnly || comment.staffId !== currentStaffId} 
+                    toggleCommentEdit={toggleCommentEdit(comment)} 
+                    deleteComment={deleteComment(comment.id)}
+                    {...comment}/>;
+
+            return (
+                <div key={index} className="pos-relative">
+                    {comment.isLoading ? loader : null}
+                    {content}
+                </div>
+            );
+        })
+    };
+
+    return <div>{currentTab ? tabs[currentTab] : null}</div>;
+};
 
 Tab.propTypes = {
-    text: PropTypes.string.isRequired,
-    active: PropTypes.bool.isRequired,
-    switchTab: PropTypes.func.isRequired
+    currentTab: PropTypes.string,
+    comments: PropTypes.array.isRequired,
+    questions: PropTypes.array.isRequired,
+    isReadOnly: PropTypes.bool.isRequired,
+    currentStaffId: PropTypes.number.isRequired,
+    toggleCommentEdit: PropTypes.func.isRequired,
+    deleteComment: PropTypes.func.isRequired,
+    submitComment: PropTypes.func.isRequired
 };
 
 export default Tab;

@@ -36,7 +36,7 @@ describe('SignOff container: ', () => {
                 name: 'Health & Safety'
             }], 
             dispatch,
-            isEditing: true
+            isLoading: true
         });
 
         const props = component.props();

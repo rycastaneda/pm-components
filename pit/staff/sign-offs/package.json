@@ -11,15 +11,13 @@
     "start": "webpack-dev-server --progress --profile --colors",
     "lint": "eslint src",
     "test": "mocha tests.config.js src/**/*.spec.js",
+    "test-watch": "mocha --watch tests.config.js src/**/*.spec.js",
     "testReducers": "mocha tests.config.js src/reducers/*.spec.js",
     "testComponent": "mocha tests.config.js src/actions/*.spec.js"
   },
   "repository": {
     "type": "git",
     "repo": "git@bitbucket.org:minergroup/plantminer-components.git"
-  },
-  "dependencies": {
-    "react-select": "^1.0.0-rc.3"
   },
   "devDependencies": {
     "axios": "^0.15.3",
@@ -50,6 +48,7 @@
     "react-hot-loader": "3.0.0-beta.4",
     "react-modal-bootstrap": "^1.1.0",
     "react-redux": "4.4.5",
+    "react-select": "^1.0.0-rc.3",
     "react-typeahead": "2.0.0-alpha.5",
     "redux": "3.6.0",
     "redux-json-api": "1.6.1",
@@ -62,5 +61,8 @@
     "webpack": "1.13.2",
     "webpack-config": "6.1.3",
     "webpack-dev-server": "1.16.1"
+  },
+  "dependencies": {
+    "date-fns": "^1.28.5"
   }
 }

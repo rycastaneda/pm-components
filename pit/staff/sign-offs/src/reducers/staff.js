@@ -9,6 +9,8 @@ export function staff(state = INITIAL_STATE, action) {
     switch (action.type) {
         case actions.RECEIVE_SECTIONS:
             return receiveSections(state, action);
+        case actions.SUBMITTED_NEW_COMMENT: // save staff upon new comment
+            return receiveComment(state, action);
     }
 
     return state;
@@ -34,4 +36,15 @@ function receiveSections(state, action) {
         byId,
         allIds
     };
+}
+
+function receiveComment(state, action) {
+    state.byId[action.staffId] = {
+        id: action.staffId,
+        name: action.staffName
+    };
+    
+    state.allIds.push(action.staffId);
+
+    return { ...state };
 }

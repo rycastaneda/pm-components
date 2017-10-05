@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 
 const Question = ({ question, answer }) => (
-    <div className="request-detail">
-        <p>{question}</p>
+    <div className="pad-btm font-rg">
+        <p className="pad-btm-sm">{question}</p>
         <strong>{answer}</strong>
     </div>
 );

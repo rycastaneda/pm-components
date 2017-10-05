@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import Header from './Header';
-import Tab from './Tab';
+import TabHeader from './TabHeader';
 import Status from './Status';
 
 const setup = (props) => {
@@ -14,20 +14,20 @@ const setup = (props) => {
     return { component };
 };
 
-const toggleStatus = sinon.spy();
-const toggleTab = sinon.spy();
+const toggleSectionStatus = sinon.spy();
+const switchSectionTab = sinon.spy();
 
 describe('Header component: ', () => {
     it('should render the tab indicators and the status selector', () => {
         const { component } = setup({ 
             currentTab: 'questions',
             status: 'approved',
-            toggleTab,
-            toggleStatus,
+            switchSectionTab,
+            toggleSectionStatus,
             isReadOnly: false
         });
 
-        expect(component.find(Tab)).to.have.length(2);
+        expect(component.find(TabHeader)).to.have.length(2);
         expect(component.find(Status)).to.have.length(1);
     });
 
@@ -35,13 +35,27 @@ describe('Header component: ', () => {
         const { component } = setup({ 
             currentTab: 'questions',
             status: 'approved',
-            toggleTab,
-            toggleStatus,
+            switchSectionTab,
+            toggleSectionStatus,
             isReadOnly: true
         });
 
-        expect(component.find(Tab)).to.have.length(2);
+        expect(component.find(TabHeader)).to.have.length(2);
         expect(component.find(Status)).to.have.length(0);
     });
+
+    it('should not show the status selector if status is empty', () => {
+        const { component } = setup({ 
+            currentTab: 'questions',
+            status: null,
+            switchSectionTab,
+            toggleSectionStatus,
+            isReadOnly: true
+        });
+
+        expect(component.find(TabHeader)).to.have.length(2);
+        expect(component.find(Status)).to.have.length(0);
+    });
+
 
 });

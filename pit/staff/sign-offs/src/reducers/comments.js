@@ -2,8 +2,7 @@ import * as actions from '../constants';
 
 const INITIAL_STATE = { 
     byId: {},
-    allIds: [],
-    addingNewComment: false
+    allIds: []
 };
 
 export function comments(state = INITIAL_STATE, action) {
@@ -13,10 +12,15 @@ export function comments(state = INITIAL_STATE, action) {
         case actions.TOGGLE_COMMENT_EDIT:
             state.byId[action.commentId].isEditing = !state.byId[action.commentId].isEditing;
             return { ...state };
-        case actions.SUBMITTING_COMMENT: 
-            return submitComment(state, action);
-        case actions.SUBMITTED_COMMENT:
-            return submittedComment(state, action);
+        case actions.TOGGLE_COMMENT_LOADING:
+            state.byId[action.commentId].isLoading = !state.byId[action.commentId].isLoading;
+            return { ...state };
+        case actions.SUBMITTED_EDIT_COMMENT: 
+            return submittedEditComment(state, action);
+        case actions.SUBMITTED_NEW_COMMENT:
+            return submittedNewComment(state, action);
+        case actions.DELETED_COMMENT:
+            return deleteComment(state, action);
         default:
             return state;
     }
@@ -28,9 +32,9 @@ function receiveSections(state, action) {
     action.sections.included
         .filter(include => include.type === 'comment')
         .map((include) => {
-            console.log("include", include); // eslint-disable-line no-console, quotes
             byId[include.id] = {
                 ...include.attributes,
+                staffId: include.relationships.staff.id,
                 isEditing: false,
                 isLoading: false
             };
@@ -46,35 +50,49 @@ function receiveSections(state, action) {
     };
 }
 
-function submitComment(state, action) {
-    if (action.commentId) { // user is editing a comment
-        state.byId[action.commentId].isEditing = true;
-        state.byId[action.commentId].isLoading = true;
-        state.byId[action.commentId].comment = action.comment;
-    } else {
-        state.addingNewComment = true;
-    } 
+function submittedNewComment(state, action) {
+    state.byId[action.commentId] = {
+        isEditing: false,
+        isLoading: false,
+        comment: action.comment,
+        staffId: action.staffId,
+        date: action.date
+    };
+
+    state.allIds.push(action.commentId);
 
     return { ...state };
 }
 
-function submittedComment(state, action) {
+
+function submittedEditComment(state, action) {
     let comment = state.byId[action.commentId];
 
-    if (comment) { 
-        comment.isEditing = false;
-        comment.isLoading = false;
-        comment.comment = action.comment;
-    } else {
-        state.byId[action.commentId] = {
-            isEditing: false,
-            isLoading: false,
-            comment: action.comment
-        };
-
-        state.allIds.push(action.commentId);
-        state.addingNewComment = false;
-    }
+    comment.isEditing = false;
+    comment.isLoading = false;
+    comment.comment = action.comment;
+    comment.date = action.date;
 
     return { ...state };
+}
+
+
+function deleteComment(state, action) {
+    const ids = {};
+
+    Object.keys(state.byId).map((commentId) => {
+        if (+commentId === action.commentId) {
+            return;
+        }
+
+        ids[commentId] = state.byId[commentId];
+    });
+
+    let index = state.allIds.indexOf(action.commentId);
+    state.allIds.splice(index, 1);
+
+    return {
+        ...state,
+        byId: ids
+    };
 }

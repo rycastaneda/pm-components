@@ -13,12 +13,14 @@ const setup = (props) => {
 };
 
 const submitComment =  sinon.spy();
+const getNewCommentRef =  sinon.spy();
 const cancelNewComment =  sinon.spy();
 
 describe('NewComment component: ', () => {
     let { component } = setup({ 
         comment: 'Company size is too small, still considering',
         submitComment,
+        getNewCommentRef,
         cancelNewComment
     });
 
@@ -29,12 +31,14 @@ describe('NewComment component: ', () => {
 
         component.simulate('submit');
         expect(submitComment).to.have.property('callCount', 1);
+        expect(getNewCommentRef).to.have.property('callCount', 3);
     });
 
     it('should be able to cancel editing', () => {
         let { component } = setup({ 
             comment: 'Company size is too small, still considering',
             submitComment,
+            getNewCommentRef,
             cancelNewComment
         });
 

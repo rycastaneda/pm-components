@@ -1,26 +1,38 @@
 import React, { PropTypes } from 'react';
 
-const Comment = ({ staff, comment, date, toggleCommentEdit, isReadOnly }) => (
-    <div className="comments-form">
-        <div className={`${isReadOnly ? 'col-lg-12 col-sm-12' :  'col-lg-11 col-sm-11'} request-detail`}>
-            {comment}
-        </div>
-        <div className={`${isReadOnly ? '' :  'col-lg-1 col-sm-1'}`}>
-            {isReadOnly ? null 
-            : <a className="edit" onClick={toggleCommentEdit}>
+const Comment = ({ staff, comment, date, toggleCommentEdit, deleteComment, isReadOnly }) => {
+    const actions = (
+        <div className="pull-right">
+            <a className="change-comment mar-r-sm" onClick={toggleCommentEdit}>
                 <i className="fa fa-edit"></i>
-            </a>}
+            </a>
+            <a className="delete-comment" onClick={deleteComment}>
+                <i className="fa fa-close"></i>
+            </a>
         </div>
-        <span className="staff">— {staff}</span>
-        <span className="italic">{date}</span>
-    </div>
-);
+    );
+
+    return (
+        <div className="pad-btm font-rg">
+            <div className="row">
+                <div className={`${isReadOnly ? 'col-lg-12 col-sm-12' :  'col-lg-11 col-sm-11'}`}>
+                    <p className="pad-btm-sm">{comment}</p>
+                    <strong className="staff">{`— ${staff} ${date}`}</strong>
+                </div>
+                <div className={`${isReadOnly ? '' :  'col-lg-1 col-sm-1'}`}>
+                    {isReadOnly ? null : actions}
+                </div>
+            </div>
+        </div>
+    );
+};
 
 Comment.propTypes = {
     staff: PropTypes.string.isRequired,
     comment: PropTypes.string.isRequired,
     date: PropTypes.string,
     toggleCommentEdit: PropTypes.func.isRequired,
+    deleteComment: PropTypes.func.isRequired,
     isReadOnly: PropTypes.bool.isRequired
 };
 

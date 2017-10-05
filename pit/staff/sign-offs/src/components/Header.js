@@ -1,26 +1,28 @@
 import React, { PropTypes } from 'react';
-import Tab from './Tab';
+import TabHeader from './TabHeader';
 import Status from './Status';
 
-const Header = ({ currentTab, status, switchTab, toggleStatus, isReadOnly }) => (
-    <div className="row">
-        <div className="tabs pull-left">
-            <Tab text="Questions" active={currentTab === 'questions'} switchTab={() => switchTab('questions')}></Tab>
-            <Tab text="Comments" active={currentTab === 'comments'} switchTab={() => switchTab('comments')}></Tab>
+const Header = ({ currentTab, status, switchSectionTab, toggleSectionStatus, isReadOnly }) => (
+    <div className="mar-top mar-btm row">
+        <div className="col-lg-10">
+            <ul className="list-inline pad-top-sm mar-top-sm">
+                <TabHeader text="Questions" active={currentTab === 'questions'} switchSectionTab={() => switchSectionTab('questions')}></TabHeader>
+                <TabHeader text="Comments" active={currentTab === 'comments'} switchSectionTab={() => switchSectionTab('comments')}></TabHeader>
+            </ul>
         </div>
-        {isReadOnly ? null
-        : <div className="pull-right">
-            <Status status={status} toggleStatus={toggleStatus}/>
+        {isReadOnly || !status ? null
+        : <div className="col-lg-2">
+            <Status status={status} toggleSectionStatus={toggleSectionStatus}/>
         </div>}
         <div className="clearfix"></div>
     </div>
 );
 
 Header.propTypes = {
-    currentTab: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired,
-    switchTab: PropTypes.func.isRequired,
-    toggleStatus: PropTypes.func.isRequired,
+    currentTab: PropTypes.string,
+    status: PropTypes.string,
+    switchSectionTab: PropTypes.func.isRequired,
+    toggleSectionStatus: PropTypes.func.isRequired,
     isReadOnly: PropTypes.bool.isRequired
 };
 

@@ -21,8 +21,8 @@ const setup = (props) => {
     return { component };
 };
 
-const toggleSection = sinon.spy();
-const toggleStatus = sinon.spy();
+const toggleSectionDisplay = sinon.spy();
+const toggleSectionStatus = sinon.spy();
 const dispatch = sinon.spy();
 
 describe('Section container: ', () => {
@@ -30,6 +30,7 @@ describe('Section container: ', () => {
         name: 'Company Size', 
         status: 'approved', 
         currentTab: 'questions',
+        currentStaffId: 100,
         isCollapsed: false,
         isReadOnly: false,
         questions: [{
@@ -49,8 +50,8 @@ describe('Section container: ', () => {
             date: `09-17-2017 9:20:00 AM`
         }],
         dispatch,
-        toggleSection,
-        toggleStatus
+        toggleSectionDisplay,
+        toggleSectionStatus
     });
 
     it('should render section and get its properties correctly', () => {

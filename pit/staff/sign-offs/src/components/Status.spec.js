@@ -12,19 +12,19 @@ const setup = (props) => {
     return { component };
 };
 
-const toggleStatus = sinon.spy();
+const toggleSectionStatus = sinon.spy();
 
 describe('Status component: ', () => {
     const { component } = setup({ 
         status: 'approved', 
-        toggleStatus
+        toggleSectionStatus
     });
 
     it('should render status name and its toggle function function', () => {
         let props = component.find('Select').props();
         expect(props).to.have.property('value', 'approved');
         component.find('Select').simulate('change');
-        expect(toggleStatus.called).to.be.true;
+        expect(toggleSectionStatus.called).to.be.true;
     });
 
 });
