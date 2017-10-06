@@ -1,9 +1,17 @@
-import { SELECTED_TAGS_UPDATE, ALL_TAGS_UPDATE, IS_BUSY, SUPPLIER_ID_UPDATE, REQUEST_FAILED } from '../constants/ActionTypes';
+import { SELECTED_TAGS_UPDATE, ALL_TAGS_UPDATE, IS_BUSY, SUPPLIER_ID_UPDATE, REQUEST_FAILED, TAG_FOCUS, TAG_COMMENT_UPDATE  } from '../constants/ActionTypes';
 import axios from 'axios';
-import { formatTagsFromInitialService, formatDataForSaveTagService } from '../utils/dataParserUtil';
+import { formatTagsFromInitialService, formatDataForSaveTagsService } from '../utils/dataParserUtil';
+
+export function updateFocusedTagComment(comment) {
+    return { type:TAG_COMMENT_UPDATE, comment };
+}
 
 export function selectItemInDropDown(selectedItems) {
     return updateSelectedItems(selectedItems);
+}
+
+export function focusTag(selectedItem) {
+    return { type:TAG_FOCUS, selectedItem };
 }
 
 export function fetchTags(supplierId) {
@@ -29,7 +37,7 @@ export function updateSupplierId(supplierId) {
 export function saveTags(tags) {
     return (dispatch, getState) => {
         dispatch(isBusy(true));
-        axios.patch('/preferred-suppliers/'+getState().manageTags.supplierId+'/relationships/tags', formatDataForSaveTagService(tags))
+        axios.patch('/preferred-suppliers/'+getState().manageTags.supplierId+'/relationships/tags', formatDataForSaveTagsService(tags))
         .then(() => {
             dispatch(isBusy(false));
         })
@@ -55,6 +63,7 @@ function updateAllTagData(tags, supplierId) {
         supplierId:supplierId
     };
 }
+
 function updateSelectedItems(items) {
     return {
         type: SELECTED_TAGS_UPDATE,
