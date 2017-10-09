@@ -53,11 +53,11 @@ class ManageTags extends Component {
         }
         return (
              <div className="manage-tags">
-                <Select className="col-xs-12" name="form-field-name" multi value={selectedTags} options={availableTags} isLoading={isBusy} valueRenderer={this.renderValue.bind(this)} backspaceToRemoveMessage={''}
+                <Select  name="form-field-name" multi value={selectedTags} options={availableTags} isLoading={isBusy} valueRenderer={this.renderValue.bind(this)} backspaceToRemoveMessage={''}
                 onChange={this.handleSelectChange} onClose={this.handleSelectClose} />
                 {(focusedTag===null) ?
                      null:
-                 <div className="col-xs-12"><div  key={focusedTag.id}  className="mar-top">
+                 <div><div  key={focusedTag.id}  className="mar-top">
                     <h4><i style={ { 'color':focusedTag.color } } className={`tag-icon fa ${focusedTag.iconClass}`}></i>{focusedTag.label}</h4>
                     <input type="text" className="fullwidth form-control" placeholder="Enter your comment" value={focusedTag.comment} onChange={event => this.handleCommentChange(event.target.value) }/ >
                 </div>
