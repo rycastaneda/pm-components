@@ -10,17 +10,17 @@
 
     .content{
         display: inline-block;
-        margin: 6px 3px 5px 3px;
+        margin: 3px;
         padding: 2px 10px 5px;
 
         &:hover{
-            margin: 6px 3px 4px 3px;
+            margin-bottom: 2px;
             border-bottom: 1px solid;
             cursor: pointer;
         }
 
         &.selected{
-            margin: 5px 3px;
+            margin-bottom: 1px;
             border-bottom: 2px solid;
         }
     }
