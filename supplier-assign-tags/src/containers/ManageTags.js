@@ -40,7 +40,7 @@ class ManageTags extends Component {
 
     renderValue(option) {
         const color = { color: option.color };
-        return <div className={option.isFocused?'content selected':'content'} onMouseDown={this.onItemClick.bind(this, option)} key={option.id}><span className={`tag-icon fa ${option.iconClass}`} style={color}></span><span>{option.label}</span>{option.comment.length!==0?<a className="btn-link comment-btn  bs-tooltip" data-title={option.comment}><i className="fa fa-commenting"  aria-hidden="true"></i></a>:null}</div>;
+        return <div className={option.isFocused?'content selected':'content'} onMouseDown={this.onItemClick.bind(this, option)} key={option.id}><span className={`tag-icon fa ${option.iconClass}`} style={color}></span><span>{option.label}</span>{option.comment.length!==0?<a className="btn-link comment-btn " data-content={option.comment}><i className="fa fa-commenting bs-tooltip"  aria-hidden="true"></i></a>:null}</div>;
     }
     render() {
 
