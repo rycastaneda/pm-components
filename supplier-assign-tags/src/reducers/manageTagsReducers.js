@@ -15,7 +15,6 @@ export function manageTags(state = INITIAL_DATA, action) {
                 if (myState.selectedTags.length) {
                     myState.selectedTags[myState.selectedTags.length-1].isFocused=true;
                 }
-                window.console.log(myState);
                 return myState;
             }
         case SELECTED_TAGS_UPDATE:
