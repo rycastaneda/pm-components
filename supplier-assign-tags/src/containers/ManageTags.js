@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import  Select  from 'react-select';
+import { Popover, OverlayTrigger } from 'react-bootstrap';
 import { selectItemInDropDown, fetchTags, saveTags, focusTag, updateFocusedTagComment } from '../actions/manageTagsActions';
 class ManageTags extends Component {
 
@@ -15,6 +16,7 @@ class ManageTags extends Component {
     componentDidMount() {
         let selector = document.querySelector('[data-component="supplier-manage-tags"]');
         this.props.dispatch(fetchTags(selector.getAttribute('data-supplier-id')));
+
     }
 
     handleSelectChange(value) {
@@ -38,12 +40,18 @@ class ManageTags extends Component {
         this.props.dispatch(focusTag(option));
     }
 
+    popoverHoverFocus(title, content) {
+        return    <Popover id="popover-trigger-hover-focus" title="Comment">{content}</Popover>;
+    }
+
     renderValue(option) {
         const color = { color: option.color };
-        return <div className={option.isFocused?'content selected':'content'} onMouseDown={this.onItemClick.bind(this, option)} key={option.id}><span className={`tag-icon fa ${option.iconClass}`} style={color}></span><span>{option.label}</span>{option.comment.length!==0?<a className="btn-link comment-btn bs-tooltip" data-content={option.comment}><i className="fa fa-commenting"  aria-hidden="true"></i></a>:null}</div>;
+        return <div className={option.isFocused?'content selected':'content'} onMouseDown={this.onItemClick.bind(this, option)} key={option.id}><span className={`tag-icon fa ${option.iconClass}`} style={color}></span><span>{option.label}</span>{option.comment.length!==0?<OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={this.popoverHoverFocus(option.label, option.comment)}>
+        <a className="btn-link comment-btn" ><i className="fa fa-commenting-o"  aria-hidden="true"></i></a>
+        </OverlayTrigger>:null}</div>;
     }
-    render() {
 
+    render() {
         const { availableTags, selectedTags, isBusy, errorMessage }  = this.props;
         let focusedTag =null;
         for (let i in selectedTags) {
