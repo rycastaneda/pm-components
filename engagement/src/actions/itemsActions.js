@@ -116,7 +116,7 @@ function getSuggestions(state, value) {
         });
 
         return {
-            requestedItem: item.attributes['title'],
+            requestedItem: item.attributes['service_title'] && item.attributes['title'] + ' - ' + item.attributes['service_title'] || item.attributes['title'],
             matchedItems: matchedItems
         };
         // filter items that consists of matchedItems

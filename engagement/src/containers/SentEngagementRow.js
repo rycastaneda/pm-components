@@ -48,7 +48,7 @@ class SentEngagementRow extends Component {
     }
 
     render() {
-        const { engagement } = this.props;
+        const { engagement, serviceTitle } = this.props;
 
         return (
             <div className="row engagement-row">
@@ -61,7 +61,7 @@ class SentEngagementRow extends Component {
                             </div>
                             <div className="row">
                                 <label className="col-sm-4 control-label">Requested Category: </label>
-                                <div className="col-sm-8">{engagement.category.attributes.title}</div>
+                                <div className="col-sm-8">{`${engagement.category.attributes.title} ${serviceTitle && ' - ' + serviceTitle || ''}`}</div>
                             </div>
                         </div>
                         <div className="col-sm-5 text-right text-left-xs">
@@ -147,7 +147,8 @@ class SentEngagementRow extends Component {
 
 SentEngagementRow.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    engagement: PropTypes.object.isRequired
+    engagement: PropTypes.object.isRequired,
+    serviceTitle: PropTypes.string
 };
 
 export default connect()(SentEngagementRow);

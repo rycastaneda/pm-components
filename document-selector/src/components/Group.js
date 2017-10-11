@@ -20,7 +20,7 @@ export default class Group extends Component {
 
         const requestedItems = items.allIds.map((id, key) => {
             return <td className={index === 0 ? 'group-table__item' : 'group-table__item-invisible' } key={key}>
-                {items.byId[id].title}
+                {(items.byId[id].service_title) && items.byId[id].title + ' - ' + items.byId[id].service_title || items.byId[id].title}
             </td>;
         });
 

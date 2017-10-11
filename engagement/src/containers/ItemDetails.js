@@ -76,6 +76,10 @@ class ItemDetails extends Component {
     render() {
         const { currentEngagement, pricingOptions } = this.props.itemDetailsReducer;
         const { itemsReducer } = this.props;
+        const { items } = itemsReducer;
+
+        let serviceTitle = currentEngagement.relationships && items.length ? items.filter(title => title.id === currentEngagement.relationships['requested-items'].data['id']).pop().attributes.service_title : [];
+
         const purchaseOrder = (Object.keys(currentEngagement).length !== 0 && currentEngagement.attributes['purchase-order'] !== null)  ? currentEngagement.attributes['purchase-order'] : '';
         const engagementText = (Object.keys(currentEngagement).length !== 0 && currentEngagement.attributes['engagement_text'] !== null)  ? currentEngagement.attributes['engagement_text'] : '';
         const defaultDate = (Object.keys(currentEngagement).length !== 0 && currentEngagement.attributes['plan-start-date'] !== null) ? moment(currentEngagement.attributes['plan-start-date']) : null;
@@ -88,6 +92,7 @@ class ItemDetails extends Component {
             disabled: enableCreate
         };
 
+        
         return (
             <div>
             {
@@ -99,6 +104,7 @@ class ItemDetails extends Component {
                         <span className="txt-small"> (
                             { engagementTitle && `${engagementTitle}` }
                             { !engagementTitle && currentEngagement.relationships && `${currentEngagement.relationships.supplier.attributes.title} - ${currentEngagement.relationships.matchedItemTitle}`}
+                            { serviceTitle && ` - ${serviceTitle}` }
                             )
                         </span>
                     </h4>
