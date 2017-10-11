@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "repo": "git@bitbucket.org:minergroup/plantminer-components.git[#release/23.2.0]"
+    "repo": "git@bitbucket.org:minergroup/plantminer-components.git[#master]"
   },
   "dependencies": {},
   "devDependencies": {}
