@@ -1,4 +1,5 @@
 import mockSections from '../mocks/sections.json';
+import mockStaff from '../mocks/staff.json';
 import * as actions from '../constants';
 import axios from 'axios';
 import format from 'date-fns/format';
@@ -38,10 +39,11 @@ export function switchSectionTab(sectionId, currentTab) {
     };
 }
 
-export function toggleSectionStatus(sectionId, status) {
+export function toggleStaffStatus(sectionId, staffId, status) {
     return {
-        type: actions.TOGGLE_SECTION_STATUS,
+        type: actions.TOGGLE_STAFF_STATUS,
         sectionId,
+        staffId,
         status
     };
 }
@@ -74,7 +76,8 @@ export function deleteComment(sectionId, commentId) {
             commentId
         });
 
-        return axios.get('https://httpbin.org/delay/1').then(() => {
+        // return axios.get('https://httpbin.org/delay/1').then(() => {
+        return axios.all([]).then(() => {
             dispatch({
                 type: actions.DELETED_COMMENT,
                 commentId,
@@ -137,5 +140,65 @@ export function submitNewComment(sectionId, comment) {
                 date: format(new Date(), 'MM-DD-YYYY HH:m a')
             });
         });
+    };
+}
+
+export function toggleManageSectionModal(sectionId) {
+    return {
+        type: actions.TOGGLE_MANAGE_SECTION_MODAL,
+        sectionId
+    };
+}
+
+export function fetchStaff() {
+    return (dispatch) => {
+        dispatch({
+            type: actions.FETCH_STAFF
+        });
+
+        // return axios.all([]).then(() => {
+        return axios.get('https://httpbin.org/delay/1').then(() => {
+            console.log("mockStaff", mockStaff); // eslint-disable-line no-console, quotes
+            dispatch({
+                type: actions.RECEIVE_STAFF,
+                staffs: mockStaff
+            });
+        });
+    };
+}
+
+export function addStaff(sectionId, staffId) {
+    return (dispatch) => {
+        dispatch({
+            type: actions.TOGGLE_STAFF_LOADING,
+            staffId
+        });
+
+        return axios.all([]).then(() => {
+        // return axios.get('https://httpbin.org/delay/1', newComment).then(() => {
+            dispatch({
+                type: actions.ADDED_STAFF,
+                sectionId,
+                staffId
+            });
+        }); 
+    };
+}
+
+
+export function deleteStaff(sectionId, staffId) {
+    return (dispatch) => {
+        dispatch({
+            type: actions.TOGGLE_STAFF_LOADING,
+            staffId
+        });
+
+        return axios.all([]).then(() => {
+            dispatch({
+                type: actions.DELETED_STAFF,
+                sectionId,
+                staffId
+            });
+        }); 
     };
 }

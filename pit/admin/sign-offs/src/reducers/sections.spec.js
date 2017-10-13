@@ -34,12 +34,13 @@ describe('Sections reducer', () => {
         expect(state.byId[1]).to.have.property('isAddingNewComment', false);
         expect(state.byId[1]).to.have.property('isLoading', false);
         expect(state.byId[1]).to.have.property('currentTab', 'questions');
-        expect(state.byId[1]).to.have.property('status');
+        expect(state.byId[1]).to.have.property('isShown', false);
+        expect(state.byId[1].responses[1]).to.eql('In Progress');
         expect(state.byId[1].commentIds).to.have.length(2);
         expect(state.byId[1].answers[0]).to.have.property('questionId', 1);
         expect(state.byId[1].answers[0]).to.have.property('answer', 'Spaghetti');
         expect(state.byId[1].answers).to.have.length(2);
-        expect(state.allIds).to.have.members(mockSections.data.map(sections => '' + sections.id));
+        expect(state.allIds).to.have.members(mockSections.data.map(sections => sections.id));
     });
 
     it('should handle TOGGLE_SECTION_COLLAPSE', () => {
@@ -53,14 +54,15 @@ describe('Sections reducer', () => {
         expect(state.byId[1]).to.have.property('isCollapsed', !isCollapsed);
     });
 
-    it('should handle TOGGLE_SECTION_STATUS', () => {
-        state = sections(state, {
-            type: actions.TOGGLE_SECTION_STATUS,
-            sectionId: 1,
-            status: 'approved'
-        });
+    it('should handle TOGGLE_MANAGE_SECTION_MODAL', function() {
+        let isShown = state.byId[1].isShown;
 
-        expect(state.byId[1]).to.have.property('status', 'approved');
+        state = sections(state, {
+            type: actions.TOGGLE_MANAGE_SECTION_MODAL,
+            sectionId: 1
+        });
+        
+        expect(state.byId[1]).to.have.property('isShown', !isShown);
     });
 
     it('should handle SWITCH_SECTION_TAB', () => {
@@ -118,4 +120,36 @@ describe('Sections reducer', () => {
         
         expect(state.byId[1].commentIds).to.not.include(4);
     });
+
+    it('should handle TOGGLE_STAFF_STATUS with staffId and status as payload', function() {
+        state = sections(state, {
+            type: actions.TOGGLE_STAFF_STATUS,
+            sectionId: 1,
+            staffId: 1,
+            status: 'not approved'
+        });
+
+        expect(state.byId[1].responses[1]).to.eql('not approved');
+    });
+
+    it('should handle ADDED_STAFF with staffId and status as payload', function() {
+        state = sections(state, {
+            type: actions.ADDED_STAFF,
+            sectionId: 1,
+            staffId: 5
+        });
+
+        expect(state.byId[1].responses[5]).to.eql('Pending');
+    });
+
+    it('should handle DELETED_STAFF with staffId and status as payload', function() {
+        state = sections(state, {
+            type: actions.DELETED_STAFF,
+            sectionId: 1,
+            staffId: 5
+        });
+
+        expect(Object.keys(state.byId[1].responses)).to.not.include(5);
+    });
+
 });

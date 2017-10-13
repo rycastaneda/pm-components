@@ -23,6 +23,7 @@ const comments = mockSections.included
         return {
             ...include.attributes,
             staffId: include.relationships.staff.id,
+            staff: 'Tester',
             isEditing: false,
             isLoading: false
         };
@@ -32,19 +33,23 @@ const questions = mockSections.included
     .filter(include => include.type === 'question')
     .map((include) => {
         return {
-            ...include.attributes
+            ...include.attributes,
+            answer: 'dummy answer'
         };
     });
 
-const toggleCommentEdit = sinon.spy();
+const toggleCommentEdit = () => sinon.spy();
+const deleteComment = () => sinon.spy();
+const submitComment = () => sinon.spy();
 const getNewCommentRef = sinon.spy();
-const deleteComment = sinon.spy();
-const submitComment = sinon.spy();
 const isReadOnly = false;
 const currentStaffId = 100;
 
 describe('Tab component: ', () => {
+
+
     it('should render the current tab: questions, with Question components rendered', () => {
+        
         const { component } = setup({ 
             currentTab: 'questions',
             comments,

@@ -6,14 +6,35 @@
             "name": "Company Size"
         },
         "relationships": {
-            "staff-response": {
+            "staff-response": [{
                 "id": 1,
                 "type": "staff-response",
                 "attributes": {
                     "staffId": 1,
                     "status": "In Progress"
                 }
-            },
+            }, {
+                "id": 2,
+                "type": "staff-response",
+                "attributes": {
+                    "staffId": 2,
+                    "status": "In Progress"
+                }
+            }, {
+                "id": 3,
+                "type": "staff-response",
+                "attributes": {
+                    "staffId": 3,
+                    "status": "Approved"
+                }
+            }, {
+                "id": 4,
+                "type": "staff-response",
+                "attributes": {
+                    "staffId": 4,
+                    "status": "rejected"
+                }
+            }],
             "questions": {
                 "data": [{
                     "id": 1,
@@ -42,14 +63,21 @@
             "name": "Company Location"
         },
         "relationships": {
-            "staff-response": {
-                "id": 1,
+            "staff-response": [{
+                "id": 5,
                 "type": "staff-response",
                 "attributes": {
                     "staffId": 1,
                     "status": "Approved"
                 }
-            },
+            }, {
+                "id": 6,
+                "type": "staff-response",
+                "attributes": {
+                    "staffId": 2,
+                    "status": "rejected"
+                }
+            }],
             "questions": {
                 "data": [{
                     "id": 1,
@@ -71,14 +99,14 @@
             "name": "Health & Safety"
         },
         "relationships": {
-            "staff-response": {
-                "id": 1,
+            "staff-response": [{
+                "id": 7,
                 "type": "staff-response",
                 "attributes": {
                     "staffId": 1,
                     "status": "Pending"
                 }
-            },
+            }],
             "questions": {
                 "data": [{
                     "id": 1,
@@ -132,6 +160,12 @@
         "type": "staff",
         "attributes": {
             "name": "Chips Ahoy"
+        }
+    }, {
+        "id": 4,
+        "type": "staff",
+        "attributes": {
+            "name": "Cloud Nine"
         }
     }, {
         "id": 1,

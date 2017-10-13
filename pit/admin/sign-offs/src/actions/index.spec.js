@@ -94,10 +94,11 @@ describe('Sign Off actions', function() {
         });
     });
 
-    it('should call TOGGLE_SECTION_STATUS with sectionId and new status as payload', () => {
-        expect(actions.toggleSectionStatus(1, 'Approved')).to.eql({
-            type: types.TOGGLE_SECTION_STATUS,
+    it('should call TOGGLE_STAFF_STATUS with sectionId and StaffId with new status as payload', () => {
+        expect(actions.toggleStaffStatus(1, 1, 'Approved')).to.eql({
+            type: types.TOGGLE_STAFF_STATUS,
             sectionId: 1,
+            staffId: 1,
             status: 'Approved'
         });
     });
@@ -189,4 +190,60 @@ describe('Sign Off actions', function() {
             });
     });
 
+    it('should call TOGGLE_MANAGE_SECTION_MODAL with sectionId as payload', function() {
+        expect(actions.toggleManageSectionModal(1)).to.eql({
+            type: types.TOGGLE_MANAGE_SECTION_MODAL,
+            sectionId: 1
+        });
+    });
+
+    it('should call FETCH_STAFF then RECEIVE_STAFF', function() {
+        const expectedActions = [types.FETCH_STAFF, types.RECEIVE_STAFF];
+        const store = mockStore();
+        return store.dispatch(actions.fetchStaff()).then(() => { // return of async actions
+            expect(store.getActions().map(action => action.type)).to.eql(expectedActions);
+        });
+    });
+
+    it('should call TOGGLE_STAFF_LOADING then ADDED_STAFF', function() {
+        const store = mockStore();
+
+        return store.dispatch(actions.addStaff(1, 5))
+            .then(() => {
+                let actions = store.getActions();
+
+                expect(actions[0]).to.eql({
+                    type: types.TOGGLE_STAFF_LOADING,
+                    staffId: 5
+                });
+
+                expect(actions[1]).to.eql({
+                    type: types.ADDED_STAFF,
+                    sectionId: 1,
+                    staffId: 5
+                });
+            });
+    });
+
+    it('should call TOGGLE_STAFF_LOADING then DELETED_STAFF', function() {
+        const store = mockStore();
+
+        return store.dispatch(actions.deleteStaff(1, 5))
+            .then(() => {
+                let actions = store.getActions();
+
+                expect(actions[0]).to.eql({
+                    type: types.TOGGLE_STAFF_LOADING,
+                    staffId: 5
+                });
+
+                expect(actions[1]).to.eql({
+                    type: types.DELETED_STAFF,
+                    sectionId: 1,
+                    staffId: 5
+                });
+            });
+    });
+
+    
 });

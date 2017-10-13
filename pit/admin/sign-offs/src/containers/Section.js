@@ -3,13 +3,16 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 import Tab from '../components/Tab';
 import NewComment from '../components/NewComment';
+import UserList from '../components/UserList';
 import Loader from '../components/Loader';
+import Counters from '../components/Counters';
 
 import { 
+    fetchStaff,
+    toggleManageSectionModal,
     toggleSectionCollapse, 
     toggleCommentBox,
     toggleCommentEdit, 
-    toggleSectionStatus, 
     switchSectionTab, 
     submitEditComment,
     submitNewComment,
@@ -26,6 +29,7 @@ class Section extends Component {
         };
         this.submitComment = this.submitComment.bind(this);
         this.toggleCommentEdit = this.toggleCommentEdit.bind(this);
+        this.toggleManageSectionModal = this.toggleManageSectionModal.bind(this);
         this.deleteComment = this.deleteComment.bind(this);
     }
 
@@ -73,15 +77,22 @@ class Section extends Component {
         };
     }
 
+    toggleManageSectionModal() {
+        const { id, dispatch } = this.props; 
+
+        dispatch(toggleManageSectionModal(id));
+        dispatch(fetchStaff());
+    }
+
     render() {
         const { 
             id, dispatch,
-            name, status, 
+            name, 
             currentTab, 
             isCollapsed, 
             isAddingNewComment, 
             isLoading,
-            questions, comments
+            questions, comments, responses
         } = this.props;
 
         const {
@@ -89,14 +100,14 @@ class Section extends Component {
             currentStaffId
         } = this.props.ui;
 
-
-        const icon = {
-            approved: 'fa-check-circle bs-callout-success',
-            'not approved': 'fa-times-circle bs-callout-danger',
-            'in progress': 'fa-gears bs-callout-warning',
-            pending: 'fa-exclamation-circle bs-callout-warning'
+        const counters = {
+            approved: 0,
+            rejected: 0,
+            inprogress: 0,
+            pending: 0
         };
 
+        responses.map(response => counters[response.status.toLowerCase().split(' ').join('')]++);
         let newCommentForm = null;
 
         if (currentTab === 'comments') {
@@ -115,18 +126,16 @@ class Section extends Component {
                     <div className="row-title">
                         <span className="pull-left pmaccordion__title">{name}</span>
                         <span className="pull-right status-icon">
-                            <i className={`fa ${status ? icon[status.toLowerCase()] : ''}`}></i>
+                            <Counters counters={counters} />
                         </span>
                         <div className="clearfix"></div>
                     </div>
                 </a>
                 <div className={`collapse pad-hor ${isCollapsed ? 'in' : ''}`}>
+                    <UserList users={responses} toggleManageSectionModal={this.toggleManageSectionModal}/>
                     <Header 
                         currentTab={currentTab} 
-                        status={status} 
-                        switchSectionTab={tab => dispatch(switchSectionTab(id, tab))}
-                        toggleSectionStatus={newStatus => dispatch(toggleSectionStatus(id, newStatus.value))}
-                        isReadOnly={isReadOnly}/>
+                        switchSectionTab={tab => dispatch(switchSectionTab(id, tab))}/>
                     <Tab 
                         currentTab={currentTab}
                         comments={comments}
@@ -149,12 +158,12 @@ class Section extends Component {
 Section.propTypes = {
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
-    status: PropTypes.string,
     currentTab: PropTypes.string,
     isCollapsed: PropTypes.bool.isRequired,
     isAddingNewComment: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     questions: PropTypes.array.isRequired,
+    responses: PropTypes.array.isRequired,
     comments: PropTypes.array.isRequired,
     dispatch: PropTypes.func.isRequired,
     ui: PropTypes.shape({ 

@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Section from './Section';
 import { fetchSections } from '../actions';
+import ManageSectionModal from './ManageSectionModal';
 import Loader from '../components/Loader';
 
 class SignOff extends Component {
@@ -14,7 +15,8 @@ class SignOff extends Component {
     }
 
     render() {
-        const { sections, isLoading } = this.props;
+        const { sections, isLoading, sectionModalId } = this.props;
+        console.log("sectionModalId", sectionModalId); // eslint-disable-line no-console, quotes
         const sectionComponents = sections.map((section) => {
             return <Section key={section.id} {...section}></Section>;
         });
@@ -22,6 +24,7 @@ class SignOff extends Component {
         return (
             <div>
                 {isLoading ? <Loader></Loader> : sectionComponents}
+                <ManageSectionModal sectionId={sectionModalId}/>
             </div>
         );
     }
@@ -30,6 +33,7 @@ class SignOff extends Component {
 SignOff.propTypes = {
     dispatch: PropTypes.func.isRequired,
     sections: PropTypes.array.isRequired,
+    sectionModalId: PropTypes.number, 
     isLoading: PropTypes.bool.isRequired
 };
 
@@ -38,13 +42,18 @@ function mapStateToProps(state) {
         sections: rawSections, 
         questions: rawQuestions, 
         comments: rawComments,
-        staff: rawStaff
+        staff: rawStaff,
+        ui
     } = state;
 
     let sections = [];
 
     if (!rawSections.allIds.length) {
-        return { sections, isLoading: rawSections.isLoading };
+        return { 
+            sections, 
+            isLoading: rawSections.isLoading, 
+            sectionModalId: null 
+        };
     }
 
     sections = rawSections.allIds.map((sectionId) => {
@@ -65,16 +74,25 @@ function mapStateToProps(state) {
                 staff: rawStaff.byId[comment.staffId].name
             };
         });
+
+        let responses = Object.keys(section.responses).map((staffId) => {
+            return {
+                id: staffId,
+                name: rawStaff.byId[staffId].name,
+                status: section.responses[staffId]
+            };
+        });
             
         return {
             sectionId,
             ...section,
             comments,
+            responses,
             questions
         };
     });
 
-    return { sections, isLoading: rawSections.isLoading };
+    return { sections, isLoading: rawSections.isLoading, sectionModalId: ui.sectionModalId };
 }
 
 export default connect(mapStateToProps)(SignOff);  // adds dispatch prop

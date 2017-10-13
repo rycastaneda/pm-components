@@ -17,14 +17,14 @@ const getNewCommentRef =  sinon.spy();
 const cancelNewComment =  sinon.spy();
 
 describe('NewComment component: ', () => {
-    let { component } = setup({ 
-        comment: 'Company size is too small, still considering',
-        submitComment,
-        getNewCommentRef,
-        cancelNewComment
-    });
 
     it('should be able to render the form to add new comment and be able to submit', () => {
+        let { component } = setup({ 
+            comment: 'Company size is too small, still considering',
+            submitComment,
+            getNewCommentRef,
+            cancelNewComment
+        });
         expect(component.find('textarea').text()).to.contain('Company size is too small, still considering');
         component.setProps({ comment: 'New Comment' });
         expect(component.find('textarea').text()).to.contain('New Comment');

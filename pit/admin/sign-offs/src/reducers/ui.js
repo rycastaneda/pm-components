@@ -2,7 +2,8 @@ import * as actions from '../constants';
 
 const INITIAL_STATE = { 
     isReadOnly: true,
-    currentStaffId: 0
+    currentStaffId: 0,
+    sectionModalId: null
 };
 
 export function ui(state = INITIAL_STATE, action) {
@@ -12,6 +13,11 @@ export function ui(state = INITIAL_STATE, action) {
                 ...state,
                 isReadOnly: action.isReadOnly,
                 currentStaffId: action.staffId
+            };
+        case actions.TOGGLE_MANAGE_SECTION_MODAL: 
+            return {
+                ...state,
+                sectionModalId: action.sectionId === state.sectionModalId ? null : action.sectionId
             };
     }
 

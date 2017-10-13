@@ -49,6 +49,7 @@ describe('Section container: ', () => {
             comment: `I don't like his pet's name, sounds elf-ish`,
             date: `09-17-2017 9:20:00 AM`
         }],
+        responses: [],
         dispatch,
         toggleSectionDisplay,
         toggleSectionStatus

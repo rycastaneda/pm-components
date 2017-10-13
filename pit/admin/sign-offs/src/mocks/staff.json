@@ -1,0 +1,33 @@
+{
+    "data": [{
+        "id": 1,
+        "type": "staff",
+        "attributes": {
+            "name": "Reese"
+        }
+    }, {
+        "id": 2,
+        "type": "staff",
+        "attributes": {
+            "name": "Oreo"
+        }
+    }, {
+        "id": 3,
+        "type": "staff",
+        "attributes": {
+            "name": "Chips Ahoy"
+        }
+    }, {
+        "id": 4,
+        "type": "staff",
+        "attributes": {
+            "name": "Cloud Nine"
+        }
+    }, {
+        "id": 5,
+        "type": "staff",
+        "attributes": {
+            "name": "Kitkat"
+        }
+    }]
+}

@@ -13,7 +13,6 @@ const Tab = ({
     submitComment,
     deleteComment
 }) => {
-
     const tabs = {
         questions: questions.map((question, index) => {
             return (

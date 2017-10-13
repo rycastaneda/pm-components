@@ -9,7 +9,8 @@ describe('UI reducer', () => {
         state = ui(undefined, {});
         expect(state).to.deep.equal({ 
             isReadOnly: true,
-            currentStaffId: 0
+            currentStaffId: 0,
+            sectionModalId: null
         });
     });
 
@@ -22,6 +23,22 @@ describe('UI reducer', () => {
 
         expect(state).to.have.property('isReadOnly', false);
         expect(state).to.have.property('currentStaffId', 100);
+    });
+
+    it('should handle TOGGLE_MANAGE_SECTION_MODAL', () => {
+        state = ui(state, {
+            type: actions.TOGGLE_MANAGE_SECTION_MODAL,
+            sectionId: 1
+        });
+        
+        expect(state).to.have.property('sectionModalId', 1);
+
+        state = ui(state, {
+            type: actions.TOGGLE_MANAGE_SECTION_MODAL,
+            sectionId: 1
+        });
+        
+        expect(state).to.have.property('sectionModalId', null);
     });
 
 });
