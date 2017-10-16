@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
-import Datetime  from 'react-datetime';
-import moment from 'moment';
+import Datetime  from './PlantMinerDatetime';
+
 
 class EvaluationTemplatesFilter extends Component {
 
@@ -22,9 +22,7 @@ class EvaluationTemplatesFilter extends Component {
     }
 
     onSelectedDateChange(date) {
-        if (!moment(date).isValid()) {
-            return false;
-        }
+        window.console.log(date);
         this.setState({ selectedDate: date });
     }
 
@@ -43,7 +41,7 @@ class EvaluationTemplatesFilter extends Component {
         this.setState({ isFilterShown:!this.state.isFilterShown });
     }
     render() {
-    
+
         return (
             <div>
                 <div className="panel panel-default pad-all">
@@ -75,12 +73,9 @@ class EvaluationTemplatesFilter extends Component {
                     <div className="col-xs-6">
                         <div className="form-group">
                             <label>Created date</label>
-                            <Datetime className="po-date"
-                                timeFormat={false}
-                                closeOnSelect={true}
-                                onChange={this.onSelectedDateChange}
-                                value={this.state.selectedDate}
-                                dateFormat="DD-MM-YYYY"
+                            <Datetime
+                                onSelectedDateChange={this.onSelectedDateChange}
+                                selectedDate={null}
                                 />
                            </div>
                     </div>
