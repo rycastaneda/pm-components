@@ -1,4 +1,4 @@
-import { ALL_TAGS_UPDATE, SELECTED_TAGS_UPDATE, IS_BUSY, REQUEST_FAILED, TAG_FOCUS, TAG_COMMENT_UPDATE } from '../constants/ActionTypes';
+import { ALL_TAGS_UPDATE, SELECTED_TAGS_UPDATE, IS_BUSY, REQUEST_FAILED, TAG_FOCUS, TAG_COMMENT_UPDATE, SELECTED_TAGS_SAVED } from '../constants/ActionTypes';
 
 const INITIAL_DATA = { availableTags: [], selectedTags:[], supplierId:null, isBusy:false, errorMessage:null };
 
@@ -11,10 +11,6 @@ export function manageTags(state = INITIAL_DATA, action) {
                 myState.selectedTags = action.selectedTags;
                 myState.supplierId = action.supplierId;
                 myState.isBusy = false;
-
-                if (myState.selectedTags.length) {
-                    myState.selectedTags[myState.selectedTags.length-1].isFocused=true;
-                }
                 return myState;
             }
         case SELECTED_TAGS_UPDATE:
@@ -24,9 +20,16 @@ export function manageTags(state = INITIAL_DATA, action) {
                     for (let i in action.selectedTags) {
                         action.selectedTags[i].isFocused=false;
                     }
-                    action.selectedTags[action.selectedTags.length-1].isFocused=true;
                 }
+
                 myState.selectedTags = action.selectedTags;
+                return myState;
+            }
+        case SELECTED_TAGS_SAVED:
+            {
+                let myState = Object.assign({}, state);
+                //  myState.selectedTags =action.tags;
+                myState.isBusy = false;
                 return myState;
             }
         case IS_BUSY:

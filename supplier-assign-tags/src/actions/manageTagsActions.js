@@ -1,6 +1,6 @@
-import { SELECTED_TAGS_UPDATE, ALL_TAGS_UPDATE, IS_BUSY, SUPPLIER_ID_UPDATE, REQUEST_FAILED, TAG_FOCUS, TAG_COMMENT_UPDATE  } from '../constants/ActionTypes';
+import { SELECTED_TAGS_UPDATE, ALL_TAGS_UPDATE, IS_BUSY, SUPPLIER_ID_UPDATE, REQUEST_FAILED, TAG_FOCUS, TAG_COMMENT_UPDATE, SELECTED_TAGS_SAVED  } from '../constants/ActionTypes';
 import axios from 'axios';
-import { formatTagsFromInitialService, formatDataForSaveTagsService } from '../utils/dataParserUtil';
+import { formatTagsFromInitialService, formatDataForSaveTagsService, formatTagsAfterSaveTagsService } from '../utils/dataParserUtil';
 
 export function updateFocusedTagComment(comment) {
     return { type:TAG_COMMENT_UPDATE, comment };
@@ -19,6 +19,7 @@ export function fetchTags(supplierId) {
         dispatch(isBusy(true));
         axios.all([axios.get('/preferred-supplier-tags'), axios.get('preferred-suppliers/'+supplierId+'/relationships/tags')])
         .then((response) => {
+
             dispatch(updateAllTagData(formatTagsFromInitialService(response), supplierId));
         })
         .catch((error) => {
@@ -39,7 +40,7 @@ export function saveTags(tags) {
         dispatch(isBusy(true));
         axios.patch('/preferred-suppliers/'+getState().manageTags.supplierId+'/relationships/tags', formatDataForSaveTagsService(tags))
         .then(() => {
-            dispatch(isBusy(false));
+            dispatch({ type:SELECTED_TAGS_SAVED, tags:formatTagsAfterSaveTagsService(tags) });
         })
         .catch((error) => {
             dispatch({ type:REQUEST_FAILED, message: error.message });

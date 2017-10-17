@@ -2,7 +2,7 @@ function formatAvailableTagsFromInitialService(data) {
     let arr=[];
     for (let i in data) {
         let item =data[i];
-        let  obj = { id: Number(item.id), label: item.attributes.name, value:item.id, iconClass: item.attributes.icon, color:item.attributes.icon_colour, isFocused:false, comment:'' };
+        let  obj = { id: Number(item.id), label: item.attributes.name, value:item.id, iconClass: item.attributes.icon, color:item.attributes.icon_colour, isFocused:false, comment:'', hasSavedComment :false };
         arr.push(obj);
     }
     return arr;
@@ -16,6 +16,8 @@ function formatSelectedTagsFromInitialService(data, availableTags) {
         for (let j in availableTags) {
             const currTag =  JSON.parse(JSON.stringify(availableTags[j]));
             currTag.comment =  comment;
+            currTag.hasSavedComment =currTag.comment.length;
+
             if (id ===currTag.id) {
                 arr.push(currTag);
             }
@@ -37,4 +39,11 @@ export function formatDataForSaveTagsService(data) {
         arr.push(obj);
     }
     return { data:arr };
+}
+
+export function formatTagsAfterSaveTagsService(tags) {
+    return tags.forEach((item) => {
+        item.hasSavedComment = Boolean(item.comment.length);
+        item.isFocused=false;
+    });
 }
