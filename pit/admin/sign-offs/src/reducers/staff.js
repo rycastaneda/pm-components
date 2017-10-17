@@ -14,15 +14,12 @@ export function staff(state = INITIAL_STATE, action) {
             return receiveSections(state, action);
         case actions.SUBMITTED_NEW_COMMENT: // save staff upon new comment
             return receiveComment(state, action);
-        case actions.FETCH_STAFF: 
-            state.isLoading = true;
-            console.log("state FETCH_STAFF", state); // eslint-disable-line no-console, quotes
+        case actions.TOGGLE_MANAGE_SECTION_MODAL_LOADING: 
+            state.isLoading = !state.isLoading;
             return { ...state };
         case actions.RECEIVE_STAFF: 
-            state.isLoading = false;
             state.needsFetching = false;
             receiveStaff(state, action);
-            console.log("state", state); // eslint-disable-line no-console, quotes
             return { ...state };
         case actions.TOGGLE_STAFF_LOADING:
             state.byId[action.staffId].isLoading = !state.byId[action.staffId].isLoading;
@@ -69,7 +66,6 @@ function receiveComment(state, action) {
 }
 
 function receiveStaff(state, action) {
-    console.log("action.staffs", action); // eslint-disable-line no-console, quotes
     action.staffs.data
         .map((staff) => {
             state.byId[staff.id] = {

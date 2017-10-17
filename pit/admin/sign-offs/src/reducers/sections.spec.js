@@ -132,9 +132,9 @@ describe('Sections reducer', () => {
         expect(state.byId[1].responses[1]).to.eql('not approved');
     });
 
-    it('should handle ADDED_STAFF with staffId and status as payload', function() {
+    it('should handle ADDED_STAFF_RESPONSE with staffId and status as payload', function() {
         state = sections(state, {
-            type: actions.ADDED_STAFF,
+            type: actions.ADDED_STAFF_RESPONSE,
             sectionId: 1,
             staffId: 5
         });

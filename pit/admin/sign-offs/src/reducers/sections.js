@@ -37,7 +37,8 @@ export function sections(state = INITIAL_STATE, action) {
             state.byId[action.sectionId] = comments(state.byId[action.sectionId], action);
             return { ...state };
         case actions.TOGGLE_STAFF_STATUS: 
-        case actions.ADDED_STAFF: 
+        case actions.ADDED_STAFF_RESPONSE: 
+        case actions.DELETED_STAFF_RESPONSE: 
             state.byId[action.sectionId] = staff(state.byId[action.sectionId], action);
             return { ...state };
     }
@@ -68,16 +69,16 @@ function staff(section, action) {
         case actions.TOGGLE_STAFF_STATUS: 
             section.responses[action.staffId] =  action.status;
             return section;
-        case actions.ADDED_STAFF: 
+        case actions.ADDED_STAFF_RESPONSE: 
             section.responses[action.staffId] =  'Pending';
             return section;
-        case actions.DELETED_STAFF:
-            Object.keys(responses).map((staffId) => {
-                if (staffId === action.staffId) {
+        case actions.DELETED_STAFF_RESPONSE:
+            Object.keys(section.responses).map((staffId) => {
+                if (+staffId === action.staffId) {
                     return;
                 }
 
-                responses[staffId] = section.responses[action.staffId];
+                responses[+staffId] = section.responses[+staffId];
             });
 
             section.responses = responses;

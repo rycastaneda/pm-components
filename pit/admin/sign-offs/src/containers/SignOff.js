@@ -16,7 +16,6 @@ class SignOff extends Component {
 
     render() {
         const { sections, isLoading, sectionModalId } = this.props;
-        console.log("sectionModalId", sectionModalId); // eslint-disable-line no-console, quotes
         const sectionComponents = sections.map((section) => {
             return <Section key={section.id} {...section}></Section>;
         });

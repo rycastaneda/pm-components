@@ -18,7 +18,7 @@ describe('Counters component: ', () => {
 
         expect(+component.find('.badge-info').text()).to.eql(3);
         expect(+component.find('.badge-success').text()).to.eql(3);
-        expect(+component.find('.badge-danger').text()).to.eql(0);
+        expect(+component.find('.badge-bg-danger').text()).to.eql(0);
         expect(+component.find('.badge-warning').text()).to.eql(2);
     });
 });

@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import Staff from './Staff';
+import Loader from './Loader';
 
 const setup = (props) => {
     const component = shallow(
@@ -13,18 +14,31 @@ const setup = (props) => {
 };
 
 const toggleSectionStatus = sinon.spy();
-const deleteStaff = sinon.spy();
+const deleteStaffResponse = sinon.spy();
 
 describe('Staff component: ', () => {
     const { component } = setup({ 
         name: 'Tester',
         status: 'approved', 
         toggleSectionStatus,
-        deleteStaff
+        deleteStaffResponse,
+        isLoading: false
     });
 
     it('should render staff name', function() {
         expect(component.find('label').text()).to.be.eql('Tester');
+    });
+
+    it('should render the loader', function() {
+        const { component } = setup({ 
+            name: 'Tester',
+            status: 'approved', 
+            toggleSectionStatus,
+            deleteStaffResponse,
+            isLoading: true
+        });
+
+        expect(component.find(Loader)).to.be.not.undefined;
     });
 
     it('should render status and its toggletoggleSectionStatus function', () => {
@@ -36,7 +50,7 @@ describe('Staff component: ', () => {
 
     it('should render the delete button and its click function', function() {
         component.find('.delete-staff').simulate('click');
-        expect(deleteStaff.called).to.be.true;
+        expect(deleteStaffResponse.called).to.be.true;
     });
 
 });

@@ -48,12 +48,15 @@ describe('Staff reducer', () => {
         expect(state.allIds).to.have.length(length + 1); // new supplier got added
     });
 
-    it('should handle FETCH_STAFF', function() {
+
+    it('should handle TOGGLE_MANAGE_SECTION_MODAL_LOADING with staffId as payload', function() {
+        const isLoading = state.isLoading;
+
         state = staff(state, {
-            type: actions.FETCH_STAFF
+            type: actions.TOGGLE_MANAGE_SECTION_MODAL_LOADING
         });
 
-        expect(state.isLoading).to.be.true;
+        expect(state.isLoading).to.be.eql(!isLoading);
     });
 
     it('should handle RECEIVE_STAFF', function() {
@@ -66,7 +69,6 @@ describe('Staff reducer', () => {
 
         const allIds = union(oldIds, mockStaffs.data.map(staff => staff.id));
 
-        expect(state.isLoading).to.be.false;
         expect(state.needsFetching).to.be.false;
         expect(state.allIds).to.have.members(allIds); // staff get appended
     });
@@ -80,6 +82,16 @@ describe('Staff reducer', () => {
         });
 
         expect(state.byId[1]).to.have.property('isLoading', !isLoading);
+    });
+
+    it('should handle ADDED_STAFF', function() {
+        state = staff(state, {
+            sectionId: 1,
+            staffId: 5
+        });
+
+        expect(state.byId[5]).to.be.not.undefined;
+        expect(state.allIds).to.include(5);
     });
 
 });

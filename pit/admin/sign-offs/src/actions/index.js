@@ -40,11 +40,26 @@ export function switchSectionTab(sectionId, currentTab) {
 }
 
 export function toggleStaffStatus(sectionId, staffId, status) {
-    return {
-        type: actions.TOGGLE_STAFF_STATUS,
-        sectionId,
-        staffId,
-        status
+    return (dispatch) => {
+        dispatch({
+            type: actions.TOGGLE_STAFF_LOADING,
+            staffId
+        });
+
+        // return axios.get('https://httpbin.org/delay/5').then(() => {
+        return axios.all([]).then(() => {
+            dispatch({
+                type: actions.TOGGLE_STAFF_STATUS,
+                sectionId,
+                staffId,
+                status
+            });
+
+            dispatch({
+                type: actions.TOGGLE_STAFF_LOADING,
+                staffId
+            });
+        });
     };
 }
 
@@ -150,43 +165,54 @@ export function toggleManageSectionModal(sectionId) {
     };
 }
 
-export function fetchStaff() {
-    return (dispatch) => {
+export function fetchStaff(refresh = false) {
+    return (dispatch, getState) => {
+        if (!getState().staff.needsFetching && !refresh) {
+            return;
+        }
+
         dispatch({
-            type: actions.FETCH_STAFF
+            type: actions.TOGGLE_MANAGE_SECTION_MODAL_LOADING
         });
 
-        // return axios.all([]).then(() => {
-        return axios.get('https://httpbin.org/delay/1').then(() => {
-            console.log("mockStaff", mockStaff); // eslint-disable-line no-console, quotes
+        return axios.all([]).then(() => {
+        // return axios.get('https://httpbin.org/delay/6').then(() => {
             dispatch({
                 type: actions.RECEIVE_STAFF,
                 staffs: mockStaff
             });
+
+            dispatch({
+                type: actions.TOGGLE_MANAGE_SECTION_MODAL_LOADING
+            });
+
         });
     };
 }
 
-export function addStaff(sectionId, staffId) {
+export function addStaffResponse(sectionId, staffId) {
     return (dispatch) => {
         dispatch({
-            type: actions.TOGGLE_STAFF_LOADING,
-            staffId
+            type: actions.TOGGLE_MANAGE_SECTION_MODAL_LOADING
         });
 
         return axios.all([]).then(() => {
-        // return axios.get('https://httpbin.org/delay/1', newComment).then(() => {
+        // return axios.get('https://httpbin.org/delay/5').then(() => {
             dispatch({
-                type: actions.ADDED_STAFF,
+                type: actions.ADDED_STAFF_RESPONSE,
                 sectionId,
                 staffId
+            });
+
+            dispatch({
+                type: actions.TOGGLE_MANAGE_SECTION_MODAL_LOADING
             });
         }); 
     };
 }
 
 
-export function deleteStaff(sectionId, staffId) {
+export function deleteStaffResponse(sectionId, staffId) {
     return (dispatch) => {
         dispatch({
             type: actions.TOGGLE_STAFF_LOADING,
@@ -195,8 +221,15 @@ export function deleteStaff(sectionId, staffId) {
 
         return axios.all([]).then(() => {
             dispatch({
-                type: actions.DELETED_STAFF,
+                type: actions.DELETED_STAFF_RESPONSE,
                 sectionId,
+                staffId
+            });
+
+            console.log("staffId", staffId); // eslint-disable-line no-console, quotes
+
+            dispatch({
+                type: actions.TOGGLE_STAFF_LOADING,
                 staffId
             });
         }); 

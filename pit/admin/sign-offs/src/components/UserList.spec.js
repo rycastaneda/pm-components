@@ -22,13 +22,23 @@ const users = [{
 const toggleManageSectionModal = sinon.spy(); 
 
 describe('UserList component: ', () => {
-    it('should render a spinner', () => {
+    it('should render the lists of users with badges', () => {
 
         const component = shallow(
             <UserList users={users} toggleManageSectionModal={toggleManageSectionModal}/>
         );
 
         expect(component.find(UserBadge)).to.have.length(users.length);
+    });
+
+    it('should render a message if no users are found', () => {
+
+        const component = shallow(
+            <UserList users={[]} toggleManageSectionModal={toggleManageSectionModal}/>
+        );
+
+        expect(component.find(UserBadge)).to.have.length(0);
+        expect(component.find('.user-lists').text()).to.eql('No staff assigned to this section yet.');
     });
 });
 

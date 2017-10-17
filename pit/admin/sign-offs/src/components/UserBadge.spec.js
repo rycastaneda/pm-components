@@ -16,7 +16,7 @@ describe('UserBadge component: ', () => {
 
     it('should render a the user\'s name and the not approved icon', () => {
         const component = shallow(
-            <UserBadge name="Tester" status="not approved"/>
+            <UserBadge name="Tester" status="rejected"/>
         );
 
         expect(component.text()).to.eql('Tester');

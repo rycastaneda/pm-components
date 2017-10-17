@@ -1,14 +1,14 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { toggleManageSectionModal, deleteStaff, addStaff, toggleStaffStatus  } from '../actions';
+import { toggleManageSectionModal, fetchStaff, deleteStaffResponse, addStaffResponse, toggleStaffStatus  } from '../actions';
 import StaffDropdown from '../components/StaffDropdown';
 import Staff from '../components/Staff';
+import Loader from '../components/Loader';
 import { difference } from 'lodash';
 
 class ManageSectionModal extends Component {
     constructor(props) {
         super(props);
-        console.log("props", props); // eslint-disable-line no-console, quotes
     }
 
     componentDidUpdate() {
@@ -34,28 +34,47 @@ class ManageSectionModal extends Component {
     }
 
     render() {
-        const { section, assignedStaffs, unassignedStaffs, dispatch } = this.props;
+        const { section, assignedStaffs, unassignedStaffs, dispatch, isLoading } = this.props;
         const staffs = assignedStaffs.map((staff) => {
+
             return <Staff key={staff.id} {...staff} 
-                deleteStaff={staffId => dispatch(deleteStaff(section.id, staffId))}
-                toggleSectionStatus={staffId => dispatch(toggleStaffStatus(section.id, staffId))}/>;
+                deleteStaffResponse={() => dispatch(deleteStaffResponse(section.id, staff.id))}
+                toggleSectionStatus={newStatus => dispatch(toggleStaffStatus(section.id, staff.id, newStatus.value))}/>;
         });
 
         return (
             <div>
                 <div ref={ref => this.modal = ref } className={`modal fade`}>
                     <div className="modal-dialog modal-md" role="document">
-                    <div className="modal-content">
+                        <div className="modal-content">
                             <div className="modal-header">
-                                <button type="button" className="close" onClick={() => dispatch(toggleManageSectionModal(section.id))}><span aria-hidden="true">×</span></button>
+                                <button type="button" className="close" 
+                                    onClick={() => dispatch(toggleManageSectionModal(section.id))}>
+                                    <span aria-hidden="true">×</span>
+                                </button>
                                 <div className="modal-title">Manage Staff</div>
                             </div>
-                            <div className="modal-body ">
-                                <StaffDropdown staffs={unassignedStaffs} addStaff={staff => dispatch(addStaff(section.id, staff.id))}/>
-                                <div className="well mar-top">{staffs}</div>
+                            <div className="modal-body pos-relative">
+                                <div className="row">
+                                    <div className="col-sm-1"></div>
+                                    <div className="col-sm-10 col-sm-offest-1">
+                                        <StaffDropdown 
+                                            isLoading={isLoading}
+                                            staffs={unassignedStaffs} 
+                                            fetchStaff={() => dispatch(fetchStaff(1))}
+                                            addStaffResponse={staff => dispatch(addStaffResponse(section.id, staff.id))}/>
+                                        <ul className="mar-top pos-relative">{staffs}</ul>
+                                    </div>
+                                </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="db-function mar-left-sm" data-dismiss="modal" onClick={() => dispatch(toggleManageSectionModal(section.id))}>Close</button>
+                                <button 
+                                    type="button" 
+                                    className="db-function mar-left-sm" 
+                                    data-dismiss="modal" 
+                                    onClick={() => dispatch(toggleManageSectionModal(section.id))}>
+                                    Close
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -72,6 +91,7 @@ ManageSectionModal.propTypes = {
     assignedStaffs: PropTypes.array.isRequired,
     unassignedStaffs: PropTypes.array.isRequired,
     dispatch: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
@@ -84,7 +104,8 @@ function mapStateToProps(state, ownProps) {
         return {
             section: null,
             assignedStaffs: [],
-            unassignedStaffs: []
+            unassignedStaffs: [],
+            isLoading: rawStaff.isLoading
         };
     }
 
@@ -106,7 +127,8 @@ function mapStateToProps(state, ownProps) {
         section,
         assignedStaffs,
         unassignedStaffs,
-        needsFetching: rawStaff.needsFetching
+        needsFetching: rawStaff.needsFetching,
+        isLoading: rawStaff.isLoading
     };
 }
 

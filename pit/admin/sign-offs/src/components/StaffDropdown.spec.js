@@ -13,7 +13,8 @@ const setup = (props) => {
     return { component };
 };
 
-const addStaff = sinon.spy();
+const addStaffResponse = sinon.spy();
+const fetchStaff = sinon.spy();
 
 const staffs = mockStaff.data.map((staff) => {
     return {
@@ -24,14 +25,34 @@ const staffs = mockStaff.data.map((staff) => {
 
 describe('StaffDropdown component: ', () => {
     const { component } = setup({ 
-        addStaff,
-        staffs
+        addStaffResponse,
+        fetchStaff,
+        staffs,
+        isLoading: false
     });
 
-    it('should render the select component with staffs and addStaff to be called', () => {
+    it('should render the select component with staffs and addStaffResponse to be called', () => {
         let props = component.find('Select').props();
         expect(props).to.have.property('options', staffs);
         component.find('Select').simulate('change');
-        expect(addStaff.called).to.be.true;
+        expect(addStaffResponse.called).to.be.true;
     });
+
+    it('should render the select component loading indicator', () => {
+        const { component } = setup({ 
+            addStaffResponse,
+            fetchStaff,
+            staffs,
+            isLoading: true
+        });
+
+        let props = component.find('Select').props();
+        expect(props).to.have.property('isLoading', true);
+    });
+
+    it('should render the select component with staffs and addStaffResponse to be called', () => {
+        component.find('.fa-refresh').simulate('click');
+        expect(fetchStaff.called).to.be.true;
+    });
+
 });

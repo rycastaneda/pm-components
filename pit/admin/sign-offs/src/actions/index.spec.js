@@ -95,12 +95,29 @@ describe('Sign Off actions', function() {
     });
 
     it('should call TOGGLE_STAFF_STATUS with sectionId and StaffId with new status as payload', () => {
-        expect(actions.toggleStaffStatus(1, 1, 'Approved')).to.eql({
-            type: types.TOGGLE_STAFF_STATUS,
-            sectionId: 1,
-            staffId: 1,
-            status: 'Approved'
-        });
+        const store = mockStore(mockState);
+
+        return store.dispatch(actions.toggleStaffStatus(1, 1, 'Approved'))
+            .then(() => { 
+                let actions = store.getActions();
+                expect(actions[0]).to.eql({
+                    type: types.TOGGLE_STAFF_LOADING,
+                    staffId: 1
+                });
+
+                expect(actions[1]).to.eql({
+                    type: types.TOGGLE_STAFF_STATUS,
+                    sectionId: 1,
+                    staffId: 1,
+                    status: 'Approved'
+                });
+
+                expect(actions[2]).to.eql({
+                    type: types.TOGGLE_STAFF_LOADING,
+                    staffId: 1
+                });
+
+            });
     });
 
     it('should call TOGGLE_SECTION_LOADING with sectionId as payload', () => {
@@ -197,38 +214,49 @@ describe('Sign Off actions', function() {
         });
     });
 
-    it('should call FETCH_STAFF then RECEIVE_STAFF', function() {
-        const expectedActions = [types.FETCH_STAFF, types.RECEIVE_STAFF];
-        const store = mockStore();
+    it('should call TOGGLE_MANAGE_SECTION_MODAL_LOADING then RECEIVE_STAFF', function() {
+        const expectedActions = [
+            types.TOGGLE_MANAGE_SECTION_MODAL_LOADING, 
+            types.RECEIVE_STAFF,
+            types.TOGGLE_MANAGE_SECTION_MODAL_LOADING
+        ];
+        const store = mockStore({ 
+            staff: {
+                needsFetching: true
+            }
+        });
         return store.dispatch(actions.fetchStaff()).then(() => { // return of async actions
+            console.log("store.getActions()", store.getActions()); // eslint-disable-line no-console, quotes
             expect(store.getActions().map(action => action.type)).to.eql(expectedActions);
         });
     });
 
-    it('should call TOGGLE_STAFF_LOADING then ADDED_STAFF', function() {
+    it('should call TOGGLE_STAFF_LOADING then ADDED_STAFF_RESPONSE', function() {
         const store = mockStore();
 
-        return store.dispatch(actions.addStaff(1, 5))
+        return store.dispatch(actions.addStaffResponse(1, 5))
             .then(() => {
                 let actions = store.getActions();
-
                 expect(actions[0]).to.eql({
-                    type: types.TOGGLE_STAFF_LOADING,
-                    staffId: 5
+                    type: types.TOGGLE_MANAGE_SECTION_MODAL_LOADING
                 });
 
                 expect(actions[1]).to.eql({
-                    type: types.ADDED_STAFF,
+                    type: types.ADDED_STAFF_RESPONSE,
                     sectionId: 1,
                     staffId: 5
+                });
+
+                expect(actions[2]).to.eql({
+                    type: types.TOGGLE_MANAGE_SECTION_MODAL_LOADING
                 });
             });
     });
 
-    it('should call TOGGLE_STAFF_LOADING then DELETED_STAFF', function() {
+    it('should call TOGGLE_STAFF_LOADING then DELETED_STAFF_RESPONSE', function() {
         const store = mockStore();
 
-        return store.dispatch(actions.deleteStaff(1, 5))
+        return store.dispatch(actions.deleteStaffResponse(1, 5))
             .then(() => {
                 let actions = store.getActions();
 
@@ -238,8 +266,13 @@ describe('Sign Off actions', function() {
                 });
 
                 expect(actions[1]).to.eql({
-                    type: types.DELETED_STAFF,
+                    type: types.DELETED_STAFF_RESPONSE,
                     sectionId: 1,
+                    staffId: 5
+                });
+
+                expect(actions[2]).to.eql({
+                    type: types.TOGGLE_STAFF_LOADING,
                     staffId: 5
                 });
             });

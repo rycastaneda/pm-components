@@ -1,15 +1,34 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 
-const Counters = ({ counters }) => {
-    return (
-        <div>
-            <span className="mar-r-sm badge badge-success">{counters.approved}</span>
-            <span className="mar-r-sm badge badge-danger">{counters.rejected}</span>
-            <span className="mar-r-sm badge badge-warning">{counters.inprogress}</span>
-            <span className="mar-r-sm badge badge-info">{counters.pending}</span>
-        </div>
-    );
-};
+class Counters extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isHovered: false
+        };
+
+        this.onHover = this.onHover.bind(this);
+    }
+    componentDidMount() {
+        console.log("this", this); // eslint-disable-line no-console, quotes
+    }
+    onHover() {
+
+    }
+    render() {
+        const { counters } = this.props;
+
+        return (
+            <div>
+                <span className="mar-r-sm badge badge-success" ref={ref => this.approvedRef = ref}>{counters.approved}</span>
+                <span className="mar-r-sm badge badge-bg-danger" ref={ref => this.rejectedRef = ref}>{counters.rejected}</span>
+                <span className="mar-r-sm badge badge-warning" ref={ref => this.inProgressRef = ref}>{counters.inprogress}</span>
+                <span className="mar-r-sm badge badge-info" ref={ref => this.pendingRef = ref}>{counters.pending}</span>
+            </div>
+        );
+    }
+}
 
 Counters.propTypes = {
     counters: PropTypes.shape({ 
