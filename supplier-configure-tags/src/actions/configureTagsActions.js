@@ -69,21 +69,29 @@ export function setDescriptionForTag(id, description) {
     id, description  };
 }
 
+export function setIsActiveForTag(id, status) {
+    return { type:TAG_ISACTIVE_UPDATE,
+    id, status  };
+}
+/*
 export function setIsActiveForTag(item, status) {
     return (dispatch) => {
         axios.patch('/preferred-supplier-tags/'+item.id, formatDataForSaveTagService(item))
         .then(() => {
             dispatch(onActiveStatusChanged(item.id, status));
         })
-        .catch((error) => {        
+        .catch((error) => {
             dispatch({ type:REQUEST_FAILED, message: error.message });
         });
     };
 }
+
+
 function onActiveStatusChanged(id, status) {
     return { type:TAG_ISACTIVE_UPDATE,
         id, status  };
 }
+*/
 export function fetchAllTags() {
     return (dispatch) => {
         axios.get('/preferred-supplier-tags')

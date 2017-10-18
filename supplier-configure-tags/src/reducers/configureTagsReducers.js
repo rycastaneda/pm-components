@@ -158,7 +158,9 @@ export function configureTags(state = INITIAL_DATA, action) {
         case TAG_ISACTIVE_UPDATE:
             {
                 let  newAvailableTags = state.availableTags.map(function(item) {
+                    window.console.log(state.availableTags);
                     if (item.id === action.id) {
+                        window.console.log(action.status);
                         item.isActive = action.status;
                         return Object.assign({}, item);
                     } else {

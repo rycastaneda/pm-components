@@ -12,6 +12,7 @@ class TagsList extends Component {
         this.populateTagsRow = this.populateTagsRow.bind(this);
         this.onTagTitleChange = this.onTagTitleChange.bind(this);
         this.onTagDescriptionChange = this.onTagDescriptionChange.bind(this);
+        this.onTagActiveChange = this.onTagActiveChange.bind(this);
     }
 
     componentDidMount() {
@@ -26,11 +27,11 @@ class TagsList extends Component {
                 <table  className="table db-table">
                      <thead>
                             <tr className="row" >
-                                  <th className="col-sm-1">Active</th>
-                                  <th className="col-sm-2">Icon</th>
-                                  <th className="col-sm-3">Title</th>
-                                  <th className="col-sm-3">Description</th>
-                                  <th className="col-sm-3"></th>
+                                  <th className="col-sm-2 td-center">Icon</th>
+                                  <th className="col-sm-2  td-center">Title</th>
+                                  <th className="col-sm-4  td-center">Description</th>
+                                  <th className="col-sm-1  td-center">Active</th>
+                                  <th className="col-sm-3  td-center"></th>
                             </tr>
                         </thead>
                     <tbody>{availableTags.map(this.populateTagsRow, this)}</tbody></table>
@@ -44,9 +45,26 @@ class TagsList extends Component {
     onTagDescriptionChange(id, value) {
         this.props.dispatch(setDescriptionForTag(id, value));
     }
+    onTagActiveChange(id, value) {
+        window.console.log(value);
+        this.props.dispatch(setIsActiveForTag(id, Number(value)));
+    }
 
     renderActiveStatusCell(item) {
-        return item.isActive?<i className="fa fa-check text-success"></i>:<i className="fa fa-ban text-danger"></i>;
+
+        if (item.isEdited) {
+            return (<select value={item.isActive} onChange={event => this.onTagActiveChange(item.id, event.target.value)}>
+                    <option value={1}>
+                        Active
+                    </option>
+                    <option value={0}>
+                    Inactive
+                    </option>
+            </select>);
+        } else {
+            return <span>{(item.isActive===1)?'Active':'Inactive'}</span>;
+        }
+
     }
 
     renderIconCell(item) {
@@ -66,22 +84,19 @@ class TagsList extends Component {
                 <button className="btn btn-sm item btn-danger"  onClick={() => this.props.dispatch(cancelTagEdit(item.id))}><i className="fa fa-times"></i>Cancel</button>
             </div>;
         } else {
-            return <div className="horizontal-block">
-                <button className="btn btn-sm item" onClick={() => this.props.dispatch(startTagEdit(item.id))}><i className="fa fa-edit"></i>Edit</button>
-                {item.isActive?<button className="btn btn-sm item" onClick={() => this.props.dispatch(setIsActiveForTag(item, false))}><i className="fa fa-ban"></i>Deactivate</button>:<button className="btn btn-sm item" onClick={() => this.props.dispatch(setIsActiveForTag(item, true))}><i className="fa fa-undo"></i>Reactivate</button>}
-            </div>;
+            return <button className="btn btn-sm item" onClick={() => this.props.dispatch(startTagEdit(item.id))}><i className="fa fa-edit"></i>Edit</button>;
         }
     }
     renderTitleCell(item) {
         if (item.isEdited) {
-            return <input value={item.title} onChange={event => this.onTagTitleChange(item.id, event.target.value) }/>;
+            return <input value={item.title}  className="col-xs-12 text-center" onChange={event => this.onTagTitleChange(item.id, event.target.value) }/>;
         } else {
             return <span>{item.title}</span>;
         }
     }
     renderDescriptionCell(item) {
         if (item.isEdited) {
-            return <input value={item.description} onChange={event => this.onTagDescriptionChange(item.id, event.target.value) }/>;
+            return <input value={item.description}  className="col-xs-12 text-center" onChange={event => this.onTagDescriptionChange(item.id, event.target.value) }/>;
         } else {
             return <span>{item.description}</span>;
         }
@@ -89,19 +104,19 @@ class TagsList extends Component {
     populateTagsRow(item, index) {
         return (
                  <tr className="row" key={index}>
-                     <td className="col-sm-1">
-                        {this.renderActiveStatusCell(item)}
-                     </td>
-                    <td className="col-sm-2">
+                    <td className="col-sm-2 td-center">
                             {this.renderIconCell(item)}
                     </td>
-                    <td className="col-sm-3">
+                    <td className="col-sm-2 td-center">
                             {this.renderTitleCell(item)}
                     </td>
-                    <td className="col-sm-2">
+                    <td className="col-sm-4 td-center">
                             {this.renderDescriptionCell(item)}
                     </td>
-                    <td className="col-sm-3">
+                     <td className="col-sm-1 td-center">
+                        {this.renderActiveStatusCell(item)}
+                     </td>
+                    <td className="col-sm-3 td-center">
                         {this.renderButtonCell(item)}
                     </td>
                 </tr>);
