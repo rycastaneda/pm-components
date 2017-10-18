@@ -20,7 +20,7 @@ describe('UserBadge component: ', () => {
         );
 
         expect(component.text()).to.eql('Tester');
-        expect(component.hasClass('badge-danger')).to.be.true;
+        expect(component.hasClass('badge-bg-danger')).to.be.true;
         expect(component.find('i.fa-times-circle')).to.have.length(1);
     });
 

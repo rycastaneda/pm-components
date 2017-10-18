@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import Counters from './Counters';
 import { expect } from 'chai';
 
@@ -12,7 +12,7 @@ describe('Counters component: ', () => {
             pending: 3
         };
 
-        const component = shallow(
+        const component = mount(
             <Counters counters={counters}/>
         );
 

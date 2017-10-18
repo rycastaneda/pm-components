@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 const UserBadge = ({ name, status }) => {
     const badges = {
-        'rejected': 'badge-danger',
+        'rejected': 'badge-bg-danger',
         'approved': 'badge-success',
         'pending': 'badge-info',
         'in progress': 'badge-warning'
