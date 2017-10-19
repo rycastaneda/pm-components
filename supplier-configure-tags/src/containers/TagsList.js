@@ -89,14 +89,14 @@ class TagsList extends Component {
     }
     renderTitleCell(item) {
         if (item.isEdited) {
-            return <input value={item.title}  className="col-xs-12 text-center" onChange={event => this.onTagTitleChange(item.id, event.target.value) }/>;
+            return <input value={item.title}  className="col-xs-12" onChange={event => this.onTagTitleChange(item.id, event.target.value) }/>;
         } else {
             return <span>{item.title}</span>;
         }
     }
     renderDescriptionCell(item) {
         if (item.isEdited) {
-            return <input value={item.description}  className="col-xs-12 text-center" onChange={event => this.onTagDescriptionChange(item.id, event.target.value) }/>;
+            return <input value={item.description}  className="col-xs-12" onChange={event => this.onTagDescriptionChange(item.id, event.target.value) }/>;
         } else {
             return <span>{item.description}</span>;
         }
@@ -107,10 +107,10 @@ class TagsList extends Component {
                     <td className="col-sm-2 td-center">
                             {this.renderIconCell(item)}
                     </td>
-                    <td className="col-sm-2 td-center">
+                    <td className="col-sm-2">
                             {this.renderTitleCell(item)}
                     </td>
-                    <td className="col-sm-4 td-center">
+                    <td className="col-sm-4">
                             {this.renderDescriptionCell(item)}
                     </td>
                      <td className="col-sm-1 td-center">
