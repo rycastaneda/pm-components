@@ -22,7 +22,6 @@ class EvaluationTemplatesFilter extends Component {
     }
 
     onSelectedDateChange(date) {
-        window.console.log(date);
         this.setState({ selectedDate: date });
     }
 

@@ -5,12 +5,25 @@ class TemplatesTable extends Component {
 
     constructor(props) {
         super(props);
+        this.state={ menuVisibleItemId:null };
+    }
+    toggleMenu(id) {
+        if (this.state.menuVisibleItemId===id) {
+            this.hideMenu();
+        } else {
+            this.setState({ menuVisibleItemId:id });
+        }
+    }
+    hideMenu() {
+        this.setState({ menuVisibleItemId:null });
     }
     renderMoreButton(id) {
         return (
         <div className="dropdown">
-            <a className="btn btn-sm">More &nbsp;<i className="fa fa-caret-down"></i></a>
-            <ul className="dropdown-menu show">
+            <a className="btn btn-sm" onBlur={ this.hideMenu.bind(this)} onClick={this.toggleMenu.bind(this, id)}>More &nbsp;
+                <i className="fa fa-caret-down" ></i>
+            </a>
+            <ul className={`dropdown-menu ${this.state.menuVisibleItemId===id? 'show':'hidden'}`}>
                 <li ><a href="javascript:;" onClick={() => this.onTemplatePreviewClick(id)}>Preview</a></li>
                 <li><a href="javascript:;" onClick={() => this.onTemplateEditClick(id)}>Edit</a></li>
                 <li><a href="javascript:;" onClick={()  => this.onTemplateToggleActivateClick(id)}>Deactivate</a></li>
@@ -37,7 +50,7 @@ class TemplatesTable extends Component {
                     <td className="td-center nowrap">{item.name}</td>
                     <td className="td-center nowrap">{item.instances}</td>
                     <td className="td-center nowrap">{item.completed}</td>
-                    <td className="td-center nowrap"><span className={`bs-label ${item.statusClass}`}>{item.statusName}</span></td>
+                    <td className="td-center nowrap">{item.status?<span className={`bs-label bs-label-success`}>Active</span>:<span className={`bs-label bs-label-danger`}>Inactive</span>}</td>
                     <td data-heading="More" className="td-center  last">
                         {this.renderMoreButton(item.id)}
                     </td>
