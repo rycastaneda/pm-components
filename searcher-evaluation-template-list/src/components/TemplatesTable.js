@@ -5,11 +5,13 @@ class TemplatesTable extends Component {
 
     constructor(props) {
         super(props);
-        this.state={ menuVisibleItemId:null };
+        this.state= { menuVisibleItemId:null };
+        this.hideMenu= this.hideMenu.bind(this);
     }
+
     toggleMenu(id) {
-        if (this.state.menuVisibleItemId===id) {
-            this.hideMenu();
+        if (this.state.menuVisibleItemId=== id) {
+        //    this.hideMenu();
         } else {
             this.setState({ menuVisibleItemId:id });
         }
@@ -19,11 +21,11 @@ class TemplatesTable extends Component {
     }
     renderMoreButton(id) {
         return (
-        <div className="dropdown">
-            <a className="btn btn-sm" onBlur={ this.hideMenu.bind(this)} onClick={this.toggleMenu.bind(this, id)}>More &nbsp;
+        <div className={`dropdown ${this.state.menuVisibleItemId===id? 'open': ''}`}>
+            <a className="btn btn-sm" onBlur={this.hideMenu} onClick={this.toggleMenu.bind(this, id)} href="javascript:">More &nbsp;
                 <i className="fa fa-caret-down" ></i>
             </a>
-            <ul className={`dropdown-menu ${this.state.menuVisibleItemId===id? 'show':'hidden'}`}>
+            <ul className="dropdown-menu">
                 <li ><a href="javascript:;" onClick={() => this.onTemplatePreviewClick(id)}>Preview</a></li>
                 <li><a href="javascript:;" onClick={() => this.onTemplateEditClick(id)}>Edit</a></li>
                 <li><a href="javascript:;" onClick={()  => this.onTemplateToggleActivateClick(id)}>Deactivate</a></li>
