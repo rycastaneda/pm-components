@@ -1,0 +1,89 @@
+import React, {  PropTypes, Component } from 'react';
+import ReactPaginate from 'react-paginate';
+
+class TemplatesTable extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state= { menuVisibleItemId:null };
+        this.hideMenu= this.hideMenu.bind(this);
+    }
+
+    toggleMenu(id) {
+        if (this.state.menuVisibleItemId=== id) {
+        //    this.hideMenu();
+        } else {
+            this.setState({ menuVisibleItemId:id });
+        }
+    }
+    hideMenu() {
+        this.setState({ menuVisibleItemId:null });
+    }
+    renderMoreButton(id) {
+        return (
+        <div className={`dropdown ${this.state.menuVisibleItemId===id? 'open': ''}`}>
+            <a className="btn btn-sm" onBlur={this.hideMenu} onClick={this.toggleMenu.bind(this, id)} href="javascript:">More &nbsp;
+                <i className="fa fa-caret-down" ></i>
+            </a>
+            <ul className="dropdown-menu">
+                <li ><a href="javascript:;" onClick={() => this.onTemplatePreviewClick(id)}>Preview</a></li>
+                <li><a href="javascript:;" onClick={() => this.onTemplateEditClick(id)}>Edit</a></li>
+                <li><a href="javascript:;" onClick={()  => this.onTemplateToggleActivateClick(id)}>Deactivate</a></li>
+                <li><a href="javascript:;" onClick={()  => this.onTemplateDeleteClick(id)}>Delete</a></li>
+            </ul>
+    </div>);
+    }
+    render() {
+        return (
+        <div>
+            <table className="table db-table db-table-sort">
+            <thead>
+            <tr>
+                <th>Template name</th>
+                <th>Instances</th>
+                <th>Completed</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+                {this.props.tableData.map((item, index) =>
+                    <tr key={index}>
+                    <td className="td-center nowrap">{item.name}</td>
+                    <td className="td-center nowrap">{item.instances}</td>
+                    <td className="td-center nowrap">{item.completed}</td>
+                    <td className="td-center nowrap">{item.status?<span className={`bs-label bs-label-success`}>Active</span>:<span className={`bs-label bs-label-danger`}>Inactive</span>}</td>
+                    <td data-heading="More" className="td-center  last">
+                        {this.renderMoreButton(item.id)}
+                    </td>
+                </tr>
+                )}
+            </tbody>
+            </table>
+            <select onChange={() => this.props.onMaxRowLengthChange() }>
+                {this.props.rowCountList.map((item, index) => <option key={index}>{item}</option>)}
+            </select>
+             <div className="pull-right">
+             <ReactPaginate  previousLabel={"previous"}
+                       nextLabel={"next"}
+                       breakLabel={<a href="">...</a>}
+                       breakClassName={"break-me"}
+                       pageCount={this.props.pageCount}
+                       marginPagesDisplayed={2}
+                       pageRangeDisplayed={5}
+                       containerClassName={"pagination"}
+                       subContainerClassName={"pages pagination"}
+                       activeClassName={"active"} />
+             </div>
+        </div>);
+    }
+}
+
+TemplatesTable.propTypes = {
+    tableData: PropTypes.array.isRequired,
+    rowCountList: PropTypes.array.isRequired,
+    pageCount:PropTypes.number.isRequired,
+    onMaxRowLengthChange: PropTypes.func.isRequired
+};
+
+export default TemplatesTable;
