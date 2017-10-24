@@ -13,25 +13,29 @@ import {
 } from '../constants';
 import axios from 'axios';
 
-export function fetchRequirements(quoteId, itemId, reqId, readOnly) {
-    return (dispatch) => {
+export function fetchRequirements(quoteId, itemId, requirementId, readOnly) {
+    return (dispatch, getState) => {
         dispatch({
             type: FETCH_REQUIREMENTS,
             quoteId,
             itemId,
+            requirementId,
             readOnly
         });
 
-        axios.get(`/supplier-quote-requests/${quoteId}/requested-items/${reqId}?include=complianceDocuments`)
+        let ui = getState().ui; 
+        console.log("ui 2", ui); // eslint-disable-line no-console, quotes
+
+        axios.get(`/supplier-quote-requests/${ui.quoteId}/requested-items/${ui.requirementId}?include=complianceDocuments`)
             .then((response) => {
-                if (!itemId) {
+                if (!ui.itemId) {
                     return dispatch({ 
                         type: RECEIVE_REQUIREMENTS, 
                         requirements: response.data
                     });
                 }
 
-                axios.get(`/supplier-quote-requests/${quoteId}/matched-items/${itemId}/documents`)
+                axios.get(`/supplier-quote-requests/${ui.quoteId}/matched-items/${ui.itemId}/documents`)
                 .then((response) => {
                     return dispatch({
                         type: RECEIVE_DOC_REQUIREMENTS,
@@ -60,8 +64,13 @@ export function incrementProgress(docId, progress) {
     };
 }
 
-export function removeDocument(quoteId, itemId, requirementId, docId) {
+export function removeDocument(requirementId, docId) {
     return (dispatch, getState) => {
+        const {
+            quoteId, 
+            itemId
+        } = getState().ui;
+
         dispatch({
             type: DOCUMENT_REMOVING,
             requirementId,
@@ -80,8 +89,9 @@ export function removeDocument(quoteId, itemId, requirementId, docId) {
     };
 }
 
-export function catchDocuments(quoteId, itemId, requirementId, docsToBeAdded) {
-    return (dispatch) => {
+export function catchDocuments(requirementId, docsToBeAdded) {
+    return (dispatch, getState) => {
+
         dispatch({
             type: DOCUMENTS_RECEIVING,
             requirementId,
@@ -95,8 +105,13 @@ export function catchDocuments(quoteId, itemId, requirementId, docsToBeAdded) {
                 docData.append('requested_document_id', requirementId);
             }
 
-            docData.append('document', document);
+            const {
+                quoteId, 
+                itemId
+            } = getState().ui;
 
+            docData.append('document', document);
+            
             return axios.post(
                 itemId ? `/supplier-quote-requests/${quoteId}/matched-items/${itemId}/documents`
                 : `/supplier-quote-requests/${quoteId}/documents`, 
@@ -126,6 +141,8 @@ export function catchDocuments(quoteId, itemId, requirementId, docsToBeAdded) {
             });
 
         });
+
+
     };
 }
 
@@ -149,14 +166,19 @@ function downloadBlob(url, filename, callback) {
     xhr.send();
 }
 
-export function downloadDocument(quote_id, documentId, matched_item_id, filename) {
-    return (dispatch) => {
+export function downloadDocument(documentId, filename) {
+    return (dispatch, getState) => {
+        const {
+            quoteId, 
+            itemId
+        } = getState().ui;
+
         dispatch({
             type: DOCUMENT_DOWNLOAD_STARTED
         });
 
         downloadBlob(
-            `${axios.defaults.baseURL}/supplier-quote-requests/${quote_id}/matched-items/${matched_item_id}/documents${documentId && '/' + documentId || ''}`,
+            `${axios.defaults.baseURL}/supplier-quote-requests/${quoteId}/matched-items/${itemId}/documents${documentId && '/' + documentId || ''}`,
             filename,
             () => {
                 dispatch({

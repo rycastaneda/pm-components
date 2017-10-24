@@ -16,10 +16,18 @@ class RequestedDocuments extends Component {
         this.handleCatchDocs = this.handleCatchDocs.bind(this);
         this.handleRemoveDocument = this.handleRemoveDocument.bind(this);
         this.handleDownloadDocument = this.handleDownloadDocument.bind(this);
-        this.quote_id = document.querySelector('[data-component="supplier-requested-documents"]').getAttribute('data-quote-id');
-        this.matched_id = document.querySelector('[data-component="supplier-requested-documents"]').getAttribute('data-matched-item');
-        this.reqId = document.querySelector('[data-component="supplier-requested-documents"]').getAttribute('data-rqid');
-        this.readOnly = !!document.querySelector('[data-component="supplier-requested-documents"]').getAttribute('data-read-only');
+        this.componentDidMount = this.componentDidMount.bind(this);
+
+        this.domRef = null;
+    }
+
+    componentDidMount() {
+        const parent = this.domRef.parentNode; // eslint-disable-line
+        console.log("parent", parent); // eslint-disable-line no-console, quotes
+        this.quote_id = parent.getAttribute('data-quote-id');
+        this.matched_id = parent.getAttribute('data-matched-item');
+        this.reqId = parent.getAttribute('data-rqid');
+        this.readOnly = !!parent.getAttribute('data-read-only');
         this.props.dispatch(fetchRequirements(this.quote_id, this.matched_id, this.reqId));
     }
 
@@ -29,11 +37,11 @@ class RequestedDocuments extends Component {
             return file;
         });
 
-        this.props.dispatch(catchDocuments(this.quote_id, this.matched_id, requirement_id, files));
+        this.props.dispatch(catchDocuments(requirement_id, files));
     }
 
     handleRemoveDocument(requirement_id, file_id) {
-        this.props.dispatch(removeDocument(this.quote_id, this.matched_id, requirement_id, file_id));
+        this.props.dispatch(removeDocument(requirement_id, file_id));
     }
 
     handleDownloadDocument(documentId, filename) {
@@ -73,7 +81,7 @@ class RequestedDocuments extends Component {
         }
 
         return (
-            <div className="group-panel supplier-requested-documents">
+            <div className="group-panel supplier-requested-documents" ref={ref => this.domRef = ref}>
                 <input type="hidden" name="requestedDocuments" value={JSON.stringify(summary)}/>
                 {ui.error === 'FETCH_FAILED' ?
                     <div className="alert alert-danger">
