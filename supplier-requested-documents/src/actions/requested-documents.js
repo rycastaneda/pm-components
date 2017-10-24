@@ -24,7 +24,6 @@ export function fetchRequirements(quoteId, itemId, requirementId, readOnly) {
         });
 
         let ui = getState().ui; 
-        console.log("ui 2", ui); // eslint-disable-line no-console, quotes
 
         axios.get(`/supplier-quote-requests/${ui.quoteId}/requested-items/${ui.requirementId}?include=complianceDocuments`)
             .then((response) => {
@@ -111,7 +110,7 @@ export function catchDocuments(requirementId, docsToBeAdded) {
             } = getState().ui;
 
             docData.append('document', document);
-            
+
             return axios.post(
                 itemId ? `/supplier-quote-requests/${quoteId}/matched-items/${itemId}/documents`
                 : `/supplier-quote-requests/${quoteId}/documents`, 

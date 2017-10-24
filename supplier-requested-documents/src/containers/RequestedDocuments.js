@@ -23,7 +23,6 @@ class RequestedDocuments extends Component {
 
     componentDidMount() {
         const parent = this.domRef.parentNode; // eslint-disable-line
-        console.log("parent", parent); // eslint-disable-line no-console, quotes
         this.quote_id = parent.getAttribute('data-quote-id');
         this.matched_id = parent.getAttribute('data-matched-item');
         this.reqId = parent.getAttribute('data-rqid');
