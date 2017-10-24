@@ -5,7 +5,7 @@ const StaffDropdown = ({ staffs, addStaffResponse, fetchStaff, isLoading }) => {
     const renderer = (option) => {
         return (
             <p className="col-header">
-                <span className="mar-l-sm col-grey-1">{option.name}</span>
+                <span className="mar-l-sm col-grey-1">{`${option.first_name} ${option.last_name}`}</span>
             </p>
         );
     };

@@ -1,35 +1,47 @@
 import * as actions from '../constants';
-
+import { includes } from 'lodash';
 const INITIAL_STATE = { 
+    bySectionId: {},
     byId: {},
     allIds: []
 };
 
 export function questions(state = INITIAL_STATE, action) {
     switch (action.type) {
-        case actions.RECEIVE_SECTIONS:
-            return receiveSections(state, action);
+        case actions.RECEIVE_QUESTIONS:
+            return receiveQuestions(state, action);
         default:
             return state;
     }
 }
 
-function receiveSections(state, action) {
-    const byId = {};
+function receiveQuestions(state, action) {
+    const {
+        byId,
+        bySectionId,
+        allIds
+    } = state; 
 
-    action.sections.included
-        .filter(include => include.type === 'question')
-        .map((include) => {
-            byId[include.id] = {
-                ...include.attributes
-            };
-            return include;
-        });
+    action.questions.data.map((question) => {
+        byId[question.id] = { 
+            ...question, 
+            question: question.attributes.label,
+            answer: question.attributes.value
+        };
+        allIds.push(question.id);
 
-    const allIds = Object.keys(byId);
+        if (bySectionId[question.attributes.section_id] && 
+            !includes(bySectionId[question.attributes.section_id], question.id)
+        ) {
+            return bySectionId[question.attributes.section_id].push(question.id);
+        } 
+
+        bySectionId[question.attributes.section_id] = [question.id];
+
+    });
 
     return {
-        ...state,
+        bySectionId,
         byId,
         allIds
     };

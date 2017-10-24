@@ -1,9 +1,18 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { toggleManageSectionModal, fetchStaff, deleteStaffResponse, addStaffResponse, toggleStaffStatus  } from '../actions';
+import { 
+    toggleManageSectionModal
+} from '../actions/section';
+
+import {
+    fetchStaff,
+    deleteStaffResponse, 
+    addStaffResponse, 
+    changeStaffResponse
+} from '../actions/staff';
+
 import StaffDropdown from '../components/StaffDropdown';
 import Staff from '../components/Staff';
-import Loader from '../components/Loader';
 import { difference } from 'lodash';
 
 class ManageSectionModal extends Component {
@@ -13,11 +22,10 @@ class ManageSectionModal extends Component {
 
     componentDidUpdate() {
         const { section } = this.props;
-
         // show the elements
         this.modal.className = `modal fade show`; 
         this.drop.className = `modal-backdrop fade`; 
-
+        
         if (!section) { // closing the modal, hide modal and drop again
             setTimeout(() => this.toggleOpacityAnimation(false), 300); // element hides instantly; need significant delay
             return;
@@ -36,10 +44,10 @@ class ManageSectionModal extends Component {
     render() {
         const { section, assignedStaffs, unassignedStaffs, dispatch, isLoading } = this.props;
         const staffs = assignedStaffs.map((staff) => {
-
-            return <Staff key={staff.id} {...staff} 
-                deleteStaffResponse={() => dispatch(deleteStaffResponse(section.id, staff.id))}
-                toggleSectionStatus={newStatus => dispatch(toggleStaffStatus(section.id, staff.id, newStatus.value))}/>;
+            return <Staff key={staff.id} 
+                {...staff} 
+                deleteStaffResponse={() => dispatch(deleteStaffResponse(section.id, staff.id, staff.responseId))}
+                toggleSectionStatus={newStatus => dispatch(changeStaffResponse(staff.id, staff.responseId, newStatus.value))}/>;
         });
 
         return (
@@ -97,6 +105,7 @@ ManageSectionModal.propTypes = {
 function mapStateToProps(state, ownProps) {
     const {
         sections: rawSections,
+        response: rawResponse,
         staff: rawStaff
     } = state;
 
@@ -111,17 +120,27 @@ function mapStateToProps(state, ownProps) {
 
     const section = rawSections.byId[ownProps.sectionId];
 
-    const assignedStaffIds = Object.keys(section.responses).map(staffId => +staffId);
-    const unassignedStaffIds = difference(rawStaff.allIds, assignedStaffIds);
-
-    const assignedStaffs = assignedStaffIds.map((staffId) => {
-        return { 
-            ...rawStaff.byId[staffId],
-            status: section.responses[staffId]
+    const responses = section.responseIds.map((responseId) => {
+        return {
+            ...rawResponse.byId[responseId],
+            responseId
         };
     });
-    const unassignedStaffs = unassignedStaffIds.map(staffId => rawStaff.byId[staffId]);
 
+    const assignedStaffIds = responses.map(response => response.staffId);
+    const unassignedStaffIds = difference(rawStaff.allIds, assignedStaffIds);
+
+    const assignedStaffs = responses.map((response) => {
+        const staff = rawStaff.byId[response.staffId];
+        return { 
+            ...rawStaff.byId[response.staffId],
+            name: `${staff.first_name} ${staff.last_name}`,
+            responseId: response.responseId,
+            status: response.status
+        };
+    });
+
+    const unassignedStaffs = unassignedStaffIds.map(staffId => rawStaff.byId[staffId]);
 
     return {
         section,

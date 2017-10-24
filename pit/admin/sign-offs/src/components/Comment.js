@@ -29,7 +29,7 @@ const Comment = ({ staff, comment, date, toggleCommentEdit, deleteComment, isRea
 
 Comment.propTypes = {
     staff: PropTypes.string.isRequired,
-    comment: PropTypes.string.isRequired,
+    comment: PropTypes.string,
     date: PropTypes.string,
     toggleCommentEdit: PropTypes.func.isRequired,
     deleteComment: PropTypes.func.isRequired,

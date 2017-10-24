@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import Counters from './Counters';
+import CounterBadge from './CounterBadge';
 import { expect } from 'chai';
 
 describe('Counters component: ', () => {
@@ -16,10 +17,7 @@ describe('Counters component: ', () => {
             <Counters counters={counters}/>
         );
 
-        expect(+component.find('.badge-info').text()).to.eql(3);
-        expect(+component.find('.badge-success').text()).to.eql(3);
-        expect(+component.find('.badge-bg-danger').text()).to.eql(0);
-        expect(+component.find('.badge-warning').text()).to.eql(2);
+        expect(component.find(CounterBadge)).to.have.length(4);
     });
 });
 

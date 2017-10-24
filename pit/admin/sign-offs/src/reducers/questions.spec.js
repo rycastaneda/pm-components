@@ -1,27 +1,29 @@
 import { expect } from 'chai';
 import { questions } from './questions';
 import * as actions from '../constants';
-import mockSections from '../mocks/sections.json';
+import mockQuestions from '../mocks/questions.json';
 
 describe('Questions reducer', () => {
+    let sectionId = 1;
     let state = {};
     
     it('should handle default state', () => {
         state = questions(undefined, {});
         expect(state).to.deep.equal({ 
+            bySectionId: {},
             byId: {},
             allIds: []
         });
     });
 
-    it('should handle RECEIVE_SECTIONS', () => {
+    it('should handle RECEIVE_QUESTIONS', () => {
         state = questions(state, {
-            type: actions.RECEIVE_SECTIONS,
-            sections: mockSections
+            type: actions.RECEIVE_QUESTIONS,
+            sectionId,
+            questions: mockQuestions
         });
-        expect(state.allIds).to.have.members(
-            mockSections.included.filter(include => include.type === 'question').map(questions => '' + questions.id)
-        );
+        
+        expect(state.bySectionId[1]).to.have.members(['3056', '3058', '3057']);
     });
 
 });

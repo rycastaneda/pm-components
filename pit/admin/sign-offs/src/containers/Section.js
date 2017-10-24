@@ -8,16 +8,21 @@ import Loader from '../components/Loader';
 import Counters from '../components/Counters';
 
 import { 
-    fetchStaff,
     toggleManageSectionModal,
     toggleSectionCollapse, 
+    switchSectionTab
+} from '../actions/section';
+
+import { fetchStaff } from '../actions/staff';
+import { fetchQuestions } from '../actions/questions';
+
+import {
     toggleCommentBox,
     toggleCommentEdit, 
-    switchSectionTab, 
     submitEditComment,
     submitNewComment,
     deleteComment
-} from '../actions';
+} from '../actions/comments';
 
 class Section extends Component {
 
@@ -31,6 +36,7 @@ class Section extends Component {
         this.toggleCommentEdit = this.toggleCommentEdit.bind(this);
         this.toggleManageSectionModal = this.toggleManageSectionModal.bind(this);
         this.deleteComment = this.deleteComment.bind(this);
+        this.toggleSectionCollapse = this.toggleSectionCollapse.bind(this);
     }
 
     submitComment(comment = this.newComment, isEditing) {
@@ -84,17 +90,26 @@ class Section extends Component {
         dispatch(fetchStaff());
     }
 
+    toggleSectionCollapse() {
+        const { id, isCollapsed, dispatch } = this.props; 
+
+        dispatch(toggleSectionCollapse(id));
+        if (!isCollapsed) {
+            dispatch(fetchQuestions(id));
+        }
+    }
+
     render() {
         const { 
             id, dispatch,
-            name, 
+            title, 
             currentTab, 
             isCollapsed, 
             isAddingNewComment, 
             isLoading,
             questions, comments, responses
         } = this.props;
-
+        
         const {
             isReadOnly,
             currentStaffId
@@ -121,10 +136,10 @@ class Section extends Component {
             
         return (
             <div className="pmaccordion pmaccordion--impact">
-                <a onClick={() => dispatch(toggleSectionCollapse(id))} 
+                <a onClick={this.toggleSectionCollapse} 
                     className={`toggle-section pmaccordion__head ${isCollapsed || 'collapsed'}`}>
                     <div className="row-title">
-                        <span className="pull-left pmaccordion__title">{name}</span>
+                        <span className="pull-left pmaccordion__title">{title}</span>
                         <span className="pull-right status-icon">
                             <Counters counters={counters} />
                         </span>
@@ -132,19 +147,21 @@ class Section extends Component {
                     </div>
                 </a>
                 <div className={`collapse pad-hor ${isCollapsed ? 'in' : ''}`}>
-                    <UserList users={responses} toggleManageSectionModal={this.toggleManageSectionModal}/>
+                    <UserList users={responses} sectionId={id} toggleManageSectionModal={this.toggleManageSectionModal}/>
                     <Header 
                         currentTab={currentTab} 
                         switchSectionTab={tab => dispatch(switchSectionTab(id, tab))}/>
-                    <Tab 
-                        currentTab={currentTab}
-                        comments={comments}
-                        questions={questions}
-                        isReadOnly={isReadOnly}
-                        currentStaffId={currentStaffId}
-                        submitComment={comment => this.submitComment(comment, submitEditComment)}
-                        toggleCommentEdit={comment => this.toggleCommentEdit(comment, true)}
-                        deleteComment={id => this.deleteComment(id)}/>
+                    {!isLoading ? 
+                        <Tab 
+                            currentTab={currentTab}
+                            comments={comments}
+                            questions={questions}
+                            isReadOnly={isReadOnly}
+                            currentStaffId={currentStaffId}
+                            submitComment={comment => this.submitComment(comment, submitEditComment)}
+                            toggleCommentEdit={comment => this.toggleCommentEdit(comment, true)}
+                            deleteComment={id => this.deleteComment(id)}/>
+                    : null }
                     <div className="text-center mar-top mar-btm pos-relative">
                         {isLoading ? <Loader icon="-small"></Loader> : null}
                         {newCommentForm}
@@ -157,7 +174,7 @@ class Section extends Component {
 
 Section.propTypes = {
     id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
     currentTab: PropTypes.string,
     isCollapsed: PropTypes.bool.isRequired,
     isAddingNewComment: PropTypes.bool.isRequired,

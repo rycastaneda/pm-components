@@ -21,7 +21,7 @@ describe('Comments reducer', () => {
         });
 
         expect(state.allIds).to.have.members(
-            mockSections.included.filter(include => include.type === 'comment').map(comments => '' + comments.id)
+            mockSections.included.filter(include => include.type === 'comments').map(comments => '' + comments.id)
         );
     });
 

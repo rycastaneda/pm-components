@@ -28,19 +28,29 @@ describe('Sections reducer', () => {
             type: actions.RECEIVE_SECTIONS,
             sections: mockSections
         });
-
-        expect(state).to.have.property('isLoading', false);
-        expect(state.byId[1]).to.have.property('isCollapsed', false);
+        expect(state).to.have.property('isLoading', false);        expect(state.byId[1]).to.have.property('isCollapsed', false);
         expect(state.byId[1]).to.have.property('isAddingNewComment', false);
         expect(state.byId[1]).to.have.property('isLoading', false);
         expect(state.byId[1]).to.have.property('currentTab', 'questions');
+        expect(state.byId[1]).to.have.property('defaultUserIds');
+        expect(state.byId[1]).to.have.property('responseIds');
+        expect(state.byId[1]).to.have.property('commentIds');
         expect(state.byId[1]).to.have.property('isShown', false);
-        expect(state.byId[1].responses[1]).to.eql('In Progress');
-        expect(state.byId[1].commentIds).to.have.length(2);
-        expect(state.byId[1].answers[0]).to.have.property('questionId', 1);
-        expect(state.byId[1].answers[0]).to.have.property('answer', 'Spaghetti');
-        expect(state.byId[1].answers).to.have.length(2);
-        expect(state.allIds).to.have.members(mockSections.data.map(sections => sections.id));
+        expect(state.byId[46].defaultUserIds).to.have.members(['1']);
+        expect(state.byId[47].responseIds).to.have.members(['1']);
+        expect(state.byId[47].commentIds).to.have.members(['1', '2']);
+        expect(state.allIds).to.have.members(mockSections.data.map(sections => '' + sections.id));
+    });
+
+    it('should handle TOGGLE_MANAGE_SECTION_MODAL', () => {
+        let isShown = state.byId[1].isShown;
+
+        state = sections(state, {
+            type: actions.TOGGLE_MANAGE_SECTION_MODAL,
+            sectionId: 1
+        });
+        
+        expect(state.byId[1]).to.have.property('isShown', !isShown);
     });
 
     it('should handle TOGGLE_SECTION_COLLAPSE', () => {
@@ -52,17 +62,6 @@ describe('Sections reducer', () => {
         });
         
         expect(state.byId[1]).to.have.property('isCollapsed', !isCollapsed);
-    });
-
-    it('should handle TOGGLE_MANAGE_SECTION_MODAL', function() {
-        let isShown = state.byId[1].isShown;
-
-        state = sections(state, {
-            type: actions.TOGGLE_MANAGE_SECTION_MODAL,
-            sectionId: 1
-        });
-        
-        expect(state.byId[1]).to.have.property('isShown', !isShown);
     });
 
     it('should handle SWITCH_SECTION_TAB', () => {
@@ -108,7 +107,7 @@ describe('Sections reducer', () => {
         
         expect(state.byId[1]).to.have.property('isLoading', false);
         expect(state.byId[1]).to.have.property('isAddingNewComment', false);
-        expect(state.byId[1].commentIds).to.have.members([1, 2, 4]);
+        expect(state.byId[1].commentIds).to.have.members([4]);
     });
 
     it('should handle DELETED_COMMENT by removing the commentId from commentIds', () => {
@@ -121,35 +120,30 @@ describe('Sections reducer', () => {
         expect(state.byId[1].commentIds).to.not.include(4);
     });
 
-    it('should handle TOGGLE_STAFF_STATUS with staffId and status as payload', function() {
-        state = sections(state, {
-            type: actions.TOGGLE_STAFF_STATUS,
-            sectionId: 1,
-            staffId: 1,
-            status: 'not approved'
-        });
+    it('should handle ADDED_STAFF_RESPONSE', () => {
+        const responseCount = state.byId[1].responseIds.length;
 
-        expect(state.byId[1].responses[1]).to.eql('not approved');
-    });
-
-    it('should handle ADDED_STAFF_RESPONSE with staffId and status as payload', function() {
         state = sections(state, {
             type: actions.ADDED_STAFF_RESPONSE,
             sectionId: 1,
-            staffId: 5
+            staffId: 1,
+            responseId: 100
         });
 
-        expect(state.byId[1].responses[5]).to.eql('Pending');
+        expect(state.byId[1].responseIds).to.have.length(responseCount + 1);
+        expect(state.byId[1].responseIds).to.include(100);
     });
 
-    it('should handle DELETED_STAFF with staffId and status as payload', function() {
+    it('should handle DELETED_STAFF_RESPONSE', () => {
+        const responseCount = state.byId[1].responseIds.length;
+        
         state = sections(state, {
-            type: actions.DELETED_STAFF,
+            type: actions.DELETED_STAFF_RESPONSE,
             sectionId: 1,
-            staffId: 5
+            responseId: 100
         });
 
-        expect(Object.keys(state.byId[1].responses)).to.not.include(5);
+        expect(state.byId[1].responseIds).to.not.include(100);
+        expect(state.byId[1].responseIds).to.have.length(responseCount - 1);
     });
-
 });

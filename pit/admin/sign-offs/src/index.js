@@ -26,7 +26,7 @@ const store = createStore(
 let hostname = api.configureHostname();
 let headers = api.configureHeaders();
 
-axios.defaults.baseURL = hostname;
+axios.defaults.baseURL = process.env.NODE_ENV !== 'test' ? 'http://httpbin.org/anything' : hostname;
 axios.defaults.headers.common = headers;
 
 render(

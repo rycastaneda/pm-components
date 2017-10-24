@@ -14,10 +14,10 @@ export function ui(state = INITIAL_STATE, action) {
                 isReadOnly: action.isReadOnly,
                 currentStaffId: action.staffId
             };
-        case actions.TOGGLE_MANAGE_SECTION_MODAL: 
+        case actions.TOGGLE_MANAGE_SECTION_MODAL:
             return {
                 ...state,
-                sectionModalId: action.sectionId === state.sectionModalId ? null : action.sectionId
+                sectionModalId: action.sectionId
             };
     }
 

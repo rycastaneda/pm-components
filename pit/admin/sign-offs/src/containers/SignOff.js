@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Section from './Section';
-import { fetchSections } from '../actions';
+import { fetchSections } from '../actions/section';
 import ManageSectionModal from './ManageSectionModal';
 import Loader from '../components/Loader';
 
@@ -42,6 +42,7 @@ function mapStateToProps(state) {
         questions: rawQuestions, 
         comments: rawComments,
         staff: rawStaff,
+        response: rawResponses,
         ui
     } = state;
 
@@ -57,41 +58,46 @@ function mapStateToProps(state) {
 
     sections = rawSections.allIds.map((sectionId) => {
         const section = rawSections.byId[sectionId];
-        let questions = section.answers.map((answer) => {
-            return {
-                id: answer.questionId,
-                ...rawQuestions.byId[answer.questionId],
-                answer: answer.answer
-            };
-        });
-
         let comments = section.commentIds.map((commentId) => {
             let comment = rawComments.byId[commentId];
+            let { first_name, last_name } = rawStaff.byId[comment.staffId];
             return {
                 ...comment,
                 id: commentId,
-                staff: rawStaff.byId[comment.staffId].name
+                staff: `${first_name} ${last_name}`
             };
         });
 
-        let responses = Object.keys(section.responses).map((staffId) => {
+        let responses = section.responseIds.map((responseId) => {
+            const response = rawResponses.byId[responseId];
+            const name = `${rawStaff.byId[response.staffId].first_name} ${rawStaff.byId[response.staffId].last_name}`;
+            const status = response.status;
+
             return {
-                id: staffId,
-                name: rawStaff.byId[staffId].name,
-                status: section.responses[staffId]
+                id: response.staffId,
+                name,
+                status
             };
         });
+
+        let questions = [];
+
+        if (rawQuestions.bySectionId[sectionId]) {
+            questions = rawQuestions.bySectionId[sectionId].map((questionId) => {
+                return rawQuestions.byId[questionId];
+            });
+        }
             
         return {
-            sectionId,
             ...section,
+            id: +sectionId,
             comments,
             responses,
             questions
         };
     });
 
-    return { sections, isLoading: rawSections.isLoading, sectionModalId: ui.sectionModalId };
+    return { sections, isLoading: rawSections.isLoading, sectionModalId: +ui.sectionModalId };
 }
 
 export default connect(mapStateToProps)(SignOff);  // adds dispatch prop

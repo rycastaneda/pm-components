@@ -25,20 +25,13 @@ describe('UI reducer', () => {
         expect(state).to.have.property('currentStaffId', 100);
     });
 
-    it('should handle TOGGLE_MANAGE_SECTION_MODAL', () => {
+    it('should handle TOGGLE_MANAGE_SECTION_MODAL by setting the sectionId on edit', function() {
         state = ui(state, {
             type: actions.TOGGLE_MANAGE_SECTION_MODAL,
             sectionId: 1
         });
-        
-        expect(state).to.have.property('sectionModalId', 1);
 
-        state = ui(state, {
-            type: actions.TOGGLE_MANAGE_SECTION_MODAL,
-            sectionId: 1
-        });
-        
-        expect(state).to.have.property('sectionModalId', null);
+        expect(state).to.have.property('sectionModalId', 1);
     });
 
 });

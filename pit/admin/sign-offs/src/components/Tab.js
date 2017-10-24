@@ -14,18 +14,22 @@ const Tab = ({
     deleteComment
 }) => {
     const tabs = {
-        questions: questions.map((question, index) => {
+        questions: questions.length ? questions.map((question, index) => {
             return (
                 <div key={index}>
                     <Question {...question}/>
                 </div>
             );
-        }),
-        comments: comments.map((comment, index) => {
+        }) : (
+            <div>
+                No questions yet.
+            </div>
+        ),
+        comments: comments.length ? comments.map((comment, index) => {
             let loader = <Loader icon="-small"></Loader>;
             let content = comment.isEditing ?
                 <NewComment  
-                    comment={comment.comment} 
+                    comment={comment.text} 
                     getNewCommentRef={input => comment.ref = input} 
                     cancelNewComment={toggleCommentEdit(comment)}
                     submitComment={submitComment(comment)}/>
@@ -41,7 +45,11 @@ const Tab = ({
                     {content}
                 </div>
             );
-        })
+        }) : (
+            <div>
+                No comments yet.
+            </div>
+        )
     };
 
     return <div>{currentTab ? tabs[currentTab] : null}</div>;

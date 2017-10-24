@@ -22,12 +22,11 @@ const setup = (props) => {
 };
 
 const toggleSectionDisplay = sinon.spy();
-const toggleSectionStatus = sinon.spy();
 const dispatch = sinon.spy();
 
 describe('Section container: ', () => {
     const { component } = setup({ 
-        name: 'Company Size', 
+        title: 'Company Size', 
         status: 'approved', 
         currentTab: 'questions',
         currentStaffId: 100,
@@ -51,13 +50,12 @@ describe('Section container: ', () => {
         }],
         responses: [],
         dispatch,
-        toggleSectionDisplay,
-        toggleSectionStatus
+        toggleSectionDisplay
     });
 
     it('should render section and get its properties correctly', () => {
         const props = component.props();
-        expect(props.name).to.eql('Company Size');
+        expect(props.title).to.eql('Company Size');
         expect(props.status).to.eql('approved');
     });
 

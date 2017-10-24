@@ -25,7 +25,7 @@ describe('UserList component: ', () => {
     it('should render the lists of users with badges', () => {
 
         const component = shallow(
-            <UserList users={users} toggleManageSectionModal={toggleManageSectionModal}/>
+            <UserList sectionId={1} users={users} toggleManageSectionModal={toggleManageSectionModal}/>
         );
 
         expect(component.find(UserBadge)).to.have.length(users.length);
@@ -34,7 +34,7 @@ describe('UserList component: ', () => {
     it('should render a message if no users are found', () => {
 
         const component = shallow(
-            <UserList users={[]} toggleManageSectionModal={toggleManageSectionModal}/>
+            <UserList sectionId={1} users={[]} toggleManageSectionModal={toggleManageSectionModal}/>
         );
 
         expect(component.find(UserBadge)).to.have.length(0);

@@ -31,22 +31,17 @@ class CounterBadge extends Component {
             },
             'approved': {
                 class: 'badge-success',
-                marginLeft: -65,
                 text: 'Approved'
             },
             'pending': {
                 class: 'badge-info',
-                marginLeft: -60,
                 text: 'Pending'
             },
             'in progress': {
                 class: 'badge-warning',
-                marginLeft: -77,
                 text: 'In Progress'
             }
         };
-
-        const marginLeft = this.state.isHovered ? -15 : badges[status].marginLeft || -60;
 
         return (
             <span className={`mar-r-sm counter-badge ${this.state.isHovered ? 'in' : ''}`}>

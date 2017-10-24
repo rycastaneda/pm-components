@@ -28,13 +28,12 @@ export function comments(state = INITIAL_STATE, action) {
 
 function receiveSections(state, action) {
     const byId = {};
-
     action.sections.included
-        .filter(include => include.type === 'comment')
+        .filter(include => include.type === 'comments')
         .map((include) => {
             byId[include.id] = {
                 ...include.attributes,
-                staffId: include.relationships.staff.id,
+                staffId: include.relationships.staff.data.id,
                 isEditing: false,
                 isLoading: false
             };

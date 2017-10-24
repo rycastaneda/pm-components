@@ -36,8 +36,8 @@ describe('CounterBadge component: ', () => {
             status: 'approved', 
             count: 2
         });
-        const count = component.find('.counter-badge--count');
-        const text = component.find('.counter-badge--text');
+        const count = component.find('.counter-badge__count');
+        const text = component.find('.counter-badge__text');
 
         expect(count.text()).to.eql('2');
         expect(text.text()).to.eql('Approved');
