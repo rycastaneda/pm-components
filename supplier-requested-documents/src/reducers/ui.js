@@ -6,7 +6,6 @@ import {
 
 const INITIAL_STATE = {
     loading: true,
-    itemId: null,
     quoteId: null, 
     requirementId: null,
     error: false
@@ -19,7 +18,6 @@ export function ui(state = INITIAL_STATE, action) {
                 ...state,
                 loading: true,
                 readOnly: action.readOnly,
-                itemId: action.itemId,
                 quoteId: action.quoteId,
                 requirementId: action.requirementId
             };

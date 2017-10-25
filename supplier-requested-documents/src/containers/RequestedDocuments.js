@@ -24,7 +24,6 @@ class RequestedDocuments extends Component {
     componentDidMount() {
         const parent = this.domRef.parentNode; // eslint-disable-line
         this.quote_id = parent.getAttribute('data-quote-id');
-        this.matched_id = parent.getAttribute('data-matched-item');
         this.reqId = parent.getAttribute('data-rqid');
         this.readOnly = !!parent.getAttribute('data-read-only');
         this.props.dispatch(fetchRequirements(this.quote_id, this.matched_id, this.reqId));
@@ -36,15 +35,21 @@ class RequestedDocuments extends Component {
             return file;
         });
 
-        this.props.dispatch(catchDocuments(requirement_id, files));
+        const itemId = this.domRef.parentNode.getAttribute('data-matched-item'); // needed to fetch dynamic matched item id
+
+        this.props.dispatch(catchDocuments(itemId, requirement_id, files));
     }
 
     handleRemoveDocument(requirement_id, file_id) {
-        this.props.dispatch(removeDocument(requirement_id, file_id));
+        const itemId = this.domRef.parentNode.getAttribute('data-matched-item'); // needed to fetch dynamic matched item id
+
+        this.props.dispatch(removeDocument(itemId, requirement_id, file_id));
     }
 
     handleDownloadDocument(documentId, filename) {
-        this.props.dispatch(downloadDocument(this.quote_id, documentId, this.matched_id, filename));
+        const itemId = this.domRef.parentNode.getAttribute('data-matched-item'); // needed to fetch dynamic matched item id
+
+        this.props.dispatch(downloadDocument(this.quote_id, documentId, itemId, filename));
     }
 
     render() {

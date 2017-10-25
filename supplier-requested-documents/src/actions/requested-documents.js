@@ -63,11 +63,10 @@ export function incrementProgress(docId, progress) {
     };
 }
 
-export function removeDocument(requirementId, docId) {
+export function removeDocument(itemId, requirementId, docId) {
     return (dispatch, getState) => {
         const {
-            quoteId, 
-            itemId
+            quoteId
         } = getState().ui;
 
         dispatch({
@@ -88,7 +87,7 @@ export function removeDocument(requirementId, docId) {
     };
 }
 
-export function catchDocuments(requirementId, docsToBeAdded) {
+export function catchDocuments(itemId, requirementId, docsToBeAdded) {
     return (dispatch, getState) => {
 
         dispatch({
@@ -105,8 +104,7 @@ export function catchDocuments(requirementId, docsToBeAdded) {
             }
 
             const {
-                quoteId, 
-                itemId
+                quoteId
             } = getState().ui;
 
             docData.append('document', document);
@@ -165,11 +163,10 @@ function downloadBlob(url, filename, callback) {
     xhr.send();
 }
 
-export function downloadDocument(documentId, filename) {
+export function downloadDocument(itemId, documentId, filename) {
     return (dispatch, getState) => {
         const {
-            quoteId, 
-            itemId
+            quoteId
         } = getState().ui;
 
         dispatch({
