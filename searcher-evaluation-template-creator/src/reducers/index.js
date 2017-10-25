@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { evaluationTemplates } from './evaluationTemplates';
+import { evaluationTemplateCreator } from './evaluationTemplateCreator';
 export default combineReducers({
-    evaluationTemplates
+    evaluationTemplateCreator
 });
