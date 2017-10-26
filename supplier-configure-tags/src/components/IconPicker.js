@@ -34,11 +34,18 @@ class IconPicker extends Component {
 
         return (
                 <div className="icon-picker">
-                    <button type="button" className="btn btn-xs" onClick={ this.handleClick }><i className={`fa ${this.state.selectedIconClass}`}></i><span className="caret"></span></button>
-                    { this.state.displayIconPicker ? <div className="popover show mar-top-lg" >
+                    <button type="button" className="btn btn-xs" onClick={ this.handleClick }>
+                        <i className={`fa ${this.state.selectedIconClass}`}></i>
+                        <span className="caret"></span></button>
+                        { this.state.displayIconPicker ? <div className="popover show mar-top-lg" >
                         <div className="cover"  onClick={ this.handleClose }/>
                         <div className="icon-group">{ICONS.map(function(item) {
-                            return <a  className={`icon-item${this.state.selectedIconClass===item?' selected': ''}`} key={item} value={item} onClick={() => this.handleChange(item)} href="javascript:void(0);"><span className={`fa ${item}`}></span></a>;
+                            return <a  
+                                className={`icon-item${this.state.selectedIconClass===item?' selected': ''}`}
+                                key={item} value={item} onClick={() => this.handleChange(item)} 
+                                href="javascript:void(0);">
+                                <span className={`fa ${item}`}></span>
+                            </a>;
                         }, this)}</div>
                     </div> : null }
                 </div>

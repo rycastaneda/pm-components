@@ -8,7 +8,8 @@ describe('Configure Tags actions: ', () => {
 
     it('setIsActiveForTag should call webservice and dispatch response', () => {
 
-        const fn = actions.saveTag({ id:1, iconClass:'fa-tag', color:'#000', title:'', description:'', isActive:true, isEdited:true });
+        const fn = actions.saveTag({ id:1, iconClass:'fa-tag', color:'#000', title:'', description:'', 
+        isActive:true, isEdited:true });
         const dispatch = sinon.spy();
         const getState = sinon.stub().returns({ response:{ data:{ data:{ id:1 } } } });
 

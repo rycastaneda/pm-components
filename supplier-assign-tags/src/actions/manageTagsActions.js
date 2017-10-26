@@ -1,6 +1,21 @@
-import { SELECTED_TAGS_UPDATE, ALL_TAGS_UPDATE, IS_BUSY, SUPPLIER_ID_UPDATE, REQUEST_FAILED, TAG_FOCUS, TAG_COMMENT_UPDATE, SELECTED_TAGS_SAVED  } from '../constants/ActionTypes';
+import {
+    SELECTED_TAGS_UPDATE,
+    ALL_TAGS_UPDATE,
+    IS_BUSY,
+    SUPPLIER_ID_UPDATE,
+    REQUEST_FAILED,
+    TAG_FOCUS,
+    TAG_COMMENT_UPDATE,
+    SELECTED_TAGS_SAVED }
+    from '../constants/ActionTypes';
+
 import axios from 'axios';
-import { formatTagsFromInitialService, formatDataForSaveTagsService, formatTagsAfterSaveTagsService } from '../utils/dataParserUtil';
+
+import {
+    formatTagsFromInitialService,
+    formatDataForSaveTagsService,
+    formatTagsAfterSaveTagsService }
+    from '../utils/dataParserUtil';
 
 export function updateFocusedTagComment(comment) {
     return { type:TAG_COMMENT_UPDATE, comment };
@@ -17,7 +32,8 @@ export function focusTag(selectedItem) {
 export function fetchTags(supplierId) {
     return (dispatch) => {
         dispatch(isBusy(true));
-        axios.all([axios.get('/preferred-supplier-tags'), axios.get('preferred-suppliers/'+supplierId+'/relationships/tags')])
+        axios.all([axios.get('/preferred-supplier-tags'),
+                        axios.get('preferred-suppliers/'+supplierId+'/relationships/tags')])
         .then((response) => {
 
             dispatch(updateAllTagData(formatTagsFromInitialService(response), supplierId));
@@ -38,9 +54,12 @@ export function updateSupplierId(supplierId) {
 export function saveTags(tags) {
     return (dispatch, getState) => {
         dispatch(isBusy(true));
-        axios.patch('/preferred-suppliers/'+getState().manageTags.supplierId+'/relationships/tags', formatDataForSaveTagsService(tags))
+        const service_url = '/preferred-suppliers/'+getState().manageTags.supplierId+'/relationships/tags';
+        axios.patch(service_url, formatDataForSaveTagsService(tags))
         .then(() => {
-            dispatch({ type:SELECTED_TAGS_SAVED, tags:formatTagsAfterSaveTagsService(tags) });
+            dispatch({ type:SELECTED_TAGS_SAVED,
+                                tags:formatTagsAfterSaveTagsService(tags)
+                            });
         })
         .catch((error) => {
             dispatch({ type:REQUEST_FAILED, message: error.message });

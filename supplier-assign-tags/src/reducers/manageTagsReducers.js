@@ -1,6 +1,16 @@
-import { ALL_TAGS_UPDATE, SELECTED_TAGS_UPDATE, IS_BUSY, REQUEST_FAILED, TAG_FOCUS, TAG_COMMENT_UPDATE, SELECTED_TAGS_SAVED } from '../constants/ActionTypes';
+import { ALL_TAGS_UPDATE,
+    SELECTED_TAGS_UPDATE,
+    IS_BUSY,
+    REQUEST_FAILED,
+    TAG_FOCUS,
+    TAG_COMMENT_UPDATE,
+    SELECTED_TAGS_SAVED } from '../constants/ActionTypes';
 
-const INITIAL_DATA = { availableTags: [], selectedTags:[], supplierId:null, isBusy:false, errorMessage:null };
+const INITIAL_DATA = { availableTags: [],
+                                                selectedTags:[],
+                                                supplierId:null,
+                                                isBusy:false,
+                                                errorMessage:null };
 
 export function manageTags(state = INITIAL_DATA, action) {
     switch (action.type) {

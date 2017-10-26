@@ -13,7 +13,13 @@ import {
     TAG_ISACTIVE_UPDATE } from '../constants/ActionTypes';
 const INITIAL_DATA = { availableTags:[], errorMessage:null };
 
-const TAG_SKELETON ={ iconClass:'fa-tag', color:'#000', title:'', description:'', id:null, isActive:true, isEdited:true, previous:null };
+const TAG_SKELETON = { id:null,
+        iconClass:'fa-tag',
+        color:'#000', title:'',
+        description:'',
+        isActive:true,
+        isEdited:true,
+        previous:null };
 
 export function configureTags(state = INITIAL_DATA, action) {
 

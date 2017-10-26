@@ -2,7 +2,17 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import ColorPicker from '../components/ColorPicker';
 import IconPicker from '../components/IconPicker';
-import { fetchAllTags, startTagEdit, cancelTagEdit, addTag, saveTag, setIsActiveForTag, setIconForTag, setColorForTag, setTitleForTag, setDescriptionForTag } from '../actions/configureTagsActions';
+import { fetchAllTags, 
+                startTagEdit,
+                 cancelTagEdit, 
+                 addTag, 
+                 saveTag, 
+                 setIsActiveForTag, 
+                 setIconForTag, 
+                 setColorForTag, 
+                 setTitleForTag, 
+                 setDescriptionForTag 
+             } from '../actions/configureTagsActions';
 /**
  * @description: Manages supplier Tags as a table
  */
@@ -22,7 +32,10 @@ class TagsList extends Component {
         const { errorMessage, availableTags } = this.props;
         return (
             <div className="tag-list">
-                <button className="btn btn-sm pull-right mar-btm-md" onClick = { () => this.props.dispatch(addTag()) }><i className="fa fa-plus"></i>Add</button>
+                <button className="btn btn-sm pull-right mar-btm-md" 
+                    onClick = { () => this.props.dispatch(addTag()) }>
+                    <i className="fa fa-plus"></i>Add
+                </button>
                 <div className="clear">{errorMessage?<div className="bs-callout bs-callout-danger">{errorMessage}</div>:null}</div>
                 <table  className="table db-table">
                      <thead>
@@ -53,7 +66,8 @@ class TagsList extends Component {
     renderActiveStatusCell(item) {
 
         if (item.isEdited) {
-            return (<select value={item.isActive} onChange={event => this.onTagActiveChange(item.id, event.target.value)}>
+            return (<select value={item.isActive} 
+                    onChange={event => this.onTagActiveChange(item.id, event.target.value)}>
                     <option value={1}>
                         Active
                     </option>
@@ -70,33 +84,51 @@ class TagsList extends Component {
     renderIconCell(item) {
         if (item.isEdited) {
             return <div className="horizontal-block">
-                <div className="item"><IconPicker  icon={item.iconClass} onChange={icon => this.props.dispatch(setIconForTag(item.id, icon))}/></div>
-                    <div className="item item-colorpicker"><ColorPicker color={item.color} onChange={color => this.props.dispatch(setColorForTag(item.id, color))}/></div>
+                <div className="item"><IconPicker  icon={item.iconClass} 
+                    onChange={icon => this.props.dispatch(setIconForTag(item.id, icon))}/>
+                </div>
+                <div className="item item-colorpicker">
+                    <ColorPicker color={item.color} 
+                        onChange={color => this.props.dispatch(setColorForTag(item.id, color))}>
+                    </ColorPicker>
+                    </div>
             </div>;
         } else {
-            return  <i className={`tag-icon fa ${item.iconClass}`} style={ { color :item.color } } ></i>;
+            return  <i className={`tag-icon fa ${item.iconClass}`} 
+                            style={ { color :item.color } } ></i>;
         }
     }
     renderButtonCell(item) {
         if (item.isEdited) {
             return <div className="horizontal-block">
-                <button className="btn btn-sm item btn-success"  onClick={() => this.props.dispatch(saveTag(item))}><i className="fa fa-save"></i>Save</button>
-                <button className="btn btn-sm item btn-danger"  onClick={() => this.props.dispatch(cancelTagEdit(item.id))}><i className="fa fa-times"></i>Cancel</button>
+                <button className="btn btn-sm item btn-success"  
+                    onClick={() => this.props.dispatch(saveTag(item))}><i className="fa fa-save"></i>Save</button>
+                <button className="btn btn-sm item btn-danger"  
+                    onClick={() => this.props.dispatch(cancelTagEdit(item.id))}>
+                    <i className="fa fa-times"></i>Cancel
+                </button>
             </div>;
         } else {
-            return <button className="btn btn-sm item" onClick={() => this.props.dispatch(startTagEdit(item.id))}><i className="fa fa-edit"></i>Edit</button>;
+            return <button className="btn btn-sm item" 
+                onClick={() => this.props.dispatch(startTagEdit(item.id))}>
+                <i className="fa fa-edit"></i>Edit
+            </button>;
         }
     }
     renderTitleCell(item) {
         if (item.isEdited) {
-            return <input value={item.title}  className="col-xs-12" onChange={event => this.onTagTitleChange(item.id, event.target.value) }/>;
+            return <input value={item.title}  
+                className="col-xs-12" 
+                onChange={event => this.onTagTitleChange(item.id, event.target.value) }/>;
         } else {
             return <span>{item.title}</span>;
         }
     }
     renderDescriptionCell(item) {
         if (item.isEdited) {
-            return <input value={item.description}  className="col-xs-12" onChange={event => this.onTagDescriptionChange(item.id, event.target.value) }/>;
+            return <input value={item.description} 
+                className="col-xs-12" 
+                onChange={event => this.onTagDescriptionChange(item.id, event.target.value) }/>;
         } else {
             return <span>{item.description}</span>;
         }

@@ -11,7 +11,8 @@ describe('configureTag reducer', () => {
     });
 
     it('should handle ALL_TAGS_UPDATE', () => {
-        expect(configureTags({ availableTags:[], errorMessage:null }, { type:ALL_TAGS_UPDATE, availableTags:[{ iconClass:'fa-tag', color:'#000', title:'', description:'', id:33, isActive:true }] }).availableTags).to.have.lengthOf(1);
+        expect(configureTags({ availableTags:[], errorMessage:null },
+            { type:ALL_TAGS_UPDATE, availableTags:[{ iconClass:'fa-tag', color:'#000', title:'', description:'', id:33, isActive:true }] }).availableTags).to.have.lengthOf(1);
     });
 
     it('should handle TAG_EDIT_START', () => {

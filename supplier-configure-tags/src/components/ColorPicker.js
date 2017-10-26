@@ -34,12 +34,16 @@ class ColorPicker extends Component {
         const color = { backgroundColor: this.state.color };
 
         return (
-              <div className="color-picker">
-                <button className="btn btn-md" style={color} onClick={ this.handleClick }><i></i></button>
+            <div className="color-picker">
+                <button className="btn btn-md" style={color} onClick={ this.handleClick }>
+                    <i></i>
+                </button>
                 { this.state.displayColorPicker ? <div className="popover show mar-top-lg">
                   <div className={'cover' } onClick={ this.handleClose }/>
-                  <ChromePicker  disableAlpha={true} color={ this.state.color } onChange={ this.handleChange } />
-                </div> : null }
+                  <ChromePicker  disableAlpha={true} color={ this.state.color } 
+                    onChange={ this.handleChange } />
+                </div> 
+                : null }
               </div>
           );
     }

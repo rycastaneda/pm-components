@@ -2,7 +2,14 @@ function formatAvailableTagsFromInitialService(data) {
     let arr=[];
     for (let i in data) {
         let item =data[i];
-        let  obj = { id: Number(item.id), label: item.attributes.name, value:item.id, iconClass: item.attributes.icon, color:item.attributes.icon_colour, isFocused:false, comment:'', hasSavedComment :false };
+        let  obj = { id: Number(item.id),
+            label: item.attributes.name,
+            value:item.id,
+            iconClass: item.attributes.icon,
+            color:item.attributes.icon_colour,
+            isFocused:false,
+            comment:'',
+            hasSavedComment :false };
         arr.push(obj);
     }
     return arr;

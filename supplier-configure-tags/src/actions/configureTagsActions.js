@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { formatAvailableTagsFromInitialService, formatDataForSaveTagService, formatDataForNewTagService } from '../utils/dataParserUtil';
+import { formatAvailableTagsFromInitialService, formatDataForSaveTagService, 
+    formatDataForNewTagService } from '../utils/dataParserUtil';
 import {
     ALL_TAGS_UPDATE,
     TAG_CREATE,
@@ -33,7 +34,8 @@ export function saveTag(item) {
                 dispatch({ type:REQUEST_FAILED, message: error.message });
             });
         } else {
-            axios.patch('/preferred-supplier-tags/'+item.id, formatDataForSaveTagService(item))
+            axios.patch('/preferred-supplier-tags/'+item.id, 
+            formatDataForSaveTagService(item))
             .then(() => {
                 dispatch({ type:TAG_SAVE, id:item.id });
             })
@@ -96,7 +98,8 @@ export function fetchAllTags() {
     return (dispatch) => {
         axios.get('/preferred-supplier-tags')
         .then((response) => {
-            dispatch(onAllTagsAvailable(formatAvailableTagsFromInitialService(response.data.data)));
+            dispatch(onAllTagsAvailable(
+                formatAvailableTagsFromInitialService(response.data.data)));
         })
         .catch((error) => {
             dispatch({ type:REQUEST_FAILED, message: error.message });
