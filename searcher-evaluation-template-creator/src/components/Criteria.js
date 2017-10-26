@@ -25,11 +25,7 @@ class Criteria extends Component {
                     </div>
                 </div>
                 { questions.map(item => <Question key={item.title} question={item}/>) }
-                <div className="col-md-12">
-                    <div className="form-group">
-                        <button className="btn btn-sm">Add Question</button>
-                    </div>
-                </div>
+
             </div>
         );
     }

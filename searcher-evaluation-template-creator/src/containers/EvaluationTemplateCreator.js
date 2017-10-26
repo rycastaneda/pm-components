@@ -14,18 +14,24 @@ class EvaluationTemplateCreator extends Component {
             <div className="db-form-section">
                 <div className="col-md-12">
                 <div className="form-group">
-                    <label className="control-label"><span className="required" aria-required="true">Template Title*</span></label>
+                    <label className="control-label">
+                        <span className="required" aria-required="true">Template Title*</span>
+                    </label>
                     <input type="text" name="title" className="form-control" value="" title="Template Title" placeholder="Enter template title" />
                     </div>
                     </div>
-                    <div className="col-md-12">
-                        {criteria.map(criterion => <Criteria key={criterion.title} title={criterion.title} questions={criterion.questions} weighting ={criterion.weighting} />)}
-                        <div className="col-md-12">
-                            <div className="form-group">
-                                <button className="btn btn-sm">Add Criteria</button>
-                            </div>
-                        </div>
-            </div>
+                    {criteria.map(criterion =>
+                            <Criteria
+                            key={criterion.title}
+                            title={criterion.title}
+                            questions={criterion.questions}
+                            weighting ={criterion.weighting} />
+                    )}
+                <div className="col-md-12">
+                    <div className="form-group">
+                        <button className="btn btn-sm">Add Criteria</button>
+                    </div>
+                </div>
             </div>
         </div>
     );
