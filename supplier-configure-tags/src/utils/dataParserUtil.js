@@ -11,7 +11,6 @@ export function formatAvailableTagsFromInitialService(data) {
 }
 
 export function formatDataForSaveTagService(data) {
-    window.console.log(data);
     return { data:{  type:'preferred-supplier-tags', id:data.id, attributes:{ name:data.title, icon:data.iconClass, icon_colour:data.color, description:data.description, active:Number(data.isActive) } } };
 }
 

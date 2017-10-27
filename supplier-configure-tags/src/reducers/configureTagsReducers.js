@@ -17,7 +17,7 @@ const TAG_SKELETON = { id:null,
         iconClass:'fa-tag',
         color:'#000', title:'',
         description:'',
-        isActive:true,
+        isActive:1,
         isEdited:true,
         previous:null };
 
@@ -164,9 +164,7 @@ export function configureTags(state = INITIAL_DATA, action) {
         case TAG_ISACTIVE_UPDATE:
             {
                 let  newAvailableTags = state.availableTags.map(function(item) {
-                    window.console.log(state.availableTags);
                     if (item.id === action.id) {
-                        window.console.log(action.status);
                         item.isActive = action.status;
                         return Object.assign({}, item);
                     } else {

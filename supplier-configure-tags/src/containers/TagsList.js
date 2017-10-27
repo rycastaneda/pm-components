@@ -59,7 +59,6 @@ class TagsList extends Component {
         this.props.dispatch(setDescriptionForTag(id, value));
     }
     onTagActiveChange(id, value) {
-        window.console.log(value);
         this.props.dispatch(setIsActiveForTag(id, Number(value)));
     }
 
