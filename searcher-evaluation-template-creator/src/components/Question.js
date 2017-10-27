@@ -2,16 +2,22 @@ import React, { PropTypes,  Component } from 'react';
 import Dropzone from 'react-dropzone';
 import { QUESTION_TYPES, QUESTION_OPTIONS } from '../constants/DataConstants';
 import { getObjectFromArrayWithValueForAttrib } from '../utils/dataParserUtil';
+
 class Question extends Component {
     constructor(props) {
         super(props);
-        const question =this.props.question;
-        this.state = { isAllowUpload:question.isAllowUpload,
-                                isCommentRequired:question.isisCommentRequired,
-                                isAllowScaleDefinitions: question.isAllowScaleDefinitions,
-                                typeId: question.typeId,
-                                scaleDefinitions: question.scaleDefinitions };
+        const question = this.props.question;
+        this.state = {
+            isMaximised:question.isMaximised,
+            title: question.title,
+            isAllowUpload:question.isAllowUpload,
+            isCommentRequired:question.isisCommentRequired,
+            isAllowScaleDefinitions: question.isAllowScaleDefinitions,
+            typeId: question.typeId,
+            scaleDefinitions: question.scaleDefinitions
+        };
     }
+
     onCommentRequiredChange(value) {
         this.setState({ isCommentRequired: value });
     }
@@ -20,23 +26,51 @@ class Question extends Component {
     }
     onAllowScaleDefinitionChange(value) {
         this.setState({ isAllowScaleDefinitions:value });
+        let scaleDefinitions =[];
         if (value) {
-            if (this.state. typeId===this.props.question.typeId) {
-                this.setState({ scaleDefinitions: this.props.question.scaleDefinitions });
+            const optionsLength = getObjectFromArrayWithValueForAttrib(QUESTION_TYPES, 'type', this.state.typeId).maxOptionDefinitions;
+            if (this.state. typeId === this.props.question.typeId) {
+                scaleDefinitions = JSON.parse(JSON.stringify(this.props.question.scaleDefinitions));
+                if (scaleDefinitions.length<optionsLength) {
+                    for (let i = scaleDefinitions.length+1; i <= optionsLength; i++) {
+                        scaleDefinitions.push({ id:i, label:'' });
+                    }
+                }
             } else {
-                const optionsLength = getObjectFromArrayWithValueForAttrib(QUESTION_TYPES, 'type', this.state.typeId).maxOptionDefinitions;
-                let options =[];
                 for (let i=1; i<=optionsLength; i++) {
-                    options.push({ id:i, label:'' });
-                    this.setState({ scaleDefinitions:options });
+                    scaleDefinitions.push({ id:i, label:'' });
                 }
             }
-        } else {
-            this.setState({ scaleDefinitions:[] });
         }
+        this.setState({ scaleDefinitions });
     }
-
+    onDiscardChanges() {
+        const question = this.props.question;
+        this.setState({
+            isMaximised:false,
+            title: question.title,
+            isAllowUpload:question.isAllowUpload,
+            isCommentRequired:question.isisCommentRequired,
+            isAllowScaleDefinitions: question.isAllowScaleDefinitions,
+            typeId: question.typeId,
+            scaleDefinitions: question.scaleDefinitions
+        });
+    }
     render() {
+        return this.state.isMaximised? this.renderMaximised():this.renderMinimised();
+    }
+    renderMinimised() {
+        return (
+            <div className="col-md-12">
+                <div className="form-group">
+                    <label>{ getObjectFromArrayWithValueForAttrib(QUESTION_TYPES, 'type', this.state.typeId).label}</label>
+                    <p>{this.state.title}</p>
+                    <button onClick={ () => this.setState({ isMaximised:true })}>Edit</button><button>Delete</button>
+                </div>
+            </div>
+        );
+    }
+    renderMaximised() {
         return (<div className="col-md-12">
             <div className="col-md-12">
                 <div className="form-group">
@@ -49,7 +83,7 @@ class Question extends Component {
             <div className="col-md-12">
                 <div className="form-group">
                     <label className="control-label"><span className="required" aria-required="true">Question Title</span></label>
-                    <textarea className="form-control"></textarea>
+                    <textarea className="form-control" value={this.state.title} onChange={event => this.setState({ title:event.target.value })}></textarea>
                 </div>
             </div>
             <div className="col-md-12">
@@ -65,7 +99,7 @@ class Question extends Component {
                             </label>
                             {this.state.isAllowScaleDefinitions?
                                 <ul>
-                                    {this.state.scaleDefinitions.map(item => <li><span>{item.id}</span><input value={this.state.label} /></li>)}
+                                    {this.state.scaleDefinitions.map(item => <li><span>{item.id}</span><input type="text" value={item.label} /></li>)}
                                 </ul>
                             :null}
                         </div>
@@ -108,21 +142,31 @@ class Question extends Component {
                     </Dropzone>
                 </div>
             </div>
-            {this.props.question.id===null?
-                <div className="col-md-12">
-                    <div className="form-group">
-                        <button className="btn btn-sm">Add Question</button>
-                    </div>
-                </div>
-                :
-                <div className="col-md-12">
-                    <div className="form-group">
-                        <button className="btn btn-sm">Save Question</button>
-                    </div>
-                </div>}
+            {this.renderFunctionButtons()}
         </div>);
     }
+    renderFunctionButtons() {
+        if (this.props.question.id===null) {
+            return (
+                    <div className="col-md-12">
+                        <div className="form-group">
+                            <button className="btn btn-sm">Add Question</button>
+                        </div>
+                    </div>
+            );
+        } else {
+            return (
+                    <div className="col-md-12">
+                    <div className="form-group">
+                        <button className="btn btn-sm">Save Question</button>
+                        <button className="btn btn-sm" onClick={ () => this.onDiscardChanges()}>Discard Changes</button>
+                    </div>
+                </div>
+            );
+        }
+    }
 }
+
 Question.propTypes = {
     question: PropTypes.object.isRequired
 };

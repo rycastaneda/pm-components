@@ -17,7 +17,6 @@ export function fetchEvaluationTemplates() {
     return (dispatch) => {
         getPromiseForService(getTemplateServiceUrlFor(), dispatch).then((response) => {
             const responseData= getDataFromTemplateService(response.data);
-            window.console.log(responseData);
             dispatch({
                 type:EVALUATION_TEMPLATES_FETCHED,
                 evaluationTemplates:responseData.templates

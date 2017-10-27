@@ -1,47 +1,58 @@
 import { } from '../constants/ActionTypes';
 import axios from 'axios';
 // import { formatTemplatesFromFetchService } from '../utils/dataParserUtil';
-import { EVALUATION_TEMPLATES_FETCHED, REQUEST_FAILED, IS_BUSY } from '../actions/evaluationTemplates';
+import {
+    CRITERIA_ADD,
+    CRITERIA_DELETE,
+    CRITERIA_UPDATE,
+    QUESTION_ADD,
+    QUESTION_UPDATE,
+    QUESTION_DELETE,
+    TEMPLATE_FETCHED,
+    REQUEST_FAILED,
+    IS_BUSY
+} from '../actions/evaluationTemplates';
 
-export function deleteTemplate(id) {
-    id;
-}
-export function previewTemplate(id) {
-    id;
+const FETCH_TEMPLATE = 'template';
+
+export function addCriteria() {
+    return { type:CRITERIA_ADD };
 }
 
-export function changeTemplateStatus(id) {
-    id;
+export function deleteCriteria() {
+    return { type:CRITERIA_DELETE };
 }
 
-export function onEvaluationTemplatesDisplayedLengthChange(length) {
-    return (getState) => {
-        const state= getState().evaluationTemplates;
-        fetchEvaluationTemplatesFor(state.filterKeyword, state.filterStatus, state.filterDate, length, state.startIndex);
+export function updateCriteria() {
+    return { type:CRITERIA_UPDATE };
+}
+
+export function addQuestionToCriteria() {
+    return { type:QUESTION_ADD };
+}
+
+export function updateQuestionToCriteria() {
+    return { type:QUESTION_UPDATE };
+}
+
+export function deleteQuestionFromCriteria() {
+    return { type:QUESTION_DELETE };
+}
+
+export function fetchTemplate() {
+    return (dispatch) => {
+        getPromiseForService(FETCH_TEMPLATE, dispatch)
+            .then((response) => {
+                response;
+                // let template = parseTemplateFromResponse(response.data);
+                dispatch ({ type: TEMPLATE_FETCHED });
+            });
     };
 }
 
-export function onEvaluationTemplatesFilterChange(keyword, status, date) {
-    return (dispatch, getState) => {
-        const state= getState().evaluationTemplates;
-        fetchEvaluationTemplatesFor(keyword, status, date, state.maxRowLength, state.startIndex, dispatch).then((response) => {
-            response;
-            dispatch({
-                type:EVALUATION_TEMPLATES_FETCHED,
-                templates: [{ 'name':'werew', 'instances':2, 'completed':3, 'statusClass':'badge-success', 'statusName':'Active' }],
-                keyword,
-                status,
-                date,
-                maxRowLength: state.maxRowLength,
-                startIndex: state.startIndex });
-        });
-    };
-}
-
-function fetchEvaluationTemplatesFor(keyword, status, date, maxRowLength, startIndex, dispatch) {
-    keyword;
-    status; date; maxRowLength; startIndex;
-    return axios.get('evaluationTemplates').catch((error) => {
+function getPromiseForService(url, dispatch) {
+    return axios.get(url)
+    .catch((error) => {
         dispatch({ type:REQUEST_FAILED, message: error.message });
     });
 }
