@@ -1,24 +1,27 @@
 import React, { PropTypes } from 'react';
 import UserBadge from './UserBadge';
 
-const UserList = ({ users }) => {
+const UserList = ({ users, removeUser }) => {
     const badges = users.map(user => (
-        <UserBadge key={user.id} name={user.name} status={user.status} />
+        <UserBadge key={user.id} {...user} removeUser={removeUser} />
     ));
 
     return (
-        <div className="row pointer">
-            <div className="col-sm-12 user-lists">
-                {users.length
-                    ? badges
-                    : 'No staff assigned to this section yet.'}
-            </div>
-        </div>
+        <ul className="pointer">
+            {users.length ? (
+                badges
+            ) : (
+                <li className="user-lists">
+                    No staff assigned to this section yet.
+                </li>
+            )}
+        </ul>
     );
 };
 
 UserList.propTypes = {
-    users: PropTypes.array
+    users: PropTypes.array,
+    removeUser: PropTypes.func.isRequired
 };
 
 export default UserList;

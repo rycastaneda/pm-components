@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import UserList from './UserList';
 import UserBadge from './UserBadge';
 import { expect } from 'chai';
+import sinon from 'sinon';
 
 const users = [
     {
@@ -21,10 +22,13 @@ const users = [
         status: 'in progress'
     }
 ];
+const removeUser = sinon.spy();
 
 describe('UserList component: ', () => {
     it('should render the lists of users with badges', () => {
-        const component = shallow(<UserList users={users} />);
+        const component = shallow(
+            <UserList users={users} removeUser={removeUser} />
+        );
 
         expect(component.find(UserBadge)).to.have.length(users.length);
     });

@@ -61,7 +61,13 @@ class UserSelector extends Component {
     }
 
     render() {
-        const { assignedUsers, unassignedUsers, isLoading } = this.props;
+        const {
+            sectionId,
+            assignedUsers,
+            unassignedUsers,
+            isLoading,
+            dispatch
+        } = this.props;
         return (
             <div>
                 {!assignedUsers.length || this.state.isAssigning ? (
@@ -80,8 +86,26 @@ class UserSelector extends Component {
                         />
                     </div>
                 ) : (
-                    <div onClick={() => this.isAssigning(true)}>
-                        <UserList users={assignedUsers} />
+                    <div>
+                        <UserList
+                            users={assignedUsers}
+                            removeUser={staffId => {
+                                dispatch(
+                                    removeStaff(sectionId, staffId, () =>
+                                        this.isAssigning(false)
+                                    )
+                                );
+                            }}
+                        />
+                        {isLoading ? (
+                            <i className="fa fa-spin fa-spinner" />
+                        ) : (
+                            <button
+                                className="db-function"
+                                onClick={() => this.isAssigning(true)}>
+                                Add
+                            </button>
+                        )}
                     </div>
                 )}
             </div>
