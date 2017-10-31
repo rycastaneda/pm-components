@@ -11,20 +11,20 @@ import {
     TEMPLATE_FETCHED,
     REQUEST_FAILED,
     IS_BUSY
-} from '../actions/evaluationTemplates';
+} from '../constants/ActionTypes';
 
-const FETCH_TEMPLATE = 'template';
+const FETCH_TEMPLATE_URL = 'template';
 
-export function addCriteria() {
-    return { type:CRITERIA_ADD };
+export function addCriteria(title, weighting) {
+    return { type:CRITERIA_ADD, id:33, title, weighting };
 }
 
 export function deleteCriteria() {
     return { type:CRITERIA_DELETE };
 }
 
-export function updateCriteria() {
-    return { type:CRITERIA_UPDATE };
+export function updateCriteria(id, title, weighting) {
+    return { type:CRITERIA_UPDATE, id, title, weighting };
 }
 
 export function addQuestionToCriteria() {
@@ -41,7 +41,7 @@ export function deleteQuestionFromCriteria() {
 
 export function fetchTemplate() {
     return (dispatch) => {
-        getPromiseForService(FETCH_TEMPLATE, dispatch)
+        getPromiseForService(FETCH_TEMPLATE_URL, dispatch)
             .then((response) => {
                 response;
                 // let template = parseTemplateFromResponse(response.data);

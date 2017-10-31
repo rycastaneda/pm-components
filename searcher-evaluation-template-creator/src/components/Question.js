@@ -1,6 +1,6 @@
 import React, { PropTypes,  Component } from 'react';
 import Dropzone from 'react-dropzone';
-import { QUESTION_TYPES, QUESTION_OPTIONS } from '../constants/DataConstants';
+import { QUESTION_TYPES, QUESTION_OPTIONS } from '../constants/models';
 import { getObjectFromArrayWithValueForAttrib } from '../utils/dataParserUtil';
 
 class Question extends Component {
@@ -8,10 +8,10 @@ class Question extends Component {
         super(props);
         const question = this.props.question;
         this.state = {
-            isMaximised:question.isMaximised,
+            isMaximised: question.isMaximised,
             title: question.title,
             isAllowUpload:question.isAllowUpload,
-            isCommentRequired:question.isisCommentRequired,
+            isCommentRequired:question.isCommentRequired,
             isAllowScaleDefinitions: question.isAllowScaleDefinitions,
             typeId: question.typeId,
             scaleDefinitions: question.scaleDefinitions
@@ -26,7 +26,7 @@ class Question extends Component {
     }
     onAllowScaleDefinitionChange(value) {
         this.setState({ isAllowScaleDefinitions:value });
-        let scaleDefinitions =[];
+        let scaleDefinitions = [];
         if (value) {
             const optionsLength = getObjectFromArrayWithValueForAttrib(QUESTION_TYPES, 'type', this.state.typeId).maxOptionDefinitions;
             if (this.state. typeId === this.props.question.typeId) {
@@ -76,72 +76,81 @@ class Question extends Component {
                 <div className="form-group">
                     <label className="control-label"><span className="required" aria-required="true">Question Type</span></label>
                     <select className="form-control" value ={this.state.typeId} onChange={event =>  this.setState({ typeId:event.target.value })}>
-                        {QUESTION_TYPES.map(item => <option key={item.type} value={item.type}>{item.label }</option>)}
+                        {QUESTION_TYPES.map((item, index) => <option key={index} value={item.type}>{item.label }</option>)}
                 </select>
                 </div>
             </div>
-            <div className="col-md-12">
-                <div className="form-group">
-                    <label className="control-label"><span className="required" aria-required="true">Question Title</span></label>
-                    <textarea className="form-control" value={this.state.title} onChange={event => this.setState({ title:event.target.value })}></textarea>
-                </div>
-            </div>
-            <div className="col-md-12">
-                <ul>
-                    <li><div className="form-group">
-                        <div className="checkbox">
-                            <label>
-                                <input type="checkbox"
-                                    defaultChecked={this.props.question.isAllowScaleDefinitions}
-                                    value={this.state.isAllowScaleDefinitions}
-                                    onClick={ event => this.onAllowScaleDefinitionChange(event.target.checked)}/>
-                                {QUESTION_OPTIONS[0].label}
-                            </label>
-                            {this.state.isAllowScaleDefinitions?
+            {this.state.typeId === null?
+                null:
+                <div>
+                            <div className="col-md-12">
+                                <div className="form-group">
+                                    <label className="control-label"><span className="required" aria-required="true">Question Title</span></label>
+                                    <textarea className="form-control" value={this.state.title} onChange={event => this.setState({ title:event.target.value })}></textarea>
+                                </div>
+                            </div>
+                            <div className="col-md-12">
                                 <ul>
-                                    {this.state.scaleDefinitions.map(item => <li><span>{item.id}</span><input type="text" value={item.label} /></li>)}
+                                    <li><div className="form-group">
+                                        <div className="checkbox">
+                                            <label>
+                                                <input type="checkbox"
+                                                    defaultChecked={this.props.question.isAllowScaleDefinitions}
+                                                    value={this.state.isAllowScaleDefinitions}
+                                                    onClick={ event => this.onAllowScaleDefinitionChange(event.target.checked)}/>
+                                                {QUESTION_OPTIONS[0].label}
+                                            </label>
+                                            {this.state.isAllowScaleDefinitions?
+                                                <ul>
+                                                    {this.state.scaleDefinitions.map((item, index) =>
+                                                        <li key={index} className="mar-btm-sm">
+                                                            <span className="badge">{item.id}</span>
+                                                            <input type="text" value={item.label} className="mar-l-sm" />
+                                                        </li>)}
+                                                </ul>
+                                            :null}
+                                        </div>
+                                    </div>
+                                    </li>
+                                    <li><div className="form-group">
+                                        <div className="checkbox">
+                                            <label>
+                                                <input type="checkbox"
+                                                    defaultChecked={this.props.question.isAllowUpload}
+                                                    value={this.state.isAllowUpload}
+                                                    onClick={ event => this.onAllowUploadChange(event.target.checked) }
+                                                />
+                                                {QUESTION_OPTIONS[1].label}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    </li>
+                                    <li><div className="form-group">
+                                        <div className="checkbox">
+                                            <label>
+                                                <input type="checkbox"
+                                                    defaultChecked = {this.props.question.isCommentRequired}
+                                                    value = {this.state.isCommentRequired}
+                                                    onClick = { event => this.onCommentRequiredChange(event.target.checked) }/>
+                                                            {QUESTION_OPTIONS[2].label}
+                                                    </label>
+                                        </div>
+                                    </div>
+                                    </li>
                                 </ul>
-                            :null}
-                        </div>
-                    </div>
-                    </li>
-                    <li><div className="form-group">
-                        <div className="checkbox">
-                            <label>
-                                <input type="checkbox"
-                                    defaultChecked={this.props.question.isAllowUpload}
-                                    value={this.state.isAllowUpload}
-                                    onClick={ event => this.onAllowUploadChange(event.target.checked) }
-                                />
-                                {QUESTION_OPTIONS[1].label}
-                            </label>
-                        </div>
-                    </div>
-                    </li>
-                    <li><div className="form-group">
-                        <div className="checkbox">
-                            <label>
-                                <input type="checkbox"
-                                    defaultChecked = {this.props.question.isCommentRequired}
-                                    value = {this.state.isCommentRequired}
-                                    onClick = { event => this.onCommentRequiredChange(event.target.checked) }/>
-                                            {QUESTION_OPTIONS[2].label}
-                                    </label>
-                        </div>
-                    </div>
-                    </li>
-                </ul>
-            </div>
-            <div className="col-md-12">
-                <div className="form-group">
-                    <label className="control-label">Documents</label>
-                    <Dropzone className="dropzone">
-                        <p className="text-center dropzone__placeholder">
-                            <i className="fa fa-cloud-upload"></i> Drop files here or click to select files.
-                        </p>
-                    </Dropzone>
+                            </div>
+                            <div className="col-md-12">
+                                <div className="form-group">
+                                    <label className="control-label">Documents</label>
+                                    <Dropzone className="dropzone">
+                                        <p className="text-center dropzone__placeholder">
+                                            <i className="fa fa-cloud-upload"></i> Drop files here or click to select files.
+                                        </p>
+                                    </Dropzone>
+                                </div>
+                            </div>
                 </div>
-            </div>
+            }
             {this.renderFunctionButtons()}
         </div>);
     }
@@ -168,6 +177,7 @@ class Question extends Component {
 }
 
 Question.propTypes = {
-    question: PropTypes.object.isRequired
+    question: PropTypes.object,
+    isCreate: PropTypes.bool
 };
 export default Question;

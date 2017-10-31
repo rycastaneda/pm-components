@@ -1,11 +1,21 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Criteria from '../components/Criteria';
+import { addCriteria, updateCriteria } from '../actions/evaluationTemplates';
 class EvaluationTemplateCreator extends Component {
 
     constructor(props) {
         super(props);
         this.state = { title:this.props.title };
+        this.onCriteriaSave = this.onCriteriaSave.bind(this);
+    }
+
+    onCriteriaSave(id, title, weighting) {
+        if (id) {
+            this.props.dispatch(updateCriteria(id, title, weighting));
+        } else {
+            this.props.dispatch(addCriteria(title, weighting));
+        }
     }
 
     render() {
@@ -27,16 +37,13 @@ class EvaluationTemplateCreator extends Component {
                             onChange={event => this.setState({ title:event.target.value })}/>
                         </div>
                     </div>
-                    {criteria.map(criterion =>
-                            <Criteria
-                            key = {criterion.title}
-                            criteria = {criterion} />
+                    {criteria.map((criterion, index) =>
+                        <Criteria
+                            key = {index}
+                            criteria = {criterion}
+                            onSave={this.onCriteriaSave}  />
                     )}
-                <div className="col-md-12">
-                    <div className="form-group">
-                        <button className="btn btn-sm">Add Criteria</button>
-                    </div>
-                </div>
+
             </div>
         </div>
     );
@@ -44,6 +51,7 @@ class EvaluationTemplateCreator extends Component {
 }
 
 EvaluationTemplateCreator.propTypes = {
+    creatable:PropTypes.object,
     criteria: PropTypes.array.isRequired,
     title: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired

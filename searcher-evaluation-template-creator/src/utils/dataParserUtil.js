@@ -5,3 +5,7 @@ export  function getObjectFromArrayWithValueForAttrib(arr, attrib, value) {
         }
     }
 }
+
+export function deepClone(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
