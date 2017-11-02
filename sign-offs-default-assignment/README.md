@@ -7,4 +7,5 @@
     `npm start`
 
     Add data-organization-id to specify the current organization to change. Provided by pm-web
-
+    
+    Add data-panel-id to specify which panel we are editing

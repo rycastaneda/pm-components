@@ -37,7 +37,8 @@ export function assignStaff(sectionId, staffId, callback) {
             id: null,
             attributes: {
                 pepp_organisation_custom_field_section_id: sectionId,
-                pepp_staff_user_id: getState().staff.byId[staffId].user_id
+                pepp_staff_user_id: getState().staff.byId[staffId].user_id,
+                panel_id: getState().ui.panelId
             }
         };
 

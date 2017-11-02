@@ -30,6 +30,9 @@ describe('Staff actions', function() {
                     }
                 },
                 needsFetching: true
+            },
+            ui: {
+                panelId: 2
             }
         });
     });
