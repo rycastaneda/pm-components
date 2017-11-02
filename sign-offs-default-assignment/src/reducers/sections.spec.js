@@ -17,7 +17,8 @@ describe('Sections reducer', () => {
 
     it('should handle FETCH_SECTIONS', () => {
         state = sections(state, {
-            type: actions.FETCH_SECTIONS
+            type: actions.FETCH_SECTIONS,
+            organizationId: 1
         });
 
         expect(state).to.have.property('isLoading', true);
@@ -33,6 +34,7 @@ describe('Sections reducer', () => {
         expect(state.byId[1]).to.have.property('isCollapsed', false);
         expect(state.byId[1]).to.have.property('isLoading', false);
         expect(state.byId[1]).to.have.property('defaultUserIds');
+        expect(state.byId[1]).to.have.property('userIdToAssignmentId');
         expect(state.byId[46].defaultUserIds).to.have.members(['80']);
         expect(state.allIds).to.have.members(
             mockSections.data.map(sections => '' + sections.id)

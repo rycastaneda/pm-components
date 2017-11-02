@@ -16,7 +16,19 @@ describe('Staff actions', function() {
     // eslint-disable-next-line
     beforeEach(() => {
         store = mockStore({
+            sections: {
+                byId: {
+                    1: {
+                        userIdToAssignmentId: { 5: 1 }
+                    }
+                }
+            },
             staff: {
+                byId: {
+                    5: {
+                        user_id: 1
+                    }
+                },
                 needsFetching: true
             }
         });
@@ -40,43 +52,32 @@ describe('Staff actions', function() {
     });
 
     it('should call TOGGLE_MANAGE_SECTION_MODAL_LOADING -> ASSIGN_STAFF', function() {
-        const store = mockStore();
+        const expectedActions = [
+            types.TOGGLE_SECTION_LOADING,
+            types.ASSIGN_STAFF
+        ];
 
         return store
             .dispatch(actions.assignStaff(sectionId, staffId))
             .then(() => {
-                let actions = store.getActions();
-                expect(actions[0]).to.eql({
-                    type: types.TOGGLE_SECTION_LOADING,
-                    sectionId
-                });
-
-                expect(actions[1]).to.eql({
-                    type: types.ASSIGN_STAFF,
-                    sectionId,
-                    staffId
-                });
+                expect(store.getActions().map(action => action.type)).to.eql(
+                    expectedActions
+                );
             });
     });
 
     it('should call TOGGLE_SECTION_LOADING -> REMOVE_STAFF', function() {
-        const store = mockStore();
+        const expectedActions = [
+            types.TOGGLE_SECTION_LOADING,
+            types.REMOVE_STAFF
+        ];
 
         return store
             .dispatch(actions.removeStaff(sectionId, staffId))
             .then(() => {
-                let actions = store.getActions();
-
-                expect(actions[0]).to.eql({
-                    type: types.TOGGLE_SECTION_LOADING,
-                    sectionId
-                });
-
-                expect(actions[1]).to.eql({
-                    type: types.REMOVE_STAFF,
-                    sectionId,
-                    staffId
-                });
+                expect(store.getActions().map(action => action.type)).to.eql(
+                    expectedActions
+                );
             });
     });
 });

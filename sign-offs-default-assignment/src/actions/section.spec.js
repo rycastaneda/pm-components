@@ -4,7 +4,6 @@ import * as actions from './section';
 import * as types from '../constants/ActionTypes';
 import { expect } from 'chai'; // You can use any testing library
 import axios from 'axios';
-
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
@@ -17,7 +16,6 @@ describe('Section actions', function() {
         const expectedActions = [types.FETCH_SECTIONS, types.RECEIVE_SECTIONS];
         const store = mockStore();
         return store.dispatch(actions.fetchSections()).then(() => {
-            // return of async actions
             expect(store.getActions().map(action => action.type)).to.eql(
                 expectedActions
             );

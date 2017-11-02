@@ -7,10 +7,9 @@ const INITIAL_STATE = {
 };
 
 export function sections(state = INITIAL_STATE, action) {
-    let section, index;
-
+    let section;
     switch (action.type) {
-        case action.FETCH_SECTIONS:
+        case actions.FETCH_SECTIONS:
             state.isLoading = true;
             return { ...state };
         case actions.RECEIVE_SECTIONS:
@@ -27,35 +26,36 @@ export function sections(state = INITIAL_STATE, action) {
             section.isLoading = !section.isLoading;
             return { ...state };
         case actions.ASSIGN_STAFF:
-            section = state.byId[action.sectionId];
-            section.isLoading = false;
-            section.defaultUserIds.push(action.staffId);
-            return { ...state };
+            return assignStaff(state, action);
         case actions.REMOVE_STAFF:
-            section = state.byId[action.sectionId];
-            section.isLoading = false;
-            index = section.defaultUserIds.indexOf(action.staffId);
-            section.defaultUserIds.splice(index, 1);
-            return { ...state };
+            return removeStaff(state, action);
     }
-
     return state;
 }
 
 function receiveSections(state, action) {
     const byId = {};
 
-    let defaultUsers = {};
-    action.sections.included
-        .filter(include => include.type === 'default-users')
-        .map(defaultUser => {
-            defaultUsers[defaultUser.id] =
-                defaultUser.relationships.staff.data.id;
-        });
+    let assignmentIdToUserId = {}; // quick mapping of all assignmentId to userId
+
+    if (action.sections.included) {
+        action.sections.included
+            .filter(include => include.type === 'default-assignments')
+            .map(assignment => {
+                assignmentIdToUserId[assignment.id] =
+                    assignment.relationships.staff.data.id;
+            });
+    }
 
     action.sections.data.map(section => {
-        const defaultUserIds = section.relationships.defaultUsers.data.map(
-            user => defaultUsers[user.id]
+        let userIdToAssignmentId = {}; // quick mapping for simplified state grouped by section
+
+        const defaultUserIds = section.relationships.defaultAssignments.data.map(
+            assignment => {
+                const userId = assignmentIdToUserId[assignment.id];
+                userIdToAssignmentId[userId] = assignment.id;
+                return userId;
+            }
         );
 
         byId[section.id] = {
@@ -63,6 +63,7 @@ function receiveSections(state, action) {
             isCollapsed: false,
             isLoading: false,
             defaultUserIds,
+            userIdToAssignmentId,
             ...section.attributes
         };
 
@@ -77,4 +78,21 @@ function receiveSections(state, action) {
         allIds,
         isLoading: false
     };
+}
+
+function assignStaff(state, action) {
+    const section = state.byId[action.sectionId];
+    section.isLoading = false;
+    section.defaultUserIds.push(action.staffId);
+    section.userIdToAssignmentId[action.staffId] = action.assignmentId; // register assignmentId
+    return { ...state };
+}
+
+function removeStaff(state, action) {
+    const section = state.byId[action.sectionId];
+    let index = section.defaultUserIds.indexOf(action.staffId);
+    section.defaultUserIds.splice(index, 1);
+    section.isLoading = false;
+
+    return { ...state };
 }

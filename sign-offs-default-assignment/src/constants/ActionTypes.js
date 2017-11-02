@@ -11,3 +11,5 @@ export const RECEIVE_STAFF = 'RECEIVE_STAFF';
 export const ASSIGN_STAFF = 'ASSIGN_STAFF';
 export const REMOVE_STAFF = 'REMOVE_STAFF';
 
+// ui
+export const API_ERROR = 'API_ERROR';

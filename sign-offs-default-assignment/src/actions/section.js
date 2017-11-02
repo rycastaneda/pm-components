@@ -1,22 +1,25 @@
-import mockSections from '../mocks/sections.json';
 import * as actions from '../constants/ActionTypes';
 import axios from 'axios';
 
-export function fetchSections(isReadOnly, staffId) {
+export function fetchSections(organizationId, panelId) {
     return dispatch => {
         dispatch({
             type: actions.FETCH_SECTIONS,
-            isReadOnly,
-            staffId
+            organizationId,
+            panelId
         });
 
-        // TODO: api endpoint
-        return axios.get('/anything').then(() => {
-            return dispatch({
-                type: actions.RECEIVE_SECTIONS,
-                sections: mockSections
-            });
-        });
+        return axios
+            .get(
+                `/compliance/assignments/${organizationId}?include=defaultAssignments`
+            )
+            .then(response => {
+                return dispatch({
+                    type: actions.RECEIVE_SECTIONS,
+                    sections: response.data
+                });
+            })
+            .catch(() => dispatch({ type: actions.API_ERROR }));
     };
 }
 

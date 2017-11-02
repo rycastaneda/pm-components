@@ -27,13 +27,18 @@ const staffState = staff(undefined, {
 
 const componentProps = {
     dispatch,
-    sections: sectionSate.allIds.map(sectionId => sectionSate.byId[sectionId])
+    sections: sectionSate.allIds.map(sectionId => sectionSate.byId[sectionId]),
+    error: ''
 };
 
 const setup = props => {
     const component = mount(
         <Provider
-            store={mockStore({ staff: staffState, sections: sectionSate })}>
+            store={mockStore({
+                staff: staffState,
+                sections: sectionSate,
+                ui: { error: '' }
+            })}>
             <Sections {...props} />
         </Provider>
     );

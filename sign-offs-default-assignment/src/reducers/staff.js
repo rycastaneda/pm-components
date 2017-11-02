@@ -12,11 +12,9 @@ export function staff(state = INITIAL_STATE, action) {
             return receiveSections(state, action);
         case actions.RECEIVE_STAFF:
             return receiveStaff(state, action);
-        case actions.ASSIGN_STAFF:
-            state.byId[action.staffId].total_incomplete_signoff += 1;
-            return { ...state };
         case actions.REMOVE_STAFF:
-            state.byId[action.staffId].total_incomplete_signoff -= 1;
+        case actions.ASSIGN_STAFF:
+            state.byId[action.staffId].isLoading = false;
             return { ...state };
     }
 
@@ -27,17 +25,19 @@ function receiveSections(state, action) {
     const byId = {};
     const allIds = [];
 
-    action.sections.included
-        .filter(include => include.type === 'staff')
-        .map(staff => {
-            let attributes = staff.attributes;
-            byId[staff.id] = {
-                id: staff.id,
-                name: `${attributes.first_name} ${attributes.last_name}`,
-                ...attributes
-            };
-            allIds.push(staff.id);
-        });
+    if (action.sections.included) {
+        action.sections.included
+            .filter(include => include.type === 'staff')
+            .map(staff => {
+                let attributes = staff.attributes;
+                byId[staff.id] = {
+                    id: staff.id,
+                    name: `${attributes.first_name} ${attributes.last_name}`,
+                    ...attributes
+                };
+                allIds.push(staff.id);
+            });
+    }
 
     return {
         ...state,

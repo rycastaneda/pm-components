@@ -40,34 +40,29 @@ describe('Staff reducer', () => {
         expect(state.needsFetching).to.be.false;
         expect(state.byId[1]).to.have.property('total_incomplete_signoff', 5);
         expect(state.byId[1]).to.have.property('name');
+        expect(state.byId[1]).to.have.property('user_id');
         expect(state.allIds).to.have.members(
             mockStaff.data.map(staff => staff.id)
         );
     });
 
     it('should handle ASSIGN_STAFF', () => {
-        const incompleteCount = state.byId[158].total_incomplete_signoff;
         state = staff(state, {
             type: actions.ASSIGN_STAFF,
             sectionId: 1,
             staffId: 158
         });
-        expect(state.byId[158].total_incomplete_signoff).to.eql(
-            incompleteCount + 1
-        );
+
+        expect(state.byId[158].isLoading).to.be.false;
     });
 
     it('should handle REMOVE_STAFF', () => {
-        const incompleteCount = state.byId[158].total_incomplete_signoff;
-
         state = staff(state, {
             type: actions.REMOVE_STAFF,
             sectionId: 1,
             staffId: 158
         });
 
-        expect(state.byId[158].total_incomplete_signoff).to.eql(
-            incompleteCount - 1
-        );
+        expect(state.byId[158].isLoading).to.be.false;
     });
 });

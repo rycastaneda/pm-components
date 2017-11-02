@@ -39,6 +39,7 @@ class UserSelector extends Component {
         const { dispatch, assignedUsers, sectionId } = this.props;
         let changedStaff;
 
+        // options got more than before: we assign them else remove
         if (assignedUsers.length > options.length) {
             changedStaff = difference(assignedUsers, options).pop();
             dispatch(

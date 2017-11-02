@@ -23,10 +23,12 @@ const enhance =
 // Configure store with thunk middleware to allow async requests
 const store = createStore(rootReducer, enhance);
 
-// let hostname = api.configureHostname();
+let hostname = api.configureHostname();
 let headers = api.configureHeaders();
 
-axios.defaults.baseURL = 'http://httpbin.org/anything';
+console.log('process.node.env', process.env.NODE_ENV); // eslint-disable-line no-console, quotes
+axios.defaults.baseURL =
+  process.env.NODE_ENV === 'test' ? 'http://httpbin.org/anything' : hostname;
 axios.defaults.headers.common = headers;
 
 render(

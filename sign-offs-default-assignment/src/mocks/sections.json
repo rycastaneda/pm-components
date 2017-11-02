@@ -11,7 +11,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -29,7 +29,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -47,7 +47,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -65,7 +65,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -83,7 +83,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -101,7 +101,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -119,7 +119,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -137,7 +137,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -155,7 +155,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -173,7 +173,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -191,7 +191,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -209,7 +209,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -227,7 +227,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -245,7 +245,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -263,7 +263,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -281,7 +281,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -299,7 +299,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -317,7 +317,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -335,7 +335,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -353,7 +353,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -371,7 +371,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -389,7 +389,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -407,7 +407,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -425,7 +425,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -443,7 +443,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -461,7 +461,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -479,7 +479,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -497,7 +497,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -515,7 +515,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -533,7 +533,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -551,10 +551,10 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": [
             {
-              "type": "default-users",
+              "type": "default-assignments",
               "id": "2"
             }
           ]
@@ -579,10 +579,10 @@
             }
           ]
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": [
             {
-              "type": "default-users",
+              "type": "default-assignments",
               "id": "1"
             }
           ]
@@ -607,7 +607,7 @@
             }
           ]
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -634,7 +634,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -652,7 +652,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -670,7 +670,7 @@
         "signOff": {
           "data": []
         },
-        "defaultUsers": {
+        "defaultAssignments": {
           "data": []
         },
         "comments": {
@@ -812,7 +812,7 @@
       }
     },
     {
-      "type": "default-users",
+      "type": "default-assignments",
       "id": "2",
       "attributes": [],
       "relationships": {
@@ -847,7 +847,7 @@
       }
     },
     {
-      "type": "default-users",
+      "type": "default-assignments",
       "id": "1",
       "attributes": [],
       "relationships": {

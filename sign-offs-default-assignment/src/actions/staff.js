@@ -1,6 +1,5 @@
 import * as actions from '../constants/ActionTypes';
 import axios from 'axios';
-import mockStaff from '../mocks/staff.json';
 
 export function fetchStaff(sectionId) {
     return (dispatch, getState) => {
@@ -13,48 +12,70 @@ export function fetchStaff(sectionId) {
             sectionId
         });
 
-        return axios.get('/anything').then(() => {
-            dispatch({
-                type: actions.RECEIVE_STAFF,
-                sectionId,
-                staffs: mockStaff
-            });
-        });
+        return axios
+            .get('/staff')
+            .then(response => {
+                dispatch({
+                    type: actions.RECEIVE_STAFF,
+                    sectionId,
+                    staffs: response.data
+                });
+            })
+            .catch(() => dispatch({ type: actions.API_ERROR }));
     };
 }
 
 export function assignStaff(sectionId, staffId, callback) {
-    return dispatch => {
+    return (dispatch, getState) => {
         dispatch({
             type: actions.TOGGLE_SECTION_LOADING,
             sectionId
         });
 
-        return axios.get('/anything').then(() => {
-            dispatch({
-                type: actions.ASSIGN_STAFF,
-                sectionId,
-                staffId
-            });
-            callback && callback(); // execute callback if provided; will call setState in react component
-        });
+        const data = {
+            type: 'compliance-default-assignment',
+            id: null,
+            attributes: {
+                pepp_organisation_custom_field_section_id: sectionId,
+                pepp_staff_user_id: getState().staff.byId[staffId].user_id
+            }
+        };
+
+        return axios
+            .post('/compliance/default-assignment', { data })
+            .then(response => {
+                dispatch({
+                    type: actions.ASSIGN_STAFF,
+                    sectionId,
+                    staffId,
+                    assignmentId: response.data.data.id
+                });
+                callback && callback(); // execute callback if provided; will call setState in react component
+            })
+            .catch(() => dispatch({ type: actions.API_ERROR }));
     };
 }
 
 export function removeStaff(sectionId, staffId, callback) {
-    return dispatch => {
+    return (dispatch, getState) => {
         dispatch({
             type: actions.TOGGLE_SECTION_LOADING,
             sectionId
         });
 
-        return axios.get('/anything').then(() => {
-            dispatch({
-                type: actions.REMOVE_STAFF,
-                sectionId,
-                staffId
-            });
-            callback && callback(); // execute callback if provided; will call setState in react component
-        });
+        const assignmentId = getState().sections.byId[sectionId]
+            .userIdToAssignmentId[staffId];
+        return axios
+            .delete(`/compliance/default-assignment/${assignmentId}`)
+            .then(() => {
+                dispatch({
+                    type: actions.REMOVE_STAFF,
+                    sectionId,
+                    staffId,
+                    assignmentId
+                });
+                callback && callback(); // execute callback if provided; will call setState in react component
+            })
+            .catch(() => dispatch({ type: actions.API_ERROR }));
     };
 }
