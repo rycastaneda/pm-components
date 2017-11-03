@@ -5,7 +5,7 @@ export function getAssignmentServiceUrlFor(
     maxRowLength = null,
     page = null
 ) {
-    const EVALUATION_SERVICE = 'http://localhost:5049/evaluation-assignments';
+    const EVALUATION_SERVICE = 'http://localhost:5050/evaluation-assignments';
     let urlPostfix = '';
     if (page) {
         urlPostfix += 'page=' + page;

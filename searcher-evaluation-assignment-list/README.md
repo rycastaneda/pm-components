@@ -1,6 +1,6 @@
 # Searcher-evaluation-template-list
 
-https://minergroup.atlassian.net/browse/PIT-468
+https://minergroup.atlassian.net/browse/PIT-460
 
 Component data attributes
 data-supplier-id
