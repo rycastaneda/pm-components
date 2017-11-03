@@ -1,0 +1,44 @@
+{
+  "data": [
+    {
+      "type": "evalution-assignments",
+      "id": "1",
+      "attributes": {
+        "assigned_on": "01/10/2017",
+        "evaluation": "ABC Suppliers",
+        "linked_to": "Supplier",
+        "assigned_user": "John Smith",
+		"supplier_name": "CCH Group Pty Ltd",
+		"status": "submitted"
+      }
+    },
+    {
+      "type": "evalution-assignments",
+      "id": "2",
+      "attributes": {
+
+		"assigned_on": "01/10/2017",
+		"evaluation": "ABC Suppliers",
+		"linked_to": "Supplier",
+		"assigned_user": "John Smith",
+	  "supplier_name": "CCH Group Pty Ltd",
+	  "status": "submitted"
+      }
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "total": 6,
+      "count": 2,
+      "per_page": 2,
+      "current_page": 1,
+      "total_pages": 3
+    }
+  },
+  "links": {
+    "self": "https://api.plantminer.com.au/evalution-assignments?page=1",
+    "first": "https://api.plantminer.com.au/evalution-assignments?page=1",
+    "next": "https://api.plantminer.com.au/evalution-assignments?page=2",
+    "last": "https://api.plantminer.com.au/evalution-assignments?page=3"
+  }
+}
