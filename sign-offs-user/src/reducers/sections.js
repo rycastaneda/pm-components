@@ -1,17 +1,16 @@
 import * as actions from '../constants';
 
-const INITIAL_STATE = { 
+const INITIAL_STATE = {
     byId: {},
     allIds: [],
     isLoading: true
 };
 
-
 export function sections(state = INITIAL_STATE, action) {
     let section, index;
 
     switch (action.type) {
-        case action.FETCH_SECTIONS: 
+        case action.FETCH_SECTIONS:
             return {
                 ...state,
                 isLoading: true
@@ -44,7 +43,7 @@ export function sections(state = INITIAL_STATE, action) {
                     }
                 }
             };
-        case actions.SWITCH_SECTION_TAB: 
+        case actions.SWITCH_SECTION_TAB:
             section = state.byId[action.sectionId];
 
             return {
@@ -53,13 +52,16 @@ export function sections(state = INITIAL_STATE, action) {
                     ...state.byId,
                     [action.sectionId]: {
                         ...section,
-                        currentTab: action.currentTab === section.currentTab ? null : action.currentTab
+                        currentTab:
+                            action.currentTab === section.currentTab
+                                ? null
+                                : action.currentTab
                     }
                 }
             };
         case actions.TOGGLE_COMMENT_BOX:
             section = state.byId[action.sectionId];
-            
+
             return {
                 ...state,
                 byId: {
@@ -79,11 +81,11 @@ export function sections(state = INITIAL_STATE, action) {
                     ...state.byId,
                     [action.sectionId]: {
                         ...section,
-                        isLoading: !section.isLoading 
+                        isLoading: !section.isLoading
                     }
                 }
             };
-        case actions.SUBMITTED_NEW_COMMENT: 
+        case actions.SUBMITTED_NEW_COMMENT:
             section = state.byId[action.sectionId];
 
             return {
@@ -100,7 +102,10 @@ export function sections(state = INITIAL_STATE, action) {
             };
         case actions.DELETED_COMMENT:
             section = state.byId[action.sectionId];
-            section.commentIds.splice(section.commentIds.indexOf(action.commentId), 1);
+            section.commentIds.splice(
+                section.commentIds.indexOf(action.commentId),
+                1
+            );
 
             return {
                 ...state,
@@ -144,27 +149,38 @@ export function sections(state = INITIAL_STATE, action) {
 function receiveSections(state, action) {
     const byId = {};
 
-    action.sections.data
-        .map((section) => {
-            const commentIds = section.relationships.comments.data.map(comment => comment.id);
-            const responseIds = section.relationships.signOff.data.map(signOff => signOff.id);
-            const defaultUserIds = section.relationships.defaultUsers.data.map(user => user.id);
-            byId[section.id] = {
-                id: section.id,
-                status: section.relationships['staff-response'] ? section.relationships['staff-response'].attributes.status : null,
-                isCollapsed: false,
-                isAddingNewComment: false,
-                isLoading: false,
-                isShown: false,
-                currentTab: 'questions',
-                commentIds,
-                responseIds,
-                defaultUserIds,
-                ...section.attributes
-            };
+    action.sections.data.map(section => {
+        let commentIds = [];
+        let responseIds = [];
+        let status = null;
 
-            return section;
-        });
+        if (section.relationships) {
+            commentIds = section.relationships.comments.data.map(
+                comment => comment.id
+            );
+            responseIds = section.relationships.signOff.data.map(
+                signOff => signOff.id
+            );
+            status = section.relationships['staff-response']
+                ? section.relationships['staff-response'].attributes.status
+                : null;
+        }
+
+        byId[section.id] = {
+            id: section.id,
+            status,
+            isCollapsed: false,
+            isAddingNewComment: false,
+            isLoading: false,
+            isShown: false,
+            currentTab: 'questions',
+            commentIds,
+            responseIds,
+            ...section.attributes
+        };
+
+        return section;
+    });
 
     const allIds = Object.keys(byId);
 

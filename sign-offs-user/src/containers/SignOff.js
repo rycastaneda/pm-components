@@ -5,23 +5,41 @@ import { fetchSections } from '../actions/section';
 import Loader from '../components/Loader';
 
 class SignOff extends Component {
-
     constructor(props) {
         super(props);
-        let isReadOnly = document.querySelector('[data-component="staff-sign-offs"]').getAttribute('data-read-only');
-        this.staffId = +document.querySelector('[data-component="staff-sign-offs"]').getAttribute('data-staff-id');
-        this.props.dispatch(fetchSections(isReadOnly === 'true', this.staffId)); // parse string
+    }
+
+    componentDidMount() {
+        const parent = this.domRef.parentNode; // eslint-disable-line
+        const isReadOnly = parent.getAttribute('data-read-only');
+        const staffId = parent.getAttribute('data-staff-id');
+        const organizationId = parent.getAttribute('data-organization-id');
+        const panelId = parent.getAttribute('data-panel-id');
+        const supplierUserId = parent.getAttribute('data-user-id');
+        const preferredSupplierId = parent.getAttribute(
+            'data-preferred-supplier-id'
+        );
+        this.props.dispatch(
+            fetchSections(
+                isReadOnly === 'true',
+                staffId,
+                organizationId,
+                panelId,
+                preferredSupplierId,
+                supplierUserId
+            )
+        );
     }
 
     render() {
         const { sections, isLoading } = this.props;
-        const sectionComponents = sections.map((section) => {
-            return <Section key={section.id} {...section}></Section>;
+        const sectionComponents = sections.map(section => {
+            return <Section key={section.id} {...section} />;
         });
 
         return (
-            <div>
-                {isLoading ? <Loader></Loader> : sectionComponents}
+            <div ref={ref => (this.domRef = ref)}>
+                {isLoading ? <Loader /> : sectionComponents}
             </div>
         );
     }
@@ -30,14 +48,15 @@ class SignOff extends Component {
 SignOff.propTypes = {
     dispatch: PropTypes.func.isRequired,
     sections: PropTypes.array.isRequired,
-    sectionModalId: PropTypes.number, 
-    isLoading: PropTypes.bool.isRequired
+    sectionModalId: PropTypes.number,
+    isLoading: PropTypes.bool.isRequired,
+    error: PropTypes.string
 };
 
 function mapStateToProps(state) {
-    const { 
-        sections: rawSections, 
-        questions: rawQuestions, 
+    const {
+        sections: rawSections,
+        questions: rawQuestions,
         comments: rawComments,
         staff: rawStaff,
         response: rawResponses,
@@ -47,16 +66,17 @@ function mapStateToProps(state) {
     let sections = [];
 
     if (!rawSections.allIds.length) {
-        return { 
-            sections, 
-            isLoading: rawSections.isLoading, 
-            sectionModalId: null 
+        return {
+            sections,
+            isLoading: rawSections.isLoading,
+            sectionModalId: null,
+            error: ui.error
         };
     }
 
-    sections = rawSections.allIds.map((sectionId) => {
+    sections = rawSections.allIds.map(sectionId => {
         const section = rawSections.byId[sectionId];
-        let comments = section.commentIds.map((commentId) => {
+        let comments = section.commentIds.map(commentId => {
             let comment = rawComments.byId[commentId];
             let { first_name, last_name } = rawStaff.byId[comment.staffId];
             return {
@@ -66,7 +86,7 @@ function mapStateToProps(state) {
             };
         });
 
-        let responses = section.responseIds.map((responseId) => {
+        let responses = section.responseIds.map(responseId => {
             const response = rawResponses.byId[responseId];
             const staff = rawStaff.byId[response.staffId];
             const name = `${staff.first_name} ${staff.last_name}`;
@@ -84,11 +104,11 @@ function mapStateToProps(state) {
         let questions = [];
 
         if (rawQuestions.bySectionId[sectionId]) {
-            questions = rawQuestions.bySectionId[sectionId].map((questionId) => {
+            questions = rawQuestions.bySectionId[sectionId].map(questionId => {
                 return rawQuestions.byId[questionId];
             });
         }
-            
+
         return {
             ...section,
             id: +sectionId,
@@ -98,7 +118,12 @@ function mapStateToProps(state) {
         };
     });
 
-    return { sections, isLoading: rawSections.isLoading, sectionModalId: +ui.sectionModalId };
+    return {
+        sections,
+        isLoading: rawSections.isLoading,
+        sectionModalId: +ui.sectionModalId,
+        error: ui.error
+    };
 }
 
-export default connect(mapStateToProps)(SignOff);  // adds dispatch prop
+export default connect(mapStateToProps)(SignOff); // adds dispatch prop

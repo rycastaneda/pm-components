@@ -1,17 +1,31 @@
 import * as actions from '../constants';
 
-const INITIAL_STATE = { 
+const INITIAL_STATE = {
     isReadOnly: true,
-    currentStaffId: 0
+    currentStaffId: 0,
+    error: null,
+    organizationId: null,
+    preferredSupplierId: null,
+    supplierUserId: null,
+    panelId: null
 };
 
 export function ui(state = INITIAL_STATE, action) {
     switch (action.type) {
         case actions.FETCH_SECTIONS:
-            return { 
+            return {
                 ...state,
                 isReadOnly: action.isReadOnly,
-                currentStaffId: action.staffId
+                currentStaffId: +action.staffId,
+                organizationId: action.organizationId,
+                preferredSupplierId: action.preferredSupplierId,
+                supplierUserId: action.supplierUserId,
+                panelId: action.panelId
+            };
+        case actions.API_ERROR:
+            return {
+                ...state,
+                error: action.error
             };
     }
 

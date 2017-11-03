@@ -3,14 +3,19 @@ import * as actions from '../constants';
 import axios from 'axios';
 
 export function fetchQuestions(sectionId) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         dispatch({
             type: actions.TOGGLE_SECTION_LOADING,
             sectionId
         });
 
+        const { organizationId, supplierUserId } = getState().ui;
+
         // TODO: api endpoint
-        return axios.get('/compliance-questionnaire')
+        return axios
+            .get(
+                `/compliance/questionnaire/${organizationId}/${supplierUserId}`
+            )
             .then(() => {
                 dispatch({
                     type: actions.RECEIVE_QUESTIONS,

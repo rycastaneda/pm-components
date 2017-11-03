@@ -5,29 +5,21 @@ import Tab from '../components/Tab';
 import NewComment from '../components/NewComment';
 import Loader from '../components/Loader';
 
-import { 
-    toggleSectionCollapse, 
-    switchSectionTab
-} from '../actions/section';
+import { toggleSectionCollapse, switchSectionTab } from '../actions/section';
 
-import {
-    changeStaffResponse
-} from '../actions/staff';
+import { changeStaffResponse } from '../actions/staff';
 
 import {
     toggleCommentBox,
-    toggleCommentEdit, 
+    toggleCommentEdit,
     submitEditComment,
     submitNewComment,
     deleteComment
 } from '../actions/comments';
 
-import {
-    fetchQuestions
-} from '../actions/questions';
+import { fetchQuestions } from '../actions/questions';
 
 class Section extends Component {
-
     constructor(props) {
         super(props);
         this.newComment = {
@@ -43,16 +35,16 @@ class Section extends Component {
     submitComment(comment = this.newComment, isEditing) {
         const { id, dispatch } = this.props;
 
-        return (e) => {
+        return e => {
             e.preventDefault();
             if (comment.ref.value === comment.comment) {
                 return;
             }
 
             dispatch(
-                isEditing ? 
-                submitEditComment(id, comment.id, comment.ref.value) : 
-                submitNewComment(id, comment.ref.value)
+                isEditing
+                    ? submitEditComment(id, comment.id, comment.ref.value)
+                    : submitNewComment(id, comment.ref.value)
             );
             comment.ref.value = '';
         };
@@ -61,13 +53,10 @@ class Section extends Component {
     toggleCommentEdit(comment = this.newComment, isEditing) {
         const { id, dispatch } = this.props;
         return () => {
-
             dispatch(
-                isEditing ? 
-                toggleCommentEdit(comment.id) : 
-                toggleCommentBox(id)
+                isEditing ? toggleCommentEdit(comment.id) : toggleCommentBox(id)
             );
-            
+
             if (comment.ref) {
                 comment.ref.focus();
             }
@@ -85,7 +74,7 @@ class Section extends Component {
     }
 
     toggleSectionCollapse() {
-        const { id, isCollapsed, dispatch } = this.props; 
+        const { id, isCollapsed, dispatch } = this.props;
 
         dispatch(toggleSectionCollapse(id));
         if (!isCollapsed) {
@@ -94,20 +83,20 @@ class Section extends Component {
     }
 
     render() {
-        const { 
-            id, dispatch,
-            title, 
-            currentTab, 
-            isCollapsed, 
-            isAddingNewComment, 
+        const {
+            id,
+            dispatch,
+            title,
+            currentTab,
+            isCollapsed,
+            isAddingNewComment,
             isLoading,
-            questions, comments, responses
+            questions,
+            comments,
+            responses
         } = this.props;
 
-        const {
-            isReadOnly,
-            currentStaffId
-        } = this.props.ui;
+        const { isReadOnly, currentStaffId } = this.props.ui;
 
         const response = responses.length ? responses.pop() : false;
 
@@ -121,45 +110,74 @@ class Section extends Component {
         let newCommentForm = null;
 
         if (currentTab === 'comments') {
-            newCommentForm = isAddingNewComment ?  
+            newCommentForm = isAddingNewComment ? (
                 <NewComment
-                    getNewCommentRef={input => this.newComment.ref = input} 
+                    getNewCommentRef={input => (this.newComment.ref = input)}
                     cancelNewComment={this.toggleCommentEdit(id, false)}
-                    submitComment={this.submitComment(this.newComment)}/>
-                : <button className="db-function" onClick={this.toggleCommentEdit()}>Add Comment</button>;
-        } 
+                    submitComment={this.submitComment(this.newComment)}
+                />
+            ) : (
+                <button
+                    className="db-function"
+                    onClick={this.toggleCommentEdit()}>
+                    Add Comment
+                </button>
+            );
+        }
 
         return (
             <div className="pmaccordion pmaccordion--impact">
-                <a onClick={this.toggleSectionCollapse} 
-                    className={`toggle-section pmaccordion__head ${isCollapsed || 'collapsed'}`}>
+                <a
+                    onClick={this.toggleSectionCollapse}
+                    className={`toggle-section pmaccordion__head ${isCollapsed ||
+                        'collapsed'}`}>
                     <div className="row-title">
-                        <span className="pull-left pmaccordion__title">{title}</span>
-                        <span className="pull-right status-icon">
-                            <i className={`fa ${response ? icon[response.status.toLowerCase()] : ''}`}></i>
+                        <span className="pull-left pmaccordion__title">
+                            {title}
                         </span>
-                        <div className="clearfix"></div>
+                        <span className="pull-right status-icon">
+                            <i
+                                className={`fa ${response
+                                    ? icon[response.status.toLowerCase()]
+                                    : ''}`}
+                            />
+                        </span>
+                        <div className="clearfix" />
                     </div>
                 </a>
                 <div className={`collapse pad-hor ${isCollapsed ? 'in' : ''}`}>
-                    <Header 
-                        currentTab={currentTab} 
-                        status={response ? response.status : ''} 
-                        switchSectionTab={tab => dispatch(switchSectionTab(id, tab))}
-                        isLoading={!!response.staffLoading}
-                        toggleSectionStatus={newStatus => dispatch(changeStaffResponse(response.staffId, response.id, newStatus.value))}
-                        isReadOnly={isReadOnly}/>
-                    <Tab 
+                    <Header
                         currentTab={currentTab}
-                        comments={comments}
-                        questions={questions}
+                        status={response ? response.status : ''}
+                        switchSectionTab={tab =>
+                            dispatch(switchSectionTab(id, tab))}
+                        isLoading={!!response.staffLoading}
+                        toggleSectionStatus={newStatus =>
+                            dispatch(
+                                changeStaffResponse(
+                                    response.staffId,
+                                    response.id,
+                                    newStatus.value
+                                )
+                            )}
                         isReadOnly={isReadOnly}
-                        currentStaffId={currentStaffId}
-                        submitComment={comment => this.submitComment(comment, submitEditComment)}
-                        toggleCommentEdit={comment => this.toggleCommentEdit(comment, true)}
-                        deleteComment={id => this.deleteComment(id)}/>
+                    />
+                    {isLoading ? (
+                        <Tab
+                            currentTab={currentTab}
+                            comments={comments}
+                            questions={questions}
+                            isReadOnly={isReadOnly}
+                            currentStaffId={currentStaffId}
+                            submitComment={comment =>
+                                this.submitComment(comment, submitEditComment)}
+                            toggleCommentEdit={comment =>
+                                this.toggleCommentEdit(comment, true)}
+                            deleteComment={id => this.deleteComment(id)}
+                        />
+                    ) : null}
                     <div className="text-center mar-top mar-btm pos-relative">
-                        {isLoading ? <Loader icon="-small"></Loader> : null}
+                        {isLoading ? <Loader icon="-small" /> : null}
                         {newCommentForm}
                     </div>
                 </div>
@@ -179,13 +197,12 @@ Section.propTypes = {
     comments: PropTypes.array.isRequired,
     responses: PropTypes.array.isRequired,
     dispatch: PropTypes.func.isRequired,
-    ui: PropTypes.shape({ 
-        isReadOnly: PropTypes.bool.isRequired, 
+    ui: PropTypes.shape({
+        isReadOnly: PropTypes.bool.isRequired,
         currentStaffId: PropTypes.number.isRequired
     })
 };
 
-
-export default connect((state) => { 
+export default connect(state => {
     return { ui: state.ui };
-})(Section);  // adds dispatch prop
+})(Section); // adds dispatch prop
