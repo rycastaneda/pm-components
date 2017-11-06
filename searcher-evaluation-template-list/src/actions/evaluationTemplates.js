@@ -1,71 +1,72 @@
-import { } from '../constants/ActionTypes';
 import axios from 'axios';
-import { getTemplateServiceUrlFor, getDataFromTemplateService } from '../utils/dataParserUtil';
-import { EVALUATION_TEMPLATES_FETCHED, REQUEST_FAILED, IS_BUSY } from '../constants/ActionTypes';
+import { getTemplateServiceUrlFor,
+    getDataFromTemplateService,
+    getDataForSave,
+    EVALUATION_SERVICE
+} from '../utils/dataParserUtil';
+import { EVALUATION_TEMPLATES_FETCHED,
+    REQUEST_FAILED,
+    IS_BUSY
+} from '../constants/ActionTypes';
 
-export function deleteTemplate(id) {
-    id;
-}
 export function previewTemplate(id) {
     id;
 }
 
-export function changeTemplateStatus(id) {
-    id;
-}
-export function fetchEvaluationTemplates() {
-    return (dispatch) => {
-        getPromiseForService(getTemplateServiceUrlFor(), dispatch).then((response) => {
-            const responseData= getDataFromTemplateService(response.data);
-            dispatch({
-                type:EVALUATION_TEMPLATES_FETCHED,
-                evaluationTemplates:responseData.templates
-            });
+export function changeTemplateStatus(id, status) {
+    return  (dispatch) => {
+        axios.patch(EVALUATION_SERVICE+'/'+id, getDataForSave(id, status))
+        .catch((error) => {
+            dispatch({ type:REQUEST_FAILED, message: error.message });
         });
     };
 }
-export function onEvaluationTemplatesPaginationChange(currPage) {
-    return (getState) => {
-        const state= getState().evaluationTemplates;
-        getPromiseForService(state.filterKeyword, state.filterStatus, state.filterDate, state.perPage, currPage);
+
+export function fetchEvaluationTemplates() {
+    return (dispatch) => {
+        getPromiseForTemplateService(getTemplateServiceUrlFor(), dispatch);
     };
 }
+
+export function onEvaluationTemplatesPageChange(currPage) {
+    return (dispatch, getState) => {
+        const state= getState().evaluationTemplates;
+        getPromiseForTemplateService(getTemplateServiceUrlFor(state.filterKeyword, state.filterStatus, state.filterDate, state.perPage, currPage), dispatch);
+    };
+}
+
 export function onEvaluationTemplatesDisplayedLengthChange(perPage) {
     return (dispatch, getState) => {
         const state= getState().evaluationTemplates;
-        getPromiseForService(state.filterKeyword, state.filterStatus, state.filterDate, perPage, 1).then((response) => {
-            response;
-            dispatch({
-                type:EVALUATION_TEMPLATES_FETCHED,
-                templates: [{ 'name':'werew', 'instances':2, 'completed':3, 'statusClass':'badge-success', 'statusName':'Active' }],
-                perPage
-            });
-        });
+        getPromiseForTemplateService(getTemplateServiceUrlFor(state.filterKeyword, state.filterStatus, state.filterDate, perPage, 1), dispatch);
     };
 }
 
 export function onEvaluationTemplatesFilterChange(keyword, status, date) {
     return (dispatch, getState) => {
         const state= getState().evaluationTemplates;
-        getPromiseForService(getTemplateServiceUrlFor(keyword, status, date, state.maxRowLength, state.startIndex), dispatch).then((response) => {
-            response;
-            dispatch({
-                type:EVALUATION_TEMPLATES_FETCHED,
-                templates: [{ 'name':'werew', 'instances':2, 'completed':3, 'statusClass':'badge-success', 'statusName':'Active' }],
-                keyword,
-                status,
-                date });
-        });
+        getPromiseForTemplateService(getTemplateServiceUrlFor(keyword, status, date, state.maxRowLength, state.startIndex), dispatch);
     };
 }
 
+function getPromiseForTemplateService(url, dispatch) {
+    return getPromiseForService(url, dispatch)
+    .then((response) => {
+        const responseData= getDataFromTemplateService(response.data);
+        dispatch({
+            type: EVALUATION_TEMPLATES_FETCHED,
+            evaluationTemplates: responseData.templates,
+            totalPages: responseData.totalPages,
+            currentPage: responseData.currentPage
+        });
+    });
+}
 function getPromiseForService(url, dispatch) {
-
-    return axios.get(url).catch((error) => {
+    return axios.get(url)
+    .catch((error) => {
         dispatch({ type:REQUEST_FAILED, message: error.message });
     });
 }
-
 export function isBusy(status) {
     return {
         type: IS_BUSY,

@@ -31,10 +31,8 @@ class EvaluationTemplatesFilter extends Component {
     }
 
     onAdvancedSubmit() {
-        if (this.state.selectedStatus.length||this.state.selectedDate!==null) {
-            let date= this.state.selectedDate!==null? this.state.selectedDate.toDate():null;
-            this.props.onSubmit(this.state.keywordSearch, this.state.selectedStatus, date);
-        }
+        let date= this.state.selectedDate!==null? this.state.selectedDate.toDate():null;
+        this.props.onSubmit(this.state.keywordSearch, this.state.selectedStatus, date);
     }
     onToggleFilter() {
         this.setState({ isFilterShown:!this.state.isFilterShown });
@@ -79,8 +77,14 @@ class EvaluationTemplatesFilter extends Component {
                            </div>
                     </div>
                     <div className="col-xs-12 pad-top align-right">
-                          <button type="button" className="btn btn-sm btn-danger" onClick={this.onToggleFilter}><i className="fa fa-ban"></i>Cancel</button>
-                          <button type="submit" className="btn btn-sm btn-success" onClick={this.onAdvancedSubmit}><i className="fa fa-check"></i>Submit</button>
+                          <ul className="list-inline">
+                            <li>
+                                <button type="button" className="btn btn-sm btn-danger" onClick={this.onToggleFilter}><i className="fa fa-ban"></i>Cancel</button>
+                            </li>
+                            <li>
+                                <button type="submit" className="btn btn-sm btn-success" onClick={this.onAdvancedSubmit}><i className="fa fa-check"></i>Submit</button>
+                            </li>
+                            </ul>
                     </div>
                </div>
               </div>:null}
