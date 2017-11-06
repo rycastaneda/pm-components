@@ -31,7 +31,9 @@ function receiveSections(state, action) {
             .map(staff => {
                 byId[staff.id] = {
                     id: staff.id,
-                    ...staff.attributes
+                    ...staff.attributes,
+                    name: `${staff.attributes.first_name} ${staff.attributes
+                        .last_name}`
                 };
                 return staff;
             });
@@ -50,7 +52,8 @@ function receiveSections(state, action) {
 function receiveComment(state, action) {
     state.byId[action.staffId] = {
         id: action.staffId,
-        name: action.staffName
+        first_name: action.firstName,
+        last_name: action.lastName
     };
 
     state.allIds.push(action.staffId);

@@ -97,14 +97,13 @@ class Section extends Component {
         } = this.props;
 
         const { isReadOnly, currentStaffId } = this.props.ui;
-
-        const response = responses.length ? responses.pop() : false;
-
+        const response = responses.length ? responses.pop() : null;
+        const statusId = response ? response.statusId : null;
         const icon = {
-            approved: 'fa-check-circle bs-callout-success',
-            'not approved': 'fa-times-circle bs-callout-danger',
-            'in progress': 'fa-gears bs-callout-warning',
-            pending: 'fa-exclamation-circle bs-callout-warning'
+            2: 'fa-check-circle bs-callout-success',
+            3: 'fa-times-circle bs-callout-danger',
+            1: 'fa-gears bs-callout-warning',
+            0: 'fa-exclamation-circle bs-callout-warning'
         };
 
         let newCommentForm = null;
@@ -124,7 +123,6 @@ class Section extends Component {
                 </button>
             );
         }
-
         return (
             <div className="pmaccordion pmaccordion--impact">
                 <a
@@ -136,11 +134,7 @@ class Section extends Component {
                             {title}
                         </span>
                         <span className="pull-right status-icon">
-                            <i
-                                className={`fa ${response
-                                    ? icon[response.status.toLowerCase()]
-                                    : ''}`}
-                            />
+                            <i className={`fa ${icon[statusId] || ''}`} />
                         </span>
                         <div className="clearfix" />
                     </div>
@@ -148,34 +142,34 @@ class Section extends Component {
                 <div className={`collapse pad-hor ${isCollapsed ? 'in' : ''}`}>
                     <Header
                         currentTab={currentTab}
-                        status={response ? response.status : ''}
+                        statusId={statusId}
                         switchSectionTab={tab =>
                             dispatch(switchSectionTab(id, tab))}
-                        isLoading={!!response.staffLoading}
-                        toggleSectionStatus={newStatus =>
+                        isLoading={response ? !!response.staffLoading : false}
+                        toggleSectionStatus={newStatus => {
                             dispatch(
                                 changeStaffResponse(
                                     response.staffId,
                                     response.id,
-                                    newStatus.value
+                                    newStatus.value,
+                                    newStatus.label
                                 )
-                            )}
+                            );
+                        }}
                         isReadOnly={isReadOnly}
                     />
-                    {isLoading ? (
-                        <Tab
-                            currentTab={currentTab}
-                            comments={comments}
-                            questions={questions}
-                            isReadOnly={isReadOnly}
-                            currentStaffId={currentStaffId}
-                            submitComment={comment =>
-                                this.submitComment(comment, submitEditComment)}
-                            toggleCommentEdit={comment =>
-                                this.toggleCommentEdit(comment, true)}
-                            deleteComment={id => this.deleteComment(id)}
-                        />
-                    ) : null}
+                    <Tab
+                        currentTab={currentTab}
+                        comments={comments}
+                        questions={questions}
+                        isReadOnly={isReadOnly}
+                        currentStaffId={currentStaffId}
+                        submitComment={comment =>
+                            this.submitComment(comment, submitEditComment)}
+                        toggleCommentEdit={comment =>
+                            this.toggleCommentEdit(comment, true)}
+                        deleteComment={id => this.deleteComment(id)}
+                    />
                     <div className="text-center mar-top mar-btm pos-relative">
                         {isLoading ? <Loader icon="-small" /> : null}
                         {newCommentForm}

@@ -149,26 +149,35 @@ export function sections(state = INITIAL_STATE, action) {
 function receiveSections(state, action) {
     const byId = {};
 
+    let assignmentIdToStaff = {};
+    action.sections.included
+        .filter(include => include.type === 'assignments')
+        .map(assignment => {
+            assignmentIdToStaff[assignment.id] = {
+                staffId: assignment.relationships.assignedStaff.id,
+                status: assignment.attributes.status_label
+            };
+        });
+
     action.sections.data.map(section => {
         let commentIds = [];
         let responseIds = [];
-        let status = null;
 
         if (section.relationships) {
             commentIds = section.relationships.comments.data.map(
                 comment => comment.id
             );
-            responseIds = section.relationships.signOff.data.map(
-                signOff => signOff.id
-            );
-            status = section.relationships['staff-response']
-                ? section.relationships['staff-response'].attributes.status
-                : null;
+
+            if (
+                section.relationships.assignments &&
+                section.relationships.assignments.data
+            ) {
+                responseIds.push(section.relationships.assignments.data.id);
+            }
         }
 
         byId[section.id] = {
             id: section.id,
-            status,
             isCollapsed: false,
             isAddingNewComment: false,
             isLoading: false,

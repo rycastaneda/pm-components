@@ -11,10 +11,9 @@ export function fetchQuestions(sectionId) {
 
         const { organizationId, supplierUserId } = getState().ui;
 
-        // TODO: api endpoint
         return axios
             .get(
-                `/compliance/questionnaire/${organizationId}/${supplierUserId}`
+                `/compliance/questionnaire/${organizationId}/${supplierUserId}?filters[section_id]=${sectionId}`
             )
             .then(() => {
                 dispatch({

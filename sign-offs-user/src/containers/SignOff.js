@@ -89,15 +89,14 @@ function mapStateToProps(state) {
         let responses = section.responseIds.map(responseId => {
             const response = rawResponses.byId[responseId];
             const staff = rawStaff.byId[response.staffId];
-            const name = `${staff.first_name} ${staff.last_name}`;
-            const status = response.status;
+            const { statusId } = response;
 
             return {
                 id: responseId,
                 staffId: response.staffId,
                 staffLoading: staff.isLoading,
-                name,
-                status
+                name: staff.name,
+                statusId
             };
         });
 

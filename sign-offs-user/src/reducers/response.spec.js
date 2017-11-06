@@ -11,7 +11,6 @@ describe('Response reducer', () => {
             type: actions.RECEIVE_SECTIONS,
             sections: mockSections
         });
-
         expect(state.byId[1]).to.have.property('status', 'In Progress');
         expect(state.allIds).to.have.members(['1', '2']);
     });
@@ -20,10 +19,11 @@ describe('Response reducer', () => {
         state = response(state, {
             type: actions.CHANGE_STAFF_RESPONSE,
             responseId: 1,
+            statusId: 2,
             status: 'Approved'
         });
 
         expect(state.byId[1]).to.have.property('status', 'Approved');
+        expect(state.byId[1]).to.have.property('statusId', 2);
     });
-
 });

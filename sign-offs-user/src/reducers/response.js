@@ -10,6 +10,7 @@ export function response(state = INITIAL_STATE, action) {
         case actions.RECEIVE_SECTIONS:
             return receiveSections(state, action);
         case actions.CHANGE_STAFF_RESPONSE:
+            state.byId[action.responseId].statusId = action.statusId;
             state.byId[action.responseId].status = action.status;
             return { ...state };
         default:
@@ -19,12 +20,12 @@ export function response(state = INITIAL_STATE, action) {
 
 function receiveSections(state, action) {
     const byId = {};
-
     if (action.sections.included) {
         action.sections.included
-            .filter(include => include.type === 'sign-off')
+            .filter(include => include.type === 'assignments')
             .map(include => {
                 byId[include.id] = {
+                    statusId: include.attributes.status,
                     status: include.attributes.status_label,
                     staffId: include.relationships.assignedStaff.data.id
                 };

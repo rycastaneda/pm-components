@@ -1,0 +1,52 @@
+{
+   "data":{
+      "type":"compliance-comment",
+      "id":"8",
+      "attributes":{
+         "text":"asdf",
+         "date":"2017-11-06 10:51:25"
+      },
+      "relationships":{
+         "staff":{
+            "data":{
+               "type":"staff",
+               "id":"31"
+            }
+         }
+      }
+   },
+   "included":[
+      {
+         "type":"organisation",
+         "id":"1",
+         "attributes":{
+            "title":"Bundaberg Regional Council"
+         }
+      },
+      {
+         "type":"staff",
+         "id":"31",
+         "attributes":{
+            "user_id":26855,
+            "first_name":"Barry",
+            "last_name":"Spence",
+            "mobile":"",
+            "is_organisation_admin":0,
+            "position":"",
+            "staff_company":"",
+            "staff_phone":"1300 883 699",
+            "state_id":0,
+            "organisation":"Bundaberg Regional Council",
+            "total_incomplete_signoff":1
+         },
+         "relationships":{
+            "organisation":{
+               "data":{
+                  "type":"organisation",
+                  "id":"1"
+               }
+            }
+         }
+      }
+   ]
+}

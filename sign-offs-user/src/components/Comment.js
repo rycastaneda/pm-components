@@ -1,13 +1,20 @@
 import React, { PropTypes } from 'react';
-
-const Comment = ({ staff, text, date, toggleCommentEdit, deleteComment, isReadOnly }) => {
+import { format } from 'date-fns';
+const Comment = ({
+    staff,
+    text,
+    date,
+    toggleCommentEdit,
+    deleteComment,
+    isReadOnly
+}) => {
     const actions = (
         <div className="pull-right">
             <a className="change-comment mar-r-sm" onClick={toggleCommentEdit}>
-                <i className="fa fa-edit"></i>
+                <i className="fa fa-edit" />
             </a>
             <a className="delete-comment" onClick={deleteComment}>
-                <i className="fa fa-close"></i>
+                <i className="fa fa-close" />
             </a>
         </div>
     );
@@ -15,11 +22,17 @@ const Comment = ({ staff, text, date, toggleCommentEdit, deleteComment, isReadOn
     return (
         <div className="pad-btm font-rg">
             <div className="row">
-                <div className={`${isReadOnly ? 'col-lg-12 col-sm-12' :  'col-lg-11 col-sm-11'}`}>
+                <div
+                    className={`${isReadOnly
+                        ? 'col-lg-12 col-sm-12'
+                        : 'col-lg-11 col-sm-11'}`}>
                     <p className="pad-btm-sm">{text}</p>
-                    <strong className="staff">{`— ${staff} ${date}`}</strong>
+                    <strong className="staff">{`— ${staff} ${format(
+                        date,
+                        'MMMM D, YYYY HH:mm a'
+                    )}`}</strong>
                 </div>
-                <div className={`${isReadOnly ? '' :  'col-lg-1 col-sm-1'}`}>
+                <div className={`${isReadOnly ? '' : 'col-lg-1 col-sm-1'}`}>
                     {isReadOnly ? null : actions}
                 </div>
             </div>

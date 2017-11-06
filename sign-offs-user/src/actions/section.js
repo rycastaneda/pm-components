@@ -22,7 +22,7 @@ export function fetchSections(
 
         return axios
             .get(
-                `/compliance/assignments/${organizationId}/${preferredSupplierId}`
+                `/compliance/assignments/${organizationId}/${preferredSupplierId}?include=assignments,comments`
             )
             .then(response => {
                 return dispatch({
