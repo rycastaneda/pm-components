@@ -25,15 +25,15 @@ class CounterBadge extends Component {
         const { count, status } = this.props;
 
         const badges = {
-            'rejected': {
+            rejected: {
                 class: 'badge-bg-danger',
-                text: 'Rejected'
+                text: 'Declined'
             },
-            'approved': {
+            approved: {
                 class: 'badge-success',
                 text: 'Approved'
             },
-            'pending': {
+            pending: {
                 class: 'badge-info',
                 text: 'Pending'
             },
@@ -44,9 +44,22 @@ class CounterBadge extends Component {
         };
 
         return (
-            <span className={`mar-r-sm counter-badge ${this.state.isHovered ? 'in' : ''}`}>
-                <span className={`counter-badge__text badge ${badges[status].class} ${this.state.isHovered ? 'in' : ''}`}>{badges[status].text}</span>
-                <span className={`badge ${badges[status].class}--lighter counter-badge__count`} onMouseEnter={this.onHoverIn} onMouseLeave={this.onHoverOut}>{count}</span>
+            <span
+                className={`mar-r-sm counter-badge ${this.state.isHovered
+                    ? 'in'
+                    : ''}`}>
+                <span
+                    className={`counter-badge__text badge ${badges[status]
+                        .class} ${this.state.isHovered ? 'in' : ''}`}>
+                    {badges[status].text}
+                </span>
+                <span
+                    className={`badge ${badges[status]
+                        .class}--lighter counter-badge__count`}
+                    onMouseEnter={this.onHoverIn}
+                    onMouseLeave={this.onHoverOut}>
+                    {count}
+                </span>
             </span>
         );
     }
@@ -58,4 +71,3 @@ CounterBadge.propTypes = {
 };
 
 export default CounterBadge;
-

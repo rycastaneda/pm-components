@@ -3,25 +3,23 @@ import { mount } from 'enzyme';
 import { expect } from 'chai';
 import CounterBadge from './CounterBadge';
 
-const setup = (props) => {
-    const component = mount(
-        <CounterBadge {...props} />
-    );
+const setup = props => {
+    const component = mount(<CounterBadge {...props} />);
 
     return { component };
 };
 
 describe('CounterBadge component: ', () => {
     const badges = {
-        'rejected': {
+        rejected: {
             class: 'badge-bg-danger',
-            text: 'Rejected'
+            text: 'Declined'
         },
-        'approved': {
+        approved: {
             class: 'badge-success',
             text: 'Approved'
         },
-        'pending': {
+        pending: {
             class: 'badge-info',
             text: 'Pending'
         },
@@ -33,7 +31,7 @@ describe('CounterBadge component: ', () => {
 
     it('should be able to render the counter and show text on hover', () => {
         const { component } = setup({
-            status: 'approved', 
+            status: 'approved',
             count: 2
         });
         const count = component.find('.counter-badge__count');
@@ -45,11 +43,12 @@ describe('CounterBadge component: ', () => {
         expect(text.hasClass('in')).to.be.true;
     });
 
-
-    Object.keys(badges).map((status) => {
-        it(`should render class ${badges[status]} and text when status is ${status}`, function() {
+    Object.keys(badges).map(status => {
+        it(`should render class ${badges[
+            status
+        ]} and text when status is ${status}`, function() {
             const { component } = setup({
-                status, 
+                status,
                 count: 2
             });
 
@@ -59,5 +58,4 @@ describe('CounterBadge component: ', () => {
             expect(element.text()).to.eql(badges[status].text);
         });
     });
-
 });

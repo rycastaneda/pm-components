@@ -6,10 +6,10 @@ import format from 'date-fns/format';
 
 describe('Staff reducer', () => {
     let state = {};
-    
+
     it('should handle default state', () => {
         state = staff(undefined, {});
-        expect(state).to.deep.equal({ 
+        expect(state).to.deep.equal({
             byId: {},
             allIds: [],
             needsFetching: true,
@@ -18,19 +18,20 @@ describe('Staff reducer', () => {
     });
 
     it('should handle RECEIVE_SECTIONS', function() {
-
         state = staff(state, {
             type: actions.RECEIVE_SECTIONS,
             sections: mockSections
         });
 
-        expect(state.needsFetching).to.be.false;
+        expect(state.needsFetching).to.be.true;
         expect(state.allIds).to.have.members(
-            mockSections.included.filter(include => include.type === 'staff').map(staff => '' + staff.id)
+            mockSections.included
+                .filter(include => include.type === 'staff')
+                .map(staff => staff.id)
         );
     });
 
-    it('should handle SUBMITTED_NEW_COMMENT by adding a new entry', () => { 
+    it('should handle SUBMITTED_NEW_COMMENT by adding a new entry', () => {
         let length = state.allIds.length;
         state = staff(state, {
             type: actions.SUBMITTED_NEW_COMMENT,

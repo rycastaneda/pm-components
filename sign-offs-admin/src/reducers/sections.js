@@ -1,141 +1,64 @@
 import * as actions from '../constants';
 
-const INITIAL_STATE = { 
+const INITIAL_STATE = {
     byId: {},
     allIds: [],
     isLoading: true
 };
 
-
 export function sections(state = INITIAL_STATE, action) {
     let section, index;
+    if (action.sectionId) {
+        section = state.byId[action.sectionId];
+    }
 
     switch (action.type) {
-        case action.FETCH_SECTIONS: 
+        case action.FETCH_SECTIONS:
             return {
                 ...state,
                 isLoading: true
             };
         case actions.RECEIVE_SECTIONS:
             return receiveSections(state, action);
+        case actions.RECEIVE_QUESTIONS:
+            section.isLoading = false;
+            return { ...state };
         case actions.TOGGLE_SECTION_COLLAPSE:
-            section = state.byId[action.sectionId];
-
-            return {
-                ...state,
-                byId: {
-                    ...state.byId,
-                    [action.sectionId]: {
-                        ...section,
-                        isCollapsed: !section.isCollapsed
-                    }
-                }
-            };
+            section.isCollapsed = !section.isCollapsed;
+            return { ...state };
         case actions.TOGGLE_MANAGE_SECTION_MODAL:
-            section = state.byId[action.sectionId];
-
-            return {
-                ...state,
-                byId: {
-                    ...state.byId,
-                    [action.sectionId]: {
-                        ...section,
-                        isShown: !section.isShown
-                    }
-                }
-            };
-        case actions.SWITCH_SECTION_TAB: 
-            section = state.byId[action.sectionId];
-
-            return {
-                ...state,
-                byId: {
-                    ...state.byId,
-                    [action.sectionId]: {
-                        ...section,
-                        currentTab: action.currentTab === section.currentTab ? null : action.currentTab
-                    }
-                }
-            };
+            section.isShown = !section.isShown;
+            return { ...state };
+        case actions.SWITCH_SECTION_TAB:
+            section.currentTab =
+                action.currentTab === section.currentTab
+                    ? null
+                    : action.currentTab;
+            return { ...state };
         case actions.TOGGLE_COMMENT_BOX:
-            section = state.byId[action.sectionId];
-            
-            return {
-                ...state,
-                byId: {
-                    ...state.byId,
-                    [action.sectionId]: {
-                        ...section,
-                        isAddingNewComment: !section.isAddingNewComment
-                    }
-                }
-            };
+            section.isAddingNewComment = !section.isAddingNewComment;
+            return { ...state };
         case actions.TOGGLE_SECTION_LOADING:
-            section = state.byId[action.sectionId];
-
-            return {
-                ...state,
-                byId: {
-                    ...state.byId,
-                    [action.sectionId]: {
-                        ...section,
-                        isLoading: !section.isLoading 
-                    }
-                }
-            };
-        case actions.SUBMITTED_NEW_COMMENT: 
-            section = state.byId[action.sectionId];
-
-            return {
-                ...state,
-                byId: {
-                    ...state.byId,
-                    [action.sectionId]: {
-                        ...section,
-                        commentIds: section.commentIds.concat(action.commentId),
-                        isAddingNewComment: false,
-                        isLoading: false
-                    }
-                }
-            };
+            section.isLoading = !section.isLoading;
+            return { ...state };
+        case actions.SUBMITTED_NEW_COMMENT:
+            section.commentIds.push(action.commentId);
+            section.isAddingNewComment = false;
+            section.isLoading = false;
+            return { ...state };
         case actions.DELETED_COMMENT:
-            section = state.byId[action.sectionId];
-            section.commentIds.splice(section.commentIds.indexOf(action.commentId), 1);
-
-            return {
-                ...state,
-                byId: {
-                    ...state.byId,
-                    [action.sectionId]: {
-                        ...section
-                    }
-                }
-            };
+            section.commentIds.splice(
+                section.commentIds.indexOf(action.commentId),
+                1
+            );
+            return { ...state };
         case actions.ADDED_STAFF_RESPONSE:
-            section = state.byId[action.sectionId];
             section.responseIds.push(action.responseId);
-            return {
-                ...state,
-                byId: {
-                    ...state.byId,
-                    [action.sectionId]: {
-                        ...section
-                    }
-                }
-            };
+            return { ...state };
         case actions.DELETED_STAFF_RESPONSE:
-            section = state.byId[action.sectionId];
             index = section.responseIds.indexOf(action.responseId);
             section.responseIds.splice(index, 1);
-            return {
-                ...state,
-                byId: {
-                    ...state.byId,
-                    [action.sectionId]: {
-                        ...section
-                    }
-                }
-            };
+            return { ...state };
     }
 
     return state;
@@ -144,27 +67,42 @@ export function sections(state = INITIAL_STATE, action) {
 function receiveSections(state, action) {
     const byId = {};
 
-    action.sections.data
-        .map((section) => {
-            const commentIds = section.relationships.comments.data.map(comment => comment.id);
-            const responseIds = section.relationships.signOff.data.map(signOff => signOff.id);
-            const defaultUserIds = section.relationships.defaultUsers.data.map(user => user.id);
-            byId[section.id] = {
-                id: section.id,
-                status: section.relationships['staff-response'] ? section.relationships['staff-response'].attributes.status : null,
-                isCollapsed: false,
-                isAddingNewComment: false,
-                isLoading: false,
-                isShown: false,
-                currentTab: 'questions',
-                commentIds,
-                responseIds,
-                defaultUserIds,
-                ...section.attributes
-            };
+    action.sections.data.map(section => {
+        let commentIds = [];
+        let responseIds = [];
+        let defaultUserIds = [];
+        if (section.relationships) {
+            commentIds = section.relationships.comments
+                ? section.relationships.comments.data.map(comment => comment.id)
+                : [];
+            responseIds = section.relationships.assignments
+                ? section.relationships.assignments.data.map(
+                      signOff => signOff.id
+                  )
+                : [];
+            defaultUserIds = section.relationships.defaultUsers
+                ? section.relationships.defaultUsers.data.map(user => user.id)
+                : [];
+        }
 
-            return section;
-        });
+        byId[section.id] = {
+            id: section.id,
+            status: section.relationships['staff-response']
+                ? section.relationships['staff-response'].attributes.status
+                : null,
+            isCollapsed: false,
+            isAddingNewComment: false,
+            isLoading: false,
+            isShown: false,
+            currentTab: 'questions',
+            commentIds,
+            responseIds,
+            defaultUserIds,
+            ...section.attributes
+        };
+
+        return section;
+    });
 
     const allIds = Object.keys(byId);
 

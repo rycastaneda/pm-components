@@ -8,7 +8,7 @@ describe('Sections reducer', () => {
 
     it('should handle default state', () => {
         state = sections(undefined, {});
-        expect(state).to.deep.equal({ 
+        expect(state).to.deep.equal({
             byId: {},
             allIds: [],
             isLoading: true
@@ -28,7 +28,8 @@ describe('Sections reducer', () => {
             type: actions.RECEIVE_SECTIONS,
             sections: mockSections
         });
-        expect(state).to.have.property('isLoading', false);        expect(state.byId[1]).to.have.property('isCollapsed', false);
+        expect(state).to.have.property('isLoading', false);
+        expect(state.byId[1]).to.have.property('isCollapsed', false);
         expect(state.byId[1]).to.have.property('isAddingNewComment', false);
         expect(state.byId[1]).to.have.property('isLoading', false);
         expect(state.byId[1]).to.have.property('currentTab', 'questions');
@@ -39,7 +40,17 @@ describe('Sections reducer', () => {
         expect(state.byId[46].defaultUserIds).to.have.members(['1']);
         expect(state.byId[47].responseIds).to.have.members(['1']);
         expect(state.byId[47].commentIds).to.have.members(['1', '2']);
-        expect(state.allIds).to.have.members(mockSections.data.map(sections => '' + sections.id));
+        expect(state.allIds).to.have.members(
+            mockSections.data.map(sections => '' + sections.id)
+        );
+    });
+
+    it('should handle RECEIVE_QUESTIONS', () => {
+        state = sections(state, {
+            type: actions.RECEIVE_QUESTIONS,
+            sectionId: 1
+        });
+        expect(state.byId[1]).to.have.property('isLoading', false);
     });
 
     it('should handle TOGGLE_MANAGE_SECTION_MODAL', () => {
@@ -49,7 +60,7 @@ describe('Sections reducer', () => {
             type: actions.TOGGLE_MANAGE_SECTION_MODAL,
             sectionId: 1
         });
-        
+
         expect(state.byId[1]).to.have.property('isShown', !isShown);
     });
 
@@ -60,7 +71,7 @@ describe('Sections reducer', () => {
             type: actions.TOGGLE_SECTION_COLLAPSE,
             sectionId: 1
         });
-        
+
         expect(state.byId[1]).to.have.property('isCollapsed', !isCollapsed);
     });
 
@@ -75,18 +86,21 @@ describe('Sections reducer', () => {
     });
 
     it('should handle TOGGLE_COMMENT_BOX toggling adding flag', () => {
-        const isAddingNewComment = state.byId[1].isLoading; 
+        const isAddingNewComment = state.byId[1].isLoading;
 
         state = sections(state, {
             type: actions.TOGGLE_COMMENT_BOX,
             sectionId: 1
         });
 
-        expect(state.byId[1]).to.have.property('isAddingNewComment', !isAddingNewComment);
+        expect(state.byId[1]).to.have.property(
+            'isAddingNewComment',
+            !isAddingNewComment
+        );
     });
 
     it('should handle TOGGLE_SECTION_LOADING by toggling loading flag', () => {
-        const isLoading = state.byId[1].isLoading; 
+        const isLoading = state.byId[1].isLoading;
 
         state = sections(state, {
             type: actions.TOGGLE_SECTION_LOADING,
@@ -104,7 +118,7 @@ describe('Sections reducer', () => {
             comment: 'test',
             date: '10-03-2017 10:55 am'
         });
-        
+
         expect(state.byId[1]).to.have.property('isLoading', false);
         expect(state.byId[1]).to.have.property('isAddingNewComment', false);
         expect(state.byId[1].commentIds).to.have.members([4]);
@@ -116,7 +130,8 @@ describe('Sections reducer', () => {
             sectionId: 1,
             commentId: 4
         });
-        
+
+        expect(state.byId[1]).to.have.property('isLoading', false);
         expect(state.byId[1].commentIds).to.not.include(4);
     });
 
@@ -130,19 +145,21 @@ describe('Sections reducer', () => {
             responseId: 100
         });
 
+        expect(state.byId[1]).to.have.property('isLoading', false);
         expect(state.byId[1].responseIds).to.have.length(responseCount + 1);
         expect(state.byId[1].responseIds).to.include(100);
     });
 
     it('should handle DELETED_STAFF_RESPONSE', () => {
         const responseCount = state.byId[1].responseIds.length;
-        
+
         state = sections(state, {
             type: actions.DELETED_STAFF_RESPONSE,
             sectionId: 1,
             responseId: 100
         });
 
+        expect(state.byId[1]).to.have.property('isLoading', false);
         expect(state.byId[1].responseIds).to.not.include(100);
         expect(state.byId[1].responseIds).to.have.length(responseCount - 1);
     });

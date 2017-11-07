@@ -5,10 +5,10 @@ import mockSections from '../mocks/sections.json';
 
 describe('Comments reducer', () => {
     let state = {};
-    
+
     it('should handle default state', () => {
         state = comments(undefined, {});
-        expect(state).to.deep.equal({ 
+        expect(state).to.deep.equal({
             byId: {},
             allIds: []
         });
@@ -21,7 +21,9 @@ describe('Comments reducer', () => {
         });
 
         expect(state.allIds).to.have.members(
-            mockSections.included.filter(include => include.type === 'comments').map(comments => '' + comments.id)
+            mockSections.included
+                .filter(include => include.type === 'comments')
+                .map(comments => '' + comments.id)
         );
     });
 
@@ -47,7 +49,6 @@ describe('Comments reducer', () => {
         expect(state.byId[1]).to.have.property('isLoading', !isLoading);
     });
 
-
     it('should handle SUBMITTED_EDIT_COMMENT', () => {
         state = comments(state, {
             type: actions.SUBMITTED_EDIT_COMMENT,
@@ -61,7 +62,6 @@ describe('Comments reducer', () => {
         expect(state.byId[1]).to.have.property('comment', 'Just kidding');
         expect(state.byId[1]).to.have.property('date');
     });
-
 
     it('should handle SUBMITTED_NEW_COMMENT on a new comment', () => {
         let previousIdCount = state.allIds.length;
@@ -91,5 +91,4 @@ describe('Comments reducer', () => {
         expect(state.byId[5]).to.be.undefined;
         expect(state.allIds).to.not.include(5);
     });
-
 });

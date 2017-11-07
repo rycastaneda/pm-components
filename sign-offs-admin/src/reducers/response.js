@@ -1,6 +1,6 @@
 import * as actions from '../constants';
 
-const INITIAL_STATE = { 
+const INITIAL_STATE = {
     byId: {},
     allIds: []
 };
@@ -10,8 +10,9 @@ export function response(state = INITIAL_STATE, action) {
         case actions.RECEIVE_SECTIONS:
             return receiveSections(state, action);
         case actions.CHANGE_STAFF_RESPONSE:
+            state.byId[action.responseId].statusId = action.statusId;
             state.byId[action.responseId].status = action.status;
-            return { ...state }; 
+            return { ...state };
         case actions.ADDED_STAFF_RESPONSE:
             state.byId[action.responseId] = {
                 status: 'Pending',
@@ -19,7 +20,7 @@ export function response(state = INITIAL_STATE, action) {
             };
             state.allIds.push(action.responseId);
             return { ...state };
-        case actions.DELETED_STAFF_RESPONSE: 
+        case actions.DELETED_STAFF_RESPONSE:
             return removeResponse(state, action);
         default:
             return state;
@@ -29,7 +30,7 @@ export function response(state = INITIAL_STATE, action) {
 function removeResponse(state, action) {
     const ids = {};
 
-    Object.keys(state.byId).map((responseId) => {
+    Object.keys(state.byId).map(responseId => {
         if (+responseId === action.responseId) {
             return;
         }
@@ -40,7 +41,7 @@ function removeResponse(state, action) {
     let index = state.allIds.indexOf(action.groupId);
     state.allIds.splice(index, 1);
 
-    return  {
+    return {
         ...state,
         byId: ids
     };
@@ -50,9 +51,10 @@ function receiveSections(state, action) {
     const byId = {};
 
     action.sections.included
-        .filter(include => include.type === 'sign-off')
-        .map((include) => {
+        .filter(include => include.type === 'assignments')
+        .map(include => {
             byId[include.id] = {
+                statusId: include.attributes.status,
                 status: include.attributes.status_label,
                 staffId: include.relationships.assignedStaff.data.id
             };
@@ -67,4 +69,3 @@ function receiveSections(state, action) {
         allIds
     };
 }
-

@@ -29,5 +29,11 @@
         z-index: 5;
         width: auto;
     }
+}
 
+.staff-lists {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 500px;
+    padding-right: 15px;
 }

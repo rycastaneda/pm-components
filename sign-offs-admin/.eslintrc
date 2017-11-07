@@ -25,7 +25,6 @@
   ],
   "rules": {
     "array-bracket-spacing": ["error", "never"],
-    "arrow-parens": ["error", "as-needed", {"requireForBlockBody": true}],
     "arrow-spacing": ["error"],
     "brace-style": ["error"],
     "comma-dangle": ["error", "never"],

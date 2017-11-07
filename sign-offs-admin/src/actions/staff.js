@@ -1,4 +1,3 @@
-import mockStaffs from '../mocks/staff.json';
 import * as actions from '../constants';
 import axios from 'axios';
 
@@ -12,17 +11,15 @@ export function fetchStaff(refresh = false) {
             type: actions.TOGGLE_MANAGE_SECTION_MODAL_LOADING
         });
 
-        return axios.get('/anything').then(() => {
-        // return axios.all([]).then(() => {
+        return axios.get('/staff').then(response => {
             dispatch({
                 type: actions.RECEIVE_STAFF,
-                staffs: mockStaffs
+                staffs: response.data
             });
 
             dispatch({
                 type: actions.TOGGLE_MANAGE_SECTION_MODAL_LOADING
             });
-
         });
     };
 }
@@ -33,63 +30,73 @@ export function addStaffResponse(sectionId, staffId) {
             type: actions.TOGGLE_MANAGE_SECTION_MODAL_LOADING
         });
 
-        return axios.get('/anything').then(() => {
-            const responseId = getState().response.allIds.length + 1; // TODO: replace with backend response
+        const { preferredSupplierId } = getState().ui;
+        const staffUserId = getState().staff.byId[staffId].user_id;
+        const staffResponse = {
+            type: 'compliance-assignment',
+            id: null,
+            attributes: {
+                pepp_organisation_custom_field_section_id: sectionId,
+                assigned_to_user_id: staffUserId,
+                pepp_preferred_supplier_id: preferredSupplierId
+            }
+        };
 
-            dispatch({
-                type: actions.ADDED_STAFF_RESPONSE,
-                sectionId,
-                staffId,
-                responseId
+        return axios
+            .post('/compliance/assignment', { data: staffResponse })
+            .then(response => {
+                const responseId = response.data.data.id;
+                dispatch({
+                    type: actions.ADDED_STAFF_RESPONSE,
+                    sectionId,
+                    staffId,
+                    responseId
+                });
             });
-
-            dispatch({
-                type: actions.TOGGLE_MANAGE_SECTION_MODAL_LOADING
-            });
-        }); 
     };
 }
 
 export function deleteStaffResponse(sectionId, staffId, responseId) {
-    return (dispatch) => {
+    return dispatch => {
         dispatch({
             type: actions.TOGGLE_STAFF_LOADING,
             staffId
         });
 
-        return axios.get('/anything').then(() => {
+        return axios.delete(`/compliance/assignment/${responseId}`).then(() => {
             dispatch({
                 type: actions.DELETED_STAFF_RESPONSE,
                 sectionId,
+                staffId,
                 responseId
             });
-
-            dispatch({
-                type: actions.TOGGLE_STAFF_LOADING,
-                staffId
-            });
-        }); 
+        });
     };
 }
 
-export function changeStaffResponse(staffId, responseId, status) {
-    return (dispatch) => {
+export function changeStaffResponse(staffId, responseId, statusId, status) {
+    return dispatch => {
         dispatch({
             type: actions.TOGGLE_STAFF_LOADING,
             staffId
         });
 
-        return axios.get('/anything').then(() => {
-            dispatch({
-                type: actions.CHANGE_STAFF_RESPONSE,
-                responseId,
-                status
-            });
+        const newReponse = {
+            type: 'compliance-assignment',
+            id: responseId,
+            attributes: { status: statusId }
+        };
 
-            dispatch({
-                type: actions.TOGGLE_STAFF_LOADING,
-                staffId
+        return axios
+            .patch('/compliance/assignment-status', { data: newReponse })
+            .then(() => {
+                dispatch({
+                    type: actions.CHANGE_STAFF_RESPONSE,
+                    responseId,
+                    statusId,
+                    staffId,
+                    status
+                });
             });
-        }); 
     };
 }

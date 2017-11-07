@@ -17,13 +17,13 @@ export function toggleCommentEdit(commentId) {
 }
 
 export function deleteComment(sectionId, commentId) {
-    return (dispatch) => {
+    return dispatch => {
         dispatch({
             type: actions.TOGGLE_COMMENT_LOADING,
             commentId
         });
 
-        return axios.get('/anything').then(() => {
+        return axios.delete(`/compliance/comment/${commentId}`).then(() => {
             dispatch({
                 type: actions.DELETED_COMMENT,
                 commentId,
@@ -34,28 +34,31 @@ export function deleteComment(sectionId, commentId) {
 }
 
 export function submitEditComment(sectionId, commentId, comment) {
-    return (dispatch) => {
+    return dispatch => {
         dispatch({
             type: actions.TOGGLE_COMMENT_LOADING,
             commentId
         });
 
         let newComment = {
-            comment
+            type: 'compliance-comment',
+            id: commentId,
+            attributes: {
+                text: comment
+            }
         };
 
-        newComment.commentId = commentId;
-
-        // TODO: API endpoint
-        return axios.get('/anything').then(() => {
-            dispatch({
-                type: actions.SUBMITTED_EDIT_COMMENT,
-                sectionId,
-                commentId: commentId,
-                comment: comment,
-                date: format(new Date(), 'MM-DD-YYYY HH:m a')
+        return axios
+            .patch('/compliance/comment', { data: newComment })
+            .then(() => {
+                dispatch({
+                    type: actions.SUBMITTED_EDIT_COMMENT,
+                    sectionId,
+                    commentId: commentId,
+                    comment: comment,
+                    date: format(new Date(), 'MM-DD-YYYY HH:m:s')
+                });
             });
-        });
     };
 }
 
@@ -65,22 +68,37 @@ export function submitNewComment(sectionId, comment) {
             type: actions.TOGGLE_SECTION_LOADING,
             sectionId
         });
+        const { preferredSupplierId } = getState().ui;
 
         let newComment = {
-            staffId: 100, // replace with current staff id
-            staffName: 'Tester',
-            commentId: getState().comments.allIds.length + 1, // replace with actual commentId from backend in 
-            comment
+            type: 'compliance-comment',
+            id: null,
+            attributes: {
+                pepp_organisation_custom_field_section_id: sectionId,
+                text: comment,
+                pepp_preferred_supplier_id: preferredSupplierId
+            }
         };
 
-        // TODO: API endpoint
-        return axios.post('/anything', newComment).then(() => {
-            dispatch({
-                type: actions.SUBMITTED_NEW_COMMENT,
-                sectionId,
-                ...newComment,
-                date: format(new Date(), 'MM-DD-YYYY HH:m a')
+        return axios
+            .post('/compliance/comment', { data: newComment })
+            .then(response => {
+                const staffId = response.data.data.relationships.staff.data.id;
+                const staff = response.data.included
+                    .filter(include => include.type === 'staff')
+                    .pop();
+                const commentId = response.data.data.id;
+                const date = response.data.data.attributes.date;
+                dispatch({
+                    type: actions.SUBMITTED_NEW_COMMENT,
+                    sectionId,
+                    staffId,
+                    firstName: staff.attributes.first_name,
+                    lastName: staff.attributes.last_name,
+                    commentId,
+                    date,
+                    comment
+                });
             });
-        });
     };
 }
