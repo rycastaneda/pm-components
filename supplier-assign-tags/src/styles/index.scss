@@ -1,0 +1,54 @@
+.manage-tags{
+
+    .tag-icon{
+        margin-right: 5px;
+    }
+
+    .comment-btn{
+        margin-left: 10px;
+    }
+
+    .content{
+        display: inline-block;
+        margin: 3px;
+        padding: 2px 10px 5px;
+
+        &:hover{
+            margin-bottom: 2px;
+            border-bottom: 1px solid;
+            cursor: pointer;
+        }
+
+        &.selected{
+            margin-bottom: 1px;
+            border-bottom: 2px solid;
+        }
+    }
+
+    .Select-value{
+        position: relative;
+        display: inline-block;
+        margin: 5px;
+        padding: 5px 10px 5px 5px;
+        border: 1px solid;
+        border-radius: 2px;
+        font-size: 0.9em;
+        line-height: 1.4;
+        vertical-align: top;
+    }
+
+    .Select-clear-zone {
+        display: none;
+    }
+
+    .Select-value-label {
+        padding: 2px 5px;
+        cursor: default;
+    }
+
+    .Select-value-icon{
+        padding: 1px 5px 3px;
+        border-right: 1px solid;
+        cursor: pointer;
+    }
+}
