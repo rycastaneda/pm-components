@@ -1,4 +1,5 @@
 import { EVALUATION_TEMPLATES_FETCHED,
+    EVALUATION_TEMPLATE_UPDATED,
     IS_BUSY,
     REQUEST_FAILED } from '../constants/ActionTypes';
 import { MAXROWS_DEFAULT,
@@ -19,7 +20,7 @@ const INITIAL_DATA = {
 export function evaluationTemplates(state = INITIAL_DATA, action) {
 
     switch (action.type) {
-        
+
         case EVALUATION_TEMPLATES_FETCHED:
             {
                 let newState = Object.assign({}, state);
@@ -29,7 +30,21 @@ export function evaluationTemplates(state = INITIAL_DATA, action) {
                 newState.isBusy = false;
                 return newState;
             }
+        case EVALUATION_TEMPLATE_UPDATED:
+            {
+                let newState = Object.assign({}, state);
+                state.currentTemplateList.forEach((item) => {
 
+                    if (item.id === action.id) {
+                        item.status = action.status;
+                    }
+                });
+                const currentTemplateList = JSON.parse(JSON.stringify(state.currentTemplateList));
+                newState.currentTemplateList = currentTemplateList;
+
+                newState.isBusy = false;
+                return newState;
+            }
         case IS_BUSY:
             state.isBusy = action.status;
             return Object.assign({}, state);

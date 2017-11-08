@@ -1,23 +1,40 @@
-import React, {  PropTypes, Component } from 'react';
+import React, { PropTypes, Component } from 'react';
+
 import ReactPaginate from 'react-paginate';
 
 class TemplatesTable extends Component {
 
+
     constructor(props) {
         super(props);
+        this.actionDropdown= null;
         this.state= { menuVisibleItemId:null };
         this.hideMenu= this.hideMenu.bind(this);
         this.handlePageClick= this.handlePageClick.bind(this);
         this.onTemplateToggleActivation = this.onTemplateToggleActivation.bind(this);
+        this.onDropdownClickOutside = this.onDropdownClickOutside.bind(this);
     }
 
+    componentWillMount() {
+        document.addEventListener('mousedown', this.onDropdownClickOutside, false);
+    }
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.onDropdownClickOutside, false);
+    }
+    onDropdownClickOutside(e) {
+        this.clickedElement = e.target;        
+        if (this.actionDropdown) {
+            if (!this.actionDropdown.contains(e.target)) {
+                this.hideMenu();
+            }
+        }
+    }
     onTemplateToggleActivation(id, status) {
+        this.hideMenu();
         this.props.onTemplateToggleActivation(id, status);
     }
     toggleMenu(id) {
-        if (this.state.menuVisibleItemId=== id) {
-        //    this.hideMenu();
-        } else {
+        if (this.state.menuVisibleItemId!== id) {
             this.setState({ menuVisibleItemId:id });
         }
     }
@@ -29,21 +46,38 @@ class TemplatesTable extends Component {
         this.setState({ menuVisibleItemId:null });
     }
     renderMoreButton(id, status) {
-        return (
-        <div className={`dropdown ${this.state.menuVisibleItemId===id? 'open': ''}`}>
-            <a className="btn btn-sm"
-                onBlur={this.hideMenu}
-                onClick={this.toggleMenu.bind(this, id)}
-                href="javascript:">
-                More &nbsp;
-                <i className="caret" ></i>
-            </a>
-            <ul className="dropdown-menu">
-                <li ><a href="javascript:;" onClick={() => this.onTemplatePreviewClick(id)}>Preview</a></li>
-                <li><a href="javascript:;" onClick={() => this.onTemplateEditClick(id)}>Edit</a></li>
-                <li><a href="javascript:;" onClick={()  => this.onTemplateToggleActivation(id, !(status))}>{status? 'Deactivate': 'Activate'}</a></li>
-            </ul>
-    </div>);
+        if (this.state.menuVisibleItemId===id) {
+            return (
+            <div className="dropdown open"   ref={(ul) => {
+                if (ul!==null) {
+                    this.actionDropdown=ul;
+                }
+            }}>
+                <a className="btn btn-sm"
+                    onClick={this.toggleMenu.bind(this, id)}
+                    href="javascript:">
+                    More &nbsp;
+                    <i className="caret" ></i>
+                </a>
+                <ul className="dropdown-menu">
+                    <li ><a href="javascript:;" onClick={() => this.onTemplatePreviewClick(id)}>Preview</a></li>
+                    <li><a href="javascript:;" onClick={() => this.onTemplateEditClick(id)}>Edit</a></li>
+                    <li><a href="javascript:;" onClick={()  => this.onTemplateToggleActivation(id, !(status))}>{status? 'Deactivate': 'Activate'}</a></li>
+                </ul>
+        </div>);
+        } else {
+            return (
+                <div className="dropdown">
+                    <a className="btn btn-sm"
+                        onClick={this.toggleMenu.bind(this, id)}
+                        href="javascript:">
+                        More &nbsp;
+                        <i className="caret" ></i>
+                    </a>
+                </div>
+            );
+        }
+
     }
     render() {
         return (

@@ -5,6 +5,7 @@ import { getTemplateServiceUrlFor,
     EVALUATION_SERVICE
 } from '../utils/dataParserUtil';
 import { EVALUATION_TEMPLATES_FETCHED,
+    EVALUATION_TEMPLATE_UPDATED,
     REQUEST_FAILED,
     IS_BUSY
 } from '../constants/ActionTypes';
@@ -16,6 +17,9 @@ export function previewTemplate(id) {
 export function changeTemplateStatus(id, status) {
     return  (dispatch) => {
         axios.patch(EVALUATION_SERVICE+'/'+id, getDataForSave(id, status))
+        .then(() => {
+            dispatch({ type: EVALUATION_TEMPLATE_UPDATED, id, status });
+        })
         .catch((error) => {
             dispatch({ type:REQUEST_FAILED, message: error.message });
         });
