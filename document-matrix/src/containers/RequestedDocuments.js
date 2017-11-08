@@ -94,7 +94,7 @@ class RequestedDocuments extends Component {
                                 {items.map((item, key) => <th key={key}>
                                     <div>
                                         <span>
-                                            &nbsp;{item.title}
+                                            &nbsp;{item.service_title && item.title + ' - ' + item.service_title || item.title}
                                         </span>
                                     </div>
                                 </th>)}

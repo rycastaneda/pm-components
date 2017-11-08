@@ -5,8 +5,7 @@ import Document from './Document';
 import { expect } from 'chai';
 import {
   UPLOAD_IN_PROGRESS,
-  UPLOAD_SUCCESS,
-  UPLOAD_FAILED
+  UPLOAD_SUCCESS
 } from '../constants';
 
 const setup = (props) => {

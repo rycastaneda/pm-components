@@ -37,3 +37,5 @@ render(
     </Provider>,
     document.querySelector('[data-component="supplier-requested-documents"]')
 );
+
+document.querySelector('[data-component="supplier-requested-documents"]').setAttribute('data-component', 'loaded');
