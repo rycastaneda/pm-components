@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import Question  from './Question';
-
+import { connect } from 'react-redux';
 
 class Criteria extends Component {
     constructor(props) {
@@ -87,4 +87,5 @@ Criteria.propTypes = {
     criteria: PropTypes.object,
     onSave: PropTypes.func.isRequired
 };
-export default Criteria;
+
+export default connect()(Criteria);

@@ -1,6 +1,8 @@
 import { } from '../constants/ActionTypes';
 import axios from 'axios';
-// import { formatTemplatesFromFetchService } from '../utils/dataParserUtil';
+import { parseDataForCreateTemplate,
+    parseDataForUpdateTemplate
+} from '../utils/dataParserUtil';
 import {
     CRITERIA_ADD,
     CRITERIA_DELETE,
@@ -9,12 +11,34 @@ import {
     QUESTION_UPDATE,
     QUESTION_DELETE,
     TEMPLATE_FETCHED,
+    TEMPLATE_CREATED,
     REQUEST_FAILED,
     IS_BUSY
 } from '../constants/ActionTypes';
 
-const FETCH_TEMPLATE_URL = 'template';
+const TEMPLATE_SERVICE_URL = 'evaluation-templates';
 
+export function addTemplate(title) {
+    return (dispatch) => {
+        return axios.post(TEMPLATE_SERVICE_URL, parseDataForCreateTemplate(title))
+        .then((response) => {
+            const template = response.data.data;
+            dispatch({ type:TEMPLATE_CREATED, title: template.attributes.title, id:Number.parsetInt(template.id) });
+        })
+        .catch((error) => {
+            dispatch({ type:REQUEST_FAILED, message: error.message });
+        });
+    };
+}
+
+export function updateTemplate(title, id) {
+    return (dispatch) => {
+        return axios.post(TEMPLATE_SERVICE_URL/+id, parseDataForUpdateTemplate(title, id))
+        .catch((error) => {
+            dispatch({ type:REQUEST_FAILED, message: error.message });
+        });
+    };
+}
 export function addCriteria(title, weighting) {
     return { type:CRITERIA_ADD, id:33, title, weighting };
 }
@@ -41,7 +65,7 @@ export function deleteQuestionFromCriteria() {
 
 export function fetchTemplate() {
     return (dispatch) => {
-        getPromiseForService(FETCH_TEMPLATE_URL, dispatch)
+        getPromiseForService(TEMPLATE_SERVICE_URL, dispatch)
             .then((response) => {
                 response;
                 // let template = parseTemplateFromResponse(response.data);

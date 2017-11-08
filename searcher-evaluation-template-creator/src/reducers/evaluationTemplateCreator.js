@@ -1,5 +1,5 @@
-import {
-    TEMPLATE_FETCHED,
+import { TEMPLATE_FETCHED,
+    TEMPLATE_CREATED,
     CRITERIA_ADD,
     CRITERIA_DELETE,
     CRITERIA_UPDATE,
@@ -8,13 +8,12 @@ import {
     QUESTION_UPDATE,
     IS_BUSY,
     REQUEST_FAILED } from '../constants/ActionTypes';
-import { deepClone } from '../utils/dataParserUtil';
+
 import { CRITERION_SKELETON } from '../constants/models';
 
 function getInitialData() {
-    const initialCriteria = deepClone(CRITERION_SKELETON);
-    // initialCriteria.questions.push(deepClone(QUESTION_SKELETON));
-    return {  isBusy:false, errorMessage:null, id:null, title:'title', criteria:[initialCriteria] };
+
+    return {  isBusy:false, errorMessage:null, id:null, title:'', criteria:[] };
 }
 
 export function evaluationTemplateCreator(state = getInitialData(), action) {
@@ -23,6 +22,10 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
             {
                 return Object.assign({}, state, { id:action.id, title:action.title, criteria:action.criteria });
             }
+        case TEMPLATE_CREATED:
+            {
+                return Object.assign({}, state, { id:action.id, title:action.title });
+            }
         case CRITERIA_ADD:
             {
                 let newCriterion = JSON.parse(JSON.stringify(CRITERION_SKELETON));
@@ -30,7 +33,6 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                 state.criteria.pop();
                 let blankCriterion = JSON.parse(JSON.stringify(CRITERION_SKELETON));
                 let criteria = [...state.criteria, newCriterion, blankCriterion];
-                window.console.log(criteria);
                 return Object.assign({}, state, { criteria });
             }
         case CRITERIA_DELETE:
