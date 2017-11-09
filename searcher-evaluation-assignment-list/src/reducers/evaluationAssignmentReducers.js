@@ -1,5 +1,5 @@
 import {
-    EVALUATION_ASSIGNMENTS_FETCHED,
+    TEMPLATES_FETCHED,
     IS_BUSY,
     REQUEST_FAILED
 } from '../constants/ActionTypes';
@@ -17,8 +17,8 @@ const INITIAL_DATA = {
 
 export function evaluationAssignments(state = INITIAL_DATA, action) {
     switch (action.type) {
-        case EVALUATION_ASSIGNMENTS_FETCHED: {
-            let newState = Object.assign({}, state);    
+        case TEMPLATES_FETCHED: {
+            let newState = Object.assign({}, state);
             newState.currentAssignmentList = action.assignments;
             newState.isBusy = false;
             return newState;
