@@ -1,21 +1,33 @@
-import mockSections from '../mocks/sections.json';
 import * as actions from '../constants';
 import axios from 'axios';
 
-export function fetchSections(isReadOnly, staffId) {
-    return (dispatch) => {
+export function fetchSections(
+    isReadOnly,
+    staffId,
+    organizationId,
+    panelId,
+    preferredSupplierId,
+    supplierUserId
+) {
+    return dispatch => {
         dispatch({
             type: actions.FETCH_SECTIONS,
             isReadOnly,
-            staffId
+            staffId,
+            organizationId,
+            panelId,
+            preferredSupplierId,
+            supplierUserId
         });
 
-        // TODO: api endpoint
-        return axios.get('/anything')
-            .then(() => {
+        return axios
+            .get(
+                `/compliance/assignments/${organizationId}/${preferredSupplierId}?include=assignments,comments`
+            )
+            .then(response => {
                 return dispatch({
                     type: actions.RECEIVE_SECTIONS,
-                    sections: mockSections
+                    sections: response.data
                 });
             });
     };
@@ -25,7 +37,7 @@ export function toggleManageSectionModal(sectionId) {
     return {
         type: actions.TOGGLE_MANAGE_SECTION_MODAL,
         sectionId
-    }
+    };
 }
 
 export function toggleSectionCollapse(sectionId) {

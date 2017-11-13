@@ -1,24 +1,37 @@
 import * as actions from '../constants';
 import axios from 'axios';
 
-export function changeStaffResponse(staffId, responseId, status) {
-    return (dispatch) => {
+export function changeStaffResponse(
+    staffId,
+    responseId,
+    statusId,
+    statusLabel
+) {
+    return dispatch => {
         dispatch({
             type: actions.TOGGLE_STAFF_LOADING,
             staffId
         });
 
-        return axios.get('/anything').then(() => {
-            dispatch({
-                type: actions.CHANGE_STAFF_RESPONSE,
-                responseId,
-                status
-            });
+        const newStatus = {
+            type: 'compliance-assignment',
+            id: responseId,
+            attributes: { status: statusId }
+        };
+        return axios
+            .patch('/compliance/assignment-status', { data: newStatus })
+            .then(() => {
+                dispatch({
+                    type: actions.CHANGE_STAFF_RESPONSE,
+                    responseId,
+                    statusId,
+                    status: statusLabel
+                });
 
-            dispatch({
-                type: actions.TOGGLE_STAFF_LOADING,
-                staffId
+                dispatch({
+                    type: actions.TOGGLE_STAFF_LOADING,
+                    staffId
+                });
             });
-        }); 
     };
 }

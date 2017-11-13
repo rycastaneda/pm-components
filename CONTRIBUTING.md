@@ -36,3 +36,6 @@ import { cloneDeep } from 'lodash';
 
 ```
 
+# Styling
+
+*Just use the styles folder in development* all classes should use the ones in `plantminer-web` due to color variables.

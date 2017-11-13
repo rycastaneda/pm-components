@@ -8,9 +8,6 @@
         "title": "Extra Details"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -26,9 +23,6 @@
         "title": "WH&S Policy and Management"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -44,9 +38,6 @@
         "title": "Safe Work Practices and Procedures"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -62,9 +53,6 @@
         "title": "WH&S Training"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -80,9 +68,6 @@
         "title": "WH&S Inspection"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -98,9 +83,6 @@
         "title": "Health and Safety Consultation"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -116,9 +98,6 @@
         "title": "WH&S Performance Monitoring"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -134,9 +113,6 @@
         "title": "WH&S Reference 1"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -152,9 +128,6 @@
         "title": "WH&S Reference 2"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -170,9 +143,6 @@
         "title": "WH&S Reference 3"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -188,9 +158,6 @@
         "title": "Dry Panel Specific Documentation"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -206,9 +173,6 @@
         "title": "Map of the Bundaberg Regional Council"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -224,9 +188,6 @@
         "title": "Wet Panel Specific Documentation"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -242,9 +203,6 @@
         "title": "ABN"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -260,9 +218,6 @@
         "title": "Weed Panel Specific Documentation"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -278,9 +233,6 @@
         "title": "Traffic Management Panel Specific Documentation"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -296,9 +248,6 @@
         "title": "RORO Panel Specific Documentation"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -314,9 +263,6 @@
         "title": "BRC Documents"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -332,9 +278,6 @@
         "title": "Road Making Materials Documentation"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -350,9 +293,6 @@
         "title": "Road Making Materials Compliance"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -368,9 +308,6 @@
         "title": "Premixed Concrete Panel WHS Policies"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -386,9 +323,6 @@
         "title": "Premixed Concrete Panel Documentation"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -404,9 +338,6 @@
         "title": "Minor Building Works WH&S"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -422,9 +353,6 @@
         "title": "Minor Building Works Panel Documentation"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -440,9 +368,6 @@
         "title": "Pest Management WH&S"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -458,9 +383,6 @@
         "title": "Pest Management Panel Documentation"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -476,9 +398,6 @@
         "title": "Premixed Concrete Panel Special Conditions"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -494,9 +413,6 @@
         "title": "Minor Electrical Works Panel Documentation"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -512,9 +428,6 @@
         "title": "Minor Electrical Works WH&S"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -530,9 +443,6 @@
         "title": "Scrap Metal Panel Documentation"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -548,9 +458,6 @@
         "title": "Scrap Metal WH&S"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": [
             {
@@ -571,13 +478,21 @@
         "title": "Traffic Management Panel Documentation"
       },
       "relationships": {
+<<<<<<< HEAD
         "signOff": {
           "data": [
+=======
+        "assignments": {
+          "data": 
+>>>>>>> feature/PIT-458-signoffs-user
             {
               "type": "sign-off",
               "id": "2"
             }
+<<<<<<< HEAD
           ]
+=======
+>>>>>>> feature/PIT-458-signoffs-user
         },
         "defaultUsers": {
           "data": [
@@ -599,13 +514,21 @@
         "title": "Wet Panel Documentation"
       },
       "relationships": {
+<<<<<<< HEAD
         "signOff": {
           "data": [
+=======
+        "assignments": {
+          "data": 
+>>>>>>> feature/PIT-458-signoffs-user
             {
               "type": "sign-off",
               "id": "1"
             }
+<<<<<<< HEAD
           ]
+=======
+>>>>>>> feature/PIT-458-signoffs-user
         },
         "defaultUsers": {
           "data": []
@@ -631,9 +554,6 @@
         "title": "Dry Panel Documentation"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -649,9 +569,6 @@
         "title": "Weed Management Panel Documentation"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -667,9 +584,6 @@
         "title": "RORO (Skip Bins) Panel Documentation"
       },
       "relationships": {
-        "signOff": {
-          "data": []
-        },
         "defaultUsers": {
           "data": []
         },
@@ -816,7 +730,7 @@
       }
     },
     {
-      "type": "sign-off",
+      "type": "assignments",
       "id": "2",
       "attributes": {
         "status": 1,
@@ -851,7 +765,7 @@
       }
     },
     {
-      "type": "sign-off",
+      "type": "assignments",
       "id": "1",
       "attributes": {
         "status": 1,

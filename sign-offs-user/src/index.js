@@ -12,26 +12,26 @@ import SignOff from './containers/SignOff';
 import './styles/index.scss';
 
 // Add redux dev tools unless we have a production build
-const enhance = process.env.NODE_ENV !== 'production' && window.devToolsExtension ? compose(
-    applyMiddleware(thunkMiddleware),
-    window.devToolsExtension && window.devToolsExtension()
-) : applyMiddleware(thunkMiddleware);
+const enhance =
+  process.env.NODE_ENV !== 'production' && window.devToolsExtension
+    ? compose(
+        applyMiddleware(thunkMiddleware),
+        window.devToolsExtension && window.devToolsExtension()
+      )
+    : applyMiddleware(thunkMiddleware);
 
 // Configure store with thunk middleware to allow async requests
-const store = createStore(
-    rootReducer,
-    enhance
-);
+const store = createStore(rootReducer, enhance);
 
 let hostname = api.configureHostname();
 let headers = api.configureHeaders();
 
-axios.defaults.baseURL = process.env.NODE_ENV !== 'test' ? 'http://httpbin.org/anything' : hostname;
+axios.defaults.baseURL = hostname;
 axios.defaults.headers.common = headers;
 
 render(
-    <Provider store={store}>
-        <SignOff/>
-    </Provider>,
-    document.querySelector('[data-component="staff-sign-offs"]')
+  <Provider store={store}>
+    <SignOff />
+  </Provider>,
+  document.querySelector('[data-component="staff-sign-offs"]')
 );
