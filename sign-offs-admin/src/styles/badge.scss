@@ -1,0 +1,39 @@
+.counter-badge {
+    display: inline-block;
+    overflow: hidden;
+    width: auto;
+    height: auto;
+    padding: 0;
+    border-radius: 10px;
+
+    &.in {
+        width: auto;
+    }
+
+    &__text {
+        position: relative;
+        left: 120px;
+        z-index: 3;
+        display: none;
+        transition: 0.15s linear;
+
+        &.in {
+            left: 20px;
+            display: inline;
+            padding-right: 25px;
+        }
+    }
+
+    &__count {
+        position: relative;
+        z-index: 5;
+        width: auto;
+    }
+}
+
+.staff-lists {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 500px;
+    padding-right: 15px;
+}

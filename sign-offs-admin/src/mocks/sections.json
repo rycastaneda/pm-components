@@ -1,0 +1,908 @@
+
+{
+  "data": [
+    {
+      "type": "compliance-sections",
+      "id": "1",
+      "attributes": {
+        "title": "Extra Details"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "2",
+      "attributes": {
+        "title": "WH&S Policy and Management"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "3",
+      "attributes": {
+        "title": "Safe Work Practices and Procedures"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "4",
+      "attributes": {
+        "title": "WH&S Training"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "5",
+      "attributes": {
+        "title": "WH&S Inspection"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "6",
+      "attributes": {
+        "title": "Health and Safety Consultation"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "7",
+      "attributes": {
+        "title": "WH&S Performance Monitoring"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "9",
+      "attributes": {
+        "title": "WH&S Reference 1"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "10",
+      "attributes": {
+        "title": "WH&S Reference 2"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "11",
+      "attributes": {
+        "title": "WH&S Reference 3"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "19",
+      "attributes": {
+        "title": "Dry Panel Specific Documentation"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "21",
+      "attributes": {
+        "title": "Map of the Bundaberg Regional Council"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "27",
+      "attributes": {
+        "title": "Wet Panel Specific Documentation"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "28",
+      "attributes": {
+        "title": "ABN"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "29",
+      "attributes": {
+        "title": "Weed Panel Specific Documentation"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "30",
+      "attributes": {
+        "title": "Traffic Management Panel Specific Documentation"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "31",
+      "attributes": {
+        "title": "RORO Panel Specific Documentation"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "32",
+      "attributes": {
+        "title": "BRC Documents"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "33",
+      "attributes": {
+        "title": "Road Making Materials Documentation"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "34",
+      "attributes": {
+        "title": "Road Making Materials Compliance"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "35",
+      "attributes": {
+        "title": "Premixed Concrete Panel WHS Policies"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "36",
+      "attributes": {
+        "title": "Premixed Concrete Panel Documentation"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "37",
+      "attributes": {
+        "title": "Minor Building Works WH&S"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "38",
+      "attributes": {
+        "title": "Minor Building Works Panel Documentation"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "39",
+      "attributes": {
+        "title": "Pest Management WH&S"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "40",
+      "attributes": {
+        "title": "Pest Management Panel Documentation"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "41",
+      "attributes": {
+        "title": "Premixed Concrete Panel Special Conditions"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "42",
+      "attributes": {
+        "title": "Minor Electrical Works Panel Documentation"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "43",
+      "attributes": {
+        "title": "Minor Electrical Works WH&S"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "44",
+      "attributes": {
+        "title": "Scrap Metal Panel Documentation"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "45",
+      "attributes": {
+        "title": "Scrap Metal WH&S"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": [
+            {
+              "type": "default-users",
+              "id": "2"
+            }
+          ]
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "46",
+      "attributes": {
+        "title": "Traffic Management Panel Documentation"
+      },
+      "relationships": {
+        "assignments": {
+          "data": [
+            {
+              "type": "assignments",
+              "id": "2"
+            }
+          ]
+        },
+        "defaultUsers": {
+          "data": [
+            {
+              "type": "default-users",
+              "id": "1"
+            }
+          ]
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "47",
+      "attributes": {
+        "title": "Wet Panel Documentation"
+      },
+      "relationships": {
+        "assignments": {
+          "data": [
+            {
+              "type": "assignments",
+              "id": "1"
+            }
+          ]
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": [
+            {
+              "type": "comments",
+              "id": "1"
+            },
+            {
+              "type": "comments",
+              "id": "2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "48",
+      "attributes": {
+        "title": "Dry Panel Documentation"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "49",
+      "attributes": {
+        "title": "Weed Management Panel Documentation"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "compliance-sections",
+      "id": "50",
+      "attributes": {
+        "title": "RORO (Skip Bins) Panel Documentation"
+      },
+      "relationships": {
+        "assignments": {
+          "data": []
+        },
+        "defaultUsers": {
+          "data": []
+        },
+        "comments": {
+          "data": []
+        }
+      }
+    }
+  ],
+  "included": [
+    {
+      "type": "organisation",
+      "id": "1",
+      "attributes": {
+        "title": "Bundaberg Regional Council"
+      }
+    },
+    {
+      "type": "staff",
+      "id": "77",
+      "attributes": {
+        "first_name": "Tim",
+        "last_name": "Stenner",
+        "mobile": "",
+        "is_organisation_admin": 0,
+        "position": "",
+        "staff_company": "",
+        "staff_phone": "1300 883 699",
+        "state_id": 0,
+        "organisation": "Bundaberg Regional Council"
+      },
+      "relationships": {
+        "organisation": {
+          "data": {
+            "type": "organisation",
+            "id": "1"
+          }
+        }
+      }
+    },
+    {
+      "type": "staff",
+      "id": "158",
+      "attributes": {
+        "first_name": "Adam",
+        "last_name": "Gardner",
+        "mobile": "",
+        "is_organisation_admin": 0,
+        "position": null,
+        "staff_company": null,
+        "staff_phone": "1300 883 699",
+        "state_id": null,
+        "organisation": "Bundaberg Regional Council"
+      },
+      "relationships": {
+        "organisation": {
+          "data": {
+            "type": "organisation",
+            "id": "1"
+          }
+        }
+      }
+    },
+    {
+      "type": "staff",
+      "id": "1",
+      "attributes": {
+        "first_name": "Troy",
+        "last_name": "Redden",
+        "mobile": "07 4130 4550",
+        "is_organisation_admin": 1,
+        "position": "",
+        "staff_company": null,
+        "staff_phone": "07 4130 4550",
+        "state_id": 10424,
+        "organisation": "Bundaberg Regional Council"
+      },
+      "relationships": {
+        "organisation": {
+          "data": {
+            "type": "organisation",
+            "id": "1"
+          }
+        }
+      }
+    },
+    {
+      "type": "staff",
+      "id": "80",
+      "attributes": {
+        "first_name": "Tony",
+        "last_name": "Wright",
+        "mobile": "",
+        "is_organisation_admin": 0,
+        "position": "",
+        "staff_company": "",
+        "staff_phone": "1300 883 699",
+        "state_id": 0,
+        "organisation": "Bundaberg Regional Council"
+      },
+      "relationships": {
+        "organisation": {
+          "data": {
+            "type": "organisation",
+            "id": "1"
+          }
+        }
+      }
+    },
+    {
+      "type": "staff",
+      "id": "79",
+      "attributes": {
+        "first_name": "Tony",
+        "last_name": "Osborn",
+        "mobile": "",
+        "is_organisation_admin": 0,
+        "position": "",
+        "staff_company": "",
+        "staff_phone": "1300 883 699",
+        "state_id": 0,
+        "organisation": "Bundaberg Regional Council"
+      },
+      "relationships": {
+        "organisation": {
+          "data": {
+            "type": "organisation",
+            "id": "1"
+          }
+        }
+      }
+    },
+    {
+      "type": "default-users",
+      "id": "2",
+      "attributes": [],
+      "relationships": {
+        "staff": {
+          "data": {
+            "type": "staff",
+            "id": "77"
+          }
+        }
+      }
+    },
+    {
+      "type": "assignments",
+      "id": "2",
+      "attributes": {
+        "status": 1,
+        "status_label": "In Progress"
+      },
+      "relationships": {
+        "assignedStaff": {
+          "data": {
+            "type": "staff",
+            "id": "158"
+          }
+        },
+        "assignedBy": {
+          "data": {
+            "type": "staff",
+            "id": "1"
+          }
+        }
+      }
+    },
+    {
+      "type": "default-users",
+      "id": "1",
+      "attributes": [],
+      "relationships": {
+        "staff": {
+          "data": {
+            "type": "staff",
+            "id": "80"
+          }
+        }
+      }
+    },
+    {
+      "type": "assignments",
+      "id": "1",
+      "attributes": {
+        "status": 1,
+        "status_label": "In Progress"
+      },
+      "relationships": {
+        "assignedStaff": {
+          "data": {
+            "type": "staff",
+            "id": "158"
+          }
+        },
+        "assignedBy": {
+          "data": {
+            "type": "staff",
+            "id": "1"
+          }
+        }
+      }
+    },
+    {
+      "type": "comments",
+      "id": "1",
+      "attributes": {
+        "text": "Test Comment",
+        "date": "2017-10-18 12:54:56"
+      },
+      "relationships": {
+        "staff": {
+          "data": {
+            "type": "staff",
+            "id": "79"
+          }
+        }
+      }
+    },
+    {
+      "type": "comments",
+      "id": "2",
+      "attributes": {
+        "text": "Test Comment",
+        "date": "2017-10-18 12:56:03"
+      },
+      "relationships": {
+        "staff": {
+          "data": {
+            "type": "staff",
+            "id": "1"
+          }
+        }
+      }
+    }
+  ]
+}

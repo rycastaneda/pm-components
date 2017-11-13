@@ -1,0 +1,82 @@
+{
+  "data": {
+    "type": "compliance-assignment",
+    "id": "17",
+    "attributes": {
+      "status": null
+    },
+    "relationships": {
+      "assignedStaff": {
+        "data": {
+          "type": "staff",
+          "id": "11"
+        }
+      },
+      "assignedBy": {
+        "data": {
+          "type": "staff",
+          "id": "86"
+        }
+      }
+    }
+  },
+  "included": [
+    {
+      "type": "organisation",
+      "id": "1",
+      "attributes": {
+        "title": "Bundaberg Regional Council"
+      }
+    },
+    {
+      "type": "staff",
+      "id": "11",
+      "attributes": {
+        "user_id": 26830,
+        "first_name": "Andrew",
+        "last_name": "Spies",
+        "mobile": "",
+        "is_organisation_admin": 0,
+        "position": "",
+        "staff_company": "",
+        "staff_phone": "1300 883 699",
+        "state_id": 0,
+        "organisation": "Bundaberg Regional Council",
+        "total_incomplete_signoff": 2
+      },
+      "relationships": {
+        "organisation": {
+          "data": {
+            "type": "organisation",
+            "id": "1"
+          }
+        }
+      }
+    },
+    {
+      "type": "staff",
+      "id": "86",
+      "attributes": {
+        "user_id": 27279,
+        "first_name": "Barry",
+        "last_name": "Pershouse",
+        "mobile": "",
+        "is_organisation_admin": 1,
+        "position": null,
+        "staff_company": null,
+        "staff_phone": "1300 883 699",
+        "state_id": null,
+        "organisation": "Bundaberg Regional Council",
+        "total_incomplete_signoff": 0
+      },
+      "relationships": {
+        "organisation": {
+          "data": {
+            "type": "organisation",
+            "id": "1"
+          }
+        }
+      }
+    }
+  ]
+}
