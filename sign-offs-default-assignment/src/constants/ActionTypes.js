@@ -1,0 +1,15 @@
+// sections
+export const FETCH_SECTIONS = 'FETCH_SECTIONS';
+export const RECEIVE_SECTIONS = 'RECEIVE_SECTIONS';
+
+export const TOGGLE_SECTION_COLLAPSE = 'TOGGLE_SECTION_COLLAPSE';
+
+export const TOGGLE_SECTION_LOADING = 'TOGGLE_SECTION_LOADING';
+
+// staff
+export const RECEIVE_STAFF = 'RECEIVE_STAFF';
+export const ASSIGN_STAFF = 'ASSIGN_STAFF';
+export const REMOVE_STAFF = 'REMOVE_STAFF';
+
+// ui
+export const API_ERROR = 'API_ERROR';
