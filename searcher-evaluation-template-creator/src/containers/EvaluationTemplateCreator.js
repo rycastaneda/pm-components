@@ -1,32 +1,31 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Criteria from './Criteria';
-import { addCriteria, updateCriteria, addTemplate, updateTemplate } from '../actions/evaluationTemplateCreator';
+import { addTemplate, updateTemplate } from '../actions/evaluationTemplateCreator';
 class EvaluationTemplateCreator extends Component {
 
     constructor(props) {
         super(props);
+        this.onSave = this.onSave.bind(this);
+        this.onTitleTextChange = this.onTitleTextChange.bind(this);
         this.state = { title:this.props.title };
-        this.onCriteriaSave = this.onCriteriaSave.bind(this);
     }
-
-    onCriteriaSave(id, title, weighting) {
-        if (id) {
-            this.props.dispatch(updateCriteria(id, title, weighting));
-        } else {
-            this.props.dispatch(addCriteria(title, weighting));
-        }
+    componentWillReceiveProps(nextProps) {
+        this.setState({ title:nextProps.title });
     }
     onSave() {
         if (this.props.id) {
             this.props.dispatch(updateTemplate(this.state.title, this.props.id));
         } else {
             this.props.dispatch(addTemplate(this.state.title));
-
         }
     }
+    onTitleTextChange(event) {
+        this.setState({ title:event.target.value });
+    }
     render() {
-        const { criteria, id } =this.props;
+        window.console.log(this.props);
+        const { allCriteriaIndexes, id } = this.props;
         return (
         <div className="searcher-evaluation-template-creator">
             <div className="db-form-section">
@@ -39,25 +38,41 @@ class EvaluationTemplateCreator extends Component {
                             name="title"
                             className="form-control"
                             value={this.state.title}
+
                             title="Template Title"
                             placeholder="Enter template title"
-                            onChange={event => this.setState({ title:event.target.value })}/>
-                        </div>
-                        <div className="form-group">
-                            {id===null?
-                                <button className="btn btn-sm" onClick={() => this.onSave(this.state.title)}>Create Template</button>
-                                :
-                                    <button className="btn btn-sm" onClick={() => this.onSave(this.state.title)}>Save Template</button>
-                                }
-                        </div>
+                            onChange={this.onTitleTextChange}/>
                     </div>
-                    {criteria.map((criterion, index) =>
+                    <div className="form-group  pull-right">
+                        {id===null?
+                            <button className="btn btn-sm" disabled={!this.state.title} onClick={this.onSave}>Create Template</button>
+                            :
+                            (this.state.title&&(this.state.title!==this.props.title))?
+                            <ul className="list-inline">
+                                <li>
+                                    <button className="btn btn-sm"
+                                    onClick = {this.onSave}>Update</button>
+                                </li>
+                                <li>
+                                    <button className="btn btn-sm"
+                                    onClick = {() => this.setState({ title: this.props.title })}>Cancel</button>
+                                </li>
+                            </ul>
+                            :null
+                            }
+                    </div>
+                </div>
+                {
+                    allCriteriaIndexes.map((criteriaId, index) =>
                         <Criteria
                             key = {index}
-                            criteria = {criterion}
-                            onSave={this.onCriteriaSave}  />
-                    )}
-
+                            criteriaId = {criteriaId}/>
+                    )
+                }
+                { id!==null?
+                <Criteria criteriaId={null}/>
+                    :null
+                }
             </div>
         </div>
     );
@@ -66,15 +81,14 @@ class EvaluationTemplateCreator extends Component {
 
 EvaluationTemplateCreator.propTypes = {
     creatable:PropTypes.object,
-    criteria: PropTypes.array.isRequired,
+    allCriteriaIndexes: PropTypes.array,
     title: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     id: PropTypes.number
 };
 
 function mapStateToProps(state) {
-    const { criteria, title, id } =state.evaluationTemplateCreator;
-
-    return { criteria, title, id };
+    const { allCriteriaIndexes, title, id } = state.evaluationTemplateCreator;
+    return { allCriteriaIndexes, title, id };
 }
 export default connect(mapStateToProps)(EvaluationTemplateCreator);

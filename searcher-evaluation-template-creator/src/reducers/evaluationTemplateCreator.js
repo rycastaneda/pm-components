@@ -1,5 +1,7 @@
-import { TEMPLATE_FETCHED,
+import {
+    TEMPLATE_FETCHED,
     TEMPLATE_CREATED,
+    TEMPLATE_UPDATED,
     CRITERIA_ADD,
     CRITERIA_DELETE,
     CRITERIA_UPDATE,
@@ -7,13 +9,19 @@ import { TEMPLATE_FETCHED,
     QUESTION_DELETE,
     QUESTION_UPDATE,
     IS_BUSY,
-    REQUEST_FAILED } from '../constants/ActionTypes';
-
-import { CRITERION_SKELETON } from '../constants/models';
+    REQUEST_FAILED
+} from '../constants/ActionTypes';
 
 function getInitialData() {
-
-    return {  isBusy:false, errorMessage:null, id:null, title:'', criteria:[] };
+    return {  isBusy:false,
+        errorMessage:null,
+        id:null,
+        title:'',
+        criteriaByIndex:{},
+        allCriteriaIndexes:[],
+        questionsByIndex:{},
+        allQuestionIndexes:[]
+      };
 }
 
 export function evaluationTemplateCreator(state = getInitialData(), action) {
@@ -24,64 +32,89 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
             }
         case TEMPLATE_CREATED:
             {
-                return Object.assign({}, state, { id:action.id, title:action.title });
+                return Object.assign({}, state, { title:action.title, id: action.id });
+            }
+        case TEMPLATE_UPDATED:
+            {
+                return Object.assign({}, state, { title: action.title });
             }
         case CRITERIA_ADD:
             {
-                let newCriterion = JSON.parse(JSON.stringify(CRITERION_SKELETON));
-                newCriterion = Object.assign({}, newCriterion, { id:action.id, title:action.title, weighting:action.weighting, isMaximised:false });
-                state.criteria.pop();
-                let blankCriterion = JSON.parse(JSON.stringify(CRITERION_SKELETON));
-                let criteria = [...state.criteria, newCriterion, blankCriterion];
-                return Object.assign({}, state, { criteria });
-            }
-        case CRITERIA_DELETE:
-            {
-                let criteria =state.criteria;
-                let index = criteria.findIndex((item) => {
-                    return item.id= action.id;
+                const criterion = action.criterion;
+                Object.keys(state.criteriaByIndex).forEach((key) => {
+                    if (state.criteriaByIndex[key].isMaximised) {
+                        state.criteriaByIndex[key] = Object.assign({}, state.criteriaByIndex[key], { isMaximised: false });
+                    }
                 });
-                criteria.splice(index, 1);
-                return Object.assign({}, state, { criteria:criteria });
+                state.criteriaByIndex[criterion.id] = criterion;
+                state.allCriteriaIndexes = state.allCriteriaIndexes.concat(criterion.id);
+                return Object.assign({}, state);
             }
         case CRITERIA_UPDATE:
             {
-                let criteria =state.criteria;
-                let index = criteria.findIndex((item) => {
-                    return item.id=== action.id;
+                let { id, title, weight } = action;
+                let criteriaByIndex = Object.assign({}, state.criteriaByIndex);
+                criteriaByIndex[id] = Object.assign({}, criteriaByIndex[id], { title, weight });
+                return Object.assign({}, state, { criteriaByIndex });
+            }
+        case CRITERIA_DELETE:
+            {
+                let allCriteriaIndexes = state.allCriteriaIndexes.filter(id => id!==action.id);
+                let criteriaByIndex = Object.assign({}, state.criteriaByIndex);
+                let allQuestionIndexes = [...state.allQuestionIndexes];
+                let questionsByIndex = Object.assign({}, state.questionsByIndex);
+                let questions = state.criteriaByIndex[action.id].questions;
+                questions.forEach((item) => {
+                    questionsByIndex = questionsByIndex.filter(thisItem => thisItem.id!==item.id) ;
+                    allQuestionIndexes = allQuestionIndexes.slice(allQuestionIndexes.findIndex(item), 1);
                 });
-                let criterion =criteria[index];
-                criterion.title= action.title;
-                criterion.weighting=action.weighting;
-                return Object.assign({}, state, { criteria:criteria });
+                delete criteriaByIndex[action.id];
+                return Object.assign({}, state, {
+                    allCriteriaIndexes,
+                    criteriaByIndex,
+                    allQuestionIndexes,
+                    questionsByIndex
+                });
             }
         case QUESTION_ADD:
             {
-                let criteria =state.criteria;
-                let index = criteria.findIndex((item) => {
-                    return item.id=== action.criteriaId;
-                });
-                let criterion = criteria[index];
-                criterion.questions.push(JSON.parse(JSON.stringify(action.question)));
-                return Object.assign({}, state, { criteria:criteria });
+                let { question, criteriaId } = action;
+                let { id } = question;
+                let questionsByIndex = Object.assign({}, state.questionsByIndex);
+                let criteriaByIndex = Object.assign({}, state.criteriaByIndex);
+                questionsByIndex[id] = question;
+                let allQuestionIndexes = [...state.allQuestionIndexes, id];
+                let questions = [...state.criteriaByIndex[criteriaId].questions, id];
+                criteriaByIndex[action.criteriaId] = Object.assign({}, criteriaByIndex[criteriaId], { questions });
+                return Object.assign({}, state, { criteriaByIndex, allQuestionIndexes, questionsByIndex });
+            }
+        case QUESTION_UPDATE:
+            {
+                let question = Object.assign({}, action.question);
+                let { id } = question;
+                let questionsByIndex = Object.assign({}, state.questionsByIndex);
+                questionsByIndex[id] = question;
+                return Object.assign({}, state, { questionsByIndex });
             }
         case QUESTION_DELETE:
             {
-                let criteria =state.criteria;
-                let index = criteria.findIndex((item) => {
-                    return item.id= action.criteriaId;
+                let { criteriaId, questionId } =  action;
+                let allQuestionIndexes = state.allQuestionIndexes.filter(id => id!==questionId);
+                let questionsByIndex = Object.assign({}, state.questionsByIndex);
+                delete questionsByIndex[questionId];
+                let criteriaByIndex = Object.assign({}, state.criteriaByIndex);
+                let questions = state.criteriaByIndex[criteriaId].questions;
+                questions.forEach((item) => {
+                    questionsByIndex = questionsByIndex.filter(thisItem => thisItem.id!==item.id) ;
+                    allQuestionIndexes = allQuestionIndexes.slice(allQuestionIndexes.findIndex(item), 1);
                 });
-                let criterion = criteria[index];
-                let qnIndex = criterion.questions.findIndex((item) => {
-                    return item.id === action.questionId;
+                delete criteriaByIndex[action.id];
+                return Object.assign({}, state, {
+                    criteriaByIndex,
+                    allQuestionIndexes,
+                    questionsByIndex
                 });
-                criterion.questions.splice(qnIndex, 1);
-                return Object.assign({}, state, { criteria:criteria });
             }
-
-        case QUESTION_UPDATE:
-            break;
-
         case IS_BUSY:
             {
                 state.isBusy = action.status;
