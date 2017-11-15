@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { comments } from './comments';
 import * as actions from '../constants/ActionTypes';
-import mockStaff from '../mocks/staff.json';
+import mockComments from '../mocks/comments.json';
 
 describe('Comments reducer', () => {
     let state = {};
@@ -26,10 +26,10 @@ describe('Comments reducer', () => {
     it('should handle RECEIVE_COMMENT', () => {
         state = comments(state, {
             type: actions.RECEIVE_COMMENT,
-            staff: mockStaff
+            comments: mockComments
         });
 
         expect(state).to.have.property('isLoading', false);
-        expect(state.allIds).to.have.length(mockStaff.data.length);
+        expect(state.allIds).to.have.length(mockComments.data.length);
     });
 });

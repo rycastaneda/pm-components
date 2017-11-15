@@ -63,12 +63,12 @@ export default class CommentModal extends Component {
                                     <div className="modal-title">Comments</div>
                                 </div>
                                 <div className="modal-body comment-lists">
-                                    {assignment.comments.map(comment => (
+                                    {assignment.comments.length ? assignment.comments.map(comment => (
                                         <Comment
                                             key={comment.id}
                                             {...comment}
                                         />
-                                    ))}
+                                    )) : 'No comments yet'}
                                 </div>
                                 <div className="modal-footer">
                                     <button

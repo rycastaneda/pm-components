@@ -2,7 +2,9 @@ import React, { PropTypes } from 'react';
 
 const Header = ({ text, field, direction, onClick }) => {
     let directionClass = '';
-    if (direction && field !== 'comments') {
+    const noSorting = ['comments'];
+
+    if (direction && !noSorting.includes(field)) {
         directionClass = `th-sort-${direction}`;
     }
 

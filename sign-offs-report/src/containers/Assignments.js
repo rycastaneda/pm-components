@@ -11,7 +11,7 @@ import Table from '../components/Table';
 import PaginatePerPage from '../components/PaginatePerPage';
 import CommentModal from './CommentModal';
 
-class Assignments extends Component {
+export class Assignments extends Component {
     constructor(props) {
         super(props);
         this.quickSearch = this.quickSearch.bind(this);
@@ -40,7 +40,6 @@ class Assignments extends Component {
     }
 
     clearFilters() {
-        console.log('this.defaultFilters', this.defaultFilters); // eslint-disable-line no-console, quotes
         this.props.dispatch(fetchAssignments(this.defaultFilters));
     }
 
@@ -132,8 +131,6 @@ class Assignments extends Component {
                     pageCount={totalPage}
                     onPageChange={this.changePage}
                     onPerPageChange={event => {
-                        console.log('event', event); // eslint-disable-line no-console, quotes
-                        console.log('event.target.value', event.target.value); // eslint-disable-line no-console, quotes
                         this.changePage(null, +event.target.value);
                     }}
                     perPage={perPage}
@@ -192,7 +189,6 @@ function mapStateToProps(state) {
 
     if (ui.currentAssignment) {
         const assignment = rawAssignments.byId[ui.currentAssignment];
-        console.log('assignment', assignment); // eslint-disable-line no-console, quotes
         currentAssignment = {
             ...assignment,
             commentCount: assignment.comments,

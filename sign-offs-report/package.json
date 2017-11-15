@@ -11,7 +11,7 @@
     "start": "webpack-dev-server --progress --profile --colors",
     "lint": "eslint src",
     "test": "mocha --opts mocha.opts tests.config.js src/**/*.spec.js",
-    "test-watch": "mocha --opts mocha.opts --watch tests.config.js src/reducers/*.spec.js",
+    "test-watch": "mocha --opts mocha.opts --watch tests.config.js src/**/*.spec.js",
     "testComponents": "mocha tests.config.js src/components/*.spec.js",
     "testReducers": "mocha tests.config.js src/reducers/*.spec.js",
     "testActions": "mocha tests.config.js src/actions/*.spec.js"

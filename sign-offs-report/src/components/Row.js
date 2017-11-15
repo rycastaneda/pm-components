@@ -21,7 +21,7 @@ const Row = ({
         <td className="td-center">
             {lastUpdated ? format(lastUpdated, 'MMMM D, YYYY HH:mm a') : 'N/A'}
         </td>
-        <td className="td-center">
+        <td className="td-center comments">
             {comments ? (
                 <i
                     className="fa fa-comments"
