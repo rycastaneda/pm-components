@@ -1,3 +1,5 @@
+// global Plantminer
+
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchDocuments, toggleDocument, toggleGroup } from '../actions/documents';
@@ -76,7 +78,8 @@ class DocumentSelector extends Component {
                     groups={this.props.groups}
                     items={this.props.requestedItems}
                     toggleGroup={this.handleToggleGroup}
-                    toggleDocument={this.handleToggleDocument}>
+                    toggleDocument={this.handleToggleDocument}
+                    item_id={this.requested_item_id}>
                 </DocumentGroupSelector>
             </div>
             : <Grid
