@@ -9,7 +9,6 @@ describe('Ui reducer', () => {
         state = ui(undefined, {});
         expect(state).to.deep.equal({
             panelId: null,
-            organizationId: null,
             error: ''
         });
     });
@@ -17,11 +16,8 @@ describe('Ui reducer', () => {
     it('should handle FETCH_SECTIONS', () => {
         state = ui(state, {
             type: actions.FETCH_SECTIONS,
-            organizationId: 1,
             panelId: 2
         });
-
-        expect(state).to.have.property('organizationId', 1);
         expect(state).to.have.property('panelId', 2);
     });
 

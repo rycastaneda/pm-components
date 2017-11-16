@@ -13,10 +13,9 @@ class Sections extends Component {
 
     componentDidMount() {
         const parent = this.domRef.parentNode; // eslint-disable-line
-        const organizationId = parent.getAttribute('data-organization-id');
         const panelId = parent.getAttribute('data-panel-id');
 
-        this.props.dispatch(fetchSections(organizationId, panelId));
+        this.props.dispatch(fetchSections(panelId));
     }
 
     toggleCollapse(sectionId) {

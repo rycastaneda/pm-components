@@ -18,7 +18,6 @@ describe('Sections reducer', () => {
     it('should handle FETCH_SECTIONS', () => {
         state = sections(state, {
             type: actions.FETCH_SECTIONS,
-            organizationId: 1
         });
 
         expect(state).to.have.property('isLoading', true);
