@@ -50,10 +50,10 @@ function receiveSections(state, action) {
     action.sections.data.map(section => {
         let userIdToAssignmentId = {}; // quick mapping for simplified state grouped by section
 
-        const defaultUserIds = [];
+        let defaultUserIds = [];
 
         if (section.relationships && section.relationships.defaultAssignments) {
-            section.relationships.defaultAssignments.data.map(
+            defaultUserIds = section.relationships.defaultAssignments.data.map(
                 assignment => {
                     const userId = assignmentIdToUserId[assignment.id];
                     userIdToAssignmentId[userId] = assignment.id;
