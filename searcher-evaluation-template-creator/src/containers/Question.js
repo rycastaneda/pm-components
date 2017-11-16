@@ -1,43 +1,137 @@
-import React, { PropTypes,  Component } from 'react';
+import React, {
+    PropTypes,
+    Component
+} from 'react';
 import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
-import { QUESTION_TYPES, QUESTION_OPTIONS } from '../constants/models';
-import { getItemByAttrib, createQuestion } from '../utils/dataParserUtil';
-import { deepClone } from '../utils/dataParserUtil';
-import { addQuestionToCriteria as add  } from '../actions/evaluationTemplateCreator';
+import Document from '../components/Document';
+
+import {
+    QUESTION_OPTIONS
+} from '../constants/models';
+
+import {
+    getItemByAttrib,
+    createQuestion
+} from '../utils/dataParserUtil';
+
+import {
+    addQuestionToCriteria as addQuestion,
+    updateQuestion as saveQuestion,
+    deleteQuestion,
+    addDocumentsForQuestion as addDocuments
+} from '../actions/evaluationTemplateCreator';
+
 class Question extends Component {
 
     constructor(props) {
         super(props);
-        const question = this.props.question;
-        this.state = {
-            isMaximised: question.isMaximised,
-            title: question.title,
-            isAllowUpload: question.isAllowUpload,
-            isCommentRequired: question.isCommentRequired,
-            isAllowScaleDefinitions: question.isAllowScaleDefinitions,
-            typeId: question.typeId,
-            scaleDefinitions: question.scaleDefinitions
+        window.console.log(props);
+        const { isMaximised,
+            title,
+            isAllowUpload,
+            isCommentRequired,
+            isAllowScaleDefinitions,
+            type,
+            scaleDefinitions
+        } = this.props.question;
+        this.state = { isMaximised,
+            title,
+            isAllowUpload,
+            isCommentRequired,
+            isAllowScaleDefinitions,
+            type,
+            scaleDefinitions,
+            documentError:''
         };
         this.addQuestion = this.addQuestion.bind(this);
+        this.saveQuestion = this.saveQuestion.bind(this);
+        this.deleteQuestion = this.deleteQuestion.bind(this);
+        this.onDiscardChanges = this.onDiscardChanges.bind(this);
+        this.onDocumentDrop = this.onDocumentDrop.bind(this);
+        this.onScaleDefinitionChange = this.onScaleDefinitionChange.bind(this);
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setStateWithQuestion(nextProps.question);
+    }
+    setStateWithQuestion(question) {
+        const { isMaximised,
+            title,
+            isAllowUpload,
+            isCommentRequired,
+            isAllowScaleDefinitions,
+            type,
+            scaleDefinitions
+        } = question;
+        this.setState({ isMaximised,
+            title,
+            isAllowUpload,
+            isCommentRequired,
+            isAllowScaleDefinitions,
+            type,
+            scaleDefinitions,
+            documentError:''
+        });
+    }
     addQuestion() {
-        this.props.dispatch(add(this.props.criteriaId, this.state.title, this.state.typeId));
+        let questionType =  getItemByAttrib(this.props.questionTypes, 'type', this.state.type);
+        window.console.log(this.state.type);
+        this.props.dispatch(addQuestion(this.props.criteriaId, this.state.title, questionType));
     }
-    onCommentRequiredChange(value) {
-        this.setState({ isCommentRequired: value });
+    deleteQuestion() {
+        this.props.dispatch(deleteQuestion(this.props.criteriaId, this.props.question.id));
     }
-    onAllowUploadChange(value) {
-        this.setState({ isAllowUpload:value });
+    saveQuestion() {
+        let {
+            title,
+            isAllowUpload,
+            isCommentRequired,
+            isAllowScaleDefinitions,
+            type,
+            scaleDefinitions
+        } = this.state;
+        let question = Object.assign({}, this.props.question, {
+            title,
+            isAllowUpload,
+            isCommentRequired,
+            isAllowScaleDefinitions,
+            type,
+            scaleDefinitions
+        });
+        this.props.dispatch(saveQuestion(this.props.criteriaId, question));
     }
-    onAllowScaleDefinitionChange(value) {
-        this.setState({ isAllowScaleDefinitions:value });
+
+    onDiscardChanges() {
+        const question = Object.assign({}, this.props.question);
+        question.isMaximised = false;
+        this.setStateWithQuestion(question);
+    }
+    onCommentRequiredChange(isCommentRequired) {
+        this.setState({ isCommentRequired });
+    }
+    onAllowUploadChange(isAllowUpload) {
+        this.setState({ isAllowUpload });
+    }
+    onQuestionTypeChange(type) {
         let scaleDefinitions = [];
-        if (value) {
-            const optionsLength = getItemByAttrib(QUESTION_TYPES, 'type', this.state.typeId).maxOptionDefinitions;
-            if (this.state. typeId === this.props.question.typeId) {
-                scaleDefinitions = deepClone(this.props.question.scaleDefinitions);
+        let isAllowScaleDefinitions = false;
+        if (this.state. type === this.props.question.type) {
+            scaleDefinitions = [...this.props.question.scaleDefinitions];
+        }
+        this.setState({ type, scaleDefinitions, isAllowScaleDefinitions });
+    }
+    onScaleDefinitionChange(index, label) {
+        let  scaleDefinitions = this.state.scaleDefinitions;
+        scaleDefinitions[index] = Object.assign({}, scaleDefinitions[index], { label });
+        this.setState({ scaleDefinitions });
+    }
+    onAllowScaleDefinitionChange(isAllowScaleDefinitions) {
+        let scaleDefinitions = [];
+        if (isAllowScaleDefinitions) {
+            const optionsLength = this.state.type.maxOptionDefinitions;
+            if (this.state. type === this.props.question.type.type) {
+                scaleDefinitions = [...this.props.question.scaleDefinitions];
                 if (scaleDefinitions.length<optionsLength) {
                     for (let i = scaleDefinitions.length+1; i <= optionsLength; i++) {
                         scaleDefinitions.push({ id:i, label:'' });
@@ -49,52 +143,101 @@ class Question extends Component {
                 }
             }
         }
-        this.setState({ scaleDefinitions });
+        this.setState({ isAllowScaleDefinitions, scaleDefinitions });
     }
-    onDiscardChanges() {
-        const question = this.props.question;
-        this.setState({
-            isMaximised:false,
-            title: question.title,
-            isAllowUpload:question.isAllowUpload,
-            isCommentRequired:question.isisCommentRequired,
-            isAllowScaleDefinitions: question.isAllowScaleDefinitions,
-            typeId: question.typeId,
-            scaleDefinitions: question.scaleDefinitions
+
+    onDownloadDocument() {
+
+    }
+    onRemoveDocument() {
+
+    }
+    onDocumentDrop(files) {
+
+        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx', '.dwg'];
+        let invalid = [];
+
+        let filteredFiles = files.filter((file) => {
+            let extension = file.name.split('.').pop().toLowerCase();
+
+            if (!~allowedExtenstions.indexOf(`.${extension}`)) {
+                invalid.push(file.name);
+            }
+
+            return !!~allowedExtenstions.indexOf(`.${extension}`);
         });
+
+        if (filteredFiles.length !== files.length) {
+            this.setState({
+                documentError: invalid.join(', ') + ' - file type not supported'
+            });
+
+            return;
+        }
+
+        this.setState({
+            documentError: ''
+        });
+
+        const documents = files.map((file, key) => {
+            file.id = +new Date() + key;
+            return file;
+        });
+        const { criteriaId, question } = this.props;
+        return this.props.dispatch(addDocuments(criteriaId, question.id, documents));
     }
-    render() {
-        return this.state.isMaximised? this.renderMaximised():this.renderMinimised();
-    }
+
     renderMinimised() {
         return (
             <div className="col-md-12">
                 <div className="form-group">
-                    <label>{ getItemByAttrib(QUESTION_TYPES, 'type', this.state.typeId).label}</label>
+                    <label>{getItemByAttrib(this.props.questionTypes, 'type', this.state.type).label}
+                    </label>
                     <p>{this.state.title}</p>
-                    <button onClick={ () => this.setState({ isMaximised:true })}>Edit</button><button>Delete</button>
+                    <ul className="list-inline">
+                        <li>
+                            <button className="btn btn-sm"
+                                onClick={ () => this.setState({ isMaximised:true })}>Edit
+                            </button>
+                        </li>
+                        <li>
+                            <button className="btn btn-sm" onClick={this.deleteQuestion}>Delete
+                            </button>
+                        </li>
+                    </ul>
                 </div>
             </div>
         );
     }
     renderMaximised() {
+        const lastQnOption = getItemByAttrib(this.props.questionTypes, 'maxOptionDefinitions', 0);
+        const isDefsDisabled = (lastQnOption.type===this.state.type);
         return (<div className="col-md-12">
             <div className="col-md-12">
                 <div className="form-group">
                     <label className="control-label">
                         <span className="required" aria-required="true">Question Type</span>
                     </label>
-                    <select className="form-control" value={this.state.typeId}
-                        onChange={event =>  this.setState({ typeId:event.target.value })}>
-                        {QUESTION_TYPES.map((item, index) => <option key={index} value={item.type}>{item.label }</option>)}
+                    <select className="form-control" value={this.state.type}
+                        onChange={event =>  this.onQuestionTypeChange(event.target.value)}>
+                        { this.props.questionTypes.map((type, index) =>
+                            <option key={index} value={type.type}>{type.title }</option>
+                        )}
                 </select>
                 </div>
             </div>
             <div>
                 <div className="col-md-12">
                     <div className="form-group">
-                        <label className="control-label"><span className="required" aria-required="true">Question Title</span></label>
-                        <textarea className="form-control" value={this.state.title} onChange={event => this.setState({ title:event.target.value })}></textarea>
+                        <label className="control-label">
+                            <span className="required" aria-required="true">Question Title
+                            </span>
+                        </label>
+                        <textarea className="form-control"
+                            value={this.state.title}
+                             onChange={event => this.setState({ title:event.target.value })
+                        }>
+                         </textarea>
                     </div>
                 </div>
                 {
@@ -102,26 +245,34 @@ class Question extends Component {
                     <div>
                         <div className="col-md-12">
                             <ul>
-                                <li><div className="form-group">
-                                    <div className="checkbox">
-                                        <label>
-                                            <input type="checkbox" disabled = {this.state.scaleDefinitions}
-                                                defaultChecked={this.props.question.isAllowScaleDefinitions}
-                                                value={this.state.isAllowScaleDefinitions}
-                                                onClick={ event => this.onAllowScaleDefinitionChange(event.target.checked)}/>
-                                            {QUESTION_OPTIONS[0].label}
-                                        </label>
-                                        {this.state.isAllowScaleDefinitions?
-                                            <ul>
-                                                {this.state.scaleDefinitions.map((item, index) =>
-                                                    <li key={index} className="mar-btm-sm">
-                                                        <span className="badge">{item.id}</span>
-                                                        <input type="text" value={item.label} className="mar-l-sm" />
-                                                    </li>)}
-                                            </ul>
-                                        :null}
+                                <li>
+                                    <div className="form-group">
+                                        <div className="checkbox">
+                                            <label>
+                                                <input type="checkbox" disabled = {isDefsDisabled}
+                                                    checked={this.state.isAllowScaleDefinitions}
+                                                    onClick={ event =>
+                                                        this.onAllowScaleDefinitionChange(event.target.checked)
+                                                    }
+                                                />
+                                                {QUESTION_OPTIONS[0].label}
+                                            </label>
+                                            { this.state.isAllowScaleDefinitions?
+                                                <ul>
+                                                    {this.state.scaleDefinitions.map((type, index) =>
+                                                        <li key={index} className="mar-btm-sm">
+                                                            <span className="badge">{type.id}</span>
+                                                            <input type="text"
+                                                            defaultValue={type.label}
+                                                            onChange = {event =>
+                                                                this.onScaleDefinitionChange(index, event.target.value)
+                                                            }
+                                                            className="mar-l-sm" />
+                                                        </li>)}
+                                                </ul>
+                                            :null}
+                                        </div>
                                     </div>
-                                </div>
                                 </li>
                                 <li><div className="form-group">
                                     <div className="checkbox">
@@ -153,11 +304,25 @@ class Question extends Component {
                         <div className="col-md-12">
                             <div className="form-group">
                                 <label className="control-label">Documents</label>
-                                <Dropzone className="dropzone">
+                                {this.state.documentError ?
+                                    <div className="bs-callout bs-callout-danger">{this.state.documentError}</div>
+                                : null}
+                                <Dropzone className="dropzone"
+                                onDrop={this.onDocumentDrop}>
                                     <p className="text-center dropzone__placeholder">
                                         <i className="fa fa-cloud-upload"></i> Drop files here or click to select files.
                                     </p>
                                 </Dropzone>
+                                <ul>
+                                    { this.props.documents.map((document, index) =>
+                                        <Document
+                                        key = {index}
+                                        file={document}
+                                        preview={false}
+                                        onFileRemove={this.onRemoveDocument}
+                                        onDownloadFile={this.onDownloadDocument}></Document>
+                                    )}
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -172,7 +337,10 @@ class Question extends Component {
             return (
                     <div className="col-md-12">
                         <div className="form-group pull-right">
-                            <button className="btn btn-sm" disabled={!this.state.title} onClick={this.addQuestion}>Add Question</button>
+                            <button className="btn btn-sm"
+                                disabled={!this.state.title}
+                                onClick={this.addQuestion}>Add Question
+                            </button>
                         </div>
                     </div>
             );
@@ -181,27 +349,43 @@ class Question extends Component {
                     <div className="col-md-12">
                     <div className="form-group">
                         <ul className="list-inline pull-right">
-                            <li><button className="btn btn-sm">Save Question</button></li>
-                            <li><button className="btn btn-sm" onClick={ () => this.onDiscardChanges()}>Discard Changes</button></li>
-                            </ul>
+                            <li>
+                                <button className="btn btn-sm" onClick={this.saveQuestion}>Save Question</button>
+                            </li>
+                            <li>
+                                <button className="btn btn-sm"
+                                onClick={this.onDiscardChanges}>Discard Changes
+                                </button>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             );
         }
     }
+    render() {
+        return this.state.isMaximised? this.renderMaximised():this.renderMinimised();
+    }
 }
 
 Question.propTypes = {
     question: PropTypes.object,
+    documents:PropTypes.array,
     questionId: PropTypes.string,
     criteriaId: PropTypes.string.isRequired,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    questionTypes:PropTypes.array.isRequired
 };
 
 function mapStateToProps(state, props) {
-    const { questionsByIndex } = state.evaluationTemplateCreator;
-    let question = props.questionId ? questionsByIndex[props.questionId]: createQuestion();
-    return { question };
+    const { questionsByIndex, documentsByIndex, questionTypes } = state.evaluationTemplateCreator;
+
+    let question = props.questionId ? questionsByIndex[props.questionId]: createQuestion(questionTypes[0].type);
+    let documents = [];
+    documents = question.documentIds.map((id) => {
+        return documentsByIndex[id];
+    });
+    return { question, documents, questionTypes };
 }
 
 export default connect(mapStateToProps)(Question);

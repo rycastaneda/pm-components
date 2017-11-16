@@ -77,21 +77,22 @@ class Criteria extends Component {
                                 <ul className=" form-group list-inline pull-right">
                                     <li>
                                         <button
-                                        className="btn btn-sm"
-                                        onClick={this.onSave}>Save Criteria
+                                            className="btn btn-sm"
+                                            onClick={this.onSave}>Save Criteria
                                         </button>
                                     </li>
                                     <li>
                                         <button className="btn btn-sm"
-
-                                        onClick={this.onCancel}>Cancel
+                                            onClick={this.onCancel}>Cancel
                                         </button>
                                     </li>
                                 </ul>
                             </div>
                             :null
                             }
-                            { this.props.criteria.questions.map(item => <Question key={item} criteriaId={this.props.criteria.id} questionId={item}/>) }
+                            { this.props.criteria.questions.map(item =>
+                                <Question key={item} criteriaId={this.props.criteria.id} questionId={item}/>
+                            ) }
                             <Question criteriaId={this.props.criteria.id} question={this.state.newQuestion}/>
                         </div>
                     }

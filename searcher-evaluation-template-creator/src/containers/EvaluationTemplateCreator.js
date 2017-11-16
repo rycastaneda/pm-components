@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Criteria from './Criteria';
-import { addTemplate, updateTemplate } from '../actions/evaluationTemplateCreator';
+import { initialize, addTemplate, updateTemplate } from '../actions/evaluationTemplateCreator';
 class EvaluationTemplateCreator extends Component {
 
     constructor(props) {
@@ -9,6 +9,9 @@ class EvaluationTemplateCreator extends Component {
         this.onSave = this.onSave.bind(this);
         this.onTitleTextChange = this.onTitleTextChange.bind(this);
         this.state = { title:this.props.title };
+    }
+    componentDidMount() {
+        this.props.dispatch(initialize());
     }
     componentWillReceiveProps(nextProps) {
         this.setState({ title:nextProps.title });
@@ -24,7 +27,6 @@ class EvaluationTemplateCreator extends Component {
         this.setState({ title:event.target.value });
     }
     render() {
-        window.console.log(this.props);
         const { allCriteriaIndexes, id } = this.props;
         return (
         <div className="searcher-evaluation-template-creator">

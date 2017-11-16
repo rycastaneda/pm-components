@@ -1,4 +1,5 @@
 import {
+    INITIALIZED,
     TEMPLATE_FETCHED,
     TEMPLATE_CREATED,
     TEMPLATE_UPDATED,
@@ -8,9 +9,19 @@ import {
     QUESTION_ADD,
     QUESTION_DELETE,
     QUESTION_UPDATE,
+    DOCUMENT_UPLOAD_SUCCESS,
+    DOCUMENT_UPLOAD_FAILED,
+    DOCUMENT_UPLOAD_IN_PROGRESS,
+    DOCUMENTS_UPLOADING,
     IS_BUSY,
     REQUEST_FAILED
 } from '../constants/ActionTypes';
+
+import {
+    UPLOAD_IN_PROGRESS,
+    UPLOAD_SUCCESS,
+    UPLOAD_FAILED
+} from '../constants';
 
 function getInitialData() {
     return {  isBusy:false,
@@ -20,12 +31,19 @@ function getInitialData() {
         criteriaByIndex:{},
         allCriteriaIndexes:[],
         questionsByIndex:{},
-        allQuestionIndexes:[]
+        allQuestionIndexes:[],
+        documentsByIndex:{},
+        allDocumentIndexes:[],
+        questionTypes:[]
       };
 }
 
 export function evaluationTemplateCreator(state = getInitialData(), action) {
     switch (action.type) {
+        case INITIALIZED: {
+            let { questionTypes } = action;
+            return Object.assign({}, state, { questionTypes });
+        }
         case TEMPLATE_FETCHED:
             {
                 return Object.assign({}, state, { id:action.id, title:action.title, criteria:action.criteria });
@@ -48,6 +66,7 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                 });
                 state.criteriaByIndex[criterion.id] = criterion;
                 state.allCriteriaIndexes = state.allCriteriaIndexes.concat(criterion.id);
+                window.console.log(state);
                 return Object.assign({}, state);
             }
         case CRITERIA_UPDATE:
@@ -55,6 +74,7 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                 let { id, title, weight } = action;
                 let criteriaByIndex = Object.assign({}, state.criteriaByIndex);
                 criteriaByIndex[id] = Object.assign({}, criteriaByIndex[id], { title, weight });
+
                 return Object.assign({}, state, { criteriaByIndex });
             }
         case CRITERIA_DELETE:
@@ -76,10 +96,51 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                     questionsByIndex
                 });
             }
+        case DOCUMENT_UPLOAD_SUCCESS: {
+            action.documents.map((document) => {
+                state.documentsByIndex[document.id] =Object.assign({}, document, {
+                    status: UPLOAD_SUCCESS,
+                    progress: 100
+                });
+            });
+
+            return Object.assign({}, state);
+        }
+        case DOCUMENT_UPLOAD_FAILED: {
+            state.documentsByIndex[action.documentId] = Object.assign({}, state.documentsByIndex[action.documentId], {
+                status: UPLOAD_FAILED,
+                progress: action.progress
+            });
+
+            return Object.assign({}, state);
+        }
+        case DOCUMENT_UPLOAD_IN_PROGRESS: {
+            state.documentsByIndex[action.documentId] = Object.assign({}, state.documentsByIndex[action.documentId], {
+                status: UPLOAD_IN_PROGRESS,
+                progress: action.progress
+            });
+
+            return Object.assign({}, state);
+        }
+        case DOCUMENTS_UPLOADING: {
+            action.documents.map((document) => {
+                state.questionsByIndex[action.questionId].documentIds.push(document.id);
+                state.documentsByIndex[document.id] =Object.assign({}, document, {
+                    status: UPLOAD_IN_PROGRESS,
+                    name: document.name,
+                    progress: 15
+                });
+                state.allDocumentIndexes.push(document.id);
+            });
+            return Object.assign({}, state);
+        }
+
         case QUESTION_ADD:
             {
                 let { question, criteriaId } = action;
                 let { id } = question;
+                window.console.log('reducer');
+                window.console.log(question);
                 let questionsByIndex = Object.assign({}, state.questionsByIndex);
                 let criteriaByIndex = Object.assign({}, state.criteriaByIndex);
                 questionsByIndex[id] = question;

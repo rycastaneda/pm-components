@@ -1,4 +1,4 @@
-import { QUESTION_TYPES, QUESTION_SKELETON, CRITERION_SKELETON } from '../constants/models';
+import { QUESTION_SKELETON, CRITERION_SKELETON } from '../constants/models';
 
 export  function getItemByAttrib(arr, attrib, value) {
     for (var i in arr) {
@@ -7,7 +7,15 @@ export  function getItemByAttrib(arr, attrib, value) {
         }
     }
 }
-
+export function parseInitialData(data) {
+    return  data.map((item) => {
+        let  type = item.id;
+        let { title } = item.attributes;
+        let definitions = item.relationships.definitions.data;
+        let maxOptionDefinitions = definitions.length;
+        return { title, type, maxOptionDefinitions, definitions };
+    });
+}
 export function deepClone(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
@@ -18,7 +26,6 @@ export function parseDataForCreateTemplate(title) {
 
 export function parseDataForUpdateTemplate(title, id) {
     return { data:{ type: 'evaluation-templates', id,  attributes: { title } } };
-
 }
 
 export function parseDataForCreateCriteria(title, weight) {
@@ -33,8 +40,9 @@ export function parseDataForUpdateCriteria(id, title, weight) {
 export function parseDataForDeleteCriteria(id) {
     return { data:{ type: 'evaluation-criteria', id, attributes: { active:0 } } };
 }
-export function parseDataForCreateQuestion(text, questionTypeId) {
-    const enable_scale_definitions =  Number(getItemByAttrib(QUESTION_TYPES, 'type', questionTypeId).maxOptionDefinitions !==0);
+export function parseDataForCreateQuestion(text, questionType) {
+    let  id  = questionType.type;
+    const enable_scale_definitions =  Number(questionType.maxOptionDefinitions !==0);
     return {
         data:{
             type: 'evaluation-questions',
@@ -43,10 +51,10 @@ export function parseDataForCreateQuestion(text, questionTypeId) {
                 enable_scale_definitions
             },
             relationships: {
-                'question-type':{
+                type:{
                     data:{
                         type:'evaluation-question-types',
-                        id: 4
+                        id
                     }
                 } }
         }
@@ -57,12 +65,15 @@ export function parseDataFromCreateQuestion(data, typeId) {
     let question = createQuestion();
     question.id = data.id;
     question.title = data.attributes.text;
-    question.typeId = typeId;
+    question.typeId = data.relationships.type.data.id;
+    question.type =typeId;
     return question;
 }
 
-export function createQuestion() {
-    return deepClone(QUESTION_SKELETON);
+export function createQuestion(type =0) {
+    let question = deepClone(QUESTION_SKELETON);
+    question.type= type;
+    return question;
 }
 export function createCriteria() {
     return deepClone(CRITERION_SKELETON);
