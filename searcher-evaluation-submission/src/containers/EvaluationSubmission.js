@@ -1,9 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { updateState, resetState, incrementCounter, decrementCounter } from '../actions/boilerplate';
+import { updateState, resetState, incrementCounter, decrementCounter } from '../actions/evaluationSubmissionAction';
 import Button from '../components/Button';
 
-class Boilerplate extends Component {
+class EvaluationSubmission extends Component {
 
     constructor(props) {
         super(props);
@@ -31,16 +31,16 @@ class Boilerplate extends Component {
     }
 
     render() {
-        const { boilerplate } = this.props;
+        const { evaluationSubmission } = this.props;
 
         return (
             <div>
-                <h1>Here it comes...
-                    {boilerplate.buttonIsClicked ? 'Clicked' : ''}
+                <h1>Here it comes......
+
+                {evaluationSubmission.state}
                 </h1>
                 <Button title="Click" onClick={this.handleOnClick}/>
                 <Button title="Reset state" onClick={this.resetState}/>
-                <h1>Counter...{boilerplate.counter}</h1>
                 <Button title="Increment Counter" onClick={this.increment}/>
                 <Button title="Decrement Counter" onClick={this.decrement}/>
             </div>
@@ -48,17 +48,17 @@ class Boilerplate extends Component {
     }
 }
 
-Boilerplate.propTypes = {
+EvaluationSubmission.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    boilerplate: PropTypes.object.isRequired
-};
+    evaluationSubmission: PropTypes.object.isRequired
+}; 
 
 function mapStateToProps(state) {
-    const { boilerplate } = state;
+    const { evaluationSubmission } = state;
 
     return {
-        boilerplate
+        evaluationSubmission
     };
 }
 
-export default connect(mapStateToProps)(Boilerplate);  // adds dispatch prop
+export default connect(mapStateToProps)(EvaluationSubmission);  // adds dispatch prop

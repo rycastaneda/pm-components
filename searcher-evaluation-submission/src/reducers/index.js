@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
-import { boilerplate } from './boilerplate';
+
+import { EvaluationSubmission } from './EvaluationSubmissionReducer';
 
 export default combineReducers({
-    boilerplate
+    evaluationSubmission
 });
