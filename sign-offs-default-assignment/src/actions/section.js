@@ -1,17 +1,16 @@
 import * as actions from '../constants/ActionTypes';
 import axios from 'axios';
 
-export function fetchSections(organizationId, panelId) {
+export function fetchSections(panelId) {
     return dispatch => {
         dispatch({
             type: actions.FETCH_SECTIONS,
-            organizationId,
             panelId
         });
 
         return axios
             .get(
-                `/compliance/assignments/${organizationId}?include=defaultAssignments`
+                `/compliance/assignments/${panelId}?include=defaultAssignments`
             )
             .then(response => {
                 return dispatch({
