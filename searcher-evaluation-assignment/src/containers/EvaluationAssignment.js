@@ -19,7 +19,8 @@ class EvaluationAssignment extends Component {
             selectedTemplateId :   null,
             selectedAssigneeId :    null,
             selectedLinkedToId :    null,
-            selectedLinkId :    null
+            selectedLinkId :    null,
+            selectedAssignees: null 
         };
         this.onSave = this.onSave.bind(this);
         this.onTemplateSelected = this.onTemplateSelected.bind(this);
@@ -55,7 +56,7 @@ class EvaluationAssignment extends Component {
     }
 
     handleSelectClose() {
-        // this.props.dispatch(saveAssignment(this.props.selectedTags));
+        this.props.dispatch(selectAssigneeInDropDown(this.props.selectedAssignees));
     }
     render() {
         /* const { boilerplate } = this.props; */
@@ -63,6 +64,7 @@ class EvaluationAssignment extends Component {
             evaluationLinks,
             evaluationAssignees,
             evaluationLinkedTo,
+            selectedAssignees,
             isBusy } = this.props;
         return (
                 <form>
@@ -129,7 +131,7 @@ class EvaluationAssignment extends Component {
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="assignees">Assignees</label>
                                 <div>
-                                    <Select name="form-field-name" multi value={this.state.selectedAssigneeId} options={evaluationAssignees} isLoading={isBusy} valueRenderer={this.renderValue}
+                                    <Select name="form-field-name" multi value={selectedAssignees} options={evaluationAssignees} isLoading={isBusy} valueRenderer={this.renderValue}
                                     onChange={this.handleSelectChange}
                                     onClose={this.handleSelectClose}
                                     />
@@ -156,6 +158,7 @@ EvaluationAssignment.propTypes = {
     selectedLinkId: PropTypes.number,
     evaluationAssignees: PropTypes.array.isRequired,
     selectedAssigneeId: PropTypes.number,
+    selectedAssignees:PropTypes.array.isRequired,
     evaluationLinkedTo: PropTypes.array.isRequired,
     selectedLinkedToId: PropTypes.number,
     isBusy: PropTypes.bool.isRequired
@@ -170,6 +173,7 @@ function mapStateToProps(state) {
         selectedTemplateId,
         selectedLinkId,
         selectedAssigneeId,
+        selectedAssignees,
         selectedLinkedToId,
         isBusy
     } = state.evaluationAssignment;
@@ -182,8 +186,9 @@ function mapStateToProps(state) {
         selectedTemplateId,
         selectedLinkId,
         selectedAssigneeId,
+        selectedAssignees,
         selectedLinkedToId,
-        isBusy 
+        isBusy
     };
 }
 
