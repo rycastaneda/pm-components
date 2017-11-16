@@ -2,10 +2,11 @@ import {
     TEMPLATES_FETCHED,
     EVALUATION_ON_FETCHED,
     ASSIGNEES_FETCHED,
-    LINKED_TO_FETCHED
+    LINKED_TO_FETCHED,
+    IS_BUSY
 } from '../constants/ActionTypes';
 
-const INITIAL_STATE = { evaluationTemplates: [], evaluationLinks:[], evaluationLinkedTo:[], evaluationAssignees:[] };
+const INITIAL_STATE = { evaluationTemplates: [], evaluationLinks:[], evaluationLinkedTo:[], evaluationAssignees:[], isBusy:false };
 
 export function evaluationAssignment(state = INITIAL_STATE, action) {
     switch (action.type) {
@@ -31,6 +32,12 @@ export function evaluationAssignment(state = INITIAL_STATE, action) {
             {
                 let currState= Object.assign({}, state);
                 currState.evaluationAssignees =action.templates;
+                return currState;
+            }
+        case IS_BUSY:
+            {
+                let currState= Object.assign({}, state);
+                currState.isBusy = action.status;
                 return currState;
             }
         default:

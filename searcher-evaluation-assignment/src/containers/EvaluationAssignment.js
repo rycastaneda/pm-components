@@ -1,11 +1,13 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
+import  Select  from 'react-select';
 import {
     saveAssignment,
     fetchTemplateList,
     fetchAssigneeList,
     fetchLinkedToList,
-    fetchEvaluationOnList
+    fetchEvaluationOnList,
+    selectAssigneeInDropDown
 }  from '../actions/evaluationAssignmentsAction';
 
 class EvaluationAssignment extends Component {
@@ -24,6 +26,8 @@ class EvaluationAssignment extends Component {
         this.onLinkSelected = this.onLinkSelected.bind(this);
         this.onLinkedToSelected = this.onLinkedToSelected.bind(this);
         this.onAssigneeSelected = this.onAssigneeSelected.bind(this);
+        this.handleSelectChange = this.handleSelectChange.bind(this);
+        this.handleSelectClose = this.handleSelectClose.bind(this);
     }
     componentDidMount() {
         this.props.dispatch(fetchTemplateList());
@@ -46,12 +50,20 @@ class EvaluationAssignment extends Component {
     onAssigneeSelected(id) {
         this.setState({ selectedAssigneeId : id });
     }
+    handleSelectChange(value) {
+        this.props.dispatch(selectAssigneeInDropDown(value));
+    }
+
+    handleSelectClose() {
+        // this.props.dispatch(saveAssignment(this.props.selectedTags));
+    }
     render() {
         /* const { boilerplate } = this.props; */
         const { evaluationTemplates,
             evaluationLinks,
             evaluationAssignees,
-            evaluationLinkedTo } = this.props;
+            evaluationLinkedTo,
+            isBusy } = this.props;
         return (
                 <form>
                     <div className="row">
@@ -116,19 +128,12 @@ class EvaluationAssignment extends Component {
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="assignees">Assignees</label>
-                                <select name="assignees"
-                                    id="assignees"
-                                    defaultValue={this.state.selectedAssigneeId}
-                                    className="form-control"
-                                    onChange={
-                                        event => this.onAssigneeSelected(event.target.value)
-                                    }>
-                                <option key="-" value={null}></option>
-                                {evaluationAssignees.map(
-                                    (item, index) =>
-                                    <option key={index} value={item.id}>{item.label}</option>
-                                )}
-                                </select>
+                                <div>
+                                    <Select name="form-field-name" multi value={this.state.selectedAssigneeId} options={evaluationAssignees} isLoading={isBusy} valueRenderer={this.renderValue}
+                                    onChange={this.handleSelectChange}
+                                    onClose={this.handleSelectClose}
+                                    />
+                                </div>
                             </div>
                         </div>
                         :null
@@ -152,7 +157,8 @@ EvaluationAssignment.propTypes = {
     evaluationAssignees: PropTypes.array.isRequired,
     selectedAssigneeId: PropTypes.number,
     evaluationLinkedTo: PropTypes.array.isRequired,
-    selectedLinkedToId: PropTypes.number
+    selectedLinkedToId: PropTypes.number,
+    isBusy: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {
@@ -164,7 +170,8 @@ function mapStateToProps(state) {
         selectedTemplateId,
         selectedLinkId,
         selectedAssigneeId,
-        selectedLinkedToId
+        selectedLinkedToId,
+        isBusy
     } = state.evaluationAssignment;
 
     return {
@@ -175,7 +182,8 @@ function mapStateToProps(state) {
         selectedTemplateId,
         selectedLinkId,
         selectedAssigneeId,
-        selectedLinkedToId
+        selectedLinkedToId,
+        isBusy 
     };
 }
 
