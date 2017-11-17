@@ -1,7 +1,15 @@
 import { QUESTION_SKELETON, CRITERION_SKELETON } from '../constants/models';
 
+export function parseDefinitionsForSave(scaleDefinitions) {
+
+    if (scaleDefinitions.length) {
+        scaleDefinitions = scaleDefinitions.filter(item => item.label.length);
+    }
+    return scaleDefinitions;
+
+}
 export  function getItemByAttrib(arr, attrib, value) {
-    for (var i in arr) {
+    for (let  i in arr) {
         if (arr[i][attrib]===value) {
             return arr[i];
         }
@@ -41,14 +49,12 @@ export function parseDataForDeleteCriteria(id) {
     return { data:{ type: 'evaluation-criteria', id, attributes: { active:0 } } };
 }
 export function parseDataForCreateQuestion(text, questionType) {
-    let  id  = questionType.type;
-    const enable_scale_definitions =  Number(questionType.maxOptionDefinitions !==0);
+    let  id  = questionType;
     return {
         data:{
             type: 'evaluation-questions',
             attributes: {
-                text,
-                enable_scale_definitions
+                text
             },
             relationships: {
                 type:{
@@ -61,18 +67,58 @@ export function parseDataForCreateQuestion(text, questionType) {
     };
 }
 
-export function parseDataFromCreateQuestion(data, typeId) {
+export function parseDataFromCreateQuestion(data, evaluationTypeDefinitions) {
+    window.console.log(evaluationTypeDefinitions);
     let question = createQuestion();
     question.id = data.id;
     question.title = data.attributes.text;
-    question.typeId = data.relationships.type.data.id;
-    question.type =typeId;
+    question.type =data.relationships.type.data.id;
+    question.scaleDefinitions = evaluationTypeDefinitions.map((item) => {
+        window.console.log(item);
+        let { id, attributes }= item;
+        let { value, title } = attributes;
+        return { id, value, title };
+    });
+
     return question;
 }
-
+export function parseDataForScaleDefinition(id, definition) {
+    return {
+        data: {
+            type: 'evaluation-question-scale-definitions',
+            id,
+            attributes: {
+                definition
+            }
+        }
+    };
+}
+export function parseDataForUpdateQuestion(question) {
+    window.console.log(question);
+    return     {
+        data: {
+            type: 'evaluation-question',
+            id: question.id,
+            attributes: {
+                text: question.title,
+                allow_documents: Number(question.isAllowUpload),
+                enable_scale_definitions: Number(question.isAllowScaleDefinitions),
+                mandatory_comments: Number(question.isCommentRequired)
+            },
+            relationships:{
+                type: {
+                    data:{
+                        type:'evaluation-question-types',
+                        id:question.type
+                    }
+                }
+            }
+        }
+    };
+}
 export function createQuestion(type =0) {
     let question = deepClone(QUESTION_SKELETON);
-    question.type= type;
+    question.type = type;
     return question;
 }
 export function createCriteria() {
