@@ -1,5 +1,3 @@
-// global Plantminer
-
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchDocuments, toggleDocument, toggleGroup } from '../actions/documents';
