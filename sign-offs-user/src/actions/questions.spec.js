@@ -20,7 +20,6 @@ describe('Questions actions', function() {
 
         const store = mockStore({
             ui: {
-                organizationId: 1,
                 supplierUserId: 7803
             }
         });

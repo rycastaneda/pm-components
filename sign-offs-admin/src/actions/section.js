@@ -1,11 +1,9 @@
-import mockSections from '../mocks/sections.json';
 import * as actions from '../constants';
 import axios from 'axios';
 
 export function fetchSections(
     isReadOnly,
     currentStaffId,
-    organizationId,
     preferredSupplierId,
     supplierUserId
 ) {
@@ -14,7 +12,6 @@ export function fetchSections(
             type: actions.FETCH_SECTIONS,
             isReadOnly,
             currentStaffId,
-            organizationId,
             preferredSupplierId,
             supplierUserId
         });
@@ -22,7 +19,7 @@ export function fetchSections(
         // TODO: api endpoint
         return axios
             .get(
-                `/compliance/assignments/${organizationId}/${preferredSupplierId}?include=assignments,comments`
+                `/compliance/assignments/${preferredSupplierId}?include=assignments,comments`
             )
             .then(response => {
                 return dispatch({

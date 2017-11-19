@@ -4,7 +4,6 @@ const INITIAL_STATE = {
     isReadOnly: true,
     currentStaffId: 0,
     error: null,
-    organizationId: null,
     preferredSupplierId: null,
     supplierUserId: null,
     panelId: null
@@ -17,7 +16,6 @@ export function ui(state = INITIAL_STATE, action) {
                 ...state,
                 isReadOnly: action.isReadOnly,
                 currentStaffId: +action.staffId,
-                organizationId: action.organizationId,
                 preferredSupplierId: action.preferredSupplierId,
                 supplierUserId: action.supplierUserId,
                 panelId: action.panelId

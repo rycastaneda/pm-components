@@ -27,7 +27,6 @@ axios.defaults.baseURL = 'https://httpbin.org/anything';
 describe('Comments actions', function() {
     let mockState = {
         ui: {
-            organizationId: 1,
             preferredSupplierId: 57,
             supplierUserId: 7803
         },

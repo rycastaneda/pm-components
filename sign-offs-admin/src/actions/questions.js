@@ -8,11 +8,11 @@ export function fetchQuestions(sectionId) {
             sectionId
         });
 
-        const { organizationId, supplierUserId } = getState().ui;
+        const { supplierUserId } = getState().ui;
         // TODO: api endpoint
         return axios
             .get(
-                `/compliance/questionnaire/${organizationId}/${supplierUserId}?filters[section_id]=${sectionId}`
+                `/compliance/questionnaire/${supplierUserId}?filters[section_id]=${sectionId}`
             )
             .then(response => {
                 dispatch({

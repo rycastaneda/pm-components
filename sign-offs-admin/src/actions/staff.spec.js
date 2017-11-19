@@ -25,7 +25,6 @@ describe('Staff actions', function() {
     const state = {
         ui: {
             currentStaffId: 31,
-            organizationId: 1,
             preferredSupplierId: 57,
             supplierUserId: 7803
         },

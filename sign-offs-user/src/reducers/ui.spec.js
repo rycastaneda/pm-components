@@ -12,7 +12,6 @@ describe('UI reducer', () => {
             currentStaffId: 0,
             error: null,
             preferredSupplierId: null,
-            organizationId: null,
             supplierUserId: null,
             panelId: null
         });
@@ -25,7 +24,6 @@ describe('UI reducer', () => {
             staffId: 100,
             preferredSupplierId: 51,
             supplierUserId: 7803,
-            organizationId: 1,
             panelId: 2
         });
 
@@ -33,7 +31,6 @@ describe('UI reducer', () => {
         expect(state).to.have.property('currentStaffId', 100);
         expect(state).to.have.property('preferredSupplierId', 51);
         expect(state).to.have.property('supplierUserId', 7803);
-        expect(state).to.have.property('organizationId', 1);
         expect(state).to.have.property('panelId', 2);
     });
 

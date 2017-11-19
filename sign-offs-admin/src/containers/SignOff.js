@@ -14,7 +14,6 @@ class SignOff extends Component {
         const parent = this.domRef.parentNode; // eslint-disable-line
         const isReadOnly = parent.getAttribute('data-read-only');
         const currentStaffId = parent.getAttribute('data-user-id');
-        const organizationId = parent.getAttribute('data-organization-id');
         const preferredSupplierId = parent.getAttribute(
             'data-preferred-supplier-id'
         );
@@ -24,7 +23,6 @@ class SignOff extends Component {
             fetchSections(
                 isReadOnly === 'true',
                 currentStaffId,
-                organizationId,
                 preferredSupplierId,
                 supplierUserId
             )

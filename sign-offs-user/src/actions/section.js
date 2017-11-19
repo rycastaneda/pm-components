@@ -4,7 +4,6 @@ import axios from 'axios';
 export function fetchSections(
     isReadOnly,
     staffId,
-    organizationId,
     panelId,
     preferredSupplierId,
     supplierUserId
@@ -14,7 +13,6 @@ export function fetchSections(
             type: actions.FETCH_SECTIONS,
             isReadOnly,
             staffId,
-            organizationId,
             panelId,
             preferredSupplierId,
             supplierUserId
@@ -22,7 +20,7 @@ export function fetchSections(
 
         return axios
             .get(
-                `/compliance/assignments/${organizationId}/${preferredSupplierId}?include=assignments,comments`
+                `/compliance/assignments/${preferredSupplierId}?include=assignments,comments`
             )
             .then(response => {
                 return dispatch({

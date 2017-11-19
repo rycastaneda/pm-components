@@ -11,7 +11,6 @@ describe('UI reducer', () => {
             isReadOnly: true,
             currentStaffId: 0,
             sectionModalId: null,
-            organizationId: null,
             preferredSupplierId: null,
             supplierUserId: null
         });
@@ -22,14 +21,12 @@ describe('UI reducer', () => {
             type: actions.FETCH_SECTIONS,
             isReadOnly: false,
             currentStaffId: 31,
-            organizationId: 1,
             preferredSupplierId: 57,
             supplierUserId: 7803
         });
 
         expect(state).to.have.property('isReadOnly', false);
         expect(state).to.have.property('currentStaffId', 31);
-        expect(state).to.have.property('organizationId', 1);
         expect(state).to.have.property('preferredSupplierId', 57);
         expect(state).to.have.property('supplierUserId', 7803);
     });

@@ -8,11 +8,11 @@ export function fetchQuestions(sectionId) {
             type: actions.TOGGLE_SECTION_LOADING,
             sectionId
         });
-        const { organizationId, supplierUserId } = getState().ui;
+        const { supplierUserId } = getState().ui;
 
         return axios
             .get(
-                `/compliance/questionnaire/${organizationId}/${supplierUserId}?filters[section_id]=${sectionId}`
+                `/compliance/questionnaire/${supplierUserId}?filters[section_id]=${sectionId}`
             )
             .then(() => {
                 dispatch({
