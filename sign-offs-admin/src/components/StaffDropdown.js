@@ -5,7 +5,7 @@ const StaffDropdown = ({ staffs, addStaffResponse, fetchStaff, isLoading }) => {
     const renderer = option => {
         return (
             <p className="col-header">
-                <span className="mar-l-sm col-grey-1">{`${option.first_name} ${option.last_name}`}</span>
+                <span className="mar-l-sm col-grey-1">{option.label}</span>
             </p>
         );
     };
@@ -20,6 +20,7 @@ const StaffDropdown = ({ staffs, addStaffResponse, fetchStaff, isLoading }) => {
                     optionRenderer={renderer}
                     valueRenderer={renderer}
                     onChange={addStaffResponse}
+                    searchable={true}
                 />
             </div>
             <div className="col-sm-1">

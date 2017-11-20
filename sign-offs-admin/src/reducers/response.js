@@ -50,16 +50,19 @@ function removeResponse(state, action) {
 function receiveSections(state, action) {
     const byId = {};
 
-    action.sections.included
-        .filter(include => include.type === 'assignments')
-        .map(include => {
-            byId[include.id] = {
-                statusId: include.attributes.status,
-                status: include.attributes.status_label,
-                staffId: include.relationships.assignedStaff.data.id
-            };
-            return include;
-        });
+
+    if (action.sections.included) {
+        action.sections.included
+            .filter(include => include.type === 'assignments')
+            .map(include => {
+                byId[include.id] = {
+                    statusId: include.attributes.status,
+                    status: include.attributes.status_label,
+                    staffId: include.relationships.assignedStaff.data.id
+                };
+                return include;
+            });
+    }
 
     const allIds = Object.keys(byId);
 

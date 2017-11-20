@@ -38,18 +38,20 @@ export function staff(state = INITIAL_STATE, action) {
 function receiveSections(state, action) {
     const byId = {};
     const allIds = [];
-    action.sections.included
-        .filter(include => include.type === 'staff')
-        .map(staff => {
-            byId[staff.id] = {
-                id: staff.id,
-                ...staff.attributes,
-                isLoading: false
-            };
-            allIds.push(staff.id);
+    if (action.sections.included) {
+        action.sections.included
+            .filter(include => include.type === 'staff')
+            .map(staff => {
+                byId[staff.id] = {
+                    id: staff.id,
+                    ...staff.attributes,
+                    isLoading: false
+                };
+                allIds.push(staff.id);
 
-            return staff;
-        });
+                return staff;
+            });
+    }
 
     return {
         ...state,

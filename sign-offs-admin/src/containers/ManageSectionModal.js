@@ -119,7 +119,7 @@ class ManageSectionModal extends Component {
                                                 dispatch(
                                                     addStaffResponse(
                                                         section.id,
-                                                        staff.id
+                                                        staff.value
                                                     )
                                                 )}
                                         />
@@ -205,9 +205,16 @@ function mapStateToProps(state, ownProps) {
         };
     });
 
-    const unassignedStaffs = unassignedStaffIds.map(
-        staffId => rawStaff.byId[staffId]
-    );
+    const unassignedStaffs = unassignedStaffIds
+        .map(staffId => {
+            const staff = rawStaff.byId[staffId];
+            const label = [staff.first_name, staff.last_name].join(' ');
+            return {
+                label,
+                value: staffId
+            };
+        })
+        .sort((a, b) => (a.label > b.label ? 1 : b.label > a.label ? -1 : 0));
 
     return {
         section,
