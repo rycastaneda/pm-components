@@ -1,8 +1,7 @@
 export function getSectionsFromService(data) {
     window.console.log(data);
     return {
-        sections:{ experience:{ id:'experience', label: 'Experience', weighting:'30', questionnaire:[
-          {
+        sections:{ experience:{ id:'experience', label: 'Experience', weighting:'30', questionnaire:[{
             id:1,
             label:'Has the tenderer demonstrated experience in successfully delivering similar work?',
             type: 'vertical-scale',
@@ -19,9 +18,9 @@ export function getSectionsFromService(data) {
                 { id:1, label:'map-of-bundy.jpg', url:'/Attachment' },
                 { id:2, label:'key-outcome.xls', url:'/Attachment' }
             ],
-            comments: true,
-          },
-          {
+            comments: true
+        },
+        {
             id:2,
             label:'The tenderer has demonstrated experience in successfully delivering similar work?',
             type: 'multiple-choice',
@@ -35,7 +34,9 @@ export function getSectionsFromService(data) {
                 { id:1, label:'map-of-bundy.jpg', url:'/Attachment' },
                 { id:2, label:'key-outcome.xls', url:'/Attachment' }
             ],
-            comments: true,
+            comments: true
+        },
+        {
             id:3,
             label:'Has the tenderer demonstrated experience in successfully delivering similar work?',
             type: 'vertical-scale',
@@ -56,6 +57,6 @@ export function getSectionsFromService(data) {
         ]
        }
      },
-     sectionsIds:['experience']
+        sectionsIds:['experience']
     };
 }
