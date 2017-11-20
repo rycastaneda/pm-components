@@ -175,13 +175,17 @@ function mapStateToProps(state) {
     });
 
     let staff = {
-        data: rawStaff.allIds.map(staffId => {
-            const staff = rawStaff.byId[staffId];
-            return {
-                label: `${staff.first_name} ${staff.last_name}`,
-                value: staff.user_id
-            };
-        }),
+        data: rawStaff.allIds
+            .map(staffId => {
+                const staff = rawStaff.byId[staffId];
+                return {
+                    label: `${staff.first_name} ${staff.last_name}`,
+                    value: staff.user_id
+                };
+            })
+            .sort(
+                (a, b) => (a.label > b.label ? 1 : b.label > a.label ? -1 : 0)
+            ),
         isLoading: rawStaff.isLoading
     };
 
