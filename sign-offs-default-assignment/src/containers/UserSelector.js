@@ -127,8 +127,9 @@ function mapStateToProps(state, ownProps) {
     let unassignedUsers = difference(
         rawStaffs.allIds,
         ownProps.assignedUsers.map(user => user.id)
-    ).map(staffId => rawStaffs.byId[staffId]);
-
+    )
+        .map(staffId => rawStaffs.byId[staffId])
+        .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
     return {
         unassignedUsers
     };
