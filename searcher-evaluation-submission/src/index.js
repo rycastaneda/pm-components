@@ -6,6 +6,7 @@ import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
 import api from '../../shared/api.config';
 import axios from 'axios';
+
 !window._babelPolyfill && require('babel-polyfill'); // prevent polyfill from importing twice
 
 import SearcherEvaluationSubmission from './containers/EvaluationSubmission';
