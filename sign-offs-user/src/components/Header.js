@@ -24,7 +24,7 @@ const Header = ({
                 />
             </ul>
         </div>
-        {isReadOnly || !statusId ? null : (
+        {isReadOnly || statusId === null ? null : (
             <div className="col-lg-2">
                 <Status
                     statusId={statusId}
