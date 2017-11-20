@@ -150,14 +150,16 @@ function receiveSections(state, action) {
     const byId = {};
 
     let assignmentIdToStaff = {};
-    action.sections.included
-        .filter(include => include.type === 'assignments')
-        .map(assignment => {
-            assignmentIdToStaff[assignment.id] = {
-                staffId: assignment.relationships.assignedStaff.id,
-                status: assignment.attributes.status_label
-            };
-        });
+    if (action.sections.included) {
+        action.sections.included
+            .filter(include => include.type === 'assignments')
+            .map(assignment => {
+                assignmentIdToStaff[assignment.id] = {
+                    staffId: assignment.relationships.assignedStaff.id,
+                    status: assignment.attributes.status_label
+                };
+            });
+    }
 
     action.sections.data.map(section => {
         let commentIds = [];
