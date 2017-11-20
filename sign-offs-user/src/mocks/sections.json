@@ -478,21 +478,12 @@
         "title": "Traffic Management Panel Documentation"
       },
       "relationships": {
-<<<<<<< HEAD
-        "signOff": {
-          "data": [
-=======
         "assignments": {
           "data": 
->>>>>>> feature/PIT-458-signoffs-user
             {
               "type": "sign-off",
               "id": "2"
             }
-<<<<<<< HEAD
-          ]
-=======
->>>>>>> feature/PIT-458-signoffs-user
         },
         "defaultUsers": {
           "data": [
@@ -514,21 +505,12 @@
         "title": "Wet Panel Documentation"
       },
       "relationships": {
-<<<<<<< HEAD
-        "signOff": {
-          "data": [
-=======
         "assignments": {
           "data": 
->>>>>>> feature/PIT-458-signoffs-user
             {
               "type": "sign-off",
               "id": "1"
             }
-<<<<<<< HEAD
-          ]
-=======
->>>>>>> feature/PIT-458-signoffs-user
         },
         "defaultUsers": {
           "data": []

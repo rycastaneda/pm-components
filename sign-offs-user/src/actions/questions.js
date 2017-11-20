@@ -1,4 +1,3 @@
-import mockQuestions from '../mocks/questions.json';
 import * as actions from '../constants';
 import axios from 'axios';
 
@@ -14,11 +13,11 @@ export function fetchQuestions(sectionId) {
             .get(
                 `/compliance/questionnaire/${supplierUserId}?filters[section_id]=${sectionId}`
             )
-            .then(() => {
+            .then(response => {
                 dispatch({
                     type: actions.RECEIVE_QUESTIONS,
                     sectionId,
-                    questions: mockQuestions
+                    questions: response.data
                 });
 
                 dispatch({
