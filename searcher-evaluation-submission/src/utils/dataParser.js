@@ -30,9 +30,8 @@ export function getSectionsFromService(data) {
 
             ],
             attachments:[
-                { id:0, label:'project-specs.pdf', url:'/Attachment' },
-                { id:1, label:'map-of-bundy.jpg', url:'/Attachment' },
-                { id:2, label:'key-outcome.xls', url:'/Attachment' }
+                { id:0, label:'project-specs.pdf', url:'/Attachment' }
+
             ],
             comments: true
         },
@@ -49,9 +48,7 @@ export function getSectionsFromService(data) {
                 { id:5, label: 'The tenderer has completed many similar projects to an exemplary standard', score:6 }
             ],
             attachments:[
-                { id:0, label:'project-specs.pdf', url:'/Attachment' },
-                { id:1, label:'map-of-bundy.jpg', url:'/Attachment' },
-                { id:2, label:'key-outcome.xls', url:'/Attachment' }
+                
             ]
         }
         ]
