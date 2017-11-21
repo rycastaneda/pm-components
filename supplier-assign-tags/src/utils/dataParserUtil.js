@@ -7,7 +7,6 @@ function formatAvailableTagsFromInitialService(data) {
             value:item.id,
             iconClass: item.attributes.icon,
             color:item.attributes.icon_colour,
-            isFocused:false,
             comment:'',
             hasSavedComment :false };
         arr.push(obj);
@@ -49,8 +48,8 @@ export function formatDataForSaveTagsService(data) {
 }
 
 export function formatTagsAfterSaveTagsService(tags) {
-    return tags.forEach((item) => {
+    return tags.map((item) => {
         item.hasSavedComment = Boolean(item.comment.length);
-        item.isFocused=false;
+        return item;
     });
 }

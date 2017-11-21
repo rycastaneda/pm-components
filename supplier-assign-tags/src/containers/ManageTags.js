@@ -6,9 +6,8 @@ import { Popover,
     from 'react-bootstrap';
 import { selectItemInDropDown,
     fetchTags,
-    saveTags,
-    focusTag,
-    updateFocusedTagComment }
+    saveTagComment
+     }
     from '../actions/manageTagsActions';
 
 class ManageTags extends Component {
@@ -16,69 +15,67 @@ class ManageTags extends Component {
     constructor(props) {
         super(props);
         this.handleSelectChange = this.handleSelectChange.bind(this);
-        this.handleSelectClose = this.handleSelectClose.bind(this);
-        this.handleSave = this.handleSave.bind(this);
-        this.handleCommentChange =  this.handleCommentChange.bind(this);
+        this.handleSaveComment = this.handleSaveComment.bind(this);
+        this.state={ focusedTagComment:'', focusedTag:null, selectedTags:this.props.selectedTags };
     }
 
     componentDidMount() {
         let selector = document.querySelector('[data-component="supplier-manage-tags"]');
         this.props.dispatch(fetchTags(selector.getAttribute('data-supplier-id')));
-
     }
-
+    componentWillReceiveProps(props) {
+        this.state={ focusedTagComment:'', focusedTag:null, selectedTags:props.selectedTags };
+    }
     handleSelectChange(value) {
         this.props.dispatch(selectItemInDropDown(value));
     }
 
-    handleCommentChange(value) {
-        this.props.dispatch(updateFocusedTagComment(value));
+    handleSaveComment() {
+        this.props.dispatch(saveTagComment(this.state.focusedTag.id, this.state.focusedTagComment));
     }
 
-    handleSave() {
-        this.props.dispatch(saveTags(this.props.selectedTags));
-    }
 
-    handleSelectClose() {
-        this.props.dispatch(saveTags(this.props.selectedTags));
-    }
     onItemClick(option, event) {
         event.stopPropagation();
         event.preventDefault();
-        this.props.dispatch(focusTag(option));
+        this.setState({ focusedTag:option, focusedTagComment:option.comment });
     }
 
-    popoverHoverFocus(title, content) {
-        return <Popover id="popover-trigger-hover-focus"
-                        title="Comment">{content}
+    popoverHoverFocus(option) {
+        if (option.hasSavedComment) {
+            return <Popover id="popover-trigger-hover-focus"
+                title="Comment">{option.comment}
             </Popover>;
+        } else {
+            return <Popover id="popover-trigger-hover-focus"
+                >{"Click to add a comment"}
+            </Popover>;
+        }
+
     }
 
     renderValue(option) {
         const color = { color: option.color };
         return <div className={option.isFocused?'content selected':'content'}
-        onMouseDown={this.onItemClick.bind(this, option)} key={option.id}>
-        <span className={`tag-icon fa ${option.iconClass}`} style={color}></span>
-        <span>{option.label}</span>
-            {option.hasSavedComment?
+                onMouseDown={this.onItemClick.bind(this, option)} key={option.id}>
                     <OverlayTrigger trigger={['hover', 'focus']}
                         placement="bottom"
-                        overlay={this.popoverHoverFocus(option.label, option.comment)}>
-                        <a className="btn-link comment-btn" >
-                            <i className="fa fa-commenting-o"  aria-hidden="true"></i>
-                        </a>
-                    </OverlayTrigger>:null}
+                        overlay={this.popoverHoverFocus(option)}>
+                        <span>
+                            <span className={`tag-icon fa ${option.iconClass}`} style={color}></span>
+                            <span>{option.label}</span>
+                            {option.hasSavedComment?
+                                <i className="fa fa-commenting-o comment-btn"  aria-hidden="true"></i>
+                                :null
+                            }
+                        </span>
+                    </OverlayTrigger>
                 </div>;
     }
 
     render() {
         const { availableTags, selectedTags, isBusy, errorMessage }  = this.props;
-        let focusedTag =null;
-        for (let i in selectedTags) {
-            if (selectedTags[i].isFocused) {
-                focusedTag=selectedTags[i];
-            }
-        }
+
         return (
              <div className="manage-tags">
                 <Select  name="form-field-name"
@@ -87,19 +84,33 @@ class ManageTags extends Component {
                     isLoading={isBusy}
                     valueRenderer={this.renderValue.bind(this)}
                     backspaceToRemoveMessage={''}
-                    onChange={this.handleSelectChange} onClose={this.handleSelectClose} />
-                {(focusedTag===null) ? null:
+                    onChange={this.handleSelectChange} />
+                {(this.state.focusedTag===null) ?
+                    null:
                  <div className="row">
-                     <div  key={focusedTag.id}  className="mar-top col-xs-12">
-                        <label>Add a comment to {focusedTag.label}</label>
-                        <input type="text" className="fullwidth form-control"
+                     <div  key={this.state.focusedTag.id}  className="mar-top col-xs-12">
+                        { this.state.focusedTag.hasSavedComment?
+                            <label>
+                                {`Edit comment on  ${this.state.focusedTag.label}`}
+                            </label>
+                            :
+                            <label>
+                                {`Add comment to ${this.state.focusedTag.label}`}
+                            </label>
+                        }
+
+                        <input type="text"
+                            className="fullwidth form-control"
                             placeholder="Enter your comment"
-                            value={focusedTag.comment}
-                            onChange={event => this.handleCommentChange(event.target.value) }
+                            defaultValue={this.state.focusedTagComment}
+                            onChange={event => this.setState({ focusedTagComment:event.target.value }) }
                         / >
                     </div>
                     <div className="mar-top  col-xs-12">
-                        <button className="btn pull-right" onClick={this.handleSave} >Save</button>
+                        <button className="btn pull-right"
+                            onClick={this.handleSaveComment}>
+                            {` ${this.state.focusedTag.hasSavedComment?'Update':'Add'} Comment`}
+                        </button>
                     </div>
                 </div>}
                 {errorMessage?<div className="col-xs-12">
