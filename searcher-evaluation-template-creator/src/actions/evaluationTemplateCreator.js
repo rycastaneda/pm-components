@@ -8,6 +8,8 @@ import { parseDataForCreateTemplate,
     parseDataForCreateQuestion,
     createCriterionFromData,
     parseDataFromCreateQuestion,
+    parseDataForUpdateQuestion,
+    parseDataForScaleDefinition,
     parseInitialData
 } from '../utils/dataParserUtil';
 import {
@@ -110,7 +112,7 @@ export function addQuestionToCriteria(criteriaId, questionTitle, questionType) {
         const id = getState().evaluationTemplateCreator.id;
         return axios.post(TEMPLATE_SERVICE_URL+'/'+id+'/criteria/'+criteriaId+'/questions', parseDataForCreateQuestion(questionTitle, questionType))
         .then((response) => {
-            const question = parseDataFromCreateQuestion(response.data.data, questionType) ;
+            const question = parseDataFromCreateQuestion(response.data.data, response.data.included) ;
             dispatch({ type:QUESTION_ADD, criteriaId, question });
         })
         .catch((error) => {
@@ -119,14 +121,91 @@ export function addQuestionToCriteria(criteriaId, questionTitle, questionType) {
     };
 }
 
-export function updateQuestion() {
-    return { type:QUESTION_UPDATE };
+export function onQuestionTypeChange(criteriaId, questionId, type) {
+    return (dispatch, getState) => {
+        let templateId =getState().evaluationTemplateCreator.id;
+        let question = getState().evaluationTemplateCreator.questionsByIndex[questionId];
+        let data = parseDataForUpdateQuestion(Object.assign({}, question, { type }));
+        window.console.log(data);
+        return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
+        .then((response) => {
+            const question = parseDataFromCreateQuestion(response.data.data, response.data.included) ;
+            dispatch({ type:QUESTION_UPDATE, criteriaId, question });
+        })
+        .catch((error) => {
+            dispatch({ type:REQUEST_FAILED, message: error.message });
+        });
+    };
+}
+export function onQuestionTitleChange(criteriaId, questionId, questionTitle) {
+    window.console.log(criteriaId, questionId, questionTitle);
 }
 
-export function deleteQuestion() {
-    return { type:QUESTION_DELETE };
+export function onQuestionAllowUploadChange(criteriaId, questionId, isAllowUpload) {
+    return (dispatch, getState) => {
+        let templateId =getState().evaluationTemplateCreator.id;
+        let question = getState().evaluationTemplateCreator.questionsByIndex[questionId];
+        let data = parseDataForUpdateQuestion(Object.assign({}, question, { isAllowUpload }));
+        return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
+        .then((response) => {
+            const question = parseDataFromCreateQuestion(response.data.data, response.data.included) ;
+            dispatch({ type:QUESTION_UPDATE, criteriaId, question });
+        })
+        .catch((error) => {
+            dispatch({ type:REQUEST_FAILED, message: error.message });
+        });
+    };
 }
-
+export function  onAllowScaleDefinitionChange(criteriaId, questionId, isAllowScaleDefinitions) {
+    return (dispatch, getState) => {
+        let templateId =getState().evaluationTemplateCreator.id;
+        let question = getState().evaluationTemplateCreator.questionsByIndex[questionId];
+        let data = parseDataForUpdateQuestion(Object.assign({}, question, { isAllowScaleDefinitions }));
+        return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
+        .then((response) => {
+            let { data, included } = response.data;
+            const question = parseDataFromCreateQuestion(data, included) ;
+            dispatch({ type:QUESTION_UPDATE, criteriaId, question });
+        })
+        .catch((error) => {
+            dispatch({ type:REQUEST_FAILED, message: error.message });
+        });
+    };
+}
+export function onQuestionAllowCommentsChange(criteriaId, questionId, isCommentRequired) {
+    return (dispatch, getState) => {
+        let templateId =getState().evaluationTemplateCreator.id;
+        let question = getState().evaluationTemplateCreator.questionsByIndex[questionId];
+        let data = parseDataForUpdateQuestion(Object.assign({}, question, { isCommentRequired }));
+        window.console.log(data);
+        return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
+        .then((response) => {
+            const question = parseDataFromCreateQuestion(response.data.data, response.data.included) ;
+            dispatch({ type:QUESTION_UPDATE, criteriaId, question });
+        })
+        .catch((error) => {
+            dispatch({ type:REQUEST_FAILED, message: error.message });
+        });
+    };
+}
+export function deleteQuestion(criteriaId, questionId) {
+    return { type:QUESTION_DELETE, criteriaId, questionId };
+}
+export function onScaleDefinitionChange(criteriaId, questionId, scaleDefinitionId, text) {
+    return (dispatch, getState) => {
+        const templateId = getState().evaluationTemplateCreator.id;
+        const url =TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId+'/scale-definitions';
+        let data = parseDataForScaleDefinition(scaleDefinitionId, text);
+        return axios.patch(url, data)
+            .then((response) => {
+                const question = parseDataFromCreateQuestion(response.data.data, response.data.included) ;
+                dispatch({ type:QUESTION_UPDATE, criteriaId, question });
+            })
+            .catch((error) => {
+                dispatch({ type:REQUEST_FAILED, message: error.message });
+            });
+    };
+}
 export function addDocumentsForQuestion(criteriaId, questionId, documents) {
     return (dispatch, getState) => {
         const templateId = getState().evaluationTemplateCreator.id;
@@ -136,7 +215,7 @@ export function addDocumentsForQuestion(criteriaId, questionId, documents) {
             documents
         });
         const url =TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId+'/documents';
-        return     axios.all(
+        return  axios.all(
                 documents.map((document) => {
                     let formData = new FormData();
 
@@ -148,7 +227,6 @@ export function addDocumentsForQuestion(criteriaId, questionId, documents) {
                     return axios.post(url, formData, {
                         onUploadProgress: function(progressEvent) {
                             var percentCompleted = progressEvent.loaded / progressEvent.total;
-
                             dispatch(incrementProgress(document.id, Math.ceil(percentCompleted * 100)));
                         }
                     }).then((response) => {

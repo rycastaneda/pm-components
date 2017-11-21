@@ -155,6 +155,7 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                 let { id } = question;
                 let questionsByIndex = Object.assign({}, state.questionsByIndex);
                 questionsByIndex[id] = question;
+                window.console.log(questionsByIndex);
                 return Object.assign({}, state, { questionsByIndex });
             }
         case QUESTION_DELETE:

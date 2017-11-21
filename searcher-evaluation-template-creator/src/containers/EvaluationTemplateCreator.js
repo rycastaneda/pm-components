@@ -8,13 +8,13 @@ class EvaluationTemplateCreator extends Component {
         super(props);
         this.onSave = this.onSave.bind(this);
         this.onTitleTextChange = this.onTitleTextChange.bind(this);
-        this.state = { title:this.props.title };
+        this.state = { title:this.props.title, showAdd:false };
     }
     componentDidMount() {
         this.props.dispatch(initialize());
     }
     componentWillReceiveProps(nextProps) {
-        this.setState({ title:nextProps.title });
+        this.setState({ title:nextProps.title,  showAdd:false  });
     }
     onSave() {
         if (this.props.id) {
@@ -25,6 +25,9 @@ class EvaluationTemplateCreator extends Component {
     }
     onTitleTextChange(event) {
         this.setState({ title:event.target.value });
+        if (this.props.id) {
+            this.props.dispatch(updateTemplate(this.state.title, this.props.id));
+        }
     }
     render() {
         const { allCriteriaIndexes, id } = this.props;
@@ -71,9 +74,22 @@ class EvaluationTemplateCreator extends Component {
                             criteriaId = {criteriaId}/>
                     )
                 }
-                { id!==null?
-                <Criteria criteriaId={null}/>
-                    :null
+                {
+                    (id!==null)?
+                        (allCriteriaIndexes.length)?
+                            <div className="col-md-12">
+                                <button className="btn btn-sm"
+                                    onClick={() => this.setState({ showAdd: !this.state.showAdd })}>
+                                    Add Criteria</button>
+                                    {
+                                        this.state.showAdd?
+                                            <Criteria criteriaId={null}/>
+                                            :null
+                                        }
+                            </div>
+                            :
+                            <Criteria criteriaId={null}/>
+                        :null
                 }
             </div>
         </div>
