@@ -5,22 +5,41 @@ import { ChromePicker  } from 'react-color';
 
 class ColorPicker extends Component {
     constructor(props) {
-        super(props);        
+        super(props);
+        let disabled =false;
+        if (props.disabled!==undefined) {
+            disabled = props.disabled;
+        }
+        let displayColorPicker = false;
+        let { color } =props;
         this.state = {
-            displayColorPicker: false,
-            color: props.color
+            displayColorPicker,
+            color,
+            disabled
         };
         this.handleClick = this.handleClick.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
-
+    componentWillReceiveProps(nextProps) {
+        let disabled =false;
+        if (nextProps.disabled!==undefined) {
+            disabled = nextProps.disabled;
+        }
+        let { color } = nextProps;
+        this.setState({
+            color,
+            disabled
+        });
+    }
     handleClick() {
-        this.setState({ displayColorPicker: !this.state.displayColorPicker });
+        let displayColorPicker = !this.state.displayColorPicker;
+        this.setState({ displayColorPicker });
     }
 
     handleClose() {
-        this.setState({ displayColorPicker: false });
+        let displayColorPicker = false;
+        this.setState({ displayColorPicker });
         if (this.props.onChange) {
             this.props.onChange(this.state.color);
         }
@@ -35,14 +54,17 @@ class ColorPicker extends Component {
 
         return (
             <div className="color-picker">
-                <button className="btn btn-md" style={color} onClick={ this.handleClick }>
+                <button className="btn btn-md"
+                    disabled={this.state.disabled}
+                    style={color}
+                    onClick={ this.handleClick }>
                     <i></i>
                 </button>
                 { this.state.displayColorPicker ? <div className="popover show mar-top-lg">
                   <div className={'cover' } onClick={ this.handleClose }/>
-                  <ChromePicker  disableAlpha={true} color={ this.state.color } 
+                  <ChromePicker  disableAlpha={true} color={ this.state.color }
                     onChange={ this.handleChange } />
-                </div> 
+                </div>
                 : null }
               </div>
           );
@@ -50,6 +72,7 @@ class ColorPicker extends Component {
 }
 ColorPicker.propTypes = {
     color : PropTypes.string.isRequired,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    disabled: PropTypes.bool
 };
 export default ColorPicker;
