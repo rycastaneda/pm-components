@@ -2,3 +2,4 @@ export const IS_CLICKED = 'IS_CLICKED';
 export const INITIAL_STATE = 'INITIAL_STATE';
 
 export const REQUEST_FAILED = 'REQUEST_FAILED';
+export const OPTION_SELECTED = 'OPTION_SELECTED'; 

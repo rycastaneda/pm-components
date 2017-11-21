@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 import Document from '../components/Document';
-import { initialize } from '../actions/evaluationSubmissionAction';
+import { initialize, setOptionValue } from '../actions/evaluationSubmissionAction';
 
 // import Button from '../components/Button';
 
@@ -11,9 +11,14 @@ class EvaluationSubmission extends Component {
     constructor(props) {
         super(props);
         this.onDocumentDrop = this.onDocumentDrop.bind(this);
+        this.uncheckRadioButtons = this.uncheckRadioButtons.bind(this);
+    }
+
+    uncheckRadioButtons() {
+        document.getElementsByClassName('rating-group-1');
+        window.console.log('unchecked');
     }
     componentDidMount() {
-        window.console.log('sdfdsf');
         this.props.dispatch(initialize());
     }
     onDocumentDrop(files) {
@@ -21,8 +26,13 @@ class EvaluationSubmission extends Component {
         files;
     }
 
+    setOptionValue(sectionId, questionId, optionId, value) {
+        this.props.dispatch(setOptionValue(sectionId, questionId, optionId, value));
+    }
+
     render() {
         const { sections } = this.props;
+
         window.console.log(sections);
         return (
             <div>
@@ -32,7 +42,6 @@ class EvaluationSubmission extends Component {
                 (section, index) =>
 
                 <div key={index}>
-                <span></span>
                     <div className="row">
                         <div className="col-sm-12">
                             <div className="pmaccordion pmaccordion--impact">
@@ -54,21 +63,56 @@ class EvaluationSubmission extends Component {
                                             <div key={index}>
                                             <div className="row">
                                                 <div className="col-md-8 col-sm-11">
-                                                    <h2 className= {`${question.id===1?'margin-top-0':''}`} >{question.id}. {question.label}</h2>
-                                                    <ol className="questionnaire">
+                                                    <h2 className= {`${question.id===1?'margin-top-0':'border-top'}`} >{question.id}. {question.label}</h2>
+
+                                                    { question.enable_scale_definitions === true &&
+                                                    <ol className="questionnaire defined-scale">
                                                         { question.options.map((option, index) =>
                                                             <li key={index}>
+                                                            { window.console.log(question) }
                                                                 <div className="radio">
-                                                                    <input type="radio" name="optionsRadios" className={`rating-group-${question.id}`} id={`rating-${question.id}-${option.id}`} value={option.score} />
+                                                                    <span className="score">{option.score}</span>
+                                                                    <input type="radio" name={`rating-group-${question.id}`} className={`rating-group-${question.id}`} id={`rating-${question.id}-${option.id}`} defaultValue={option.score}
+                                                                    onChange ={event => this.setOptionValue(section.id, question.id, option.id, event.target.value)}/>
                                                                     <label htmlFor={`rating-${question.id}-${option.id}`}>{option.label}</label>
                                                                 </div>
                                                             </li>
                                                         )}
                                                     </ol>
+                                                }
+
+                                                { question.enable_scale_definitions === false && question.question_type !== 3 &&
+                                                    <ol className="questionnaire undefined-scale">
+                                                        { question.options.map((option, index) =>
+                                                            <li key={index}>
+                                                                <div className="radio">
+                                                                    <span className="score">{option.score}</span>
+                                                                    <input type="radio" name={`rating-group-${question.id}`} className={`rating-group-${question.id}`} id={`rating-${question.id}-${option.id}`} value={option.score} checked={false} />
+                                                                    <label htmlFor={`rating-${question.id}-${option.id}`}>{option.label}</label>
+                                                                </div>
+                                                            </li>
+                                                        )}
+                                                    </ol>
+                                                }
+
+                                                { question.enable_scale_definitions === false && question.question_type === 3 &&
+                                                    <ol className="questionnaire horizontal">
+                                                        { question.options.map((option, index) =>
+                                                            <li key={index}>
+                                                                <div className="radio">
+                                                                    <span className="score">{option.score}</span>
+                                                                    <input type="radio" name={`rating-group-${question.id}`} className={`rating-group-${question.id}`} id={`rating-${question.id}-${option.id}`} value={option.score} checked={false} />
+                                                                    <label htmlFor={`rating-${question.id}-${option.id}`}>{option.label}</label>
+                                                                </div>
+                                                            </li>
+                                                        )}
+                                                    </ol>
+                                                }
+
                                                 </div>
                                                 <div className="col-md-8 col-sm-12">
                                                     <div className="form-group">
-                                                        <button type="button" className="btn btn-sm btn-danger pmfilters__cancel"><i className="fa fa-undo"></i>Clear Rating</button>
+                                                        <button type="button" className="btn btn-sm btn-danger pmfilters__cancel" onClick={this.uncheckRadioButtons}><i className="fa fa-undo"></i>Clear Rating</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -88,13 +132,14 @@ class EvaluationSubmission extends Component {
 
                                             <div className="row">
                                                 <div className="col-md-8 col-sm-12">
-                                                    <h2>Comments</h2>
+                                                    <h2>Comments { question.mandatory_comments === true && <small>(required)</small> }</h2>
                                                     <div className="form-group">
-                                                        <textarea name="comments" className="form-control" rows="4" placeholder="Your comments"></textarea>
+                                                        <textarea name="comments" className="form-control" rows="4" placeholder="Your comments" required={ question.mandatory_comments }></textarea>
                                                     </div>
                                                 </div>
                                             </div>
 
+                                            { question.allow_documents === true &&
                                             <div className="row">
                                                 <div className="col-md-8 col-sm-12">
                                                     <Dropzone className="dropzone"
@@ -115,6 +160,7 @@ class EvaluationSubmission extends Component {
                                                     </ul>
                                                 </div>
                                             </div>
+                                        }
                                         </div>
                                         )}
                                     </div>
