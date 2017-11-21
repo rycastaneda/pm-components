@@ -2,16 +2,16 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import ColorPicker from '../components/ColorPicker';
 import IconPicker from '../components/IconPicker';
-import { fetchAllTags, 
+import { fetchAllTags,
                 startTagEdit,
-                 cancelTagEdit, 
-                 addTag, 
-                 saveTag, 
-                 setIsActiveForTag, 
-                 setIconForTag, 
-                 setColorForTag, 
-                 setTitleForTag, 
-                 setDescriptionForTag 
+                 cancelTagEdit,
+                 addTag,
+                 saveTag,
+                 setIsActiveForTag,
+                 setIconForTag,
+                 setColorForTag,
+                 setTitleForTag,
+                 setDescriptionForTag
              } from '../actions/configureTagsActions';
 /**
  * @description: Manages supplier Tags as a table
@@ -23,6 +23,7 @@ class TagsList extends Component {
         this.onTagTitleChange = this.onTagTitleChange.bind(this);
         this.onTagDescriptionChange = this.onTagDescriptionChange.bind(this);
         this.onTagActiveChange = this.onTagActiveChange.bind(this);
+
     }
 
     componentDidMount() {
@@ -32,7 +33,7 @@ class TagsList extends Component {
         const { errorMessage, availableTags } = this.props;
         return (
             <div className="tag-list">
-                <button className="btn btn-sm pull-right mar-btm-md" 
+                <button className="btn btn-sm pull-right mar-btm-md"
                     onClick = { () => this.props.dispatch(addTag()) }>
                     <i className="fa fa-plus"></i>Add
                 </button>
@@ -47,10 +48,21 @@ class TagsList extends Component {
                                   <th className="col-sm-3  td-center"></th>
                             </tr>
                         </thead>
-                    <tbody>{availableTags.map(this.populateTagsRow, this)}</tbody></table>
+                    <tbody>
+                        {
+                            availableTags.map(this.populateTagsRow, this)
+                        }
+                    </tbody>
+                </table>
+                {availableTags.length?null:<div className="col-sm-12 text-center">{'Click \'Add\' to create supplier tags'}</div>}
             </div>);
     }
+    getSavableStatus(item) {
+        window.console.log(item);
+        let { title } = item;
+        return !(title.length);
 
+    }
     onTagTitleChange(id, value) {
         this.props.dispatch(setTitleForTag(id, value));
     }
@@ -65,7 +77,7 @@ class TagsList extends Component {
     renderActiveStatusCell(item) {
 
         if (item.isEdited) {
-            return (<select value={item.isActive} 
+            return (<select value={item.isActive}
                     onChange={event => this.onTagActiveChange(item.id, event.target.value)}>
                     <option value={1}>
                         Active
@@ -79,36 +91,38 @@ class TagsList extends Component {
         }
 
     }
-
+    getIsColorChangable(className) {
+        return !(className.includes('fa-'));
+    }
     renderIconCell(item) {
         if (item.isEdited) {
             return <div className="horizontal-block">
-                <div className="item"><IconPicker  icon={item.iconClass} 
+                <div className="item"><IconPicker  icon={item.iconClass}
                     onChange={icon => this.props.dispatch(setIconForTag(item.id, icon))}/>
                 </div>
                 <div className="item item-colorpicker">
-                    <ColorPicker color={item.color} 
+                    <ColorPicker color={item.color} disabled={this.getIsColorChangable(item.iconClass)}
                         onChange={color => this.props.dispatch(setColorForTag(item.id, color))}>
                     </ColorPicker>
-                    </div>
+                </div>
             </div>;
         } else {
-            return  <i className={`tag-icon fa ${item.iconClass}`} 
+            return  <i className={`tag-icon fa ${item.iconClass}`}
                             style={ { color :item.color } } ></i>;
         }
     }
     renderButtonCell(item) {
         if (item.isEdited) {
             return <div className="horizontal-block">
-                <button className="btn btn-sm item btn-success"  
+                <button className="btn btn-sm item btn-success" disabled= {this.getSavableStatus(item)}
                     onClick={() => this.props.dispatch(saveTag(item))}><i className="fa fa-save"></i>Save</button>
-                <button className="btn btn-sm item btn-danger"  
+                <button className="btn btn-sm item btn-danger"
                     onClick={() => this.props.dispatch(cancelTagEdit(item.id))}>
                     <i className="fa fa-times"></i>Cancel
                 </button>
             </div>;
         } else {
-            return <button className="btn btn-sm item" 
+            return <button className="btn btn-sm item"
                 onClick={() => this.props.dispatch(startTagEdit(item.id))}>
                 <i className="fa fa-edit"></i>Edit
             </button>;
@@ -116,8 +130,8 @@ class TagsList extends Component {
     }
     renderTitleCell(item) {
         if (item.isEdited) {
-            return <input value={item.title}  
-                className="col-xs-12" 
+            return <input value={item.title}
+                className="col-xs-12"
                 onChange={event => this.onTagTitleChange(item.id, event.target.value) }/>;
         } else {
             return <span>{item.title}</span>;
@@ -125,8 +139,8 @@ class TagsList extends Component {
     }
     renderDescriptionCell(item) {
         if (item.isEdited) {
-            return <input value={item.description} 
-                className="col-xs-12" 
+            return <input value={item.description}
+                className="col-xs-12"
                 onChange={event => this.onTagDescriptionChange(item.id, event.target.value) }/>;
         } else {
             return <span>{item.description}</span>;
@@ -136,13 +150,13 @@ class TagsList extends Component {
         return (
                  <tr className="row" key={index}>
                     <td className="col-sm-2 td-center">
-                            {this.renderIconCell(item)}
+                        {this.renderIconCell(item)}
                     </td>
                     <td className="col-sm-2">
-                            {this.renderTitleCell(item)}
+                        {this.renderTitleCell(item)}
                     </td>
                     <td className="col-sm-4">
-                            {this.renderDescriptionCell(item)}
+                        {this.renderDescriptionCell(item)}
                     </td>
                      <td className="col-sm-1 td-center">
                         {this.renderActiveStatusCell(item)}
