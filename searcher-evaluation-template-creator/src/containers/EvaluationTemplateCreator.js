@@ -12,7 +12,7 @@ class EvaluationTemplateCreator extends Component {
     }
     componentDidMount() {
         const element = document.querySelector('[data-component="searcher-evaluation-template-creator"]');
-        const id = element.getAttribute('data-template-id');
+        const id = Number(element.getAttribute('data-template-id'));
         if (id) {
             this.props.dispatch(fetchTemplate(id));
         } else {

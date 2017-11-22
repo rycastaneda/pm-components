@@ -279,9 +279,7 @@ export function fetchTemplate(id) {
     return (dispatch) => {
         getPromiseForService(TEMPLATE_SERVICE_URL+'/'+id, dispatch)
             .then((response) => {
-                response;
-                // let template = parseTemplateFromResponse(response.data);
-                dispatch ({ type: TEMPLATE_FETCHED, title:response.data.data.attributes.title });
+                dispatch ({ type: TEMPLATE_FETCHED, title:response.data.data.attributes.title, id });
             });
     };
 }
