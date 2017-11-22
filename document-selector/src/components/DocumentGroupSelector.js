@@ -1,14 +1,13 @@
 import React, { PropTypes } from 'react';
 import Groups from '../components/Groups';
 
-const DocumentGroupSelector = ({ quote_id, groups, items, toggleGroup, toggleDocument, item_id }) => {
+const DocumentGroupSelector = ({ groups, items, toggleGroup, toggleDocument, returnDocument }) => {
     const documentsButton = (
         <div>
             <div className="pull-right">
-                <a className="db-function copy-from"
-                    href={`/searcher/quotes/documents/${quote_id}/${item_id}`}>
+                <button onClick={returnDocument} type="button" className="db-function copy-from" data-provide="return">
                     Return to step 2 to add documents
-                </a>
+                </button>
             </div>
             <div className="clearfix"></div>
         </div>
@@ -27,12 +26,11 @@ const DocumentGroupSelector = ({ quote_id, groups, items, toggleGroup, toggleDoc
 };
 
 DocumentGroupSelector.propTypes = {
-    quote_id: PropTypes.any,
     groups: PropTypes.array.isRequired,
     items: PropTypes.object.isRequired,
     toggleGroup: PropTypes.func.isRequired,
     toggleDocument: PropTypes.func.isRequired,
-    item_id: PropTypes.any 
+    returnDocument: PropTypes.func.isRequired
 };
 
 export default DocumentGroupSelector;

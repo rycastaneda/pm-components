@@ -1,3 +1,5 @@
+// Global plantminer
+
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchDocuments, toggleDocument, toggleGroup } from '../actions/documents';
@@ -17,6 +19,7 @@ class DocumentSelector extends Component {
         this.handleToggleGroup = this.handleToggleGroup.bind(this);
         this.handleToggleItem = this.handleToggleItem.bind(this);
         this.handleSelectItem = this.handleSelectItem.bind(this);
+        this.handleReturnDocument = this.handleReturnDocument.bind(this);
         this.quote_id = document.querySelector('[data-quote-id]').getAttribute('data-quote-id');
         this.requested_item_id = document.querySelector('[data-requested-item-id]') ?
                 +document.querySelector('[data-requested-item-id]').getAttribute('data-requested-item-id') : false;
@@ -42,6 +45,12 @@ class DocumentSelector extends Component {
 
     handleSelectItem(item) {
         return this.props.dispatch(selectItem(item));
+    }
+
+    handleReturnDocument() {
+        if (Plantminer && Plantminer.returnDocument) {
+            return Plantminer.returnDocument();
+        }
     }
 
     render() {
@@ -72,12 +81,11 @@ class DocumentSelector extends Component {
                 {showCopyFrom ? copyFrom : null}
 
                 <DocumentGroupSelector
-                    quote_id={this.quote_id}
                     groups={this.props.groups}
                     items={this.props.requestedItems}
                     toggleGroup={this.handleToggleGroup}
                     toggleDocument={this.handleToggleDocument}
-                    item_id={this.requested_item_id}>
+                    returnDocument={this.handleReturnDocument}>
                 </DocumentGroupSelector>
             </div>
             : <Grid
