@@ -126,7 +126,6 @@ export function onQuestionTypeChange(criteriaId, questionId, type) {
         let templateId =getState().evaluationTemplateCreator.id;
         let question = getState().evaluationTemplateCreator.questionsByIndex[questionId];
         let data = parseDataForUpdateQuestion(Object.assign({}, question, { type }));
-        window.console.log(data);
         return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
         .then((response) => {
             const question = parseDataFromCreateQuestion(response.data.data, response.data.included) ;
@@ -137,8 +136,20 @@ export function onQuestionTypeChange(criteriaId, questionId, type) {
         });
     };
 }
-export function onQuestionTitleChange(criteriaId, questionId, questionTitle) {
-    window.console.log(criteriaId, questionId, questionTitle);
+export function onQuestionTitleChange(criteriaId, questionId, title) {
+    return (dispatch, getState) => {
+        let templateId =getState().evaluationTemplateCreator.id;
+        let question = getState().evaluationTemplateCreator.questionsByIndex[questionId];
+        let data = parseDataForUpdateQuestion(Object.assign({}, question, { title }));
+        return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
+        .then((response) => {
+            const question = parseDataFromCreateQuestion(response.data.data, response.data.included) ;
+            dispatch({ type:QUESTION_UPDATE, criteriaId, question });
+        })
+        .catch((error) => {
+            dispatch({ type:REQUEST_FAILED, message: error.message });
+        });
+    };
 }
 
 export function onQuestionAllowUploadChange(criteriaId, questionId, isAllowUpload) {
@@ -264,13 +275,13 @@ export function incrementProgress(documentId, progress) {
         progress
     };
 }
-export function fetchTemplate() {
+export function fetchTemplate(id) {
     return (dispatch) => {
-        getPromiseForService(TEMPLATE_SERVICE_URL, dispatch)
+        getPromiseForService(TEMPLATE_SERVICE_URL+'/'+id, dispatch)
             .then((response) => {
                 response;
                 // let template = parseTemplateFromResponse(response.data);
-                dispatch ({ type: TEMPLATE_FETCHED });
+                dispatch ({ type: TEMPLATE_FETCHED, title:response.data.data.attributes.title });
             });
     };
 }

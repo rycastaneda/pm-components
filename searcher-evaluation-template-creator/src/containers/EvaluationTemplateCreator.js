@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Criteria from './Criteria';
-import { initialize, addTemplate, updateTemplate } from '../actions/evaluationTemplateCreator';
+import { initialize, addTemplate, updateTemplate, fetchTemplate } from '../actions/evaluationTemplateCreator';
 class EvaluationTemplateCreator extends Component {
 
     constructor(props) {
@@ -11,9 +11,17 @@ class EvaluationTemplateCreator extends Component {
         this.state = { title:this.props.title, showAdd:false };
     }
     componentDidMount() {
-        this.props.dispatch(initialize());
+        const element = document.querySelector('[data-component="searcher-evaluation-template-creator"]');
+        const id = element.getAttribute('data-template-id');
+        if (id) {
+            this.props.dispatch(fetchTemplate(id));
+        } else {
+            this.props.dispatch(initialize());
+        }
+
     }
     componentWillReceiveProps(nextProps) {
+        window.console.log(nextProps);
         this.setState({ title:nextProps.title,  showAdd:false  });
     }
     onSave() {
@@ -51,18 +59,6 @@ class EvaluationTemplateCreator extends Component {
                     <div className="form-group  pull-right">
                         {id===null?
                             <button className="btn btn-sm" disabled={!this.state.title} onClick={this.onSave}>Create Template</button>
-                            :
-                            (this.state.title&&(this.state.title!==this.props.title))?
-                            <ul className="list-inline">
-                                <li>
-                                    <button className="btn btn-sm"
-                                    onClick = {this.onSave}>Update</button>
-                                </li>
-                                <li>
-                                    <button className="btn btn-sm"
-                                    onClick = {() => this.setState({ title: this.props.title })}>Cancel</button>
-                                </li>
-                            </ul>
                             :null
                             }
                     </div>

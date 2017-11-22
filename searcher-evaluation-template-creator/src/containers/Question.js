@@ -22,7 +22,7 @@ import {
     onScaleDefinitionChange,
     onAllowScaleDefinitionChange,
     addQuestionToCriteria as addQuestion,
-    updateQuestion,
+    onQuestionTitleChange,
     deleteQuestion,
     addDocumentsForQuestion as addDocuments
 } from '../actions/evaluationTemplateCreator';
@@ -88,6 +88,12 @@ class Question extends Component {
     deleteQuestion() {
         this.props.dispatch(deleteQuestion(this.props.criteriaId, this.props.question.id));
     }
+    onTitleChange(title) {
+        this.setState({ title });
+        if (this.props.question.id!==null) {
+            this.props.dispatch(onQuestionTitleChange(this.props.criteriaId, this.props.question.id, title));
+        }
+    }
     saveQuestion() {
         let {
             title,
@@ -105,7 +111,7 @@ class Question extends Component {
             type,
             scaleDefinitions
         });
-        this.props.dispatch(updateQuestion(this.props.criteriaId, question));
+        this.props.dispatch(onQuestionTitleChange(this.props.criteriaId, question.id, question.title));
     }
 
     onDiscardChanges() {
@@ -227,8 +233,7 @@ class Question extends Component {
                         </label>
                         <textarea className="form-control"
                             value={this.state.title}
-                             onChange={event => this.setState({ title:event.target.value })
-                        }>
+                             onChange={ event => this.onTitleChange(event.target.value)}>
                          </textarea>
                     </div>
                 </div>
@@ -337,17 +342,7 @@ class Question extends Component {
                     </div>
             );
         } else {
-            return (
-                    <div className="col-md-12">
-                    <div className="form-group">
-                        <ul className="list-inline pull-right">
-                            <li>
-                                <button className="btn btn-sm" onClick={this.saveQuestion}>Save Question Title</button>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            );
+            return null;
         }
     }
     render() {
