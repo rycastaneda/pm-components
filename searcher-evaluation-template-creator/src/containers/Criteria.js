@@ -13,7 +13,7 @@ class Criteria extends Component {
             isMaximised: this.props.criteria.isMaximised,
             title:this.props.criteria.title,
             weight: this.props.criteria.weight,
-            isShowAdd:false
+            showAdd:false
         };
         this.onSave= this.onSave.bind(this);
         this.onCancel= this.onCancel.bind(this);
