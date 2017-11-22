@@ -37,7 +37,12 @@ export function initialize() {
         return axios.get('evaluation-question-types')
         .then((response) => {
             let questionTypes =parseInitialData(response.data.data);
-            dispatch({ type:INITIALIZED, questionTypes });
+            if (questionTypes.length) {
+                dispatch({ type:INITIALIZED, questionTypes });
+            } else {
+                alert('Unable to proceeed. Initial data returned by the service is empty');
+            }
+
         })
         .catch((error) => {
             dispatch({ type:REQUEST_FAILED, message: error.message });

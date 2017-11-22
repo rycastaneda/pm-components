@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { addCriteria,
     updateCriteria,
     deleteCriteria } from '../actions/evaluationTemplateCreator';
-import { createCriteria } from '../utils/dataParserUtil';
+import { createCriteria, createQuestion } from '../utils/dataParserUtil';
 class Criteria extends Component {
     constructor(props) {
         super(props);
@@ -15,6 +15,7 @@ class Criteria extends Component {
             weight: this.props.criteria.weight,
             showAdd:false
         };
+        this.newQuestion =createQuestion();
         this.onSave= this.onSave.bind(this);
         this.onCancel= this.onCancel.bind(this);
         this.onDelete= this.onDelete.bind(this);
@@ -51,7 +52,7 @@ class Criteria extends Component {
     }
     render() {
         let { title, weight, isMaximised } =this.state;
-
+        window.console.log(this.newQuestion);
         if (isMaximised) {
             return (
                 <div>
@@ -101,12 +102,12 @@ class Criteria extends Component {
                                         Add Question</button>
                                         {
                                             this.state.showAdd?
-                                                <Question criteriaId={this.props.criteria.id} question={this.state.newQuestion}/>
+                                                <Question criteriaId={this.props.criteria.id} question={this.newQuestion}/>
                                                 :null
                                             }
                                 </div>
                                 :
-                                <Question criteriaId={this.props.criteria.id} question={this.state.newQuestion}/>
+                                <Question criteriaId={this.props.criteria.id} question={this.newQuestion}/>
                             }
                         </div>
                     }
@@ -152,6 +153,7 @@ Criteria.propTypes = {
 
 function mapStateToProps(state, props) {
     const { criteriaByIndex } = state.evaluationTemplateCreator;
+    window.console.log(state.evaluationTemplateCreator);
     let criteria = props.criteriaId ? criteriaByIndex[props.criteriaId]: createCriteria();
 
     return { criteria };
