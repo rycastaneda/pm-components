@@ -42,51 +42,68 @@ class EvaluationTemplateCreator extends Component {
         return (
         <div className="searcher-evaluation-template-creator">
             <div className="db-form-section">
-                <div className="col-md-12">
-                    <div className="form-group">
-                        <label className="control-label">
-                            <span className="required" aria-required="true">Template Title*</span>
-                        </label>
-                        <input type="text"
-                            name="title"
-                            className="form-control"
-                            value={this.state.title}
+                <div className="row">
+                    <div className="col-md-12">
+                        <div className="form-group">
+                            <label className="control-label">
+                                <span className="required" aria-required="true">Template Title</span>
+                            </label>
+                            <div className="row">
+                                <div className="col-md-8 col-sm-12">
+                                    <input type="text"
+                                        name="title"
+                                        className="form-control"
+                                        value={this.state.title}
 
-                            title="Template Title"
-                            placeholder="Enter template title"
-                            onChange={this.onTitleTextChange}/>
-                    </div>
-                    <div className="form-group  pull-right">
-                        {id===null?
-                            <button className="btn btn-sm" disabled={!this.state.title} onClick={this.onSave}>Create Template</button>
-                            :null
-                            }
+                                        title="Template Title"
+                                        placeholder="Enter template title"
+                                        onChange={this.onTitleTextChange}/>
+                                </div>
+                                <div className="col-md-4 col-sm-12">
+                                    <div className="form-group">
+                                        {id===null?
+                                            <button className="btn btn-sm" disabled={!this.state.title} onClick={this.onSave}>Create Template</button>
+                                            :null
+                                            }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                {
-                    allCriteriaIndexes.map((criteriaId, index) =>
-                        <Criteria
-                            key = {index}
-                            criteriaId = {criteriaId}/>
-                    )
-                }
-                {
-                    (id!==null)?
-                        (allCriteriaIndexes.length)?
-                            <div className="col-md-12">
-                                <button className="btn btn-sm"
-                                    onClick={() => this.setState({ showAdd: !this.state.showAdd })}>
-                                    Add Criteria</button>
-                                    {
-                                        this.state.showAdd?
-                                            <Criteria criteriaId={null}/>
-                                            :null
-                                        }
+
+                        {
+                            allCriteriaIndexes.map((criteriaId, index) =>
+                            <div className="row" key = {index}>
+                                <Criteria
+                                    criteriaId = {criteriaId}/>
                             </div>
-                            :
-                            <Criteria criteriaId={null}/>
-                        :null
-                }
+                            )
+                        }
+                        {
+                            (id!==null)?
+                                (allCriteriaIndexes.length)?
+                                    <div>
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <button className="btn btn-sm"
+                                                onClick={() => this.setState({ showAdd: !this.state.showAdd })}>
+                                                Add Criteria</button>
+                                            </div>
+                                        </div>
+                                            {
+                                                this.state.showAdd?
+                                                    <div className="row"><Criteria criteriaId={null}/></div>
+                                                    :null
+                                                }
+
+                                    </div>
+                                    :
+                                    <div className="row">
+                                        <Criteria criteriaId={null}/>
+                                    </div>
+                                :null
+                        }
             </div>
         </div>
     );

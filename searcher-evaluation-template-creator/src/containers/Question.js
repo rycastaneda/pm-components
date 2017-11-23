@@ -59,7 +59,7 @@ class Question extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setStateWithQuestion(nextProps.question);
+        this.setStateWithQuestion(nextProps.question, this.state.isMaximised);
     }
     setStateWithQuestion(question) {
         const { isMaximised,
@@ -187,22 +187,24 @@ class Question extends Component {
 
     renderMinimised() {
         return (
-            <div className="col-md-12">
-                <div className="form-group">
-                    <label>{getItemByAttrib(this.props.questionTypes, 'type', this.state.type).label}
-                    </label>
-                    <p>{this.state.title}</p>
-                    <ul className="list-inline">
-                        <li>
-                            <button className="btn btn-sm"
-                                onClick={ () => this.setState({ isMaximised:true })}>Edit
-                            </button>
-                        </li>
-                        <li>
-                            <button className="btn btn-sm" onClick={this.deleteQuestion}>Delete
-                            </button>
-                        </li>
-                    </ul>
+            <div className="row">
+                <div className="col-md-12">
+                    <div className="form-group">
+                        <label>{getItemByAttrib(this.props.questionTypes, 'type', this.state.type).label}
+                        </label>
+                        <p>{this.state.title}</p>
+                        <ul className="list-inline">
+                            <li>
+                                <button className="btn btn-sm"
+                                    onClick={ () => this.setState({ isMaximised:true })}>Edit
+                                </button>
+                            </li>
+                            <li>
+                                <button className="btn btn-sm" onClick={this.deleteQuestion}>Delete
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         );
@@ -210,50 +212,52 @@ class Question extends Component {
     renderMaximised() {
         const lastQnOption = getItemByAttrib(this.props.questionTypes, 'maxOptionDefinitions', 0);
         const isDefsDisabled = (lastQnOption.type===this.state.type);
-        return (<div className="col-md-12">
-            <div className="col-md-12">
-                <div className="form-group">
-                    <label className="control-label">
-                        <span className="required" aria-required="true">Question Type</span>
-                    </label>
-                    <select className="form-control" value={this.state.type}
-                        onChange={event =>  this.onQuestionTypeChange(event.target.value)}>
-                        { this.props.questionTypes.map((type, index) =>
-                            <option key={index} value={type.type}>{type.title }</option>
-                        )}
-                </select>
-                </div>
-            </div>
+        return (
             <div>
-                <div className="col-md-12">
-                    <div className="form-group">
-                        <label className="control-label">
-                            <span className="required" aria-required="true">Question Title
-                            </span>
-                        </label>
-                        <textarea className="form-control"
-                            value={this.state.title}
-                             onChange={ event => this.onTitleChange(event.target.value)}>
-                         </textarea>
-                    </div>
-                </div>
-                {
-                    this.props.question.id!==null?
-                    <div>
-                        <div className="col-md-12">
-                            <ul>
-                                <li>
-                                    <div className="form-group">
-                                        <div className="checkbox">
-                                            <label>
-                                                <input type="checkbox" disabled = {isDefsDisabled}
-                                                    checked={this.state.isAllowScaleDefinitions}
-                                                    onChange={ event =>
-                                                        this.onAllowScaleDefinitionChange(event.target.checked)
-                                                    }
-                                                />
-                                                {QUESTION_OPTIONS[0].label}
-                                            </label>
+                    <fieldset className="question-container">
+                        <div className="col-md-4 col-sm-12">
+                            <div className="form-group">
+                                <label className="control-label">
+                                    <span className="required" aria-required="true">Question Type</span>
+                                </label>
+                                <select className="form-control" value={this.state.type}
+                                    onChange={event =>  this.onQuestionTypeChange(event.target.value)}>
+                                    { this.props.questionTypes.map((type, index) =>
+                                        <option key={index} value={type.type}>{type.title }</option>
+                                    )}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="col-md-6 col-sm-12">
+                            <div className="form-group">
+                                <label className="control-label">
+                                    <span className="required" aria-required="true">Question Title
+                                    </span>
+                                </label>
+                                <input className="form-control"
+                                    value={this.state.title}
+                                     onChange={ event => this.onTitleChange(event.target.value)} />
+                            </div>
+                        </div>
+                    {
+                        this.props.question.id!==null?
+                        <div>
+                            <div className="col-md-12">
+                                <div className="form-group">
+                                    <label className="control-label">Options</label>
+                                    <ul>
+                                        <li>
+                                            <div className="checkbox">
+                                                <label>
+                                                    <input type="checkbox" disabled = {isDefsDisabled}
+                                                        checked={this.state.isAllowScaleDefinitions}
+                                                        onChange={ event =>
+                                                            this.onAllowScaleDefinitionChange(event.target.checked)
+                                                        }
+                                                    />
+                                                    {QUESTION_OPTIONS[0].label}
+                                                </label>
                                             { this.state.isAllowScaleDefinitions?
                                                 <ul>
                                                     {this.state.scaleDefinitions.map((type, index) =>
@@ -266,74 +270,76 @@ class Question extends Component {
                                                             }
                                                             className="mar-l-sm" />
                                                         </li>)}
-                                                </ul>
-                                            :null}
-                                        </div>
-                                    </div>
-                                </li>
-                                <li><div className="form-group">
-                                    <div className="checkbox">
-                                        <label>
-                                            <input type="checkbox"
-                                                defaultChecked={this.props.question.isAllowUpload}
-                                                value={this.state.isAllowUpload}
-                                                onChange={ event => this.onAllowUploadChange(event.target.checked) }
-                                            />
-                                            {QUESTION_OPTIONS[1].label}
-                                        </label>
-                                    </div>
+                                                    </ul>
+                                                :null}
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="checkbox">
+                                                <label>
+                                                    <input type="checkbox"
+                                                        defaultChecked={this.props.question.isAllowUpload}
+                                                        value={this.state.isAllowUpload}
+                                                        onChange={ event => this.onAllowUploadChange(event.target.checked) }
+                                                    />
+                                                    {QUESTION_OPTIONS[1].label}
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="checkbox">
+                                                <label>
+                                                    <input type="checkbox"
+                                                        defaultChecked = {this.props.question.isCommentRequired}
+                                                        value = {this.state.isCommentRequired}
+                                                        onChange = { event => this.onCommentRequiredChange(event.target.checked) }/>
+                                                        {QUESTION_OPTIONS[2].label}
+                                                </label>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
-                                </li>
-                                <li><div className="form-group">
-                                    <div className="checkbox">
-                                        <label>
-                                            <input type="checkbox"
-                                                defaultChecked = {this.props.question.isCommentRequired}
-                                                value = {this.state.isCommentRequired}
-                                                onChange = { event => this.onCommentRequiredChange(event.target.checked) }/>
-                                                {QUESTION_OPTIONS[2].label}
-                                            </label>
-                                    </div>
+                            </div>
+                            <div className="col-md-12">
+                                <div className="form-group">
+                                    <label className="control-label">Documents</label>
+                                    {this.state.documentError ?
+                                        <div className="bs-callout bs-callout-danger">{this.state.documentError}</div>
+                                    : null}
+                                    <Dropzone className="dropzone"
+                                    onDrop={this.onDocumentDrop}>
+                                        <p className="text-center dropzone__placeholder">
+                                            <i className="fa fa-cloud-upload"></i> Drop files here or click to select files.
+                                        </p>
+                                    </Dropzone>
+                                    <ul>
+                                        { this.props.documents.map((document, index) =>
+                                            <Document
+                                            key = {index}
+                                            file={document}
+                                            preview={false}
+                                            onFileRemove={this.onRemoveDocument}
+                                            onDownloadFile={this.onDownloadDocument}></Document>
+                                        )}
+                                    </ul>
                                 </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div className="col-md-12">
-                            <div className="form-group">
-                                <label className="control-label">Documents</label>
-                                {this.state.documentError ?
-                                    <div className="bs-callout bs-callout-danger">{this.state.documentError}</div>
-                                : null}
-                                <Dropzone className="dropzone"
-                                onDrop={this.onDocumentDrop}>
-                                    <p className="text-center dropzone__placeholder">
-                                        <i className="fa fa-cloud-upload"></i> Drop files here or click to select files.
-                                    </p>
-                                </Dropzone>
-                                <ul>
-                                    { this.props.documents.map((document, index) =>
-                                        <Document
-                                        key = {index}
-                                        file={document}
-                                        preview={false}
-                                        onFileRemove={this.onRemoveDocument}
-                                        onDownloadFile={this.onDownloadDocument}></Document>
-                                    )}
-                                </ul>
                             </div>
                         </div>
-                    </div>
-                    : null
-                }
-            </div>
+                        : null
+                    }
             {this.renderFunctionButtons()}
+            </fieldset>
         </div>);
     }
     renderFunctionButtons() {
         if (this.props.question.id===null) {
             return (
-                    <div className="col-md-12">
+                    <div className="col-md-2">
                         <div className="form-group pull-right">
+                            <div className="hidden-sm">
+                                <br />
+                                <br />
+                            </div>
                             <button className="btn btn-sm"
                                 disabled={!this.state.title}
                                 onClick={this.addQuestion}>Add Question
