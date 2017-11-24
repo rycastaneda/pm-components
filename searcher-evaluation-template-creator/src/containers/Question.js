@@ -27,18 +27,20 @@ import {
     addDocumentsForQuestion as addDocuments
 } from '../actions/evaluationTemplateCreator';
 
+import { INPUT_SYNC_INTERVAL, SAVE_ANIM_INTERVAL } from '../constants';
+
 class Question extends Component {
 
     constructor(props) {
         super(props);
-        window.console.log(props);
         const { isMaximised,
             title,
             isAllowUpload,
             isCommentRequired,
             isAllowScaleDefinitions,
             type,
-            scaleDefinitions
+            scaleDefinitions,
+            isSaved
         } = this.props.question;
         this.state = { isMaximised,
             title,
@@ -48,7 +50,8 @@ class Question extends Component {
             type,
             scaleDefinitions,
             documentError:'',
-            documents:[]
+            documents:[],
+            isSaved
         };
         this.addQuestion = this.addQuestion.bind(this);
         this.saveQuestion = this.saveQuestion.bind(this);
@@ -56,12 +59,20 @@ class Question extends Component {
         this.onDiscardChanges = this.onDiscardChanges.bind(this);
         this.onDocumentDrop = this.onDocumentDrop.bind(this);
         this.onScaleDefinitionChange = this.onScaleDefinitionChange.bind(this);
+        this.intervalId_update = null;
+        this.intervalId_saveAnim = null;
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setStateWithQuestion(nextProps.question, this.state.isMaximised);
+        let { question }  = nextProps;        
+        this.setStateWithQuestion(question, question.isSaved);
+        this.intervalId_saveAnim = setInterval(() => {
+            this.setState({ isSaved:false });
+            clearInterval(this.intervalId_saveAnim);
+        }, SAVE_ANIM_INTERVAL);
+
     }
-    setStateWithQuestion(question) {
+    setStateWithQuestion(question, isSaved) {
         const { isMaximised,
             title,
             isAllowUpload,
@@ -77,23 +88,34 @@ class Question extends Component {
             isAllowScaleDefinitions,
             type,
             scaleDefinitions,
-            documentError:''
+            documentError:'',
+            isSaved
         });
     }
+    componentWillUnmount() {
+        clearInterval(this.intervalId_update);
+        clearInterval(this.intervalId_saveAnim);
+    }
     addQuestion() {
-        window.console.log(this.state.type);
-        // let questionType =  getItemByAttrib(this.props.questionTypes, 'type', this.state.type);
         this.props.dispatch(addQuestion(this.props.criteriaId, this.state.title, this.state.type));
     }
     deleteQuestion() {
         this.props.dispatch(deleteQuestion(this.props.criteriaId, this.props.question.id));
     }
+    updateTitle() {
+        if (this.props.question.id!==null) {
+            this.props.dispatch(onQuestionTitleChange(this.props.criteriaId, this.props.question.id, this.state.title));
+        }
+        clearInterval(this.intervalId_update);
+    }
     onTitleChange(title) {
         this.setState({ title });
-        if (this.props.question.id!==null) {
-            this.props.dispatch(onQuestionTitleChange(this.props.criteriaId, this.props.question.id, title));
+        if (title.length) {
+            clearInterval(this.intervalId_update);
+            this.intervalId_update = setInterval(this.updateTitle.bind(this), INPUT_SYNC_INTERVAL);
         }
     }
+
     saveQuestion() {
         let {
             title,
@@ -117,8 +139,10 @@ class Question extends Component {
     onDiscardChanges() {
         const question = Object.assign({}, this.props.question);
         question.isMaximised = false;
-        this.setStateWithQuestion(question);
+        clearInterval(this.intervalId_update);
+        this.setStateWithQuestion(question, false);
     }
+
     onCommentRequiredChange(isCommentRequired) {
         this.props.dispatch(onQuestionAllowCommentsChange(this.props.criteriaId, this.props.question.id, isCommentRequired));
     }
@@ -128,10 +152,15 @@ class Question extends Component {
     onQuestionTypeChange(type) {
         this.props.dispatch(onQuestionTypeChange(this.props.criteriaId, this.props.question.id, type));
     }
+    updateScaleDefinitionChange(id, label) {
+        this.props.dispatch(onScaleDefinitionChange(this.props.criteriaId, this.props.question.id, id, label));
+        clearInterval(this.intervalId_update);
+    }
     onScaleDefinitionChange(id, index, label) {
         let  scaleDefinitions = this.state.scaleDefinitions;
         scaleDefinitions[index] = Object.assign({}, scaleDefinitions[index], { label });
         this.setState({ scaleDefinitions });
+        this.intervalId_update = setInterval(this.updateTitle.bind(this, id, label), INPUT_SYNC_INTERVAL);
         this.props.dispatch(onScaleDefinitionChange(this.props.criteriaId, this.props.question.id, id,  label));
     }
     onAllowScaleDefinitionChange(isAllowScaleDefinitions) {
@@ -214,7 +243,7 @@ class Question extends Component {
         const isDefsDisabled = (lastQnOption.type===this.state.type);
         return (
             <div>
-                    <fieldset className="question-container">
+                    <fieldset className={`question-container ${this.state.isSaved?'saved':''}`}>
                         <div className="col-md-4 col-sm-12">
                             <div className="form-group">
                                 <label className="control-label">
@@ -236,7 +265,7 @@ class Question extends Component {
                                     </span>
                                 </label>
                                 <input className="form-control"
-                                    value={this.state.title}
+                                    defaultValue={this.state.title}
                                      onChange={ event => this.onTitleChange(event.target.value)} />
                             </div>
                         </div>

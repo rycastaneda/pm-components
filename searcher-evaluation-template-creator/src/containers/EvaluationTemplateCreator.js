@@ -2,13 +2,18 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Criteria from './Criteria';
 import { initialize, addTemplate, updateTemplate, fetchTemplate } from '../actions/evaluationTemplateCreator';
+import { INPUT_SYNC_INTERVAL } from '../constants';
 class EvaluationTemplateCreator extends Component {
 
     constructor(props) {
         super(props);
         this.onSave = this.onSave.bind(this);
         this.onTitleTextChange = this.onTitleTextChange.bind(this);
-        this.state = { title:this.props.title, showAdd:false };
+        this.updateTitleText= this.updateTitleText.bind(this);
+        this.getTitleInputStyle = this.getTitleInputStyle.bind(this);
+        this.state = { title:this.props.title, showAdd:false, isTitleError:false, isSaved:false };
+        this.intervalId_update = null;
+        this.intervalId_saveAnim =null;
     }
     componentDidMount() {
         const element = document.querySelector('[data-component="searcher-evaluation-template-creator"]');
@@ -20,9 +25,14 @@ class EvaluationTemplateCreator extends Component {
         }
 
     }
+    componentWillUnmount() {
+        clearInterval(this.intervalId_update);
+        clearInterval(this.intervalId_saveAnim);
+    }
+
     componentWillReceiveProps(nextProps) {
-        window.console.log(nextProps);
-        this.setState({ title:nextProps.title,  showAdd:false  });
+        this.setState({ title:nextProps.title,  showAdd:false, isSaved:true, isTitleError:false });
+        this.intervalId_saveAnim = setInterval(() => this.setState({ isSaved:false }), INPUT_SYNC_INTERVAL);
     }
     onSave() {
         if (this.props.id) {
@@ -31,11 +41,26 @@ class EvaluationTemplateCreator extends Component {
             this.props.dispatch(addTemplate(this.state.title));
         }
     }
+    updateTitleText() {
+        this.props.dispatch(updateTemplate(this.state.title, this.props.id));
+        clearInterval(this.intervalId_update);
+
+    }
     onTitleTextChange(event) {
-        this.setState({ title:event.target.value });
-        if (this.props.id) {
-            this.props.dispatch(updateTemplate(this.state.title, this.props.id));
+        this.setState({ title:event.target.value, isTitleError:!event.target.value  });
+        if (this.props.id&&event.target.value) {
+            clearInterval(this.intervalId_update);
+            this.intervalId_update = setInterval(this.updateTitleText, INPUT_SYNC_INTERVAL);
         }
+    }
+    getTitleInputStyle() {
+        let style = 'form-control';
+        if (this.state.isTitleError) {
+            style +=' error';
+        } else if (this.state.isSaved) {
+            style +=' saved';
+        }
+        return style;
     }
     render() {
         const { allCriteriaIndexes, id } = this.props;
@@ -52,12 +77,12 @@ class EvaluationTemplateCreator extends Component {
                                 <div className="col-md-8 col-sm-12">
                                     <input type="text"
                                         name="title"
-                                        className="form-control"
-                                        value={this.state.title}
-
+                                        className={this.getTitleInputStyle()}
+                                        defaultValue={this.state.title}
                                         title="Template Title"
                                         placeholder="Enter template title"
                                         onChange={this.onTitleTextChange}/>
+                                        { this.state.isTitleError?<span className="danger">Title cannot be empty</span>:null}
                                 </div>
                                 <div className="col-md-4 col-sm-12">
                                     <div className="form-group">

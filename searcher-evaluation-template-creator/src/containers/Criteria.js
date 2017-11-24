@@ -6,6 +6,8 @@ import { addCriteria,
     updateCriteria,
     deleteCriteria } from '../actions/evaluationTemplateCreator';
 import { createCriteria, createQuestion } from '../utils/dataParserUtil';
+
+import { INPUT_SYNC_INTERVAL } from '../constants';
 class Criteria extends Component {
     constructor(props) {
         super(props);
@@ -13,12 +15,14 @@ class Criteria extends Component {
             isMaximised: this.props.criteria.isMaximised,
             title:this.props.criteria.title,
             weight: this.props.criteria.weight,
-            showAdd:false
+            showAdd:false,
+            isSaved:false
         };
-        this.newQuestion =createQuestion();
-        this.onSave= this.onSave.bind(this);
-        this.onCancel= this.onCancel.bind(this);
-        this.onDelete= this.onDelete.bind(this);
+        this.newQuestion = createQuestion();
+        this.onSave = this.onSave.bind(this);
+        this.updateCriteriaChange = this.updateCriteriaChange.bind(this);
+        this.onCancel = this.onCancel.bind(this);
+        this.onDelete = this.onDelete.bind(this);
     }
     componentWillReceiveProps(nextProps) {
         this.setState({
@@ -30,16 +34,24 @@ class Criteria extends Component {
     onDelete() {
         this.props.dispatch(deleteCriteria(this.props.criteria.id));
     }
+    updateCriteriaChange() {
+        this.props.dispatch(updateCriteria(this.props.criteriaId, this.state.title, this.state.weight));
+        clearInterval(this.intervalId);
+    }
+
     onTitleChange(title) {
         this.setState({ title });
-        if (this.props.criteria.id) {
-            this.props.dispatch(updateCriteria(this.props.criteria.id, title, this.state.weight));
+        if (this.props.criteria.id&&title.length) {
+            clearInterval(this.intervalId);
+            this.intervalId = setInterval(this.updateCriteriaChange, INPUT_SYNC_INTERVAL);
         }
     }
+
     onWeightChange(weight) {
         this.setState({ weight });
         if (this.props.criteria.id) {
-            this.props.dispatch(updateCriteria(this.props.criteria.id, this.state.title, weight));
+            clearInterval(this.intervalId);
+            this.intervalId = setInterval(this.updateCriteriaChange, INPUT_SYNC_INTERVAL);
         }
     }
     onSave() {
@@ -52,9 +64,9 @@ class Criteria extends Component {
     onCancel() {
         this.setState({ isMaximised: false });
     }
+
     render() {
         let { title, weight, isMaximised } =this.state;
-        window.console.log(this.newQuestion);
         if (isMaximised) {
             return (
                 <div>
@@ -65,7 +77,7 @@ class Criteria extends Component {
                             <div className="col-md-4 col-sm-12">
                                 <div className="form-group">
                                     <label className="control-label"><span className="required" aria-required="true">Criteria</span></label>
-                                    <input type="text" name="title" className="form-control" value = {this.state.title} title="Criteria" placeholder="Criteria Title"
+                                    <input type="text" name="title" className="form-control" defaultValue = {this.state.title} title="Criteria" placeholder="Criteria Title"
                                     onChange={event => this.onTitleChange(event.target.value)} />
                                 </div>
                             </div>
@@ -73,7 +85,7 @@ class Criteria extends Component {
                             <div className="col-md-2 col-sm-12">
                                 <div className="form-group">
                                     <label className="control-label"><span className="required" aria-required="true">Weighting</span></label>
-                                    <input type="number" min="0" step="1" max="100" name="weight" value = {this.state.weight} className="form-control"  title="Criteria Weight" placeholder="Value"
+                                    <input type="number" min="0" step="1" max="100" name="weight" defaultValue = {this.state.weight} className="form-control"  title="Criteria Weight" placeholder="Value"
                                     onChange={event => this.onWeightChange(event.target.value)} />
                                 </div>
                             </div>
@@ -191,10 +203,9 @@ Criteria.propTypes = {
 };
 
 function mapStateToProps(state, props) {
-    const { criteriaByIndex } = state.evaluationTemplateCreator;
-    window.console.log(state.evaluationTemplateCreator);
-    let criteria = props.criteriaId ? criteriaByIndex[props.criteriaId]: createCriteria();
 
+    const { criteriaByIndex } = state.evaluationTemplateCreator;
+    let criteria = props.criteriaId ? criteriaByIndex[props.criteriaId]: createCriteria();
     return { criteria };
 }
 export default connect(mapStateToProps)(Criteria);

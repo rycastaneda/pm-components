@@ -66,14 +66,23 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                 });
                 state.criteriaByIndex[criterion.id] = criterion;
                 state.allCriteriaIndexes = state.allCriteriaIndexes.concat(criterion.id);
-                window.console.log(state);
                 return Object.assign({}, state);
             }
         case CRITERIA_UPDATE:
             {
                 let { id, title, weight } = action;
                 let criteriaByIndex = Object.assign({}, state.criteriaByIndex);
-                criteriaByIndex[id] = Object.assign({}, criteriaByIndex[id], { title, weight });
+                for (let i in state.allQuestionIndexes) {
+                    if (state.questionsByIndex[state.allQuestionIndexes[i]].isSaved) {
+                        state.questionsByIndex[state.allQuestionIndexes[i]].isSaved = false;
+                    }
+                }
+                for (let i in state.allCriteriaIndexes) {
+                    if (state.criteriaByIndex[state.allCriteriaIndexes[i]].isSaved) {
+                        state.criteriaByIndex[state.allCriteriaIndexes[i]].isSaved = false;
+                    }
+                }
+                criteriaByIndex[id] = Object.assign({}, criteriaByIndex[id], { title, weight, isSaved:true });
 
                 return Object.assign({}, state, { criteriaByIndex });
             }
@@ -139,8 +148,6 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
             {
                 let { question, criteriaId } = action;
                 let { id } = question;
-                window.console.log('reducer');
-                window.console.log(question);
                 let questionsByIndex = Object.assign({}, state.questionsByIndex);
                 let criteriaByIndex = Object.assign({}, state.criteriaByIndex);
                 questionsByIndex[id] = question;
@@ -151,11 +158,20 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
             }
         case QUESTION_UPDATE:
             {
-                let question = Object.assign({}, action.question);
+                let question = Object.assign({}, action.question, { isSaved:true });
                 let { id } = question;
+                for (let i in state.allQuestionIndexes) {
+                    if (state.questionsByIndex[state.allQuestionIndexes[i]].isSaved) {
+                        state.questionsByIndex[state.allQuestionIndexes[i]].isSaved = false;
+                    }
+                }
+                for (let i in state.allCriteriaIndexes) {
+                    if (state.criteriaByIndex[state.allCriteriaIndexes[i]].isSaved) {
+                        state.criteriaByIndex[state.allCriteriaIndexes[i]].isSaved = false;
+                    }
+                }
                 let questionsByIndex = Object.assign({}, state.questionsByIndex);
                 questionsByIndex[id] = question;
-                window.console.log(questionsByIndex);
                 return Object.assign({}, state, { questionsByIndex });
             }
         case QUESTION_DELETE:

@@ -68,7 +68,6 @@ export function parseDataForCreateQuestion(text, questionType) {
 }
 
 export function parseDataFromCreateQuestion(data, evaluationTypeDefinitions) {
-    window.console.log(evaluationTypeDefinitions);
     let question = createQuestion();
     question.id = data.id;
     question.title = data.attributes.text;
@@ -93,8 +92,7 @@ export function parseDataForScaleDefinition(id, definition) {
         }
     };
 }
-export function parseDataForUpdateQuestion(question) {
-    window.console.log(question);
+export function parseDataForUpdateQuestion(question) {    
     return     {
         data: {
             type: 'evaluation-question',
