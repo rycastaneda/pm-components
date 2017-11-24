@@ -24,6 +24,7 @@ import {
     addQuestionToCriteria as addQuestion,
     onQuestionTitleChange,
     deleteQuestion,
+    deleteDocument,
     addDocumentsForQuestion as addDocuments
 } from '../actions/evaluationTemplateCreator';
 
@@ -64,7 +65,7 @@ class Question extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        let { question }  = nextProps;        
+        let { question }  = nextProps;
         this.setStateWithQuestion(question, question.isSaved);
         this.intervalId_saveAnim = setInterval(() => {
             this.setState({ isSaved:false });
@@ -173,11 +174,10 @@ class Question extends Component {
             this.props.dispatch(onAllowScaleDefinitionChange(this.props.criteriaId, this.props.question.id,  isAllowScaleDefinitions));
         }
     }
-    onDownloadDocument() {
 
-    }
-    onRemoveDocument() {
-
+    onRemoveDocument(id) {
+        const { criteriaId, question } = this.props;
+        this.props.dispatch(deleteDocument(criteriaId, question.id, id));
     }
     onDocumentDrop(files) {
         const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx', '.dwg'];
@@ -348,7 +348,7 @@ class Question extends Component {
                                             file={document}
                                             preview={false}
                                             onFileRemove={this.onRemoveDocument}
-                                            onDownloadFile={this.onDownloadDocument}></Document>
+                                            ></Document>
                                         )}
                                     </ul>
                                 </div>

@@ -24,6 +24,7 @@ class Criteria extends Component {
         this.onCancel = this.onCancel.bind(this);
         this.onDelete = this.onDelete.bind(this);
     }
+
     componentWillReceiveProps(nextProps) {
         this.setState({
             showAdd:false,
@@ -84,7 +85,7 @@ class Criteria extends Component {
 
                             <div className="col-md-2 col-sm-12">
                                 <div className="form-group">
-                                    <label className="control-label"><span className="required" aria-required="true">Weighting</span></label>
+                                    <label className="control-label"><span className="required" aria-required="true">Weighting<i className="fa fa-info-circle" aria-hidden="true"></i></span></label>
                                     <input type="number" min="0" step="1" max="100" name="weight" defaultValue = {this.state.weight} className="form-control"  title="Criteria Weight" placeholder="Value"
                                     onChange={event => this.onWeightChange(event.target.value)} />
                                 </div>

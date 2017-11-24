@@ -106,11 +106,14 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                 });
             }
         case DOCUMENT_UPLOAD_SUCCESS: {
-            action.documents.map((document) => {
-                state.documentsByIndex[document.id] =Object.assign({}, document, {
-                    status: UPLOAD_SUCCESS,
-                    progress: 100
-                });
+            let document = Object.assign({}, state.documentsByIndex[action.documentId]);
+            let { documentsByIndex } = state;
+
+            documentsByIndex[action.documentId] =Object.assign({}, document, {
+                status: UPLOAD_SUCCESS,
+                progress: 100,
+                reffernceId:action.newDocumentId,
+                reffernceUrl:action.url
             });
 
             return Object.assign({}, state);
@@ -133,6 +136,7 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
         }
         case DOCUMENTS_UPLOADING: {
             action.documents.map((document) => {
+                window.console.log(document);
                 state.questionsByIndex[action.questionId].documentIds.push(document.id);
                 state.documentsByIndex[document.id] =Object.assign({}, document, {
                     status: UPLOAD_IN_PROGRESS,
