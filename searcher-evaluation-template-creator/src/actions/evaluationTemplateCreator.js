@@ -181,6 +181,7 @@ export function  onAllowScaleDefinitionChange(criteriaId, questionId, isAllowSca
         return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
         .then((response) => {
             let { data, included } = response.data;
+            window.console.log(response);
             const question = parseDataFromCreateQuestion(data, included) ;
             question.isAllowScaleDefinitions =isAllowScaleDefinitions;
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
@@ -209,19 +210,47 @@ export function onQuestionAllowCommentsChange(criteriaId, questionId, isCommentR
 export function deleteQuestion(criteriaId, questionId) {
     return { type:QUESTION_DELETE, criteriaId, questionId };
 }
-export function onScaleDefinitionChange(criteriaId, questionId, scaleDefinitionId, text) {
+export function onScaleDefinitionChange(criteriaId, questionId, scaleDefinitionId, text, score, refId) {
     return (dispatch, getState) => {
         const templateId = getState().evaluationTemplateCreator.id;
-        const url =TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId+'/scale-definitions/'+scaleDefinitionId;
-        let data = parseDataForScaleDefinition(scaleDefinitionId, text);
-        return axios.patch(url, data)
-            .then((response) => {
-                const question = parseDataFromCreateQuestion(response.data.data, response.data.included) ;
-                dispatch({ type:QUESTION_UPDATE, criteriaId, question });
-            })
-            .catch((error) => {
-                dispatch({ type:REQUEST_FAILED, message: error.message });
-            });
+        const url =TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId+'/scale-definitions';
+
+        let data = parseDataForScaleDefinition(scaleDefinitionId, text, score);
+        window.console.log(refId);
+        if (refId===null) {
+            return axios.post(url, data)
+                .then((response) => {
+                    response;
+                    let question = Object.assign({}, getState().evaluationTemplateCreator.questionsByIndex[questionId]);
+                    const index = question.scaleDefinitions.findIndex((item) => {
+                        return (item.id === response.data.data.attributes.score);
+                    });
+                    question.scaleDefinitions[index].refId = response.data.data.id;
+                    question.scaleDefinitions[index].label = text;
+                    dispatch({ type:QUESTION_UPDATE, criteriaId, question });
+                })
+                .catch((error) => {
+                    dispatch({ type:REQUEST_FAILED, message: error.message });
+                });
+        } else {
+
+            // not working completely. Need to check with Tom
+            return axios.patch(url+'/'+refId, data)
+                .then((response) => {
+                    window.console.log(response);
+                    let question = Object.assign({}, getState().evaluationTemplateCreator.questionsByIndex[questionId]);
+                    window.console.log(question.scaleDefinitions);
+                    const index = question.scaleDefinitions.findIndex((item) => {
+                        return (item.id === response.data.data.id);
+                    });
+
+                    question.scaleDefinitions[index].label = text;
+                    dispatch({ type:QUESTION_UPDATE, criteriaId, question });
+                })
+                .catch((error) => {
+                    dispatch({ type:REQUEST_FAILED, message: error.message });
+                });
+        }
     };
 }
 export function addDocumentsForQuestion(criteriaId, questionId, documents) {

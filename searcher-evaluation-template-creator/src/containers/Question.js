@@ -67,6 +67,7 @@ class Question extends Component {
 
     componentWillReceiveProps(nextProps) {
         let { question }  = nextProps;
+        window.console.log(question);
         this.setStateWithQuestion(question, question.isSaved);
         clearInterval(this.intervalId_saveAnim);
         clearInterval(this.intervalId_update);
@@ -157,18 +158,20 @@ class Question extends Component {
     onQuestionTypeChange(type) {
         this.props.dispatch(onQuestionTypeChange(this.props.criteriaId, this.props.question.id, type));
     }
-    updateScaleDefinition(id, index, label) {
+    updateScaleDefinition(id, index, label, score, refId) {
         clearInterval(this.intervalId_update);
-        this.props.dispatch(onScaleDefinitionChange(this.props.criteriaId, this.props.question.id, id,  label));
+        this.props.dispatch(onScaleDefinitionChange(this.props.criteriaId, this.props.question.id, id,  label, score, refId));
     }
 
 
     onScaleDefinitionChange(id, index, label) {
         let { scaleDefinitions } = this.state;
         scaleDefinitions[index] = Object.assign({}, scaleDefinitions[index], { label });
+
+        let { value, refId } = scaleDefinitions[index];
         this.setState({ scaleDefinitions });
         clearInterval(this.intervalId_update);
-        this.intervalId_update = setInterval(this.updateScaleDefinition.bind(this, id, index, label), INPUT_SYNC_INTERVAL);
+        this.intervalId_update = setInterval(this.updateScaleDefinition.bind(this, id, index, label, value, refId), INPUT_SYNC_INTERVAL);
 
     }
     onAllowScaleDefinitionChange(isAllowScaleDefinitions) {
@@ -247,7 +250,6 @@ class Question extends Component {
         );
     }
     renderMaximised() {
-        window.console.log(this.state.scaleDefinitions);
         const lastQnOption = getItemByAttrib(this.props.questionTypes, 'maxOptionDefinitions', 0);
         const isDefsDisabled = (lastQnOption.type===this.state.type);
         return (
