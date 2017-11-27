@@ -118,7 +118,7 @@ export function addQuestionToCriteria(criteriaId, questionTitle, questionType) {
         const id = getState().evaluationTemplateCreator.id;
         return axios.post(TEMPLATE_SERVICE_URL+'/'+id+'/criteria/'+criteriaId+'/questions', parseDataForCreateQuestion(questionTitle, questionType))
         .then((response) => {
-            const question = parseDataFromCreateQuestion(response.data.data, response.data.included) ;
+            const question = parseDataFromCreateQuestion(response.data) ;
             dispatch({ type:QUESTION_ADD, criteriaId, question });
         })
         .catch((error) => {
@@ -134,7 +134,7 @@ export function onQuestionTypeChange(criteriaId, questionId, type) {
         let data = parseDataForUpdateQuestion(Object.assign({}, question, { type }));
         return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
         .then((response) => {
-            const question = parseDataFromCreateQuestion(response.data.data, response.data.included) ;
+            const question = parseDataFromCreateQuestion(response.data) ;
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
@@ -149,7 +149,7 @@ export function onQuestionTitleChange(criteriaId, questionId, title) {
         let data = parseDataForUpdateQuestion(Object.assign({}, question, { title }));
         return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
         .then((response) => {
-            const question = parseDataFromCreateQuestion(response.data.data, response.data.included) ;
+            const question = parseDataFromCreateQuestion(response.data) ;
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
@@ -180,9 +180,8 @@ export function  onAllowScaleDefinitionChange(criteriaId, questionId, isAllowSca
         let data = parseDataForUpdateQuestion(Object.assign({}, question, { isAllowScaleDefinitions }));
         return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
         .then((response) => {
-            let { data, included } = response.data;
             window.console.log(response);
-            const question = parseDataFromCreateQuestion(data, included) ;
+            const question = parseDataFromCreateQuestion(response.data) ;
             question.isAllowScaleDefinitions =isAllowScaleDefinitions;
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })

@@ -57,7 +57,7 @@ class Question extends Component {
         this.addQuestion = this.addQuestion.bind(this);
         this.saveQuestion = this.saveQuestion.bind(this);
         this.deleteQuestion = this.deleteQuestion.bind(this);
-        this.onDiscardChanges = this.onDiscardChanges.bind(this);
+        this.toggleMaximise = this.toggleMaximise.bind(this);
         this.onDocumentDrop = this.onDocumentDrop.bind(this);
         this.onRemoveDocument = this.onRemoveDocument.bind(this);
         this.onScaleDefinitionChange = this.onScaleDefinitionChange.bind(this);
@@ -78,7 +78,8 @@ class Question extends Component {
 
     }
     setStateWithQuestion(question, isSaved) {
-        const { isMaximised,
+        const {
+            isMaximised,
             title,
             isAllowUpload,
             isCommentRequired,
@@ -141,12 +142,11 @@ class Question extends Component {
         this.props.dispatch(onQuestionTitleChange(this.props.criteriaId, question.id, question.title));
     }
 
-    onDiscardChanges() {
-        const question = Object.assign({}, this.props.question);
-        question.isMaximised = false;
+    toggleMaximise() {
+        this.setState({ isMaximised:!this.state.isMaximised });
         clearInterval(this.intervalId_update);
         clearInterval(this.intervalId_saveAnim);
-        this.setStateWithQuestion(question, false);
+        // this.setStateWithQuestion(question, false);
     }
 
     onCommentRequiredChange(isCommentRequired) {

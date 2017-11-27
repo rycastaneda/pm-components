@@ -67,19 +67,33 @@ export function parseDataForCreateQuestion(text, questionType) {
     };
 }
 
-export function parseDataFromCreateQuestion(data, evaluationTypeDefinitions) {
+export function parseDataFromCreateQuestion(response) {
+    let { data, included } = response;
+
+    window.console.log(data);
+    window.console.log(included);
     let question = createQuestion();
+
     question.id = data.id;
     question.title = data.attributes.text;
     question.type =data.relationships.type.data.id;
-    let definitions =[];
-    if (data.relationships.definitions !== undefined) {
+    let evaluationTypeDefinitions = included.filter((item) => {
+        return item.type === 'evaluation-question-type-definitions';
+    });
+    let evaluationScaleDefinitions = included.filter((item) => {
+        return item.type === 'evaluation-question-scale-definitions';
+    });
 
-        definitions = data.relationships.definitions.data;
-    }
-    window.console.log(definitions);
+    let evaluationTypes = included.filter((item) => {
+        return item.type === 'evaluation-question-types';
+    });
+    window.console.log(evaluationTypeDefinitions);
+    window.console.log(evaluationTypes);
+
     question.scaleDefinitions = evaluationTypeDefinitions.map((item) => {
-        window.console.log(item);
+        window.console.log(evaluationScaleDefinitions.find((scaleDefinition) => {
+            return scaleDefinition.attributes.score === item.id;
+        }));
         let { id, attributes }= item;
         let { value, title } = attributes;
         return { id, value, title, refId:null };
