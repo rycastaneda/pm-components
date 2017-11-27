@@ -21,6 +21,7 @@ import {
     DOCUMENT_UPLOAD_FAILED,
     DOCUMENT_UPLOAD_IN_PROGRESS,
     DOCUMENTS_UPLOADING,
+    DOCUMENT_DELETE,
     QUESTION_ADD,
     QUESTION_UPDATE,
     QUESTION_DELETE,
@@ -163,8 +164,8 @@ export function onQuestionAllowUploadChange(criteriaId, questionId, isAllowUploa
         let question = getState().evaluationTemplateCreator.questionsByIndex[questionId];
         let data = parseDataForUpdateQuestion(Object.assign({}, question, { isAllowUpload }));
         return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
-        .then((response) => {
-            const question = parseDataFromCreateQuestion(response.data.data, response.data.included) ;
+        .then(() => {
+            question.isAllowUpload = isAllowUpload;
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
@@ -194,10 +195,10 @@ export function onQuestionAllowCommentsChange(criteriaId, questionId, isCommentR
         let templateId =getState().evaluationTemplateCreator.id;
         let question = getState().evaluationTemplateCreator.questionsByIndex[questionId];
         let data = parseDataForUpdateQuestion(Object.assign({}, question, { isCommentRequired }));
-        window.console.log(data);
         return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
-        .then((response) => {
-            const question = parseDataFromCreateQuestion(response.data.data, response.data.included) ;
+        .then(() => {
+            // const question = parseDataFromCreateQuestion(response.data.data, response.data.included) ;
+            question.isCommentRequired = isCommentRequired;
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
@@ -219,7 +220,6 @@ export function onScaleDefinitionChange(criteriaId, questionId, scaleDefinitionI
                 dispatch({ type:QUESTION_UPDATE, criteriaId, question });
             })
             .catch((error) => {
-                window.console.log(error.message);
                 dispatch({ type:REQUEST_FAILED, message: error.message });
             });
     };
@@ -248,8 +248,6 @@ export function addDocumentsForQuestion(criteriaId, questionId, documents) {
                             dispatch(incrementProgress(document.id, Math.ceil(percentCompleted * 100)));
                         }
                     }).then((response) => {
-
-                        window.console.log(response);
                         dispatch({
                             type: DOCUMENT_UPLOAD_SUCCESS,
                             criteriaId,
@@ -274,6 +272,19 @@ export function addDocumentsForQuestion(criteriaId, questionId, documents) {
                     });
                 }
             });
+    };
+}
+export function deleteDocument(criteriaId, questionId, id) {
+    return (dispatch, getState) => {
+        const templateId = getState().evaluationTemplateCreator.id;
+        const reffId = getState().evaluationTemplateCreator.documentsByIndex[id].referenceId;
+        return axios.delete(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId+'/documents/'+reffId)
+        .then(() => {
+            dispatch({ type:DOCUMENT_DELETE, questionId, id });
+        })
+        .catch((error) => {
+            dispatch({ type:REQUEST_FAILED, message: error.message });
+        });
     };
 }
 export function incrementProgress(documentId, progress) {

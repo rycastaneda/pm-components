@@ -21,7 +21,7 @@ const Document = ({ file, onFileRemove }) => {
                     </a>
                 }
                 <a key={`link-${file.id + 1}`}
-                    href={file.reffernceUrl}
+                    href={file.referenceUrl}
                 ><i className="group-panel__actions fa fa-download"></i></a>
             </div>
             : null}

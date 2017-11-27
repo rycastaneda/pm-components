@@ -73,7 +73,6 @@ export function parseDataFromCreateQuestion(data, evaluationTypeDefinitions) {
     question.title = data.attributes.text;
     question.type =data.relationships.type.data.id;
     question.scaleDefinitions = evaluationTypeDefinitions.map((item) => {
-        window.console.log(item);
         let { id, attributes }= item;
         let { value, title } = attributes;
         return { id, value, title };

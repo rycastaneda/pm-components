@@ -13,6 +13,7 @@ import {
     DOCUMENT_UPLOAD_FAILED,
     DOCUMENT_UPLOAD_IN_PROGRESS,
     DOCUMENTS_UPLOADING,
+    DOCUMENT_DELETE,
     IS_BUSY,
     REQUEST_FAILED
 } from '../constants/ActionTypes';
@@ -34,7 +35,9 @@ function getInitialData() {
         allQuestionIndexes:[],
         documentsByIndex:{},
         allDocumentIndexes:[],
-        questionTypes:[]
+        questionTypes:[],
+        scaleDefinitionsByIndex:{},
+        allScaleDefinitions:[]
       };
 }
 
@@ -105,6 +108,7 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                     questionsByIndex
                 });
             }
+
         case DOCUMENT_UPLOAD_SUCCESS: {
             let document = Object.assign({}, state.documentsByIndex[action.documentId]);
             let { documentsByIndex } = state;
@@ -112,8 +116,8 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
             documentsByIndex[action.documentId] =Object.assign({}, document, {
                 status: UPLOAD_SUCCESS,
                 progress: 100,
-                reffernceId:action.newDocumentId,
-                reffernceUrl:action.url
+                referenceId:action.newDocumentId,
+                referenceUrl:action.url
             });
 
             return Object.assign({}, state);
@@ -136,7 +140,6 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
         }
         case DOCUMENTS_UPLOADING: {
             action.documents.map((document) => {
-                window.console.log(document);
                 state.questionsByIndex[action.questionId].documentIds.push(document.id);
                 state.documentsByIndex[document.id] =Object.assign({}, document, {
                     status: UPLOAD_IN_PROGRESS,
@@ -147,7 +150,19 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
             });
             return Object.assign({}, state);
         }
+        case DOCUMENT_DELETE:
+            {
+                let { allDocumentIndexes, documentsByIndex, questionsByIndex } = state;
+                let { documentIds } = questionsByIndex[action.questionId];
+                let index = documentIds.indexOf(action.id);
+                documentIds.splice(index, 1);
 
+                questionsByIndex[action.questionId].documentIds = documentIds;
+                delete documentsByIndex[action.id];
+                let docuIndex = allDocumentIndexes.indexOf(document.id);
+                allDocumentIndexes.splice(docuIndex, 1);
+                return Object.assign({}, state, { allDocumentIndexes, documentsByIndex, questionsByIndex  });
+            }
         case QUESTION_ADD:
             {
                 let { question, criteriaId } = action;

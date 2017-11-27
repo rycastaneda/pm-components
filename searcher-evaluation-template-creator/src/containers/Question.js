@@ -59,6 +59,7 @@ class Question extends Component {
         this.deleteQuestion = this.deleteQuestion.bind(this);
         this.onDiscardChanges = this.onDiscardChanges.bind(this);
         this.onDocumentDrop = this.onDocumentDrop.bind(this);
+        this.onRemoveDocument = this.onRemoveDocument.bind(this);
         this.onScaleDefinitionChange = this.onScaleDefinitionChange.bind(this);
         this.intervalId_update = null;
         this.intervalId_saveAnim = null;
@@ -143,6 +144,7 @@ class Question extends Component {
         const question = Object.assign({}, this.props.question);
         question.isMaximised = false;
         clearInterval(this.intervalId_update);
+        clearInterval(this.intervalId_saveAnim);
         this.setStateWithQuestion(question, false);
     }
 
@@ -165,6 +167,7 @@ class Question extends Component {
         let { scaleDefinitions } = this.state;
         scaleDefinitions[index] = Object.assign({}, scaleDefinitions[index], { label });
         this.setState({ scaleDefinitions });
+        clearInterval(this.intervalId_update);
         this.intervalId_update = setInterval(this.updateScaleDefinition.bind(this, id, index, label), INPUT_SYNC_INTERVAL);
 
     }
@@ -174,9 +177,10 @@ class Question extends Component {
             if (this.state. type === this.props.question.type) {
                 scaleDefinitions = [...this.props.question.scaleDefinitions];
             }
-            this.setState({ isAllowScaleDefinitions, scaleDefinitions });
-            this.props.dispatch(onAllowScaleDefinitionChange(this.props.criteriaId, this.props.question.id,  isAllowScaleDefinitions));
+
         }
+        this.setState({ isAllowScaleDefinitions, scaleDefinitions });
+        this.props.dispatch(onAllowScaleDefinitionChange(this.props.criteriaId, this.props.question.id,  isAllowScaleDefinitions));
     }
 
     onRemoveDocument(id) {
@@ -243,6 +247,7 @@ class Question extends Component {
         );
     }
     renderMaximised() {
+        window.console.log(this.state.scaleDefinitions);
         const lastQnOption = getItemByAttrib(this.props.questionTypes, 'maxOptionDefinitions', 0);
         const isDefsDisabled = (lastQnOption.type===this.state.type);
         return (
