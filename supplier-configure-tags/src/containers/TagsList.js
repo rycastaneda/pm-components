@@ -52,11 +52,15 @@ class TagsList extends Component {
                             :null
                         }
                         {
+                            availableTags.length?
                             availableTags.map(this.populateTagsRow, this)
+                            :
+                            <tr className ={this.state.showAdd?'hide':''} >
+                                <td colSpan="10" className="text-center td-no-link">{`Click \'Add\' to create supplier tags`}</td>
+                            </tr>
                         }
                     </tbody>
                 </table>
-                {availableTags.length?null:<div className="col-sm-12 text-center">{'Click \'Add\' to create supplier tags'}</div>}
             </div>);
     }
 
