@@ -247,13 +247,14 @@ export function addDocumentsForQuestion(criteriaId, questionId, documents) {
                         }
                     }).then((response) => {
 
-
+                        window.console.log(response);
                         dispatch({
                             type: DOCUMENT_UPLOAD_SUCCESS,
                             criteriaId,
                             questionId,
                             documentId: document.id,
-                            newDocumentId: response.data.data.id
+                            newDocumentId: Number(response.data.data.id),
+                            url: String(response.data.data.attributes.download_url)
                         });
                         return response;
                     }).catch((error) => {
