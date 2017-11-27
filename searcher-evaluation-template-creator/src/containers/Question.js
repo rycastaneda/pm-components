@@ -342,7 +342,7 @@ class Question extends Component {
                             </div>
                             <button className="btn btn-sm"
                                 disabled={!this.state.title}
-                                onClick={this.addQuestion}>Add Question
+                                onClick={this.addQuestion}><i className="fa fa-plus"></i>Add Question
                             </button>
                         </div>
                     </div>

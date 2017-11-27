@@ -94,6 +94,14 @@ fieldset {
         &.saved {
             border-left: 1px solid #5cb85c;
         }
+
+        &.collapsed {
+            margin: 0 80px 10px 110px;
+            background: #ffffff;
+            border: 1px solid #eaeaea;
+            border-left: 3px solid #eaeaea;
+            font-size: 14px;
+        }
     }
 
     &.question-container {

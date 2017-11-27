@@ -85,7 +85,7 @@ class Criteria extends Component {
                                             <br />
                                             <br />
                                         </div>
-                                        <button className="btn btn-sm" disabled={!this.state.title} onClick={this.onSave}>Add Criteria</button>
+                                        <button className="btn btn-sm" disabled={!this.state.title} onClick={this.onSave}><i className="fa fa-plus"></i>Add Criteria</button>
                                     </div>
                                 </div>
                                 :
@@ -99,7 +99,7 @@ class Criteria extends Component {
                                                     <br />
                                                 </div>
                                                 <button className="btn btn-sm"
-                                                    onClick={this.onCancel}>Cancel
+                                                    onClick={this.onCancel}><i className="fa fa-window-minimize"></i>Minimize
                                                 </button>
                                             </div>
                                         </div>
@@ -121,10 +121,15 @@ class Criteria extends Component {
                                 ) }
                                 </div>
                                 <div className="row">
-                                    <div className="col-md-12 mar-btm">
+                                    <div className="col-md-8 col-md-offset 1 mar-btm">
                                         <button className="btn btn-sm"
                                             onClick={() => this.setState({ showAdd: !this.state.showAdd })}>
-                                            Add New Question</button>
+                                            <i className="fa fa-plus"></i>Add New Question
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="row">
                                             {
                                                 this.state.showAdd?
                                                     <Question criteriaId={this.props.criteria.id} question={this.newQuestion}/>
@@ -154,27 +159,25 @@ class Criteria extends Component {
             return (
                 <div className="row">
                     <fieldset className="criteria-container collapsed">
-                        <div className="col-md-8">
+                        <div className="col-md-6">
                             <div className="form-group">
                                 <label className="control-label"><span className="required" aria-required="true" required>Criteria</span></label>
                                 <div>{title}</div>
                             </div>
                         </div>
-                        <div className="col-md-4">
+                        <div className="col-md-2 text-center">
                             <div className="form-group">
                                 <label className="control-label"><span className="required" aria-required="true">Weighting</span></label>
                                 <div>{weight}</div>
                             </div>
                         </div>
-                        <div className="col-md-12">
-                        <ul className="list-inline pull-right">
-                            <li>
-                                <button className="btn btn-sm"  onClick={() => this.setState({ isMaximised:!this.state.isMaximised })}>Edit</button>
-                            </li>
-                            <li>
-                                <button className="btn btn-sm" onClick={this.onDelete}>Delete</button>
-                            </li>
-                        </ul>
+                        <div className="col-md-4 text-right">
+                            <div className="form-group">
+                                <br />
+                                <button className="btn btn-sm"  onClick={() => this.setState({ isMaximised:!this.state.isMaximised })}><i className="fa fa-pencil"></i>Edit item</button>
+                                &nbsp;
+                                <button className="btn btn-sm" onClick={this.onDelete}><i className ="fa fa-trash-o"></i>Delete item</button>
+                            </div>
                         </div>
                     </fieldset>
                 </div>

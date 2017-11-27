@@ -62,7 +62,7 @@ class EvaluationTemplateCreator extends Component {
                                 <div className="col-md-4 col-sm-12">
                                     <div className="form-group">
                                         {id===null?
-                                            <button className="btn btn-sm" disabled={!this.state.title} onClick={this.onSave}>Create Template</button>
+                                            <button className="btn btn-sm" disabled={!this.state.title} onClick={this.onSave}><i className="fa fa-plus"></i>Create Template</button>
                                             :null
                                             }
                                     </div>
@@ -85,10 +85,13 @@ class EvaluationTemplateCreator extends Component {
                                 (allCriteriaIndexes.length)?
                                     <div>
                                         <div className="row">
-                                            <div className="col-md-12">
-                                                <button className="btn btn-sm"
-                                                onClick={() => this.setState({ showAdd: !this.state.showAdd })}>
-                                                Add Criteria</button>
+                                            <div className="col-md-10 col-md-offset-1 text-right">
+                                                <hr />
+                                                <div className="form-group">
+                                                    <button className="btn"
+                                                    onClick={() => this.setState({ showAdd: !this.state.showAdd })}>
+                                                    <i className="fa fa-plus"></i>Add New Criteria</button>
+                                                </div>
                                             </div>
                                         </div>
                                             {
