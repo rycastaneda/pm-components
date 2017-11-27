@@ -36,14 +36,13 @@ export function selectItemInDropDown(selectedItems) {
 
 
 
-export function fetchTags(supplierId) {
+export function initialise(supplierId, isReadOnly) {
     return (dispatch) => {
         dispatch(isBusy(true));
         axios.all([axios.get('/preferred-supplier-tags'),
                         axios.get('preferred-suppliers/'+supplierId+'/relationships/tags')])
         .then((response) => {
-
-            dispatch(updateAllTagData(formatTagsFromInitialService(response), supplierId));
+            dispatch(updateAllTagData(formatTagsFromInitialService(response), supplierId, isReadOnly));
         })
         .catch((error) => {
             dispatch({ type:REQUEST_FAILED, message: error.message });
@@ -85,12 +84,13 @@ export function isBusy(status) {
     };
 }
 
-function updateAllTagData(tags, supplierId) {
+function updateAllTagData(tags, supplierId, isReadOnly) {
     const { availableTags, selectedTags } =tags;
     return {
         type: ALL_TAGS_UPDATE,
         availableTags,
         selectedTags,
-        supplierId:supplierId
+        supplierId:supplierId,
+        isReadOnly
     };
 }

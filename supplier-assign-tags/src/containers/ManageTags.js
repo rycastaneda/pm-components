@@ -5,7 +5,7 @@ import { Popover,
     OverlayTrigger }
     from 'react-bootstrap';
 import { selectItemInDropDown,
-    fetchTags,
+    initialise,
     saveTagComment
      }
     from '../actions/manageTagsActions';
@@ -20,8 +20,11 @@ class ManageTags extends Component {
     }
 
     componentDidMount() {
-        let selector = document.querySelector('[data-component="supplier-manage-tags"]');
-        this.props.dispatch(fetchTags(selector.getAttribute('data-supplier-id')));
+        const selector = this.refs.root.parentNode;
+        const supplier_id = selector.getAttribute('data-supplier-id');
+        let isReadOnly = selector.getAttribute('data-readonly');
+        isReadOnly = Boolean(isReadOnly)&&(isReadOnly.toLowerCase()!=='false');
+        this.props.dispatch(initialise(supplier_id, isReadOnly));
     }
     componentWillReceiveProps(props) {
         this.state={ focusedTagComment:'', focusedTag:null, selectedTags:props.selectedTags };
@@ -74,50 +77,80 @@ class ManageTags extends Component {
     }
 
     render() {
-        const { availableTags, selectedTags, isBusy, errorMessage }  = this.props;
+        const { availableTags,
+                selectedTags,
+                isBusy,
+                errorMessage,
+                isReadOnly }  = this.props;
+        if (isReadOnly) {
+            return (
+                 <div className="manage-tags" ref="root">
+                    <ul className="supplier-tag-listing">
+                    {
+                        selectedTags.map((option) => {
+                            const color = { color: option.color };
+                            return <li key={option.id}>
+                                <div className="row">
+                                    <div className="col-md-2">
+                                        <span className={`tag-icon fa-2x fa ${option.iconClass}`} style={color}></span>
+                                    </div>
+                                    <div className="col-md-10">
+                                        <h5>{option.label}</h5>
+                                        {option.hasSavedComment?<span>{option.comment}</span>:null}
+                                    </div>
+                                </div>
 
-        return (
-             <div className="manage-tags">
-                <Select  name="form-field-name"
-                    multi value={selectedTags}
-                    options={availableTags}
-                    isLoading={isBusy}
-                    valueRenderer={this.renderValue.bind(this)}
-                    backspaceToRemoveMessage={''}
-                    onChange={this.handleSelectChange} />
-                {(this.state.focusedTag===null) ?
-                    null:
-                 <div className="row">
-                     <div  key={this.state.focusedTag.id}  className="mar-top col-xs-12">
-                        { this.state.focusedTag.hasSavedComment?
-                            <label>
-                                {`Edit comment on  ${this.state.focusedTag.label}`}
-                            </label>
-                            :
-                            <label>
-                                {`Add comment to ${this.state.focusedTag.label}`}
-                            </label>
-                        }
+                            </li>;
+                        })
+                    }
+                    </ul>
+                 </div>
+            );
+        } else {
+            return (
+                 <div className="manage-tags" ref="root">
+                    <Select  name="form-field-name"
+                        multi value={selectedTags}
+                        options={availableTags}
+                        isLoading={isBusy}
+                        valueRenderer={this.renderValue.bind(this)}
+                        backspaceToRemoveMessage={''}
+                        onChange={this.handleSelectChange} />
+                    {(this.state.focusedTag===null) ?
+                        null:
+                     <div className="row">
+                         <div  key={this.state.focusedTag.id}  className="mar-top col-xs-12">
+                            { this.state.focusedTag.hasSavedComment?
+                                <label>
+                                    {`Edit comment on  ${this.state.focusedTag.label}`}
+                                </label>
+                                :
+                                <label>
+                                    {`Add comment to ${this.state.focusedTag.label}`}
+                                </label>
+                            }
 
-                        <input type="text"
-                            className="fullwidth form-control"
-                            placeholder="Enter your comment"
-                            defaultValue={this.state.focusedTagComment}
-                            onChange={event => this.setState({ focusedTagComment:event.target.value }) }
-                        / >
-                    </div>
-                    <div className="mar-top  col-xs-12">
-                        <button className="btn pull-right"
-                            onClick={this.handleSaveComment}>
-                            {` ${this.state.focusedTag.hasSavedComment?'Update':'Add'} Comment`}
-                        </button>
-                    </div>
-                </div>}
-                {errorMessage?<div className="col-xs-12">
-                    <div className="bs-callout bs-callout-danger">{errorMessage}</div>
-                </div>:null}
-            </div>
-        );
+                            <input type="text"
+                                className="fullwidth form-control"
+                                placeholder="Enter your comment"
+                                defaultValue={this.state.focusedTagComment}
+                                onChange={event => this.setState({ focusedTagComment:event.target.value }) }
+                            / >
+                        </div>
+                        <div className="mar-top  col-xs-12">
+                            <button className="btn pull-right"
+                                onClick={this.handleSaveComment}>
+                                {` ${this.state.focusedTag.hasSavedComment?'Update':'Add'} Comment`}
+                            </button>
+                        </div>
+                    </div>}
+                    {errorMessage?<div className="col-xs-12">
+                        <div className="bs-callout bs-callout-danger">{errorMessage}</div>
+                    </div>:null}
+                </div>
+            );
+        }
+
     }
 
 }
@@ -125,11 +158,12 @@ ManageTags.propTypes = {
     availableTags:PropTypes.array.isRequired,
     selectedTags:PropTypes.array.isRequired,
     isBusy:PropTypes.bool.isRequired,
+    isReadOnly: PropTypes.bool.isRequired,
     errorMessage:PropTypes.string,
     dispatch: PropTypes.func.isRequired
 };
 function mapStateToProps(state) {
-    const { availableTags, selectedTags, isBusy, errorMessage } = state.manageTags;
-    return { availableTags, selectedTags, isBusy, errorMessage };
+    const { availableTags, selectedTags, isBusy, errorMessage, isReadOnly } = state.manageTags;
+    return { availableTags, selectedTags, isBusy, errorMessage, isReadOnly };
 }
 export default connect(mapStateToProps)(ManageTags);

@@ -1,5 +1,24 @@
 .manage-tags{
 
+    ul.supplier-tag-listing {
+        list-style: none;
+        font-size: 13px;
+
+        li {
+            border-bottom: 1px solid #eaeaea;
+            padding: 10px 5px;
+
+            .fa {
+                display: block;
+                margin-top: 10px;
+            }
+
+            h5 {
+                margin-bottom: 5px;
+            }
+        }
+    }
+
     .tag-icon{
         margin-right: 5px;
     }

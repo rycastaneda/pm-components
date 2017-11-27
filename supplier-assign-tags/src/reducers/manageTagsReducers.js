@@ -8,14 +8,15 @@ const INITIAL_DATA = { availableTags: [],
                                                 selectedTags:[],
                                                 supplierId:null,
                                                 isBusy:false,
-                                                errorMessage:null };
+                                                errorMessage:null,
+                                            isReadOnly:false };
 
 export function manageTags(state = INITIAL_DATA, action) {
     switch (action.type) {
         case ALL_TAGS_UPDATE:
             {
-                let { availableTags, selectedTags, supplierId } =action;
-                return Object.assign({}, state, { availableTags, selectedTags, supplierId, isBusy:false  });
+                let { availableTags, selectedTags, supplierId, isReadOnly } =action;
+                return Object.assign({}, state, { availableTags, selectedTags, supplierId, isBusy:false, isReadOnly  });
             }
         case SELECTED_TAGS_UPDATE:
             {
