@@ -67,6 +67,8 @@ class Question extends Component {
     componentWillReceiveProps(nextProps) {
         let { question }  = nextProps;
         this.setStateWithQuestion(question, question.isSaved);
+        clearInterval(this.intervalId_saveAnim);
+        clearInterval(this.intervalId_update);
         this.intervalId_saveAnim = setInterval(() => {
             this.setState({ isSaved:false });
             clearInterval(this.intervalId_saveAnim);
@@ -153,16 +155,18 @@ class Question extends Component {
     onQuestionTypeChange(type) {
         this.props.dispatch(onQuestionTypeChange(this.props.criteriaId, this.props.question.id, type));
     }
-    updateScaleDefinitionChange(id, label) {
-        this.props.dispatch(onScaleDefinitionChange(this.props.criteriaId, this.props.question.id, id, label));
+    updateScaleDefinition(id, index, label) {
         clearInterval(this.intervalId_update);
+        this.props.dispatch(onScaleDefinitionChange(this.props.criteriaId, this.props.question.id, id,  label));
     }
+
+
     onScaleDefinitionChange(id, index, label) {
-        let  scaleDefinitions = this.state.scaleDefinitions;
+        let { scaleDefinitions } = this.state;
         scaleDefinitions[index] = Object.assign({}, scaleDefinitions[index], { label });
         this.setState({ scaleDefinitions });
-        this.intervalId_update = setInterval(this.updateTitle.bind(this, id, label), INPUT_SYNC_INTERVAL);
-        this.props.dispatch(onScaleDefinitionChange(this.props.criteriaId, this.props.question.id, id,  label));
+        this.intervalId_update = setInterval(this.updateScaleDefinition.bind(this, id, index, label), INPUT_SYNC_INTERVAL);
+
     }
     onAllowScaleDefinitionChange(isAllowScaleDefinitions) {
         let scaleDefinitions = [];
@@ -291,13 +295,15 @@ class Question extends Component {
                                                 <ul>
                                                     {this.state.scaleDefinitions.map((type, index) =>
                                                         <li key={index} className="mar-btm-sm">
-                                                            <span className="badge">{type.id}</span>
-                                                            <input type="text"
-                                                            defaultValue={type.label}
-                                                            onChange = {event =>
-                                                                this.onScaleDefinitionChange(type.id, index, event.target.value)
-                                                            }
-                                                            className="mar-l-sm" />
+                                                            <div className="input-group">
+                                                              <span className="input-group-addon" id="basic-addon1">{index+1}</span>
+                                                              <input type="text"
+                                                              defaultValue={type.label}
+                                                              onChange = {event =>
+                                                                  this.onScaleDefinitionChange(type.id, index, event.target.value)
+                                                              }
+                                                              className="form-control" aria-describedby="basic-addon1" placeholder="Enter Definition"/>
+                                                            </div>
                                                         </li>)}
                                                     </ul>
                                                 :null}

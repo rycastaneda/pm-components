@@ -181,6 +181,7 @@ export function  onAllowScaleDefinitionChange(criteriaId, questionId, isAllowSca
         .then((response) => {
             let { data, included } = response.data;
             const question = parseDataFromCreateQuestion(data, included) ;
+            question.isAllowScaleDefinitions =isAllowScaleDefinitions;
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
@@ -210,7 +211,7 @@ export function deleteQuestion(criteriaId, questionId) {
 export function onScaleDefinitionChange(criteriaId, questionId, scaleDefinitionId, text) {
     return (dispatch, getState) => {
         const templateId = getState().evaluationTemplateCreator.id;
-        const url =TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId+'/scale-definitions';
+        const url =TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId+'/scale-definitions/'+scaleDefinitionId;
         let data = parseDataForScaleDefinition(scaleDefinitionId, text);
         return axios.patch(url, data)
             .then((response) => {
@@ -218,6 +219,7 @@ export function onScaleDefinitionChange(criteriaId, questionId, scaleDefinitionI
                 dispatch({ type:QUESTION_UPDATE, criteriaId, question });
             })
             .catch((error) => {
+                window.console.log(error.message);
                 dispatch({ type:REQUEST_FAILED, message: error.message });
             });
     };

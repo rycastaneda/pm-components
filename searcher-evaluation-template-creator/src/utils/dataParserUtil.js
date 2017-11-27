@@ -92,7 +92,7 @@ export function parseDataForScaleDefinition(id, definition) {
         }
     };
 }
-export function parseDataForUpdateQuestion(question) {    
+export function parseDataForUpdateQuestion(question) {
     return     {
         data: {
             type: 'evaluation-question',
