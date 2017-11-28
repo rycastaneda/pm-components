@@ -4,7 +4,8 @@ import Question  from './Question';
 import { connect } from 'react-redux';
 import { addCriteria,
     updateCriteria,
-    deleteCriteria } from '../actions/evaluationTemplateCreator';
+    deleteCriteria,
+toggleMaximiseCriteria } from '../actions/evaluationTemplateCreator';
 import { createCriteria, createQuestion } from '../utils/dataParserUtil';
 
 import { INPUT_SYNC_INTERVAL } from '../constants';
@@ -12,7 +13,6 @@ class Criteria extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isMaximised: this.props.criteria.isMaximised,
             title:this.props.criteria.title,
             weight: this.props.criteria.weight,
             showAdd:false,
@@ -21,7 +21,7 @@ class Criteria extends Component {
         this.newQuestion = createQuestion();
         this.onSave = this.onSave.bind(this);
         this.updateCriteriaChange = this.updateCriteriaChange.bind(this);
-        this.onCancel = this.onCancel.bind(this);
+        this.toggleMaximise = this.toggleMaximise.bind(this);
         this.onDelete = this.onDelete.bind(this);
     }
 
@@ -29,8 +29,17 @@ class Criteria extends Component {
         this.setState({
             showAdd:false,
             title:nextProps.criteria.title,
-            weight: nextProps.criteria.weight,
-            isMaximised:nextProps.criteria.isMaximised });
+            weight: nextProps.criteria.weight
+        });
+    }
+    toggleMaximise() {
+        window.console.log('toggleMaximise');
+        clearInterval(this.intervalId_update);
+        clearInterval(this.intervalId_saveAnim);
+        let { criteria } = this.props;
+        window.console.log(criteria.isMaximised);
+        this.props.dispatch(toggleMaximiseCriteria(criteria.id, !criteria.isMaximised));
+        // this.setStateWithQuestion(question, false);
     }
     onDelete() {
         this.props.dispatch(deleteCriteria(this.props.criteria.id));
@@ -62,13 +71,10 @@ class Criteria extends Component {
             this.props.dispatch(addCriteria(title, weight));
         }
     }
-    onCancel() {
-        this.setState({ isMaximised: false });
-    }
 
     render() {
-        let { title, weight, isMaximised } =this.state;
-        if (isMaximised) {
+        let { title, weight } =this.state;
+        if (this.props.criteria.isMaximised) {
             return (
                 <div>
                     <fieldset className="criteria-container">
@@ -113,7 +119,7 @@ class Criteria extends Component {
                                                     <br />
                                                 </div>
                                                 <button className="btn btn-sm"
-                                                    onClick={this.onCancel}><i className="fa fa-angle-double-up"></i>Collapse Criteria
+                                                    onClick={this.toggleMaximise}><i className="fa fa-angle-double-up"></i>Minimize
                                                 </button>
                                             </div>
                                         </div>
@@ -189,7 +195,7 @@ class Criteria extends Component {
                             <div className="col-md-4 text-right">
                                 <div className="form-group">
                                     <br />
-                                    <button className="btn btn-sm"  onClick={() => this.setState({ isMaximised:!this.state.isMaximised })}><i className="fa fa-pencil"></i>Edit Criteria</button>
+                                <button className="btn btn-sm"  onClick={this.toggleMaximise}><i className="fa fa-pencil"></i>Edit Criteria</button>
                                     &nbsp;
                                     <button className="btn btn-sm" onClick={this.onDelete}><i className ="fa fa-trash-o"></i>Delete Criteria</button>
                                 </div>
@@ -210,9 +216,9 @@ Criteria.propTypes = {
 };
 
 function mapStateToProps(state, props) {
-
     const { criteriaByIndex } = state.evaluationTemplateCreator;
     let criteria = props.criteriaId ? criteriaByIndex[props.criteriaId]: createCriteria();
+    window.console.log(criteria);
     return { criteria };
 }
 export default connect(mapStateToProps)(Criteria);

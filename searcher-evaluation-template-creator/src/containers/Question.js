@@ -16,6 +16,7 @@ import {
 } from '../utils/dataParserUtil';
 
 import {
+    toggleMaximiseQuestion,
     onQuestionTypeChange,
     onQuestionAllowCommentsChange,
     onQuestionAllowUploadChange,
@@ -34,7 +35,7 @@ class Question extends Component {
 
     constructor(props) {
         super(props);
-        const { isMaximised,
+        const {
             title,
             isAllowUpload,
             isCommentRequired,
@@ -43,7 +44,7 @@ class Question extends Component {
             scaleDefinitions,
             isSaved
         } = this.props.question;
-        this.state = { isMaximised,
+        this.state = {
             title,
             isAllowUpload,
             isCommentRequired,
@@ -79,7 +80,6 @@ class Question extends Component {
     }
     setStateWithQuestion(question, isSaved) {
         const {
-            isMaximised,
             title,
             isAllowUpload,
             isCommentRequired,
@@ -87,7 +87,7 @@ class Question extends Component {
             type,
             scaleDefinitions
         } = question;
-        this.setState({ isMaximised,
+        this.setState({
             title,
             isAllowUpload,
             isCommentRequired,
@@ -124,9 +124,10 @@ class Question extends Component {
 
 
     toggleMaximise() {
-        this.setState({ isMaximised:!this.state.isMaximised });
         clearInterval(this.intervalId_update);
         clearInterval(this.intervalId_saveAnim);
+        let { question } = this.props;
+        this.props.dispatch(toggleMaximiseQuestion(question.id, !question.isMaximised));
         // this.setStateWithQuestion(question, false);
     }
 
@@ -217,7 +218,7 @@ class Question extends Component {
                         <ul className="list-inline">
                             <li>
                                 <button className="btn btn-sm"
-                                    onClick={ () => this.setState({ isMaximised:true })}>Edit
+                                    onClick={this.toggleMaximise}>Edit
                                 </button>
                             </li>
                             <li>
@@ -272,7 +273,7 @@ class Question extends Component {
                                 <br /><br />
                                 </div>
                                 <button className="btn btn-sm"
-                                    onClick = { () => this.setState({ isMaximised:!this.state.isMaximised })}
+                                    onClick = {this.toggleMaximise}
                                 >
                                     <i className="fa fa-angle-double-up"></i>
                                     Collapse Question
@@ -390,7 +391,7 @@ class Question extends Component {
         }
     }
     render() {
-        return this.state.isMaximised? this.renderMaximised():this.renderMinimised();
+        return this.props.question.isMaximised? this.renderMaximised():this.renderMinimised();
     }
 }
 
