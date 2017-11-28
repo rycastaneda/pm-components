@@ -119,7 +119,7 @@ class Criteria extends Component {
                                                     <br />
                                                 </div>
                                                 <button className="btn btn-sm"
-                                                    onClick={this.toggleMaximise}><i className="fa fa-angle-double-up"></i>Minimize
+                                                    onClick={this.toggleMaximise}><i className="fa fa-angle-double-up"></i> Collapse Criteria
                                                 </button>
                                             </div>
                                         </div>
