@@ -135,7 +135,7 @@ class Criteria extends Component {
                                 ) }
                                 </div>
                                 <div className="row">
-                                    <div className="col-md-12 mar-btm">
+                                    <div className="col-md-12 new-question mar-btm">
                                         <button className="btn btn-sm"
                                             onClick={() => this.setState({ showAdd: !this.state.showAdd })}>
                                             <i className="fa fa-plus"></i>Add New Question

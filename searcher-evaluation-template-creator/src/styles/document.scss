@@ -121,7 +121,22 @@
                 border-left: 1px solid #5cb85c;
                 background: #f4fbed;
             }
+
+            &.collapsed {
+                border: 1px solid #eaeaea;
+                border-left: 4px solid #eaeaea;
+                padding: 0;
+                margin: 10px 50px;
+            }
+
+            p {
+                font-size: 14px;
+            }
         }
+    }
+
+    .new-question {
+        margin: 20px;
     }
 
     .new-criteria {

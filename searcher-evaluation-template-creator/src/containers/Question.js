@@ -210,22 +210,30 @@ class Question extends Component {
         return (
             <div className="row">
                 <div className="col-md-12">
-                    <div className="form-group">
-                        <label>{getItemByAttrib(this.props.questionTypes, 'type', this.state.type).label}
-                        </label>
-                        <p>{this.state.title}</p>
-                        <ul className="list-inline">
-                            <li>
-                                <button className="btn btn-sm"
-                                    onClick={ () => this.setState({ isMaximised:true })}>Edit
-                                </button>
-                            </li>
-                            <li>
-                                <button className="btn btn-sm" onClick={this.deleteQuestion}>Delete
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
+                    <fieldset className="question-container collapsed">
+                        <div className="row">
+                            <div className="col-md-6">
+                                <div className="form-group">
+                                    <label>
+                                        {getItemByAttrib(this.props.questionTypes, 'type', this.state.type).label}
+                                    </label>
+                                    <p>{this.state.title}</p>
+                                </div>
+                            </div>
+                            <div className="col-md-6 text-right">
+                                <div className="form-group">
+                                    <br />
+                                    <button className="btn btn-sm" onClick={ () => this.setState({ isMaximised:true })}>
+                                        <i className="fa fa-pencil"></i>Edit Question
+                                    </button>
+                                    &nbsp;
+                                    <button className="btn btn-sm" onClick={this.deleteQuestion}>
+                                        <i className="fa fa-trash-o"></i>Delete Question
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
                 </div>
             </div>
         );
