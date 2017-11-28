@@ -66,6 +66,7 @@ class EvaluationTemplateCreator extends Component {
         const { allCriteriaIndexes, id } = this.props;
         return (
         <div className="searcher-evaluation-template-creator">
+
             <div className="db-form-section">
                 <div className="row">
                     <div className="col-md-12">
@@ -133,7 +134,7 @@ class EvaluationTemplateCreator extends Component {
                         }
                 <div className="row">
                     <div className="col-md-10 col-md-offset-1 text-right">
-                        <div className="form-group ">
+                        <div className="form-group">
                             <button className="btn btn-md" type="button" onClick={() => this.props.dispatch(publishTemplate())}>Finish</button>
                         </div>
                     </div>
