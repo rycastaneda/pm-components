@@ -33,6 +33,24 @@ import {
 } from '../constants/ActionTypes';
 
 const TEMPLATE_SERVICE_URL = 'evaluation-templates';
+export function publishTemplate() {
+    return (dispatch, getState) => {
+        const templateId = getState().evaluationTemplateCreator.id;
+        return axios.post(TEMPLATE_SERVICE_URL+'/'+templateId+'/finalise', {})
+        .then((response) => {
+            let questionTypes =parseInitialData(response.data.data);
+            if (questionTypes.length) {
+                dispatch({ type:INITIALIZED, questionTypes });
+            } else {
+                alert('Unable to proceeed. Initial data returned by the service is empty');
+            }
+
+        })
+        .catch((error) => {
+            dispatch({ type:REQUEST_FAILED, message: error.message });
+        });
+    };
+}
 export function initialize() {
     return (dispatch) => {
         return axios.get('evaluation-question-types')
@@ -180,8 +198,7 @@ export function  onAllowScaleDefinitionChange(criteriaId, questionId, isAllowSca
         let data = parseDataForUpdateQuestion(Object.assign({}, question, { isAllowScaleDefinitions }));
         return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
         .then((response) => {
-            window.console.log(response);
-            const question = parseDataFromCreateQuestion(response.data) ;
+            const question = parseDataFromCreateQuestion(response.data);
             question.isAllowScaleDefinitions =isAllowScaleDefinitions;
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
@@ -207,7 +224,16 @@ export function onQuestionAllowCommentsChange(criteriaId, questionId, isCommentR
     };
 }
 export function deleteQuestion(criteriaId, questionId) {
-    return { type:QUESTION_DELETE, criteriaId, questionId };
+    return (dispatch, getState) => {
+        const templateId = getState().evaluationTemplateCreator.id;
+        return axios.delete(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId)
+        .then(() => {
+            dispatch({ type:QUESTION_DELETE, criteriaId, questionId });
+        })
+        .catch((error) => {
+            dispatch({ type:REQUEST_FAILED, message: error.message });
+        });
+    };
 }
 export function onScaleDefinitionChange(criteriaId, questionId, scaleDefinitionId, text, score, refId) {
     return (dispatch, getState) => {
@@ -215,7 +241,7 @@ export function onScaleDefinitionChange(criteriaId, questionId, scaleDefinitionI
         const url =TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId+'/scale-definitions';
 
         let data = parseDataForScaleDefinition(scaleDefinitionId, text, score);
-        window.console.log(refId);
+
         if (refId===null) {
             return axios.post(url, data)
                 .then((response) => {
@@ -236,9 +262,9 @@ export function onScaleDefinitionChange(criteriaId, questionId, scaleDefinitionI
             // not working completely. Need to check with Tom
             return axios.patch(url+'/'+refId, data)
                 .then((response) => {
-                    window.console.log(response);
+
                     let question = Object.assign({}, getState().evaluationTemplateCreator.questionsByIndex[questionId]);
-                    window.console.log(question.scaleDefinitions);
+
                     const index = question.scaleDefinitions.findIndex((item) => {
                         return (item.id === response.data.data.id);
                     });

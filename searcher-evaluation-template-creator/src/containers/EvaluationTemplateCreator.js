@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Criteria from './Criteria';
-import { initialize, addTemplate, updateTemplate, fetchTemplate } from '../actions/evaluationTemplateCreator';
+import { initialize, addTemplate, updateTemplate, fetchTemplate, publishTemplate } from '../actions/evaluationTemplateCreator';
 import { INPUT_SYNC_INTERVAL } from '../constants';
 class EvaluationTemplateCreator extends Component {
 
@@ -132,7 +132,15 @@ class EvaluationTemplateCreator extends Component {
                                     </div>
                                 :null
                         }
+                <div className="row">
+                    <div className="col-md-10 col-md-offset-1 text-right">
+                        <div className="form-group ">
+                            <button className="btn btn-md" type="button" onClick={() => this.props.dispatch(publishTemplate())}>Finish</button>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
     );
     }

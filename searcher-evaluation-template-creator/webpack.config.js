@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 
-const HOST = process.env.HOST || 'pm.local.dev';
+const HOST = process.env.HOST || 'org.okfelix.local.dev'; // Update this URL if you work with either PIT (org.okfelix.local.dev) or PM-Web (pm.local.dev)
 const PORT = process.env.PORT || '5052';
 
 

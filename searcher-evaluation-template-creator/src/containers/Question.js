@@ -55,7 +55,7 @@ class Question extends Component {
             isSaved
         };
         this.addQuestion = this.addQuestion.bind(this);
-        this.saveQuestion = this.saveQuestion.bind(this);
+
         this.deleteQuestion = this.deleteQuestion.bind(this);
         this.toggleMaximise = this.toggleMaximise.bind(this);
         this.onDocumentDrop = this.onDocumentDrop.bind(this);
@@ -67,7 +67,7 @@ class Question extends Component {
 
     componentWillReceiveProps(nextProps) {
         let { question }  = nextProps;
-        window.console.log(question);
+        window.console.log(nextProps);
         this.setStateWithQuestion(question, question.isSaved);
         clearInterval(this.intervalId_saveAnim);
         clearInterval(this.intervalId_update);
@@ -122,25 +122,6 @@ class Question extends Component {
         }
     }
 
-    saveQuestion() {
-        let {
-            title,
-            isAllowUpload,
-            isCommentRequired,
-            isAllowScaleDefinitions,
-            type,
-            scaleDefinitions
-        } = this.state;
-        let question = Object.assign({}, this.props.question, {
-            title,
-            isAllowUpload,
-            isCommentRequired,
-            isAllowScaleDefinitions,
-            type,
-            scaleDefinitions
-        });
-        this.props.dispatch(onQuestionTitleChange(this.props.criteriaId, question.id, question.title));
-    }
 
     toggleMaximise() {
         this.setState({ isMaximised:!this.state.isMaximised });
@@ -221,7 +202,7 @@ class Question extends Component {
             return file;
         });
         const { criteriaId, question } = this.props;
-        // this.saveQuestion();
+
         this.props.dispatch(addDocuments(criteriaId, question.id, documents));
     }
 
@@ -280,9 +261,21 @@ class Question extends Component {
                                      onChange={ event => this.onTitleChange(event.target.value)} />
                             </div>
                         </div>
+
                     {
                         this.props.question.id!==null?
                         <div>
+                            <div className="form-group pull-right">
+                                <div className="hidden-sm">
+                                <br /><br />
+                                </div>
+                                <button className="btn btn-sm"
+                                    onClick = { () => this.setState({ isMaximised:!this.state.isMaximised })}
+                                >
+                                    <i className="fa fa-window-minimize"></i>
+                                    Minimize
+                                </button>
+                            </div>
                             <div className="col-md-12">
                                 <div className="form-group">
                                     <label className="control-label">Options</label>
@@ -301,11 +294,12 @@ class Question extends Component {
                                             { this.state.isAllowScaleDefinitions?
                                                 <ul>
                                                     {this.state.scaleDefinitions.map((type, index) =>
+
                                                         <li key={index} className="mar-btm-sm">
                                                             <div className="input-group">
                                                               <span className="input-group-addon" id="basic-addon1">{index+1}</span>
                                                               <input type="text"
-                                                              defaultValue={type.label}
+                                                              value={type.label}
                                                               onChange = {event =>
                                                                   this.onScaleDefinitionChange(type.id, index, event.target.value)
                                                               }
