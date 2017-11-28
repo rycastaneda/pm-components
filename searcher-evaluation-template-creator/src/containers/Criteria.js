@@ -33,7 +33,6 @@ class Criteria extends Component {
         });
     }
     toggleMaximise() {
-        window.console.log('toggleMaximise');
         clearInterval(this.intervalId_update);
         clearInterval(this.intervalId_saveAnim);
         let { criteria } = this.props;
@@ -93,7 +92,7 @@ class Criteria extends Component {
                                 <div className="form-group">
                                     <label className="control-label"><span className="required" aria-required="true">Weighting
                                     <i className="fa fa-info-circle" data-tooltip="Weighting is optional. Leave blank to weight all criteria evenly." aria-hidden="true"></i></span></label>
-                                    <input type="number" min="0" step="1" max="100" name="weight" defaultValue = {this.state.weight} className="form-control"  title="Criteria Weight" placeholder="Value"
+                                    <input type="number" min="0" step="1"  name="weight" defaultValue = {this.state.weight} className="form-control"  title="Criteria Weight" placeholder="Value"
                                     onChange={event => this.onWeightChange(event.target.value)} />
                                 </div>
                             </div>

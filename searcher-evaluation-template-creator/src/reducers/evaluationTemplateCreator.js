@@ -109,9 +109,10 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                 let allQuestionIndexes = [...state.allQuestionIndexes];
                 let questionsByIndex = Object.assign({}, state.questionsByIndex);
                 let questions = state.criteriaByIndex[action.id].questions;
-                questions.forEach((item) => {
-                    questionsByIndex = questionsByIndex.filter(thisItem => thisItem.id!==item.id) ;
-                    allQuestionIndexes = allQuestionIndexes.slice(allQuestionIndexes.findIndex(item), 1);
+                questions.forEach((questionId) => {
+                    delete questionsByIndex[questionId];
+                    allQuestionIndexes = allQuestionIndexes.slice(allQuestionIndexes.indexOf(questionId), 1);
+                    window.console.log('deleted');
                 });
                 delete criteriaByIndex[action.id];
                 return Object.assign({}, state, {
@@ -201,12 +202,10 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                 let questionsByIndex = Object.assign({}, state.questionsByIndex);
                 delete questionsByIndex[questionId];
                 let criteriaByIndex = Object.assign({}, state.criteriaByIndex);
-                let questions = state.criteriaByIndex[criteriaId].questions;
-                questions.forEach((item) => {
-                    questionsByIndex = questionsByIndex.filter(thisItem => thisItem.id!==item.id) ;
-                    allQuestionIndexes = allQuestionIndexes.slice(allQuestionIndexes.findIndex(item), 1);
-                });
-                delete criteriaByIndex[action.id];
+                let questions = state.criteriaByIndex[criteriaId].questions.filter(qnId => qnId!==questionId);
+                criteriaByIndex[criteriaId].questions = questions;
+                criteriaByIndex[criteriaId] = Object.assign({}, criteriaByIndex[criteriaId], { criteriaId:criteriaByIndex[criteriaId] });
+
                 return Object.assign({}, state, {
                     criteriaByIndex,
                     allQuestionIndexes,

@@ -16,6 +16,7 @@ import {
 } from '../utils/dataParserUtil';
 import {
     INITIALIZED,
+    TEMPLATE_FETCHED,
     CRITERIA_ADD,
     CRITERIA_DELETE,
     CRITERIA_UPDATE,
@@ -29,7 +30,7 @@ import {
     QUESTION_UPDATE,
     QUESTION_DELETE,
     QUESTION_MAXIMISE_CHANGE,
-    TEMPLATE_FETCHED,
+
     TEMPLATE_CREATED,
     TEMPLATE_UPDATED,
     REQUEST_FAILED,
@@ -41,12 +42,15 @@ export function publishTemplate() {
     return (dispatch, getState) => {
         const templateId = getState().evaluationTemplateCreator.id;
         return axios.post(TEMPLATE_SERVICE_URL+'/'+templateId+'/finalise', {})
-        .then((response) => {
-            let template =parseDataFromFetchTemplate(response.data.data);
-            dispatch ({ type: TEMPLATE_FETCHED, template });
+        .then(() => {
+            alert('Template Saved');
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            // dispatch({ type:REQUEST_FAILED, message: error.message });
+            error.response.data.errors.forEach((e) => {
+                alert(e.detail);
+            });
+
         });
     };
 }
@@ -117,7 +121,8 @@ export function deleteCriteria(id) {
     return (dispatch, getState) => {
         const templateId = getState().evaluationTemplateCreator.id;
         const data = parseDataForDeleteCriteria(id);
-        return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+id, data)
+
+        return axios.delete(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+id, data)
         .then(() => {
             dispatch({ type:CRITERIA_DELETE, id });
         })
@@ -361,9 +366,11 @@ export function incrementProgress(documentId, progress) {
 }
 export function fetchTemplate(id) {
     return (dispatch) => {
-        getPromiseForService(TEMPLATE_SERVICE_URL+'/'+id+'?include=', dispatch)
+        getPromiseForService(TEMPLATE_SERVICE_URL+'/'+id+'?include=criteria.questions', dispatch)
             .then((response) => {
-                dispatch ({ type: TEMPLATE_FETCHED, title:response.data.data.attributes.title, id });
+                let template = parseDataFromFetchTemplate(response.data);
+                window.console.log();
+                dispatch ({ type: TEMPLATE_FETCHED, template });
             });
     };
 }

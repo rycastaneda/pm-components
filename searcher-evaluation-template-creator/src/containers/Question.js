@@ -67,7 +67,6 @@ class Question extends Component {
 
     componentWillReceiveProps(nextProps) {
         let { question }  = nextProps;
-        window.console.log(nextProps);
         this.setStateWithQuestion(question, question.isSaved);
         clearInterval(this.intervalId_saveAnim);
         clearInterval(this.intervalId_update);
