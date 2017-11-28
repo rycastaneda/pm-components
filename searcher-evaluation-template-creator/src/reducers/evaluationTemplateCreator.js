@@ -6,14 +6,15 @@ import {
     CRITERIA_ADD,
     CRITERIA_DELETE,
     CRITERIA_UPDATE,
+    CRITERIA_MAXIMISE_CHANGE,
     QUESTION_ADD,
     QUESTION_DELETE,
     QUESTION_UPDATE,
+    QUESTION_MAXIMISE_CHANGE,
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_UPLOAD_FAILED,
     DOCUMENT_UPLOAD_IN_PROGRESS,
     DOCUMENTS_UPLOADING,
-    DOCUMENT_DELETE,
     IS_BUSY,
     REQUEST_FAILED
 } from '../constants/ActionTypes';
@@ -35,9 +36,7 @@ function getInitialData() {
         allQuestionIndexes:[],
         documentsByIndex:{},
         allDocumentIndexes:[],
-        questionTypes:[],
-        scaleDefinitionsByIndex:{},
-        allScaleDefinitions:[]
+        questionTypes:[]
       };
 }
 
@@ -46,6 +45,20 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
         case INITIALIZED: {
             let { questionTypes } = action;
             return Object.assign({}, state, { questionTypes });
+        }
+        case QUESTION_MAXIMISE_CHANGE: {
+            let { questionsByIndex } = state;
+            let question = questionsByIndex[action.id];
+            question = Object.assign({}, question, { isMaximised:action.isMaximised });
+            questionsByIndex[action.id] = question;
+            return Object.assign({}, state, { questionsByIndex });
+        }
+        case CRITERIA_MAXIMISE_CHANGE: {
+            let { criteriaByIndex } = state;
+            let criteria = criteriaByIndex[action.id];
+            criteria = Object.assign({}, criteria, { isMaximised:action.isMaximised });
+            criteriaByIndex[action.id] = criteria;
+            return Object.assign({}, state, { criteriaByIndex });
         }
         case TEMPLATE_FETCHED:
             {
@@ -108,7 +121,6 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                     questionsByIndex
                 });
             }
-
         case DOCUMENT_UPLOAD_SUCCESS: {
             let document = Object.assign({}, state.documentsByIndex[action.documentId]);
             let { documentsByIndex } = state;
@@ -116,8 +128,8 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
             documentsByIndex[action.documentId] =Object.assign({}, document, {
                 status: UPLOAD_SUCCESS,
                 progress: 100,
-                referenceId:action.newDocumentId,
-                referenceUrl:action.url
+                reffernceId:action.newDocumentId,
+                reffernceUrl:action.url
             });
 
             return Object.assign({}, state);
@@ -140,6 +152,7 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
         }
         case DOCUMENTS_UPLOADING: {
             action.documents.map((document) => {
+                window.console.log(document);
                 state.questionsByIndex[action.questionId].documentIds.push(document.id);
                 state.documentsByIndex[document.id] =Object.assign({}, document, {
                     status: UPLOAD_IN_PROGRESS,
@@ -150,19 +163,7 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
             });
             return Object.assign({}, state);
         }
-        case DOCUMENT_DELETE:
-            {
-                let { allDocumentIndexes, documentsByIndex, questionsByIndex } = state;
-                let { documentIds } = questionsByIndex[action.questionId];
-                let index = documentIds.indexOf(action.id);
-                documentIds.splice(index, 1);
 
-                questionsByIndex[action.questionId].documentIds = documentIds;
-                delete documentsByIndex[action.id];
-                let docuIndex = allDocumentIndexes.indexOf(document.id);
-                allDocumentIndexes.splice(docuIndex, 1);
-                return Object.assign({}, state, { allDocumentIndexes, documentsByIndex, questionsByIndex  });
-            }
         case QUESTION_ADD:
             {
                 let { question, criteriaId } = action;

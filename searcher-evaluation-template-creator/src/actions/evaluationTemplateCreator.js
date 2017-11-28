@@ -19,6 +19,7 @@ import {
     CRITERIA_ADD,
     CRITERIA_DELETE,
     CRITERIA_UPDATE,
+    CRITERIA_MAXIMISE_CHANGE,
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_UPLOAD_FAILED,
     DOCUMENT_UPLOAD_IN_PROGRESS,
@@ -27,6 +28,7 @@ import {
     QUESTION_ADD,
     QUESTION_UPDATE,
     QUESTION_DELETE,
+    QUESTION_MAXIMISE_CHANGE,
     TEMPLATE_FETCHED,
     TEMPLATE_CREATED,
     TEMPLATE_UPDATED,
@@ -42,22 +44,27 @@ export function publishTemplate() {
         .then((response) => {
             let template =parseDataFromFetchTemplate(response.data.data);
             dispatch ({ type: TEMPLATE_FETCHED, template });
-
         })
         .catch((error) => {
             dispatch({ type:REQUEST_FAILED, message: error.message });
         });
     };
 }
+export function toggleMaximiseQuestion(id, isMaximised) {
+    return { type:QUESTION_MAXIMISE_CHANGE, id, isMaximised };
+}
+export function toggleMaximiseCriteria(id, isMaximised) {
+    return { type:CRITERIA_MAXIMISE_CHANGE, id, isMaximised };
+}
 export function initialize() {
     return (dispatch) => {
         return axios.get('evaluation-question-types')
         .then((response) => {
-            let questionTypes =parseInitialData(response.data.data);
+            let questionTypes = parseInitialData(response.data.data);
             if (questionTypes.length) {
                 dispatch({ type:INITIALIZED, questionTypes });
             } else {
-                alert('Unable to proceeed. Initial data returned by the service is empty');
+                alert('Unable to proceed. Initial data returned by the service is empty');
             }
 
         })
@@ -68,7 +75,8 @@ export function initialize() {
 }
 export function addTemplate(title) {
     return (dispatch) => {
-        return axios.post(TEMPLATE_SERVICE_URL, parseDataForCreateTemplate(title))
+        const data = parseDataForCreateTemplate(title);
+        return axios.post(TEMPLATE_SERVICE_URL, data)
         .then((response) => {
             const template = response.data.data;
             dispatch({ type:TEMPLATE_CREATED, title: template.attributes.title, id:Number(template.id) });
@@ -81,7 +89,8 @@ export function addTemplate(title) {
 
 export function updateTemplate(title, id) {
     return (dispatch) => {
-        return axios.patch(TEMPLATE_SERVICE_URL+'/'+id, parseDataForUpdateTemplate(title, id))
+        const data = parseDataForUpdateTemplate(title, id);
+        return axios.patch(TEMPLATE_SERVICE_URL+'/'+id, data)
         .then(() => {
             dispatch({ type:TEMPLATE_UPDATED, title });
         })
@@ -92,8 +101,9 @@ export function updateTemplate(title, id) {
 }
 export function addCriteria(title, weight) {
     return (dispatch, getState) => {
-        const id = getState().evaluationTemplateCreator.id;
-        return axios.post(TEMPLATE_SERVICE_URL+'/'+id+'/criteria', parseDataForCreateCriteria(title, weight))
+        const { id } = getState().evaluationTemplateCreator;
+        const data = parseDataForCreateCriteria(title, weight);
+        return axios.post(TEMPLATE_SERVICE_URL+'/'+id+'/criteria', data)
         .then((response) => {
             dispatch({ type:CRITERIA_ADD, criterion: createCriterionFromData(response.data.data) });
         })
@@ -106,7 +116,8 @@ export function addCriteria(title, weight) {
 export function deleteCriteria(id) {
     return (dispatch, getState) => {
         const templateId = getState().evaluationTemplateCreator.id;
-        return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+id, parseDataForDeleteCriteria(id))
+        const data = parseDataForDeleteCriteria(id);
+        return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+id, data)
         .then(() => {
             dispatch({ type:CRITERIA_DELETE, id });
         })
@@ -119,7 +130,9 @@ export function deleteCriteria(id) {
 export function updateCriteria(id, title, weight) {
     return (dispatch, getState) => {
         const templateId = getState().evaluationTemplateCreator.id;
-        return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+id, parseDataForUpdateCriteria(id, title, weight))
+        const data = parseDataForUpdateCriteria(id, title, weight);
+        return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+id,
+        data)
         .then(() => {
             dispatch({ type:CRITERIA_UPDATE, id, title, weight });
         })
@@ -132,7 +145,9 @@ export function updateCriteria(id, title, weight) {
 export function addQuestionToCriteria(criteriaId, questionTitle, questionType) {
     return (dispatch, getState) => {
         const id = getState().evaluationTemplateCreator.id;
-        return axios.post(TEMPLATE_SERVICE_URL+'/'+id+'/criteria/'+criteriaId+'/questions', parseDataForCreateQuestion(questionTitle, questionType))
+        const data = parseDataForCreateQuestion(questionTitle, questionType);
+        return axios.post(TEMPLATE_SERVICE_URL+'/'+id+'/criteria/'+criteriaId+'/questions',
+        data)
         .then((response) => {
             const question = parseDataFromCreateQuestion(response.data) ;
             dispatch({ type:QUESTION_ADD, criteriaId, question });
@@ -164,8 +179,8 @@ export function onQuestionTitleChange(criteriaId, questionId, title) {
         let question = getState().evaluationTemplateCreator.questionsByIndex[questionId];
         let data = parseDataForUpdateQuestion(Object.assign({}, question, { title }));
         return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
-        .then((response) => {
-            const question = parseDataFromCreateQuestion(response.data) ;
+        .then(() => {
+            const question = Object.assign({}, this.question, { title });
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
@@ -211,8 +226,7 @@ export function onQuestionAllowCommentsChange(criteriaId, questionId, isCommentR
         let question = getState().evaluationTemplateCreator.questionsByIndex[questionId];
         let data = parseDataForUpdateQuestion(Object.assign({}, question, { isCommentRequired }));
         return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
-        .then((response) => {
-            const question = parseDataFromCreateQuestion(response) ;
+        .then(() => {
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
