@@ -1,6 +1,8 @@
 import { } from '../constants/ActionTypes';
 import axios from 'axios';
-import { parseDataForCreateTemplate,
+import {
+    parseDataFromFetchTemplate,
+    parseDataForCreateTemplate,
     parseDataForUpdateTemplate,
     parseDataForCreateCriteria,
     parseDataForUpdateCriteria,
@@ -38,12 +40,8 @@ export function publishTemplate() {
         const templateId = getState().evaluationTemplateCreator.id;
         return axios.post(TEMPLATE_SERVICE_URL+'/'+templateId+'/finalise', {})
         .then((response) => {
-            let questionTypes =parseInitialData(response.data.data);
-            if (questionTypes.length) {
-                dispatch({ type:INITIALIZED, questionTypes });
-            } else {
-                alert('Unable to proceeed. Initial data returned by the service is empty');
-            }
+            let template =parseDataFromFetchTemplate(response.data.data);
+            dispatch ({ type: TEMPLATE_FETCHED, template });
 
         })
         .catch((error) => {
@@ -183,7 +181,7 @@ export function onQuestionAllowUploadChange(criteriaId, questionId, isAllowUploa
         let data = parseDataForUpdateQuestion(Object.assign({}, question, { isAllowUpload }));
         return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
         .then(() => {
-            question.isAllowUpload = isAllowUpload;
+
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
@@ -199,7 +197,7 @@ export function  onAllowScaleDefinitionChange(criteriaId, questionId, isAllowSca
         return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
         .then((response) => {
             const question = parseDataFromCreateQuestion(response.data);
-            question.isAllowScaleDefinitions =isAllowScaleDefinitions;
+
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
@@ -213,9 +211,8 @@ export function onQuestionAllowCommentsChange(criteriaId, questionId, isCommentR
         let question = getState().evaluationTemplateCreator.questionsByIndex[questionId];
         let data = parseDataForUpdateQuestion(Object.assign({}, question, { isCommentRequired }));
         return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
-        .then(() => {
-            // const question = parseDataFromCreateQuestion(response.data.data, response.data.included) ;
-            question.isCommentRequired = isCommentRequired;
+        .then((response) => {
+            const question = parseDataFromCreateQuestion(response) ;
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
@@ -350,7 +347,7 @@ export function incrementProgress(documentId, progress) {
 }
 export function fetchTemplate(id) {
     return (dispatch) => {
-        getPromiseForService(TEMPLATE_SERVICE_URL+'/'+id, dispatch)
+        getPromiseForService(TEMPLATE_SERVICE_URL+'/'+id+'?include=', dispatch)
             .then((response) => {
                 dispatch ({ type: TEMPLATE_FETCHED, title:response.data.data.attributes.title, id });
             });

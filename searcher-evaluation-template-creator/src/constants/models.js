@@ -13,11 +13,13 @@ export const QUESTION_SKELETON = { id:null,
                                     type: null,
                                     scaleDefinitions:[],
                                     documentIds:[],
-                                    isSaved:false };
+                                    isSaved:false,
+                                    errorMessage:'' };
 
 export const CRITERION_SKELETON = { id:null,
                                     questions:[],
                                     weight: '',
                                     title:'',
                                     isMaximised:true,
-                                    isSaved:false };
+                                    isSaved:false,
+                                    errorMessage:'' };
