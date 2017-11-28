@@ -83,19 +83,12 @@ class Group extends Component {
             return !!~allowedExtenstions.indexOf(`.${extension}`);
         });
 
-        if (filteredFiles.length !== files.length) {
-            this.setState({
-                error: invalid.join(', ') + ' - file type not supported'
-            });
-
-            return;
-        }
+        this.handleDropDocuments(filteredFiles);
 
         this.setState({
-            error: ''
+            error: filteredFiles.length !== files.length ? 
+                invalid.join(', ') + ' - file type not supported'  : ''
         });
-
-        this.handleDropDocuments(filteredFiles);
     }
 
     render() {
