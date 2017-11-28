@@ -106,14 +106,14 @@ class Criteria extends Component {
                                 <div>
                                     { (this.state.title || this.state.title!==this.props.criteria.title
                                         || this.state.weight!==this.props.criteria.weight)?
-                                        <div className="col-md-2 col-sm-12">
+                                        <div className="col-md-6 col-sm-12">
                                             <div className="form-group pull-right">
                                                 <div className="hidden-sm">
                                                     <br />
                                                     <br />
                                                 </div>
                                                 <button className="btn btn-sm"
-                                                    onClick={this.onCancel}><i className="fa fa-window-minimize"></i>Minimize
+                                                    onClick={this.onCancel}><i className="fa fa-angle-double-up"></i>Collapse Criteria
                                                 </button>
                                             </div>
                                         </div>
@@ -135,7 +135,7 @@ class Criteria extends Component {
                                 ) }
                                 </div>
                                 <div className="row">
-                                    <div className="col-md-8 col-md-offset 1 mar-btm">
+                                    <div className="col-md-12 mar-btm">
                                         <button className="btn btn-sm"
                                             onClick={() => this.setState({ showAdd: !this.state.showAdd })}>
                                             <i className="fa fa-plus"></i>Add New Question
@@ -172,28 +172,30 @@ class Criteria extends Component {
         } else {
             return (
                 <div className="row">
-                    <fieldset className="criteria-container collapsed">
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label className="control-label"><span className="required" aria-required="true" required>Criteria</span></label>
-                                <div>{title}</div>
+                    <div className="col-sm-12">
+                        <fieldset className="criteria-container collapsed">
+                            <div className="col-md-6">
+                                <div className="form-group">
+                                    <label className="control-label"><span className="required" aria-required="true" required>Criteria</span></label>
+                                    <div>{title}</div>
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-md-2 text-center">
-                            <div className="form-group">
-                                <label className="control-label"><span className="required" aria-required="true">Weighting</span></label>
-                                <div>{weight}</div>
+                            <div className="col-md-2 text-center">
+                                <div className="form-group">
+                                    <label className="control-label"><span className="required" aria-required="true">Weighting</span></label>
+                                    <div>{weight}</div>
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-md-4 text-right">
-                            <div className="form-group">
-                                <br />
-                                <button className="btn btn-sm"  onClick={() => this.setState({ isMaximised:!this.state.isMaximised })}><i className="fa fa-pencil"></i>Edit item</button>
-                                &nbsp;
-                                <button className="btn btn-sm" onClick={this.onDelete}><i className ="fa fa-trash-o"></i>Delete item</button>
+                            <div className="col-md-4 text-right">
+                                <div className="form-group">
+                                    <br />
+                                    <button className="btn btn-sm"  onClick={() => this.setState({ isMaximised:!this.state.isMaximised })}><i className="fa fa-pencil"></i>Edit Criteria</button>
+                                    &nbsp;
+                                    <button className="btn btn-sm" onClick={this.onDelete}><i className ="fa fa-trash-o"></i>Delete Criteria</button>
+                                </div>
                             </div>
-                        </div>
-                    </fieldset>
+                        </fieldset>
+                    </div>
                 </div>
             );
         }

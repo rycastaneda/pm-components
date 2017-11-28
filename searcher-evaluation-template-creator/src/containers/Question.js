@@ -235,6 +235,8 @@ class Question extends Component {
         const isDefsDisabled = (lastQnOption.type===this.state.type);
         return (
             <div>
+
+                    <h3>Question</h3>
                     <fieldset className={`question-container ${this.state.isSaved?'saved':''}`}>
                         <div className="col-md-4 col-sm-12">
                             <div className="form-group">
@@ -272,8 +274,8 @@ class Question extends Component {
                                 <button className="btn btn-sm"
                                     onClick = { () => this.setState({ isMaximised:!this.state.isMaximised })}
                                 >
-                                    <i className="fa fa-window-minimize"></i>
-                                    Minimize
+                                    <i className="fa fa-angle-double-up"></i>
+                                    Collapse Question
                                 </button>
                             </div>
                             <div className="col-md-12">

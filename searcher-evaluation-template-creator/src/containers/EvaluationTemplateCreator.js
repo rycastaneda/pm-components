@@ -110,9 +110,8 @@ class EvaluationTemplateCreator extends Component {
                                 (allCriteriaIndexes.length)?
                                     <div>
                                         <div className="row">
-                                            <div className="col-md-10 col-md-offset-1 text-right">
-                                                <hr />
-                                                <div className="form-group">
+                                            <div className="col-md-12 text-right">
+                                                <div className="form-group new-criteria">
                                                     <button className="btn"
                                                     onClick={() => this.setState({ showAdd: !this.state.showAdd })}>
                                                     <i className="fa fa-plus"></i>Add New Criteria</button>
