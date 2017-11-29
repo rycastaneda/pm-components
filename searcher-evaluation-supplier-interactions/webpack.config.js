@@ -35,7 +35,7 @@ module.exports =  {
             {
                 test: /\.js$/,
                 exclude: /(node_modules|dist)/,
-                loaders: ['babel', 'eslint']
+                loaders: ['babel', 'eslint'],
             },
             {
                 test: /\.json$/,

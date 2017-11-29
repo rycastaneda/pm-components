@@ -1,10 +1,11 @@
-import React from 'react';
-import { render } from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
-import EvaluationTemplateList from './containers/EvaluationTemplateList';
+import SupplierInteractionsContainer from './containers/SupplierInteractionsContainer';
 import api from '../../shared/api.config';
 import './styles/index.scss';
 !window._babelPolyfill && require('babel-polyfill'); // prevent polyfill from importing twice
@@ -22,15 +23,15 @@ const store = createStore(
     enhance
 );
 
-let hostname = api.configureHostname();
-let headers = api.configureHeaders();
+const hostname = api.configureHostname();
+const headers = api.configureHeaders();
 
 axios.defaults.baseURL = hostname;
 axios.defaults.headers.common = headers;
 
-render(
+ReactDOM.render(
     <Provider store={store}>
-        <EvaluationTemplateList/>
+        <SupplierInteractionsContainer />
     </Provider>,
-    document.querySelector('[data-component="searcher-evaluation-templates-list"]')
+    document.querySelector('[data-component="searcher-evaluation-supplier-interactions"]')
 );
