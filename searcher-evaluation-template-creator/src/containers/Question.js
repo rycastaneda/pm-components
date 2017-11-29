@@ -55,7 +55,6 @@ class Question extends Component {
             isSaved
         };
         this.addQuestion = this.addQuestion.bind(this);
-
         this.deleteQuestion = this.deleteQuestion.bind(this);
         this.toggleMaximise = this.toggleMaximise.bind(this);
         this.onDocumentDrop = this.onDocumentDrop.bind(this);
@@ -74,7 +73,6 @@ class Question extends Component {
             this.setState({ isSaved:false });
             clearInterval(this.intervalId_saveAnim);
         }, SAVE_ANIM_INTERVAL);
-
     }
     setStateWithQuestion(question, isSaved) {
         const {
@@ -97,6 +95,12 @@ class Question extends Component {
             isSaved
         });
     }
+
+    updateQuestionIndex() {
+        let newQuestionIndex = this.state.questionIndex;
+        this.setState({ newQuestionIndex: newQuestionIndex });
+    }
+
     componentWillUnmount() {
         clearInterval(this.intervalId_update);
         clearInterval(this.intervalId_saveAnim);
@@ -214,7 +218,7 @@ class Question extends Component {
                             <div className="col-md-6">
                                 <div className="form-group">
                                     <label>
-                                        {getItemByAttrib(this.props.questionTypes, 'type', this.state.type).label}
+                                        Question {this.props.questionIndex} <span>{getItemByAttrib(this.props.questionTypes, 'type', this.state.type).title}</span>
                                     </label>
                                     <p>{this.state.title}</p>
                                 </div>
@@ -243,7 +247,7 @@ class Question extends Component {
         return (
             <div>
 
-                    <h3>Question</h3>
+                    <h3>Question {this.props.questionIndex}</h3>
                     <fieldset className={`question-container ${this.state.isSaved?'saved':''}`}>
                         <div className="col-md-4 col-sm-12">
                             <div className="form-group">
@@ -405,6 +409,7 @@ Question.propTypes = {
     question: PropTypes.object,
     documents:PropTypes.array,
     questionId: PropTypes.string,
+    questionIndex: PropTypes.number,
     criteriaId: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     questionTypes:PropTypes.array.isRequired
@@ -414,11 +419,12 @@ function mapStateToProps(state, props) {
     const { questionsByIndex, documentsByIndex, questionTypes } = state.evaluationTemplateCreator;
 
     let question = props.questionId ? questionsByIndex[props.questionId]: createQuestion(questionTypes[0].type);
+    const questionIndex = props.questionIndex;
     let documents = [];
     documents = question.documentIds.map((id) => {
         return documentsByIndex[id];
     });
-    return { question, documents, questionTypes };
+    return { question, documents, questionTypes, questionIndex };
 }
 
 export default connect(mapStateToProps)(Question);

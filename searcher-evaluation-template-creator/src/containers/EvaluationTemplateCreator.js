@@ -70,27 +70,29 @@ class EvaluationTemplateCreator extends Component {
             <div className="db-form-section">
                 <div className="row">
                     <div className="col-md-12">
-                        <div className="form-group">
-                            <label className="control-label">
-                                <span className="required" aria-required="true">Template Title</span>
-                            </label>
-                            <div className="row">
-                                <div className="col-md-8 col-sm-12">
-                                    <input type="text"
-                                        name="title"
-                                        className={this.getTitleInputStyle()}
-                                        defaultValue={this.state.title}
-                                        title="Template Title"
-                                        placeholder="Enter template title"
-                                        onChange={this.onTitleTextChange}/>
-                                        { this.state.isTitleError?<span className="danger">Title cannot be empty</span>:null}
-                                </div>
-                                <div className="col-md-4 col-sm-12">
-                                    <div className="form-group">
-                                        {id===null?
-                                            <button className="btn btn-sm" disabled={!this.state.title} onClick={this.onSave}><i className="fa fa-plus"></i>Create Template</button>
-                                            :null
-                                            }
+                        <div className="template-title-container">
+                            <div className="form-group">
+                                <label className="control-label">
+                                    <span className="required" aria-required="true">Template Title</span>
+                                </label>
+                                <div className="row">
+                                    <div className="col-md-8 col-sm-12">
+                                        <input type="text"
+                                            name="title"
+                                            className={this.getTitleInputStyle()}
+                                            defaultValue={this.state.title}
+                                            title="Template Title"
+                                            placeholder="Enter template title"
+                                            onChange={this.onTitleTextChange}/>
+                                            { this.state.isTitleError?<span className="danger">Title cannot be empty</span>:null}
+                                    </div>
+                                    <div className="col-md-4 col-sm-12">
+                                        <div className="form-group">
+                                            {id===null?
+                                                <button className="btn btn-sm" disabled={!this.state.title} onClick={this.onSave}><i className="fa fa-plus"></i>Create Template</button>
+                                                :null
+                                                }
+                                        </div>
                                     </div>
                                 </div>
                             </div>

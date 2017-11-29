@@ -85,11 +85,15 @@
         margin-top: 5px;
     }
 
+    .template-title-container {
+        margin: 20px 10px;
+    }
+
     fieldset {
 
         &.criteria-container {
             margin: 20px 40px;
-            padding: 0 40px;
+            padding: 0 10px;
             transition: ease-in all 0.2s;
             background: #ffffff;
             border: 1px solid #eaeaea;
@@ -127,6 +131,14 @@
                 border-left: 4px solid #eaeaea;
                 padding: 0;
                 margin: 10px 50px;
+
+                label span {
+                    color: rgba(0, 0, 0, 0.4);
+                    padding-left: 10px;
+                    margin-left: 10px;
+                    border-left: 1px solid rgba(0, 0, 0, 0.3);
+                    font-weight: normal;
+                }
             }
 
             p {

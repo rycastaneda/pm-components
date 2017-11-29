@@ -71,6 +71,10 @@ class Criteria extends Component {
         }
     }
 
+    getQuestionIndex(index) {
+        return index + 1;
+    }
+
     render() {
         let { title, weight } =this.state;
         if (this.props.criteria.isMaximised) {
@@ -133,9 +137,9 @@ class Criteria extends Component {
                         {this.props.criteria.questions.length?
                             <div>
                                 <div className="row">
-                                { this.props.criteria.questions.map(item =>
+                                { this.props.criteria.questions.map((item, index) =>
                                     <div className="row" key={item}>
-                                        <Question criteriaId={this.props.criteria.id} questionId={item}/>
+                                        <Question criteriaId={this.props.criteria.id} questionId={item} questionIndex={index+1} />
                                     </div>
                                 ) }
                                 </div>
@@ -151,7 +155,7 @@ class Criteria extends Component {
                                     <div className="row">
                                             {
                                                 this.state.showAdd?
-                                                    <Question criteriaId={this.props.criteria.id} question={this.newQuestion}/>
+                                                    <Question criteriaId={this.props.criteria.id} question={this.newQuestion} questionIndex ={this.props.criteria.questions.length+1} />
                                                     :null
                                                 }
                                     </div>
@@ -163,7 +167,7 @@ class Criteria extends Component {
                                     this.props.criteria.id?
                                     <div className="row">
                                         <div className="row">
-                                            <Question criteriaId={this.props.criteria.id} question={this.newQuestion}/>
+                                            <Question criteriaId={this.props.criteria.id} question={this.newQuestion} questionIndex ={this.props.criteria.questions.length+1}  />
                                         </div>
                                     </div>
                                     :null
