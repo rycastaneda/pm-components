@@ -158,6 +158,16 @@
     .btn-sm {
         margin-top: -5px;
     }
+
+    .input-group-addon.scale {
+        background: #4777ff;
+        border: 1px solid transparent;
+        color: #ffffff;
+
+        &:hover {
+            background: #4777ff;
+        }
+    }
 }
 
 [data-tooltip] {
@@ -178,6 +188,7 @@
             font-size: 12px;
             line-height: 1.5;
             color: rgba(0, 0, 0, 0.6);
+            z-index: 10;
         }
     }
 
@@ -190,19 +201,19 @@
         border: 10px solid transparent;
         border-bottom-color: 1px solid #eaeaea;
     }
-}
 
-[data-tooltip]:after {
-    background: #ffffff;
-    border: 1px solid #eaeaea;
-    left: 50%;
-    margin-top: 13px;
-    font-size: 0.8em;
-    padding: 0.8em 1em;
-    position: absolute;
-    transform: translateX(-50%);
-    top: 100%;
-    width: 250px;
-    z-index: 1;
-    box-shadow: 1px 10px 15px rgba(0, 0, 0, 0.1);
+    :after {
+        background: #ffffff;
+        border: 1px solid #eaeaea;
+        left: 50%;
+        margin-top: 13px;
+        font-size: 0.8em;
+        padding: 0.8em 1em;
+        position: absolute;
+        transform: translateX(-50%);
+        top: 100%;
+        width: 250px;
+        z-index: 1;
+        box-shadow: 1px 10px 15px rgba(0, 0, 0, 0.1);
+    }
 }
