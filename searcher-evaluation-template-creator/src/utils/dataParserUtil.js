@@ -66,35 +66,56 @@ export function parseDataForCreateQuestion(text, questionType) {
         }
     };
 }
-
-export function parseDataFromCreateQuestion(data, evaluationTypeDefinitions) {
-    window.console.log(evaluationTypeDefinitions);
+export function parseDataFromFetchTemplate(data) {
+    window.console.log(data);
+}
+export function parseDataFromCreateQuestion(response) {
+    let { data, included } = response;
     let question = createQuestion();
-    question.id = data.id;
-    question.title = data.attributes.text;
-    question.type =data.relationships.type.data.id;
-    question.scaleDefinitions = evaluationTypeDefinitions.map((item) => {
-        window.console.log(item);
-        let { id, attributes }= item;
-        let { value, title } = attributes;
-        return { id, value, title };
+    let { attributes, relationships, id } = data;
+    question.id = id;
+    question.title = attributes.text;
+    question.type = relationships.type.data.id;
+    question.isAllowScaleDefinitions = Boolean(attributes.enable_scale_definitions);
+    question.isCommentRequired = Boolean(attributes.mandatory_comments);
+    question.isAllowUpload = Boolean(attributes.allow_documents);
+
+    let evaluationTypeDefinitions = included.filter((item) => {
+        return item.type === 'evaluation-question-type-definitions';
+    });
+    let evaluationScaleDefinitions = included.filter((item) => {
+        return item.type === 'evaluation-question-scale-definitions';
     });
 
+
+    question.scaleDefinitions = evaluationTypeDefinitions.map((item) => {
+        let definition = evaluationScaleDefinitions.find((scaleDefinition) => {
+            return Number(scaleDefinition.attributes.score) === Number(item.attributes.value);
+        });
+        let { id, attributes }= item;
+        let { value, title } = attributes;
+        if (definition) {
+            return { id, value, title, label:definition.attributes.definition, refId:definition.id };
+        } else {
+            return { id, value, title, label:'', refId:null };
+        }
+    });
     return question;
 }
-export function parseDataForScaleDefinition(id, definition) {
+
+export function parseDataForScaleDefinition(id, definition, score) {
     return {
         data: {
             type: 'evaluation-question-scale-definitions',
             id,
             attributes: {
-                definition
+                definition,
+                score
             }
         }
     };
 }
 export function parseDataForUpdateQuestion(question) {
-    window.console.log(question);
     return     {
         data: {
             type: 'evaluation-question',

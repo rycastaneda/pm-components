@@ -4,40 +4,63 @@ import Question  from './Question';
 import { connect } from 'react-redux';
 import { addCriteria,
     updateCriteria,
-    deleteCriteria } from '../actions/evaluationTemplateCreator';
+    deleteCriteria,
+toggleMaximiseCriteria } from '../actions/evaluationTemplateCreator';
 import { createCriteria, createQuestion } from '../utils/dataParserUtil';
+
+import { INPUT_SYNC_INTERVAL } from '../constants';
 class Criteria extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isMaximised: this.props.criteria.isMaximised,
             title:this.props.criteria.title,
             weight: this.props.criteria.weight,
-            showAdd:false
+            showAdd:false,
+            isSaved:false
         };
-        this.newQuestion =createQuestion();
-        this.onSave= this.onSave.bind(this);
-        this.onCancel= this.onCancel.bind(this);
-        this.onDelete= this.onDelete.bind(this);
+        this.newQuestion = createQuestion();
+        this.onSave = this.onSave.bind(this);
+        this.updateCriteriaChange = this.updateCriteriaChange.bind(this);
+        this.toggleMaximise = this.toggleMaximise.bind(this);
+        this.onDelete = this.onDelete.bind(this);
     }
+
     componentWillReceiveProps(nextProps) {
-        this.setState({ title:nextProps.criteria.title,
-            weight: nextProps.criteria.weight,
-            isMaximised:nextProps.criteria.isMaximised });
+        this.setState({
+            showAdd:false,
+            title:nextProps.criteria.title,
+            weight: nextProps.criteria.weight
+        });
+    }
+    toggleMaximise() {
+        clearInterval(this.intervalId_update);
+        clearInterval(this.intervalId_saveAnim);
+        let { criteria } = this.props;
+        window.console.log(criteria.isMaximised);
+        this.props.dispatch(toggleMaximiseCriteria(criteria.id, !criteria.isMaximised));
+        // this.setStateWithQuestion(question, false);
     }
     onDelete() {
         this.props.dispatch(deleteCriteria(this.props.criteria.id));
     }
+    updateCriteriaChange() {
+        this.props.dispatch(updateCriteria(this.props.criteriaId, this.state.title, this.state.weight));
+        clearInterval(this.intervalId);
+    }
+
     onTitleChange(title) {
         this.setState({ title });
-        if (this.props.criteria.id) {
-            this.props.dispatch(updateCriteria(this.props.criteria.id, title, this.state.weight));
+        if (this.props.criteria.id&&title.length) {
+            clearInterval(this.intervalId);
+            this.intervalId = setInterval(this.updateCriteriaChange, INPUT_SYNC_INTERVAL);
         }
     }
+
     onWeightChange(weight) {
         this.setState({ weight });
         if (this.props.criteria.id) {
-            this.props.dispatch(updateCriteria(this.props.criteria.id, this.state.title, weight));
+            clearInterval(this.intervalId);
+            this.intervalId = setInterval(this.updateCriteriaChange, INPUT_SYNC_INTERVAL);
         }
     }
     onSave() {
@@ -47,96 +70,140 @@ class Criteria extends Component {
             this.props.dispatch(addCriteria(title, weight));
         }
     }
-    onCancel() {
-        this.setState({ isMaximised: false });
+
+    getQuestionIndex(index) {
+        return index + 1;
     }
+
     render() {
-        let { title, weight, isMaximised } =this.state;
-        window.console.log(this.newQuestion);
-        if (isMaximised) {
+        let { title, weight } =this.state;
+        if (this.props.criteria.isMaximised) {
             return (
                 <div>
-                    <div className="col-md-7">
-                        <div className="form-group">
-                            <label className="control-label"><span className="required" aria-required="true">Criteria*</span></label>
-                            <input type="text" name="title" className="form-control" value = {this.state.title} title="Criteria" placeholder="Criteria title"
-                            onChange={event => this.onTitleChange(event.target.value)} />
-                        </div>
-                    </div>
-                    <div className="col-md-5">
-                        <div className="form-group">
-                            <label className="control-label"><span className="required" aria-required="true">weight*</span></label>
-                            <input type="number" min="0" step="1" max="100" name="weight" value = {this.state.weight} className="form-control"  title="Criteria weight" placeholder="Enter weight value"
-                            onChange={event => this.onWeightChange(event.target.value)} />
-                        </div>
-                    </div>
-                    { this.props.criteria.id===null?
-                            <div className="col-md-12">
-                                <div className="form-group  pull-right">
-                                    <button className="btn btn-sm" disabled={!this.state.title} onClick={this.onSave}>Add Criteria</button>
+                    <fieldset className="criteria-container">
+
+                        <div className="row">
+
+                            <div className="col-md-4 col-sm-12">
+                                <div className="form-group">
+                                    <label className="control-label"><span className="required" aria-required="true">Criteria</span></label>
+                                    <input type="text" name="title" className="form-control" defaultValue = {this.state.title} title="Criteria" placeholder="Criteria Title"
+                                    onChange={event => this.onTitleChange(event.target.value)} />
                                 </div>
                             </div>
-                        :
-                        <div>
-                            { (this.state.title || this.state.title!==this.props.criteria.title
-                                || this.state.weight!==this.props.criteria.weight)?
-                            <div className="col-md-12">
-                                <ul className=" form-group list-inline pull-right">
-                                    <li>
-                                        <button className="btn btn-sm"
-                                            onClick={this.onCancel}>Cancel
-                                        </button>
-                                    </li>
-                                </ul>
+
+                            <div className="col-md-2 col-sm-12">
+                                <div className="form-group">
+                                    <label className="control-label"><span className="required" aria-required="true">Weighting
+                                    <i className="fa fa-info-circle" data-tooltip="Weighting is optional. Leave blank to weight all criteria evenly." aria-hidden="true"></i></span></label>
+                                    <input type="number" min="0" step="1"  name="weight" defaultValue = {this.state.weight} className="form-control"  title="Criteria Weight" placeholder="Value"
+                                    onChange={event => this.onWeightChange(event.target.value)} />
+                                </div>
                             </div>
-                            :null
-                            }
-                            { this.props.criteria.questions.map(item =>
-                                <Question key={item} criteriaId={this.props.criteria.id} questionId={item}/>
-                            ) }
-                            {
-                                this.props.criteria.questions.length?
-                                <div className="col-md-12 mar-btm">
-                                    <button className="btn btn-sm"
-                                        onClick={() => this.setState({ showAdd: !this.state.showAdd })}>
-                                        Add Question</button>
-                                        {
-                                            this.state.showAdd?
-                                                <Question criteriaId={this.props.criteria.id} question={this.newQuestion}/>
-                                                :null
-                                            }
+
+                            { this.props.criteria.id===null?
+                                <div className="col-md-2 col-sm-12">
+                                    <div className="form-group pull-right">
+                                        <div className="hidden-sm">
+                                            <br />
+                                            <br />
+                                        </div>
+                                        <button className="btn btn-sm" disabled={!this.state.title} onClick={this.onSave}><i className="fa fa-plus"></i>Add Criteria</button>
+                                    </div>
                                 </div>
                                 :
-                                <Question criteriaId={this.props.criteria.id} question={this.newQuestion}/>
+                                <div>
+                                    { (this.state.title || this.state.title!==this.props.criteria.title
+                                        || this.state.weight!==this.props.criteria.weight)?
+                                        <div className="col-md-6 col-sm-12">
+                                            <div className="form-group pull-right">
+                                                <div className="hidden-sm">
+                                                    <br />
+                                                    <br />
+                                                </div>
+                                                <button className="btn btn-sm"
+                                                    onClick={this.toggleMaximise}><i className="fa fa-angle-double-up"></i> Collapse Criteria
+                                                </button>
+                                            </div>
+                                        </div>
+                                    :null
+                                    }
+
+                                </div>
                             }
+                            </div>
+                        <div>
+
+                        {this.props.criteria.questions.length?
+                            <div>
+                                <div className="row">
+                                { this.props.criteria.questions.map((item, index) =>
+                                    <div className="row" key={item}>
+                                        <Question criteriaId={this.props.criteria.id} questionId={item} questionIndex={index+1} />
+                                    </div>
+                                ) }
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-12 new-question mar-btm">
+                                        <button className="btn btn-sm"
+                                            onClick={() => this.setState({ showAdd: !this.state.showAdd })}>
+                                            <i className="fa fa-plus"></i>Add New Question
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="row">
+                                            {
+                                                this.state.showAdd?
+                                                    <Question criteriaId={this.props.criteria.id} question={this.newQuestion} questionIndex ={this.props.criteria.questions.length+1} />
+                                                    :null
+                                                }
+                                    </div>
+                                </div>
+                            </div>
+                            :
+                            <div>
+                                {
+                                    this.props.criteria.id?
+                                    <div className="row">
+                                        <div className="row">
+                                            <Question criteriaId={this.props.criteria.id} question={this.newQuestion} questionIndex ={this.props.criteria.questions.length+1}  />
+                                        </div>
+                                    </div>
+                                    :null
+                                }
+                            </div>
+                        }
                         </div>
-                    }
+                    </fieldset>
                 </div>
             );
         } else {
             return (
-                <div>
-                    <div className="col-md-8">
-                        <div className="form-group">
-                            <label className="control-label"><span className="required" aria-required="true">Criteria*</span></label>
-                            <div>{title}</div>
-                        </div>
-                    </div>
-                    <div className="col-md-4">
-                        <div className="form-group">
-                            <label className="control-label"><span className="required" aria-required="true">weight*</span></label>
-                            <div>{weight}</div>
-                        </div>
-                    </div>
-                    <div className="col-md-12">
-                    <ul className="list-inline pull-right">
-                        <li>
-                            <button className="btn btn-sm"  onClick={() => this.setState({ isMaximised:!this.state.isMaximised })}>Edit</button>
-                        </li>
-                        <li>
-                            <button className="btn btn-sm" onClick={this.onDelete}>Delete</button>
-                        </li>
-                    </ul>
+                <div className="row">
+                    <div className="col-sm-12">
+                        <fieldset className="criteria-container collapsed">
+                            <div className="col-md-6">
+                                <div className="form-group">
+                                    <label className="control-label"><span className="required" aria-required="true" required>Criteria</span></label>
+                                    <div>{title}</div>
+                                </div>
+                            </div>
+                            <div className="col-md-2 text-center">
+                                <div className="form-group">
+                                    <label className="control-label"><span className="required" aria-required="true">Weighting</span></label>
+                                    <div>{weight}</div>
+                                </div>
+                            </div>
+                            <div className="col-md-4 text-right">
+                                <div className="form-group">
+                                    <br />
+                                <button className="btn btn-sm"  onClick={this.toggleMaximise}><i className="fa fa-pencil"></i>Edit Criteria</button>
+                                    &nbsp;
+                                    <button className="btn btn-sm" onClick={this.onDelete}><i className ="fa fa-trash-o"></i>Delete Criteria</button>
+                                </div>
+                            </div>
+                        </fieldset>
                     </div>
                 </div>
             );
@@ -153,9 +220,8 @@ Criteria.propTypes = {
 
 function mapStateToProps(state, props) {
     const { criteriaByIndex } = state.evaluationTemplateCreator;
-    window.console.log(state.evaluationTemplateCreator);
     let criteria = props.criteriaId ? criteriaByIndex[props.criteriaId]: createCriteria();
-
+    window.console.log(criteria);
     return { criteria };
 }
 export default connect(mapStateToProps)(Criteria);

@@ -6,7 +6,7 @@ import {
   UPLOAD_FAILED
 } from '../constants';
 
-const Document = ({ file, onFileRemove, onDownloadFile }) => {
+const Document = ({ file, onFileRemove }) => {
     return (
         <li className="list-group-item document">
             <div className="pull-left document__filename">
@@ -21,9 +21,7 @@ const Document = ({ file, onFileRemove, onDownloadFile }) => {
                     </a>
                 }
                 <a key={`link-${file.id + 1}`}
-                    onClick={() => {
-                        onDownloadFile(file.id);
-                    }}
+                    href={file.referenceUrl}
                 ><i className="group-panel__actions fa fa-download"></i></a>
             </div>
             : null}
