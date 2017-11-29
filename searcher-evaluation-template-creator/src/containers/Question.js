@@ -16,6 +16,7 @@ import {
 } from '../utils/dataParserUtil';
 
 import {
+    toggleMaximiseQuestion,
     onQuestionTypeChange,
     onQuestionAllowCommentsChange,
     onQuestionAllowUploadChange,
@@ -34,7 +35,7 @@ class Question extends Component {
 
     constructor(props) {
         super(props);
-        const { isMaximised,
+        const {
             title,
             isAllowUpload,
             isCommentRequired,
@@ -43,7 +44,7 @@ class Question extends Component {
             scaleDefinitions,
             isSaved
         } = this.props.question;
-        this.state = { isMaximised,
+        this.state = {
             title,
             isAllowUpload,
             isCommentRequired,
@@ -60,11 +61,13 @@ class Question extends Component {
         this.onDocumentDrop = this.onDocumentDrop.bind(this);
         this.onRemoveDocument = this.onRemoveDocument.bind(this);
         this.onScaleDefinitionChange = this.onScaleDefinitionChange.bind(this);
+        this.updateTitle = this.updateTitle.bind(this);
         this.intervalId_update = null;
         this.intervalId_saveAnim = null;
     }
 
     componentWillReceiveProps(nextProps) {
+        window.console.log(nextProps);
         let { question }  = nextProps;
         this.setStateWithQuestion(question, question.isSaved);
         clearInterval(this.intervalId_saveAnim);
@@ -76,7 +79,7 @@ class Question extends Component {
     }
     setStateWithQuestion(question, isSaved) {
         const {
-            isMaximised,
+
             title,
             isAllowUpload,
             isCommentRequired,
@@ -84,7 +87,7 @@ class Question extends Component {
             type,
             scaleDefinitions
         } = question;
-        this.setState({ isMaximised,
+        this.setState({
             title,
             isAllowUpload,
             isCommentRequired,
@@ -113,6 +116,7 @@ class Question extends Component {
     }
     updateTitle() {
         if (this.props.question.id!==null) {
+            window.console.log(this.state.title);
             this.props.dispatch(onQuestionTitleChange(this.props.criteriaId, this.props.question.id, this.state.title));
         }
         clearInterval(this.intervalId_update);
@@ -121,15 +125,16 @@ class Question extends Component {
         this.setState({ title });
         if (title.length) {
             clearInterval(this.intervalId_update);
-            this.intervalId_update = setInterval(this.updateTitle.bind(this), INPUT_SYNC_INTERVAL);
+            this.intervalId_update = setInterval(this.updateTitle, INPUT_SYNC_INTERVAL);
         }
     }
 
 
     toggleMaximise() {
-        this.setState({ isMaximised:!this.state.isMaximised });
         clearInterval(this.intervalId_update);
         clearInterval(this.intervalId_saveAnim);
+        let { question } = this.props;
+        this.props.dispatch(toggleMaximiseQuestion(question.id, !question.isMaximised));
         // this.setStateWithQuestion(question, false);
     }
 
@@ -140,11 +145,13 @@ class Question extends Component {
         this.props.dispatch(onQuestionAllowUploadChange(this.props.criteriaId, this.props.question.id, isAllowUpload));
     }
     onQuestionTypeChange(type) {
+        this.setState({ type });
         this.props.dispatch(onQuestionTypeChange(this.props.criteriaId, this.props.question.id, type));
     }
-    updateScaleDefinition(id, index, label, score, refId) {
+    updateScaleDefinition(id, index, label, value, refId) {
+        window.console.log(id);
         clearInterval(this.intervalId_update);
-        this.props.dispatch(onScaleDefinitionChange(this.props.criteriaId, this.props.question.id, id,  label, score, refId));
+        this.props.dispatch(onScaleDefinitionChange(this.props.criteriaId, this.props.question.id, id,  label, value, refId));
     }
 
 
@@ -226,7 +233,7 @@ class Question extends Component {
                             <div className="col-md-6 text-right">
                                 <div className="form-group">
                                     <br />
-                                    <button className="btn btn-sm" onClick={ () => this.setState({ isMaximised:true })}>
+                                    <button className="btn btn-sm" onClick={ this.toggleMaximise }>
                                         <i className="fa fa-pencil"></i>Edit Question
                                     </button>
                                     &nbsp;
@@ -282,7 +289,7 @@ class Question extends Component {
                             <br /><br />
                             </div>
                             <button className="btn btn-sm"
-                                onClick = { () => this.setState({ isMaximised:!this.state.isMaximised })}
+                                    onClick = {this.toggleMaximise}
                             >
                                 <i className="fa fa-angle-double-up"></i>
                                 Collapse Question
@@ -400,7 +407,7 @@ class Question extends Component {
         }
     }
     render() {
-        return this.state.isMaximised? this.renderMaximised():this.renderMinimised();
+        return this.props.question.isMaximised? this.renderMaximised():this.renderMinimised();
     }
 }
 

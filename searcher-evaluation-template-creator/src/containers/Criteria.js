@@ -36,7 +36,6 @@ class Criteria extends Component {
         clearInterval(this.intervalId_update);
         clearInterval(this.intervalId_saveAnim);
         let { criteria } = this.props;
-        window.console.log(criteria.isMaximised);
         this.props.dispatch(toggleMaximiseCriteria(criteria.id, !criteria.isMaximised));
         // this.setStateWithQuestion(question, false);
     }
@@ -221,7 +220,6 @@ Criteria.propTypes = {
 function mapStateToProps(state, props) {
     const { criteriaByIndex } = state.evaluationTemplateCreator;
     let criteria = props.criteriaId ? criteriaByIndex[props.criteriaId]: createCriteria();
-    window.console.log(criteria);
     return { criteria };
 }
 export default connect(mapStateToProps)(Criteria);
