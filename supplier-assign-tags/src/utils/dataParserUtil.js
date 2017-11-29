@@ -3,16 +3,16 @@ function formatAvailableTagsFromInitialService(data) {
     for (let i in data) {
         let item =data[i];
         // consider tag only if it is active.
-        if (Number(item.attributes.active)===1) {
-            let  obj = { id: Number(item.id),
-                label: item.attributes.name,
-                value:item.id,
-                iconClass: item.attributes.icon,
-                color:item.attributes.icon_colour,
-                comment:'',
-                hasSavedComment :false };
-            arr.push(obj);
-        }
+        let  obj = { id: Number(item.id),
+            label: item.attributes.name,
+            value:item.id,
+            active: Boolean(item.attributes.active),
+            iconClass: item.attributes.icon,
+            color:item.attributes.icon_colour,
+            comment:'',
+            hasSavedComment :false };
+        arr.push(obj);
+
     }
     return arr;
 }
@@ -33,9 +33,12 @@ function formatSelectedTagsFromInitialService(data, availableTags) {
     }
     return arr;
 }
+
 export function formatTagsFromInitialService(response) {
-    const availableTags = formatAvailableTagsFromInitialService(response[0].data.data);
+    let availableTags = formatAvailableTagsFromInitialService(response[0].data.data);
     const selectedTags = formatSelectedTagsFromInitialService(response[1].data.data, availableTags);
+    availableTags = availableTags.filter(tag => tag.active);
+    window.console.log(availableTags);
     return { availableTags, selectedTags };
 }
 export function formatDataForSaveTagsService(data) {

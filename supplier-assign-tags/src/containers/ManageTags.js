@@ -16,6 +16,7 @@ class ManageTags extends Component {
         super(props);
         this.handleSelectChange = this.handleSelectChange.bind(this);
         this.handleSaveComment = this.handleSaveComment.bind(this);
+        this.renderValue = this.renderValue.bind(this);
         this.state={ focusedTagComment:'', focusedTag:null, selectedTags:this.props.selectedTags };
     }
 
@@ -36,7 +37,6 @@ class ManageTags extends Component {
     handleSaveComment() {
         this.props.dispatch(saveTagComment(this.state.focusedTag.id, this.state.focusedTagComment));
     }
-
 
     onItemClick(option, event) {
         event.stopPropagation();
@@ -59,7 +59,10 @@ class ManageTags extends Component {
 
     renderValue(option) {
         const color = { color: option.color };
-        return <div className={option.isFocused?'content selected':'content'}
+        let styleClass ='content';
+        styleClass += option.isFocused?' selected':'';
+        styleClass += option.active?'':' inactive';
+        return <div className={styleClass}
                 onMouseDown={this.onItemClick.bind(this, option)} key={option.id}>
                     <OverlayTrigger trigger={['hover', 'focus']}
                         placement="bottom"
@@ -113,7 +116,7 @@ class ManageTags extends Component {
                         multi value={selectedTags}
                         options={availableTags}
                         isLoading={isBusy}
-                        valueRenderer={this.renderValue.bind(this)}
+                        valueRenderer={this.renderValue}
                         backspaceToRemoveMessage={''}
                         onChange={this.handleSelectChange} />
                     {(this.state.focusedTag===null) ?
