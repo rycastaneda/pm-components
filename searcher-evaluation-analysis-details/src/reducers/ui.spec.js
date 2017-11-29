@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { ui } from './ui';
-import * as actions from '../constants';
+import * as actions from '../constants/ActionTypes';
 
 describe('UI reducer', () => {
     let state = {};
@@ -15,7 +15,7 @@ describe('UI reducer', () => {
                 done: false
             },
             evaluationId: '',
-            currentView: ''
+            currentView: 'single'
         });
     });
 

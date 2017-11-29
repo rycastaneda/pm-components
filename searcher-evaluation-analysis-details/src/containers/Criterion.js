@@ -2,7 +2,8 @@ import React, { PropTypes, Component } from 'react';
 import Report from '../components/Report';
 import Question from '../components/Question';
 import Header from '../components/Header';
-
+import { connect } from 'react-redux';
+import { toggleCriterionCollapse, changeTab } from '../actions/evaluation';
 export class Criterion extends Component {
     constructor(props) {
         super(props);
@@ -15,38 +16,44 @@ export class Criterion extends Component {
             open: false,
             tab: 'responses'
         };
+
         this.toggleAccordion = this.toggleAccordion.bind(this);
         this.changeTab = this.changeTab.bind(this);
     }
 
     toggleAccordion() {
-        this.setState({
-            open: !this.state.open
-        });
+        const { id, dispatch } = this.props;
+
+        dispatch(toggleCriterionCollapse(id));
     }
 
     changeTab(event) {
-        this.setState({
-            tab: event.target.id
-        });
+        const { id, dispatch } = this.props;
+
+        dispatch(changeTab(id, event.target.id));
     }
 
     render() {
-        const { title, weight, questions, reports } = this.props;
+        const {
+            title,
+            weight,
+            questions,
+            reports,
+            isOpen,
+            currentTab
+        } = this.props;
 
-        const { open, tab } = this.state;
-
-        const questionComponents = questions.map(question => (
-            <Question key={question.id} {...question} />
+        const questionComponents = questions.map((question, index) => (
+            <Question key={question.id} number={index + 1} {...question} />
         ));
 
         return (
             <div className="pmaccordion pmaccordion--impact">
                 <a
                     onClick={this.toggleAccordion}
-                    className={`toggle-section pmaccordion__head ${open
-                        ? 'collapsed'
-                        : ''}`}>
+                    className={`toggle-section pmaccordion__head ${isOpen
+                        ? ''
+                        : 'collapsed'}`}>
                     <div className="row-title">
                         <span className="pull-left pmaccordion__title">
                             {title}
@@ -58,9 +65,15 @@ export class Criterion extends Component {
                         <div className="clearfix" />
                     </div>
                 </a>
-                <div className={`collapse pad-hor ${open ? 'in' : ''}`}>
-                    <Header currentTab={tab} changeTab={this.changeTab} />
-                    {tab === 'responses' ? (
+                <div
+                    className={`collapse mar-btm pad-hor ${isOpen
+                        ? 'in'
+                        : ''}`}>
+                    <Header
+                        currentTab={currentTab}
+                        changeTab={this.changeTab}
+                    />
+                    {currentTab === 'responses' ? (
                         questionComponents
                     ) : (
                         <Report reportData={reports} />
@@ -75,8 +88,15 @@ Criterion.propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     weight: PropTypes.number.isRequired,
+    isOpen: PropTypes.bool,
+    currentTab: PropTypes.string,
     questions: PropTypes.array,
-    reports: PropTypes.array
+    reports: PropTypes.array,
+    dispatch: PropTypes.func
 };
 
-export default Criterion; // adds dispatch prop
+function mapStateToProps() {
+    return {};
+}
+
+export default connect(mapStateToProps)(Criterion); // adds dispatch prop

@@ -2,9 +2,10 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchEvaluation, changeView } from '../actions/evaluation';
 
-import Criterion from '../components/Criterion';
+import Criterion from './Criterion';
 import Loader from '../components/Loader';
 import ViewSelector from '../components/ViewSelector';
+import ComparisonTable from '../components/ComparisonTable';
 
 export class Details extends Component {
     constructor(props) {
@@ -25,15 +26,33 @@ export class Details extends Component {
     }
 
     render() {
-        const { criteria, currentView, isLoading } = this.props;
-        const criteriaComponents = criteria.map(section => {
-            return <Criterion key={section.id} {...section} />;
+        const { criteria, currentView, isLoading, supplierData } = this.props;
+        const criteriaComponents = criteria.map(criterion => {
+            return <Criterion key={criterion.id} {...criterion} />;
         });
 
         return (
             <div ref={ref => (this.domRef = ref)}>
-                <ViewSelector view={currentView} changeView={this.changeView} />
-                {isLoading ? <Loader /> : criteriaComponents}
+                <div className="row">
+                    <div className="pull-right">
+                        <ViewSelector
+                            view={currentView}
+                            changeView={this.changeView}
+                        />
+                    </div>
+                </div>
+                <div className="row mar-top-sm criteria-list">
+                    {isLoading ? (
+                        <Loader />
+                    ) : currentView === 'compare' ? (
+                        <ComparisonTable
+                            criteria={criteria}
+                            suppliers={supplierData}
+                        />
+                    ) : (
+                        criteriaComponents
+                    )}
+                </div>
             </div>
         );
     }
@@ -43,44 +62,87 @@ Details.propTypes = {
     dispatch: PropTypes.func.isRequired,
     criteria: PropTypes.array.isRequired,
     currentView: PropTypes.string.isRequired,
-    isLoading: PropTypes.bool.isRequired
+    isLoading: PropTypes.bool.isRequired,
+    supplierData: PropTypes.array
 };
 
 function mapStateToProps(state) {
     const {
         evaluation: rawEvaluation,
         criterion: rawCriterion,
-        question: rawQuestions,
-        // staff: rawStaff,
+        questions: rawQuestions,
+        staff: rawStaff,
+        comments: rawComments,
         ui
     } = state;
 
     let criteria = [];
     let isLoading = ui.isLoading.who === 'evaluation' && !ui.isLoading.done;
     let currentView = ui.currentView;
+    let supplierData = [
+        {
+            id: 1,
+            name: 'tester 1',
+            scores: {
+                2: 100
+            }
+        },
+        {
+            id: 2,
+            name: 'tester 2',
+            scores: {
+                2: 95
+            }
+        }
+    ];
+
+    const getComments = commentId => {
+        let comment = rawComments.byId[commentId];
+        let staff = rawStaff.by[comment.staffId];
+        comment.staff = `${staff.first_name} ${staff.last_name}`;
+
+        return comment;
+    };
+
+    const getQuestions = questionId => {
+        let question = rawQuestions.byId[questionId];
+        question.comments = question.commentIds.map(getComments);
+        return question;
+    };
+
+    const getCriteria = criterionId => {
+        let criteria = rawCriterion.byId[criterionId];
+        criteria.reports = [
+            {
+                staff: 'tester',
+                scores: [1, 2, 3, 4]
+            },
+            {
+                staff: 'tester',
+                scores: [2, 3, 3, 4]
+            }
+        ];
+        criteria.questions = criteria.questionIds.map(getQuestions);
+        return criteria;
+    };
 
     if (isLoading) {
         return {
             criteria,
             currentView,
+            supplierData,
             isLoading
         };
     }
 
-    if (ui.currentView === 'single') {
-        rawEvaluation.byId[ui.evaluationId].criteriaIds.map(criterionId => {
-            let criteria = rawCriterion.byId[criterionId];
-
-            criteria.questions = criteria.questionIds.map(questionId => {
-                let question = rawQuestions.byId[questionId];
-                return question;
-            });
-
-            return criteria;
-        });
+    let criteriaIds = rawCriterion.allIds;
+    if (ui.currentView !== 'compare') {
+        criteriaIds = rawEvaluation.byId[ui.evaluationId].criteriaIds;
     }
 
-    return { criteria, currentView, isLoading };
+    criteria = criteriaIds.map(getCriteria);
+
+    return { criteria, currentView, isLoading, supplierData };
 }
 
 export default connect(mapStateToProps)(Details); // adds dispatch prop

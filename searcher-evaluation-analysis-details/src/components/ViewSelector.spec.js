@@ -14,10 +14,10 @@ describe('ViewSelector component: ', () => {
         changeView
     };
 
-    it('should render the ViewSelector', () => {
+    it('should render the ViewSelector with the active view', () => {
         component = mount(<ViewSelector {...props} />);
 
-        expect(component.find('.btn').text()).to.eql('Single');
+        expect(component.find('.btn-default').text()).to.eql('Single');
     });
 
     it('should be able to change view after clicking', () => {

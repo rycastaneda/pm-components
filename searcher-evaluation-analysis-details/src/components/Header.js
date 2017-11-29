@@ -1,22 +1,28 @@
 import React, { PropTypes } from 'react';
 
 const Header = ({ currentTab, changeTab }) => (
-    <div className="mar-top mar-btm row">
-        <div className="col-lg-10">
-            <ul className="nav nav-pills tabs pad-top-sm mar-top-sm">
-                <li
-                    id="responses"
-                    className={`${currentTab === 'responses'
-                        ? 'selected'
-                        : ''}`}
-                    onClick={changeTab}>
-                    Responses
+    <div className="mar-btm row">
+        <div className="pmnav col-lg-10 bor-btm-no">
+            <ul className="nav nav-pills pad-top-sm mar-top-sm">
+                <li>
+                    <a
+                        id="responses"
+                        onClick={changeTab}
+                        className={`font-sm ${currentTab === 'responses'
+                            ? 'selected'
+                            : ''}`}>
+                        Responses
+                    </a>
                 </li>
-                <li
-                    id="reports"
-                    className={`${currentTab === 'reports' ? 'selected' : ''}`}
-                    onClick={changeTab}>
-                    Responses
+                <li>
+                    <a
+                        id="reports"
+                        onClick={changeTab}
+                        className={`font-sm ${currentTab === 'reports'
+                            ? 'selected'
+                            : ''}`}>
+                        Reports
+                    </a>
                 </li>
             </ul>
         </div>

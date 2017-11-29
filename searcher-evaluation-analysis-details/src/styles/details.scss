@@ -1,0 +1,22 @@
+// prettier-ignore
+.tab-pills {
+    display: block;
+    position: relative;
+    top: 0;
+    left: 0;
+    min-width: 0;
+    border-width: initial;
+    border-style: none;
+    border-color: initial;
+    border-image: initial;
+
+    > li {
+
+        > a.selected {
+            display: block;
+            background-color: rgb(246, 246, 246);
+            color: rgb(51, 51, 51);
+            border-color: rgb(230, 128, 32);
+        }
+    }
+}

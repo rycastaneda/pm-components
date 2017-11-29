@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import ComparisonRow from './ComparisonRow';
 const ComparisonTable = ({ criteria, suppliers }) => (
-    <table>
+    <table className="table db-table db-table-sort">
         <thead>
             <tr>
                 <th>User</th>

@@ -1,23 +1,23 @@
 import * as actions from '../constants/ActionTypes';
+import mockEvaluation from '../mocks/evaluation.json';
 import axios from 'axios';
-
 export function fetchEvaluation(evaluationId, currentView) {
     return dispatch => {
+        axios.defaults.baseURL = 'http://httpbin.org';
         dispatch({
             type: actions.FETCH_EVALUATION,
             evaluationId,
             currentView
         });
-
-        // TODO: api endpoint
         return axios
             .get(
-                `/evaluation-templates/${evaluationId}?include=criteria.questions`
+                // `/evaluation-templates/${evaluationId}?include=criteria.questions`
+                '/anything'
             )
             .then(response => {
                 return dispatch({
                     type: actions.RECEIVE_EVALUATION,
-                    evaluation: response.data
+                    evaluation: mockEvaluation
                 });
             });
     };
@@ -39,3 +39,19 @@ export function changeView(view) {
         // });
     };
 }
+
+export function changeTab(criterionId, tab) {
+    return {
+        type: actions.CHANGE_TAB,
+        criterionId,
+        tab
+    };
+}
+
+export function toggleCriterionCollapse(criterionId) {
+    return {
+        type: actions.TOGGLE_CRITERION_COLLAPSE,
+        criterionId
+    };
+}
+

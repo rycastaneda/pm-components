@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
 
-import { Line } from 'react-chartjs';
+import { Line } from 'react-chartjs-2';
 import Report from './Report';
 
 describe('Report component: ', () => {

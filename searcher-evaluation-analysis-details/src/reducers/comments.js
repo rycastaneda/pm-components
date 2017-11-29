@@ -1,4 +1,4 @@
-import * as actions from '../constants/ActionTypes';
+// import * as actions from '../constants/ActionTypes';
 
 const INITIAL_STATE = {
     byId: {},
@@ -7,8 +7,8 @@ const INITIAL_STATE = {
 
 export function comments(state = INITIAL_STATE, action) {
     switch (action.type) {
-        case actions.RECEIVE_EVALUATION:
-            return receiveComment(state, action);
+    // case actions.RECEIVE_EVALUATION:
+    //     return receiveComment(state, action);
     }
 
     return state;

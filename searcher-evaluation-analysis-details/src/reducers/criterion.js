@@ -9,6 +9,14 @@ export function criterion(state = INITIAL_STATE, action) {
     switch (action.type) {
         case actions.RECEIVE_EVALUATION:
             return receiveCriteria(state, action);
+        case actions.CHANGE_TAB:
+            state.byId[action.criterionId].currentTab = action.tab;
+            return { ...state };
+        case actions.TOGGLE_CRITERION_COLLAPSE:
+            state.byId[action.criterionId].isOpen = !state.byId[
+                action.criterionId
+            ].isOpen;
+            return { ...state };
     }
 
     return state;
@@ -29,12 +37,14 @@ function receiveCriteria(state, action) {
                 }
 
                 byId[criteria.id] = {
-                    id: criteria.id,
+                    id: +criteria.id,
                     questionIds,
-                    ...criteria.attributes
+                    ...criteria.attributes,
+                    isOpen: false,
+                    currentTab: 'responses'
                 };
 
-                allIds.push[criteria.id];
+                allIds.push(criteria.id);
             });
     }
 

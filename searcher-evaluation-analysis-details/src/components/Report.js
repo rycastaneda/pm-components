@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Line } from 'react-chartjs';
+import { Line } from 'react-chartjs-2';
 
 const Report = ({ reportData }) => {
     const data = {

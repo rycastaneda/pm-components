@@ -17,16 +17,25 @@ class Question extends Component {
     }
 
     render() {
-        const { questionTitle, totalScore, comments } = this.props;
+        const { number, questionTitle, totalScore, comments } = this.props;
+
+        const listComponents = comments.length ? (
+            comments.map(comment => <Comment key={comment.id} {...comment} />)
+        ) : (
+            <div className="col-sm-12 mar-top">No comments yet</div>
+        );
 
         return (
             <div className="row">
-                <div className="col-lg-8">
+                <div className="col-sm-1 text-right">{`${number}. `}</div>
+                <div className="col-sm-9">
                     <p className="question-title">{questionTitle}</p>
                 </div>
-                <div className="col-lg-2 scorebox">{totalScore}</div>
+                <div className="col-sm-1 scorebox">
+                    <span className="badge">{totalScore}</span>
+                </div>
                 <div
-                    className="col-lg-2 toggle-comments"
+                    className="col-sm-1 toggle-comments"
                     onClick={this.toggleComments}>
                     <i
                         className={`fa pointer ${this.state.isShown
@@ -35,18 +44,15 @@ class Question extends Component {
                     />
                 </div>
 
-                {this.state.isShown
-                    ? comments.map(comment => (
-                          <Comment key={comment.id} {...comment} />
-                      ))
-                    : null}
+                {this.state.isShown ? listComponents : null}
             </div>
         );
     }
 }
 
 Question.propTypes = {
-    questionTitle: PropTypes.string,
+    number: PropTypes.number.isRequired,
+    questionTitle: PropTypes.string.isRequired,
     totalScore: PropTypes.number,
     comments: PropTypes.array
 };

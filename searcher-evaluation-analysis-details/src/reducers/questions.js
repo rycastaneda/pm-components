@@ -20,12 +20,16 @@ function receiveQuestions(state, action) {
         action.evaluation.included
             .filter(included => included.type === 'evaluation-questions')
             .map(question => {
+                let commentIds = [];
+
                 byId[question.id] = {
                     id: question.id,
-                    ...question.attributes
+                    questionTitle: question.attributes.text,
+                    totalScore: 0,
+                    commentIds
                 };
 
-                allIds.push[question.id];
+                allIds.push(question.id);
             });
     }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import Criterion from './Criterion';
+import { Criterion } from './Criterion';
 import Report from '../components/Report';
 import Question from '../components/Question';
 import Header from '../components/Header';
@@ -16,6 +16,8 @@ const componentProps = {
     id: 1,
     title: 'Experience',
     weight: 50,
+    isOpen: false,
+    currentTab: 'responses',
     questions: [
         {
             id: 1,
@@ -64,10 +66,11 @@ const componentProps = {
             staff: 'Kitkat',
             scores: [25, 30, 35, 40]
         }
-    ]
+    ],
+    dispatch: () => {}
 };
 
-describe('Assignment container: ', () => {
+describe('Criterion container: ', () => {
     const { component } = setup(componentProps);
 
     it('should render title and weight and should be closed by default', () => {
@@ -77,34 +80,33 @@ describe('Assignment container: ', () => {
         expect(+component.find('.weight').text()).to.eql(componentProps.weight);
         expect(component.find('.in')).to.have.length(0);
         expect(component.find('.toggle-section').hasClass('collapsed')).to.be
-            .false;
+            .true;
     });
 
     it('should render Header with props', () => {
         const header = component.find(Header);
         expect(header).to.have.length(1);
         const props = header.props();
-        console.log('props', props); // eslint-disable-line quotes, no-console
         expect(props).to.have.property('currentTab', 'responses');
     });
 
-    it('should be able to expand the accordion', () => {
+    it('should be able to expand the accordion and render Questions', () => {
+        const { component } = setup({ ...componentProps, isOpen: true });
+
         let toggle = component.find('.toggle-section');
         toggle.simulate('click');
-        component.setState({ open: true });
         expect(component.find('.in')).to.have.length(1);
         expect(component.find('.toggle-section').hasClass('collapsed')).to.be
-            .true;
-    });
-
-    it('should render toggle tabs between questions and reports', () => {
+            .false;
         expect(component.find(Question)).to.have.length(
             componentProps.questions.length
         );
+    });
 
-        component.setState({
-            open: true,
-            tab: 'reports'
+    it('should render toggle tabs between questions and reports', () => {
+        const { component } = setup({
+            ...componentProps,
+            currentTab: 'reports'
         });
 
         expect(component.find(Question)).to.have.length(0);
