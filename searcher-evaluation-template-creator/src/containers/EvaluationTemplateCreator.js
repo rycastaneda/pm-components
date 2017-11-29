@@ -19,7 +19,6 @@ class EvaluationTemplateCreator extends Component {
     componentDidMount() {
         const element = document.querySelector('[data-component="searcher-evaluation-template-creator"]');
         const id = Number(element.getAttribute('data-template-id'));
-        window.console.log(element, element.getAttribute('data-template-id'));
         if (id) {
             this.props.dispatch(fetchTemplate(id));
         } else {
@@ -82,7 +81,7 @@ class EvaluationTemplateCreator extends Component {
                                         <input type="text"
                                             name="title"
                                             className={this.getTitleInputStyle()}
-                                            defaultValue={this.state.title}
+                                            value={this.state.title}
                                             title="Template Title"
                                             placeholder="Enter template title"
                                             onChange={this.onTitleTextChange}

@@ -67,7 +67,6 @@ class Question extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        window.console.log(nextProps);
         let { question }  = nextProps;
         this.setStateWithQuestion(question, question.isSaved);
         clearInterval(this.intervalId_saveAnim);
@@ -116,7 +115,6 @@ class Question extends Component {
     }
     updateTitle() {
         if (this.props.question.id!==null) {
-            window.console.log(this.state.title);
             this.props.dispatch(onQuestionTitleChange(this.props.criteriaId, this.props.question.id, this.state.title));
         }
         clearInterval(this.intervalId_update);
@@ -149,7 +147,6 @@ class Question extends Component {
         this.props.dispatch(onQuestionTypeChange(this.props.criteriaId, this.props.question.id, type));
     }
     updateScaleDefinition(id, index, label, value, refId) {
-        window.console.log(id);
         clearInterval(this.intervalId_update);
         this.props.dispatch(onScaleDefinitionChange(this.props.criteriaId, this.props.question.id, id,  label, value, refId));
     }
