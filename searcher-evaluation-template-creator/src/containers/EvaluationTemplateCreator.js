@@ -15,6 +15,7 @@ class EvaluationTemplateCreator extends Component {
         this.intervalId_update = null;
         this.intervalId_saveAnim =null;
     }
+
     componentDidMount() {
         const element = document.querySelector('[data-component="searcher-evaluation-template-creator"]');
         const id = Number(element.getAttribute('data-template-id'));
@@ -29,11 +30,11 @@ class EvaluationTemplateCreator extends Component {
         clearInterval(this.intervalId_update);
         clearInterval(this.intervalId_saveAnim);
     }
-
     componentWillReceiveProps(nextProps) {
         this.setState({ title:nextProps.title,  showAdd:false, isSaved:true, isTitleError:false });
         this.intervalId_saveAnim = setInterval(() => this.setState({ isSaved:false }), INPUT_SYNC_INTERVAL);
     }
+
     onSave() {
         if (this.props.id) {
             this.props.dispatch(updateTemplate(this.state.title, this.props.id));
@@ -83,8 +84,9 @@ class EvaluationTemplateCreator extends Component {
                                             defaultValue={this.state.title}
                                             title="Template Title"
                                             placeholder="Enter template title"
-                                            onChange={this.onTitleTextChange}/>
-                                            { this.state.isTitleError?<span className="danger">Title cannot be empty</span>:null}
+                                            onChange={this.onTitleTextChange}
+                                            />
+                                            { this.state.isTitleError?<span className="error danger">Title cannot be empty</span>:null}
                                     </div>
                                     <div className="col-md-4 col-sm-12">
                                         <div className="form-group">
