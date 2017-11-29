@@ -105,7 +105,7 @@
 
             &.collapsed {
                 margin: 10px 40px;
-                border-left: 3px solid #eaeaea;
+                border-left: 6px solid #eaeaea;
                 font-size: 14px;
             }
 
@@ -128,7 +128,7 @@
 
             &.collapsed {
                 border: 1px solid #eaeaea;
-                border-left: 4px solid #eaeaea;
+                border-left: 6px solid #eaeaea;
                 padding: 0;
                 margin: 10px 50px;
 
@@ -149,6 +149,10 @@
 
     .new-question {
         margin: 20px;
+    }
+
+    .save-template {
+        margin-right: 10px;
     }
 
     .new-criteria {

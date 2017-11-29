@@ -134,6 +134,11 @@ class Criteria extends Component {
                                 </div>
                             }
                             </div>
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <hr />
+                                </div>
+                            </div>
                         <div>
 
                         {this.props.criteria.questions.length?

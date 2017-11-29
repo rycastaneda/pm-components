@@ -115,7 +115,7 @@ class EvaluationTemplateCreator extends Component {
                                 (allCriteriaIndexes.length)?
                                     <div>
                                         <div className="row">
-                                            <div className="col-md-12 text-right">
+                                            <div className="col-md-12">
                                                 <div className="form-group new-criteria">
                                                     <button className="btn"
                                                     onClick={() => this.setState({ showAdd: !this.state.showAdd })}>
@@ -137,9 +137,10 @@ class EvaluationTemplateCreator extends Component {
                                 :null
                         }
                 <div className="row">
-                    <div className="col-md-10 col-md-offset-1 text-right">
+                    <div className="col-md-12 text-right">
+                        <hr />
                         <div className="form-group">
-                            <button className="btn btn-md" type="button" onClick={() => this.props.dispatch(publishTemplate())}>Finish</button>
+                            <button className="btn btn-md save-template " type="button" onClick={() => this.props.dispatch(publishTemplate())}><i className="fa fa-send"></i>Save Template</button>
                         </div>
                     </div>
                 </div>
