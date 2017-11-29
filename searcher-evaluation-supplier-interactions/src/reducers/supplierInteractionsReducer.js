@@ -7,27 +7,28 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
+    debugger
     switch (action.type) {
 
-    case actions.SUPPLIER_INTERACTIONS_REQUEST_START:
+        case actions.SUPPLIER_INTERACTIONS_REQUEST_START:
+            debugger
+            return {
+                ...state,
+                isLoading: true,
+            };
 
-        return {
-            ...state,
-            isLoading: true,
-        };
+        case actions.SUPPLIER_INTERACTIONS_REQUEST_SUCCESS:
 
-    case actions.SUPPLIER_INTERACTIONS_REQUEST_SUCCESS:
+            return {
+                ...state,
+                interactions: action.interactions,
+                isLoading: false,
+            };
 
-        return {
-            ...state,
-            interactions: action.interactions,
-            isLoading: false,
-        };
+        default:
+            return state;
 
-    default:
-        return state;
-
-    }
+        }
 };
 
 export default reducer;

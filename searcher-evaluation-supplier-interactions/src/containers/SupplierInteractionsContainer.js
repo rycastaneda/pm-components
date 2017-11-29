@@ -9,6 +9,8 @@ import * as actions from '../actions/actions';
 class SupplierInteractionsContainer extends Component {
 
     componentDidMount() {
+        debugger
+        const {actions} = this.props;
         actions.fetchSupplierInteractions('urls');
     }
 
@@ -24,6 +26,7 @@ class SupplierInteractionsContainer extends Component {
 
 SupplierInteractionsContainer.propTypes = {
     interactions: PropTypes.array.isRequired,
+    actions: PropTypes.func,
 };
 
 const mapDispatchToProps = dispatch => {

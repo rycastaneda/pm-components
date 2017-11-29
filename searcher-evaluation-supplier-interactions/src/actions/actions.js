@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as actionTypes from '../constants/ActionTypes';
 
 export const fetchSupplierInteractions = (apiUrl) => (dispatch) => {
+
     dispatch({
         type: actionTypes.SUPPLIER_INTERACTIONS_REQUEST_START,
     });
@@ -19,3 +20,10 @@ export const fetchSupplierInteractions = (apiUrl) => (dispatch) => {
             console.log(error);
         });
 };
+
+export const testAction = (paramBool) => {
+    return {
+        type: actionTypes.SUPPLIER_INTERACTIONS_REQUEST_START,
+        paramBool,
+    }
+}
