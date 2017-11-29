@@ -127,8 +127,9 @@
             }
 
             &.collapsed {
-                border: 1px solid #eaeaea;
-                border-left: 6px solid #eaeaea;
+                background: #f4f4f4;
+                border: 1px solid transparent;
+                border-left: 6px solid #e4e4e4;
                 padding: 0;
                 margin: 10px 50px;
 
