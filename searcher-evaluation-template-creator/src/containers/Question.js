@@ -309,7 +309,7 @@ class Question extends Component {
 
                                                     <li key={index} className="mar-btm-sm">
                                                         <div className="input-group">
-                                                          <span className="input-group-addon" id="basic-addon1">{index+1}</span>
+                                                          <span className="input-group-addon scale" id="basic-addon1">{index+1}</span>
                                                           <input type="text"
                                                           value={type.label}
                                                           onChange = {event =>
