@@ -1,5 +1,8 @@
 export const EVALUATION_SERVICE ='evaluation-templates';
 
+const EDIT_PAGE ='/searcher/evaluation/edit_template/';
+const PREVIEW_PAGE ='/searcher/evaluation/preview_template/';
+
 export function getTemplateServiceUrlFor(keyword=null, status =null, date=null, maxRowLength=null, page=null) {
 
     let urlPostfix='';
@@ -33,10 +36,11 @@ export function getTemplateServiceUrlFor(keyword=null, status =null, date=null, 
 export function getDataFromTemplateService(data) {
     let result={ templates:[] };
     const templateData =data.data;
+    window.console.log(data);
     for (var i in templateData) {
         let current =templateData[i];
         let attrib=current.attributes;
-        result.templates.push({ id:current.id, name:attrib.title, completed:0, instances:0, status:Boolean(attrib.active===1) });
+        result.templates.push({ id:current.id, name:attrib.title, preview_url:PREVIEW_PAGE+current.id, edit_url:EDIT_PAGE+current.id, completed:0, instances:0, status:Boolean(attrib.active===1) });
     }
     result.totalPages =data.meta.pagination.total_pages;
     result.currentPage =data.meta.pagination.current_page;
