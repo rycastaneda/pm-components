@@ -1,0 +1,51 @@
+{
+  "data": {
+    "type": "evaluation-templates",
+    "id": "1",
+    "attributes": {
+      "title": "Template Title",
+      "active": 1
+    },
+    "relationships": {
+      "criteria": {
+        "data": [
+          {
+            "type": "evaluation-criteria",
+            "id": "2"
+          }
+        ]
+      }
+    }
+  },
+  "included": [
+    {
+      "type": "evaluation-questions",
+      "id": "3",
+      "attributes": {
+        "text": "Question Text",
+        "allow_documents": 0,
+        "enable_scale_definitions": 0,
+        "mandatory_comments": 0,
+        "sort_order": 0
+      }
+    },
+    {
+      "type": "evaluation-criteria",
+      "id": "2",
+      "attributes": {
+        "title": "Criteria Title",
+        "weight": 0
+      },
+      "relationships": {
+        "questions": {
+          "data": [
+            {
+              "type": "evaluation-questions",
+              "id": "3"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

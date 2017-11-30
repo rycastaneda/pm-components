@@ -1,6 +1,12 @@
 import { combineReducers } from 'redux';
-import { evaluationAssignments } from './evaluationAssignmentReducers';
+import { assignments } from './assignments';
+import { comments } from './comments';
+import { staff } from './staff';
+import { ui } from './ui';
 
 export default combineReducers({
-    evaluationAssignments
+    ui,
+    staff,
+    assignments,
+    comments
 });
