@@ -43,7 +43,7 @@ export function publishTemplate() {
         const templateId = getState().evaluationTemplateCreator.id;
         return axios.post(TEMPLATE_SERVICE_URL+'/'+templateId+'/finalise', {})
         .then(() => {
-            alert('Template Saved');
+            alert('Template Published.');
         })
         .catch((error) => {
             // dispatch({ type:REQUEST_FAILED, message: error.message });
