@@ -25,7 +25,6 @@
   ],
   "rules": {
     "array-bracket-spacing": ["error", "never"],
-    "arrow-parens": ["error", "as-needed", {"requireForBlockBody": true}],
     "arrow-spacing": ["error"],
     "brace-style": ["error"],
     "comma-dangle": ["error", "never"],
@@ -52,11 +51,5 @@
     "space-in-parens": ["error", "never"],
     "spaced-comment": ["error", "always"],
     "template-curly-spacing": ["error", "never"]
-  },
-   "settings": {
-  "react": {
-        "pragma": "React",  // Pragma to use, default to "React"
-        "version": "15.3.0" // React version to adjust linting for deprecated commands
-      }
   }
 }
