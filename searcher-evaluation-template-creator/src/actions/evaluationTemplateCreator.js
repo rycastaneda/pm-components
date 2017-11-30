@@ -43,7 +43,7 @@ export function publishTemplate() {
         const templateId = getState().evaluationTemplateCreator.id;
         return axios.post(TEMPLATE_SERVICE_URL+'/'+templateId+'/finalise', {})
         .then(() => {
-            alert('Template Saved');
+            alert('Template Published.');
         })
         .catch((error) => {
             // dispatch({ type:REQUEST_FAILED, message: error.message });
@@ -181,11 +181,12 @@ export function onQuestionTypeChange(criteriaId, questionId, type) {
 export function onQuestionTitleChange(criteriaId, questionId, title) {
     return (dispatch, getState) => {
         let templateId =getState().evaluationTemplateCreator.id;
-        let question = getState().evaluationTemplateCreator.questionsByIndex[questionId];
-        let data = parseDataForUpdateQuestion(Object.assign({}, question, { title }));
+        let qn = getState().evaluationTemplateCreator.questionsByIndex[questionId];
+        let data = parseDataForUpdateQuestion(Object.assign({}, qn, { title }));
         return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
         .then(() => {
-            const question = Object.assign({}, this.question, { title });
+            qn = getState().evaluationTemplateCreator.questionsByIndex[questionId];
+            const question = Object.assign({}, qn, { title });
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
@@ -251,7 +252,7 @@ export function deleteQuestion(criteriaId, questionId) {
         });
     };
 }
-export function onScaleDefinitionChange(criteriaId, questionId, scaleDefinitionId, text, score, refId) {
+export function onScaleDefinitionChange(criteriaId, questionId, scaleDefinitionId, text, score, refId) {    
     return (dispatch, getState) => {
         const templateId = getState().evaluationTemplateCreator.id;
         const url =TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId+'/scale-definitions';
@@ -366,12 +367,28 @@ export function incrementProgress(documentId, progress) {
 }
 export function fetchTemplate(id) {
     return (dispatch) => {
-        getPromiseForService(TEMPLATE_SERVICE_URL+'/'+id+'?include=criteria.questions', dispatch)
+        axios.all([
+            axios.get('evaluation-question-types')
+            .then((response) => {
+                let questionTypes = parseInitialData(response.data.data);
+                if (questionTypes.length) {
+                    dispatch({ type:INITIALIZED, questionTypes });
+                } else {
+                    alert('Unable to proceed. Initial data returned by the service is empty');
+                }
+
+            })
+            .catch((error) => {
+                dispatch({ type:REQUEST_FAILED, message: error.message });
+            }),
+            getPromiseForService(TEMPLATE_SERVICE_URL+'/'+id+'?include=criteria.questions', dispatch)
             .then((response) => {
                 let template = parseDataFromFetchTemplate(response.data);
-                window.console.log();
                 dispatch ({ type: TEMPLATE_FETCHED, template });
-            });
+            })
+        ]
+        );
+
     };
 }
 

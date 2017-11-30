@@ -15,6 +15,7 @@ class EvaluationTemplateCreator extends Component {
         this.intervalId_update = null;
         this.intervalId_saveAnim =null;
     }
+
     componentDidMount() {
         const element = document.querySelector('[data-component="searcher-evaluation-template-creator"]');
         const id = Number(element.getAttribute('data-template-id'));
@@ -29,11 +30,11 @@ class EvaluationTemplateCreator extends Component {
         clearInterval(this.intervalId_update);
         clearInterval(this.intervalId_saveAnim);
     }
-
     componentWillReceiveProps(nextProps) {
         this.setState({ title:nextProps.title,  showAdd:false, isSaved:true, isTitleError:false });
         this.intervalId_saveAnim = setInterval(() => this.setState({ isSaved:false }), INPUT_SYNC_INTERVAL);
     }
+
     onSave() {
         if (this.props.id) {
             this.props.dispatch(updateTemplate(this.state.title, this.props.id));
@@ -80,11 +81,12 @@ class EvaluationTemplateCreator extends Component {
                                         <input type="text"
                                             name="title"
                                             className={this.getTitleInputStyle()}
-                                            defaultValue={this.state.title}
+                                            value={this.state.title}
                                             title="Template Title"
                                             placeholder="Enter template title"
-                                            onChange={this.onTitleTextChange}/>
-                                            { this.state.isTitleError?<span className="danger">Title cannot be empty</span>:null}
+                                            onChange={this.onTitleTextChange}
+                                            />
+                                            { this.state.isTitleError?<span className="error danger">Title cannot be empty</span>:null}
                                     </div>
                                     <div className="col-md-4 col-sm-12">
                                         <div className="form-group">
@@ -113,7 +115,7 @@ class EvaluationTemplateCreator extends Component {
                                 (allCriteriaIndexes.length)?
                                     <div>
                                         <div className="row">
-                                            <div className="col-md-12 text-right">
+                                            <div className="col-md-12">
                                                 <div className="form-group new-criteria">
                                                     <button className="btn"
                                                     onClick={() => this.setState({ showAdd: !this.state.showAdd })}>
@@ -135,9 +137,18 @@ class EvaluationTemplateCreator extends Component {
                                 :null
                         }
                 <div className="row">
-                    <div className="col-md-10 col-md-offset-1 text-right">
+                    <div className="col-md-12 text-right">
+                        <hr />
+
                         <div className="form-group">
-                            <button className="btn btn-md" type="button" onClick={() => this.props.dispatch(publishTemplate())}>Finish</button>
+                            <ul className="list-inline">
+                                <li>
+                                    <a className="btn btn-md" href="/searcher/evaluation/list_templates"><i className="fa fa-download"></i>Save and Continue Later</a>
+                                </li>
+                                <li>
+                                    <button className="btn btn-md save-template " type="button" onClick={() => this.props.dispatch(publishTemplate())}><i className="fa fa-send"></i>Publish Template</button>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>

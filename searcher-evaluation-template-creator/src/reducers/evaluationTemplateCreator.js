@@ -15,6 +15,7 @@ import {
     DOCUMENT_UPLOAD_FAILED,
     DOCUMENT_UPLOAD_IN_PROGRESS,
     DOCUMENTS_UPLOADING,
+    DOCUMENT_DELETE,
     IS_BUSY,
     REQUEST_FAILED
 } from '../constants/ActionTypes';
@@ -62,7 +63,24 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
         }
         case TEMPLATE_FETCHED:
             {
-                return Object.assign({}, state, { id:action.id, title:action.title, criteria:action.criteria });
+                let { template } = action;
+                let { id,
+                    title,
+                    criteriaByIndex,
+                    allCriteriaIndexes,
+                    questionsByIndex,
+                    allQuestionIndexes,
+                    documentsByIndex,
+                    allDocumentIndexes } = template;
+                return Object.assign({}, state,  { id,
+                    title,
+                    criteriaByIndex,
+                    allCriteriaIndexes,
+                    questionsByIndex,
+                    allQuestionIndexes,
+                    documentsByIndex,
+                    allDocumentIndexes
+                     });
             }
         case TEMPLATE_CREATED:
             {
@@ -112,7 +130,6 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                 questions.forEach((questionId) => {
                     delete questionsByIndex[questionId];
                     allQuestionIndexes = allQuestionIndexes.slice(allQuestionIndexes.indexOf(questionId), 1);
-                    window.console.log('deleted');
                 });
                 delete criteriaByIndex[action.id];
                 return Object.assign({}, state, {
@@ -129,8 +146,8 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
             documentsByIndex[action.documentId] =Object.assign({}, document, {
                 status: UPLOAD_SUCCESS,
                 progress: 100,
-                reffernceId:action.newDocumentId,
-                reffernceUrl:action.url
+                referenceId:action.newDocumentId,
+                referenceUrl:action.url
             });
 
             return Object.assign({}, state);
@@ -153,7 +170,6 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
         }
         case DOCUMENTS_UPLOADING: {
             action.documents.map((document) => {
-                window.console.log(document);
                 state.questionsByIndex[action.questionId].documentIds.push(document.id);
                 state.documentsByIndex[document.id] =Object.assign({}, document, {
                     status: UPLOAD_IN_PROGRESS,
@@ -164,7 +180,16 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
             });
             return Object.assign({}, state);
         }
-
+        case DOCUMENT_DELETE: {
+            let questionsByIndex = Object.assign({}, state.questionsByIndex);
+            let question = questionsByIndex[action.questionId];
+            let allDocumentIndexes = state.allDocumentIndexes.filter(id => id!== action.id);
+            let documentsByIndex =  Object.assign({}, state.documentsByIndex);
+            delete documentsByIndex[String(action.id)];
+            question.documentIds = question.documentIds.filter(id => id!== action.id);
+            questionsByIndex[action.id]=question;
+            return Object.assign({}, state, { allDocumentIndexes, documentsByIndex, questionsByIndex });
+        }
         case QUESTION_ADD:
             {
                 let { question, criteriaId } = action;
@@ -192,7 +217,7 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                     }
                 }
                 let questionsByIndex = Object.assign({}, state.questionsByIndex);
-                questionsByIndex[id] = question;
+                questionsByIndex[id] = question;        
                 return Object.assign({}, state, { questionsByIndex });
             }
         case QUESTION_DELETE:

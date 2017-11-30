@@ -22,7 +22,7 @@ class TemplatesTable extends Component {
         document.removeEventListener('mousedown', this.onDropdownClickOutside, false);
     }
     onDropdownClickOutside(e) {
-        this.clickedElement = e.target;        
+        this.clickedElement = e.target;
         if (this.actionDropdown) {
             if (!this.actionDropdown.contains(e.target)) {
                 this.hideMenu();
@@ -45,7 +45,7 @@ class TemplatesTable extends Component {
     hideMenu() {
         this.setState({ menuVisibleItemId:null });
     }
-    renderMoreButton(id, status) {
+    renderMoreButton(id, edit_url, preview_url, status) {
         if (this.state.menuVisibleItemId===id) {
             return (
             <div className="dropdown open"   ref={(ul) => {
@@ -60,8 +60,8 @@ class TemplatesTable extends Component {
                     <i className="caret" ></i>
                 </a>
                 <ul className="dropdown-menu">
-                    <li ><a href="javascript:;" onClick={() => this.onTemplatePreviewClick(id)}>Preview</a></li>
-                    <li><a href="javascript:;" onClick={() => this.onTemplateEditClick(id)}>Edit</a></li>
+                    <li ><a href={preview_url} >Preview</a></li>
+                    <li><a href={edit_url} >Edit</a></li>
                     <li><a href="javascript:;" onClick={()  => this.onTemplateToggleActivation(id, !(status))}>{status? 'Deactivate': 'Activate'}</a></li>
                 </ul>
         </div>);
@@ -85,7 +85,7 @@ class TemplatesTable extends Component {
             <table className="table db-table db-table-sort">
             <thead>
             <tr>
-                <th>Template name</th>
+                <th><p className="text-left">Template name</p></th>
                 <th>Instances</th>
                 <th>Completed</th>
                 <th>Status</th>
@@ -95,7 +95,7 @@ class TemplatesTable extends Component {
             <tbody>
                 {this.props.tableData.map((item, index) =>
                     <tr key={index}>
-                    <td className="td-center nowrap">{item.name}</td>
+                    <td className="nowrap">{item.name}</td>
                     <td className="td-center nowrap">{item.instances}</td>
                     <td className="td-center nowrap">{item.completed}</td>
                     <td className="td-center nowrap">{item.status?
@@ -104,7 +104,7 @@ class TemplatesTable extends Component {
                     }
                     </td>
                     <td data-heading="More" className="td-center  last">
-                        {this.renderMoreButton(item.id, item.status)}
+                        {this.renderMoreButton(item.id, item.edit_url, item.preview_url, item.status)}
                     </td>
                 </tr>
                 )}

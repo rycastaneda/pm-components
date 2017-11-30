@@ -36,7 +36,6 @@ class Criteria extends Component {
         clearInterval(this.intervalId_update);
         clearInterval(this.intervalId_saveAnim);
         let { criteria } = this.props;
-        window.console.log(criteria.isMaximised);
         this.props.dispatch(toggleMaximiseCriteria(criteria.id, !criteria.isMaximised));
         // this.setStateWithQuestion(question, false);
     }
@@ -96,8 +95,11 @@ class Criteria extends Component {
                                 <div className="form-group">
                                     <label className="control-label"><span className="required" aria-required="true">Weighting
                                     <i className="fa fa-info-circle" data-tooltip="Weighting is optional. Leave blank to weight all criteria evenly." aria-hidden="true"></i></span></label>
-                                    <input type="number" min="0" step="1"  name="weight" defaultValue = {this.state.weight} className="form-control"  title="Criteria Weight" placeholder="Value"
-                                    onChange={event => this.onWeightChange(event.target.value)} />
+                                    <div className="input-group">
+                                      <input type="number" min="0" step="1"  name="weight" defaultValue = {this.state.weight} className="form-control"  title="Criteria Weight" placeholder="Value"
+                                      onChange={event => this.onWeightChange(event.target.value)} aria-describedby="weighting-addon"/>
+                                      <span className="input-group-addon" id="weighting-addon">%</span>
+                                  </div>
                                 </div>
                             </div>
 
@@ -132,6 +134,13 @@ class Criteria extends Component {
                                 </div>
                             }
                             </div>
+                            {this.props.criteria.questions.length?
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <hr />
+                                </div>
+                            </div>
+                            :null}
                         <div>
 
                         {this.props.criteria.questions.length?
@@ -192,7 +201,7 @@ class Criteria extends Component {
                             <div className="col-md-2 text-center">
                                 <div className="form-group">
                                     <label className="control-label"><span className="required" aria-required="true">Weighting</span></label>
-                                    <div>{weight}</div>
+                                    <div>{weight} %</div>
                                 </div>
                             </div>
                             <div className="col-md-4 text-right">
@@ -221,7 +230,6 @@ Criteria.propTypes = {
 function mapStateToProps(state, props) {
     const { criteriaByIndex } = state.evaluationTemplateCreator;
     let criteria = props.criteriaId ? criteriaByIndex[props.criteriaId]: createCriteria();
-    window.console.log(criteria);
     return { criteria };
 }
 export default connect(mapStateToProps)(Criteria);
