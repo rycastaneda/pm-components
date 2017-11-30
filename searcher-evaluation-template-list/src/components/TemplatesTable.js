@@ -95,7 +95,7 @@ class TemplatesTable extends Component {
             <tbody>
                 {this.props.tableData.map((item, index) =>
                     <tr key={index}>
-                    <td className="td-center nowrap">{item.name}</td>
+                    <td className="nowrap">{item.name}</td>
                     <td className="td-center nowrap">{item.instances}</td>
                     <td className="td-center nowrap">{item.completed}</td>
                     <td className="td-center nowrap">{item.status?

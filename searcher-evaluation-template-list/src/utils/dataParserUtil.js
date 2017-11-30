@@ -36,7 +36,6 @@ export function getTemplateServiceUrlFor(keyword=null, status =null, date=null, 
 export function getDataFromTemplateService(data) {
     let result={ templates:[] };
     const templateData =data.data;
-    window.console.log(data);
     for (var i in templateData) {
         let current =templateData[i];
         let attrib=current.attributes;

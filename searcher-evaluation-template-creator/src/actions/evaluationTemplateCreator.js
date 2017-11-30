@@ -187,7 +187,6 @@ export function onQuestionTitleChange(criteriaId, questionId, title) {
         .then(() => {
             qn = getState().evaluationTemplateCreator.questionsByIndex[questionId];
             const question = Object.assign({}, qn, { title });
-            window.console.log(question);
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
@@ -253,8 +252,7 @@ export function deleteQuestion(criteriaId, questionId) {
         });
     };
 }
-export function onScaleDefinitionChange(criteriaId, questionId, scaleDefinitionId, text, score, refId) {
-    window.console.log(criteriaId, questionId, scaleDefinitionId, text, score, refId);
+export function onScaleDefinitionChange(criteriaId, questionId, scaleDefinitionId, text, score, refId) {    
     return (dispatch, getState) => {
         const templateId = getState().evaluationTemplateCreator.id;
         const url =TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId+'/scale-definitions';
