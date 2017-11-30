@@ -85,7 +85,7 @@ class TemplatesTable extends Component {
             <table className="table db-table db-table-sort">
             <thead>
             <tr>
-                <th>Template name</th>
+                <th><p className="text-left">Template name</p></th>
                 <th>Instances</th>
                 <th>Completed</th>
                 <th>Status</th>
