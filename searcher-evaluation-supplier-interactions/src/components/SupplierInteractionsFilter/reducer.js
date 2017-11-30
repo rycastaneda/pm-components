@@ -2,7 +2,7 @@ import * as actions from './actionsTypes';
 
 const initialState = {
     filterSearchKey: '',
-    interactionStatuses: [],
+    interactionStatuses: ['viewed', 'in progress', 'sent', 'completed', 'declined', 'quoted'],
     filterInteractionStatus: '',
     filterDate: new Date(),
     toggleFilterShow: false,
@@ -46,6 +46,13 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoading: false,
+            };
+
+        case actions.SUPPLIER_INTERACTIONS_SHOW_FILTER_TOGGLE:
+
+            return {
+                ...state,
+                toggleFilterShow: !state.toggleFilterShow,
             };
 
         default:
