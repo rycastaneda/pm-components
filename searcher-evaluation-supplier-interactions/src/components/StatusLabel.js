@@ -13,7 +13,7 @@ const setStatusClass = (status) => {
 };
 
 StatusLabel.propTypes = {
-    status: PropTypes.bool.isRequired,
+    status: PropTypes.string.isRequired,
 };
 
 export default StatusLabel;

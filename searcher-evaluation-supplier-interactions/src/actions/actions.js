@@ -7,13 +7,16 @@ export const fetchSupplierInteractions = (apiUrl) => (dispatch) => {
         type: actionTypes.SUPPLIER_INTERACTIONS_REQUEST_START,
     });
 
+    console.log(apiUrl)
+
     axios
         .get(apiUrl)
         .then((response) => {
             // might normalise response here
+            console.log("response: ", response);
             dispatch({
                 type: actionTypes.SUPPLIER_INTERACTIONS_REQUEST_SUCCESS,
-                interactions: response,
+                interactions: response.data.interactions,
             });
         })
         .catch((error) => {

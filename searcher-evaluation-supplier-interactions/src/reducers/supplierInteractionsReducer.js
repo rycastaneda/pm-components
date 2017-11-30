@@ -7,11 +7,11 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-    debugger
+
     switch (action.type) {
 
         case actions.SUPPLIER_INTERACTIONS_REQUEST_START:
-            debugger
+
             return {
                 ...state,
                 isLoading: true,
