@@ -1,0 +1,379 @@
+{
+    "data": [
+        {
+            "type": "compliance-assignments",
+            "id": "4",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "WH&S Performance Monitoring",
+                "assignee": "Barry Spence",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "7",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "Extra Details",
+                "assignee": "Barry Pershouse",
+                "last_updated": "2017-11-07 02:35:32",
+                "status_label": "Approved"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "9",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "Safe Work Practices and Procedures",
+                "assignee": "Jenny Goss",
+                "last_updated": "2017-11-07 02:27:44",
+                "status_label": "Approved"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "12",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "Extra Details",
+                "assignee": "Troy Redden",
+                "last_updated": "2017-11-07 06:30:23",
+                "status_label": "Approved"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "14",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "Extra Details",
+                "assignee": "Robyn Silcox",
+                "last_updated": "2017-11-07 05:51:28",
+                "status_label": "Approved"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "18",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "WH&S Policy and Management",
+                "assignee": "Troy Redden",
+                "last_updated": "2017-11-07 06:01:01",
+                "status_label": "Approved"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "22",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "WH&S Policy and Management",
+                "assignee": "Ben Mathison",
+                "last_updated": "2017-11-07 06:07:07",
+                "status_label": "Approved"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "31",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "WH&S Policy and Management",
+                "assignee": "Thomas Hall",
+                "last_updated": "2017-11-07 06:07:56",
+                "status_label": "Approved"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "38",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "WH&S Policy and Management",
+                "assignee": "Jenny Goss",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "52",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "Extra Details",
+                "assignee": "Ron Russell",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "55",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "Extra Details",
+                "assignee": "Kayleen Wust",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "60",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "Extra Details",
+                "assignee": "Carla Colasimone",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "61",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "WH&S Inspection",
+                "assignee": "Thomas Hall",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "62",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "WH&S Inspection",
+                "assignee": "Robyn Silcox",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "63",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "WH&S Inspection",
+                "assignee": "Brian McMah",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "64",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "WH&S Inspection",
+                "assignee": "Carol Brown",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "65",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "WH&S Inspection",
+                "assignee": "Daniel Heaton",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "66",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "WH&S Inspection",
+                "assignee": "David Sandford",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "71",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "WH&S Inspection",
+                "assignee": "Troy Redden",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "73",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "WH&S Policy and Management",
+                "assignee": "Glenys Zunker",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "76",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "Safe Work Practices and Procedures",
+                "assignee": "Andrew Spies",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "77",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "Safe Work Practices and Procedures",
+                "assignee": "Glenys Zunker",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "78",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "Safe Work Practices and Procedures",
+                "assignee": "Ben Mathison",
+                "last_updated": "2017-11-07 07:11:15",
+                "status_label": "Approved"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "79",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "Safe Work Practices and Procedures",
+                "assignee": "Troy Redden",
+                "last_updated": "2017-11-07 07:50:26",
+                "status_label": "Approved"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "80",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "Safe Work Practices and Procedures",
+                "assignee": "Brian McMah",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "81",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "Safe Work Practices and Procedures",
+                "assignee": "Robyn Silcox",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "85",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "Safe Work Practices and Procedures",
+                "assignee": "Thomas Hall",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "86",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "Safe Work Practices and Procedures",
+                "assignee": "David Sandford",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "87",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "Safe Work Practices and Procedures",
+                "assignee": "Daniel Heaton",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        },
+        {
+            "type": "compliance-assignments",
+            "id": "89",
+            "attributes": {
+                "supplier": "Vans Slashing and Mowing",
+                "panels": "TEN/0031 Weed Mgmt",
+                "section": "Extra Details",
+                "assignee": "Jenny Goss",
+                "last_updated": null,
+                "status_label": "Pending"
+            }
+        }
+    ],
+    "meta": {
+        "pagination": {
+            "total": 45,
+            "count": 30,
+            "per_page": 30,
+            "current_page": 1,
+            "total_pages": 2
+        }
+    },
+    "links": {
+        "self": "http://api.pm.local.dev//compliance/reports?page=1",
+        "first": "http://api.pm.local.dev//compliance/reports?page=1",
+        "next": "http://api.pm.local.dev//compliance/reports?page=2",
+        "last": "http://api.pm.local.dev//compliance/reports?page=2"
+    }
+}
