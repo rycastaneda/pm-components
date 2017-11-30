@@ -133,7 +133,6 @@ class Question extends Component {
         clearInterval(this.intervalId_saveAnim);
         let { question } = this.props;
         this.props.dispatch(toggleMaximiseQuestion(question.id, !question.isMaximised));
-        // this.setStateWithQuestion(question, false);
     }
 
     onCommentRequiredChange(isCommentRequired) {
@@ -144,13 +143,14 @@ class Question extends Component {
     }
     onQuestionTypeChange(type) {
         this.setState({ type });
-        this.props.dispatch(onQuestionTypeChange(this.props.criteriaId, this.props.question.id, type));
+        if (this.props.question.id) {
+            this.props.dispatch(onQuestionTypeChange(this.props.criteriaId, this.props.question.id, type));
+        }
     }
     updateScaleDefinition(id, index, label, value, refId) {
         clearInterval(this.intervalId_update);
         this.props.dispatch(onScaleDefinitionChange(this.props.criteriaId, this.props.question.id, id,  label, value, refId));
     }
-
 
     onScaleDefinitionChange(id, index, label) {
         let { scaleDefinitions } = this.state;

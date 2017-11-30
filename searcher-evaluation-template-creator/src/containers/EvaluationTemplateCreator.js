@@ -139,8 +139,16 @@ class EvaluationTemplateCreator extends Component {
                 <div className="row">
                     <div className="col-md-12 text-right">
                         <hr />
+
                         <div className="form-group">
-                            <button className="btn btn-md save-template " type="button" onClick={() => this.props.dispatch(publishTemplate())}><i className="fa fa-send"></i>Save Template</button>
+                            <ul className="list-inline">
+                                <li>
+                                    <a className="btn btn-md" href="searcher/evaluation/list_templates"><i className="fa fa-download"></i>Save and Continue Later</a>
+                                </li>
+                                <li>
+                                    <button className="btn btn-md save-template " type="button" onClick={() => this.props.dispatch(publishTemplate())}><i className="fa fa-send"></i>Publish Template</button>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
