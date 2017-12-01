@@ -89,7 +89,7 @@ class TemplatesTable extends Component {
                 <th>Instances</th>
                 <th>Completed</th>
                 <th>Status</th>
-                <th></th>
+                <th>More</th>
             </tr>
             </thead>
             <tbody>
@@ -103,7 +103,7 @@ class TemplatesTable extends Component {
                         :<span className={`bs-label bs-label-danger`}>Inactive</span>
                     }
                     </td>
-                    <td data-heading="More" className="td-center  last">
+                    <td data-heading="More" className="td-center last">
                         {this.renderMoreButton(item.id, item.edit_url, item.preview_url, item.status)}
                     </td>
                 </tr>

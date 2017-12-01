@@ -94,7 +94,7 @@ class Criteria extends Component {
                             <div className="col-md-2 col-sm-12">
                                 <div className="form-group">
                                     <label className="control-label"><span className="required" aria-required="true">Weighting
-                                    <i className="fa fa-info-circle" data-tooltip="Weighting is optional. Leave blank to weight all criteria evenly." aria-hidden="true"></i></span></label>
+                                    <i className="fa fa-info-circle" data-tooltip="The total weighting across all criteria must equal 100%." aria-hidden="true"></i></span></label>
                                     <div className="input-group">
                                       <input type="number" min="0" step="1"  name="weight" defaultValue = {this.state.weight} className="form-control"  title="Criteria Weight" placeholder="Value"
                                       onChange={event => this.onWeightChange(event.target.value)} aria-describedby="weighting-addon"/>
@@ -103,7 +103,7 @@ class Criteria extends Component {
                                 </div>
                             </div>
 
-                            { this.props.criteria.id===null?
+                            { this.props.criteria.id===null && this.state.title?
                                 <div className="col-md-2 col-sm-12">
                                     <div className="form-group pull-right">
                                         <div className="hidden-sm">

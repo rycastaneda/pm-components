@@ -246,8 +246,8 @@ class Question extends Component {
         );
     }
     renderMaximised() {
-        const lastQnOption = getItemByAttrib(this.props.questionTypes, 'maxOptionDefinitions', 0);
-        const isDefsDisabled = (lastQnOption.type===this.state.type);
+        const isDefsDisabled = (this.state.type === '3' || this.state.type === '4');
+
         return (
             <div>
                 <h3>Question {this.props.questionIndex}</h3>
@@ -296,6 +296,7 @@ class Question extends Component {
                             <div className="form-group">
                                 <label className="control-label">Options</label>
                                 <ul>
+                                { isDefsDisabled !== true?
                                     <li>
                                         <div className="checkbox">
                                             <label>
@@ -305,6 +306,7 @@ class Question extends Component {
                                                         this.onAllowScaleDefinitionChange(event.target.checked)
                                                     }
                                                 />
+
                                                 {QUESTION_OPTIONS[0].label}
                                             </label>
                                         { this.state.isAllowScaleDefinitions?
@@ -326,6 +328,8 @@ class Question extends Component {
                                             :null}
                                         </div>
                                     </li>
+                                    :null
+                                }
                                     <li>
                                         <div className="checkbox">
                                             <label>
@@ -384,7 +388,7 @@ class Question extends Component {
             </div>);
     }
     renderFunctionButtons() {
-        if (this.props.question.id===null) {
+        if (this.props.question.id===null && this.state.title) {
             return (
                     <div className="col-md-2">
                         <div className="form-group pull-right">
