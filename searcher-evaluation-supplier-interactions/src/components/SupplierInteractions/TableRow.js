@@ -5,7 +5,9 @@ import StatusLabel from '../StatusLabel';
 const TableRow = ({rowItem}) => (
     <tr>
         <td className="td-center nowrap">{rowItem.date}</td>
-        <td className="td-center nowrap">{rowItem.interaction}</td>
+        <td className="td-center nowrap">
+            <span data-tooltip="RFQ title/evaluation name">{rowItem.interaction}</span>
+        </td>
         <td className="td-center nowrap">{rowItem.initiatedBy}</td>
         <td className="td-center nowrap">{rowItem.relatedTo}</td>
         <td className="td-center nowrap">

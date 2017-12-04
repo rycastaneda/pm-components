@@ -14,14 +14,6 @@ export const updateFilterStatusChange = (interactionStatus) => {
     }
 }
 
-export const updateFilterDateChange = (filterDate) => {
-    // do some moment stuff here
-    return {
-        type: actionTypes.SUPPLIER_INTERACTIONS_FILTER_DATE_CHANGE,
-        filterDate,
-    }
-}
-
 export const submitFilterNormal = () => {
     return {
         type: actionTypes.SUPPLIER_INTERACTIONS_SUBMIT_NORMAL,

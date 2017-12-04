@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actions from './actions';
-import {FilterMainContainer} from "./styling/styledComponents";
+import {FilterMainContainer} from './styling/styledComponents';
+import PMDateTime from '../PMDateTime/main';
 
 const FilterBody = ({toggleFilterShow, interactionStatuses, filterInteractionStatus, actions}) => (
-    <FilterMainContainer className="panel panel-default pad-all" toggleFilterShow={toggleFilterShow}>
+    <FilterMainContainer className="panel panel-default pad-all" toggleFilterShow={ toggleFilterShow }>
         <div className="row">
             <div className="col-xs-6">
                 <div className="form-group">
@@ -15,6 +16,12 @@ const FilterBody = ({toggleFilterShow, interactionStatuses, filterInteractionSta
                         value={filterInteractionStatus}>
                         {interactionStatuses.map(item => <option id={item} key={item}>{item}</option>)}
                     </select>
+                </div>
+            </div>
+            <div className="col-xs-6">
+                <div className="form-group">
+                    <label>Created date</label>
+                    <PMDateTime />
                 </div>
             </div>
         </div>

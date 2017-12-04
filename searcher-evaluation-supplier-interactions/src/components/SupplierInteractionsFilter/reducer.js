@@ -4,7 +4,6 @@ const initialState = {
     filterSearchKey: '',
     interactionStatuses: ['viewed', 'in progress', 'sent', 'completed', 'declined', 'quoted'],
     filterInteractionStatus: '',
-    filterDate: new Date(),
     toggleFilterShow: false,
     isLoading: false,
 };
