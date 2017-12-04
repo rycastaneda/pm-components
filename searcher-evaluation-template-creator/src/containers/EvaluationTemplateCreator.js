@@ -66,7 +66,9 @@ class EvaluationTemplateCreator extends Component {
     render() {
         const { allCriteriaIndexes, id } = this.props;
         return (
+
         <div className="searcher-evaluation-template-creator">
+            <div className="toast-container auto-hide"></div>
 
             <div className="db-form-section">
                 <div className="row">

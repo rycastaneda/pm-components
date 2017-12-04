@@ -16,7 +16,8 @@ class Criteria extends Component {
             title:this.props.criteria.title,
             weight: this.props.criteria.weight,
             showAdd:false,
-            isSaved:false
+            isSaved:false,
+            isWeightError:false
         };
         this.newQuestion = createQuestion();
         this.onSave = this.onSave.bind(this);
@@ -56,7 +57,8 @@ class Criteria extends Component {
     }
 
     onWeightChange(weight) {
-        this.setState({ weight });
+        this.setState({ weight, isWeightError:!event.target.value  });
+
         if (this.props.criteria.id) {
             clearInterval(this.intervalId);
             this.intervalId = setInterval(this.updateCriteriaChange, INPUT_SYNC_INTERVAL);
@@ -100,6 +102,7 @@ class Criteria extends Component {
                                       onChange={event => this.onWeightChange(event.target.value)} aria-describedby="weighting-addon"/>
                                       <span className="input-group-addon" id="weighting-addon">%</span>
                                   </div>
+                                  { this.state.isWeightError?<span className="error danger">Please add a value</span>:null}
                                 </div>
                             </div>
 

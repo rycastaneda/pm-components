@@ -213,6 +213,15 @@ class Question extends Component {
         this.props.dispatch(addDocuments(criteriaId, question.id, documents));
     }
 
+    getWeightInputStyle() {
+        let style = 'form-control';
+        if (this.state.isWeightError) {
+            style +=' error';
+        } else if (this.state.isSaved) {
+            style +=' saved';
+        }
+        return style;
+    }
     renderMinimised() {
         return (
             <div className="row">
