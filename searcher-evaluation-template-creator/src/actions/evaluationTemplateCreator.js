@@ -30,7 +30,6 @@ import {
     QUESTION_UPDATE,
     QUESTION_DELETE,
     QUESTION_MAXIMISE_CHANGE,
-
     TEMPLATE_CREATED,
     TEMPLATE_UPDATED,
     REQUEST_FAILED,
@@ -252,7 +251,7 @@ export function deleteQuestion(criteriaId, questionId) {
         });
     };
 }
-export function onScaleDefinitionChange(criteriaId, questionId, scaleDefinitionId, text, score, refId) {    
+export function onScaleDefinitionChange(criteriaId, questionId, scaleDefinitionId, text, score, refId) {
     return (dispatch, getState) => {
         const templateId = getState().evaluationTemplateCreator.id;
         const url =TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId+'/scale-definitions';

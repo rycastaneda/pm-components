@@ -17,6 +17,7 @@ class Criteria extends Component {
             weight: this.props.criteria.weight,
             showAdd:false,
             isSaved:false,
+            isTitleError:false,
             isWeightError:false
         };
         this.newQuestion = createQuestion();
@@ -44,25 +45,60 @@ class Criteria extends Component {
         this.props.dispatch(deleteCriteria(this.props.criteria.id));
     }
     updateCriteriaChange() {
-        this.props.dispatch(updateCriteria(this.props.criteriaId, this.state.title, this.state.weight));
+        let { title, weight } = this.state;
+        if (title.length&&weight.length) {
+            this.props.dispatch(updateCriteria(this.props.criteriaId, this.state.title, this.state.weight));
+        }
+
         clearInterval(this.intervalId);
     }
 
     onTitleChange(title) {
-        this.setState({ title });
+        this.setState({ title, isTitleError:!title.length });
+        clearInterval(this.intervalId);
         if (this.props.criteria.id&&title.length) {
-            clearInterval(this.intervalId);
+
             this.intervalId = setInterval(this.updateCriteriaChange, INPUT_SYNC_INTERVAL);
         }
     }
 
     onWeightChange(weight) {
-        this.setState({ weight, isWeightError:!event.target.value  });
-
-        if (this.props.criteria.id) {
-            clearInterval(this.intervalId);
+        let isWeightError = false;
+        if (weight.length) {
+            if (Number(weight>100)) {
+                isWeightError =true;
+            }
+            if (Number(weight<0)) {
+                isWeightError =true;
+            }
+        } else {
+            isWeightError = true;
+        }
+        this.setState({ weight, isWeightError  });
+        clearInterval(this.intervalId);
+        if (this.props.criteria.id&&!isWeightError) {
             this.intervalId = setInterval(this.updateCriteriaChange, INPUT_SYNC_INTERVAL);
         }
+    }
+
+    getWeightInputStyle() {
+        let style = 'form-control';
+        if (this.state.isWeightError) {
+            style +=' error';
+        } else if (this.state.isSaved) {
+            style +=' saved';
+        }
+        return style;
+    }
+
+    getTitleInputStyle() {
+        let style = 'form-control';
+        if (this.state.isTitleError) {
+            style +=' error';
+        } else if (this.state.isSaved) {
+            style +=' saved';
+        }
+        return style;
     }
     onSave() {
         let title = this.state.title;
@@ -88,8 +124,9 @@ class Criteria extends Component {
                             <div className="col-md-4 col-sm-12">
                                 <div className="form-group">
                                     <label className="control-label"><span className="required" aria-required="true">Criteria</span></label>
-                                    <input type="text" name="title" className="form-control" defaultValue = {this.state.title} title="Criteria" placeholder="Criteria Title"
+                                    <input type="text" name="title" className={this.getTitleInputStyle()} defaultValue = {this.state.title} title="Criteria" placeholder="Criteria Title"
                                     onChange={event => this.onTitleChange(event.target.value)} />
+                                    { this.state.isTitleError?<span className="error danger">Please add a Title</span>:null}
                                 </div>
                             </div>
 
@@ -98,7 +135,7 @@ class Criteria extends Component {
                                     <label className="control-label"><span className="required" aria-required="true">Weighting
                                     <i className="fa fa-info-circle" data-tooltip="The total weighting across all criteria must equal 100%." aria-hidden="true"></i></span></label>
                                     <div className="input-group">
-                                      <input type="number" min="0" step="1"  name="weight" defaultValue = {this.state.weight} className="form-control"  title="Criteria Weight" placeholder="Value"
+                                      <input type="number" min="0" step="1"  name="weight" defaultValue = {this.state.weight} className={this.getWeightInputStyle()} title="Criteria Weight" placeholder="Value"
                                       onChange={event => this.onWeightChange(event.target.value)} aria-describedby="weighting-addon"/>
                                       <span className="input-group-addon" id="weighting-addon">%</span>
                                   </div>
