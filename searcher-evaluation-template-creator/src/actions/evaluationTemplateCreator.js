@@ -1,4 +1,4 @@
-import { } from '../constants/ActionTypes';
+
 import axios from 'axios';
 import {
     parseDataFromFetchTemplate,
@@ -32,22 +32,24 @@ import {
     QUESTION_MAXIMISE_CHANGE,
     TEMPLATE_CREATED,
     TEMPLATE_UPDATED,
-    REQUEST_FAILED,
+    PROMPT_MESSAGE,
+    CLEAR_MESSAGES,
     IS_BUSY
 } from '../constants/ActionTypes';
-
+import { MESSAGE_TYPE_ERROR, MESSAGE_TYPE_SUCCESS } from '../constants';
 const TEMPLATE_SERVICE_URL = 'evaluation-templates';
 export function publishTemplate() {
     return (dispatch, getState) => {
         const templateId = getState().evaluationTemplateCreator.id;
         return axios.post(TEMPLATE_SERVICE_URL+'/'+templateId+'/finalise', {})
         .then(() => {
-            alert('Template Published.');
+            dispatch({ type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_SUCCESS, message:'Template Published.' });
+
         })
         .catch((error) => {
             // dispatch({ type:REQUEST_FAILED, message: error.message });
             error.response.data.errors.forEach((e) => {
-                alert(e.detail);
+                dispatch({ type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message: e.detail });
             });
 
         });
@@ -67,12 +69,12 @@ export function initialize() {
             if (questionTypes.length) {
                 dispatch({ type:INITIALIZED, questionTypes });
             } else {
-                alert('Unable to proceed. Initial data returned by the service is empty');
+                dispatch({ type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message: 'Unable to proceed. Initial data returned by the service is empty' });
             }
 
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({ type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message: error.message });
         });
     };
 }
@@ -85,7 +87,7 @@ export function addTemplate(title) {
             dispatch({ type:TEMPLATE_CREATED, title: template.attributes.title, id:Number(template.id) });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({ type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message: error.message });
         });
     };
 }
@@ -98,7 +100,7 @@ export function updateTemplate(title, id) {
             dispatch({ type:TEMPLATE_UPDATED, title });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({ type: PROMPT_MESSAGE, messageType:'error', message: error.message });
         });
     };
 }
@@ -111,7 +113,7 @@ export function addCriteria(title, weight) {
             dispatch({ type:CRITERIA_ADD, criterion: createCriterionFromData(response.data.data) });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({ type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message: error.message });
         });
     };
 }
@@ -126,7 +128,7 @@ export function deleteCriteria(id) {
             dispatch({ type:CRITERIA_DELETE, id });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({ type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message: error.message });
         });
     };
 }
@@ -141,7 +143,7 @@ export function updateCriteria(id, title, weight) {
             dispatch({ type:CRITERIA_UPDATE, id, title, weight });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({ type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message: error.message });
         });
     };
 }
@@ -157,7 +159,7 @@ export function addQuestionToCriteria(criteriaId, questionTitle, questionType) {
             dispatch({ type:QUESTION_ADD, criteriaId, question });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({ type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message: error.message });
         });
     };
 }
@@ -173,7 +175,7 @@ export function onQuestionTypeChange(criteriaId, questionId, type) {
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({ type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message: error.message });
         });
     };
 }
@@ -189,7 +191,7 @@ export function onQuestionTitleChange(criteriaId, questionId, title) {
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({ type: PROMPT_MESSAGE, messageType:'error', message: error.message });
         });
     };
 }
@@ -205,7 +207,7 @@ export function onQuestionAllowUploadChange(criteriaId, questionId, isAllowUploa
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({ type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message: error.message });
         });
     };
 }
@@ -221,7 +223,7 @@ export function  onAllowScaleDefinitionChange(criteriaId, questionId, isAllowSca
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({ type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message: error.message });
         });
     };
 }
@@ -235,7 +237,7 @@ export function onQuestionAllowCommentsChange(criteriaId, questionId, isCommentR
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({ type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message: error.message });
         });
     };
 }
@@ -247,7 +249,7 @@ export function deleteQuestion(criteriaId, questionId) {
             dispatch({ type:QUESTION_DELETE, criteriaId, questionId });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({ type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message: error.message });
         });
     };
 }
@@ -271,7 +273,7 @@ export function onScaleDefinitionChange(criteriaId, questionId, scaleDefinitionI
                     dispatch({ type:QUESTION_UPDATE, criteriaId, question });
                 })
                 .catch((error) => {
-                    dispatch({ type:REQUEST_FAILED, message: error.message });
+                    dispatch({ type:PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message: error.message });
                 });
         } else {
 
@@ -289,7 +291,7 @@ export function onScaleDefinitionChange(criteriaId, questionId, scaleDefinitionI
                     dispatch({ type:QUESTION_UPDATE, criteriaId, question });
                 })
                 .catch((error) => {
-                    dispatch({ type:REQUEST_FAILED, message: error.message });
+                    dispatch({ type:PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message: error.message });
                 });
         }
     };
@@ -338,11 +340,20 @@ export function addDocumentsForQuestion(criteriaId, questionId, documents) {
             ).then((response) => {
                 if (!response.every(response => response.status === 200)) { // Respond to error if necessary
                     dispatch({
-                        type: REQUEST_FAILED
+                        type: PROMPT_MESSAGE,
+                        messageType:MESSAGE_TYPE_ERROR,
+                        message:'Error'
                     });
                 }
             });
     };
+}
+
+export function promptError(message) {
+    return { type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message:message };
+}
+export function promptSuccess(message) {
+    return { type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_SUCCESS, message:message };
 }
 export function deleteDocument(criteriaId, questionId, id) {
     return (dispatch, getState) => {
@@ -353,7 +364,7 @@ export function deleteDocument(criteriaId, questionId, id) {
             dispatch({ type:DOCUMENT_DELETE, questionId, id });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({ type:PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message: error.message });
         });
     };
 }
@@ -373,12 +384,12 @@ export function fetchTemplate(id) {
                 if (questionTypes.length) {
                     dispatch({ type:INITIALIZED, questionTypes });
                 } else {
-                    alert('Unable to proceed. Initial data returned by the service is empty');
+                    dispatch({ type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message: 'Unable to proceed. Initial data returned by the service is empty' });
                 }
 
             })
             .catch((error) => {
-                dispatch({ type:REQUEST_FAILED, message: error.message });
+                dispatch({ type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message: error.message });
             }),
             getPromiseForService(TEMPLATE_SERVICE_URL+'/'+id+'?include=criteria.questions', dispatch)
             .then((response) => {
@@ -394,10 +405,14 @@ export function fetchTemplate(id) {
 function getPromiseForService(url, dispatch) {
     return axios.get(url)
     .catch((error) => {
-        dispatch({ type:REQUEST_FAILED, message: error.message });
+        dispatch({ type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message: error.message });
     });
 }
 
+export function clearMessages() {
+    window.console.log('clearMessages action');
+    return { type: CLEAR_MESSAGES };
+}
 export function isBusy(status) {
     return {
         type: IS_BUSY,

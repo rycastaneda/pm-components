@@ -17,18 +17,21 @@ import {
     DOCUMENTS_UPLOADING,
     DOCUMENT_DELETE,
     IS_BUSY,
-    REQUEST_FAILED
+    PROMPT_MESSAGE,
+    CLEAR_MESSAGES
 } from '../constants/ActionTypes';
 
 import {
     UPLOAD_IN_PROGRESS,
     UPLOAD_SUCCESS,
-    UPLOAD_FAILED
+    UPLOAD_FAILED,
+    MESSAGE_TYPE_ERROR,
+    MESSAGE_TYPE_SUCCESS
 } from '../constants';
 
 function getInitialData() {
     return {  isBusy:false,
-        errorMessage:null,
+        messages:[],
         id:null,
         title:'',
         criteriaByIndex:{},
@@ -217,7 +220,7 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                     }
                 }
                 let questionsByIndex = Object.assign({}, state.questionsByIndex);
-                questionsByIndex[id] = question;        
+                questionsByIndex[id] = question;
                 return Object.assign({}, state, { questionsByIndex });
             }
         case QUESTION_DELETE:
@@ -242,10 +245,24 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                 state.isBusy = action.status;
                 return Object.assign({}, state);
             }
-        case REQUEST_FAILED:
+        case PROMPT_MESSAGE:
             {
                 state.isBusy = false;
-                state.errorMessage = action.message;
+                let { message, messageType } = action;
+                switch (action.messageType) {
+                    case MESSAGE_TYPE_ERROR:
+                        state.messages =[...state.messages, { messageClass:'error', message, messageType }];
+                        break;
+                    case MESSAGE_TYPE_SUCCESS:
+                        state.messages =[...state.messages, { messageClass:'success', message, messageType }];
+                        break;
+                }
+
+                return Object.assign({}, state);
+            }
+        case CLEAR_MESSAGES:
+            {
+                state.messages = [];
                 return Object.assign({}, state);
             }
         default:

@@ -139,7 +139,7 @@ class Criteria extends Component {
                                       onChange={event => this.onWeightChange(event.target.value)} aria-describedby="weighting-addon"/>
                                       <span className="input-group-addon" id="weighting-addon">%</span>
                                   </div>
-                                  { this.state.isWeightError?<span className="error danger">Please add a value</span>:null}
+                                  { this.state.isWeightError?<span className="error danger">Accepted values: 0 to 100</span>:null}
                                 </div>
                             </div>
 
