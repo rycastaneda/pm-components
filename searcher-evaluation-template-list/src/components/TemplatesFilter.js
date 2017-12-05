@@ -63,7 +63,7 @@ class EvaluationTemplatesFilter extends Component {
                         <div className="form-group">
                         <label>Active Status</label>
                             <select className="form-control form-control-sm" onChange={event => this.onSelectedStatusChange(event.target.value)} value={this.state.selectedStatus}>
-                                    {this.props.templateStatusesList.map(item => <option id={item} key={item}>{item}</option>)}
+                                    {this.props.templateStatusesList.map(item => <option id={item} key={item} value={item}>{item.charAt(0).toUpperCase() + item.slice(1)}</option>)}
                                </select>
                            </div>
                     </div>
