@@ -1,8 +1,8 @@
 {
   "plugins": [
     "transform-runtime",
-    "transform-object-rest-spread",
-    "react-hot-loader/babel"
+    "react-hot-loader/babel",
+    "transform-object-rest-spread"
   ],
   "presets": [
     "react",

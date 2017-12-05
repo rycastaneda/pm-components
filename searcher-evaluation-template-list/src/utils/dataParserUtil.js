@@ -13,10 +13,10 @@ export function getTemplateServiceUrlFor(keyword=null, status =null, date=null, 
         urlPostfix +='perpage='+maxRowLength;
     }
     if (keyword) {
-        urlPostfix +='&filter[title]='+keyword;
+        urlPostfix +='&filters[title]='+keyword;
     }
     if (status) {
-        urlPostfix +='&filter[active]=';
+        urlPostfix +='&filters[active]=';
         if (status==='active') {
             urlPostfix+=1;
         } else {

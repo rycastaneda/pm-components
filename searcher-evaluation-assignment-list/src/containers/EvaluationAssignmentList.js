@@ -1,70 +1,65 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import AssignmentsFilter from '../components/AssignmentsFilter';
-import { STATUS_LIST, LINKEDTO_LIST, MAXROWS_LIST } from '../constants/DataConstants';
+import { MAXROWS_LIST } from '../constants/DataConstants';
 import {
-    onEvaluationAssignmentsDisplayedLengthChange,
-    previewAssignment,
-    editAssignment,
-    changeAssignmentStatus,
-    deleteAssignment,
-    fetchEvaluationAssignmentsFor,
+    onEvaluationTemplatesDisplayedLengthChange,
+
+    onEvaluationAssignmentFilterChange,
+    onEvaluationTemplatesPageChange,
     initialize
 } from '../actions/evaluationAssignments';
-
 import AssignmentsTable from '../components/AssignmentsTable';
-
 class EvaluationAssignmentList extends Component {
     constructor(props) {
         super(props);
         this.onFilterSubmit = this.onFilterSubmit.bind(this);
     }
+
     componentDidMount() {
         this.props.dispatch(initialize());
     }
-    onFilterSubmit(keyword, status, date) {
-        fetchEvaluationAssignmentsFor(keyword, status, date);
+
+
+    onFilterSubmit(result) {
+        this.props.dispatch(
+            onEvaluationAssignmentFilterChange(result)
+        );
     }
+
     tableRowLengthChanged(val) {
-        onEvaluationAssignmentsDisplayedLengthChange(val);
+        this.props.dispatch(onEvaluationTemplatesDisplayedLengthChange(val));
     }
-
-    onAssignmentPreviewClick(id) {
-        previewAssignment(id);
-    }
-
-    onAssignmentEditClick(id) {
-        editAssignment(id);
-    }
-
-    onAssignmentToggleActivateClick(id) {
-        changeAssignmentStatus(id);
-    }
-
-    onAssignmentDeleteClick(id) {
-        deleteAssignment(id);
+    paginateTo(page) {
+        this.props.dispatch(onEvaluationTemplatesPageChange(page));
     }
 
     render() {
-        let { currentAssignmentList, pageCount } = this.props;
+        let {
+            currentPage,
+            totalPages,
+            maxRowLength
+        } = this.props;
         return (
-            <div className="searcher-evaluation-assignment-list">
+            <div className="searcher-evaluation-template-list">
                 <AssignmentsFilter
-                    assignmentStatusesList={STATUS_LIST}
-                    assignmentLinkedToList={LINKEDTO_LIST}
+                    evaluationTemplateList = {this.props.evaluationTemplates}
+                    assignmentStatusesList = {this.props.evaluationTemplateAssignmentStatuses}
+                    assignedToList = {this.props.staff}
+                    assignmentTypeList = {this.props.evaluationTemplateAssignmentTypes}
+                    supplierList = {this.props.preferredSuppliers}
+                    assignmentLinkedToList = {this.props.evaluationTemplates}
                     onSubmit={this.onFilterSubmit}
                 />
                 <AssignmentsTable
-                    tableData={currentAssignmentList}
-                    rowCountList={MAXROWS_LIST}
-                    pageCount={pageCount}
-                    onAssignmentPreviewClick={this.onAssignmentPreviewClick.bind(this)}
-                    onAssignmentEditClick={this.onAssignmentEditClick.bind(this)}
-                    onAssignmentToggleActivateClick={this.onAssignmentToggleActivateClick.bind(this)}
-                    onAssignmentDeleteClick={this.onAssignmentDeleteClick.bind(
-                        this
-                    )}
+                    tableData= {this.props.evaluationAssignments}
+                    rowCountList= {MAXROWS_LIST}
+                    currentPage= {currentPage}
+                    totalPages= {totalPages}
+                    rowCount= {maxRowLength}
                     onMaxRowLengthChange={this.tableRowLengthChanged.bind(this)}
+                    rowCountChange={this.tableRowLengthChanged.bind(this)}
+                    goToPage={this.paginateTo.bind(this)}
                 />
             </div>
         );
@@ -73,9 +68,17 @@ class EvaluationAssignmentList extends Component {
 
 EvaluationAssignmentList.propTypes = {
     isBusy: PropTypes.bool.isRequired,
-    currentAssignmentList: PropTypes.array.isRequired,
-    pageCount: PropTypes.number.isRequired,
+    filterStatusList:PropTypes.array.isRequired,
+    staff:PropTypes.array,
+    preferredSuppliers:PropTypes.array,
+    evaluationTemplateAssignmentTypes:PropTypes.array,
+    evaluationTemplateAssignmentStatuses:PropTypes.array,
+    evaluationAssignments: PropTypes.array.isRequired,
+    evaluationTemplates:PropTypes.array,
+    currentPage: PropTypes.number.isRequired,
+    totalPages: PropTypes.number.isRequired,
     errorMessage: PropTypes.string,
+    maxRowLength: PropTypes.number,
     dispatch: PropTypes.func.isRequired
 };
 
@@ -83,9 +86,31 @@ function mapStateToProps(state) {
     const {
         isBusy,
         errorMessage,
-        currentAssignmentList,
-        pageCount
+        evaluationTemplates,
+        staff,
+        preferredSuppliers,
+        evaluationTemplateAssignmentTypes,
+        evaluationTemplateAssignmentStatuses,
+        filterStatusList,
+        currentPage,
+        totalPages,
+        maxRowLength,
+        evaluationAssignments
     } = state.evaluationAssignments;
-    return { isBusy, errorMessage, currentAssignmentList, pageCount };
+
+    return {
+        isBusy,
+        errorMessage,
+        staff,
+        preferredSuppliers,
+        evaluationTemplateAssignmentTypes,
+        evaluationTemplateAssignmentStatuses,
+        evaluationTemplates,
+        filterStatusList,
+        currentPage,
+        totalPages,
+        maxRowLength,
+        evaluationAssignments
+    };
 }
 export default connect(mapStateToProps)(EvaluationAssignmentList);
