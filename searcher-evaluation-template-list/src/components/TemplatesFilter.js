@@ -61,20 +61,23 @@ class EvaluationTemplatesFilter extends Component {
                <div className="row">
                     <div className="col-xs-6">
                         <div className="form-group">
-                        <label>Active Status</label>
+                        <label>Status</label>
                             <select className="form-control form-control-sm" onChange={event => this.onSelectedStatusChange(event.target.value)} value={this.state.selectedStatus}>
-                                    {this.props.templateStatusesList.map(item => <option id={item} key={item}>{item}</option>)}
+                                    {this.props.templateStatusesList.map(item => <option id={item} key={item} value={item}>{item.charAt(0).toUpperCase() + item.slice(1)}</option>)}
                                </select>
                            </div>
                     </div>
                     <div className="col-xs-6">
                         <div className="form-group">
-                            <label>Created date</label>
+                            <label>Date Created</label>
+                            <div className="input-group">
+                            <span className="input-group-addon"><i className="fa fa-calendar"></i></span>
                             <Datetime
                                 onSelectedDateChange={this.onSelectedDateChange}
                                 selectedDate={null}
                                 />
-                           </div>
+                            </div>
+                       </div>
                     </div>
                     <div className="col-xs-12 pad-top align-right">
                           <ul className="list-inline">
