@@ -38,9 +38,13 @@ class EvaluationAssignmentsFilter extends Component {
 
         this.setState({ selectedAssignedTo: val });
     }
-    onSupplierChange(val) {
-
-        this.setState({ selectedSupplier: val });
+    onSupplierChange(index) {
+        let supplier = null;
+        if (index) {
+            supplier = index;
+        }
+        window.console.log(supplier);
+        this.setState({ selectedSupplier: index });
     }
     onAdvancedSubmit() {
 
@@ -54,12 +58,19 @@ class EvaluationAssignmentsFilter extends Component {
                 selectedAssignedTo,
                 selectedSupplier
              } = this.state;
+
+        let selectedEntityInstanceId = '';
+        if (selectedSupplier!=='') {
+            selectedEntityInstanceId = this.props.supplierList[selectedSupplier].userName;
+            selectedSupplier = this.props.supplierList[selectedSupplier].id;
+        }
         this.props.onSubmit(
             { selectedStatus,
             selectedLinkedTo,
             selectedTemplate,
             selectedAssignedTo,
             selectedSupplier,
+            selectedEntityInstanceId,
             selectedAssignedOn }
         );
 
@@ -99,7 +110,7 @@ class EvaluationAssignmentsFilter extends Component {
                                         this.onTemplateChange(
                                             event.target.value
                                         )}>
-                                        <option value={null} >None</option>
+                                        <option value={''} >None</option>
                                         {   evaluationTemplateList.map(item =>
                                             <option key={item.id} value={item.id}>{item.title}</option>)
                                         }
@@ -114,7 +125,7 @@ class EvaluationAssignmentsFilter extends Component {
                                             this.onAssignedToChange(
                                                 event.target.value
                                             )}>
-                                        <option value={null} >None</option>
+                                        <option value={''} >None</option>
                                         {   assignedToList.map(item =>
                                             <option key={item.id} value={item.id}>{item.firstName} {item.lastName}</option>)
                                         }
@@ -140,9 +151,9 @@ class EvaluationAssignmentsFilter extends Component {
                                         this.onSupplierChange(
                                             event.target.value
                                         )}>
-                                        <option value={null} >None</option>
-                                        {   supplierList.map(item =>
-                                            <option key={item.id} value={item.id}>{item.userName}</option>)
+                                        <option value={''} >None</option>
+                                        {   supplierList.map((item, index) =>
+                                            <option key={item.id} value={index}>{item.userName}</option>)
                                         }
                                     </select>
                                 </div>
@@ -156,7 +167,7 @@ class EvaluationAssignmentsFilter extends Component {
                                                 event.target.value
                                             )}
                                         value={this.state.selectedLinkedTo}>
-                                        <option value={null} >None</option>
+                                        <option value={''} >None</option>
                                         {this.props.assignmentTypeList.map(
                                             (item, index) => (
                                                 <option value={item.id} key={index}>
@@ -177,7 +188,7 @@ class EvaluationAssignmentsFilter extends Component {
                                                 event.target.value
                                             )}
                                         value={this.state.selectedStatus}>
-                                        <option value={null} >None</option>
+                                        <option value={''} >None</option>
                                         { assignmentStatusesList.map(
                                             (item, index) => (
                                                 <option value={item.id} key={index}>

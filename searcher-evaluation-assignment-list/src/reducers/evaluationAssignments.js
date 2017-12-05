@@ -1,17 +1,16 @@
 import { EVALUATION_ASSIGMENTS_FETCHED,
-    EVALUATION_TEMPLATE_UPDATED,
     IS_BUSY,
     REQUEST_FAILED,
     INITIALIZED } from '../constants/ActionTypes';
-import { MAXROWS_DEFAULT,
-    STATUS_DEFAULT } from '../constants/DataConstants';
+import { MAXROWS_DEFAULT } from '../constants/DataConstants';
 
 const INITIAL_DATA = {
-    evaluationTemplateAssignmentTypes: [],
-    evaluationTemplateAssignmentStatuses:[],
-    evaluationTemplates:[],
-    filterKeyword:'',
-    filterStatus:STATUS_DEFAULT,
+    selectedLinkedTo:'',
+    selectedTemplate:'',
+    selectedAssignedTo:'',
+    selectedSupplier:'',
+    selectedAssignedOn:'',
+    selectedEntityInstanceId:'',
     filterDate:null,
     isBusy:false,
     errorMessage:null,
@@ -21,7 +20,10 @@ const INITIAL_DATA = {
     filterStatusList:[],
     staff:[],
     preferredSuppliers: [],
-    evaluationAssignments:[]
+    evaluationAssignments:[],
+    evaluationTemplateAssignmentTypes: [],
+    evaluationTemplateAssignmentStatuses:[],
+    evaluationTemplates:[]
 };
 
 export function evaluationAssignments(state = INITIAL_DATA, action) {
@@ -30,24 +32,24 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
 
         case EVALUATION_ASSIGMENTS_FETCHED:
             {
-                let { evaluationAssignments, currentPage, totalPages } = action;
+                let { evaluationAssignments, currentPage, totalPages, selectedLinkedTo,
+                selectedTemplate,
+                selectedAssignedTo,
+                selectedSupplier,
+                selectedEntityInstanceId,
+                selectedAssignedOn  } = action;
                 let isBusy = false;
-                return { ...state, evaluationAssignments, currentPage, totalPages, isBusy };
-            }
-        case EVALUATION_TEMPLATE_UPDATED:
-            {
-                let newState = Object.assign({}, state);
-                state.currentTemplateList.forEach((item) => {
-
-                    if (item.id === action.id) {
-                        item.status = action.status;
-                    }
-                });
-                const currentTemplateList = JSON.parse(JSON.stringify(state.currentTemplateList));
-                newState.currentTemplateList = currentTemplateList;
-
-                newState.isBusy = false;
-                return newState;
+                return { ...state,
+                    evaluationAssignments,
+                    currentPage,
+                    totalPages,
+                    selectedLinkedTo,
+                    selectedTemplate,
+                    selectedAssignedTo,
+                    selectedSupplier,
+                    selectedEntityInstanceId,
+                    selectedAssignedOn,
+                    isBusy };
             }
         case IS_BUSY:
             state.isBusy = action.status;

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getTemplateServiceUrlFor,
+import {
     getDataFromAssignmentService,
     getAssignmentServiceUrlFor,
     parseInitializeResponse
@@ -26,7 +26,7 @@ export function initialize() {
             axios.get('staff'),
             axios.get('preferred-suppliers'),
             getPromiseForService(
-                getAssignmentServiceUrlFor(MAXROWS_DEFAULT, 1),
+                getAssignmentServiceUrlFor({ maxRowLength: MAXROWS_DEFAULT, currentPage:1 }),
                 dispatch
             )
         ]).then((response) => {
@@ -38,30 +38,36 @@ export function initialize() {
             let preferredSuppliers = response[4].data;
             let evaluationAssignments = response[5].data;
 
-            let result = parseInitializeResponse({ evaluationTemplates, evaluationTemplateAssignmentTypes, evaluationTemplateAssignmentStatuses, staff, preferredSuppliers, evaluationAssignments });
+            let result = parseInitializeResponse({ evaluationTemplates,
+                evaluationTemplateAssignmentTypes,
+                evaluationTemplateAssignmentStatuses,
+                staff,
+                preferredSuppliers,
+                evaluationAssignments });
+
             dispatch({ type:INITIALIZED,  ...result });
         });
-    };
-}
-export function fetchEvaluationTemplates() {
-    return (dispatch) => {
-        getPromiseForAssignmentService(getTemplateServiceUrlFor(), dispatch);
     };
 }
 
 export function onEvaluationTemplatesPageChange(currPage) {
     return (dispatch, getState) => {
-        let { perPage, selectedLinkedTo,
+        let { maxRowLength, selectedLinkedTo,
         selectedTemplate,
         selectedAssignedTo,
         selectedSupplier,
-        selectedAssignedOn } = getState().evaluationAssignments;
-        
-        getPromiseForAssignmentService(getAssignmentServiceUrlFor (perPage, currPage, selectedLinkedTo,
-        selectedTemplate,
-        selectedAssignedTo,
-        selectedSupplier,
-        selectedAssignedOn), dispatch);
+        selectedAssignedOn,
+        preferred_supplier_id } = getState().evaluationAssignments;
+        let queryParams = {
+            maxRowLength,
+            currentPage:currPage,
+            selectedLinkedTo,
+            selectedTemplate,
+            selectedAssignedTo,
+            selectedSupplier,
+            selectedAssignedOn,
+            preferred_supplier_id };
+        getPromiseForAssignmentService(getAssignmentServiceUrlFor (queryParams), dispatch);
     };
 }
 
@@ -71,12 +77,18 @@ export function onEvaluationTemplatesDisplayedLengthChange(perPage) {
         selectedTemplate,
         selectedAssignedTo,
         selectedSupplier,
-        selectedAssignedOn } = getState().evaluationAssignments;
-        getPromiseForAssignmentService(getAssignmentServiceUrlFor(perPage, 1, selectedLinkedTo,
-        selectedTemplate,
-        selectedAssignedTo,
-        selectedSupplier,
-        selectedAssignedOn), dispatch);
+        selectedAssignedOn,
+        selectedEntityInstanceId } = getState().evaluationAssignments;
+        let queryParams = {
+            maxRowLength:perPage,
+            currentPage:1,
+            selectedLinkedTo,
+            selectedTemplate,
+            selectedAssignedTo,
+            selectedSupplier,
+            selectedAssignedOn,
+            selectedEntityInstanceId };
+        getPromiseForAssignmentService(getAssignmentServiceUrlFor(queryParams), queryParams, dispatch);
     };
 }
 
@@ -85,23 +97,31 @@ export function onEvaluationAssignmentFilterChange({ selectedStatus,
     selectedTemplate,
     selectedAssignedTo,
     selectedSupplier,
-    selectedAssignedOn }) {
+    selectedAssignedOn,
+    selectedEntityInstanceId }) {
+
     return (dispatch, getState) => {
         const state= getState().evaluationAssignments;
-        getPromiseForAssignmentService(getAssignmentServiceUrlFor(state.maxRowLength, 1, selectedStatus,
-        selectedLinkedTo,
-        selectedTemplate,
-        selectedAssignedTo,
-        selectedSupplier,
-        selectedAssignedOn), dispatch);
+        let { maxRowLength, currentPage } = state;
+        let queryParams = {
+            maxRowLength,
+            currentPage,
+            selectedStatus,
+            selectedLinkedTo,
+            selectedTemplate,
+            selectedAssignedTo,
+            selectedSupplier,
+            selectedAssignedOn,
+            selectedEntityInstanceId };
+        getPromiseForAssignmentService(getAssignmentServiceUrlFor(queryParams), queryParams, dispatch);
     };
 }
 
-function getPromiseForAssignmentService(url, dispatch) {
+function getPromiseForAssignmentService(url, queryParams, dispatch) {
     return getPromiseForService(url, dispatch)
     .then((response) => {
         let result = getDataFromAssignmentService(response.data);
-        dispatch({ type:EVALUATION_ASSIGMENTS_FETCHED, ...result });
+        dispatch({ type:EVALUATION_ASSIGMENTS_FETCHED, ...result, ...queryParams });
     });
 }
 function getPromiseForService(url, dispatch) {

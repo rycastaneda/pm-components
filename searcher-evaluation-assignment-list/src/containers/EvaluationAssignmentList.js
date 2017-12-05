@@ -49,7 +49,7 @@ class EvaluationAssignmentList extends Component {
                     assignmentTypeList = {this.props.evaluationTemplateAssignmentTypes}
                     supplierList = {this.props.preferredSuppliers}
                     assignmentLinkedToList = {this.props.evaluationTemplates}
-                    onSubmit={this.onFilterSubmit}
+                    onSubmit = {this.onFilterSubmit}
                 />
                 <AssignmentsTable
                     tableData= {this.props.evaluationAssignments}
@@ -68,7 +68,6 @@ class EvaluationAssignmentList extends Component {
 
 EvaluationAssignmentList.propTypes = {
     isBusy: PropTypes.bool.isRequired,
-    filterStatusList:PropTypes.array.isRequired,
     staff:PropTypes.array,
     preferredSuppliers:PropTypes.array,
     evaluationTemplateAssignmentTypes:PropTypes.array,
@@ -91,7 +90,6 @@ function mapStateToProps(state) {
         preferredSuppliers,
         evaluationTemplateAssignmentTypes,
         evaluationTemplateAssignmentStatuses,
-        filterStatusList,
         currentPage,
         totalPages,
         maxRowLength,
@@ -106,7 +104,6 @@ function mapStateToProps(state) {
         evaluationTemplateAssignmentTypes,
         evaluationTemplateAssignmentStatuses,
         evaluationTemplates,
-        filterStatusList,
         currentPage,
         totalPages,
         maxRowLength,

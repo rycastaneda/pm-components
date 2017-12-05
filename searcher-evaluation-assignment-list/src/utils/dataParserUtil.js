@@ -6,40 +6,38 @@ export const EVALUATION_SERVICE ='evaluation-template-assignments';
 // const EDIT_PAGE ='/searcher/evaluation/edit_template/';
 // const PREVIEW_PAGE ='/searcher/evaluation/preview_template/';
 
-export function getAssignmentServiceUrlFor(
-    maxRowLength = null,
-    page = null,
-    selectedStatus = null,
-    selectedLinkedTo = null,
-    selectedTemplate = null,
-    selectedAssignedTo = null,
-    selectedSupplier = null,
-    selectedAssignedOn = null
-) {
+export function getAssignmentServiceUrlFor(queryParams) {
+    window.console.log(queryParams);
     let urlPostfix = '';
-    if (page) {
-        urlPostfix += '?page=' + page;
+    let { currentPage, maxRowLength, selectedStatus, selectedLinkedTo, selectedTemplate, selectedAssignedTo, selectedSupplier, selectedEntityInstanceId, selectedAssignedOn } =queryParams;
+    if (currentPage) {
+        urlPostfix += '?page=' + currentPage;
     }
     if (maxRowLength) {
         urlPostfix += '&per_page=' + maxRowLength;
     }
 
-    if (selectedStatus) {
+    if (selectedStatus&&selectedStatus!=='') {
         urlPostfix +='&filters[evaluation_template_assignment_status_id]='+selectedStatus;
     }
-    if (selectedLinkedTo) {
+    if (selectedLinkedTo&&selectedLinkedTo!=='') {
         urlPostfix +='&filters[evaluation_template_assignment_type_id]='+selectedLinkedTo;
     }
-    if (selectedTemplate) {
+    if (selectedTemplate&&selectedTemplate!=='') {
         urlPostfix +='&filters[evaluation_template_id]='+selectedTemplate;
     }
-    if (selectedAssignedTo) {
+    if (selectedAssignedTo&&selectedAssignedTo!=='') {
         urlPostfix +='&filters[assignee_user_id]='+selectedAssignedTo;
     }
-    if (selectedSupplier) {
-        urlPostfix +='&filters[suppliers]='+selectedSupplier;
+    if (selectedEntityInstanceId&&selectedEntityInstanceId!=='') {
+        urlPostfix +='&filters[assignment_entity_instance_id]='+selectedEntityInstanceId;
     }
-    if (selectedAssignedOn) {
+    if (selectedSupplier&&selectedSupplier!=='') {
+        urlPostfix +='&filters[preferred_supplier_id]='+selectedSupplier;
+    }
+    if (selectedAssignedOn&&selectedAssignedOn!=='') {
+        let assignedOn = new Date(selectedAssignedOn);
+        selectedAssignedOn = assignedOn.getDate()+'/'+assignedOn.getMonth()+'/'+assignedOn.getFullYear();
         urlPostfix +='&filters[date]='+selectedAssignedOn;
     }
 
@@ -118,7 +116,7 @@ function parseEvaluationAssignments(evaluationAssignments) {
         obj.linkedTo = { id: linkedToObj.id, title: linkedToObj.attributes.title };
         let entityInstance = assignment.relationships.assignmentEntityInstance.data;
         let supplierObj = evaluationAssignments[entityInstance.type][entityInstance.id];
-        obj.supplier = { id: supplierObj.id, title: supplierObj.attributes.title };
+        obj.supplier = { id: supplierObj.id, title: supplierObj.attributes.title, type:entityInstance.type, typeId:entityInstance.id };
         let statusObj = evaluationAssignments.evaluationTemplateAssignmentStatuses[assignment.relationships.assignmentStatus.data.id];
         obj.assignmentStatus = { id:statusObj.id, title:statusObj.attributes.title };
         arr.push(obj);
