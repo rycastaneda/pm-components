@@ -15,7 +15,7 @@ export function getAssignmentServiceUrlFor(
     selectedAssignedTo = null,
     selectedSupplier = null,
     selectedAssignedOn = null
-) {    
+) {
     let urlPostfix = '';
     if (page) {
         urlPostfix += '?page=' + page;
@@ -25,16 +25,16 @@ export function getAssignmentServiceUrlFor(
     }
 
     if (selectedStatus) {
-        urlPostfix +='&filters[evaluation-template-assignment-statuses]='+selectedStatus;
+        urlPostfix +='&filters[evaluation_template_assignment_status_id]='+selectedStatus;
     }
     if (selectedLinkedTo) {
-        urlPostfix +='&filters[evaluation-template-assignment-types]='+selectedLinkedTo;
+        urlPostfix +='&filters[evaluation_template_assignment_type_id]='+selectedLinkedTo;
     }
     if (selectedTemplate) {
-        urlPostfix +='&filters[evaluation-template]='+selectedTemplate;
+        urlPostfix +='&filters[evaluation_template_id]='+selectedTemplate;
     }
     if (selectedAssignedTo) {
-        urlPostfix +='&filters[staff]='+selectedAssignedTo;
+        urlPostfix +='&filters[assignee_user_id]='+selectedAssignedTo;
     }
     if (selectedSupplier) {
         urlPostfix +='&filters[suppliers]='+selectedSupplier;
