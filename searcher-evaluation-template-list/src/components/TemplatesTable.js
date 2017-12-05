@@ -116,27 +116,33 @@ class TemplatesTable extends Component {
                 )}
             </tbody>
             </table>
-            <select defaultValue={this.props.rowCount}
-                onChange={event => this.props.rowCountChange(event.target.value) }>
-                {this.props.rowCountList.map((item, index) =>
-                    <option key={index}>{item}</option>
-                )}
-            </select>
-             <div className="pull-right">
-             <ReactPaginate  previousLabel={"previous"}
-                       nextLabel={"next"}
-                       breakLabel={<a href="">...</a>}
-                       breakClassName={"break-me"}
-                       pageCount={this.props.totalPages}
-                       forcePage= {this.props.currentPage-1}
-                       marginPagesDisplayed={2}
-                       pageRangeDisplayed={5}
-                       onPageChange={this.handlePageClick}
-                       containerClassName={"pagination"}
-                       subContainerClassName={"pages pagination"}
-                       activeClassName={"active"} />
-             </div>
-        </div>);
+            {this.props.totalPages > 1?
+            <div className="row">
+                <div className="col-sm-12 form-inline">
+                    <select className="form-control" defaultValue={this.props.rowCount}
+                        onChange={event => this.props.rowCountChange(event.target.value) }>
+                        {this.props.rowCountList.map((item, index) =>
+                            <option key={index}>{item}</option>
+                        )}
+                    </select>
+                    &nbsp;
+                    <ReactPaginate  previousLabel={"previous"}
+                              nextLabel={"next"}
+                              breakLabel={<a href="">...</a>}
+                              breakClassName={"break-me"}
+                              pageCount={this.props.totalPages}
+                              forcePage= {this.props.currentPage-1}
+                              marginPagesDisplayed={2}
+                              pageRangeDisplayed={5}
+                              onPageChange={this.handlePageClick}
+                              containerClassName={"pagination"}
+                              subContainerClassName={"pages pagination"}
+                              activeClassName={"active"} />
+                    </div>
+                </div>
+                :null}
+            </div>
+        );
     }
 }
 
