@@ -1,35 +1,27 @@
-import {
-    ASSIGNMENT_CREATED,
-    TEMPLATES_FETCHED,
-    EVALUATION_ON_FETCHED,
-    ASSIGNEES_FETCHED,
-    SELECTED_ASSIGNEES_UPDATE,
-    LINKED_TO_FETCHED,
-    REQUEST_FAILED,
-    IS_BUSY
-} from '../constants/ActionTypes';
+import * as actionTypes from '../constants/ActionTypes';
 import { parseDataFromTemplatesService, parseDataFromAssigneeService } from '../utils/dataParser';
 import axios from 'axios';
 
-const SERVICE_URL_FRAGMENT = 'http://localhost:5049/assignment';
+const SERVICE_URL_FRAGMENT = 'https://api.pm.local.dev/';
 
 export function createAssignment(selectedTemplateId, selectedAssigneeId, selectedLinkedToId, selectedLinkId) {
     return (dispatch) => {
         return dispatch({
-            type: ASSIGNMENT_CREATED,
+            type: actionTypes.ASSIGNMENT_CREATED,
             selectedTemplateId, selectedAssigneeId, selectedLinkedToId, selectedLinkId
         });
     };
 }
+
 export function fetchTemplateList() {
     return (dispatch) => {
         return axios.get(SERVICE_URL_FRAGMENT)
         .then((response) => {
             const templates = parseDataFromTemplatesService(response);
-            dispatch({ type:TEMPLATES_FETCHED, templates });
+            dispatch({ type: actionTypes.TEMPLATES_FETCHED, templates });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({ type: actionTypes.REQUEST_FAILED, message: error.message });
         });
     };
 }
@@ -39,10 +31,10 @@ export function fetchEvaluationOnList() {
         return axios.get(SERVICE_URL_FRAGMENT)
         .then((response) => {
             const templates = parseDataFromTemplatesService(response);
-            dispatch({ type:EVALUATION_ON_FETCHED, templates });
+            dispatch({ type: actionTypes.EVALUATION_ON_FETCHED, templates });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({ type: actionTypes.REQUEST_FAILED, message: error.message });
         });
     };
 }
@@ -52,10 +44,10 @@ export function fetchLinkedToList() {
         return axios.get(SERVICE_URL_FRAGMENT)
         .then((response) => {
             const templates = parseDataFromTemplatesService(response);
-            dispatch({ type:LINKED_TO_FETCHED, templates });
+            dispatch({ type: actionTypes.LINKED_TO_FETCHED, templates });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({ type: actionTypes.REQUEST_FAILED, message: error.message });
         });
     };
 }
@@ -65,17 +57,17 @@ export function fetchAssigneeList() {
         return axios.get(SERVICE_URL_FRAGMENT)
         .then((response) => {
             const templates = parseDataFromAssigneeService(response);
-            dispatch({ type:ASSIGNEES_FETCHED, templates });
+            dispatch({ type: actionTypes.ASSIGNEES_FETCHED, templates });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({ type: actionTypes.REQUEST_FAILED, message: error.message });
         });
     };
 }
 
 export function isBusy(status) {
     return {
-        type: IS_BUSY,
+        type: actionTypes.IS_BUSY,
         status
     };
 }
@@ -86,7 +78,7 @@ export function selectAssigneeInDropDown(selectedAssignees) {
 
 function updateSelectedAssignees(assignees) {
     return {
-        type: SELECTED_ASSIGNEES_UPDATE,
+        type: actionTypes.SELECTED_ASSIGNEES_UPDATE,
         selectedAssignees:assignees
     };
 }

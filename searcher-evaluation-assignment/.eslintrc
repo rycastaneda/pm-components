@@ -5,7 +5,8 @@
     "sourceType": "module",
     "ecmaFeatures": {
       "impliedStrict": true,
-      "jsx": true
+      "jsx": true,
+      "experimentalObjectRestSpread": true
     }
   },
   "env": {
@@ -26,7 +27,7 @@
     "arrow-parens": ["error", "as-needed", {"requireForBlockBody": true}],
     "arrow-spacing": ["error"],
     "brace-style": ["error"],
-    "comma-dangle": ["error", "never"],
+    "comma-dangle": 0,
     "comma-spacing": ["error", {"before": false, "after": true}],
     "computed-property-spacing": ["error", "never"],
     "consistent-this": ["error", "self"],
