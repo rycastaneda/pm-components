@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
 import api from '../../shared/api.config';
+import './styles/index.scss';
 import axios from 'axios';
 !window._babelPolyfill && require('babel-polyfill'); // prevent polyfill from importing twice
 
