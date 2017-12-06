@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import Datetime from './PlantMinerDatetime';
+
 class EvaluationAssignmentsFilter extends Component {
     constructor(props) {
         super(props);
@@ -83,6 +84,7 @@ class EvaluationAssignmentsFilter extends Component {
         let { evaluationTemplateList, assignedToList, supplierList, assignmentStatusesList } = this.props;
         return (
             <div>
+
                     <div className="row mar-btm">
                         <div className="col-xs-12 col-md-12 align-right">
                             <button
@@ -119,6 +121,10 @@ class EvaluationAssignmentsFilter extends Component {
                             </div><div className="col-xs-6">
                                 <div className="form-group">
                                     <label>Assigned To</label>
+
+
+
+
                                     <select className = "form-control form-control-sm"
                                         value={this.state.selectedAssignedTo}
                                         onChange={event =>
@@ -133,13 +139,16 @@ class EvaluationAssignmentsFilter extends Component {
                                 </div>
                             </div><div className="col-xs-6">
                                 <div>
-                                    <label>Assigned on</label>
-                                    <Datetime
-                                        onSelectedDateChange={
-                                            this.onSelectedDateChange
-                                        }
-                                        selectedDate={null}
-                                    />
+                                    <label>Date Assigned</label>
+                                    <div className="input-group">
+                                        <span className="input-group-addon"><i className="fa fa-calendar"></i></span>
+                                        <Datetime
+                                            onSelectedDateChange={
+                                                this.onSelectedDateChange
+                                            }
+                                            selectedDate={null}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                             <div className="col-xs-6">
@@ -180,7 +189,7 @@ class EvaluationAssignmentsFilter extends Component {
                             </div>
                             <div className="col-xs-6">
                                 <div className="form-group">
-                                    <label>Active Status</label>
+                                    <label>Status</label>
                                     <select
                                         className="form-control form-control-sm"
                                         onChange={event =>

@@ -1,2 +1,2 @@
-export const EVALUATION_ASSIGNMENT_SERVICE = 'http://org.okfelix.local.dev:5050/evaluation-assignments';
-export const EVALUATION_TEMPLATE_SERVICE = 'http://org.okfelix.local.dev:5050/evaluation-templates?[active=1]';
+export const EVALUATION_ASSIGNMENT_SERVICE = 'http://pit-460-admin.pmstg.com/evaluation-assignments';
+export const EVALUATION_TEMPLATE_SERVICE = 'http://pit-460-admin.pmstg.com/evaluation-templates?[active=1]';
