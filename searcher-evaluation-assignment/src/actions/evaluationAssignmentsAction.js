@@ -13,57 +13,78 @@ export function createAssignment(selectedTemplateId, selectedAssigneeId, selecte
     };
 }
 
-export function fetchTemplateList() {
-    return (dispatch) => {
-        return axios.get(SERVICE_URL_FRAGMENT)
+
+export const fetchTemplateList = () => (dispatch) => {
+    axios.get(SERVICE_URL_FRAGMENT+'evaluation-templates')
         .then((response) => {
             const templates = parseDataFromTemplatesService(response);
-            dispatch({ type: actionTypes.TEMPLATES_FETCHED, templates });
+            dispatch({
+                type: actionTypes.TEMPLATES_FETCHED,
+                templates
+            });
         })
         .catch((error) => {
-            dispatch({ type: actionTypes.REQUEST_FAILED, message: error.message });
+            dispatch({
+                type: actionTypes.REQUEST_FAILED,
+                message: error.message
+            });
         });
-    };
-}
+};
 
-export function fetchEvaluationOnList() {
-    return (dispatch) => {
-        return axios.get(SERVICE_URL_FRAGMENT)
+
+export const fetchEvaluationOnList = () => (dispatch) => {
+
+    axios.get(SERVICE_URL_FRAGMENT)
         .then((response) => {
             const templates = parseDataFromTemplatesService(response);
-            dispatch({ type: actionTypes.EVALUATION_ON_FETCHED, templates });
+            dispatch({
+                type: actionTypes.EVALUATION_ON_FETCHED,
+                templates
+            });
         })
         .catch((error) => {
-            dispatch({ type: actionTypes.REQUEST_FAILED, message: error.message });
+            dispatch({
+                type: actionTypes.REQUEST_FAILED,
+                message: error.message
+            });
         });
-    };
-}
+};
 
-export function fetchLinkedToList() {
-    return (dispatch) => {
-        return axios.get(SERVICE_URL_FRAGMENT)
+export const fetchLinkedToList = () => (dispatch) => {
+    axios.get(SERVICE_URL_FRAGMENT)
         .then((response) => {
             const templates = parseDataFromTemplatesService(response);
-            dispatch({ type: actionTypes.LINKED_TO_FETCHED, templates });
+            dispatch({
+                type: actionTypes.LINKED_TO_FETCHED,
+                templates
+            });
         })
         .catch((error) => {
-            dispatch({ type: actionTypes.REQUEST_FAILED, message: error.message });
+            dispatch({
+                type: actionTypes.REQUEST_FAILED,
+                message: error.message
+            });
         });
-    };
-}
+};
 
-export function fetchAssigneeList() {
-    return (dispatch) => {
-        return axios.get(SERVICE_URL_FRAGMENT)
+
+export const fetchAssigneeList = () => (dispatch) => {
+    axios.get(SERVICE_URL_FRAGMENT)
         .then((response) => {
             const templates = parseDataFromAssigneeService(response);
-            dispatch({ type: actionTypes.ASSIGNEES_FETCHED, templates });
+            dispatch({
+                type: actionTypes.ASSIGNEES_FETCHED,
+                templates
+            });
         })
         .catch((error) => {
-            dispatch({ type: actionTypes.REQUEST_FAILED, message: error.message });
+            dispatch({
+                type: actionTypes.REQUEST_FAILED,
+                message: error.message
+            });
         });
-    };
-}
+};
+
 
 export function isBusy(status) {
     return {
@@ -72,13 +93,19 @@ export function isBusy(status) {
     };
 }
 
-export function selectAssigneeInDropDown(selectedAssignees) {
-    return updateSelectedAssignees(selectedAssignees);
-}
 
-function updateSelectedAssignees(assignees) {
+export const updateSelectedAssignees = (assignees) => {
+    console.log('action creator', assignees);
+
     return {
         type: actionTypes.SELECTED_ASSIGNEES_UPDATE,
-        selectedAssignees:assignees
+        assignees
     };
-}
+};
+
+
+// export function selectAssigneeInDropDown(selectedAssignees) {
+//     return updateSelectedAssignees(selectedAssignees);
+// }
+
+

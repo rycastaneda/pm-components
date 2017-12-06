@@ -38,7 +38,7 @@ export function evaluationAssignment(state = initialState, action) {
         case actionTypes.SELECTED_ASSIGNEES_UPDATE:
             return {
                 ...state,
-                selectedAssignees: action.templates,
+                selectedAssignees: action.assignees,
             };
 
         case actionTypes.IS_BUSY:
