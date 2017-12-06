@@ -1,63 +1,16 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import  Select  from 'react-select';
-import {
-    saveAssignment,
-    fetchTemplateList,
-    fetchAssigneeList,
-    fetchLinkedToList,
-    fetchEvaluationOnList,
-    selectAssigneeInDropDown
-}  from '../actions/evaluationAssignmentsAction';
+import * as actions from '../actions/evaluationAssignmentsAction';
 
 class EvaluationAssignment extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            selectedTemplateId :   null,
-            selectedAssigneeId :    null,
-            selectedLinkedToId :    null,
-            selectedLinkId :    null,
-            selectedAssignees: null 
-        };
-        this.onSave = this.onSave.bind(this);
-        this.onTemplateSelected = this.onTemplateSelected.bind(this);
-        this.onLinkSelected = this.onLinkSelected.bind(this);
-        this.onLinkedToSelected = this.onLinkedToSelected.bind(this);
-        this.onAssigneeSelected = this.onAssigneeSelected.bind(this);
-        this.handleSelectChange = this.handleSelectChange.bind(this);
-        this.handleSelectClose = this.handleSelectClose.bind(this);
-    }
     componentDidMount() {
-        this.props.dispatch(fetchTemplateList());
-    }
-    onSave() {
-        this.props.dispatch(saveAssignment());
-    }
-    onTemplateSelected(id) {
-        this.setState({ selectedTemplateId : id });
-        this.props.dispatch(fetchEvaluationOnList(id));
-    }
-    onLinkSelected(id) {
-        this.setState({ selectedLinkId : id });
-        this.props.dispatch(fetchLinkedToList(id));
-    }
-    onLinkedToSelected(id) {
-        this.setState({ selectedLinkedToId : id });
-        this.props.dispatch(fetchAssigneeList(id));
-    }
-    onAssigneeSelected(id) {
-        this.setState({ selectedAssigneeId : id });
-    }
-    handleSelectChange(value) {
-        this.props.dispatch(selectAssigneeInDropDown(value));
+        const { actions } = this.props;
+        actions.fetchTemplateList();
     }
 
-    handleSelectClose() {
-        this.props.dispatch(selectAssigneeInDropDown(this.props.selectedAssignees));
-    }
     render() {
         /* const { boilerplate } = this.props; */
         const { evaluationTemplates,
@@ -65,18 +18,18 @@ class EvaluationAssignment extends Component {
             evaluationAssignees,
             evaluationLinkedTo,
             selectedAssignees,
-            isBusy } = this.props;
+            isBusy,
+            actions } = this.props;
         return (
                 <form>
                     <div className="row">
                         <div className="col-sm-4 form-group">
                             <label htmlFor="evaluationTemplate">Evaluation Template</label>
                             <select name="evaluationTemplate"
-                                defaultValue={this.state.selectedTemplateId}
                                 id="evaluationTemplate"
                                 className="form-control"
-                                onChange={ event => this.onTemplateSelected(event.target.value)}>
-                                <option key="-" value={null}></option>
+                                onChange={ event => actions.fetchEvaluationOnList(event.target.value)}>
+                                <option key="-" value={null}>Select Template</option>
                                 {evaluationTemplates.map(
                                     (item, index) =>
                                     <option key={index} value={item.id}>{item.label}</option>
@@ -84,16 +37,15 @@ class EvaluationAssignment extends Component {
                             </select>
                         </div>
                     </div>
-                    {(this.state.selectedTemplateId!==null)?
+                    {evaluationLinks.length > 0 ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationIsOn">Evaluation is on</label>
                                 <select name="evaluationIsOn"
-                                    defaultValue={this.state.selectedLinkId}
                                     id="evaluationIsOn"
                                     className="form-control"
-                                    onChange={ event => this.onLinkSelected(event.target.value)}>
-                                    <option key="-" value={null}></option>
+                                    onChange={ event => actions.fetchLinkedToList(event.target.value)}>
+                                    <option key="-" value={null}>Select evaluation</option>
                                     {evaluationLinks.map(
                                         (item, index) =>
                                         <option key={index} value={item.id}>{item.label}</option>
@@ -103,19 +55,17 @@ class EvaluationAssignment extends Component {
                         </div>:
                         null
                     }
-                    {
-                        this.state.selectedLinkId !== null?
+                    {evaluationLinkedTo.length > 0 ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">Linked to</label>
                                 <select name="evaluationLink"
-                                    defaultValue={this.state.selectedLinkedToId}
                                     id="evaluationLink"
                                     className="form-control"
                                     onChange={
-                                        event => this.onLinkedToSelected(event.target.value)
+                                        event => actions.fetchAssigneeList(event.target.value)
                                     }>
-                                    <option key="-" value={null}></option>
+                                    <option key="-" value={null}>Select..</option>
                                     {evaluationLinkedTo.map(
                                         (item, index) =>
                                         <option key={index} value={item.id}>{item.label}</option>
@@ -125,16 +75,17 @@ class EvaluationAssignment extends Component {
                         </div>
                         : null
                     }
-                    {
-                        this.state.selectedLinkedToId !== null?
+                    {evaluationAssignees.length > 0  ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
-                                <label htmlFor="assignees">Assignees</label>
+                                <label htmlFor="assignees">Assignees debug</label>
                                 <div>
-                                    <Select name="form-field-name" multi value={selectedAssignees} options={evaluationAssignees} isLoading={isBusy} valueRenderer={this.renderValue}
-                                    onChange={this.handleSelectChange}
-                                    onClose={this.handleSelectClose}
-                                    />
+                                    <Select name="form-field-name" multi
+                                        value={selectedAssignees}
+                                        options={evaluationAssignees}
+                                        isLoading={isBusy}
+                                        onChange={actions.updateSelectedAssignees}
+                                        valueRenderer={this.renderValue}/>
                                 </div>
                             </div>
                         </div>
@@ -142,7 +93,7 @@ class EvaluationAssignment extends Component {
                     }
                     <div className="row">
                         <div className="col-sm-4">
-                            <button title="Save" disabled={this.state.selectedAssigneeId===null} onClick={this.onSave}>Save</button>
+                            <button title="Save" disabled onClick={this.onSave}>Save</button>
                         </div>
                     </div>
                 </form>
@@ -151,45 +102,43 @@ class EvaluationAssignment extends Component {
 }
 
 EvaluationAssignment.propTypes = {
-    dispatch: PropTypes.func.isRequired,
     evaluationTemplates: PropTypes.array.isRequired,
-    selectedTemplateId: PropTypes.number,
     evaluationLinks: PropTypes.array.isRequired,
-    selectedLinkId: PropTypes.number,
     evaluationAssignees: PropTypes.array.isRequired,
-    selectedAssigneeId: PropTypes.number,
     selectedAssignees:PropTypes.array.isRequired,
     evaluationLinkedTo: PropTypes.array.isRequired,
-    selectedLinkedToId: PropTypes.number,
-    isBusy: PropTypes.bool.isRequired
+    isBusy: PropTypes.bool.isRequired,
+    actions: PropTypes.object,
 };
 
-function mapStateToProps(state) {
+const mapDispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(actions, dispatch),
+    };
+};
+
+const mapStateToProps = (state, ownProps) => {
+
     const {
         evaluationTemplates,
         evaluationLinks,
         evaluationAssignees,
         evaluationLinkedTo,
-        selectedTemplateId,
-        selectedLinkId,
-        selectedAssigneeId,
         selectedAssignees,
-        selectedLinkedToId,
-        isBusy
+        isBusy,
     } = state.evaluationAssignment;
 
+    console.log('map state: ', selectedAssignees);
+
     return {
+        ...ownProps,
         evaluationTemplates,
         evaluationLinks,
         evaluationAssignees,
         evaluationLinkedTo,
-        selectedTemplateId,
-        selectedLinkId,
-        selectedAssigneeId,
         selectedAssignees,
-        selectedLinkedToId,
-        isBusy
+        isBusy,
     };
-}
+};
 
-export default connect(mapStateToProps)(EvaluationAssignment);  // adds dispatch prop
+export default connect(mapStateToProps, mapDispatchToProps)(EvaluationAssignment);  // adds dispatch prop
