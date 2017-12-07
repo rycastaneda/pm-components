@@ -5,7 +5,7 @@ import { fetchEvaluation, changeView } from '../actions/evaluation';
 import Criterion from './Criterion';
 import Loader from '../components/Loader';
 import ViewSelector from '../components/ViewSelector';
-import ComparisonTable from '../components/ComparisonTable';
+import ComparisonTable from './ComparisonTable';
 
 export class Details extends Component {
     constructor(props) {
@@ -15,14 +15,17 @@ export class Details extends Component {
 
     componentDidMount() {
         const parent = this.domRef.parentNode; // eslint-disable-line
-        const evaluationId = parent.getAttribute('data-evaluation-id');
+        const assignmentId = parent.getAttribute(
+            'data-evaluation-assignment-id'
+        );
         const currentView = parent.getAttribute('data-view');
 
-        this.props.dispatch(fetchEvaluation(evaluationId, currentView));
+        this.props.dispatch(fetchEvaluation(assignmentId, currentView));
     }
 
     changeView(event) {
         this.props.dispatch(changeView(event.target.id));
+        this.props.dispatch(fetchEvaluation(null, event.target.id));
     }
 
     render() {
@@ -98,9 +101,8 @@ function mapStateToProps(state) {
 
     const getComments = commentId => {
         let comment = rawComments.byId[commentId];
-        let staff = rawStaff.by[comment.staffId];
-        comment.staff = `${staff.first_name} ${staff.last_name}`;
-
+        let staff = rawStaff.byId[comment.staffId];
+        comment.staff = staff.name;
         return comment;
     };
 
@@ -112,17 +114,8 @@ function mapStateToProps(state) {
 
     const getCriteria = criterionId => {
         let criteria = rawCriterion.byId[criterionId];
-        criteria.reports = [
-            {
-                staff: 'tester',
-                scores: [1, 2, 3, 4]
-            },
-            {
-                staff: 'tester',
-                scores: [2, 3, 3, 4]
-            }
-        ];
         criteria.questions = criteria.questionIds.map(getQuestions);
+
         return criteria;
     };
 
@@ -137,7 +130,7 @@ function mapStateToProps(state) {
 
     let criteriaIds = rawCriterion.allIds;
     if (ui.currentView !== 'compare') {
-        criteriaIds = rawEvaluation.byId[ui.evaluationId].criteriaIds;
+        criteriaIds = rawEvaluation.byId[ui.assignmentId].criteriaIds;
     }
 
     criteria = criteriaIds.map(getCriteria);

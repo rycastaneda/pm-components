@@ -4,13 +4,17 @@ import { criterion } from './criterion';
 import { questions } from './questions';
 import { staff } from './staff';
 import { comments } from './comments';
+import { entity } from './entity';
+import { assignments } from './assignments';
 import { ui } from './ui';
 
 export default combineReducers({
+    assignments,
     evaluation,
     criterion,
     questions,
     staff,
     comments,
-    ui
+    ui,
+    entity
 });

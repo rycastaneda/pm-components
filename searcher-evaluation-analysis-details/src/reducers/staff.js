@@ -8,16 +8,31 @@ const INITIAL_STATE = {
 export function staff(state = INITIAL_STATE, action) {
     switch (action.type) {
         case actions.RECEIVE_EVALUATION:
-            return { ...state };
+            return receiveStaff(state, action);
     }
 
     return state;
 }
 
-// function receiveStaff(state, action) {
-//     const { byId, allIds } = state;
-//     return {
-//         byId,
-//         allIds
-//     };
-// }
+function receiveStaff(state, action) {
+    const { byId, allIds } = state;
+
+    if (action.evaluation.included) {
+        action.evaluation.included
+            .filter(included => included.type === 'staff')
+            .map(staff => {
+                byId[staff.id] = {
+                    id: staff.id,
+                    name: `${staff.attributes.first_name} ${staff.attributes
+                        .last_name}`
+                };
+
+                allIds.push(staff.id);
+            });
+    }
+
+    return {
+        byId,
+        allIds
+    };
+}

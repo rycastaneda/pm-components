@@ -1,15 +1,48 @@
 import React, { PropTypes } from 'react';
 import { Line } from 'react-chartjs-2';
+import randomColor from 'randomcolor';
 
-const Report = ({ reportData }) => {
+const Report = ({ questions }) => {
+    console.log('questions', questions); // eslint-disable-line quotes, no-console
+
+    let labels = [],
+        datasets = [];
+    let staffComments = {};
+
+    questions.map((question, index) => {
+        labels.push({
+            title: question.questionTitle,
+            text: `Q${index}`
+        });
+        // labels.push(`Q${index + 1}`);
+        question.comments.map(comment => {
+            if (staffComments[comment.staff]) {
+                staffComments[comment.staff].push(comment.score);
+            } else {
+                staffComments[comment.staff] = [comment.score];
+            }
+        });
+    });
+
+    datasets = Object.keys(staffComments).map(staff => {
+        let color = randomColor({
+            luminosity: 'dark',
+            format: 'rgba',
+            alpha: 0.7
+        });
+        return {
+            label: staff,
+            fill: false,
+            backgroundColor: color,
+            borderColor: color,
+            data: staffComments[staff]
+        };
+    });
+
     const data = {
-        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-        datasets: reportData.map(report => {
-            return {
-                label: report.staff,
-                data: report.scores
-            };
-        })
+        labels: labels.map(label => label.text),
+        questions: labels.map(label => label.title),
+        datasets
     };
 
     const options = {
@@ -21,6 +54,15 @@ const Report = ({ reportData }) => {
                     }
                 }
             ]
+        },
+        tooltips: {
+            mode: 'index',
+            axis: 'y',
+            callbacks: {
+                title: function(tooltips, data) {
+                    return data.questions[tooltips.pop().index];
+                }
+            }
         }
     };
 
@@ -28,7 +70,7 @@ const Report = ({ reportData }) => {
 };
 
 Report.propTypes = {
-    reportData: PropTypes.array
+    questions: PropTypes.array
 };
 
 export default Report; // adds dispatch prop

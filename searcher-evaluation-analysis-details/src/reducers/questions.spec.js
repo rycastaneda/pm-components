@@ -26,7 +26,6 @@ describe('Questions reducer', () => {
 
         expect(state.allIds).to.eql(mockIds);
         mockIds.map(evaluationId => {
-            expect(state.byId[evaluationId]).to.have.property('totalScore', 0);
             expect(state.byId[evaluationId]).to.have.property('commentIds');
             expect(state.byId[evaluationId]).to.have.property('questionTitle');
         });

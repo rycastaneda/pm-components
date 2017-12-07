@@ -6,7 +6,7 @@ const INITIAL_STATE = {
         id: null,
         done: false
     },
-    evaluationId: '',
+    assignmentId: '',
     currentView: 'single'
 };
 
@@ -18,7 +18,7 @@ export function ui(state = INITIAL_STATE, action) {
                 id: null,
                 done: false
             };
-            state.evaluationId = action.evaluationId;
+            state.assignmentId = action.assignmentId;
             return { ...state };
         case actions.RECEIVE_EVALUATION:
             state.isLoading = {

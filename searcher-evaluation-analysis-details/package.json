@@ -43,6 +43,7 @@
     "lodash": "^4.17.4",
     "mocha": "3.0.2",
     "node-sass": "3.10.0",
+    "randomcolor": "^0.5.3",
     "react": "15.3.2",
     "react-addons-test-utils": "15.3.2",
     "react-autosuggest": "6.0.4",

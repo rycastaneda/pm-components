@@ -38,14 +38,18 @@ export class Criterion extends Component {
             title,
             weight,
             questions,
-            reports,
             isOpen,
-            currentTab
+            currentTab,
+            currentView
         } = this.props;
 
-        const questionComponents = questions.map((question, index) => (
-            <Question key={question.id} number={index + 1} {...question} />
-        ));
+        const questionComponents = questions.length ? (
+            questions.map((question, index) => (
+                <Question key={question.id} number={index + 1} {...question} />
+            ))
+        ) : (
+            <div className="mar-top-sm text-center">No Responses yet.</div>
+        );
 
         return (
             <div className="pmaccordion pmaccordion--impact">
@@ -69,14 +73,16 @@ export class Criterion extends Component {
                     className={`collapse mar-btm pad-hor ${isOpen
                         ? 'in'
                         : ''}`}>
+                    asdfsadf
                     <Header
+                        currentView={currentView}
                         currentTab={currentTab}
                         changeTab={this.changeTab}
                     />
                     {currentTab === 'responses' ? (
                         questionComponents
                     ) : (
-                        <Report reportData={reports} />
+                        <Report questions={questions} />
                     )}
                 </div>
             </div>
@@ -89,14 +95,15 @@ Criterion.propTypes = {
     title: PropTypes.string.isRequired,
     weight: PropTypes.number.isRequired,
     isOpen: PropTypes.bool,
+    currentView: PropTypes.string,
     currentTab: PropTypes.string,
     questions: PropTypes.array,
     reports: PropTypes.array,
     dispatch: PropTypes.func
 };
 
-function mapStateToProps() {
-    return {};
+function mapStateToProps(state) {
+    return { currentView: state.ui.currentView };
 }
 
 export default connect(mapStateToProps)(Criterion); // adds dispatch prop
