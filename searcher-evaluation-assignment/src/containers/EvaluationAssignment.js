@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import  Select  from 'react-select';
 import * as actions from '../actions/evaluationAssignmentsAction';
+import { selectFromStore } from '../utils/selectFromStore';
 
 class EvaluationAssignment extends Component {
 
@@ -13,11 +14,12 @@ class EvaluationAssignment extends Component {
 
     render() {
         /* const { boilerplate } = this.props; */
-        const { evaluationTemplates,
-            evaluationLinks,
+        const {
+            evaluationTemplates,
+            evaluationTypes,
             evaluationAssignees,
-            evaluationLinkedTo,
             selectedAssignees,
+            evaluationTypesRfq,
             isBusy,
             actions } = this.props;
         return (
@@ -28,34 +30,32 @@ class EvaluationAssignment extends Component {
                             <select name="evaluationTemplate"
                                 id="evaluationTemplate"
                                 className="form-control"
-                                onChange={ event => actions.fetchEvaluationOnList(event.target.value)}>
+                                onChange={actions.fetchEvaluationOnTypes}>
                                 <option key="-" value={null}>Select Template</option>
                                 {evaluationTemplates.map(
-                                    (item, index) =>
-                                    <option key={index} value={item.id}>{item.label}</option>
+                                    item => <option key={item.id} value={item.id}>{item.title}</option>
                                 )}
                             </select>
                         </div>
                     </div>
-                    {evaluationLinks.length > 0 ?
+                    {evaluationTypes.length > 0 ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
-                                <label htmlFor="evaluationIsOn">Evaluation is on</label>
+                                <label htmlFor="evaluationIsOn">Evaluation Type</label>
                                 <select name="evaluationIsOn"
                                     id="evaluationIsOn"
                                     className="form-control"
-                                    onChange={ event => actions.fetchLinkedToList(event.target.value)}>
+                                    onChange={ actions.fetchEvaluationTypeRfq }>
                                     <option key="-" value={null}>Select evaluation</option>
-                                    {evaluationLinks.map(
-                                        (item, index) =>
-                                        <option key={index} value={item.id}>{item.label}</option>
+                                    {evaluationTypes.map(
+                                        item => <option key={item.id} value={item.id}>{item.title}</option>
                                     )}
                                 </select>
                             </div>
                         </div>:
                         null
                     }
-                    {evaluationLinkedTo.length > 0 ?
+                    {evaluationTypesRfq.length > 0 ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">Linked to</label>
@@ -66,7 +66,7 @@ class EvaluationAssignment extends Component {
                                         event => actions.fetchAssigneeList(event.target.value)
                                     }>
                                     <option key="-" value={null}>Select..</option>
-                                    {evaluationLinkedTo.map(
+                                    {[1, 2, 3].map(
                                         (item, index) =>
                                         <option key={index} value={item.id}>{item.label}</option>
                                     )}
@@ -103,10 +103,10 @@ class EvaluationAssignment extends Component {
 
 EvaluationAssignment.propTypes = {
     evaluationTemplates: PropTypes.array.isRequired,
-    evaluationLinks: PropTypes.array.isRequired,
+    evaluationTypes: PropTypes.array.isRequired,
     evaluationAssignees: PropTypes.array.isRequired,
     selectedAssignees:PropTypes.array.isRequired,
-    evaluationLinkedTo: PropTypes.array.isRequired,
+    evaluationTypesRfq: PropTypes.array.isRequired,
     isBusy: PropTypes.bool.isRequired,
     actions: PropTypes.object,
 };
@@ -120,22 +120,24 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state, ownProps) => {
 
     const {
-        evaluationTemplates,
-        evaluationLinks,
         evaluationAssignees,
-        evaluationLinkedTo,
         selectedAssignees,
         isBusy,
     } = state.evaluationAssignment;
 
-    console.log('map state: ', selectedAssignees);
+    const evaluationTemplates = selectFromStore(state.evaluationAssignment.evaluationTemplates, 'evaluation-templates', 'evaluationTemplates');
+    const evaluationTypes = selectFromStore(state.evaluationAssignment.evaluationTypes, 'evaluation-types', 'evaluationTemplateAssignmentTypes');
+    const evaluationTypesRfq = selectFromStore(state.evaluationAssignment.evaluationTypes, 'evaluation-types', 'evaluationTemplateAssignmentTypes');
+
+
+    console.log('select from store: ', evaluationTypesRfq);
 
     return {
         ...ownProps,
+        evaluationTypes,
         evaluationTemplates,
-        evaluationLinks,
+        evaluationTypesRfq,
         evaluationAssignees,
-        evaluationLinkedTo,
         selectedAssignees,
         isBusy,
     };

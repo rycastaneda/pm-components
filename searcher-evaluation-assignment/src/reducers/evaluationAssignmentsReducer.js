@@ -1,9 +1,9 @@
 import * as actionTypes from '../constants/ActionTypes';
 
 const initialState = {
-    evaluationTemplates: [],
-    evaluationLinks: [],
-    evaluationLinkedTo: [],
+    evaluationTemplates: { meta: {} },
+    evaluationTypes: { meta: {} },
+    evaluationTypesRfq: { meta: {} },
     evaluationAssignees: [],
     isBusy: false,
     selectedAssignees: [],
@@ -17,16 +17,16 @@ export function evaluationAssignment(state = initialState, action) {
                 evaluationTemplates: action.templates,
             };
 
-        case actionTypes.EVALUATION_ON_FETCHED:
+        case actionTypes.EVALUATION_ON_TYPES_FETCHED:
             return {
                 ...state,
-                evaluationLinks: action.templates,
+                evaluationTypes: action.evaluationTypes,
             };
 
-        case actionTypes.LINKED_TO_FETCHED:
+        case actionTypes.EVALUATION_ON_TYPES_RFQ_FETCHED:
             return {
                 ...state,
-                evaluationLinkedTo: action.templates,
+                evaluationTypesRfq: action.evaluationTypesRfq,
             };
 
         case actionTypes.ASSIGNEES_FETCHED:

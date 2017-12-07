@@ -9,6 +9,7 @@ import './styles/index.scss';
 import axios from 'axios';
 !window._babelPolyfill && require('babel-polyfill'); // prevent polyfill from importing twice
 
+
 import EvaluationAssignment from './containers/EvaluationAssignment';
 
 // Add redux dev tools unless we have a production build

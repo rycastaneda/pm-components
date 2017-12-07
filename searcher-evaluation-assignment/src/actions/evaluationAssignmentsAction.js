@@ -1,6 +1,9 @@
+import plantMinerApi from '../utils/pmApiService';
+
 import * as actionTypes from '../constants/ActionTypes';
-import { parseDataFromTemplatesService, parseDataFromAssigneeService } from '../utils/dataParser';
+import { parseDataFromAssigneeService } from '../utils/dataParser';
 import axios from 'axios';
+import normalize from 'json-api-normalizer';
 
 const SERVICE_URL_FRAGMENT = 'https://api.pm.local.dev/';
 
@@ -15,12 +18,16 @@ export function createAssignment(selectedTemplateId, selectedAssigneeId, selecte
 
 
 export const fetchTemplateList = () => (dispatch) => {
-    axios.get(SERVICE_URL_FRAGMENT+'evaluation-templates')
+
+    axios.get(plantMinerApi.getTemplates)
         .then((response) => {
-            const templates = parseDataFromTemplatesService(response);
+            // TO DO: move it to middleWare API
+            const normalisedResponse = normalize(response.data, { endpoint: 'evaluation-templates' });
+            // console.log('original response:', response);
+            // console.log('normalised response:', normalisedResponse);
             dispatch({
                 type: actionTypes.TEMPLATES_FETCHED,
-                templates
+                templates: normalisedResponse,
             });
         })
         .catch((error) => {
@@ -32,14 +39,14 @@ export const fetchTemplateList = () => (dispatch) => {
 };
 
 
-export const fetchEvaluationOnList = () => (dispatch) => {
+export const fetchEvaluationOnTypes = () => (dispatch) => {
 
-    axios.get(SERVICE_URL_FRAGMENT)
+    axios.get(plantMinerApi.getEvaluationAssignmentTypes)
         .then((response) => {
-            const templates = parseDataFromTemplatesService(response);
+            const  evaluationTypes =  normalize(response.data, { endpoint: 'evaluation-types' });
             dispatch({
-                type: actionTypes.EVALUATION_ON_FETCHED,
-                templates
+                type: actionTypes.EVALUATION_ON_TYPES_FETCHED,
+                evaluationTypes
             });
         })
         .catch((error) => {
@@ -50,13 +57,14 @@ export const fetchEvaluationOnList = () => (dispatch) => {
         });
 };
 
-export const fetchLinkedToList = () => (dispatch) => {
-    axios.get(SERVICE_URL_FRAGMENT)
+export const fetchEvaluationTypeRfq = () => (dispatch) => {
+    // RFQ Response or RFQ Items
+    axios.get('/request-for-quotations')
         .then((response) => {
-            const templates = parseDataFromTemplatesService(response);
+            const  evaluationTypesRfq =  normalize(response.data, { endpoint: 'evaluation-rfq' });
             dispatch({
-                type: actionTypes.LINKED_TO_FETCHED,
-                templates
+                type: actionTypes.EVALUATION_ON_TYPES_RFQ_FETCHED,
+                evaluationTypesRfq
             });
         })
         .catch((error) => {
