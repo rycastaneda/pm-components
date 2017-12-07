@@ -89,8 +89,10 @@ class Question extends Component {
                         <h2>Comments { mandatoryComments === true && <small>(required)</small> }</h2>
                         <div className="form-group">
                             <textarea name="comments"
+                                defaultValue ={this.props.question.comment}
                                 className="form-control"
                                 rows="4" placeholder="Your comments"
+
                                 required={ mandatoryComments }>
                             </textarea>
                         </div>
