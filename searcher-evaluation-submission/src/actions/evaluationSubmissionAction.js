@@ -1,14 +1,13 @@
 import axios from 'axios';
-import { getSectionsFromService } from '../utils/dataParser';
+import { parseInitialize } from '../utils/dataParser';
 import { INITIAL_STATE, REQUEST_FAILED, OPTION_SELECTED } from '../constants/ActionTypes';
 
-export function initialize() {
+export function initialize(requestedAssignmentId) {
     return (dispatch) => {
-        return axios.get('http://localhost:5049/getSections')
+        return axios.get('/evaluation-template-assignments/'+requestedAssignmentId+'?include=template.criteria.questions')
         .then((response) => {
-            let { sections, sectionsIds } =getSectionsFromService(response.data);
-            window.console.log(sections);
-            dispatch({ type:INITIAL_STATE, sections, sectionsIds });
+            let result =parseInitialize(response.data, requestedAssignmentId);
+            dispatch({ type:INITIAL_STATE, ...result });
         })
         .catch((error) => {
             const { message }= error;
@@ -16,6 +15,6 @@ export function initialize() {
         });
     };
 }
-export function setOptionValue(sectionId, questionId, optionId, value) {
-    return { type:OPTION_SELECTED, sectionId, questionId, optionId, value };
+export function setOptionValue(criteriaId, questionId, optionId, value) {
+    return { type:OPTION_SELECTED, criteriaId, questionId, optionId, value };
 }

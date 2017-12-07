@@ -3,27 +3,45 @@ import {
     OPTION_SELECTED
 } from '../constants/ActionTypes';
 
-const INITIAL_EVALUATION_SUBMISSION_STATE = { sections:{}, sectionsIds:[] };
+const INITIAL_EVALUATION_SUBMISSION_STATE = { criteriaByIndex:{}, criteriaIds:[] };
 
 export function evaluationSubmission(state = INITIAL_EVALUATION_SUBMISSION_STATE, action) {
     switch (action.type) {
 
         case INITIAL_STATE:
             {
-                let { sections, sectionsIds } = action;
-                sections.experience.documents =[];
-                return Object.assign({}, state, { sections, sectionsIds });
+                let {
+                    criteriaIds,
+                    criteriaByIndex,
+                    questionByIndex,
+                    attachmentByIndex,
+                    questionTypeByIndex,
+                    scaleDefinitionByIndex,
+                    questionTypeDefinitionsByIndex
+
+                } = action;
+
+                let newState = Object.assign({}, state, {
+                    criteriaIds,
+                    criteriaByIndex,
+                    questionByIndex,
+                    attachmentByIndex,
+                    questionTypeByIndex,
+                    scaleDefinitionByIndex,
+                    questionTypeDefinitionsByIndex
+                });
+                window.console.log('state->', newState);
+                return newState;
             }
 
         case OPTION_SELECTED:
             {
-                let { sectionId, questionId, optionId, value } = action;
-                let { sections } = state;
-                let { questionnaire } = Object.assign({}, sections[sectionId]);
-                let { options } = Object.assign({}, questionnaire[questionId]);
-                options[optionId] = Object.assign({}, options[optionId], { checked:value });
+                let { scaleDefinitionId, value } = action;
+                let { scaleDefinitionByIndex } = state;
+                let scaleDefinition = scaleDefinitionByIndex[scaleDefinitionId];
+                scaleDefinitionByIndex[scaleDefinitionId] = Object.assign({}, scaleDefinition, { checked:value });
 
-                return Object.assign({}, state, { questionnaire });
+                return { state, ...scaleDefinitionByIndex };
 
             }
         default:
