@@ -1,11 +1,8 @@
 import plantMinerApi from '../utils/pmApiService';
 
 import * as actionTypes from '../constants/ActionTypes';
-import { parseDataFromAssigneeService } from '../utils/dataParser';
 import axios from 'axios';
 import normalize from 'json-api-normalizer';
-
-const SERVICE_URL_FRAGMENT = 'https://api.pm.local.dev/';
 
 export function createAssignment(selectedTemplateId, selectedAssigneeId, selectedLinkedToId, selectedLinkId) {
     return (dispatch) => {
@@ -16,24 +13,24 @@ export function createAssignment(selectedTemplateId, selectedAssigneeId, selecte
     };
 }
 
-
+// TO DO: THIS ALL WILL GO AWAY TO MIDDLEWARE
 export const fetchTemplateList = () => (dispatch) => {
 
     axios.get(plantMinerApi.getTemplates)
         .then((response) => {
-            // TO DO: move it to middleWare API
+
             const normalisedResponse = normalize(response.data, { endpoint: 'evaluation-templates' });
             // console.log('original response:', response);
             // console.log('normalised response:', normalisedResponse);
             dispatch({
-                type: actionTypes.TEMPLATES_FETCHED,
+                type: actionTypes.ASSIGNMENT_CREATION_FETCH_EVALUATION_TEMPLATES_SUCCESS,
                 templates: normalisedResponse,
             });
         })
         .catch((error) => {
             dispatch({
                 type: actionTypes.REQUEST_FAILED,
-                message: error.message
+                message: error.message,
             });
         });
 };
@@ -45,75 +42,198 @@ export const fetchEvaluationOnTypes = () => (dispatch) => {
         .then((response) => {
             const  evaluationTypes =  normalize(response.data, { endpoint: 'evaluation-types' });
             dispatch({
-                type: actionTypes.EVALUATION_ON_TYPES_FETCHED,
-                evaluationTypes
+                type: actionTypes.ASSIGNMENT_CREATION_FETCH_EVALUATION_TYPES_SUCCESS,
+                evaluationTypes,
             });
         })
         .catch((error) => {
             dispatch({
                 type: actionTypes.REQUEST_FAILED,
-                message: error.message
+                message: error.message,
             });
         });
 };
 
-export const fetchEvaluationTypeRfq = () => (dispatch) => {
-    // RFQ Response or RFQ Items
+export const updateChangeEvaluationType = evaluationType => (dispatch) => {
+
+    dispatch({
+        type: actionTypes.ASSIGNMENT_CREATION_UPDATE_CHANGE_EVALUATION_TYPE,
+        evaluationType,
+    });
+
+    if (evaluationType === 'Engagement') {
+
+        axios.get('/engagements')
+            .then((response) => {
+                const  evaluationEngagements =  normalize(response.data, { endpoint: 'engagements' });
+                console.log('normalised response engagements: ', evaluationEngagements);
+                dispatch({
+                    type: actionTypes.ASSIGNMENT_CREATION_FETCH_ENGAGEMENTS_SUCCESS,
+                    evaluationEngagements,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: actionTypes.REQUEST_FAILED,
+                    message: error.message,
+                });
+            });
+
+        return;
+    }
+
+    if (evaluationType === 'Supplier') {
+
+        axios.get('/preferred-suppliers')
+            .then((response) => {
+                const  evaluationSuppliers =  normalize(response.data, { endpoint: 'suppliers' });
+                console.log('normalised response suppliers: ', evaluationSuppliers);
+                dispatch({
+                    type: actionTypes.ASSIGNMENT_CREATION_FETCH_SUPPLIERS_SUCCESS,
+                    evaluationSuppliers,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: actionTypes.REQUEST_FAILED,
+                    message: error.message,
+                });
+            });
+
+        return;
+    }
+
     axios.get('/request-for-quotations')
         .then((response) => {
             const  evaluationTypesRfq =  normalize(response.data, { endpoint: 'evaluation-rfq' });
+            console.log('normalised response quotations', evaluationTypesRfq);
             dispatch({
-                type: actionTypes.EVALUATION_ON_TYPES_RFQ_FETCHED,
-                evaluationTypesRfq
+                type: actionTypes.ASSIGNMENT_CREATION_FETCH_EVALUATION_RFQS_SUCCESS,
+                evaluationTypesRfq,
             });
         })
         .catch((error) => {
             dispatch({
                 type: actionTypes.REQUEST_FAILED,
-                message: error.message
+                message: error.message,
             });
         });
 };
 
+
+export const fetchMatchedSuppliers = rfqTypeId => (dispatch) => {
+
+    axios.get(`/request-for-quotations/${rfqTypeId}/matched-suppliers`)
+        .then((response) => {
+            const  matchedSuppliers =  normalize(response.data, { endpoint: 'matched-suppliers' });
+            console.log('normalised response fetchMatchedSuppliers:', matchedSuppliers);
+            dispatch({
+                type: actionTypes.ASSIGNMENT_CREATION_GET_MATCHED_SUPPLIERS_SUCCESS,
+                matchedSuppliers,
+                rfqTypeId,
+            });
+        })
+        .catch((error) => {
+            dispatch({
+                type: actionTypes.REQUEST_FAILED,
+                message: error.message,
+            });
+        });
+};
+
+
+export const updateChangeMatchedSuppliers = matchedSupplierId => (dispatch, getState) => {
+    const { rfqTypeSelectedId, evaluationTypeSelected } = getState().evaluationAssignment;
+
+    if (evaluationTypeSelected !== 'RFQ Item') {
+        return;
+    }
+
+    axios.get(`/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers/${matchedSupplierId}/matched-items`)
+        .then((response) => {
+            const  matchedItems =  normalize(response.data, { endpoint: 'matched-items' });
+            console.log('original response fetchMatchedItems: ', response);
+            console.log('normalised response fetchMatchedItems: ', matchedItems);
+
+            dispatch({
+                type: actionTypes.ASSIGNMENT_CREATION_GET_MATCHED_ITEMS_SUCCESS,
+                matchedItems,
+            });
+        })
+        .catch((error) => {
+            dispatch({
+                type: actionTypes.REQUEST_FAILED,
+                message: error.message,
+            });
+        });
+};
+
+
+export const updateChangeMatchedItems = (matchedItemId) => {
+    console.log('action creator', matchedItemId);
+
+    return {
+        type: actionTypes.ASSIGNMENT_CREATION_UPDATE_CHANGE_MATCHED_ITEMS,
+        matchedItemId,
+    };
+};
+
+export const updateChangeEngagements = (engagementId) => {
+    console.log('action creator', engagementId);
+
+    return {
+        type: actionTypes.ASSIGNMENT_CREATION_ENGAGEMENT_UPDATE_CHANGE,
+        engagementId,
+    };
+};
+
+export const updateChangeSuppliers = (supplierId) => {
+    console.log('action creator', supplierId);
+
+    return {
+        type: actionTypes.ASSIGNMENT_CREATION_PREFERRED_SUPPLIERS_UPDATE_CHANGE,
+        supplierId,
+    };
+};
 
 export const fetchAssigneeList = () => (dispatch) => {
-    axios.get(SERVICE_URL_FRAGMENT)
+
+    dispatch({
+        type: actionTypes.ASSIGNMENT_CREATION_FETCH_ASSIGNEES_REQUEST_START,
+    });
+
+    axios.get('/staff')
         .then((response) => {
-            const templates = parseDataFromAssigneeService(response);
+            const  evaluationAssignees =  normalize(response.data, { endpoint: 'evaluation-assignees' });
+            console.log('original response fetchAssignees: ', response);
+            console.log('normalised response fetchAssignees: ', evaluationAssignees);
+
             dispatch({
-                type: actionTypes.ASSIGNEES_FETCHED,
-                templates
+                type: actionTypes.ASSIGNMENT_CREATION_FETCH_ASSIGNEES_SUCCESS,
+                evaluationAssignees,
             });
         })
         .catch((error) => {
             dispatch({
                 type: actionTypes.REQUEST_FAILED,
-                message: error.message
+                message: error.message,
             });
         });
 };
-
 
 export function isBusy(status) {
     return {
         type: actionTypes.IS_BUSY,
-        status
+        status,
     };
 }
-
 
 export const updateSelectedAssignees = (assignees) => {
     console.log('action creator', assignees);
 
     return {
         type: actionTypes.SELECTED_ASSIGNEES_UPDATE,
-        assignees
+        assignees,
     };
 };
-
-
-// export function selectAssigneeInDropDown(selectedAssignees) {
-//     return updateSelectedAssignees(selectedAssignees);
-// }
-
 
