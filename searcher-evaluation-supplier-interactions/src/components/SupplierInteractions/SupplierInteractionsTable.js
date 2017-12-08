@@ -14,7 +14,7 @@ const SupplierInteractionsTable  = ({ interactions }) => (
                     <th>Initiated by</th>
                     <th>Related to</th>
                     <th>Status</th>
-                    <th/>
+                    <th>More</th>
                 </tr>
             </thead>
 

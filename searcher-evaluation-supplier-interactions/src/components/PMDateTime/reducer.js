@@ -1,7 +1,7 @@
 import * as actions from './actionsTypes';
 
 const initialState = {
-    dateTime: '',
+    dateTime: Date(Date.now()).toLocaleString()
 };
 
 const reducer = (state = initialState, action) => {

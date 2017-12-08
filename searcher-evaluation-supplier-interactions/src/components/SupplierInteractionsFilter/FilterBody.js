@@ -11,8 +11,8 @@ const FilterBody = ({toggleFilterShow, interactionStatuses, filterInteractionSta
         <div className="row">
             <div className="col-xs-6">
                 <div className="form-group">
-                    <label>Active Status</label>
-                    <select className="form-control form-control-sm" onChange={event => actions.updateFilterStatusChange(event.target.value)}
+                    <label>Status</label>
+                    <select className="form-control form-control-sm text-capitalize" onChange={event => actions.updateFilterStatusChange(event.target.value)}
                         value={filterInteractionStatus}>
                         {interactionStatuses.map(item => <option id={item} key={item}>{item}</option>)}
                     </select>
@@ -20,7 +20,7 @@ const FilterBody = ({toggleFilterShow, interactionStatuses, filterInteractionSta
             </div>
             <div className="col-xs-6">
                 <div className="form-group">
-                    <label>Created date</label>
+                    <label>Date Created</label>
                     <PMDateTime />
                 </div>
             </div>

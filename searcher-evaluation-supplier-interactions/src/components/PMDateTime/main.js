@@ -10,14 +10,17 @@ class PMDateTime extends Component {
 
     render() {
         const {dateTime, actions} = this.props;
-        const dateFormatted = moment(dateTime).format("DD-MM-YYYY");
+        const dateFormatted = moment(dateTime).format("MM/DD/YYYY");
         return (
             <div>
-                <Datetime className="po-date"
-                    timeFormat={false}
-                    closeOnSelect={true}
-                    onChange={actions.updateFilterDateChange}
-                    value={dateFormatted}/>
+                <div className="input-group">
+                  <span className="input-group-addon"><i className="fa fa-calendar"></i></span>
+                  <Datetime className="po-date  "
+                      timeFormat={false}
+                      closeOnSelect={true}
+                      onChange={actions.updateFilterDateChange}
+                      value={dateFormatted}/>
+                  </div>
             </div>
         );
     }
