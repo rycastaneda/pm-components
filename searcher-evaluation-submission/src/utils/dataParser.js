@@ -138,6 +138,5 @@ export function parseInitialize(data, assignmentId) {
     });
 
     result.attachmentByIndex = {};
-    window.console.log(result);
     return result;
 }
