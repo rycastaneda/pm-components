@@ -7,6 +7,7 @@ import {
 } from '../constants';
 
 const Document = ({ file, onFileRemove, onDownloadFile }) => {
+
     return (
         <li className="list-group-item document">
             <div className="pull-left document__filename">
@@ -21,6 +22,7 @@ const Document = ({ file, onFileRemove, onDownloadFile }) => {
                     </a>
                 }
                 <a key={`link-${file.id + 1}`}
+                href={file.referenceUrl}
                     onClick={() => {
                         onDownloadFile(file.id);
                     }}

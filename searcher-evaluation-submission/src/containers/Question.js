@@ -1,27 +1,66 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
+import Documents from '../components/Documents';
 import Attachment from './Attachment';
 import ScaleDefinition from './ScaleDefinition';
-
+import { setOptionValue, setComment, uploadDocuments, deleteDocument } from '../actions/evaluationSubmissionAction';
 
 class Question extends Component {
     constructor(props) {
         super(props);
-    }
-
-    componentDidMount() {
         this.onDocumentDrop = this.onDocumentDrop.bind(this);
         this.uncheckRadioButtons = this.uncheckRadioButtons.bind(this);
+        this.onDeleteAttachment = this.onDeleteAttachment.bind(this);
+        this.onDownloadAttachment = this.onDownloadAttachment.bind(this);
     }
 
+    onDownloadAttachment(file) {
+        window.console.log(file);
+
+    }
+    onDeleteAttachment(documentId) {
+        this.props.dispatch(deleteDocument(this.props.questionId, documentId));
+    }
     onDocumentDrop(files) {
-        window.console.log(files);
-    }
+        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx', '.dwg'];
+        let invalid = [];
 
+        let filteredFiles = files.filter((file) => {
+            let extension = file.name.split('.').pop().toLowerCase();
+
+            if (!~allowedExtenstions.indexOf(`.${extension}`)) {
+                invalid.push(file.name);
+            }
+
+            return !!~allowedExtenstions.indexOf(`.${extension}`);
+        });
+
+        if (filteredFiles.length !== files.length) {
+            this.setState({
+                documentError: invalid.join(', ') + ' - file type not supported'
+            });
+
+            return;
+        }
+
+        this.setState({
+            documentError: ''
+        });
+
+        const documents = files.map((file, key) => {
+            file.id = +new Date() + key;
+            return file;
+        });
+        this.props.dispatch(uploadDocuments(this.props.questionId, documents));
+    }
+    onCommentChange(comment) {
+
+        this.props.dispatch(setComment(this.props.questionId, comment));
+    }
     uncheckRadioButtons() {
         document.getElementsByClassName('rating-group-1');
-        window.console.log('unchecked');
+        this.props.dispatch(setOptionValue(this.props.questionId, null, null));
     }
     getScaleDefinitionClass(enableScaleDefinitions, questionType) {
         if (enableScaleDefinitions) {
@@ -35,21 +74,30 @@ class Question extends Component {
         }
     }
     render() {
-        let { question, criteriaId, index } = this.props;
-        let { enableScaleDefinitions, mandatoryComments, allowDocuments, documents, droppedDocuments, questionType, title, id } = question;
+        let { question, index, typeDefinitionIds } = this.props;
+        let {
+            enableScaleDefinitions,
+            selectedDefinition,
+            mandatoryComments,
+            allowDocuments,
+            documents,
+            questionType,
+            title,
+            id } = question;
         return (
             <div>
                 <div className="row">
                     <div className="col-md-8 col-sm-11">
                         <h2 className= {`${index===0?'margin-top-0':'border-top'}`} >{id}. {title}</h2>
                         <ol className={`questionnaire ${this.getScaleDefinitionClass(enableScaleDefinitions, questionType)}`}>
-                            { question.scaleDefinitions.map((scaleDefinitionId, index) =>
+                            { typeDefinitionIds.map((definitionId, index) =>
                                 <li key={index}>
                                     <ScaleDefinition
-                                        criteriaId = {criteriaId}
                                         enableScaleDefinitions = {enableScaleDefinitions}
+                                        selectedDefinition = { selectedDefinition }
                                         questionId = {id}
-                                        scaleDefinitionId = {scaleDefinitionId} >
+                                        scaleDefinitionIds = {question.scaleDefinitions}
+                                        typeDefinitionId = {definitionId} >
                                     </ScaleDefinition>
                                 </li>
                             )}
@@ -69,7 +117,7 @@ class Question extends Component {
                 { documents.length > 0 &&
                 <div className="row">
                     <div className="col-md-8 col-sm-12">
-                        <h2>Attachments</h2>
+                        <h2>Documents</h2>
                         <ul className="attachments">
                             { document.map((attachmentId, index) =>
                                 <li key={index}>
@@ -92,13 +140,13 @@ class Question extends Component {
                                 defaultValue ={this.props.question.comment}
                                 className="form-control"
                                 rows="4" placeholder="Your comments"
-
-                                required={ mandatoryComments }>
+                                required={ mandatoryComments }
+                                onBlur={event => this.onCommentChange(event.target.value)}>
                             </textarea>
                         </div>
                     </div>
                 </div>
-                { allowDocuments === true &&
+                { Boolean(allowDocuments)&&
                     <div className="row">
                         <div className="col-md-8 col-sm-12">
                             <Dropzone className="dropzone"
@@ -107,16 +155,12 @@ class Question extends Component {
                                     <i className="fa fa-cloud-upload"></i> Drop files here or click to select files.
                                 </p>
                             </Dropzone>
-                            <ul>
-                                { droppedDocuments.map((documents, index) =>
-                                    <Document
-                                    key={index}
-                                    file={documents}
-                                    preview={false}
-                                    onFileRemove={this.onRemoveDocument}
-                                    onDownloadFile={this.onDownloadDocument}></Document>
-                                )}
-                            </ul>
+                            <Documents
+                                files ={this.props.uploadedDocuments}
+                                onFileRemove ={this.onDeleteAttachment}
+                                onDownloadFile = {this.onDownloadAttachment}
+                            >
+                            </Documents>
                         </div>
                     </div>
                 }
@@ -126,8 +170,9 @@ class Question extends Component {
 }
 
 Question.propTypes = {
-    criteriaId: PropTypes.string.isRequired,
     questionId: PropTypes.string.isRequired,
+    typeDefinitionIds: PropTypes.array.isRequired,
+    uploadedDocuments:PropTypes.array,
     question:PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired
@@ -135,11 +180,12 @@ Question.propTypes = {
 
 function mapStateToProps(state, props) {
 
-    let { criteriaId, questionId, index } = props;
-    let { questionByIndex } = state.evaluationSubmission;
+    let { questionId, index } = props;
+    let { questionByIndex, questionTypeByIndex, uploadedDocumentByIndex } = state.evaluationSubmission;
     let question = questionByIndex[questionId];
-
-    return { question, criteriaId, index };
+    let typeDefinitionIds = questionTypeByIndex[question.type].definitions;
+    let uploadedDocuments = question.uploadedDocuments.map(item => uploadedDocumentByIndex[String(item)]);
+    return { question, index, typeDefinitionIds, uploadedDocuments };
 
 }
 

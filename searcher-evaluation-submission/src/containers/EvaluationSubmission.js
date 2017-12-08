@@ -16,15 +16,21 @@ class EvaluationSubmission extends Component {
     }
 
     render() {
-        const { criteriaIds } = this.props;
+        const { criteriaIds, title, assignmentStatus } = this.props;
         return (
             <div>
+                <h1>
+                {title} -<small>{assignmentStatus.title}</small>
+                </h1>
                 { criteriaIds.map(
                     (criteriaId, index) =>
                     <div key={index}>
                         <Criteria criteriaId = {criteriaId} />
                     </div>
                 )}
+                <div className="pull-right">
+                    <button className="btn btn-md">Finish</button>
+                </div>
             </div>
         );
     }
@@ -32,13 +38,17 @@ class EvaluationSubmission extends Component {
 
 EvaluationSubmission.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    criteriaIds:PropTypes.array.isRequired
+    criteriaIds:PropTypes.array.isRequired,
+    assignmentStatus:PropTypes.object,
+    title: PropTypes.string
 };
 
 function mapStateToProps(state) {
-    const { criteriaIds } = state.evaluationSubmission;
+    const { criteriaIds, title, assignmentStatus } = state.evaluationSubmission;
     return {
-        criteriaIds
+        title,
+        criteriaIds,
+        assignmentStatus
     };
 }
 

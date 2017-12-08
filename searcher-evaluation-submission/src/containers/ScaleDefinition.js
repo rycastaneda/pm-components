@@ -7,17 +7,18 @@ class ScaleDefinition extends Component {
         super(props);
     }
 
-    setOptionValue(criteriaId, questionId, optionId, value) {
-        this.props.dispatch(setOptionValue(criteriaId, questionId, optionId, value));
+    setOptionValue(questionId, scaleDefinitionId, value) {
+        window.console.log(questionId, scaleDefinitionId, value);
+        this.props.dispatch(setOptionValue(questionId, scaleDefinitionId, value));
     }
 
     render() {
-        let { scaleDefinition, questionId, criteriaId } = this.props;
+        let { scaleDefinition, questionId, selectedDefinition } = this.props;
         return (
             <div className="radio">
-                <span className="score">{scaleDefinition.score}</span>
-                <input type="radio" name={`rating-group-${questionId}`} className={`rating-group-${questionId}`} id={`rating-${questionId}-${scaleDefinition.id}`} defaultValue={scaleDefinition.score}
-                onChange ={event => this.setOptionValue(criteriaId, questionId, scaleDefinition.id, event.target.value)}/>
+                <span className="score">{scaleDefinition.value}</span>
+                <input type="radio" name={`rating-group-${questionId}`} checked={ scaleDefinition.value === selectedDefinition } className={`rating-group-${questionId}`} id={`rating-${questionId}-${scaleDefinition.id}`} defaultValue={scaleDefinition.value}
+                onChange ={event => this.setOptionValue(questionId, scaleDefinition.id, event.target.value)}/>
                 <label htmlFor={`rating-${questionId}-${scaleDefinition.id}`}>{scaleDefinition.definition}</label>
             </div>
         );
@@ -26,32 +27,34 @@ class ScaleDefinition extends Component {
 }
 
 ScaleDefinition.propTypes = {
-    criteriaId:PropTypes.string.isRequired,
     enableScaleDefinitions:PropTypes.number.isRequired,
     questionId:PropTypes.string.isRequired,
-    scaleDefinitionId:PropTypes.string.isRequired,
-    scaleDefinition:PropTypes.object.isRequired,
+    typeDefinitionId:PropTypes.string.isRequired,
+    selectedDefinition:PropTypes.string,
+    scaleDefinitionIds:PropTypes.array,
+    scaleDefinition:PropTypes.object,
     dispatch: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state, props) {
-    let { scaleDefinitionByIndex, questionTypeDefinitionsByIndex } = state.evaluationSubmission;
-    let { questionId, scaleDefinitionId } = props;
-    let scaleDefinition;
 
+    let { scaleDefinitionByIndex, questionTypeDefinitionsByIndex } = state.evaluationSubmission;
+
+    let { questionId, scaleDefinitionIds, typeDefinitionId } = props;
+    let { value, title, id } = questionTypeDefinitionsByIndex[String(typeDefinitionId)];
+    let score = 0;
+    let definition = null;
     if (props.enableScaleDefinitions) {
-        scaleDefinition = scaleDefinitionByIndex[scaleDefinitionId];
-        let qnTypeDfn = questionTypeDefinitionsByIndex[scaleDefinition.typeDefinitionId];
-        let { value, title } = qnTypeDfn;
-        scaleDefinition = { ...scaleDefinition, value, title };
-        window.console.log(scaleDefinition);
-    } else {
-        let { value, title, id } = questionTypeDefinitionsByIndex[scaleDefinitionId];
-        let score = null;
-        let definition = null;
-        let typeDefinitionId = null;
-        scaleDefinition =  { id, score, definition, value, title, typeDefinitionId };
+        let scaleDefinitions = scaleDefinitionIds.map((scaleDefinitionId) => {
+            return scaleDefinitionByIndex[String(scaleDefinitionId)];
+        });
+        let scaleDefinitionObj = scaleDefinitions.find(scaleDefn => scaleDefn.typeDefinitionId === typeDefinitionId);
+        if (scaleDefinitionObj) {
+            score = scaleDefinitionObj.score;
+            definition = scaleDefinitionObj.definition;
+        }
     }
+    let scaleDefinition =  { id, score, definition, value, title };
     return { scaleDefinition, questionId  };
 }
 

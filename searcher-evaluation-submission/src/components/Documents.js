@@ -4,7 +4,7 @@ import Document from './Document';
 class Documents extends Component {
     render() {
         const { files, onFileRemove, onDownloadFile } = this.props;
-
+        
         return (
             <ul className="list-group files">
                 {files.map(file => (
