@@ -41,7 +41,7 @@ class EvaluationAssignmentList extends Component {
             maxRowLength
         } = this.props;
         return (
-            <div className="searcher-evaluation-template-list">
+            <div className="searcher-evaluation-assignment-list">
                 <AssignmentsFilter
                     evaluationTemplateList = {this.props.evaluationTemplates}
                     assignmentStatusesList = {this.props.evaluationTemplateAssignmentStatuses}
