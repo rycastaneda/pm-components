@@ -213,6 +213,15 @@ class Question extends Component {
         this.props.dispatch(addDocuments(criteriaId, question.id, documents));
     }
 
+    getWeightInputStyle() {
+        let style = 'form-control';
+        if (this.state.isWeightError) {
+            style +=' error';
+        } else if (this.state.isSaved) {
+            style +=' saved';
+        }
+        return style;
+    }
     renderMinimised() {
         return (
             <div className="row">
@@ -246,8 +255,8 @@ class Question extends Component {
         );
     }
     renderMaximised() {
-        const lastQnOption = getItemByAttrib(this.props.questionTypes, 'maxOptionDefinitions', 0);
-        const isDefsDisabled = (lastQnOption.type===this.state.type);
+        const isDefsDisabled = (this.state.type === '3' || this.state.type === '4');
+
         return (
             <div>
                 <h3>Question {this.props.questionIndex}</h3>
@@ -296,6 +305,7 @@ class Question extends Component {
                             <div className="form-group">
                                 <label className="control-label">Options</label>
                                 <ul>
+                                { isDefsDisabled !== true?
                                     <li>
                                         <div className="checkbox">
                                             <label>
@@ -305,6 +315,7 @@ class Question extends Component {
                                                         this.onAllowScaleDefinitionChange(event.target.checked)
                                                     }
                                                 />
+
                                                 {QUESTION_OPTIONS[0].label}
                                             </label>
                                         { this.state.isAllowScaleDefinitions?
@@ -313,7 +324,7 @@ class Question extends Component {
 
                                                     <li key={index} className="mar-btm-sm">
                                                         <div className="input-group">
-                                                          <span className="input-group-addon scale" id="basic-addon1">{index+1}</span>
+                                                          <span className="input-group-addon scale" id="basic-addon1">{index}</span>
                                                           <input type="text"
                                                           value={type.label}
                                                           onChange = {event =>
@@ -326,6 +337,8 @@ class Question extends Component {
                                             :null}
                                         </div>
                                     </li>
+                                    :null
+                                }
                                     <li>
                                         <div className="checkbox">
                                             <label>
@@ -384,7 +397,7 @@ class Question extends Component {
             </div>);
     }
     renderFunctionButtons() {
-        if (this.props.question.id===null) {
+        if (this.props.question.id===null && this.state.title) {
             return (
                     <div className="col-md-2">
                         <div className="form-group pull-right">

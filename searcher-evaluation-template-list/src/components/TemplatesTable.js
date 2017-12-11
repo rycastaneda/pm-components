@@ -13,6 +13,7 @@ class TemplatesTable extends Component {
         this.handlePageClick= this.handlePageClick.bind(this);
         this.onTemplateToggleActivation = this.onTemplateToggleActivation.bind(this);
         this.onDropdownClickOutside = this.onDropdownClickOutside.bind(this);
+
     }
 
     componentWillMount() {
@@ -29,6 +30,11 @@ class TemplatesTable extends Component {
             }
         }
     }
+
+    onTableRowClick(url) {
+        document.location.href=url;
+    }
+
     onTemplateToggleActivation(id, status) {
         this.hideMenu();
         this.props.onTemplateToggleActivation(id, status);
@@ -89,48 +95,54 @@ class TemplatesTable extends Component {
                 <th>Instances</th>
                 <th>Completed</th>
                 <th>Status</th>
-                <th></th>
+                <th>More</th>
             </tr>
             </thead>
             <tbody>
                 {this.props.tableData.map((item, index) =>
                     <tr key={index}>
-                    <td className="nowrap">{item.name}</td>
-                    <td className="td-center nowrap">{item.instances}</td>
-                    <td className="td-center nowrap">{item.completed}</td>
-                    <td className="td-center nowrap">{item.status?
+                    <td className="nowrap" onClick={()  => this.onTableRowClick(item.edit_url)}>{item.name}</td>
+                    <td className="td-center nowrap" onClick={()  => this.onTableRowClick(item.edit_url)}>{item.instances}</td>
+                    <td className="td-center nowrap" onClick={()  => this.onTableRowClick(item.edit_url)}>{item.completed}</td>
+                    <td className="td-center nowrap" onClick={()  => this.onTableRowClick(item.edit_url)}>{item.status?
                         <span className={`bs-label bs-label-success`}>Active</span>
                         :<span className={`bs-label bs-label-danger`}>Inactive</span>
                     }
                     </td>
-                    <td data-heading="More" className="td-center  last">
+                    <td data-heading="More" className="td-center last">
                         {this.renderMoreButton(item.id, item.edit_url, item.preview_url, item.status)}
                     </td>
                 </tr>
                 )}
             </tbody>
             </table>
-            <select defaultValue={this.props.rowCount}
-                onChange={event => this.props.rowCountChange(event.target.value) }>
-                {this.props.rowCountList.map((item, index) =>
-                    <option key={index}>{item}</option>
-                )}
-            </select>
-             <div className="pull-right">
-             <ReactPaginate  previousLabel={"previous"}
-                       nextLabel={"next"}
-                       breakLabel={<a href="">...</a>}
-                       breakClassName={"break-me"}
-                       pageCount={this.props.totalPages}
-                       forcePage= {this.props.currentPage-1}
-                       marginPagesDisplayed={2}
-                       pageRangeDisplayed={5}
-                       onPageChange={this.handlePageClick}
-                       containerClassName={"pagination"}
-                       subContainerClassName={"pages pagination"}
-                       activeClassName={"active"} />
-             </div>
-        </div>);
+            {this.props.totalPages > 1?
+            <div className="row">
+                <div className="col-sm-12 form-inline">
+                    <select className="form-control" defaultValue={this.props.rowCount}
+                        onChange={event => this.props.rowCountChange(event.target.value) }>
+                        {this.props.rowCountList.map((item, index) =>
+                            <option key={index}>{item}</option>
+                        )}
+                    </select>
+                    &nbsp;
+                    <ReactPaginate  previousLabel={"previous"}
+                              nextLabel={"next"}
+                              breakLabel={<a href="">...</a>}
+                              breakClassName={"break-me"}
+                              pageCount={this.props.totalPages}
+                              forcePage= {this.props.currentPage-1}
+                              marginPagesDisplayed={2}
+                              pageRangeDisplayed={5}
+                              onPageChange={this.handlePageClick}
+                              containerClassName={"pagination"}
+                              subContainerClassName={"pages pagination"}
+                              activeClassName={"active"} />
+                    </div>
+                </div>
+                :null}
+            </div>
+        );
     }
 }
 

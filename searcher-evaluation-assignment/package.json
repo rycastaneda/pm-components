@@ -16,7 +16,11 @@
     "type": "git",
     "repo": "git@bitbucket.org:minergroup/plantminer-components.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "json-api-normalizer": "^0.4.6",
+    "redux-bees": "^0.1.7",
+    "redux-object": "^0.5.4"
+  },
   "devDependencies": {
     "axios": "^0.15.3",
     "babel-core": "6.14.0",
@@ -43,7 +47,7 @@
     "react-dom": "15.3.2",
     "react-hot-loader": "3.0.0-beta.4",
     "react-redux": "4.4.5",
-    "react-select": "^1.0.0-rc.5", 
+    "react-select": "^1.0.0-rc.5",
     "redux": "3.6.0",
     "redux-thunk": "2.1.0",
     "sass-loader": "4.0.2",

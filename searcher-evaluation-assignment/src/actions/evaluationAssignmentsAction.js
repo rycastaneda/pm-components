@@ -1,92 +1,283 @@
-import {
-    ASSIGNMENT_CREATED,
-    TEMPLATES_FETCHED,
-    EVALUATION_ON_FETCHED,
-    ASSIGNEES_FETCHED,
-    SELECTED_ASSIGNEES_UPDATE,
-    LINKED_TO_FETCHED,
-    REQUEST_FAILED,
-    IS_BUSY
-} from '../constants/ActionTypes';
-import { parseDataFromTemplatesService, parseDataFromAssigneeService } from '../utils/dataParser';
+import plantMinerApi from '../utils/pmApiService';
+
+import * as actionTypes from '../constants/ActionTypes';
 import axios from 'axios';
+import normalize from 'json-api-normalizer';
 
-const SERVICE_URL_FRAGMENT = 'http://localhost:5049/assignment';
 
-export function createAssignment(selectedTemplateId, selectedAssigneeId, selectedLinkedToId, selectedLinkId) {
-    return (dispatch) => {
-        return dispatch({
-            type: ASSIGNMENT_CREATED,
-            selectedTemplateId, selectedAssigneeId, selectedLinkedToId, selectedLinkId
-        });
+
+export const createAssignment = () => (dispatch, getState) => {
+    const { selectedTemplateId, selectedAssignees, selectedAssignmentEntityInstanceId, evaluationTypeSelected } = getState().evaluationAssignment;
+
+    dispatch({
+        type: actionTypes.ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_REQUEST_START,
+    });
+
+    const data = {
+        ['data']: {
+            'type' : 'evaluation-template-assignments',
+            'id' : selectedTemplateId, // TO DO:
+            'attributes': {
+                'assignment_entity_instance_id': selectedAssignmentEntityInstanceId
+            },
+            'relationships': {
+                'template': {
+                    'data': {
+                        'type': 'evaluation-templates',
+                        'id': selectedTemplateId
+                    }
+                },
+                'assigneeUser' : {
+                    'data' : selectedAssignees
+                },
+                'assignmentType' : {
+                    'data' : {
+                        'type':'evaluation-template-assignment-types',
+                        'id': evaluationTypeSelected
+                    }
+                }
+            }
+        }
     };
-}
-export function fetchTemplateList() {
-    return (dispatch) => {
-        return axios.get(SERVICE_URL_FRAGMENT)
+
+    console.log('data to be sent: ', data);
+
+    axios.post('/evaluation-template-assignments', data)
         .then((response) => {
-            const templates = parseDataFromTemplatesService(response);
-            dispatch({ type:TEMPLATES_FETCHED, templates });
+            console.log(response);
+            dispatch({
+                type: actionTypes.ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_SUCCESS,
+            });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            console.log(error);
         });
-    };
-}
 
-export function fetchEvaluationOnList() {
-    return (dispatch) => {
-        return axios.get(SERVICE_URL_FRAGMENT)
+};
+
+// TO DO: THIS ALL WILL GO AWAY TO MIDDLEWARE
+export const fetchTemplateList = () => (dispatch) => {
+
+    axios.get(plantMinerApi.getTemplates)
+
         .then((response) => {
-            const templates = parseDataFromTemplatesService(response);
-            dispatch({ type:EVALUATION_ON_FETCHED, templates });
+
+            const evaluationTemplates = normalize(response.data, { endpoint: 'evaluation-templates' });
+
+            dispatch({
+                type: actionTypes.ASSIGNMENT_CREATION_FETCH_EVALUATION_TEMPLATES_SUCCESS,
+                evaluationTemplates,
+            });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({
+                type: actionTypes.REQUEST_FAILED,
+                message: error.message,
+            });
         });
-    };
-}
+};
 
-export function fetchLinkedToList() {
-    return (dispatch) => {
-        return axios.get(SERVICE_URL_FRAGMENT)
+
+export const evaluationTemplateUpdateChange = templateId => (dispatch) => {
+
+    axios.get(plantMinerApi.getEvaluationAssignmentTypes)
         .then((response) => {
-            const templates = parseDataFromTemplatesService(response);
-            dispatch({ type:LINKED_TO_FETCHED, templates });
+
+            const  evaluationTypes =  normalize(response.data, { endpoint: 'evaluation-types' });
+            console.log('evaluation types fetch: ', evaluationTypes);
+
+            dispatch({
+                type: actionTypes.ASSIGNMENT_CREATION_FETCH_EVALUATION_TYPES_SUCCESS,
+                evaluationTypes,
+            });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({
+                type: actionTypes.REQUEST_FAILED,
+                message: error.message,
+            });
         });
-    };
-}
 
-export function fetchAssigneeList() {
-    return (dispatch) => {
-        return axios.get(SERVICE_URL_FRAGMENT)
+    dispatch({
+        type: actionTypes.ASSIGNMENT_CREATION_EVALUATION_TEMPLATE_UPDATE_CHANGE,
+        templateId,
+    });
+};
+
+export const updateChangeEvaluationType = evaluationType => (dispatch) => {
+
+    dispatch({
+        type: actionTypes.ASSIGNMENT_CREATION_UPDATE_CHANGE_EVALUATION_TYPE,
+        evaluationType,
+    });
+
+    if (evaluationType === '4') {
+
+        axios.get('/engagements')
+            .then((response) => {
+                const  evaluationEngagements =  normalize(response.data, { endpoint: 'engagements' });
+                console.log('normalised response engagements: ', evaluationEngagements);
+                dispatch({
+                    type: actionTypes.ASSIGNMENT_CREATION_FETCH_ENGAGEMENTS_SUCCESS,
+                    evaluationEngagements,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: actionTypes.REQUEST_FAILED,
+                    message: error.message,
+                });
+            });
+
+        return;
+    }
+
+    if (evaluationType === '3') {
+
+        axios.get('/preferred-suppliers')
+            .then((response) => {
+                const  evaluationSuppliers =  normalize(response.data, { endpoint: 'suppliers' });
+                console.log('normalised response suppliers: ', evaluationSuppliers);
+                dispatch({
+                    type: actionTypes.ASSIGNMENT_CREATION_FETCH_SUPPLIERS_SUCCESS,
+                    evaluationSuppliers,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: actionTypes.REQUEST_FAILED,
+                    message: error.message,
+                });
+            });
+
+        return;
+    }
+
+    axios.get('/request-for-quotations')
         .then((response) => {
-            const templates = parseDataFromAssigneeService(response);
-            dispatch({ type:ASSIGNEES_FETCHED, templates });
+            const  evaluationTypesRfq =  normalize(response.data, { endpoint: 'evaluation-rfq' });
+            console.log('normalised response quotations', evaluationTypesRfq);
+            dispatch({
+                type: actionTypes.ASSIGNMENT_CREATION_FETCH_EVALUATION_RFQS_SUCCESS,
+                evaluationTypesRfq,
+            });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            dispatch({
+                type: actionTypes.REQUEST_FAILED,
+                message: error.message,
+            });
         });
-    };
-}
+};
 
-export function isBusy(status) {
+
+export const fetchMatchedSuppliers = rfqTypeId => (dispatch) => {
+
+    axios.get(`/request-for-quotations/${rfqTypeId}/matched-suppliers`)
+        .then((response) => {
+            const  matchedSuppliers =  normalize(response.data, { endpoint: 'matched-suppliers' });
+            console.log('normalised response fetchMatchedSuppliers:', matchedSuppliers);
+            dispatch({
+                type: actionTypes.ASSIGNMENT_CREATION_GET_MATCHED_SUPPLIERS_SUCCESS,
+                matchedSuppliers,
+                rfqTypeId,
+            });
+        })
+        .catch((error) => {
+            dispatch({
+                type: actionTypes.REQUEST_FAILED,
+                message: error.message,
+            });
+        });
+};
+
+
+export const updateChangeMatchedSuppliers = matchedSupplierId => (dispatch, getState) => {
+    const { rfqTypeSelectedId, evaluationTypeSelected } = getState().evaluationAssignment;
+
+    if (evaluationTypeSelected === '1') {
+        dispatch({
+            type: actionTypes.ASSIGNMENT_CREATION_SET_ASSIGNMENT_ENTITY_INSTANCE_ID,
+            selectedAssignmentEntityInstanceId: matchedSupplierId,
+        });
+
+        return;
+    }
+
+    axios.get(`/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers/${matchedSupplierId}/matched-items`)
+        .then((response) => {
+            const  matchedItems =  normalize(response.data, { endpoint: 'matched-items' });
+            console.log('original response fetchMatchedItems: ', response);
+            console.log('normalised response fetchMatchedItems: ', matchedItems);
+
+            dispatch({
+                type: actionTypes.ASSIGNMENT_CREATION_GET_MATCHED_ITEMS_SUCCESS,
+                matchedItems,
+            });
+        })
+        .catch((error) => {
+            dispatch({
+                type: actionTypes.REQUEST_FAILED,
+                message: error.message,
+            });
+        });
+};
+
+
+export const updateChangeMatchedItems = (matchedItemId) => {
     return {
-        type: IS_BUSY,
-        status
+        type: actionTypes.ASSIGNMENT_CREATION_SET_ASSIGNMENT_ENTITY_INSTANCE_ID,
+        selectedAssignmentEntityInstanceId: matchedItemId,
     };
-}
 
-export function selectAssigneeInDropDown(selectedAssignees) {
-    return updateSelectedAssignees(selectedAssignees);
-}
+};
 
-function updateSelectedAssignees(assignees) {
+export const updateChangeEngagements = (engagementId) => {
     return {
-        type: SELECTED_ASSIGNEES_UPDATE,
-        selectedAssignees:assignees
+        type: actionTypes.ASSIGNMENT_CREATION_SET_ASSIGNMENT_ENTITY_INSTANCE_ID,
+        selectedAssignmentEntityInstanceId: engagementId,
     };
-}
+};
+
+export const updateChangeSuppliers = (supplierId) => {
+    return {
+        type: actionTypes.ASSIGNMENT_CREATION_SET_ASSIGNMENT_ENTITY_INSTANCE_ID,
+        selectedAssignmentEntityInstanceId: supplierId,
+    };
+};
+
+export const fetchAssigneeList = () => (dispatch) => {
+
+    dispatch({
+        type: actionTypes.ASSIGNMENT_CREATION_FETCH_ASSIGNEES_REQUEST_START,
+    });
+
+    axios.get('/staff')
+        .then((response) => {
+            const  evaluationAssignees =  normalize(response.data, { endpoint: 'evaluation-assignees' });
+            console.log('original response fetchAssignees: ', response);
+            console.log('normalised response fetchAssignees: ', evaluationAssignees);
+
+            dispatch({
+                type: actionTypes.ASSIGNMENT_CREATION_FETCH_ASSIGNEES_SUCCESS,
+                evaluationAssignees,
+            });
+        })
+        .catch((error) => {
+            dispatch({
+                type: actionTypes.REQUEST_FAILED,
+                message: error.message,
+            });
+        });
+};
+
+
+export const updateSelectedAssignees = (assignees) => {
+    console.log('action creator', assignees);
+
+    return {
+        type: actionTypes.ASSIGNMENT_CREATION_ASSIGNEES_CHANGE_UPDATE,
+        assignees,
+    };
+};
+

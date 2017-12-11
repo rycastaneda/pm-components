@@ -1,11 +1,14 @@
-# Sign Offs - Default Assignment
+# Searcher-evaluation-template-list
 
-    Used in PIT Admin User in Settings > Panel Management > Assign Default Staff
+https://minergroup.atlassian.net/browse/PIT-468
 
-# How to run
-    `npm install`
-    `npm start`
+Component data attributes
+data-supplier-id
+data-component
 
-    Add data-organization-id to specify the current organization to change. Provided by pm-web
-    
-    Add data-panel-id to specify which panel we are editing
+Commands to run:
+npm install
+npm build
+npm start
+
+http://pepp.local.dev:5050/

@@ -1,8 +1,8 @@
 
 
-export const QUESTION_OPTIONS = [{ id:'scale', label:'Do you need to define the scale' },
-                                                                        { id:'upload', label:'Allow respondant to upload documents' },
-                                                                        { id:'comments', label:'Comments are mandatory' }];
+export const QUESTION_OPTIONS = [{ id:'scale', label:'Do you need to define the scale?' },
+                                                                        { id:'upload', label:'Allow respondant to upload documents.' },
+                                                                        { id:'comments', label:'Comments are mandatory.' }];
 
 export const QUESTION_SKELETON = { id:null,
                                     title:'',

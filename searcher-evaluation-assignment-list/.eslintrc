@@ -4,7 +4,7 @@
     "ecmaVersion": 6,
     "sourceType": "module",
     "ecmaFeatures": {
-      "experimentalObjectRestSpread": true,
+    "experimentalObjectRestSpread": true,
       "impliedStrict": true,
       "jsx": true
     }
@@ -17,7 +17,6 @@
   "globals": {
     "React": true,
     "describe": true,
-    "Plantminer": true,
     "it": true
   },
   "plugins": [

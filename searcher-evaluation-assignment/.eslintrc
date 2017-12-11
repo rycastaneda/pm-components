@@ -5,7 +5,8 @@
     "sourceType": "module",
     "ecmaFeatures": {
       "impliedStrict": true,
-      "jsx": true
+      "jsx": true,
+      "experimentalObjectRestSpread": true
     }
   },
   "env": {
@@ -25,8 +26,8 @@
     "array-bracket-spacing": ["error", "never"],
     "arrow-parens": ["error", "as-needed", {"requireForBlockBody": true}],
     "arrow-spacing": ["error"],
-    "brace-style": ["error"],
-    "comma-dangle": ["error", "never"],
+    "brace-style":0,
+    "comma-dangle": 0,
     "comma-spacing": ["error", {"before": false, "after": true}],
     "computed-property-spacing": ["error", "never"],
     "consistent-this": ["error", "self"],
@@ -49,6 +50,8 @@
     "space-before-function-paren": ["error", "never"],
     "space-in-parens": ["error", "never"],
     "spaced-comment": ["error", "always"],
-    "template-curly-spacing": ["error", "never"]
+    "template-curly-spacing": ["error", "never"],
+    "no-debugger": 0,
+    "no-console":0
   }
 }

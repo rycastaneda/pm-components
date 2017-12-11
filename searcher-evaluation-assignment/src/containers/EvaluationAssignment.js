@@ -1,195 +1,209 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import  Select  from 'react-select';
-import {
-    saveAssignment,
-    fetchTemplateList,
-    fetchAssigneeList,
-    fetchLinkedToList,
-    fetchEvaluationOnList,
-    selectAssigneeInDropDown
-}  from '../actions/evaluationAssignmentsAction';
+import * as actions from '../actions/evaluationAssignmentsAction';
+import { selectFromStore } from '../utils/selectFromStore';
+import { concatLabelKey } from '../utils/concatLabelKey';
+import EvaluationTemplatesDropdown from './components/EvaluationTemplatesDropdown';
+import EvaluationTypeDropdown from './components/EvaluationTypeDropdown';
+import RfqListDropdown from './components/RfqListDropdown';
+import MatchedSuppliersDropdown from './components/MatchedSuppliersDropdown';
+import MatchedItemsDropdown from './components/MatchedItemsDropdown';
+import EngagementsDropdown from './components/EngagementsDropdown';
+import PreferredSuppliersDropdown from './components/PreferredSuppliersDropdown';
+
+
 
 class EvaluationAssignment extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            selectedTemplateId :   null,
-            selectedAssigneeId :    null,
-            selectedLinkedToId :    null,
-            selectedLinkId :    null,
-            selectedAssignees: null 
-        };
-        this.onSave = this.onSave.bind(this);
-        this.onTemplateSelected = this.onTemplateSelected.bind(this);
-        this.onLinkSelected = this.onLinkSelected.bind(this);
-        this.onLinkedToSelected = this.onLinkedToSelected.bind(this);
-        this.onAssigneeSelected = this.onAssigneeSelected.bind(this);
-        this.handleSelectChange = this.handleSelectChange.bind(this);
-        this.handleSelectClose = this.handleSelectClose.bind(this);
-    }
     componentDidMount() {
-        this.props.dispatch(fetchTemplateList());
-    }
-    onSave() {
-        this.props.dispatch(saveAssignment());
-    }
-    onTemplateSelected(id) {
-        this.setState({ selectedTemplateId : id });
-        this.props.dispatch(fetchEvaluationOnList(id));
-    }
-    onLinkSelected(id) {
-        this.setState({ selectedLinkId : id });
-        this.props.dispatch(fetchLinkedToList(id));
-    }
-    onLinkedToSelected(id) {
-        this.setState({ selectedLinkedToId : id });
-        this.props.dispatch(fetchAssigneeList(id));
-    }
-    onAssigneeSelected(id) {
-        this.setState({ selectedAssigneeId : id });
-    }
-    handleSelectChange(value) {
-        this.props.dispatch(selectAssigneeInDropDown(value));
+        const { actions } = this.props;
+        actions.fetchTemplateList();
+        actions.fetchAssigneeList();
     }
 
-    handleSelectClose() {
-        this.props.dispatch(selectAssigneeInDropDown(this.props.selectedAssignees));
-    }
     render() {
         /* const { boilerplate } = this.props; */
-        const { evaluationTemplates,
-            evaluationLinks,
+        const {
+            evaluationTemplates,
+            evaluationTypes,
             evaluationAssignees,
-            evaluationLinkedTo,
             selectedAssignees,
-            isBusy } = this.props;
+            evaluationTypesRfq,
+            matchedSuppliers,
+            matchedItems,
+            evaluationEngagements,
+            evaluationSuppliers,
+            isLoading,
+            evaluationTypeSelected,
+            selectedAssignmentEntityInstanceId,
+            actions } = this.props;
         return (
                 <form>
                     <div className="row">
                         <div className="col-sm-4 form-group">
                             <label htmlFor="evaluationTemplate">Evaluation Template</label>
-                            <select name="evaluationTemplate"
-                                defaultValue={this.state.selectedTemplateId}
-                                id="evaluationTemplate"
-                                className="form-control"
-                                onChange={ event => this.onTemplateSelected(event.target.value)}>
-                                <option key="-" value={null}></option>
-                                {evaluationTemplates.map(
-                                    (item, index) =>
-                                    <option key={index} value={item.id}>{item.label}</option>
-                                )}
-                            </select>
+                            <EvaluationTemplatesDropdown evaluationTemplates={evaluationTemplates} />
                         </div>
                     </div>
-                    {(this.state.selectedTemplateId!==null)?
+                    { evaluationTypes.length > 0 ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
-                                <label htmlFor="evaluationIsOn">Evaluation is on</label>
-                                <select name="evaluationIsOn"
-                                    defaultValue={this.state.selectedLinkId}
-                                    id="evaluationIsOn"
-                                    className="form-control"
-                                    onChange={ event => this.onLinkSelected(event.target.value)}>
-                                    <option key="-" value={null}></option>
-                                    {evaluationLinks.map(
-                                        (item, index) =>
-                                        <option key={index} value={item.id}>{item.label}</option>
-                                    )}
-                                </select>
-                            </div>
-                        </div>:
-                        null
-                    }
-                    {
-                        this.state.selectedLinkId !== null?
-                        <div className="row">
-                            <div className="col-sm-4 form-group">
-                                <label htmlFor="evaluationLink">Linked to</label>
-                                <select name="evaluationLink"
-                                    defaultValue={this.state.selectedLinkedToId}
-                                    id="evaluationLink"
-                                    className="form-control"
-                                    onChange={
-                                        event => this.onLinkedToSelected(event.target.value)
-                                    }>
-                                    <option key="-" value={null}></option>
-                                    {evaluationLinkedTo.map(
-                                        (item, index) =>
-                                        <option key={index} value={item.id}>{item.label}</option>
-                                    )}
-                                </select>
+                                <label htmlFor="evaluationIsOn">Evaluation Type</label>
+                                <EvaluationTypeDropdown evaluationTypes={evaluationTypes} isLoading={isLoading} />
                             </div>
                         </div>
                         : null
                     }
-                    {
-                        this.state.selectedLinkedToId !== null?
+                    { evaluationTypesRfq.length > 0 && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1') ?
+                        <div className="row">
+                            <div className="col-sm-4 form-group">
+                                <label htmlFor="evaluationLink">RFQ List</label>
+                                <RfqListDropdown evaluationTypesRfq={evaluationTypesRfq} />
+                            </div>
+                        </div>
+                        : null
+                    }
+                    { matchedSuppliers.length > 0  && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1') ?
+                        <div className="row">
+                            <div className="col-sm-4 form-group">
+                                <label htmlFor="evaluationLink">Matched Suppliers</label>
+                                <MatchedSuppliersDropdown matchedSuppliers={matchedSuppliers} />
+                            </div>
+                        </div>
+                        : null
+                    }
+                    { matchedItems.length > 0 && evaluationTypeSelected === '2' ?
+                        <div className="row">
+                            <div className="col-sm-4 form-group">
+                                <label htmlFor="evaluationLink">Matched Items</label>
+                                <MatchedItemsDropdown matchedItems={matchedItems} />
+                            </div>
+                        </div>
+                        : null
+                    }
+
+                    { evaluationEngagements.length > 0 && evaluationTypeSelected === '4' ?
+                        <div className="row">
+                            <div className="col-sm-4 form-group">
+                                <label htmlFor="evaluationLink">Engagements</label>
+                                <EngagementsDropdown evaluationEngagements={evaluationEngagements} isloading={isLoading} />
+                            </div>
+                        </div>
+                        : null
+                    }
+
+                    { evaluationSuppliers.length > 0 && evaluationTypeSelected === '3' ?
+                        <div className="row">
+                            <div className="col-sm-4 form-group">
+                                <label htmlFor="evaluationLink">Preferred Suppliers</label>
+                                <PreferredSuppliersDropdown evaluationSuppliers={evaluationSuppliers} isLoading={isLoading} />
+                            </div>
+                        </div>
+                        : null
+                    }
+
+                    { selectedAssignmentEntityInstanceId !== ''  ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="assignees">Assignees</label>
                                 <div>
-                                    <Select name="form-field-name" multi value={selectedAssignees} options={evaluationAssignees} isLoading={isBusy} valueRenderer={this.renderValue}
-                                    onChange={this.handleSelectChange}
-                                    onClose={this.handleSelectClose}
-                                    />
+                                    <Select name="form-field-name"
+                                        multi
+                                        labelKey="fullName"
+                                        value={selectedAssignees}
+                                        options={evaluationAssignees}
+                                        isLoading={isLoading}
+                                        onChange={actions.updateSelectedAssignees}
+                                        valueRenderer={this.renderValue} />
                                 </div>
                             </div>
                         </div>
-                        :null
+                        : null
                     }
-                    <div className="row">
-                        <div className="col-sm-4">
-                            <button title="Save" disabled={this.state.selectedAssigneeId===null} onClick={this.onSave}>Save</button>
-                        </div>
-                    </div>
+
+                    {this.renderSaveButton()}
+
                 </form>
             );
+    }
+
+    renderSaveButton() {
+        const { selectedAssignmentEntityInstanceId, selectedAssignees, isLoading, actions } = this.props;
+
+        if (selectedAssignmentEntityInstanceId === '' || selectedAssignees.length === 0) {
+            return null;
+        }
+
+        return (
+            <div className="row">
+                <div className="col-sm-4">
+                    <button title="Save" type="button" onClick={actions.createAssignment}>{isLoading ? 'Saving...' : 'Save'}</button>
+                </div>
+            </div>
+        );
     }
 }
 
 EvaluationAssignment.propTypes = {
-    dispatch: PropTypes.func.isRequired,
     evaluationTemplates: PropTypes.array.isRequired,
-    selectedTemplateId: PropTypes.number,
-    evaluationLinks: PropTypes.array.isRequired,
-    selectedLinkId: PropTypes.number,
+    evaluationTypes: PropTypes.array.isRequired,
     evaluationAssignees: PropTypes.array.isRequired,
-    selectedAssigneeId: PropTypes.number,
     selectedAssignees:PropTypes.array.isRequired,
-    evaluationLinkedTo: PropTypes.array.isRequired,
-    selectedLinkedToId: PropTypes.number,
-    isBusy: PropTypes.bool.isRequired
+    evaluationTypesRfq: PropTypes.array.isRequired,
+    matchedSuppliers: PropTypes.array.isRequired,
+    matchedItems: PropTypes.array.isRequired,
+    evaluationEngagements: PropTypes.array.isRequired,
+    evaluationSuppliers: PropTypes.array.isRequired,
+    evaluationTypeSelected: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    selectedAssignmentEntityInstanceId: PropTypes.string.isRequired,
+    actions: PropTypes.object,
 };
 
-function mapStateToProps(state) {
+const mapDispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(actions, dispatch),
+    };
+};
+
+const mapStateToProps = (state, ownProps) => {
+
     const {
-        evaluationTemplates,
-        evaluationLinks,
-        evaluationAssignees,
-        evaluationLinkedTo,
-        selectedTemplateId,
-        selectedLinkId,
-        selectedAssigneeId,
+        evaluationTypeSelected,
         selectedAssignees,
-        selectedLinkedToId,
-        isBusy
+        isLoading,
+        selectedAssignmentEntityInstanceId,
     } = state.evaluationAssignment;
 
-    return {
-        evaluationTemplates,
-        evaluationLinks,
-        evaluationAssignees,
-        evaluationLinkedTo,
-        selectedTemplateId,
-        selectedLinkId,
-        selectedAssigneeId,
-        selectedAssignees,
-        selectedLinkedToId,
-        isBusy
-    };
-}
+    const evaluationTemplates = selectFromStore(state.evaluationAssignment.evaluationTemplates, 'evaluation-templates', 'evaluationTemplates');
+    const evaluationAssignees = concatLabelKey(selectFromStore(state.evaluationAssignment.evaluationAssignees, 'evaluation-assignees', 'staff'));
 
-export default connect(mapStateToProps)(EvaluationAssignment);  // adds dispatch prop
+    const evaluationTypes = selectFromStore(state.evaluationAssignment.evaluationTypes, 'evaluation-types', 'evaluationTemplateAssignmentTypes');
+    const evaluationTypesRfq = selectFromStore(state.evaluationAssignment.evaluationTypesRfq, 'evaluation-rfq', 'requestForQuotations');
+    const matchedSuppliers = selectFromStore(state.evaluationAssignment.matchedSuppliers, 'matched-suppliers', 'matchedSuppliers');
+    const matchedItems = selectFromStore(state.evaluationAssignment.matchedItems, 'matched-items', 'matchedItems');
+    const evaluationEngagements = selectFromStore(state.evaluationAssignment.evaluationEngagements, 'engagements', 'engagements');
+    const evaluationSuppliers = selectFromStore(state.evaluationAssignment.evaluationSuppliers, 'suppliers', 'preferredSuppliers');
+
+    console.log('select from store: ', evaluationAssignees);
+
+    return {
+        ...ownProps,
+        evaluationTypes,
+        evaluationTemplates,
+        evaluationTypesRfq,
+        matchedSuppliers,
+        matchedItems,
+        evaluationTypeSelected,
+        evaluationEngagements,
+        evaluationSuppliers,
+        evaluationAssignees,
+        selectedAssignees,
+        selectedAssignmentEntityInstanceId,
+        isLoading,
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EvaluationAssignment);  // adds dispatch prop

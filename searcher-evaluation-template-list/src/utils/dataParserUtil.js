@@ -7,16 +7,16 @@ export function getTemplateServiceUrlFor(keyword=null, status =null, date=null, 
 
     let urlPostfix='';
     if (page) {
-        urlPostfix +='page='+page;
+        urlPostfix +='?page='+page;
     }
     if (maxRowLength) {
-        urlPostfix +='perpage='+maxRowLength;
+        urlPostfix +='&per_page='+maxRowLength;
     }
     if (keyword) {
-        urlPostfix +='&filter[title]='+keyword;
+        urlPostfix +='&filters[title]='+keyword;
     }
     if (status) {
-        urlPostfix +='&filter[active]=';
+        urlPostfix +='&filters[active]=';
         if (status==='active') {
             urlPostfix+=1;
         } else {

@@ -1,13 +1,6 @@
 import { QUESTION_SKELETON, CRITERION_SKELETON } from '../constants/models';
 
-export function parseDefinitionsForSave(scaleDefinitions) {
 
-    if (scaleDefinitions.length) {
-        scaleDefinitions = scaleDefinitions.filter(item => item.label.length);
-    }
-    return scaleDefinitions;
-
-}
 export  function getItemByAttrib(arr, attrib, value) {
     for (let  i in arr) {
         if (arr[i][attrib]===value) {
