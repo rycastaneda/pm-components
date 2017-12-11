@@ -27,6 +27,7 @@ class EvaluationAssignment extends Component {
             evaluationSuppliers,
             isLoading,
             evaluationTypeSelected,
+            selectedAssignmentEntityInstanceId,
             actions } = this.props;
         return (
                 <form>
@@ -36,11 +37,11 @@ class EvaluationAssignment extends Component {
                             <select name="evaluationTemplate"
                                 id="evaluationTemplate"
                                 className="form-control"
-                                onChange={actions.fetchEvaluationOnTypes}>
+                                onChange={ evt => actions.evaluationTemplateUpdateChange(evt.target.value) }>
                                 <option key="-" value={null}>Select Template</option>
-                                {evaluationTemplates.map(
+                                { evaluationTemplates.map(
                                     item => <option key={item.id} value={item.id}>{item.title}</option>
-                                )}
+                                ) }
                             </select>
                         </div>
                     </div>
@@ -54,14 +55,14 @@ class EvaluationAssignment extends Component {
                                     onChange={ evt => actions.updateChangeEvaluationType(evt.target.value) }>
                                     <option key="-" value={null}>{!isLoading ? 'Select..' : 'Loading...'}</option>
                                     {evaluationTypes.map(
-                                        item => <option key={item.id} value={item.title}>{item.title}</option>
+                                        item => <option key={item.id} value={item.id}>{item.title}</option>
                                     )}
                                 </select>
                             </div>
                         </div>:
                         null
                     }
-                    { evaluationTypesRfq.length > 0 && (evaluationTypeSelected === 'RFQ Item' || evaluationTypeSelected === 'RFQ Response') ?
+                    { evaluationTypesRfq.length > 0 && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1') ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">RFQ List</label>
@@ -81,7 +82,7 @@ class EvaluationAssignment extends Component {
                         </div>
                         : null
                     }
-                    { matchedSuppliers.length > 0  && (evaluationTypeSelected === 'RFQ Item' || evaluationTypeSelected === 'RFQ Response') ?
+                    { matchedSuppliers.length > 0  && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1') ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">Matched Suppliers</label>
@@ -101,7 +102,7 @@ class EvaluationAssignment extends Component {
                         </div>
                         : null
                     }
-                    { matchedItems.length > 0 && evaluationTypeSelected === 'RFQ Item' ?
+                    { matchedItems.length > 0 && evaluationTypeSelected === '2' ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">Matched Items</label>
@@ -122,7 +123,7 @@ class EvaluationAssignment extends Component {
                         : null
                     }
 
-                    { evaluationEngagements.length > 0 && evaluationTypeSelected === 'Engagement' ?
+                    { evaluationEngagements.length > 0 && evaluationTypeSelected === '4' ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">Engagements</label>
@@ -143,7 +144,7 @@ class EvaluationAssignment extends Component {
                         : null
                     }
 
-                    { evaluationSuppliers.length > 0 && evaluationTypeSelected === 'Supplier' ?
+                    { evaluationSuppliers.length > 0 && evaluationTypeSelected === '3' ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">Preferred Suppliers</label>
@@ -164,12 +165,13 @@ class EvaluationAssignment extends Component {
                         : null
                     }
 
-                    {evaluationAssignees.length > 0  ?
+                    { selectedAssignmentEntityInstanceId !== ''  ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
-                                <label htmlFor="assignees">Assignees debug</label>
+                                <label htmlFor="assignees">Assignees</label>
                                 <div>
-                                    <Select name="form-field-name" multi
+                                    <Select name="form-field-name"
+                                        multi
                                         labelKey="lastName"
                                         value={selectedAssignees}
                                         options={evaluationAssignees}
@@ -179,15 +181,29 @@ class EvaluationAssignment extends Component {
                                 </div>
                             </div>
                         </div>
-                        :null
+                        : null
                     }
-                    <div className="row">
-                        <div className="col-sm-4">
-                            <button title="Save" disabled onClick={this.onSave}>Save</button>
-                        </div>
-                    </div>
+
+                    {this.renderSaveButton()}
+
                 </form>
             );
+    }
+
+    renderSaveButton() {
+        const { selectedAssignmentEntityInstanceId, selectedAssignees, isLoading, actions } = this.props;
+
+        if (selectedAssignmentEntityInstanceId === '' || selectedAssignees.length === 0) {
+            return null;
+        }
+
+        return (
+            <div className="row">
+                <div className="col-sm-4">
+                    <button title="Save" type="button" onClick={actions.createAssignment}>{isLoading ? 'Saving...' : 'Save'}</button>
+                </div>
+            </div>
+        );
     }
 }
 
@@ -202,8 +218,8 @@ EvaluationAssignment.propTypes = {
     evaluationEngagements: PropTypes.array.isRequired,
     evaluationSuppliers: PropTypes.array.isRequired,
     evaluationTypeSelected: PropTypes.string.isRequired,
-
     isLoading: PropTypes.bool.isRequired,
+    selectedAssignmentEntityInstanceId: PropTypes.string.isRequired,
     actions: PropTypes.object,
 };
 
@@ -219,6 +235,7 @@ const mapStateToProps = (state, ownProps) => {
         evaluationTypeSelected,
         selectedAssignees,
         isLoading,
+        selectedAssignmentEntityInstanceId,
     } = state.evaluationAssignment;
 
     const evaluationTemplates = selectFromStore(state.evaluationAssignment.evaluationTemplates, 'evaluation-templates', 'evaluationTemplates');
@@ -231,7 +248,7 @@ const mapStateToProps = (state, ownProps) => {
     const evaluationEngagements = selectFromStore(state.evaluationAssignment.evaluationEngagements, 'engagements', 'engagements');
     const evaluationSuppliers = selectFromStore(state.evaluationAssignment.evaluationSuppliers, 'suppliers', 'preferredSuppliers');
 
-    console.log('select from store: ', evaluationAssignees);
+    console.log('select from store: ', evaluationTypes);
 
     return {
         ...ownProps,
@@ -243,9 +260,9 @@ const mapStateToProps = (state, ownProps) => {
         evaluationTypeSelected,
         evaluationEngagements,
         evaluationSuppliers,
-
         evaluationAssignees,
         selectedAssignees,
+        selectedAssignmentEntityInstanceId,
         isLoading,
     };
 };

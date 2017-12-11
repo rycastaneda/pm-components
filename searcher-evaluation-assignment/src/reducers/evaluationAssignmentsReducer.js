@@ -9,19 +9,30 @@ const initialState = {
     matchedItems: { meta: {} },
     evaluationEngagements: { meta: {} },
     evaluationSuppliers: { meta: {} },
+    evaluationAssignees: { meta: {} },
+    selectedAssignees: [],
+    selectedTemplateId: '',
+    selectedAssignmentEntityInstanceId: '',
     evaluationTypeSelected: '',
     rfqTypeSelectedId: '',
-    evaluationAssignees: { meta: {} },
     isLoading: false,
-    selectedAssignees: [],
+
 };
 
 export function evaluationAssignment(state = initialState, action) {
     switch (action.type) {
+
         case actionTypes.ASSIGNMENT_CREATION_FETCH_EVALUATION_TEMPLATES_SUCCESS:
+
             return {
                 ...state,
-                evaluationTemplates: action.templates,
+                evaluationTemplates: action.evaluationTemplates,
+            };
+
+        case actionTypes.ASSIGNMENT_CREATION_EVALUATION_TEMPLATE_UPDATE_CHANGE:
+            return {
+                ...state,
+                selectedTemplateId: action.templateId,
             };
 
         case actionTypes.ASSIGNMENT_CREATION_FETCH_EVALUATION_TYPES_SUCCESS:
@@ -85,18 +96,37 @@ export function evaluationAssignment(state = initialState, action) {
                 isLoading: false,
             };
 
+        case actionTypes.ASSIGNMENT_CREATION_PREFERRED_SUPPLIERS_UPDATE_CHANGE:
+            return {
+                ...state,
+            };
 
-        case actionTypes.SELECTED_ASSIGNEES_UPDATE:
+        case actionTypes.ASSIGNMENT_CREATION_ASSIGNEES_CHANGE_UPDATE:
             return {
                 ...state,
                 selectedAssignees: action.assignees,
             };
 
-        case actionTypes.IS_BUSY:
+        case actionTypes.ASSIGNMENT_CREATION_SET_ASSIGNMENT_ENTITY_INSTANCE_ID:
             return {
                 ...state,
-                isBusy: true,
+                selectedAssignmentEntityInstanceId: action.selectedAssignmentEntityInstanceId,
             };
+
+        case actionTypes.ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_REQUEST_START:
+            return {
+                ...state,
+                isLoading: true,
+            };
+
+        case actionTypes.ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+            };
+
+
+
 
         default:
             return state;

@@ -4,27 +4,69 @@ import * as actionTypes from '../constants/ActionTypes';
 import axios from 'axios';
 import normalize from 'json-api-normalizer';
 
-export function createAssignment(selectedTemplateId, selectedAssigneeId, selectedLinkedToId, selectedLinkId) {
-    return (dispatch) => {
-        return dispatch({
-            type: actionTypes.ASSIGNMENT_CREATED,
-            selectedTemplateId, selectedAssigneeId, selectedLinkedToId, selectedLinkId
-        });
+
+
+export const createAssignment = () => (dispatch, getState) => {
+    const { selectedTemplateId, selectedAssignees, selectedAssignmentEntityInstanceId, evaluationTypeSelected } = getState().evaluationAssignment;
+
+    dispatch({
+        type: actionTypes.ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_REQUEST_START,
+    });
+
+    const data = {
+        ['data']: {
+            'type' : 'evaluation-template-assignments',
+            'id' : selectedTemplateId, // TO DO:
+            'attributes': {
+                'assignment_entity_instance_id': selectedAssignmentEntityInstanceId
+            },
+            'relationships': {
+                'template': {
+                    'data': {
+                        'type': 'evaluation-templates',
+                        'id': selectedTemplateId
+                    }
+                },
+                'assigneeUser' : {
+                    'data' : selectedAssignees
+                },
+                'assignmentType' : {
+                    'data' : {
+                        'type':'evaluation-template-assignment-types',
+                        'id': evaluationTypeSelected
+                    }
+                }
+            }
+        }
     };
-}
+
+    console.log('data to be sent: ', data);
+
+    axios.post('/evaluation-template-assignments', data)
+        .then((response) => {
+            console.log(response);
+            dispatch({
+                type: actionTypes.ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_SUCCESS,
+            });
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+};
 
 // TO DO: THIS ALL WILL GO AWAY TO MIDDLEWARE
 export const fetchTemplateList = () => (dispatch) => {
 
     axios.get(plantMinerApi.getTemplates)
+
         .then((response) => {
 
-            const normalisedResponse = normalize(response.data, { endpoint: 'evaluation-templates' });
-            // console.log('original response:', response);
-            // console.log('normalised response:', normalisedResponse);
+            const evaluationTemplates = normalize(response.data, { endpoint: 'evaluation-templates' });
+
             dispatch({
                 type: actionTypes.ASSIGNMENT_CREATION_FETCH_EVALUATION_TEMPLATES_SUCCESS,
-                templates: normalisedResponse,
+                evaluationTemplates,
             });
         })
         .catch((error) => {
@@ -36,11 +78,14 @@ export const fetchTemplateList = () => (dispatch) => {
 };
 
 
-export const fetchEvaluationOnTypes = () => (dispatch) => {
+export const evaluationTemplateUpdateChange = templateId => (dispatch) => {
 
     axios.get(plantMinerApi.getEvaluationAssignmentTypes)
         .then((response) => {
+
             const  evaluationTypes =  normalize(response.data, { endpoint: 'evaluation-types' });
+            console.log('evaluation types fetch: ', evaluationTypes);
+
             dispatch({
                 type: actionTypes.ASSIGNMENT_CREATION_FETCH_EVALUATION_TYPES_SUCCESS,
                 evaluationTypes,
@@ -52,6 +97,11 @@ export const fetchEvaluationOnTypes = () => (dispatch) => {
                 message: error.message,
             });
         });
+
+    dispatch({
+        type: actionTypes.ASSIGNMENT_CREATION_EVALUATION_TEMPLATE_UPDATE_CHANGE,
+        templateId,
+    });
 };
 
 export const updateChangeEvaluationType = evaluationType => (dispatch) => {
@@ -61,7 +111,7 @@ export const updateChangeEvaluationType = evaluationType => (dispatch) => {
         evaluationType,
     });
 
-    if (evaluationType === 'Engagement') {
+    if (evaluationType === '4') {
 
         axios.get('/engagements')
             .then((response) => {
@@ -82,7 +132,7 @@ export const updateChangeEvaluationType = evaluationType => (dispatch) => {
         return;
     }
 
-    if (evaluationType === 'Supplier') {
+    if (evaluationType === '3') {
 
         axios.get('/preferred-suppliers')
             .then((response) => {
@@ -145,7 +195,12 @@ export const fetchMatchedSuppliers = rfqTypeId => (dispatch) => {
 export const updateChangeMatchedSuppliers = matchedSupplierId => (dispatch, getState) => {
     const { rfqTypeSelectedId, evaluationTypeSelected } = getState().evaluationAssignment;
 
-    if (evaluationTypeSelected !== 'RFQ Item') {
+    if (evaluationTypeSelected === '1') {
+        dispatch({
+            type: actionTypes.ASSIGNMENT_CREATION_SET_ASSIGNMENT_ENTITY_INSTANCE_ID,
+            selectedAssignmentEntityInstanceId: matchedSupplierId,
+        });
+
         return;
     }
 
@@ -170,29 +225,24 @@ export const updateChangeMatchedSuppliers = matchedSupplierId => (dispatch, getS
 
 
 export const updateChangeMatchedItems = (matchedItemId) => {
-    console.log('action creator', matchedItemId);
-
     return {
-        type: actionTypes.ASSIGNMENT_CREATION_UPDATE_CHANGE_MATCHED_ITEMS,
-        matchedItemId,
+        type: actionTypes.ASSIGNMENT_CREATION_SET_ASSIGNMENT_ENTITY_INSTANCE_ID,
+        selectedAssignmentEntityInstanceId: matchedItemId,
     };
+
 };
 
 export const updateChangeEngagements = (engagementId) => {
-    console.log('action creator', engagementId);
-
     return {
-        type: actionTypes.ASSIGNMENT_CREATION_ENGAGEMENT_UPDATE_CHANGE,
-        engagementId,
+        type: actionTypes.ASSIGNMENT_CREATION_SET_ASSIGNMENT_ENTITY_INSTANCE_ID,
+        selectedAssignmentEntityInstanceId: engagementId,
     };
 };
 
 export const updateChangeSuppliers = (supplierId) => {
-    console.log('action creator', supplierId);
-
     return {
-        type: actionTypes.ASSIGNMENT_CREATION_PREFERRED_SUPPLIERS_UPDATE_CHANGE,
-        supplierId,
+        type: actionTypes.ASSIGNMENT_CREATION_SET_ASSIGNMENT_ENTITY_INSTANCE_ID,
+        selectedAssignmentEntityInstanceId: supplierId,
     };
 };
 
@@ -221,18 +271,12 @@ export const fetchAssigneeList = () => (dispatch) => {
         });
 };
 
-export function isBusy(status) {
-    return {
-        type: actionTypes.IS_BUSY,
-        status,
-    };
-}
 
 export const updateSelectedAssignees = (assignees) => {
     console.log('action creator', assignees);
 
     return {
-        type: actionTypes.SELECTED_ASSIGNEES_UPDATE,
+        type: actionTypes.ASSIGNMENT_CREATION_ASSIGNEES_CHANGE_UPDATE,
         assignees,
     };
 };
