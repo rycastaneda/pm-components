@@ -37,7 +37,7 @@ function configureHeaders() {
  */
 function getLocalHeaders() {
     var api_url = window.api_url || 'https://pit-460-api.pmstg.com';
-    var tokenRequest = new Request(api_url + 'authenticate', {
+    var tokenRequest = new Request(api_url + '/authenticate', {
         method: 'POST',
         headers: {
             'Accept': 'application/vnd.pm.v1+json',
