@@ -22,20 +22,26 @@ class Question extends Component {
         const listComponents = comments.length ? (
             comments.map(comment => <Comment key={comment.id} {...comment} />)
         ) : (
-            <div className="col-sm-12 mar-top">No comments yet</div>
+            <tr>
+                <td className="td-center" colSpan="3">
+                    No comments yet
+                </td>
+            </tr>
         );
 
         return (
             <div className="row">
-                <div className="col-sm-1 text-right">{`${number}. `}</div>
-                <div className="col-sm-9">
+                <div className="mar-top-sm col-sm-1 text-right">{`${number}. `}</div>
+                <div className="mar-top-sm col-sm-9">
                     <p className="question-title">{questionTitle}</p>
                 </div>
                 <div className="col-sm-1 scorebox">
-                    <span className="badge">{totalScore}</span>
+                    <span className="label label-lg label-plantminer">
+                        {totalScore}
+                    </span>
                 </div>
                 <div
-                    className="col-sm-1 toggle-comments"
+                    className="mar-top-sm col-sm-1 toggle-comments"
                     onClick={this.toggleComments}>
                     <i
                         className={`fa pointer ${this.state.isShown
@@ -44,7 +50,20 @@ class Question extends Component {
                     />
                 </div>
 
-                {this.state.isShown ? listComponents : null}
+                {this.state.isShown ? (
+                    <div className="col-sm-12">
+                        <table className="table db-table">
+                            <thead>
+                                <tr>
+                                    <th>Staff</th>
+                                    <th>Comment</th>
+                                    <th className="td-center">Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>{listComponents}</tbody>
+                        </table>
+                    </div>
+                ) : null}
             </div>
         );
     }

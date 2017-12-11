@@ -1,51 +1,593 @@
 {
-  "data": {
-    "type": "evaluation-templates",
-    "id": "1",
-    "attributes": {
-      "title": "Template Title",
-      "active": 1
-    },
-    "relationships": {
-      "criteria": {
-        "data": [
-          {
-            "type": "evaluation-criteria",
-            "id": "2"
-          }
-        ]
-      }
-    }
-  },
-  "included": [
-    {
-      "type": "evaluation-questions",
-      "id": "3",
-      "attributes": {
-        "text": "Question Text",
-        "allow_documents": 0,
-        "enable_scale_definitions": 0,
-        "mandatory_comments": 0,
-        "sort_order": 0
-      }
-    },
-    {
-      "type": "evaluation-criteria",
-      "id": "2",
-      "attributes": {
-        "title": "Criteria Title",
-        "weight": 0
-      },
-      "relationships": {
-        "questions": {
-          "data": [
-            {
-              "type": "evaluation-questions",
-              "id": "3"
+    "data": {
+        "type": "evaluation-template-assignments",
+        "id": "1",
+        "attributes": {
+            "created_by": 0,
+            "created_at": {
+                "date": "2017-11-29 05:02:39.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "updated_at": {
+                "date": "2017-12-05 06:44:57.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
             }
-          ]
+        },
+        "relationships": {
+            "template": {
+                "data": {
+                    "type": "evaluation-templates",
+                    "id": "1"
+                }
+            },
+            "assigneeUser": {
+                "data": {
+                    "type": "users",
+                    "id": "23679"
+                }
+            },
+            "assignmentType": {
+                "data": {
+                    "type": "evaluation-template-assignment-types",
+                    "id": "2"
+                }
+            },
+            "assignmentStatus": {
+                "data": {
+                    "type": "evaluation-template-assignment-statuses",
+                    "id": "1"
+                }
+            },
+            "chairStaff": {
+                "data": {
+                    "type": "staff",
+                    "id": "1"
+                }
+            },
+            "assignmentEntityInstance": {
+                "data": {
+                    "type": "matched-items",
+                    "id": "4602083"
+                }
+            },
+            "questionResponses": {
+                "data": [
+                    {
+                        "type": "evaluation-question-responses",
+                        "id": "2"
+                    }
+                ]
+            },
+            "relatedAssignments": {
+                "data": [
+                    {
+                        "type": "evaluation-template-assignments",
+                        "id": "5"
+                    },
+                    {
+                        "type": "evaluation-template-assignments",
+                        "id": "7"
+                    }
+                ]
+            }
         }
-      }
-    }
-  ]
+    },
+    "included": [
+        {
+            "type": "evaluation-question-types",
+            "id": "1",
+            "attributes": {
+                "title": "Scale (1 - 5)",
+                "description": "",
+                "active": 1
+            },
+            "relationships": {
+                "definitions": {
+                    "data": []
+                }
+            }
+        },
+        {
+            "type": "evaluation-questions",
+            "id": "2",
+            "attributes": {
+                "text": "New Question",
+                "allow_documents": 0,
+                "enable_scale_definitions": 0,
+                "mandatory_comments": 0,
+                "sort_order": 0
+            },
+            "relationships": {
+                "type": {
+                    "data": {
+                        "type": "evaluation-question-types",
+                        "id": "1"
+                    }
+                },
+                "documents": {
+                    "data": []
+                }
+            }
+        },
+        {
+            "type": "evaluation-questions",
+            "id": "3",
+            "attributes": {
+                "text": "New Question",
+                "allow_documents": 0,
+                "enable_scale_definitions": 0,
+                "mandatory_comments": 0,
+                "sort_order": 0
+            },
+            "relationships": {
+                "type": {
+                    "data": {
+                        "type": "evaluation-question-types",
+                        "id": "1"
+                    }
+                },
+                "documents": {
+                    "data": []
+                }
+            }
+        },
+        {
+            "type": "evaluation-questions",
+            "id": "5",
+            "attributes": {
+                "text": "New Question",
+                "allow_documents": 0,
+                "enable_scale_definitions": 0,
+                "mandatory_comments": 0,
+                "sort_order": 0
+            },
+            "relationships": {
+                "type": {
+                    "data": {
+                        "type": "evaluation-question-types",
+                        "id": "1"
+                    }
+                },
+                "documents": {
+                    "data": []
+                }
+            }
+        },
+        {
+            "type": "evaluation-criteria",
+            "id": "1",
+            "attributes": {
+                "title": "Update Criteria",
+                "weight": 100
+            },
+            "relationships": {
+                "questions": {
+                    "data": [
+                        {
+                            "type": "evaluation-questions",
+                            "id": "2"
+                        },
+                        {
+                            "type": "evaluation-questions",
+                            "id": "3"
+                        },
+                        {
+                            "type": "evaluation-questions",
+                            "id": "5"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "evaluation-criteria",
+            "id": "3",
+            "attributes": {
+                "title": "New Criteria",
+                "weight": 0
+            },
+            "relationships": {
+                "questions": {
+                    "data": []
+                }
+            }
+        },
+        {
+            "type": "organisation",
+            "id": "1",
+            "attributes": {
+                "title": "Bundaberg Regional Council"
+            }
+        },
+        {
+            "type": "staff",
+            "id": "1",
+            "attributes": {
+                "first_name": "Troy",
+                "last_name": "Redden",
+                "mobile": "0412345678",
+                "is_organisation_admin": 1,
+                "position": "",
+                "staff_company": "",
+                "staff_phone": "07 4130 4550",
+                "state_id": 10424,
+                "organisation": "Bundaberg Regional Council"
+            },
+            "relationships": {
+                "organisation": {
+                    "data": {
+                        "type": "organisation",
+                        "id": "1"
+                    }
+                }
+            }
+        },
+        {
+            "type": "supplier",
+            "id": "964012",
+            "attributes": {
+                "title": "Najah Earthmoving"
+            }
+        },
+        {
+            "type": "requested-item",
+            "id": "81375",
+            "attributes": {
+                "tbl_category_id": 933,
+                "quantity": "1",
+                "comments": "",
+                "tbl_quote_request_id": 36689,
+                "mobilisation": 0,
+                "demobilisation": 0,
+                "title": "26 - 30 Tonne Excavator",
+                "service": "hire",
+                "service_title": "",
+                "locked_in": 1
+            }
+        },
+        {
+            "type": "supplier",
+            "id": "963986",
+            "attributes": {
+                "title": "Bitz Excavations"
+            }
+        },
+        {
+            "type": "requested-item",
+            "id": "81377",
+            "attributes": {
+                "tbl_category_id": 936,
+                "quantity": "1",
+                "comments": "",
+                "tbl_quote_request_id": 36689,
+                "mobilisation": 0,
+                "demobilisation": 0,
+                "title": "41 - 45 Tonne Excavator",
+                "service": "hire",
+                "service_title": "",
+                "locked_in": 1
+            }
+        },
+        {
+            "type": "requested-item",
+            "id": "81360",
+            "attributes": {
+                "tbl_category_id": 660,
+                "quantity": "1",
+                "comments": "",
+                "tbl_quote_request_id": 36689,
+                "mobilisation": 0,
+                "demobilisation": 0,
+                "title": "Grader 120, 130, 140, 160M / H / G or Equivalent",
+                "service": "hire",
+                "service_title": "",
+                "locked_in": 1
+            }
+        },
+        {
+            "type": "evaluation-templates",
+            "id": "1",
+            "attributes": {
+                "title": "New Template",
+                "active": 0,
+                "created_at": {
+                    "date": "2017-11-29 01:50:11.000000",
+                    "timezone_type": 3,
+                    "timezone": "UTC"
+                }
+            }
+        },
+        {
+            "type": "users",
+            "id": "23679",
+            "attributes": {
+                "username": "troy.redden@bundaberg.qld.gov.au"
+            }
+        },
+        {
+            "type": "evaluation-template-assignment-types",
+            "id": "2",
+            "attributes": {
+                "title": "RFQ Item",
+                "description": "RFQ Item",
+                "assignment_type_space_id": null,
+                "ref_table": "tbl_requested_item_quote_item",
+                "ref_field": "id",
+                "created_by": 0,
+                "pepp_organisation_id": null
+            }
+        },
+        {
+            "type": "evaluation-template-assignment-statuses",
+            "id": "1",
+            "attributes": {
+                "title": "Not Started"
+            }
+        },
+        {
+            "type": "matched-items",
+            "id": "4549001",
+            "attributes": {
+                "quantity": 1,
+                "item_document": null,
+                "comments": "N/A",
+                "quoted": 1,
+                "stand_by_rate": null,
+                "title": "Caterpillar 349D"
+            },
+            "relationships": {
+                "matchedSupplier": {
+                    "data": [
+                        {
+                            "type": "supplier",
+                            "id": "963986"
+                        }
+                    ]
+                },
+                "requestedItem": {
+                    "data": {
+                        "type": "requested-item",
+                        "id": "81377"
+                    }
+                }
+            }
+        },
+        {
+            "type": "evaluation-question-responses",
+            "id": "3",
+            "attributes": {
+                "response_value": "5",
+                "comment": "They did a good job.",
+                "created_at": {
+                    "date": "2017-11-29 22:11:29.000000",
+                    "timezone_type": 3,
+                    "timezone": "UTC"
+                },
+                "updated_at": {
+                    "date": "2017-11-29 22:11:29.000000",
+                    "timezone_type": 3,
+                    "timezone": "UTC"
+                }
+            },
+            "relationships": {
+                "documents": {
+                    "data": []
+                },
+                "question": {
+                    "data": {
+                        "type": "evaluation-questions",
+                        "id": "3"
+                    }
+                }
+            }
+        },
+        {
+            "type": "matched-items",
+            "id": "4549002",
+            "attributes": {
+                "quantity": 1,
+                "item_document": null,
+                "comments": "Topcon GPS included ",
+                "quoted": 1,
+                "stand_by_rate": null,
+                "title": "Caterpillar 120H Grader"
+            },
+            "relationships": {
+                "matchedSupplier": {
+                    "data": [
+                        {
+                            "type": "supplier",
+                            "id": "963986"
+                        }
+                    ]
+                },
+                "requestedItem": {
+                    "data": {
+                        "type": "requested-item",
+                        "id": "81360"
+                    }
+                }
+            }
+        },
+        {
+            "type": "matched-items",
+            "id": "4602083",
+            "attributes": {
+                "quantity": 4,
+                "item_document": null,
+                "comments": "N/A",
+                "quoted": 1,
+                "stand_by_rate": null,
+                "title": "Hammer &bucket"
+            },
+            "relationships": {
+                "matchedSupplier": {
+                    "data": [
+                        {
+                            "type": "supplier",
+                            "id": "964012"
+                        }
+                    ]
+                },
+                "requestedItem": {
+                    "data": {
+                        "type": "requested-item",
+                        "id": "81375"
+                    }
+                }
+            }
+        },
+        {
+            "type": "evaluation-question-responses",
+            "id": "2",
+            "attributes": {
+                "response_value": "5",
+                "comment": "They did a good job.",
+                "created_at": {
+                    "date": "2017-11-29 22:11:29.000000",
+                    "timezone_type": 3,
+                    "timezone": "UTC"
+                },
+                "updated_at": {
+                    "date": "2017-11-29 22:11:29.000000",
+                    "timezone_type": 3,
+                    "timezone": "UTC"
+                }
+            },
+            "relationships": {
+                "documents": {
+                    "data": []
+                },
+                "question": {
+                    "data": {
+                        "type": "evaluation-questions",
+                        "id": "3"
+                    }
+                }
+            }
+        },
+        {
+            "type": "evaluation-template-assignments",
+            "id": "5",
+            "attributes": {
+                "created_by": 0,
+                "created_at": {
+                    "date": "2017-11-29 05:02:39.000000",
+                    "timezone_type": 3,
+                    "timezone": "UTC"
+                },
+                "updated_at": {
+                    "date": "2017-12-05 06:52:24.000000",
+                    "timezone_type": 3,
+                    "timezone": "UTC"
+                }
+            },
+            "relationships": {
+                "template": {
+                    "data": {
+                        "type": "evaluation-templates",
+                        "id": "1"
+                    }
+                },
+                "assigneeUser": {
+                    "data": {
+                        "type": "users",
+                        "id": "23679"
+                    }
+                },
+                "assignmentType": {
+                    "data": {
+                        "type": "evaluation-template-assignment-types",
+                        "id": "2"
+                    }
+                },
+                "assignmentStatus": {
+                    "data": {
+                        "type": "evaluation-template-assignment-statuses",
+                        "id": "1"
+                    }
+                },
+                "chairStaff": {
+                    "data": {
+                        "type": "staff",
+                        "id": "1"
+                    }
+                },
+                "assignmentEntityInstance": {
+                    "data": {
+                        "type": "matched-items",
+                        "id": "4549001"
+                    }
+                },
+                "questionResponses": {
+                    "data": [
+                        {
+                            "type": "evaluation-question-responses",
+                            "id": "3"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "evaluation-template-assignments",
+            "id": "7",
+            "attributes": {
+                "created_by": 0,
+                "created_at": {
+                    "date": "2017-11-29 05:02:39.000000",
+                    "timezone_type": 3,
+                    "timezone": "UTC"
+                },
+                "updated_at": {
+                    "date": "2017-12-05 06:52:24.000000",
+                    "timezone_type": 3,
+                    "timezone": "UTC"
+                }
+            },
+            "relationships": {
+                "template": {
+                    "data": {
+                        "type": "evaluation-templates",
+                        "id": "1"
+                    }
+                },
+                "assigneeUser": {
+                    "data": {
+                        "type": "users",
+                        "id": "23679"
+                    }
+                },
+                "assignmentType": {
+                    "data": {
+                        "type": "evaluation-template-assignment-types",
+                        "id": "2"
+                    }
+                },
+                "assignmentStatus": {
+                    "data": {
+                        "type": "evaluation-template-assignment-statuses",
+                        "id": "1"
+                    }
+                },
+                "chairStaff": {
+                    "data": {
+                        "type": "staff",
+                        "id": "1"
+                    }
+                },
+                "assignmentEntityInstance": {
+                    "data": {
+                        "type": "matched-items",
+                        "id": "4549002"
+                    }
+                },
+                "questionResponses": {
+                    "data": []
+                }
+            }
+        }
+    ]
 }

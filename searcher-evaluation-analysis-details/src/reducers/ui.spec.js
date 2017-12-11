@@ -4,7 +4,7 @@ import * as actions from '../constants/ActionTypes';
 
 describe('UI reducer', () => {
     let state = {};
-    const evaluationId = 1;
+    const assignmentId = 1;
 
     it('should handle default state', () => {
         state = ui(undefined, {});
@@ -14,7 +14,7 @@ describe('UI reducer', () => {
                 id: null,
                 done: false
             },
-            evaluationId: '',
+            assignmentId: '',
             currentView: 'single'
         });
     });
@@ -22,7 +22,7 @@ describe('UI reducer', () => {
     it('should handle FETCH_EVALUATION', () => {
         state = ui(state, {
             type: actions.FETCH_EVALUATION,
-            evaluationId
+            assignmentId
         });
 
         expect(state.isLoading).to.deep.equal({
@@ -30,13 +30,13 @@ describe('UI reducer', () => {
             id: null,
             done: false
         });
-        expect(state.evaluationId).to.eql(evaluationId);
+        expect(state.assignmentId).to.eql(assignmentId);
     });
 
     it('should handle RECEIVE_EVALUATION', () => {
         state = ui(state, {
             type: actions.RECEIVE_EVALUATION,
-            evaluationId
+            assignmentId
         });
 
         expect(state.isLoading).to.deep.equal({
@@ -49,7 +49,7 @@ describe('UI reducer', () => {
     it('should handle FETCH_CRITERIA', () => {
         state = ui(state, {
             type: actions.RECEIVE_EVALUATION,
-            evaluationId
+            assignmentId
         });
 
         expect(state.isLoading).to.deep.equal({

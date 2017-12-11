@@ -1,42 +1,48 @@
 import * as actions from '../constants/ActionTypes';
-import mockEvaluation from '../mocks/evaluation.json';
 import axios from 'axios';
-export function fetchEvaluation(evaluationId, currentView) {
-    return dispatch => {
-        axios.defaults.baseURL = 'http://httpbin.org';
+
+export function fetchEvaluation(assignmentId, currentView) {
+    return (dispatch, getState) => {
+        let assignment = assignmentId || getState().ui.assignmentId;
+
         dispatch({
             type: actions.FETCH_EVALUATION,
-            evaluationId,
+            assignmentId: assignment,
             currentView
         });
+
+        let includes = [
+            'template.criteria.questions',
+            'assigneeUser.staff',
+            'questionResponses.question'
+        ];
+
+        if (currentView !== 'single') {
+            includes.push(
+                'relatedAssignments.questionResponses',
+                'relatedAssignments.assigneeUser.staff'
+            );
+        }
+
         return axios
             .get(
-                // `/evaluation-templates/${evaluationId}?include=criteria.questions`
-                '/anything'
+                `/evaluation-template-assignments/${assignment}?include=${includes.join(
+                    ','
+                )}`
             )
             .then(response => {
                 return dispatch({
                     type: actions.RECEIVE_EVALUATION,
-                    evaluation: mockEvaluation
+                    evaluation: response.data
                 });
             });
     };
 }
 
 export function changeView(view) {
-    return dispatch => {
-        dispatch({
-            type: actions.CHANGE_VIEW,
-            view
-        });
-
-        // // TODO: api endpoint
-        // return axios.get('/anything').then(response => {
-        //     return dispatch({
-        //         type: actions.RECEIVE_EVALUATIONS,
-        //         evaluation: response.data
-        //     });
-        // });
+    return {
+        type: actions.CHANGE_VIEW,
+        view
     };
 }
 
@@ -54,4 +60,3 @@ export function toggleCriterionCollapse(criterionId) {
         criterionId
     };
 }
-

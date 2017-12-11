@@ -15,12 +15,10 @@ export function evaluation(state = INITIAL_STATE, action) {
 }
 
 function receiveEvaluation(state, action) {
-    const { byId, allIds } = state;
-
-    const evaluationId = action.evaluation.data.id;
-
+    let { byId, allIds } = state;
+    let assignment = action.evaluation.data;
     let criteriaIds = [];
-
+    const evaluationId = assignment.relationships.template.data.id;
     if (action.evaluation.included) {
         criteriaIds = action.evaluation.included
             .filter(included => included.type === 'evaluation-criteria')
@@ -30,11 +28,13 @@ function receiveEvaluation(state, action) {
     byId[evaluationId] = {
         id: evaluationId,
         criteriaIds,
-        ...action.evaluation.data.attributes
+        ...assignment.attributes
     };
+
+    allIds.push(evaluationId);
 
     return {
         byId,
-        allIds: allIds.concat(evaluationId)
+        allIds
     };
 }

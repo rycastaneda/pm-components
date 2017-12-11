@@ -40,7 +40,7 @@ describe('ComparisonRow component: ', () => {
 
     it('should be able to render the rows', () => {
         const cells = component.find('td');
-        expect(cells).to.have.length(props.criteria.length + 1);
+        expect(cells).to.have.length(props.criteria.length + 2);
 
         let counter = 0;
         cells.forEach(cell => {
