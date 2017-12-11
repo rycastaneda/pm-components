@@ -44,7 +44,9 @@ function receiveCriteria(state, action) {
                     currentTab: 'responses'
                 };
 
-                allIds.push(criteria.id);
+                if (!allIds.includes(criteria.id)) {
+                    allIds.push(criteria.id);
+                }
             });
     }
 

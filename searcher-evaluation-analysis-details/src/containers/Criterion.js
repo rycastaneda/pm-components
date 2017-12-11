@@ -4,18 +4,10 @@ import Question from '../components/Question';
 import Header from '../components/Header';
 import { connect } from 'react-redux';
 import { toggleCriterionCollapse, changeTab } from '../actions/evaluation';
+
 export class Criterion extends Component {
     constructor(props) {
         super(props);
-        this.newComment = {
-            ref: null,
-            comment: ''
-        };
-
-        this.state = {
-            open: false,
-            tab: 'responses'
-        };
 
         this.toggleAccordion = this.toggleAccordion.bind(this);
         this.changeTab = this.changeTab.bind(this);
@@ -38,14 +30,18 @@ export class Criterion extends Component {
             title,
             weight,
             questions,
-            reports,
             isOpen,
-            currentTab
+            currentTab,
+            currentView
         } = this.props;
 
-        const questionComponents = questions.map((question, index) => (
-            <Question key={question.id} number={index + 1} {...question} />
-        ));
+        const questionComponents = questions.length ? (
+            questions.map((question, index) => (
+                <Question key={question.id} number={index + 1} {...question} />
+            ))
+        ) : (
+            <div className="mar-top-sm text-center">No Responses yet.</div>
+        );
 
         return (
             <div className="pmaccordion pmaccordion--impact">
@@ -66,17 +62,20 @@ export class Criterion extends Component {
                     </div>
                 </a>
                 <div
-                    className={`collapse mar-btm pad-hor ${isOpen
+                    className={`collapse mar-btm mar-top pad-hor ${isOpen
                         ? 'in'
                         : ''}`}>
-                    <Header
-                        currentTab={currentTab}
-                        changeTab={this.changeTab}
-                    />
+                    {currentView === 'all' ? (
+                        <Header
+                            currentView={currentView}
+                            currentTab={currentTab}
+                            changeTab={this.changeTab}
+                        />
+                    ) : null}
                     {currentTab === 'responses' ? (
                         questionComponents
                     ) : (
-                        <Report reportData={reports} />
+                        <Report questions={questions} />
                     )}
                 </div>
             </div>
@@ -89,14 +88,15 @@ Criterion.propTypes = {
     title: PropTypes.string.isRequired,
     weight: PropTypes.number.isRequired,
     isOpen: PropTypes.bool,
+    currentView: PropTypes.string,
     currentTab: PropTypes.string,
     questions: PropTypes.array,
     reports: PropTypes.array,
     dispatch: PropTypes.func
 };
 
-function mapStateToProps() {
-    return {};
+function mapStateToProps(state) {
+    return { currentView: state.ui.currentView };
 }
 
 export default connect(mapStateToProps)(Criterion); // adds dispatch prop

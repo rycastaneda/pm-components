@@ -9,7 +9,8 @@ const changeTab = sinon.spy();
 
 describe('Header component: ', () => {
     let component;
-    const props = {
+    let props = {
+        currentView: 'single',
         currentTab: 'responses',
         changeTab
     };
@@ -25,5 +26,18 @@ describe('Header component: ', () => {
 
         tab.simulate('click');
         expect(changeTab.called).to.be.true;
+    });
+
+    it('should show the reports tab on all tab', () => {
+        props = {
+            currentView: 'all',
+            currentTab: 'responses',
+            changeTab
+        };
+
+        component = shallow(<Header {...props} />);
+
+        let tab = component.find(`#${props.currentTab}`);
+        expect(tab).to.have.length(1);
     });
 });

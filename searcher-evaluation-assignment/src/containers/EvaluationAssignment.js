@@ -4,6 +4,16 @@ import { bindActionCreators } from 'redux';
 import  Select  from 'react-select';
 import * as actions from '../actions/evaluationAssignmentsAction';
 import { selectFromStore } from '../utils/selectFromStore';
+import { concatLabelKey } from '../utils/concatLabelKey';
+import EvaluationTemplatesDropdown from './components/EvaluationTemplatesDropdown';
+import EvaluationTypeDropdown from './components/EvaluationTypeDropdown';
+import RfqListDropdown from './components/RfqListDropdown';
+import MatchedSuppliersDropdown from './components/MatchedSuppliersDropdown';
+import MatchedItemsDropdown from './components/MatchedItemsDropdown';
+import EngagementsDropdown from './components/EngagementsDropdown';
+import PreferredSuppliersDropdown from './components/PreferredSuppliersDropdown';
+
+
 
 class EvaluationAssignment extends Component {
 
@@ -34,50 +44,23 @@ class EvaluationAssignment extends Component {
                     <div className="row">
                         <div className="col-sm-4 form-group">
                             <label htmlFor="evaluationTemplate">Evaluation Template</label>
-                            <select name="evaluationTemplate"
-                                id="evaluationTemplate"
-                                className="form-control"
-                                onChange={ evt => actions.evaluationTemplateUpdateChange(evt.target.value) }>
-                                <option key="-" value={null}>Select Template</option>
-                                { evaluationTemplates.map(
-                                    item => <option key={item.id} value={item.id}>{item.title}</option>
-                                ) }
-                            </select>
+                            <EvaluationTemplatesDropdown evaluationTemplates={evaluationTemplates} />
                         </div>
                     </div>
                     { evaluationTypes.length > 0 ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationIsOn">Evaluation Type</label>
-                                <select name="evaluationIsOn"
-                                    id="evaluationIsOn"
-                                    className="form-control"
-                                    onChange={ evt => actions.updateChangeEvaluationType(evt.target.value) }>
-                                    <option key="-" value={null}>{!isLoading ? 'Select..' : 'Loading...'}</option>
-                                    {evaluationTypes.map(
-                                        item => <option key={item.id} value={item.id}>{item.title}</option>
-                                    )}
-                                </select>
+                                <EvaluationTypeDropdown evaluationTypes={evaluationTypes} isLoading={isLoading} />
                             </div>
-                        </div>:
-                        null
+                        </div>
+                        : null
                     }
                     { evaluationTypesRfq.length > 0 && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1') ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">RFQ List</label>
-                                <select name="evaluationLink"
-                                    id="evaluationLink"
-                                    className="form-control"
-                                    onChange={
-                                        event => actions.fetchMatchedSuppliers(event.target.value)
-                                    }>
-                                    <option key="-" value={null}>Select..</option>
-                                    {evaluationTypesRfq.map(
-                                        (item, index) =>
-                                        <option key={index} value={item.id}>{item.quoteTitle}</option>
-                                    )}
-                                </select>
+                                <RfqListDropdown evaluationTypesRfq={evaluationTypesRfq} />
                             </div>
                         </div>
                         : null
@@ -86,18 +69,7 @@ class EvaluationAssignment extends Component {
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">Matched Suppliers</label>
-                                <select name="evaluationLink"
-                                        id="evaluationLink"
-                                        className="form-control"
-                                        onChange={
-                                            event => actions.updateChangeMatchedSuppliers(event.target.value)
-                                        }>
-                                    <option key="-" value={null}>Select..</option>
-                                    { matchedSuppliers.map(
-                                        (item, index) =>
-                                            <option key={index} value={item.id}>{item.title}</option>
-                                    )}
-                                </select>
+                                <MatchedSuppliersDropdown matchedSuppliers={matchedSuppliers} />
                             </div>
                         </div>
                         : null
@@ -106,18 +78,7 @@ class EvaluationAssignment extends Component {
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">Matched Items</label>
-                                <select name="evaluationLink"
-                                        id="evaluationLink"
-                                        className="form-control"
-                                        onChange={
-                                            event => actions.updateChangeMatchedItems(event.target.value)
-                                        }>
-                                    <option key="-" value={null}>Select..</option>
-                                    {matchedItems.map(
-                                        (item, index) =>
-                                            <option key={index} value={item.id}>{item.title}</option>
-                                    )}
-                                </select>
+                                <MatchedItemsDropdown matchedItems={matchedItems} />
                             </div>
                         </div>
                         : null
@@ -127,18 +88,7 @@ class EvaluationAssignment extends Component {
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">Engagements</label>
-                                <select name="evaluationLink"
-                                        id="evaluationLink"
-                                        className="form-control"
-                                        onChange={
-                                            event => actions.updateChangeEngagements(event.target.value)
-                                        }>
-                                    <option key="-" value={null}>{!isLoading ? 'Select..' : 'Loading...'}</option>
-                                    { evaluationEngagements.map(
-                                        (item, index) =>
-                                            <option key={index} value={item.id}>{item.engagementText}</option>
-                                    )}
-                                </select>
+                                <EngagementsDropdown evaluationEngagements={evaluationEngagements} isloading={isLoading} />
                             </div>
                         </div>
                         : null
@@ -148,18 +98,7 @@ class EvaluationAssignment extends Component {
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">Preferred Suppliers</label>
-                                <select name="evaluationLink"
-                                        id="evaluationLink"
-                                        className="form-control"
-                                        onChange={
-                                            event => actions.updateChangeSuppliers(event.target.value)
-                                        }>
-                                    <option key="-" value={null}>{!isLoading ? 'Select..' : 'Loading...'}</option>
-                                    { evaluationSuppliers.map(
-                                        (item, index) =>
-                                            <option key={index} value={item.id}>{item.supplier.title}</option>
-                                    )}
-                                </select>
+                                <PreferredSuppliersDropdown evaluationSuppliers={evaluationSuppliers} isLoading={isLoading} />
                             </div>
                         </div>
                         : null
@@ -172,7 +111,7 @@ class EvaluationAssignment extends Component {
                                 <div>
                                     <Select name="form-field-name"
                                         multi
-                                        labelKey="lastName"
+                                        labelKey="fullName"
                                         value={selectedAssignees}
                                         options={evaluationAssignees}
                                         isLoading={isLoading}
@@ -239,7 +178,7 @@ const mapStateToProps = (state, ownProps) => {
     } = state.evaluationAssignment;
 
     const evaluationTemplates = selectFromStore(state.evaluationAssignment.evaluationTemplates, 'evaluation-templates', 'evaluationTemplates');
-    const evaluationAssignees = selectFromStore(state.evaluationAssignment.evaluationAssignees, 'evaluation-assignees', 'staff');
+    const evaluationAssignees = concatLabelKey(selectFromStore(state.evaluationAssignment.evaluationAssignees, 'evaluation-assignees', 'staff'));
 
     const evaluationTypes = selectFromStore(state.evaluationAssignment.evaluationTypes, 'evaluation-types', 'evaluationTemplateAssignmentTypes');
     const evaluationTypesRfq = selectFromStore(state.evaluationAssignment.evaluationTypesRfq, 'evaluation-rfq', 'requestForQuotations');
@@ -248,7 +187,7 @@ const mapStateToProps = (state, ownProps) => {
     const evaluationEngagements = selectFromStore(state.evaluationAssignment.evaluationEngagements, 'engagements', 'engagements');
     const evaluationSuppliers = selectFromStore(state.evaluationAssignment.evaluationSuppliers, 'suppliers', 'preferredSuppliers');
 
-    console.log('select from store: ', evaluationTypes);
+    console.log('select from store: ', evaluationAssignees);
 
     return {
         ...ownProps,
