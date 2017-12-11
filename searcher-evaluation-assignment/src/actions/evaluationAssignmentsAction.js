@@ -8,7 +8,6 @@ import normalize from 'json-api-normalizer';
 
 export const createAssignment = () => (dispatch, getState) => {
     const { selectedTemplateId, selectedAssignees, selectedAssignmentEntityInstanceId, evaluationTypeSelected } = getState().evaluationAssignment;
-
     dispatch({
         type: actionTypes.ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_REQUEST_START,
     });
@@ -57,13 +56,9 @@ export const createAssignment = () => (dispatch, getState) => {
 
 // TO DO: THIS ALL WILL GO AWAY TO MIDDLEWARE
 export const fetchTemplateList = () => (dispatch) => {
-
     axios.get(plantMinerApi.getTemplates)
-
         .then((response) => {
-
             const evaluationTemplates = normalize(response.data, { endpoint: 'evaluation-templates' });
-
             dispatch({
                 type: actionTypes.ASSIGNMENT_CREATION_FETCH_EVALUATION_TEMPLATES_SUCCESS,
                 evaluationTemplates,
@@ -79,13 +74,9 @@ export const fetchTemplateList = () => (dispatch) => {
 
 
 export const evaluationTemplateUpdateChange = templateId => (dispatch) => {
-
     axios.get(plantMinerApi.getEvaluationAssignmentTypes)
         .then((response) => {
-
             const  evaluationTypes =  normalize(response.data, { endpoint: 'evaluation-types' });
-            console.log('evaluation types fetch: ', evaluationTypes);
-
             dispatch({
                 type: actionTypes.ASSIGNMENT_CREATION_FETCH_EVALUATION_TYPES_SUCCESS,
                 evaluationTypes,
@@ -105,7 +96,6 @@ export const evaluationTemplateUpdateChange = templateId => (dispatch) => {
 };
 
 export const updateChangeEvaluationType = evaluationType => (dispatch) => {
-
     dispatch({
         type: actionTypes.ASSIGNMENT_CREATION_UPDATE_CHANGE_EVALUATION_TYPE,
         evaluationType,
@@ -116,7 +106,6 @@ export const updateChangeEvaluationType = evaluationType => (dispatch) => {
         axios.get('/engagements')
             .then((response) => {
                 const  evaluationEngagements =  normalize(response.data, { endpoint: 'engagements' });
-                console.log('normalised response engagements: ', evaluationEngagements);
                 dispatch({
                     type: actionTypes.ASSIGNMENT_CREATION_FETCH_ENGAGEMENTS_SUCCESS,
                     evaluationEngagements,
@@ -137,7 +126,6 @@ export const updateChangeEvaluationType = evaluationType => (dispatch) => {
         axios.get('/preferred-suppliers')
             .then((response) => {
                 const  evaluationSuppliers =  normalize(response.data, { endpoint: 'suppliers' });
-                console.log('normalised response suppliers: ', evaluationSuppliers);
                 dispatch({
                     type: actionTypes.ASSIGNMENT_CREATION_FETCH_SUPPLIERS_SUCCESS,
                     evaluationSuppliers,
@@ -172,11 +160,9 @@ export const updateChangeEvaluationType = evaluationType => (dispatch) => {
 
 
 export const fetchMatchedSuppliers = rfqTypeId => (dispatch) => {
-
     axios.get(`/request-for-quotations/${rfqTypeId}/matched-suppliers`)
         .then((response) => {
             const  matchedSuppliers =  normalize(response.data, { endpoint: 'matched-suppliers' });
-            console.log('normalised response fetchMatchedSuppliers:', matchedSuppliers);
             dispatch({
                 type: actionTypes.ASSIGNMENT_CREATION_GET_MATCHED_SUPPLIERS_SUCCESS,
                 matchedSuppliers,
@@ -207,9 +193,6 @@ export const updateChangeMatchedSuppliers = matchedSupplierId => (dispatch, getS
     axios.get(`/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers/${matchedSupplierId}/matched-items`)
         .then((response) => {
             const  matchedItems =  normalize(response.data, { endpoint: 'matched-items' });
-            console.log('original response fetchMatchedItems: ', response);
-            console.log('normalised response fetchMatchedItems: ', matchedItems);
-
             dispatch({
                 type: actionTypes.ASSIGNMENT_CREATION_GET_MATCHED_ITEMS_SUCCESS,
                 matchedItems,
@@ -247,7 +230,6 @@ export const updateChangeSuppliers = (supplierId) => {
 };
 
 export const fetchAssigneeList = () => (dispatch) => {
-
     dispatch({
         type: actionTypes.ASSIGNMENT_CREATION_FETCH_ASSIGNEES_REQUEST_START,
     });
@@ -255,9 +237,6 @@ export const fetchAssigneeList = () => (dispatch) => {
     axios.get('/staff')
         .then((response) => {
             const  evaluationAssignees =  normalize(response.data, { endpoint: 'evaluation-assignees' });
-            console.log('original response fetchAssignees: ', response);
-            console.log('normalised response fetchAssignees: ', evaluationAssignees);
-
             dispatch({
                 type: actionTypes.ASSIGNMENT_CREATION_FETCH_ASSIGNEES_SUCCESS,
                 evaluationAssignees,
@@ -273,8 +252,6 @@ export const fetchAssigneeList = () => (dispatch) => {
 
 
 export const updateSelectedAssignees = (assignees) => {
-    console.log('action creator', assignees);
-
     return {
         type: actionTypes.ASSIGNMENT_CREATION_ASSIGNEES_CHANGE_UPDATE,
         assignees,
