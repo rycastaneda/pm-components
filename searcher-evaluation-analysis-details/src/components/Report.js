@@ -3,8 +3,6 @@ import { Line } from 'react-chartjs-2';
 import randomColor from 'randomcolor';
 
 const Report = ({ questions }) => {
-    console.log('questions', questions); // eslint-disable-line quotes, no-console
-
     let labels = [],
         datasets = [];
     let staffComments = {};
@@ -12,9 +10,8 @@ const Report = ({ questions }) => {
     questions.map((question, index) => {
         labels.push({
             title: question.questionTitle,
-            text: `Q${index}`
+            text: `Q${index + 1}`
         });
-        // labels.push(`Q${index + 1}`);
         question.comments.map(comment => {
             if (staffComments[comment.staff]) {
                 staffComments[comment.staff].push(comment.score);
@@ -60,7 +57,8 @@ const Report = ({ questions }) => {
             axis: 'y',
             callbacks: {
                 title: function(tooltips, data) {
-                    return data.questions[tooltips.pop().index];
+                    let tipIndex = tooltips.pop().index;
+                    return data.questions[tipIndex];
                 }
             }
         }

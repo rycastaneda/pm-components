@@ -4,18 +4,10 @@ import Question from '../components/Question';
 import Header from '../components/Header';
 import { connect } from 'react-redux';
 import { toggleCriterionCollapse, changeTab } from '../actions/evaluation';
+
 export class Criterion extends Component {
     constructor(props) {
         super(props);
-        this.newComment = {
-            ref: null,
-            comment: ''
-        };
-
-        this.state = {
-            open: false,
-            tab: 'responses'
-        };
 
         this.toggleAccordion = this.toggleAccordion.bind(this);
         this.changeTab = this.changeTab.bind(this);
@@ -70,15 +62,16 @@ export class Criterion extends Component {
                     </div>
                 </a>
                 <div
-                    className={`collapse mar-btm pad-hor ${isOpen
+                    className={`collapse mar-btm mar-top pad-hor ${isOpen
                         ? 'in'
                         : ''}`}>
-                    asdfsadf
-                    <Header
-                        currentView={currentView}
-                        currentTab={currentTab}
-                        changeTab={this.changeTab}
-                    />
+                    {currentView === 'all' ? (
+                        <Header
+                            currentView={currentView}
+                            currentTab={currentTab}
+                            changeTab={this.changeTab}
+                        />
+                    ) : null}
                     {currentTab === 'responses' ? (
                         questionComponents
                     ) : (

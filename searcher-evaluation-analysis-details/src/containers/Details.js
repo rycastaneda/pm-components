@@ -29,7 +29,7 @@ export class Details extends Component {
     }
 
     render() {
-        const { criteria, currentView, isLoading, supplierData } = this.props;
+        const { criteria, currentView, isLoading } = this.props;
         const criteriaComponents = criteria.map(criterion => {
             return <Criterion key={criterion.id} {...criterion} />;
         });
@@ -48,10 +48,7 @@ export class Details extends Component {
                     {isLoading ? (
                         <Loader />
                     ) : currentView === 'compare' ? (
-                        <ComparisonTable
-                            criteria={criteria}
-                            suppliers={supplierData}
-                        />
+                        <ComparisonTable criteria={criteria} />
                     ) : (
                         criteriaComponents
                     )}
@@ -65,8 +62,7 @@ Details.propTypes = {
     dispatch: PropTypes.func.isRequired,
     criteria: PropTypes.array.isRequired,
     currentView: PropTypes.string.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    supplierData: PropTypes.array
+    isLoading: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {
@@ -82,22 +78,6 @@ function mapStateToProps(state) {
     let criteria = [];
     let isLoading = ui.isLoading.who === 'evaluation' && !ui.isLoading.done;
     let currentView = ui.currentView;
-    let supplierData = [
-        {
-            id: 1,
-            name: 'tester 1',
-            scores: {
-                2: 100
-            }
-        },
-        {
-            id: 2,
-            name: 'tester 2',
-            scores: {
-                2: 95
-            }
-        }
-    ];
 
     const getComments = commentId => {
         let comment = rawComments.byId[commentId];
@@ -123,7 +103,6 @@ function mapStateToProps(state) {
         return {
             criteria,
             currentView,
-            supplierData,
             isLoading
         };
     }
@@ -135,7 +114,7 @@ function mapStateToProps(state) {
 
     criteria = criteriaIds.map(getCriteria);
 
-    return { criteria, currentView, isLoading, supplierData };
+    return { criteria, currentView, isLoading };
 }
 
 export default connect(mapStateToProps)(Details); // adds dispatch prop

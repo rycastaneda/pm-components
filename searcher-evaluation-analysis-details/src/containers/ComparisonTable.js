@@ -53,6 +53,7 @@ function mapStateToProps(state) {
         let assignment = rawAssignments.byId[assignmentId];
         let scores = {},
             counters = {};
+
         rawCriteria.allIds.map(criteriaId => {
             scores[criteriaId] = 0;
             counters[criteriaId] = {
@@ -61,6 +62,7 @@ function mapStateToProps(state) {
             };
         });
 
+        // tally up the scores on responses
         assignment.responseIds.map(responseId => {
             let response = rawComments.byId[responseId];
 
@@ -71,11 +73,14 @@ function mapStateToProps(state) {
             return response;
         });
 
+        // get totals
         Object.keys(scores).map(criteriaId => {
-            scores[criteriaId] =
-                counters[criteriaId].score /
-                counters[criteriaId].scale *
-                rawCriteria.byId[criteriaId].weight;
+            if (counters[criteriaId].score) {
+                scores[criteriaId] =
+                    counters[criteriaId].score /
+                    counters[criteriaId].scale *
+                    rawCriteria.byId[criteriaId].weight;
+            }
         });
 
         entities.push({

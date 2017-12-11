@@ -8,12 +8,12 @@ const ComparisonRow = ({ criteria, entity }) => {
             {criteria.map(criterion => {
                 totalScores += entity.scores[criterion.id];
                 return (
-                    <td key={criterion.id} className="text-right">
+                    <td key={criterion.id} className="td-center">
                         {entity.scores[criterion.id]}
                     </td>
                 );
             })}
-            <td className="text-right">{totalScores}</td>
+            <td className="td-center">{totalScores}</td>
         </tr>
     );
 };

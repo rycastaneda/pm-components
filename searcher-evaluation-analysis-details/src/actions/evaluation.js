@@ -1,8 +1,6 @@
 import * as actions from '../constants/ActionTypes';
 import axios from 'axios';
 
-import mockEvaluation from '../mocks/evaluation.json';
-
 export function fetchEvaluation(assignmentId, currentView) {
     return (dispatch, getState) => {
         let assignment = assignmentId || getState().ui.assignmentId;
@@ -42,20 +40,9 @@ export function fetchEvaluation(assignmentId, currentView) {
 }
 
 export function changeView(view) {
-    return (dispatch, getState) => {
-        dispatch({
-            type: actions.CHANGE_VIEW,
-            view
-        });
-
-        // fetchEvaluation(getState().ui.assignmentId, view);
-        // // TODO: api endpoint
-        // return axios.get('/anything').then(response => {
-        //     return dispatch({
-        //         type: actions.RECEIVE_EVALUATIONS,
-        //         evaluation: response.data
-        //     });
-        // });
+    return {
+        type: actions.CHANGE_VIEW,
+        view
     };
 }
 

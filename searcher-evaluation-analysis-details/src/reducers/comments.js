@@ -20,6 +20,7 @@ function receiveComment(state, action) {
 
     const { data, included } = action.evaluation;
 
+    // Map comment id to staffId which is from user then to staff
     const commentIdtoStaffId = {};
     if (
         data.relationships.relatedAssignments &&
@@ -77,7 +78,7 @@ function receiveComment(state, action) {
             .filter(
                 include => include.type === 'users' && include.id === userId
             )
-            .pop(); // eslint-disable-line quotes, no-console
+            .pop();
 
         return staff.relationships.staff.data.id;
     }

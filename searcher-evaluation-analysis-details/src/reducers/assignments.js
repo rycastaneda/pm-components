@@ -27,31 +27,22 @@ function receiveAssignments(state, action) {
         let relatedAssignments = action.evaluation.included.filter(
             include => include.type === 'evaluation-template-assignments'
         );
-        [data, ...relatedAssignments].map(assignment => {
-            byId[assignment.id] = {
-                ...assignment.attributes,
-                entityId:
-                    assignment.relationships.assignmentEntityInstance.data.id,
-                responseIds: assignment.relationships.questionResponses.data.map(
-                    response => response.id
-                )
-            };
-
-            if (!allIds.includes(assignment.id)) {
-                allIds.push(assignment.id);
-            }
-        });
+        [data, ...relatedAssignments].map(getAssignment);
     } else {
-        byId[data.id] = {
-            ...data.attributes,
-            entityId: data.relationships.assignmentEntityInstance.data.id,
-            responseIds: data.relationships.questionResponses.data.map(
+        getAssignment(data);
+    }
+
+    function getAssignment(assignment) {
+        byId[assignment.id] = {
+            ...assignment.attributes,
+            entityId: assignment.relationships.assignmentEntityInstance.data.id,
+            responseIds: assignment.relationships.questionResponses.data.map(
                 response => response.id
             )
         };
 
-        if (!allIds.includes(data.id)) {
-            allIds.push(data.id);
+        if (!allIds.includes(assignment.id)) {
+            allIds.push(assignment.id);
         }
     }
 

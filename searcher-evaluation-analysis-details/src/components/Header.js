@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 
-const Header = ({ currentView, currentTab, changeTab }) => (
+const Header = ({ currentTab, changeTab }) => (
     <div className="mar-btm row">
         <div className="col-lg-10 bor-btm-no">
-            <ul className="nav nav-pills tab-pills pad-top-sm mar-top-sm">
+            <ul className="nav nav-pills tab-pills">
                 <li>
                     <a
                         id="responses"
@@ -11,21 +11,19 @@ const Header = ({ currentView, currentTab, changeTab }) => (
                         className={`font-sm ${currentTab === 'responses'
                             ? 'selected'
                             : ''}`}>
-                        Responsesasdfasdf
+                        Responses
                     </a>
                 </li>
-                {currentView === 'all' ? (
-                    <li>
-                        <a
-                            id="reports"
-                            onClick={changeTab}
-                            className={`font-sm ${currentTab === 'reports'
-                                ? 'selected'
-                                : ''}`}>
-                            Reports
-                        </a>
-                    </li>
-                ) : null}
+                <li>
+                    <a
+                        id="reports"
+                        onClick={changeTab}
+                        className={`font-sm ${currentTab === 'reports'
+                            ? 'selected'
+                            : ''}`}>
+                        Reports
+                    </a>
+                </li>
             </ul>
         </div>
         <div className="clearfix" />
