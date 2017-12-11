@@ -14,7 +14,6 @@ import EngagementsDropdown from './components/EngagementsDropdown';
 import PreferredSuppliersDropdown from './components/PreferredSuppliersDropdown';
 
 
-
 class EvaluationAssignment extends Component {
 
     componentDidMount() {
@@ -61,6 +60,7 @@ class EvaluationAssignment extends Component {
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">RFQ List</label>
                                 <RfqListDropdown evaluationTypesRfq={evaluationTypesRfq} />
+                                {this.renderEmptyRfqResponseMessage()}
                             </div>
                         </div>
                         : null
@@ -107,16 +107,18 @@ class EvaluationAssignment extends Component {
                     { selectedAssignmentEntityInstanceId !== ''  ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
-                                <label htmlFor="assignees">Assignees</label>
+                                <label htmlFor="assignees">Evaluation Assignees</label>
                                 <div>
-                                    <Select name="form-field-name"
-                                        multi
+                                    <Select
                                         labelKey="fullName"
-                                        value={selectedAssignees}
-                                        options={evaluationAssignees}
-                                        isLoading={isLoading}
+                                        closeOnSelect={true}
+                                        multi
                                         onChange={actions.updateSelectedAssignees}
-                                        valueRenderer={this.renderValue} />
+                                        options={evaluationAssignees}
+                                        placeholder="Select assignees"
+                                        removeSelected={true}
+                                        value={selectedAssignees}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -144,6 +146,19 @@ class EvaluationAssignment extends Component {
             </div>
         );
     }
+
+    renderEmptyRfqResponseMessage() {
+        const { rfqTypeSelectedId, matchedSuppliers } = this.props;
+
+        if (rfqTypeSelectedId !== '' && matchedSuppliers.length === 0) {
+            return (
+                <div className="bs-callout bs-callout-warning">
+                    The selected RFQ doesn't match any suppliers, please select other option
+                </div>
+            );
+        }
+        return null;
+    }
 }
 
 EvaluationAssignment.propTypes = {
@@ -157,6 +172,7 @@ EvaluationAssignment.propTypes = {
     evaluationEngagements: PropTypes.array.isRequired,
     evaluationSuppliers: PropTypes.array.isRequired,
     evaluationTypeSelected: PropTypes.string.isRequired,
+    rfqTypeSelectedId: PropTypes.string,
     isLoading: PropTypes.bool.isRequired,
     selectedAssignmentEntityInstanceId: PropTypes.string.isRequired,
     actions: PropTypes.object,
@@ -175,19 +191,17 @@ const mapStateToProps = (state, ownProps) => {
         selectedAssignees,
         isLoading,
         selectedAssignmentEntityInstanceId,
+        rfqTypeSelectedId,
     } = state.evaluationAssignment;
 
     const evaluationTemplates = selectFromStore(state.evaluationAssignment.evaluationTemplates, 'evaluation-templates', 'evaluationTemplates');
     const evaluationAssignees = concatLabelKey(selectFromStore(state.evaluationAssignment.evaluationAssignees, 'evaluation-assignees', 'staff'));
-
     const evaluationTypes = selectFromStore(state.evaluationAssignment.evaluationTypes, 'evaluation-types', 'evaluationTemplateAssignmentTypes');
     const evaluationTypesRfq = selectFromStore(state.evaluationAssignment.evaluationTypesRfq, 'evaluation-rfq', 'requestForQuotations');
     const matchedSuppliers = selectFromStore(state.evaluationAssignment.matchedSuppliers, 'matched-suppliers', 'matchedSuppliers');
     const matchedItems = selectFromStore(state.evaluationAssignment.matchedItems, 'matched-items', 'matchedItems');
     const evaluationEngagements = selectFromStore(state.evaluationAssignment.evaluationEngagements, 'engagements', 'engagements');
     const evaluationSuppliers = selectFromStore(state.evaluationAssignment.evaluationSuppliers, 'suppliers', 'preferredSuppliers');
-
-    console.log('select from store: ', evaluationAssignees);
 
     return {
         ...ownProps,
@@ -202,6 +216,7 @@ const mapStateToProps = (state, ownProps) => {
         evaluationAssignees,
         selectedAssignees,
         selectedAssignmentEntityInstanceId,
+        rfqTypeSelectedId,
         isLoading,
     };
 };
