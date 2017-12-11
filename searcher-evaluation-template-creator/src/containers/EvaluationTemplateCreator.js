@@ -1,8 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Criteria from './Criteria';
-import { initialize, addTemplate, updateTemplate, fetchTemplate, publishTemplate, clearMessages } from '../actions/evaluationTemplateCreator';
-import { INPUT_SYNC_INTERVAL, MESSAGE_TYPE_ERROR } from '../constants';
+import { initialize, addTemplate, updateTemplate, fetchTemplate, publishTemplate } from '../actions/evaluationTemplateCreator';
+import Notification from '../notification/Notification';
+import { INPUT_SYNC_INTERVAL } from '../constants';
 class EvaluationTemplateCreator extends Component {
 
     constructor(props) {
@@ -14,7 +15,6 @@ class EvaluationTemplateCreator extends Component {
         this.state = { title:this.props.title, showAdd:false, isTitleError:false, isSaved:false };
         this.intervalId_update = null;
         this.intervalId_saveAnim =null;
-        this.toasterTimerId =null;
     }
 
     componentDidMount() {
@@ -35,12 +35,6 @@ class EvaluationTemplateCreator extends Component {
     componentWillReceiveProps(nextProps) {
         this.setState({ title:nextProps.title,  showAdd:false, isSaved:true, isTitleError:false });
         this.intervalId_saveAnim = setInterval(() => this.setState({ isSaved:false }), INPUT_SYNC_INTERVAL);
-        if (nextProps.messages.length) {
-            this.toasterTimerId = setInterval(() => {
-                this.props.dispatch(clearMessages());
-                clearInterval(this.toasterTimerId);
-            }, 3500);
-        }
     }
 
     onSave() {
@@ -73,28 +67,11 @@ class EvaluationTemplateCreator extends Component {
     }
     render() {
         const { allCriteriaIndexes, id } = this.props;
-        let errorClass ='';
-        if ((this.props.messages.length)&&(this.props.messages.find(item => item.messageType === MESSAGE_TYPE_ERROR))) {
-            errorClass = 'error';
-        }
-
 
         return (
 
         <div className="searcher-evaluation-template-creator">
-            {this.props.messages.length?
-                <div className={`toast-container ${errorClass} active auto-hide`}>
-
-                {
-                    this.props.messages.map((item, index) =>
-                        <span key={index}> {item.message}</span>
-                    )
-                }
-
-                </div>
-                :null
-            }
-
+            <Notification />
             <div className="db-form-section">
                 <div className="row">
                     <div className="col-md-12">
@@ -187,7 +164,6 @@ class EvaluationTemplateCreator extends Component {
 }
 
 EvaluationTemplateCreator.propTypes = {
-    messages: PropTypes.array,
     creatable:PropTypes.object,
     allCriteriaIndexes: PropTypes.array,
     title: PropTypes.string.isRequired,
@@ -196,8 +172,8 @@ EvaluationTemplateCreator.propTypes = {
 };
 
 function mapStateToProps(state) {
-    const { allCriteriaIndexes, title, id, messages } = state.evaluationTemplateCreator;
+    const { allCriteriaIndexes, title, id } = state.evaluationTemplateCreator;
 
-    return { allCriteriaIndexes, title, id, messages };
+    return { allCriteriaIndexes, title, id };
 }
 export default connect(mapStateToProps)(EvaluationTemplateCreator);
