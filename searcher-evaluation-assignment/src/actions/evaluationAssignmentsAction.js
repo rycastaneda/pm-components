@@ -1,10 +1,6 @@
-import plantMinerApi from '../utils/pmApiService';
-
 import * as actionTypes from '../constants/ActionTypes';
 import axios from 'axios';
-import normalize from 'json-api-normalizer';
-
-
+import * as apiActions from './apiActions';
 
 export const createAssignment = () => (dispatch, getState) => {
     const { selectedTemplateId, selectedAssignees, selectedAssignmentEntityInstanceId, evaluationTypeSelected } = getState().evaluationAssignment;
@@ -54,40 +50,8 @@ export const createAssignment = () => (dispatch, getState) => {
 
 };
 
-// TO DO: THIS ALL WILL GO AWAY TO MIDDLEWARE
-export const fetchTemplateList = () => (dispatch) => {
-    axios.get(plantMinerApi.getTemplates)
-        .then((response) => {
-            const evaluationTemplates = normalize(response.data, { endpoint: 'evaluation-templates' });
-            dispatch({
-                type: actionTypes.ASSIGNMENT_CREATION_FETCH_EVALUATION_TEMPLATES_SUCCESS,
-                evaluationTemplates,
-            });
-        })
-        .catch((error) => {
-            dispatch({
-                type: actionTypes.REQUEST_FAILED,
-                message: error.message,
-            });
-        });
-};
-
-
 export const evaluationTemplateUpdateChange = templateId => (dispatch) => {
-    axios.get(plantMinerApi.getEvaluationAssignmentTypes)
-        .then((response) => {
-            const  evaluationTypes =  normalize(response.data, { endpoint: 'evaluation-types' });
-            dispatch({
-                type: actionTypes.ASSIGNMENT_CREATION_FETCH_EVALUATION_TYPES_SUCCESS,
-                evaluationTypes,
-            });
-        })
-        .catch((error) => {
-            dispatch({
-                type: actionTypes.REQUEST_FAILED,
-                message: error.message,
-            });
-        });
+    dispatch(apiActions.fetchEvaluationTypes());
 
     dispatch({
         type: actionTypes.ASSIGNMENT_CREATION_EVALUATION_TEMPLATE_UPDATE_CHANGE,
@@ -102,84 +66,35 @@ export const updateChangeEvaluationType = evaluationType => (dispatch) => {
     });
 
     if (evaluationType === '4') {
-
-        axios.get('/engagements')
-            .then((response) => {
-                const  evaluationEngagements =  normalize(response.data, { endpoint: 'engagements' });
-                dispatch({
-                    type: actionTypes.ASSIGNMENT_CREATION_FETCH_ENGAGEMENTS_SUCCESS,
-                    evaluationEngagements,
-                });
-            })
-            .catch((error) => {
-                dispatch({
-                    type: actionTypes.REQUEST_FAILED,
-                    message: error.message,
-                });
-            });
-
+        dispatch(apiActions.fetchEngagements());
         return;
     }
 
     if (evaluationType === '3') {
-
-        axios.get('/preferred-suppliers')
-            .then((response) => {
-                const  evaluationSuppliers =  normalize(response.data, { endpoint: 'suppliers' });
-                dispatch({
-                    type: actionTypes.ASSIGNMENT_CREATION_FETCH_SUPPLIERS_SUCCESS,
-                    evaluationSuppliers,
-                });
-            })
-            .catch((error) => {
-                dispatch({
-                    type: actionTypes.REQUEST_FAILED,
-                    message: error.message,
-                });
-            });
-
+        dispatch(apiActions.fetchPreferredSuppliers());
         return;
     }
 
-    axios.get('/request-for-quotations')
-        .then((response) => {
-            const  evaluationTypesRfq =  normalize(response.data, { endpoint: 'evaluation-rfq' });
-            console.log('normalised response quotations', evaluationTypesRfq);
-            dispatch({
-                type: actionTypes.ASSIGNMENT_CREATION_FETCH_EVALUATION_RFQS_SUCCESS,
-                evaluationTypesRfq,
-            });
-        })
-        .catch((error) => {
-            dispatch({
-                type: actionTypes.REQUEST_FAILED,
-                message: error.message,
-            });
-        });
+    dispatch(apiActions.fetchRequestsForQuotations());
 };
 
 
 export const fetchMatchedSuppliers = rfqTypeId => (dispatch) => {
-    axios.get(`/request-for-quotations/${rfqTypeId}/matched-suppliers`)
-        .then((response) => {
-            const  matchedSuppliers =  normalize(response.data, { endpoint: 'matched-suppliers' });
-            dispatch({
-                type: actionTypes.ASSIGNMENT_CREATION_GET_MATCHED_SUPPLIERS_SUCCESS,
-                matchedSuppliers,
-                rfqTypeId,
-            });
-        })
-        .catch((error) => {
-            dispatch({
-                type: actionTypes.REQUEST_FAILED,
-                message: error.message,
-            });
-        });
+    dispatch({
+        type: actionTypes.ASSIGNMENT_CREATION_UPDATE_CHANGE_RFQ,
+        rfqTypeId,
+    });
+
+    dispatch(apiActions.fetchRfqMatchedSuppliers(rfqTypeId));
 };
 
 
 export const updateChangeMatchedSuppliers = matchedSupplierId => (dispatch, getState) => {
     const { rfqTypeSelectedId, evaluationTypeSelected } = getState().evaluationAssignment;
+    dispatch({
+        type: actionTypes.ASSIGNMENT_CREATION_UPDATE_MATCHED_SUPPLIER_ID,
+        matchedSupplierId,
+    });
 
     if (evaluationTypeSelected === '1') {
         dispatch({
@@ -190,22 +105,8 @@ export const updateChangeMatchedSuppliers = matchedSupplierId => (dispatch, getS
         return;
     }
 
-    axios.get(`/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers/${matchedSupplierId}/matched-items`)
-        .then((response) => {
-            const  matchedItems =  normalize(response.data, { endpoint: 'matched-items' });
-            dispatch({
-                type: actionTypes.ASSIGNMENT_CREATION_GET_MATCHED_ITEMS_SUCCESS,
-                matchedItems,
-            });
-        })
-        .catch((error) => {
-            dispatch({
-                type: actionTypes.REQUEST_FAILED,
-                message: error.message,
-            });
-        });
+    dispatch(apiActions.fetchMatchedItems(rfqTypeSelectedId, matchedSupplierId));
 };
-
 
 export const updateChangeMatchedItems = (matchedItemId) => {
     return {
@@ -228,28 +129,6 @@ export const updateChangeSuppliers = (supplierId) => {
         selectedAssignmentEntityInstanceId: supplierId,
     };
 };
-
-export const fetchAssigneeList = () => (dispatch) => {
-    dispatch({
-        type: actionTypes.ASSIGNMENT_CREATION_FETCH_ASSIGNEES_REQUEST_START,
-    });
-
-    axios.get('/staff')
-        .then((response) => {
-            const  evaluationAssignees =  normalize(response.data, { endpoint: 'evaluation-assignees' });
-            dispatch({
-                type: actionTypes.ASSIGNMENT_CREATION_FETCH_ASSIGNEES_SUCCESS,
-                evaluationAssignees,
-            });
-        })
-        .catch((error) => {
-            dispatch({
-                type: actionTypes.REQUEST_FAILED,
-                message: error.message,
-            });
-        });
-};
-
 
 export const updateSelectedAssignees = (assignees) => {
     return {

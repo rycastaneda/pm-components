@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import  Select  from 'react-select';
 import * as actions from '../actions/evaluationAssignmentsAction';
+import * as apiCalls from '../actions/apiActions';
 import { selectFromStore } from '../utils/selectFromStore';
 import { concatLabelKey } from '../utils/concatLabelKey';
 import EvaluationTemplatesDropdown from './components/EvaluationTemplatesDropdown';
@@ -17,9 +18,9 @@ import PreferredSuppliersDropdown from './components/PreferredSuppliersDropdown'
 class EvaluationAssignment extends Component {
 
     componentDidMount() {
-        const { actions } = this.props;
-        actions.fetchTemplateList();
-        actions.fetchAssigneeList();
+        const { apiActions } = this.props;
+        apiActions.fetchEvaluationTemplates();
+        apiActions.fetchAssigneesStaff();
     }
 
     render() {
@@ -176,11 +177,13 @@ EvaluationAssignment.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     selectedAssignmentEntityInstanceId: PropTypes.string.isRequired,
     actions: PropTypes.object,
+    apiActions: PropTypes.object,
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(actions, dispatch),
+        apiActions: bindActionCreators(apiCalls, dispatch),
     };
 };
 
@@ -192,16 +195,19 @@ const mapStateToProps = (state, ownProps) => {
         isLoading,
         selectedAssignmentEntityInstanceId,
         rfqTypeSelectedId,
+        matchedSupplierId,
     } = state.evaluationAssignment;
 
-    const evaluationTemplates = selectFromStore(state.evaluationAssignment.evaluationTemplates, 'evaluation-templates', 'evaluationTemplates');
-    const evaluationAssignees = concatLabelKey(selectFromStore(state.evaluationAssignment.evaluationAssignees, 'evaluation-assignees', 'staff'));
-    const evaluationTypes = selectFromStore(state.evaluationAssignment.evaluationTypes, 'evaluation-types', 'evaluationTemplateAssignmentTypes');
-    const evaluationTypesRfq = selectFromStore(state.evaluationAssignment.evaluationTypesRfq, 'evaluation-rfq', 'requestForQuotations');
-    const matchedSuppliers = selectFromStore(state.evaluationAssignment.matchedSuppliers, 'matched-suppliers', 'matchedSuppliers');
-    const matchedItems = selectFromStore(state.evaluationAssignment.matchedItems, 'matched-items', 'matchedItems');
-    const evaluationEngagements = selectFromStore(state.evaluationAssignment.evaluationEngagements, 'engagements', 'engagements');
-    const evaluationSuppliers = selectFromStore(state.evaluationAssignment.evaluationSuppliers, 'suppliers', 'preferredSuppliers');
+    const evaluationTemplates = selectFromStore(state.evaluationAssignment, '/evaluation-templates', 'evaluationTemplates');
+    const evaluationAssignees = concatLabelKey(selectFromStore(state.evaluationAssignment, '/staff', 'staff'));
+    const evaluationTypes = selectFromStore(state.evaluationAssignment, '/evaluation-template-assignment-types', 'evaluationTemplateAssignmentTypes');
+    const evaluationEngagements = selectFromStore(state.evaluationAssignment, '/engagements', 'engagements');
+    const evaluationSuppliers = selectFromStore(state.evaluationAssignment, '/preferred-suppliers', 'preferredSuppliers');
+    const evaluationTypesRfq = selectFromStore(state.evaluationAssignment, '/request-for-quotations', 'requestForQuotations');
+    const matchedSuppliers = selectFromStore(state.evaluationAssignment, `/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers`, 'matchedSuppliers');
+    const matchedItems = selectFromStore(state.evaluationAssignment, `/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers/${matchedSupplierId}/matched-items`, 'matchedItems');
+
+    console.log(`selected by endpoint from store with rfqId-${rfqTypeSelectedId} suppId-${matchedSupplierId} and :`, matchedItems);
 
     return {
         ...ownProps,

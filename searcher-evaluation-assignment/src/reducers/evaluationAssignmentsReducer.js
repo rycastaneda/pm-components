@@ -1,44 +1,37 @@
+import merge from 'lodash/merge';
 import * as actionTypes from '../constants/ActionTypes';
+import { API_DATA_REQUEST, API_DATA_SUCCESS } from '../middleware/api';
 
 const initialState = {
-    // temp gotta have this empty meta inside, will be moved to middleware later
-    evaluationTemplates: { meta: {} },
-    evaluationTypes: { meta: {} },
-    evaluationTypesRfq: { meta: {} },
-    matchedSuppliers: { meta: {} },
-    matchedItems: { meta: {} },
-    evaluationEngagements: { meta: {} },
-    evaluationSuppliers: { meta: {} },
-    evaluationAssignees: { meta: {} },
     selectedAssignees: [],
     selectedTemplateId: '',
     selectedAssignmentEntityInstanceId: '',
     evaluationTypeSelected: '',
     rfqTypeSelectedId: '',
+    matchedSupplierId: '',
     isLoading: false,
-
+    meta: {},
+    data: {},
 };
 
 export function evaluationAssignment(state = initialState, action) {
     switch (action.type) {
 
-        case actionTypes.ASSIGNMENT_CREATION_FETCH_EVALUATION_TEMPLATES_SUCCESS:
+        case API_DATA_SUCCESS:
+            return merge(
+                {},
+                state,
+                merge({}, action.response, { meta: { [action.endpoint]: { loading: false } } })
+            );
 
-            return {
-                ...state,
-                evaluationTemplates: action.evaluationTemplates,
-            };
+        case API_DATA_REQUEST:
+            return merge({}, state, { meta: { [action.endpoint]: { loading: true } } });
+
 
         case actionTypes.ASSIGNMENT_CREATION_EVALUATION_TEMPLATE_UPDATE_CHANGE:
             return {
                 ...state,
                 selectedTemplateId: action.templateId,
-            };
-
-        case actionTypes.ASSIGNMENT_CREATION_FETCH_EVALUATION_TYPES_SUCCESS:
-            return {
-                ...state,
-                evaluationTypes: action.evaluationTypes,
             };
 
         case actionTypes.ASSIGNMENT_CREATION_UPDATE_CHANGE_EVALUATION_TYPE:
@@ -48,53 +41,18 @@ export function evaluationAssignment(state = initialState, action) {
                 isLoading: true,
             };
 
-        case actionTypes.ASSIGNMENT_CREATION_FETCH_EVALUATION_RFQS_SUCCESS:
+        case actionTypes.ASSIGNMENT_CREATION_UPDATE_CHANGE_RFQ:
             return {
                 ...state,
-                evaluationTypesRfq: action.evaluationTypesRfq,
-                isLoading: false,
-            };
-
-        case actionTypes.ASSIGNMENT_CREATION_FETCH_ENGAGEMENTS_SUCCESS:
-            return {
-                ...state,
-                evaluationEngagements: action.evaluationEngagements,
-                isLoading: false,
-            };
-
-        case actionTypes.ASSIGNMENT_CREATION_FETCH_SUPPLIERS_SUCCESS:
-            return {
-                ...state,
-                evaluationSuppliers: action.evaluationSuppliers,
-                isLoading: false,
-            };
-
-        case actionTypes.ASSIGNMENT_CREATION_GET_MATCHED_SUPPLIERS_SUCCESS:
-            return {
-                ...state,
-                matchedSuppliers: action.matchedSuppliers,
                 rfqTypeSelectedId: action.rfqTypeId,
             };
 
-        case actionTypes.ASSIGNMENT_CREATION_GET_MATCHED_ITEMS_SUCCESS:
+        case actionTypes.ASSIGNMENT_CREATION_UPDATE_MATCHED_SUPPLIER_ID:
             return {
                 ...state,
-                matchedItems: action.matchedItems,
+                matchedSupplierId: action.matchedSupplierId,
             };
 
-
-        case actionTypes.ASSIGNMENT_CREATION_FETCH_ASSIGNEES_REQUEST_START:
-            return {
-                ...state,
-                isLoading: true,
-            };
-
-        case actionTypes.ASSIGNMENT_CREATION_FETCH_ASSIGNEES_SUCCESS:
-            return {
-                ...state,
-                evaluationAssignees: action.evaluationAssignees,
-                isLoading: false,
-            };
 
         case actionTypes.ASSIGNMENT_CREATION_PREFERRED_SUPPLIERS_UPDATE_CHANGE:
             return {
@@ -124,8 +82,6 @@ export function evaluationAssignment(state = initialState, action) {
                 ...state,
                 isLoading: false,
             };
-
-
 
 
         default:
