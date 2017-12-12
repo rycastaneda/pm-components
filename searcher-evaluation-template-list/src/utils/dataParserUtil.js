@@ -2,8 +2,8 @@ import normalize from 'json-api-normalizer';
 import  build  from 'redux-object';
 export const EVALUATION_SERVICE ='evaluation-templates';
 
-const EDIT_PAGE ='/searcher/evaluation/edit/';
-const PREVIEW_PAGE ='/searcher/evaluation/preview/';
+const EDIT_PAGE ='/searcher/evaluation_templates/edit/';
+const PREVIEW_PAGE ='/searcher/evaluation_templates/preview/';
 export function getUsers(userData) {
 
     userData = normalize(userData, { endpoint:'/staff/' });

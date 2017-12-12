@@ -23143,8 +23143,8 @@
 
 	var EVALUATION_SERVICE = exports.EVALUATION_SERVICE = 'evaluation-templates';
 
-	var EDIT_PAGE = '/searcher/evaluation/edit/';
-	var PREVIEW_PAGE = '/searcher/evaluation/preview/';
+	var EDIT_PAGE = '/searcher/evaluation_templates/edit/';
+	var PREVIEW_PAGE = '/searcher/evaluation_templates/preview/';
 	function getUsers(userData) {
 
 	    userData = (0, _jsonApiNormalizer2.default)(userData, { endpoint: '/staff/' });
