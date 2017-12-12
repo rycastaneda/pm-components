@@ -38,11 +38,12 @@ export function evaluationTemplates(state = INITIAL_DATA, action) {
         case EVALUATION_TEMPLATE_UPDATED:
             {
                 let { currentTemplateList } = state;
-                let { status, id } =action;
+                let { active, id } = action;
                 for (let i in currentTemplateList) {
                     let item = currentTemplateList[i];
                     if (item.id===id) {
-                        item.status = status;
+
+                        currentTemplateList[i] = { ...item, active };
                     }
                 }
                 currentTemplateList = [...currentTemplateList];

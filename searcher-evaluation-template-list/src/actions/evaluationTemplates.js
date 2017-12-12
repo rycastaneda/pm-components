@@ -18,11 +18,11 @@ export function previewTemplate(id) {
     id;
 }
 
-export function changeTemplateStatus(id, status) {
+export function changeTemplateStatus(id, active) {
     return  (dispatch) => {
-        axios.patch(EVALUATION_SERVICE+'/'+id, getDataForSave(id, status))
+        axios.patch(EVALUATION_SERVICE+'/'+id, getDataForSave(id, active))
         .then(() => {
-            dispatch({ type: EVALUATION_TEMPLATE_UPDATED, id, status });
+            dispatch({ type: EVALUATION_TEMPLATE_UPDATED, id, active });
         })
         .catch((error) => {
             dispatch({ type:REQUEST_FAILED, message: error.message });
@@ -73,7 +73,7 @@ function getPromiseForTemplateService(url, dispatch) {
     return getPromiseForService(url, dispatch)
     .then((response) => {
         const { templates, totalPages, currentPage }= getDataFromTemplateService(response.data);
-        const isBusy = false;        
+        const isBusy = false;
         dispatch({
             type: EVALUATION_TEMPLATES_FETCHED,
             templates,

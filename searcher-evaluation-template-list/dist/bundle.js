@@ -21900,10 +21900,10 @@
 	    id;
 	}
 
-	function changeTemplateStatus(id, status) {
+	function changeTemplateStatus(id, active) {
 	    return function (dispatch) {
-	        _axios2.default.patch(_dataParserUtil.EVALUATION_SERVICE + '/' + id, (0, _dataParserUtil.getDataForSave)(id, status)).then(function () {
-	            dispatch({ type: _ActionTypes.EVALUATION_TEMPLATE_UPDATED, id: id, status: status });
+	        _axios2.default.patch(_dataParserUtil.EVALUATION_SERVICE + '/' + id, (0, _dataParserUtil.getDataForSave)(id, active)).then(function () {
+	            dispatch({ type: _ActionTypes.EVALUATION_TEMPLATE_UPDATED, id: id, active: active });
 	        }).catch(function (error) {
 	            dispatch({ type: _ActionTypes.REQUEST_FAILED, message: error.message });
 	        });
@@ -23041,13 +23041,14 @@
 	        case _ActionTypes.EVALUATION_TEMPLATE_UPDATED:
 	            {
 	                var _currentTemplateList2 = state.currentTemplateList;
-	                var status = action.status,
+	                var active = action.active,
 	                    id = action.id;
 
 	                for (var i in _currentTemplateList2) {
 	                    var item = _currentTemplateList2[i];
 	                    if (item.id === id) {
-	                        item.status = status;
+
+	                        _currentTemplateList2[i] = (0, _extends3.default)({}, item, { active: active });
 	                    }
 	                }
 	                _currentTemplateList2 = [].concat((0, _toConsumableArray3.default)(_currentTemplateList2));
