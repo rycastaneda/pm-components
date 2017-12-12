@@ -22310,7 +22310,7 @@
 	        urlPostfix += '&per_page=' + maxRowLength;
 	    }
 	    if (keyword) {
-	        urlPostfix += '&filter[title]="' + keyword;
+	        urlPostfix += '&filter[title]=' + keyword;
 	    }
 	    if (status) {
 	        urlPostfix += '&filter[active]=';
