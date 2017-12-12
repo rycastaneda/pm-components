@@ -22017,7 +22017,7 @@
 	function initialize() {
 
 	    return function (dispatch) {
-	        _axios2.default.all([_axios2.default.get('evaluation-templates?[active=1]'), _axios2.default.get('evaluation-template-assignment-types'), _axios2.default.get('evaluation-template-assignment-statuses'), _axios2.default.get('staff'), _axios2.default.get('preferred-suppliers'), getPromiseForService((0, _dataParserUtil.getAssignmentServiceUrlFor)({ maxRowLength: _DataConstants.MAXROWS_DEFAULT, currentPage: 1 }), dispatch)]).then(function (response) {
+	        _axios2.default.all([_axios2.default.get('evaluation-templates?filter[active]=1'), _axios2.default.get('evaluation-template-assignment-types'), _axios2.default.get('evaluation-template-assignment-statuses'), _axios2.default.get('staff'), _axios2.default.get('preferred-suppliers'), getPromiseForService((0, _dataParserUtil.getAssignmentServiceUrlFor)({ maxRowLength: _DataConstants.MAXROWS_DEFAULT, currentPage: 1 }), dispatch)]).then(function (response) {
 
 	            var evaluationTemplates = response[0].data;
 	            var evaluationTemplateAssignmentTypes = response[1].data;
@@ -23477,27 +23477,27 @@
 	    }
 
 	    if (selectedStatus && selectedStatus !== '') {
-	        urlPostfix += '&filters[evaluation_template_assignment_status_id]=' + selectedStatus;
+	        urlPostfix += '&filter[evaluation_template_assignment_status_id]=' + selectedStatus;
 	    }
 	    if (selectedLinkedTo && selectedLinkedTo !== '') {
-	        urlPostfix += '&filters[evaluation_template_assignment_type_id]=' + selectedLinkedTo;
+	        urlPostfix += '&filter[evaluation_template_assignment_type_id]=' + selectedLinkedTo;
 	    }
 	    if (selectedTemplate && selectedTemplate !== '') {
-	        urlPostfix += '&filters[evaluation_template_id]=' + selectedTemplate;
+	        urlPostfix += '&filter[evaluation_template_id]=' + selectedTemplate;
 	    }
 	    if (selectedAssignedTo && selectedAssignedTo !== '') {
-	        urlPostfix += '&filters[assignee_user_id]=' + selectedAssignedTo;
+	        urlPostfix += '&filter[assignee_user_id]=' + selectedAssignedTo;
 	    }
 	    if (selectedEntityInstanceId && selectedEntityInstanceId !== '') {
-	        urlPostfix += '&filters[assignment_entity_instance_id]=' + selectedEntityInstanceId;
+	        urlPostfix += '&filter[assignment_entity_instance_id]=' + selectedEntityInstanceId;
 	    }
 	    if (selectedSupplier && selectedSupplier !== '') {
-	        urlPostfix += '&filters[preferred_supplier_id]=' + selectedSupplier;
+	        urlPostfix += '&filter[preferred_supplier_id]=' + selectedSupplier;
 	    }
 	    if (selectedAssignedOn && selectedAssignedOn !== '') {
 	        var assignedOn = new Date(selectedAssignedOn);
 	        selectedAssignedOn = assignedOn.getDate() + '/' + assignedOn.getMonth() + '/' + assignedOn.getFullYear();
-	        urlPostfix += '&filters[date]=' + selectedAssignedOn;
+	        urlPostfix += '&filter[date]=' + selectedAssignedOn;
 	    }
 
 	    if (urlPostfix.length) {
