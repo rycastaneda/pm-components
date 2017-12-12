@@ -116,7 +116,7 @@ class TemplatesTable extends Component {
                 )}
             </tbody>
             </table>
-            {this.props.totalPages > 1?
+
             <div className="row">
                 <div className="col-sm-12 form-inline">
                     <select className="form-control" defaultValue={this.props.rowCount}
@@ -126,6 +126,7 @@ class TemplatesTable extends Component {
                         )}
                     </select>
                     &nbsp;
+                    {this.props.totalPages > 1?
                     <ReactPaginate  previousLabel={"previous"}
                               nextLabel={"next"}
                               breakLabel={<a href="">...</a>}
@@ -138,9 +139,10 @@ class TemplatesTable extends Component {
                               containerClassName={"pagination"}
                               subContainerClassName={"pages pagination"}
                               activeClassName={"active"} />
+                    :null}
                     </div>
                 </div>
-                :null}
+
             </div>
         );
     }

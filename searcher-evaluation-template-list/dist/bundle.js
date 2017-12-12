@@ -22711,7 +22711,7 @@
 	                        })
 	                    )
 	                ),
-	                this.props.totalPages > 1 ? _react2.default.createElement(
+	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'row' },
 	                    _react2.default.createElement(
@@ -22732,7 +22732,7 @@
 	                            })
 	                        ),
 	                        '\xA0',
-	                        _react2.default.createElement(_reactPaginate2.default, { previousLabel: "previous",
+	                        this.props.totalPages > 1 ? _react2.default.createElement(_reactPaginate2.default, { previousLabel: "previous",
 	                            nextLabel: "next",
 	                            breakLabel: _react2.default.createElement(
 	                                'a',
@@ -22747,9 +22747,9 @@
 	                            onPageChange: this.handlePageClick,
 	                            containerClassName: "pagination",
 	                            subContainerClassName: "pages pagination",
-	                            activeClassName: "active" })
+	                            activeClassName: "active" }) : null
 	                    )
-	                ) : null
+	                )
 	            );
 	        }
 	    }]);
@@ -23170,7 +23170,7 @@
 
 	    var urlPostfix = '';
 	    if (page) {
-	        urlPostfix += '?page=' + page;
+	        urlPostfix += 'page=' + page;
 	    }
 	    if (maxRowLength) {
 	        urlPostfix += '&per_page=' + maxRowLength;

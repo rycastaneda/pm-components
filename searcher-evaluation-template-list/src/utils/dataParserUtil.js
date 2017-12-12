@@ -19,7 +19,7 @@ export function getTemplateServiceUrlFor(keyword=null, status =null, date=null, 
 
     let urlPostfix='';
     if (page) {
-        urlPostfix +='?page='+page;
+        urlPostfix +='page='+page;
     }
     if (maxRowLength) {
         urlPostfix +='&per_page='+maxRowLength;
