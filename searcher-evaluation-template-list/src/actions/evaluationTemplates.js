@@ -1,10 +1,14 @@
 import axios from 'axios';
+
 import { getTemplateServiceUrlFor,
     getDataFromTemplateService,
     getDataForSave,
+    getUsers,
     EVALUATION_SERVICE
 } from '../utils/dataParserUtil';
-import { EVALUATION_TEMPLATES_FETCHED,
+
+import { INITIALIZED,
+    EVALUATION_TEMPLATES_FETCHED,
     EVALUATION_TEMPLATE_UPDATED,
     REQUEST_FAILED,
     IS_BUSY
@@ -26,42 +30,56 @@ export function changeTemplateStatus(id, status) {
     };
 }
 
-export function fetchEvaluationTemplates() {
+export function initialize() {
     return (dispatch) => {
-        getPromiseForTemplateService(getTemplateServiceUrlFor(), dispatch);
+        axios.all([axios.get('staff'), axios.get(getTemplateServiceUrlFor())])
+        .then((responses) => {
+            const responseData = getDataFromTemplateService(responses[1].data);
+            const users = getUsers(responses[0].data);
+            let isBusy = false;
+            let { templates, totalPages, currentPage } = responseData;
+            dispatch({ type: INITIALIZED,
+                users,
+                templates,
+                totalPages,
+                currentPage,
+                isBusy });
+        });
     };
 }
 
 export function onEvaluationTemplatesPageChange(currPage) {
     return (dispatch, getState) => {
-        const state= getState().evaluationTemplates;
-        getPromiseForTemplateService(getTemplateServiceUrlFor(state.filterKeyword, state.filterStatus, state.filterDate, state.perPage, currPage), dispatch);
+        const { filterKeyword, filterStatus, filterDate, filterUserId, perPage }= getState().evaluationTemplates;
+        getPromiseForTemplateService(getTemplateServiceUrlFor(filterKeyword, filterStatus, filterDate, filterUserId, perPage, currPage), dispatch);
     };
 }
 
 export function onEvaluationTemplatesDisplayedLengthChange(perPage) {
     return (dispatch, getState) => {
-        const state= getState().evaluationTemplates;
-        getPromiseForTemplateService(getTemplateServiceUrlFor(state.filterKeyword, state.filterStatus, state.filterDate, perPage, 1), dispatch);
+        const { filterKeyword, filterStatus, filterDate, filterUserId }= getState().evaluationTemplates;
+        getPromiseForTemplateService(getTemplateServiceUrlFor(filterKeyword, filterStatus, filterDate, filterUserId, perPage, 1), dispatch);
     };
 }
 
-export function onEvaluationTemplatesFilterChange(keyword, status, date) {
+export function onEvaluationTemplatesFilterChange(keyword, status, date, userId) {
     return (dispatch, getState) => {
-        const state= getState().evaluationTemplates;
-        getPromiseForTemplateService(getTemplateServiceUrlFor(keyword, status, date, state.maxRowLength, state.startIndex), dispatch);
+        const { maxRowLength, startIndex }= getState().evaluationTemplates;
+        getPromiseForTemplateService(getTemplateServiceUrlFor(keyword, status, date, userId, maxRowLength, startIndex), dispatch);
     };
 }
 
 function getPromiseForTemplateService(url, dispatch) {
     return getPromiseForService(url, dispatch)
     .then((response) => {
-        const responseData= getDataFromTemplateService(response.data);
+        const { templates, totalPages, currentPage }= getDataFromTemplateService(response.data);
+        const isBusy = false;        
         dispatch({
             type: EVALUATION_TEMPLATES_FETCHED,
-            evaluationTemplates: responseData.templates,
-            totalPages: responseData.totalPages,
-            currentPage: responseData.currentPage
+            templates,
+            totalPages,
+            currentPage,
+            isBusy
         });
     });
 }
