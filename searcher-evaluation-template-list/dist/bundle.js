@@ -22310,18 +22310,20 @@
 	        urlPostfix += '&per_page=' + maxRowLength;
 	    }
 	    if (keyword) {
-	        urlPostfix += '&filters[title]=' + keyword;
+	        urlPostfix += '&filters[title="' + keyword + '"]';
 	    }
 	    if (status) {
-	        urlPostfix += '&filters[active]=';
+	        urlPostfix += '&filters[active"';
 	        if (status === 'active') {
 	            urlPostfix += 1;
 	        } else {
 	            urlPostfix += 0;
 	        }
+	        urlPostfix += '"]';
 	    }
 	    if (date) {
-	        urlPostfix += '&filter[created_at]=' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+	        urlPostfix += '&filter[created_at=' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+	        urlPostfix += '"]';
 	    }
 	    if (urlPostfix.length) {
 	        return EVALUATION_SERVICE + '?' + urlPostfix;
