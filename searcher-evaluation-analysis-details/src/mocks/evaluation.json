@@ -1,593 +1,869 @@
 {
-    "data": {
-        "type": "evaluation-template-assignments",
-        "id": "1",
-        "attributes": {
-            "created_by": 0,
-            "created_at": {
-                "date": "2017-11-29 05:02:39.000000",
-                "timezone_type": 3,
-                "timezone": "UTC"
-            },
-            "updated_at": {
-                "date": "2017-12-05 06:44:57.000000",
-                "timezone_type": 3,
-                "timezone": "UTC"
-            }
-        },
-        "relationships": {
-            "template": {
-                "data": {
-                    "type": "evaluation-templates",
-                    "id": "1"
-                }
-            },
-            "assigneeUser": {
-                "data": {
-                    "type": "users",
-                    "id": "23679"
-                }
-            },
-            "assignmentType": {
-                "data": {
-                    "type": "evaluation-template-assignment-types",
-                    "id": "2"
-                }
-            },
-            "assignmentStatus": {
-                "data": {
-                    "type": "evaluation-template-assignment-statuses",
-                    "id": "1"
-                }
-            },
-            "chairStaff": {
-                "data": {
-                    "type": "staff",
-                    "id": "1"
-                }
-            },
-            "assignmentEntityInstance": {
-                "data": {
-                    "type": "matched-items",
-                    "id": "4602083"
-                }
-            },
-            "questionResponses": {
-                "data": [
-                    {
-                        "type": "evaluation-question-responses",
-                        "id": "2"
-                    }
-                ]
-            },
-            "relatedAssignments": {
-                "data": [
-                    {
-                        "type": "evaluation-template-assignments",
-                        "id": "5"
-                    },
-                    {
-                        "type": "evaluation-template-assignments",
-                        "id": "7"
-                    }
-                ]
-            }
-        }
+  "data": {
+    "type": "evaluation-template-assignments",
+    "id": "1",
+    "attributes": {
+      "created_by": 0,
+      "created_at": {
+        "date": "2017-11-29 05:02:39.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+      },
+      "updated_at": {
+        "date": "2017-11-29 08:02:59.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+      }
     },
-    "included": [
-        {
+    "relationships": {
+      "template": {
+        "data": {
+          "type": "evaluation-templates",
+          "id": "1"
+        }
+      },
+      "assigneeUser": {
+        "data": {
+          "type": "users",
+          "id": "23679"
+        }
+      },
+      "assignmentType": {
+        "data": {
+          "type": "evaluation-template-assignment-types",
+          "id": "1"
+        }
+      },
+      "assignmentStatus": {
+        "data": {
+          "type": "evaluation-template-assignment-statuses",
+          "id": "1"
+        }
+      },
+      "chairStaff": {
+        "data": {
+          "type": "staff",
+          "id": "1"
+        }
+      },
+      "assignmentEntityInstance": {
+        "data": {
+          "type": "suppliers",
+          "id": "20"
+        }
+      },
+      "questionResponses": {
+        "data": [
+          {
+            "type": "evaluation-question-responses",
+            "id": "1"
+          },
+          {
+            "type": "evaluation-question-responses",
+            "id": "2"
+          },
+          {
+            "type": "evaluation-question-responses",
+            "id": "3"
+          }
+        ]
+      }
+    }
+  },
+  "included": [
+    {
+      "type": "evaluation-question-type-definitions",
+      "id": "1",
+      "attributes": {
+        "title": "0",
+        "value": "0"
+      }
+    },
+    {
+      "type": "evaluation-question-type-definitions",
+      "id": "3",
+      "attributes": {
+        "title": "1",
+        "value": "1"
+      }
+    },
+    {
+      "type": "evaluation-question-type-definitions",
+      "id": "4",
+      "attributes": {
+        "title": "2",
+        "value": "2"
+      }
+    },
+    {
+      "type": "evaluation-question-type-definitions",
+      "id": "5",
+      "attributes": {
+        "title": "3",
+        "value": "3"
+      }
+    },
+    {
+      "type": "evaluation-question-type-definitions",
+      "id": "6",
+      "attributes": {
+        "title": "4",
+        "value": "4"
+      }
+    },
+    {
+      "type": "evaluation-question-type-definitions",
+      "id": "7",
+      "attributes": {
+        "title": "5",
+        "value": "5"
+      }
+    },
+    {
+      "type": "evaluation-question-types",
+      "id": "1",
+      "attributes": {
+        "title": "Scale (0 - 5)",
+        "description": "",
+        "active": 1
+      },
+      "relationships": {
+        "definitions": {
+          "data": [
+            {
+              "type": "evaluation-question-type-definitions",
+              "id": "1"
+            },
+            {
+              "type": "evaluation-question-type-definitions",
+              "id": "3"
+            },
+            {
+              "type": "evaluation-question-type-definitions",
+              "id": "4"
+            },
+            {
+              "type": "evaluation-question-type-definitions",
+              "id": "5"
+            },
+            {
+              "type": "evaluation-question-type-definitions",
+              "id": "6"
+            },
+            {
+              "type": "evaluation-question-type-definitions",
+              "id": "7"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "evaluation-question-scale-definitions",
+      "id": "1",
+      "attributes": {
+        "score": 0,
+        "definition": "Bad"
+      },
+      "relationships": {
+        "typeDefinition": {
+          "data": {
+            "type": "evaluation-question-type-definitions",
+            "id": "1"
+          }
+        }
+      }
+    },
+    {
+      "type": "evaluation-question-scale-definitions",
+      "id": "2",
+      "attributes": {
+        "score": 5,
+        "definition": "Good"
+      },
+      "relationships": {
+        "typeDefinition": {
+          "data": {
+            "type": "evaluation-question-type-definitions",
+            "id": "7"
+          }
+        }
+      }
+    },
+    {
+      "type": "evaluation-question-scale-definitions",
+      "id": "5",
+      "attributes": {
+        "score": 0,
+        "definition": "Bad"
+      },
+      "relationships": {
+        "typeDefinition": {
+          "data": {
+            "type": "evaluation-question-type-definitions",
+            "id": "1"
+          }
+        }
+      }
+    },
+    {
+      "type": "evaluation-question-scale-definitions",
+      "id": "7",
+      "attributes": {
+        "score": 5,
+        "definition": "Good"
+      },
+      "relationships": {
+        "typeDefinition": {
+          "data": {
+            "type": "evaluation-question-type-definitions",
+            "id": "7"
+          }
+        }
+      }
+    },
+    {
+      "type": "evaluation-questions",
+      "id": "1",
+      "attributes": {
+        "text": "First Question",
+        "allow_documents": 0,
+        "enable_scale_definitions": 1,
+        "mandatory_comments": 0,
+        "sort_order": 0
+      },
+      "relationships": {
+        "type": {
+          "data": {
             "type": "evaluation-question-types",
-            "id": "1",
-            "attributes": {
-                "title": "Scale (1 - 5)",
-                "description": "",
-                "active": 1
+            "id": "1"
+          }
+        },
+        "definitions": {
+          "data": [
+            {
+              "type": "evaluation-question-scale-definitions",
+              "id": "1"
             },
-            "relationships": {
-                "definitions": {
-                    "data": []
-                }
+            {
+              "type": "evaluation-question-scale-definitions",
+              "id": "2"
             }
+          ]
         },
-        {
-            "type": "evaluation-questions",
-            "id": "2",
-            "attributes": {
-                "text": "New Question",
-                "allow_documents": 0,
-                "enable_scale_definitions": 0,
-                "mandatory_comments": 0,
-                "sort_order": 0
+        "documents": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "evaluation-questions",
+      "id": "2",
+      "attributes": {
+        "text": "Second Question",
+        "allow_documents": 0,
+        "enable_scale_definitions": 0,
+        "mandatory_comments": 1,
+        "sort_order": 0
+      },
+      "relationships": {
+        "type": {
+          "data": {
+            "type": "evaluation-question-types",
+            "id": "1"
+          }
+        },
+        "documents": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "evaluation-questions",
+      "id": "3",
+      "attributes": {
+        "text": "Third Question",
+        "allow_documents": 1,
+        "enable_scale_definitions": 1,
+        "mandatory_comments": 1,
+        "sort_order": 0
+      },
+      "relationships": {
+        "type": {
+          "data": {
+            "type": "evaluation-question-types",
+            "id": "1"
+          }
+        },
+        "definitions": {
+          "data": []
+        },
+        "documents": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "evaluation-questions",
+      "id": "6",
+      "attributes": {
+        "text": "Fifth Question",
+        "allow_documents": 1,
+        "enable_scale_definitions": 1,
+        "mandatory_comments": 1,
+        "sort_order": 0
+      },
+      "relationships": {
+        "type": {
+          "data": {
+            "type": "evaluation-question-types",
+            "id": "1"
+          }
+        },
+        "definitions": {
+          "data": [
+            {
+              "type": "evaluation-question-scale-definitions",
+              "id": "5"
             },
-            "relationships": {
-                "type": {
-                    "data": {
-                        "type": "evaluation-question-types",
-                        "id": "1"
-                    }
-                },
-                "documents": {
-                    "data": []
-                }
+            {
+              "type": "evaluation-question-scale-definitions",
+              "id": "7"
             }
+          ]
         },
-        {
-            "type": "evaluation-questions",
-            "id": "3",
-            "attributes": {
-                "text": "New Question",
-                "allow_documents": 0,
-                "enable_scale_definitions": 0,
-                "mandatory_comments": 0,
-                "sort_order": 0
+        "documents": {
+          "data": []
+        }
+      }
+    },
+    {
+      "type": "evaluation-criteria",
+      "id": "1",
+      "attributes": {
+        "title": "First Criteria",
+        "weight": 33
+      },
+      "relationships": {
+        "questions": {
+          "data": [
+            {
+              "type": "evaluation-questions",
+              "id": "1"
             },
-            "relationships": {
-                "type": {
-                    "data": {
-                        "type": "evaluation-question-types",
-                        "id": "1"
-                    }
-                },
-                "documents": {
-                    "data": []
-                }
-            }
-        },
-        {
-            "type": "evaluation-questions",
-            "id": "5",
-            "attributes": {
-                "text": "New Question",
-                "allow_documents": 0,
-                "enable_scale_definitions": 0,
-                "mandatory_comments": 0,
-                "sort_order": 0
+            {
+              "type": "evaluation-questions",
+              "id": "2"
             },
-            "relationships": {
-                "type": {
-                    "data": {
-                        "type": "evaluation-question-types",
-                        "id": "1"
-                    }
-                },
-                "documents": {
-                    "data": []
-                }
+            {
+              "type": "evaluation-questions",
+              "id": "3"
             }
-        },
-        {
-            "type": "evaluation-criteria",
-            "id": "1",
-            "attributes": {
-                "title": "Update Criteria",
-                "weight": 100
-            },
-            "relationships": {
-                "questions": {
-                    "data": [
-                        {
-                            "type": "evaluation-questions",
-                            "id": "2"
-                        },
-                        {
-                            "type": "evaluation-questions",
-                            "id": "3"
-                        },
-                        {
-                            "type": "evaluation-questions",
-                            "id": "5"
-                        }
-                    ]
-                }
+          ]
+        }
+      }
+    },
+    {
+      "type": "evaluation-criteria",
+      "id": "3",
+      "attributes": {
+        "title": "Third Criteria2",
+        "weight": 32
+      },
+      "relationships": {
+        "questions": {
+          "data": [
+            {
+              "type": "evaluation-questions",
+              "id": "6"
             }
-        },
-        {
-            "type": "evaluation-criteria",
-            "id": "3",
-            "attributes": {
-                "title": "New Criteria",
-                "weight": 0
-            },
-            "relationships": {
-                "questions": {
-                    "data": []
-                }
-            }
-        },
-        {
-            "type": "organisation",
-            "id": "1",
-            "attributes": {
-                "title": "Bundaberg Regional Council"
-            }
-        },
-        {
-            "type": "staff",
-            "id": "1",
-            "attributes": {
-                "first_name": "Troy",
-                "last_name": "Redden",
-                "mobile": "0412345678",
-                "is_organisation_admin": 1,
-                "position": "",
-                "staff_company": "",
-                "staff_phone": "07 4130 4550",
-                "state_id": 10424,
-                "organisation": "Bundaberg Regional Council"
-            },
-            "relationships": {
-                "organisation": {
-                    "data": {
-                        "type": "organisation",
-                        "id": "1"
-                    }
-                }
-            }
-        },
-        {
-            "type": "supplier",
-            "id": "964012",
-            "attributes": {
-                "title": "Najah Earthmoving"
-            }
-        },
-        {
-            "type": "requested-item",
-            "id": "81375",
-            "attributes": {
-                "tbl_category_id": 933,
-                "quantity": "1",
-                "comments": "",
-                "tbl_quote_request_id": 36689,
-                "mobilisation": 0,
-                "demobilisation": 0,
-                "title": "26 - 30 Tonne Excavator",
-                "service": "hire",
-                "service_title": "",
-                "locked_in": 1
-            }
-        },
-        {
-            "type": "supplier",
-            "id": "963986",
-            "attributes": {
-                "title": "Bitz Excavations"
-            }
-        },
-        {
-            "type": "requested-item",
-            "id": "81377",
-            "attributes": {
-                "tbl_category_id": 936,
-                "quantity": "1",
-                "comments": "",
-                "tbl_quote_request_id": 36689,
-                "mobilisation": 0,
-                "demobilisation": 0,
-                "title": "41 - 45 Tonne Excavator",
-                "service": "hire",
-                "service_title": "",
-                "locked_in": 1
-            }
-        },
-        {
-            "type": "requested-item",
-            "id": "81360",
-            "attributes": {
-                "tbl_category_id": 660,
-                "quantity": "1",
-                "comments": "",
-                "tbl_quote_request_id": 36689,
-                "mobilisation": 0,
-                "demobilisation": 0,
-                "title": "Grader 120, 130, 140, 160M / H / G or Equivalent",
-                "service": "hire",
-                "service_title": "",
-                "locked_in": 1
-            }
-        },
-        {
-            "type": "evaluation-templates",
-            "id": "1",
-            "attributes": {
-                "title": "New Template",
-                "active": 0,
-                "created_at": {
-                    "date": "2017-11-29 01:50:11.000000",
-                    "timezone_type": 3,
-                    "timezone": "UTC"
-                }
-            }
-        },
-        {
-            "type": "users",
-            "id": "23679",
-            "attributes": {
-                "username": "troy.redden@bundaberg.qld.gov.au"
-            }
-        },
-        {
-            "type": "evaluation-template-assignment-types",
-            "id": "2",
-            "attributes": {
-                "title": "RFQ Item",
-                "description": "RFQ Item",
-                "assignment_type_space_id": null,
-                "ref_table": "tbl_requested_item_quote_item",
-                "ref_field": "id",
-                "created_by": 0,
-                "pepp_organisation_id": null
-            }
-        },
-        {
-            "type": "evaluation-template-assignment-statuses",
-            "id": "1",
-            "attributes": {
-                "title": "Not Started"
-            }
-        },
-        {
-            "type": "matched-items",
-            "id": "4549001",
-            "attributes": {
-                "quantity": 1,
-                "item_document": null,
-                "comments": "N/A",
-                "quoted": 1,
-                "stand_by_rate": null,
-                "title": "Caterpillar 349D"
-            },
-            "relationships": {
-                "matchedSupplier": {
-                    "data": [
-                        {
-                            "type": "supplier",
-                            "id": "963986"
-                        }
-                    ]
-                },
-                "requestedItem": {
-                    "data": {
-                        "type": "requested-item",
-                        "id": "81377"
-                    }
-                }
-            }
-        },
-        {
-            "type": "evaluation-question-responses",
-            "id": "3",
-            "attributes": {
-                "response_value": "5",
-                "comment": "They did a good job.",
-                "created_at": {
-                    "date": "2017-11-29 22:11:29.000000",
-                    "timezone_type": 3,
-                    "timezone": "UTC"
-                },
-                "updated_at": {
-                    "date": "2017-11-29 22:11:29.000000",
-                    "timezone_type": 3,
-                    "timezone": "UTC"
-                }
-            },
-            "relationships": {
-                "documents": {
-                    "data": []
-                },
-                "question": {
-                    "data": {
-                        "type": "evaluation-questions",
-                        "id": "3"
-                    }
-                }
-            }
-        },
-        {
-            "type": "matched-items",
-            "id": "4549002",
-            "attributes": {
-                "quantity": 1,
-                "item_document": null,
-                "comments": "Topcon GPS included ",
-                "quoted": 1,
-                "stand_by_rate": null,
-                "title": "Caterpillar 120H Grader"
-            },
-            "relationships": {
-                "matchedSupplier": {
-                    "data": [
-                        {
-                            "type": "supplier",
-                            "id": "963986"
-                        }
-                    ]
-                },
-                "requestedItem": {
-                    "data": {
-                        "type": "requested-item",
-                        "id": "81360"
-                    }
-                }
-            }
-        },
-        {
-            "type": "matched-items",
-            "id": "4602083",
-            "attributes": {
-                "quantity": 4,
-                "item_document": null,
-                "comments": "N/A",
-                "quoted": 1,
-                "stand_by_rate": null,
-                "title": "Hammer &bucket"
-            },
-            "relationships": {
-                "matchedSupplier": {
-                    "data": [
-                        {
-                            "type": "supplier",
-                            "id": "964012"
-                        }
-                    ]
-                },
-                "requestedItem": {
-                    "data": {
-                        "type": "requested-item",
-                        "id": "81375"
-                    }
-                }
-            }
-        },
-        {
-            "type": "evaluation-question-responses",
-            "id": "2",
-            "attributes": {
-                "response_value": "5",
-                "comment": "They did a good job.",
-                "created_at": {
-                    "date": "2017-11-29 22:11:29.000000",
-                    "timezone_type": 3,
-                    "timezone": "UTC"
-                },
-                "updated_at": {
-                    "date": "2017-11-29 22:11:29.000000",
-                    "timezone_type": 3,
-                    "timezone": "UTC"
-                }
-            },
-            "relationships": {
-                "documents": {
-                    "data": []
-                },
-                "question": {
-                    "data": {
-                        "type": "evaluation-questions",
-                        "id": "3"
-                    }
-                }
-            }
-        },
-        {
-            "type": "evaluation-template-assignments",
-            "id": "5",
-            "attributes": {
-                "created_by": 0,
-                "created_at": {
-                    "date": "2017-11-29 05:02:39.000000",
-                    "timezone_type": 3,
-                    "timezone": "UTC"
-                },
-                "updated_at": {
-                    "date": "2017-12-05 06:52:24.000000",
-                    "timezone_type": 3,
-                    "timezone": "UTC"
-                }
-            },
-            "relationships": {
-                "template": {
-                    "data": {
-                        "type": "evaluation-templates",
-                        "id": "1"
-                    }
-                },
-                "assigneeUser": {
-                    "data": {
-                        "type": "users",
-                        "id": "23679"
-                    }
-                },
-                "assignmentType": {
-                    "data": {
-                        "type": "evaluation-template-assignment-types",
-                        "id": "2"
-                    }
-                },
-                "assignmentStatus": {
-                    "data": {
-                        "type": "evaluation-template-assignment-statuses",
-                        "id": "1"
-                    }
-                },
-                "chairStaff": {
-                    "data": {
-                        "type": "staff",
-                        "id": "1"
-                    }
-                },
-                "assignmentEntityInstance": {
-                    "data": {
-                        "type": "matched-items",
-                        "id": "4549001"
-                    }
-                },
-                "questionResponses": {
-                    "data": [
-                        {
-                            "type": "evaluation-question-responses",
-                            "id": "3"
-                        }
-                    ]
-                }
-            }
-        },
-        {
-            "type": "evaluation-template-assignments",
-            "id": "7",
-            "attributes": {
-                "created_by": 0,
-                "created_at": {
-                    "date": "2017-11-29 05:02:39.000000",
-                    "timezone_type": 3,
-                    "timezone": "UTC"
-                },
-                "updated_at": {
-                    "date": "2017-12-05 06:52:24.000000",
-                    "timezone_type": 3,
-                    "timezone": "UTC"
-                }
-            },
-            "relationships": {
-                "template": {
-                    "data": {
-                        "type": "evaluation-templates",
-                        "id": "1"
-                    }
-                },
-                "assigneeUser": {
-                    "data": {
-                        "type": "users",
-                        "id": "23679"
-                    }
-                },
-                "assignmentType": {
-                    "data": {
-                        "type": "evaluation-template-assignment-types",
-                        "id": "2"
-                    }
-                },
-                "assignmentStatus": {
-                    "data": {
-                        "type": "evaluation-template-assignment-statuses",
-                        "id": "1"
-                    }
-                },
-                "chairStaff": {
-                    "data": {
-                        "type": "staff",
-                        "id": "1"
-                    }
-                },
-                "assignmentEntityInstance": {
-                    "data": {
-                        "type": "matched-items",
-                        "id": "4549002"
-                    }
-                },
-                "questionResponses": {
-                    "data": []
-                }
+          ]
+        }
+      }
+    },
+    {
+      "type": "organisation",
+      "id": "1",
+      "attributes": {
+        "title": "Bundaberg Regional Council"
+      }
+    },
+    {
+      "type": "users",
+      "id": "23679",
+      "attributes": {
+        "username": "troy.redden@bundaberg.qld.gov.au"
+      },
+      "relationships": {
+        "staff": {
+          "data":
+            {
+              "type": "staff",
+              "id": "1"
             }
         }
-    ]
+      }
+    },
+    {
+      "type": "staff",
+      "id": "1",
+      "attributes": {
+        "first_name": "Troy",
+        "last_name": "Redden",
+        "mobile": "07 4130 4550",
+        "is_organisation_admin": 1,
+        "position": "",
+        "staff_company": null,
+        "staff_phone": "07 4130 4550",
+        "state_id": 10424,
+        "user_id": 23679,
+        "organisation": "Bundaberg Regional Council"
+      },
+      "relationships": {
+        "organisation": {
+          "data": {
+            "type": "organisation",
+            "id": "1"
+          }
+        },
+        "user": {
+          "data": {
+            "type": "users",
+            "id": "23679"
+          }
+        }
+      }
+    },
+    {
+      "type": "evaluation-question-response-documents",
+      "id": "330022",
+      "attributes": {
+        "original_name": "Screen Shot 2017-11-30 at 11.47.04 am.png",
+        "hash": "PnZ0cHIiIVtC5SUK2035272151",
+        "created_on": "2017-12-08 09:28:22",
+        "filetype": "png",
+        "filesize": 92072,
+        "path": "documents/PnZ0cHIiIVtC5SUK2035272151",
+        "download_url": "https://s3-ap-southeast-2.amazonaws.com/upload.staging.plantminer.com.au/documents/PnZ0cHIiIVtC5SUK2035272151?response-content-disposition=attachment%3B%20filename%3DScreen%20Shot%202017-11-30%20at%2011.47.04%20am.png&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJIU6BIH6USLHNP2Q%2F20171212%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20171212T071231Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=3dcb6b332342d052477b6c77a800a6002f219b0264c01bfc0c2fc8894d74f205"
+      }
+    },
+    {
+      "type": "evaluation-question-response-documents",
+      "id": "330023",
+      "attributes": {
+        "original_name": "Screen Shot 2017-11-30 at 11.47.04 am.png",
+        "hash": "x2K0BuuOGwPtq4Kx9935272151",
+        "created_on": "2017-12-08 09:29:59",
+        "filetype": "png",
+        "filesize": 92072,
+        "path": "documents/x2K0BuuOGwPtq4Kx9935272151",
+        "download_url": "https://s3-ap-southeast-2.amazonaws.com/upload.staging.plantminer.com.au/documents/x2K0BuuOGwPtq4Kx9935272151?response-content-disposition=attachment%3B%20filename%3DScreen%20Shot%202017-11-30%20at%2011.47.04%20am.png&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJIU6BIH6USLHNP2Q%2F20171212%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20171212T071231Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=2066f060db0c947bc503b8d177ec0528b5050df856dfd83731208d03eadd9d3d"
+      }
+    },
+    {
+      "type": "evaluation-question-response-documents",
+      "id": "330024",
+      "attributes": {
+        "original_name": "Screen Shot 2017-11-30 at 11.47.04 am.png",
+        "hash": "mmZnouiKU2nA38QJ3655272151",
+        "created_on": "2017-12-08 09:32:44",
+        "filetype": "png",
+        "filesize": 92072,
+        "path": "documents/mmZnouiKU2nA38QJ3655272151",
+        "download_url": "https://s3-ap-southeast-2.amazonaws.com/upload.staging.plantminer.com.au/documents/mmZnouiKU2nA38QJ3655272151?response-content-disposition=attachment%3B%20filename%3DScreen%20Shot%202017-11-30%20at%2011.47.04%20am.png&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJIU6BIH6USLHNP2Q%2F20171212%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20171212T071231Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=d19dae324816e029bf0c72d69aa5ebee419feb26c193b06e79bf7caf1e9c2811"
+      }
+    },
+    {
+      "type": "evaluation-question-response-documents",
+      "id": "330025",
+      "attributes": {
+        "original_name": "Screen Shot 2017-11-30 at 11.47.04 am.png",
+        "hash": "kCify6GE5s8dFdGs1855272151",
+        "created_on": "2017-12-08 09:33:01",
+        "filetype": "png",
+        "filesize": 92072,
+        "path": "documents/kCify6GE5s8dFdGs1855272151",
+        "download_url": "https://s3-ap-southeast-2.amazonaws.com/upload.staging.plantminer.com.au/documents/kCify6GE5s8dFdGs1855272151?response-content-disposition=attachment%3B%20filename%3DScreen%20Shot%202017-11-30%20at%2011.47.04%20am.png&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJIU6BIH6USLHNP2Q%2F20171212%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20171212T071231Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=68bef2f36367cdd9d0dae6c74340cf36824bd436be7488fb1cd1140367ba5c60"
+      }
+    },
+    {
+      "type": "evaluation-question-response-documents",
+      "id": "330026",
+      "attributes": {
+        "original_name": "Screen Shot 2017-11-30 at 11.47.04 am.png",
+        "hash": "3hK1WRfIiQlCbXKC8385272151",
+        "created_on": "2017-12-08 09:37:19",
+        "filetype": "png",
+        "filesize": 92072,
+        "path": "documents/3hK1WRfIiQlCbXKC8385272151",
+        "download_url": "https://s3-ap-southeast-2.amazonaws.com/upload.staging.plantminer.com.au/documents/3hK1WRfIiQlCbXKC8385272151?response-content-disposition=attachment%3B%20filename%3DScreen%20Shot%202017-11-30%20at%2011.47.04%20am.png&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJIU6BIH6USLHNP2Q%2F20171212%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20171212T071231Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=9317d004ebf88956d251248ca7e003906a1aba025fbb9fc6a717ae46d5ad0286"
+      }
+    },
+    {
+      "type": "evaluation-question-response-documents",
+      "id": "330027",
+      "attributes": {
+        "original_name": "Screen Shot 2017-11-23 at 5.40.46 pm.png",
+        "hash": "1SqT3e8klnGKNsVK5685272151",
+        "created_on": "2017-12-08 09:37:45",
+        "filetype": "png",
+        "filesize": 45794,
+        "path": "documents/1SqT3e8klnGKNsVK5685272151",
+        "download_url": "https://s3-ap-southeast-2.amazonaws.com/upload.staging.plantminer.com.au/documents/1SqT3e8klnGKNsVK5685272151?response-content-disposition=attachment%3B%20filename%3DScreen%20Shot%202017-11-23%20at%205.40.46%20pm.png&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJIU6BIH6USLHNP2Q%2F20171212%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20171212T071231Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=eeb1854b9ebb3edcc253d944d0c859dac07813c51cbb5a139587ea9f9e13b4f6"
+      }
+    },
+    {
+      "type": "evaluation-question-response-documents",
+      "id": "330028",
+      "attributes": {
+        "original_name": "Screen Shot 2017-11-30 at 11.47.04 am.png",
+        "hash": "DhVzITdMPuuQCidb1895272151",
+        "created_on": "2017-12-08 09:39:41",
+        "filetype": "png",
+        "filesize": 92072,
+        "path": "documents/DhVzITdMPuuQCidb1895272151",
+        "download_url": "https://s3-ap-southeast-2.amazonaws.com/upload.staging.plantminer.com.au/documents/DhVzITdMPuuQCidb1895272151?response-content-disposition=attachment%3B%20filename%3DScreen%20Shot%202017-11-30%20at%2011.47.04%20am.png&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJIU6BIH6USLHNP2Q%2F20171212%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20171212T071231Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=d2e7dfe11c29bcaae1081c075702f173f0ac542bb4b420ed07cc366ccb162d6c"
+      }
+    },
+    {
+      "type": "evaluation-question-response-documents",
+      "id": "330029",
+      "attributes": {
+        "original_name": "Screen Shot 2017-11-30 at 11.47.04 am.png",
+        "hash": "UNT7lkSLQsNu5EAB3116272151",
+        "created_on": "2017-12-08 09:41:53",
+        "filetype": "png",
+        "filesize": 92072,
+        "path": "documents/UNT7lkSLQsNu5EAB3116272151",
+        "download_url": "https://s3-ap-southeast-2.amazonaws.com/upload.staging.plantminer.com.au/documents/UNT7lkSLQsNu5EAB3116272151?response-content-disposition=attachment%3B%20filename%3DScreen%20Shot%202017-11-30%20at%2011.47.04%20am.png&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJIU6BIH6USLHNP2Q%2F20171212%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20171212T071231Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=24375141860ff1d34369a4e3d053521af0fb0e90399fd579db8b40f52b977c75"
+      }
+    },
+    {
+      "type": "evaluation-question-response-documents",
+      "id": "330030",
+      "attributes": {
+        "original_name": "Screen Shot 2017-11-30 at 11.47.04 am.png",
+        "hash": "knZUrVK7jKf5RVCd7916272151",
+        "created_on": "2017-12-08 09:43:17",
+        "filetype": "png",
+        "filesize": 92072,
+        "path": "documents/knZUrVK7jKf5RVCd7916272151",
+        "download_url": "https://s3-ap-southeast-2.amazonaws.com/upload.staging.plantminer.com.au/documents/knZUrVK7jKf5RVCd7916272151?response-content-disposition=attachment%3B%20filename%3DScreen%20Shot%202017-11-30%20at%2011.47.04%20am.png&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJIU6BIH6USLHNP2Q%2F20171212%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20171212T071231Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=d22e13255e26adc2bf7f89fb74ef3f10549ce3af9f9cc4181a1455cec8e514b9"
+      }
+    },
+    {
+      "type": "evaluation-question-response-documents",
+      "id": "330031",
+      "attributes": {
+        "original_name": "Screen Shot 2017-11-30 at 11.47.04 am.png",
+        "hash": "ZFKtCkvvr4efcz5F6036272151",
+        "created_on": "2017-12-08 09:45:06",
+        "filetype": "png",
+        "filesize": 92072,
+        "path": "documents/ZFKtCkvvr4efcz5F6036272151",
+        "download_url": "https://s3-ap-southeast-2.amazonaws.com/upload.staging.plantminer.com.au/documents/ZFKtCkvvr4efcz5F6036272151?response-content-disposition=attachment%3B%20filename%3DScreen%20Shot%202017-11-30%20at%2011.47.04%20am.png&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJIU6BIH6USLHNP2Q%2F20171212%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20171212T071231Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=da80941d12779e29a863355979cdeba8aa3ea944cc0c91d8ce51934d1af0e3b7"
+      }
+    },
+    {
+      "type": "evaluation-question-response-documents",
+      "id": "330032",
+      "attributes": {
+        "original_name": "Screen Shot 2017-11-30 at 11.47.04 am.png",
+        "hash": "GzlYohf625QgbaHf5536272151",
+        "created_on": "2017-12-08 09:45:55",
+        "filetype": "png",
+        "filesize": 92072,
+        "path": "documents/GzlYohf625QgbaHf5536272151",
+        "download_url": "https://s3-ap-southeast-2.amazonaws.com/upload.staging.plantminer.com.au/documents/GzlYohf625QgbaHf5536272151?response-content-disposition=attachment%3B%20filename%3DScreen%20Shot%202017-11-30%20at%2011.47.04%20am.png&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJIU6BIH6USLHNP2Q%2F20171212%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20171212T071231Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=7f3d3eede4b7df41f8e40ab31322e2ea32bf5f89d16ab1cfc8e8a21d2e5a6ecc"
+      }
+    },
+    {
+      "type": "evaluation-question-response-documents",
+      "id": "330033",
+      "attributes": {
+        "original_name": "Screen Shot 2017-11-30 at 11.47.04 am.png",
+        "hash": "a6UxpjSdf5V1r0qg8046272151",
+        "created_on": "2017-12-08 09:46:48",
+        "filetype": "png",
+        "filesize": 92072,
+        "path": "documents/a6UxpjSdf5V1r0qg8046272151",
+        "download_url": "https://s3-ap-southeast-2.amazonaws.com/upload.staging.plantminer.com.au/documents/a6UxpjSdf5V1r0qg8046272151?response-content-disposition=attachment%3B%20filename%3DScreen%20Shot%202017-11-30%20at%2011.47.04%20am.png&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJIU6BIH6USLHNP2Q%2F20171212%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20171212T071231Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=9d7bce46a1ae52823dacf421753bda05ba5ae8a64b8cf560548f3db1b1b1ad15"
+      }
+    },
+    {
+      "type": "evaluation-question-response-documents",
+      "id": "330034",
+      "attributes": {
+        "original_name": "Screen Shot 2017-11-30 at 11.47.04 am.png",
+        "hash": "eQvVxzVCxF1Y0xKx4127272151",
+        "created_on": "2017-12-08 10:00:14",
+        "filetype": "png",
+        "filesize": 92072,
+        "path": "documents/eQvVxzVCxF1Y0xKx4127272151",
+        "download_url": "https://s3-ap-southeast-2.amazonaws.com/upload.staging.plantminer.com.au/documents/eQvVxzVCxF1Y0xKx4127272151?response-content-disposition=attachment%3B%20filename%3DScreen%20Shot%202017-11-30%20at%2011.47.04%20am.png&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJIU6BIH6USLHNP2Q%2F20171212%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20171212T071231Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=7d7cd00a1ff826e126d98413f2913600daa120ce3b931efe067b03e6ee181f8c"
+      }
+    },
+    {
+      "type": "evaluation-question-response-documents",
+      "id": "330035",
+      "attributes": {
+        "original_name": "Screen Shot 2017-11-30 at 11.47.04 am.png",
+        "hash": "Yuzqk6tHNjG7EdKp6527272151",
+        "created_on": "2017-12-08 10:00:56",
+        "filetype": "png",
+        "filesize": 92072,
+        "path": "documents/Yuzqk6tHNjG7EdKp6527272151",
+        "download_url": "https://s3-ap-southeast-2.amazonaws.com/upload.staging.plantminer.com.au/documents/Yuzqk6tHNjG7EdKp6527272151?response-content-disposition=attachment%3B%20filename%3DScreen%20Shot%202017-11-30%20at%2011.47.04%20am.png&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJIU6BIH6USLHNP2Q%2F20171212%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20171212T071231Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=6c78b11f5c5b4bf3bef706a0e6879b91857344de21ca71809fc3c59a2665b221"
+      }
+    },
+    {
+      "type": "evaluation-question-response-documents",
+      "id": "330036",
+      "attributes": {
+        "original_name": "Screen Shot 2017-11-30 at 11.47.04 am (1).png",
+        "hash": "jf3qP8m9T7Yz4nrp0928272151",
+        "created_on": "2017-12-08 10:18:10",
+        "filetype": "png",
+        "filesize": 92072,
+        "path": "documents/jf3qP8m9T7Yz4nrp0928272151",
+        "download_url": "https://s3-ap-southeast-2.amazonaws.com/upload.staging.plantminer.com.au/documents/jf3qP8m9T7Yz4nrp0928272151?response-content-disposition=attachment%3B%20filename%3DScreen%20Shot%202017-11-30%20at%2011.47.04%20am%20%281%29.png&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJIU6BIH6USLHNP2Q%2F20171212%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20171212T071231Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=7580300951c3e8f48dff0dbadc72660e316fff2bfe9661a1214b94ebbe4d45c7"
+      }
+    },
+    {
+      "type": "evaluation-question-response-documents",
+      "id": "330037",
+      "attributes": {
+        "original_name": "Screen Shot 2017-11-30 at 11.47.04 am (1).png",
+        "hash": "icDSBf4GppdmTrFf9648272151",
+        "created_on": "2017-12-08 10:21:09",
+        "filetype": "png",
+        "filesize": 92072,
+        "path": "documents/icDSBf4GppdmTrFf9648272151",
+        "download_url": "https://s3-ap-southeast-2.amazonaws.com/upload.staging.plantminer.com.au/documents/icDSBf4GppdmTrFf9648272151?response-content-disposition=attachment%3B%20filename%3DScreen%20Shot%202017-11-30%20at%2011.47.04%20am%20%281%29.png&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJIU6BIH6USLHNP2Q%2F20171212%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20171212T071231Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=77bf075c9d3a9df6ab3f20ecd8306be3a0a970efc9899bef37f2a24fe89fd317"
+      }
+    },
+    {
+      "type": "evaluation-question-response-documents",
+      "id": "330038",
+      "attributes": {
+        "original_name": "Screen Shot 2017-11-30 at 11.47.04 am (1).png",
+        "hash": "x8rZpOuyycK2R41w3168272151",
+        "created_on": "2017-12-08 10:23:33",
+        "filetype": "png",
+        "filesize": 92072,
+        "path": "documents/x8rZpOuyycK2R41w3168272151",
+        "download_url": "https://s3-ap-southeast-2.amazonaws.com/upload.staging.plantminer.com.au/documents/x8rZpOuyycK2R41w3168272151?response-content-disposition=attachment%3B%20filename%3DScreen%20Shot%202017-11-30%20at%2011.47.04%20am%20%281%29.png&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJIU6BIH6USLHNP2Q%2F20171212%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20171212T071231Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=d8b401c7f05b37a16f0d15d2db4228e9e771ef157566717abf366f76d91e1bf9"
+      }
+    },
+    {
+      "type": "evaluation-templates",
+      "id": "1",
+      "attributes": {
+        "title": "New Template 7",
+        "active": 0,
+        "created_at": {
+          "date": "2017-11-29 01:50:11.000000",
+          "timezone_type": 3,
+          "timezone": "UTC"
+        }
+      },
+      "relationships": {
+        "criteria": {
+          "data": [
+            {
+              "type": "evaluation-criteria",
+              "id": "1"
+            },
+            {
+              "type": "evaluation-criteria",
+              "id": "3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "evaluation-template-assignment-types",
+      "id": "1",
+      "attributes": {
+        "title": "RFQ Response",
+        "description": "RFQ Response",
+        "assignment_type_space_id": null,
+        "ref_table": "tbl_quote_requested_by_to",
+        "ref_field": "id",
+        "created_by": 0,
+        "pepp_organisation_id": null
+      }
+    },
+    {
+      "type": "evaluation-template-assignment-statuses",
+      "id": "1",
+      "attributes": {
+        "title": "Not Started"
+      }
+    },
+    {
+      "type": "suppliers",
+      "id": "20",
+      "attributes": {
+        "title": "Excedo Group Pty Ltd"
+      }
+    },
+    {
+      "type": "evaluation-question-responses",
+      "id": "1",
+      "attributes": {
+        "response_value": "2",
+        "comment": "They did a good job.",
+        "created_at": {
+          "date": "2017-11-29 22:11:29.000000",
+          "timezone_type": 3,
+          "timezone": "UTC"
+        },
+        "updated_at": {
+          "date": "2017-12-07 23:35:00.000000",
+          "timezone_type": 3,
+          "timezone": "UTC"
+        }
+      },
+      "relationships": {
+        "documents": {
+          "data": []
+        },
+        "question": {
+          "data": {
+            "type": "evaluation-questions",
+            "id": "1"
+          }
+        }
+      }
+    },
+    {
+      "type": "evaluation-question-responses",
+      "id": "2",
+      "attributes": {
+        "response_value": "3",
+        "comment": "They did a good job.",
+        "created_at": {
+          "date": "2017-11-29 22:11:29.000000",
+          "timezone_type": 3,
+          "timezone": "UTC"
+        },
+        "updated_at": {
+          "date": "2017-12-07 23:35:03.000000",
+          "timezone_type": 3,
+          "timezone": "UTC"
+        }
+      },
+      "relationships": {
+        "documents": {
+          "data": []
+        },
+        "question": {
+          "data": {
+            "type": "evaluation-questions",
+            "id": "2"
+          }
+        }
+      }
+    },
+    {
+      "type": "evaluation-question-responses",
+      "id": "3",
+      "attributes": {
+        "response_value": "5",
+        "comment": "They did a good job.",
+        "created_at": {
+          "date": "2017-11-29 22:11:29.000000",
+          "timezone_type": 3,
+          "timezone": "UTC"
+        },
+        "updated_at": {
+          "date": "2017-11-29 22:11:29.000000",
+          "timezone_type": 3,
+          "timezone": "UTC"
+        }
+      },
+      "relationships": {
+        "documents": {
+          "data": [
+            {
+              "type": "evaluation-question-response-documents",
+              "id": "330022"
+            },
+            {
+              "type": "evaluation-question-response-documents",
+              "id": "330023"
+            },
+            {
+              "type": "evaluation-question-response-documents",
+              "id": "330024"
+            },
+            {
+              "type": "evaluation-question-response-documents",
+              "id": "330025"
+            },
+            {
+              "type": "evaluation-question-response-documents",
+              "id": "330026"
+            },
+            {
+              "type": "evaluation-question-response-documents",
+              "id": "330027"
+            },
+            {
+              "type": "evaluation-question-response-documents",
+              "id": "330028"
+            },
+            {
+              "type": "evaluation-question-response-documents",
+              "id": "330029"
+            },
+            {
+              "type": "evaluation-question-response-documents",
+              "id": "330030"
+            },
+            {
+              "type": "evaluation-question-response-documents",
+              "id": "330031"
+            },
+            {
+              "type": "evaluation-question-response-documents",
+              "id": "330032"
+            },
+            {
+              "type": "evaluation-question-response-documents",
+              "id": "330033"
+            },
+            {
+              "type": "evaluation-question-response-documents",
+              "id": "330034"
+            },
+            {
+              "type": "evaluation-question-response-documents",
+              "id": "330035"
+            },
+            {
+              "type": "evaluation-question-response-documents",
+              "id": "330036"
+            },
+            {
+              "type": "evaluation-question-response-documents",
+              "id": "330037"
+            },
+            {
+              "type": "evaluation-question-response-documents",
+              "id": "330038"
+            }
+          ]
+        },
+        "question": {
+          "data": {
+            "type": "evaluation-questions",
+            "id": "3"
+          }
+        }
+      }
+    }
+  ]
 }

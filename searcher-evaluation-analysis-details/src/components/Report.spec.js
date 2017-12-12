@@ -8,14 +8,43 @@ import Report from './Report';
 describe('Report component: ', () => {
     let component;
     const props = {
-        reportData: [
+        questions: [
             {
-                staff: 'Reese',
-                scores: [5, 10, 15, 20]
+                id: 1,
+                questionTitle: 'Test Question',
+                totalScore: 5,
+                comments: [
+                    {
+                        id: 1,
+                        staff: 'Reese',
+                        comment: 'Company size is too small, still considering',
+                        score: 5
+                    },
+                    {
+                        id: 2,
+                        staff: 'Kitkat',
+                        comment: 'Agree with comment above',
+                        score: 5
+                    }
+                ]
             },
             {
-                staff: 'Kitkat',
-                scores: [25, 30, 35, 40]
+                questionTitle: 'Test Question',
+                totalScore: 2,
+                comments: [
+                    {
+                        id: 1,
+                        staff: 'Reese',
+                        comment: 'Company size is too small, still considering',
+                        score: 5
+                    },
+                    {
+                        id: 2,
+                        staff: 'Kitkat',
+                        comment: 'Agree with comment above',
+                        score: 5
+                    }
+                ]
             }
         ]
     };
