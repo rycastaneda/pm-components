@@ -9,7 +9,7 @@ import {
     changeTemplateStatus,
     onEvaluationTemplatesFilterChange,
     onEvaluationTemplatesPageChange,
-    fetchEvaluationTemplates
+    initialize
 } from '../actions/evaluationTemplates';
 import TemplatesTable from '../components/TemplatesTable';
 class EvaluationTemplateList extends Component {
@@ -19,13 +19,13 @@ class EvaluationTemplateList extends Component {
     }
 
     componentDidMount() {
-        this.props.dispatch(fetchEvaluationTemplates());
+        this.props.dispatch(initialize());
     }
 
 
-    onFilterSubmit(keyword, status, date) {
+    onFilterSubmit(keyword, status, date, userId) {        
         this.props.dispatch(
-            onEvaluationTemplatesFilterChange(keyword, status, date)
+            onEvaluationTemplatesFilterChange(keyword, status, date, userId)
         );
     }
 
@@ -53,12 +53,14 @@ class EvaluationTemplateList extends Component {
             currentTemplateList,
             currentPage,
             totalPages,
-            maxRowLength
+            maxRowLength,
+            users
         } = this.props;
         return (
             <div className="searcher-evaluation-template-list">
                 <TemplatesFilter
                     templateStatusesList={STATUS_LIST}
+                    users = {users}
                     onSubmit={this.onFilterSubmit}
                 />
                 <TemplatesTable
@@ -86,6 +88,7 @@ class EvaluationTemplateList extends Component {
 EvaluationTemplateList.propTypes = {
     isBusy: PropTypes.bool.isRequired,
     currentTemplateList: PropTypes.array.isRequired,
+    users: PropTypes.array.isRequired,
     currentPage: PropTypes.number.isRequired,
     totalPages: PropTypes.number.isRequired,
     errorMessage: PropTypes.string,
@@ -96,6 +99,7 @@ EvaluationTemplateList.propTypes = {
 function mapStateToProps(state) {
     const {
         isBusy,
+        users,
         errorMessage,
         currentTemplateList,
         currentPage,
@@ -104,6 +108,7 @@ function mapStateToProps(state) {
     } = state.evaluationTemplates;
     return {
         isBusy,
+        users,
         errorMessage,
         currentTemplateList,
         currentPage,

@@ -5,18 +5,18 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
 import api from '../../shared/api.config';
+import apiMiddleware from './middleware/api';
 import './styles/index.scss';
 import axios from 'axios';
 !window._babelPolyfill && require('babel-polyfill'); // prevent polyfill from importing twice
-
 
 import EvaluationAssignment from './containers/EvaluationAssignment';
 
 // Add redux dev tools unless we have a production build
 const enhance = process.env.NODE_ENV !== 'production' && window.devToolsExtension ? compose(
-    applyMiddleware(thunkMiddleware),
+    applyMiddleware(thunkMiddleware, apiMiddleware),
     window.devToolsExtension && window.devToolsExtension()
-) : applyMiddleware(thunkMiddleware);
+) : applyMiddleware(thunkMiddleware, apiMiddleware);
 
 // Configure store with thunk middleware to allow async requests
 const store = createStore(

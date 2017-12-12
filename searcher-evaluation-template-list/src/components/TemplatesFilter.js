@@ -6,19 +6,35 @@ class EvaluationTemplatesFilter extends Component {
 
     constructor(props) {
         super(props);
-        this.state={ isFilterShown:false, keywordSearch:'', selectedStatus:'', selectedDate:null };
+        this.state={ isFilterShown:false, keywordSearch:'', selectedStatus:'', selectedDate:null, selectedUserId:'' };
         this.onSelectedDateChange= this.onSelectedDateChange.bind(this);
+        this.onKeyPress = this.onKeyPress.bind(this);
+        this.onKeywordChange = this.onKeywordChange.bind(this);
         this.onNormalSubmit= this.onNormalSubmit.bind(this);
         this.onAdvancedSubmit= this.onAdvancedSubmit.bind(this);
         this.onToggleFilter= this.onToggleFilter.bind(this);
     }
+    
+    onKeyPress(event) {
+        if (event.key === 'Enter') {
+            if (this.state.isFilterShown) {
+                this.onAdvancedSubmit();
+            } else {
+                this.onNormalSubmit();
+            }
 
-    onKeywordChange(val) {
-        this.setState({ keywordSearch: val });
+        }
+    }
+
+    onKeywordChange(event) {
+        this.setState({ keywordSearch: event.target.value });
     }
 
     onSelectedStatusChange(val) {
         this.setState({ selectedStatus: val });
+    }
+    onSelectedUserChange(val) {
+        this.setState({ selectedUserId: val });
     }
 
     onSelectedDateChange(date) {
@@ -26,16 +42,21 @@ class EvaluationTemplatesFilter extends Component {
     }
 
     onNormalSubmit() {
-        this.setState({ selectedStatus:'', selectedDate:null, isFilterShown:false });
-        this.props.onSubmit(this.state.keywordSearch, null, null);
+        let { keywordSearch } = this.state;
+        this.setState({ selectedStatus:'', selectedUserId:'', selectedDate:null, isFilterShown:false });
+        this.props.onSubmit(keywordSearch, null, null, null);
     }
 
     onAdvancedSubmit() {
-        let date= this.state.selectedDate!==null? this.state.selectedDate.toDate():null;
-        this.props.onSubmit(this.state.keywordSearch, this.state.selectedStatus, date);
+        let { keywordSearch, selectedStatus, selectedUserId, selectedDate } = this.state;
+        selectedStatus =(selectedStatus!=='active'&&selectedStatus!=='inactive')?null:selectedStatus;
+        let date= selectedDate!==null&&selectedDate!==''? selectedDate.toDate():null;
+        this.props.onSubmit(keywordSearch, selectedStatus, date, selectedUserId);
     }
     onToggleFilter() {
-        this.setState({ isFilterShown:!this.state.isFilterShown });
+        let { isFilterShown } = this.state;
+        isFilterShown = !isFilterShown;
+        this.setState({ isFilterShown });
     }
     render() {
 
@@ -46,7 +67,7 @@ class EvaluationTemplatesFilter extends Component {
                         <div className="col-xs-6 col-md-4">
                             <div className="input-group">
                                 <span className="input-group-addon"><i className="fa fa-search"></i></span>
-                                     <input type="text" name="search" className="form-control" placeholder="Quick search"  onChange={event => this.onKeywordChange(event.target.value)}/>
+                                     <input type="text" name="search" className="form-control" placeholder="Quick search" onKeyPress={this.onKeyPress} onChange={this.onKeywordChange}/>
                              </div>
                         </div>
                        <div className="col-xs-2 col-md-2">
@@ -59,7 +80,7 @@ class EvaluationTemplatesFilter extends Component {
             </div>
             {this.state.isFilterShown? <div className="panel panel-default pad-all">
                <div className="row">
-                    <div className="col-xs-6">
+                    <div className="col-xs-4">
                         <div className="form-group">
                         <label>Status</label>
                             <select className="form-control form-control-sm" onChange={event => this.onSelectedStatusChange(event.target.value)} value={this.state.selectedStatus}>
@@ -67,15 +88,28 @@ class EvaluationTemplatesFilter extends Component {
                                </select>
                            </div>
                     </div>
-                    <div className="col-xs-6">
+                    <div className="col-xs-4">
                         <div className="form-group">
-                            <label>Date Created</label>
+                            <label>Created At</label>
                             <div className="input-group">
                             <span className="input-group-addon"><i className="fa fa-calendar"></i></span>
                             <Datetime
                                 onSelectedDateChange={this.onSelectedDateChange}
                                 selectedDate={null}
                                 />
+                            </div>
+                       </div>
+                    </div>
+                    <div className="col-xs-4">
+                        <div className="form-group">
+                            <label>Created By</label>
+                            <div className="input-group">
+                                <select className="form-control form-control-sm" onChange={event => this.onSelectedUserChange(event.target.value)} value={this.state.selectedUserId}>
+                                    <option value="">{'All Users'}</option>
+                                    {
+                                        this.props.users.map((user, index) => <option key={index} value={user.id} >{ `${user.lastName}, ${user.firstName}` }</option>)
+                                    }
+                                </select>
                             </div>
                        </div>
                     </div>
@@ -98,6 +132,7 @@ class EvaluationTemplatesFilter extends Component {
 
 EvaluationTemplatesFilter.propTypes = {
     templateStatusesList: PropTypes.array,
+    users: PropTypes.array,
     onSubmit: PropTypes.func.isRequired
 };
 

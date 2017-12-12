@@ -18,27 +18,27 @@ export function getAssignmentServiceUrlFor(queryParams) {
     }
 
     if (selectedStatus&&selectedStatus!=='') {
-        urlPostfix +='&filters[evaluation_template_assignment_status_id]='+selectedStatus;
+        urlPostfix +='&filter[evaluation_template_assignment_status_id]='+selectedStatus;
     }
     if (selectedLinkedTo&&selectedLinkedTo!=='') {
-        urlPostfix +='&filters[evaluation_template_assignment_type_id]='+selectedLinkedTo;
+        urlPostfix +='&filter[evaluation_template_assignment_type_id]='+selectedLinkedTo;
     }
     if (selectedTemplate&&selectedTemplate!=='') {
-        urlPostfix +='&filters[evaluation_template_id]='+selectedTemplate;
+        urlPostfix +='&filter[evaluation_template_id]='+selectedTemplate;
     }
     if (selectedAssignedTo&&selectedAssignedTo!=='') {
-        urlPostfix +='&filters[assignee_user_id]='+selectedAssignedTo;
+        urlPostfix +='&filter[assignee_user_id]='+selectedAssignedTo;
     }
     if (selectedEntityInstanceId&&selectedEntityInstanceId!=='') {
-        urlPostfix +='&filters[assignment_entity_instance_id]='+selectedEntityInstanceId;
+        urlPostfix +='&filter[assignment_entity_instance_id]='+selectedEntityInstanceId;
     }
     if (selectedSupplier&&selectedSupplier!=='') {
-        urlPostfix +='&filters[preferred_supplier_id]='+selectedSupplier;
+        urlPostfix +='&filter[preferred_supplier_id]='+selectedSupplier;
     }
     if (selectedAssignedOn&&selectedAssignedOn!=='') {
         let assignedOn = new Date(selectedAssignedOn);
         selectedAssignedOn = assignedOn.getDate()+'/'+assignedOn.getMonth()+'/'+assignedOn.getFullYear();
-        urlPostfix +='&filters[date]='+selectedAssignedOn;
+        urlPostfix +='&filter[date]='+selectedAssignedOn;
     }
 
     if (urlPostfix.length) {
