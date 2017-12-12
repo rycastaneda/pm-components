@@ -4079,18 +4079,18 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.clearMessages = clearMessages;
-	exports.showMessage = showMessage;
+	exports.clearNotifications = clearNotifications;
+	exports.showNotification = showNotification;
 
 	var _ActionTypes = __webpack_require__(147);
 
 	var _constants = __webpack_require__(72);
 
-	function clearMessages() {
+	function clearNotifications() {
 	    return { type: _ActionTypes.NOTIFICATION_CLEAR_MESSAGES };
 	}
 
-	function showMessage() {
+	function showNotification() {
 	    var messageType = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _constants.MESSAGE_TYPE_ERROR;
 	    var message = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
 
@@ -4104,9 +4104,9 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(clearMessages, 'clearMessages', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/notification/actions/index.js');
+	    __REACT_HOT_LOADER__.register(clearNotifications, 'clearNotifications', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/notification/actions/index.js');
 
-	    __REACT_HOT_LOADER__.register(showMessage, 'showMessage', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/notification/actions/index.js');
+	    __REACT_HOT_LOADER__.register(showNotification, 'showNotification', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/notification/actions/index.js');
 	})();
 
 	;
