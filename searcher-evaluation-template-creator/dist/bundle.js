@@ -6717,7 +6717,7 @@
 	                                        null,
 	                                        _react2.default.createElement(
 	                                            'a',
-	                                            { className: 'btn btn-md', href: '/searcher/evaluation/list_templates' },
+	                                            { className: 'btn btn-md', href: '/searcher/evaluation_templates/list' },
 	                                            _react2.default.createElement('i', { className: 'fa fa-save' }),
 	                                            'Save and Continue Later'
 	                                        )
