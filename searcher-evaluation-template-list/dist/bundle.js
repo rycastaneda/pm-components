@@ -22177,6 +22177,8 @@
 
 	        _this.state = { isFilterShown: false, keywordSearch: '', selectedStatus: '', selectedDate: null, selectedUserId: '' };
 	        _this.onSelectedDateChange = _this.onSelectedDateChange.bind(_this);
+	        _this.onKeyPress = _this.onKeyPress.bind(_this);
+	        _this.onKeywordChange = _this.onKeywordChange.bind(_this);
 	        _this.onNormalSubmit = _this.onNormalSubmit.bind(_this);
 	        _this.onAdvancedSubmit = _this.onAdvancedSubmit.bind(_this);
 	        _this.onToggleFilter = _this.onToggleFilter.bind(_this);
@@ -22184,9 +22186,20 @@
 	    }
 
 	    (0, _createClass3.default)(EvaluationTemplatesFilter, [{
+	        key: 'onKeyPress',
+	        value: function onKeyPress(event) {
+	            if (event.key === 'Enter') {
+	                if (this.state.isFilterShown) {
+	                    this.onAdvancedSubmit();
+	                } else {
+	                    this.onNormalSubmit();
+	                }
+	            }
+	        }
+	    }, {
 	        key: 'onKeywordChange',
-	        value: function onKeywordChange(val) {
-	            this.setState({ keywordSearch: val });
+	        value: function onKeywordChange(event) {
+	            this.setState({ keywordSearch: event.target.value });
 	        }
 	    }, {
 	        key: 'onSelectedStatusChange',
@@ -22220,6 +22233,7 @@
 	                selectedUserId = _state.selectedUserId,
 	                selectedDate = _state.selectedDate;
 
+	            selectedStatus = selectedStatus !== 'active' && selectedStatus !== 'inactive' ? null : selectedStatus;
 	            var date = selectedDate !== null && selectedDate !== '' ? selectedDate.toDate() : null;
 	            this.props.onSubmit(keywordSearch, selectedStatus, date, selectedUserId);
 	        }
@@ -22256,9 +22270,7 @@
 	                                    { className: 'input-group-addon' },
 	                                    _react2.default.createElement('i', { className: 'fa fa-search' })
 	                                ),
-	                                _react2.default.createElement('input', { type: 'text', name: 'search', className: 'form-control', placeholder: 'Quick search', onChange: function onChange(event) {
-	                                        return _this2.onKeywordChange(event.target.value);
-	                                    } })
+	                                _react2.default.createElement('input', { type: 'text', name: 'search', className: 'form-control', placeholder: 'Quick search', onKeyPress: this.onKeyPress, onChange: this.onKeywordChange })
 	                            )
 	                        ),
 	                        _react2.default.createElement(

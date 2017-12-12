@@ -8,13 +8,26 @@ class EvaluationTemplatesFilter extends Component {
         super(props);
         this.state={ isFilterShown:false, keywordSearch:'', selectedStatus:'', selectedDate:null, selectedUserId:'' };
         this.onSelectedDateChange= this.onSelectedDateChange.bind(this);
+        this.onKeyPress = this.onKeyPress.bind(this);
+        this.onKeywordChange = this.onKeywordChange.bind(this);
         this.onNormalSubmit= this.onNormalSubmit.bind(this);
         this.onAdvancedSubmit= this.onAdvancedSubmit.bind(this);
         this.onToggleFilter= this.onToggleFilter.bind(this);
     }
+    
+    onKeyPress(event) {
+        if (event.key === 'Enter') {
+            if (this.state.isFilterShown) {
+                this.onAdvancedSubmit();
+            } else {
+                this.onNormalSubmit();
+            }
 
-    onKeywordChange(val) {
-        this.setState({ keywordSearch: val });
+        }
+    }
+
+    onKeywordChange(event) {
+        this.setState({ keywordSearch: event.target.value });
     }
 
     onSelectedStatusChange(val) {
@@ -36,6 +49,7 @@ class EvaluationTemplatesFilter extends Component {
 
     onAdvancedSubmit() {
         let { keywordSearch, selectedStatus, selectedUserId, selectedDate } = this.state;
+        selectedStatus =(selectedStatus!=='active'&&selectedStatus!=='inactive')?null:selectedStatus;
         let date= selectedDate!==null&&selectedDate!==''? selectedDate.toDate():null;
         this.props.onSubmit(keywordSearch, selectedStatus, date, selectedUserId);
     }
@@ -53,7 +67,7 @@ class EvaluationTemplatesFilter extends Component {
                         <div className="col-xs-6 col-md-4">
                             <div className="input-group">
                                 <span className="input-group-addon"><i className="fa fa-search"></i></span>
-                                     <input type="text" name="search" className="form-control" placeholder="Quick search"  onChange={event => this.onKeywordChange(event.target.value)}/>
+                                     <input type="text" name="search" className="form-control" placeholder="Quick search" onKeyPress={this.onKeyPress} onChange={this.onKeywordChange}/>
                              </div>
                         </div>
                        <div className="col-xs-2 col-md-2">
