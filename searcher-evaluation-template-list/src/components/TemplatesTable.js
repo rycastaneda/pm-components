@@ -32,12 +32,12 @@ class TemplatesTable extends Component {
     }
 
     onTableRowClick(url) {
-        document.location.href=url;
+        document.location.href = url;
     }
 
-    onTemplateToggleActivation(id, status) {
+    onTemplateToggleActivation(id, active) {
         this.hideMenu();
-        this.props.onTemplateToggleActivation(id, status);
+        this.props.onTemplateToggleActivation(id, active);
     }
     toggleMenu(id) {
         if (this.state.menuVisibleItemId!== id) {
@@ -51,7 +51,7 @@ class TemplatesTable extends Component {
     hideMenu() {
         this.setState({ menuVisibleItemId:null });
     }
-    renderMoreButton(id, edit_url, preview_url, status) {
+    renderMoreButton(id, edit_url, preview_url, active) {
         if (this.state.menuVisibleItemId===id) {
             return (
             <div className="dropdown open"   ref={(ul) => {
@@ -68,7 +68,7 @@ class TemplatesTable extends Component {
                 <ul className="dropdown-menu">
                     <li ><a href={preview_url} >Preview</a></li>
                     <li><a href={edit_url} >Edit</a></li>
-                    <li><a href="javascript:;" onClick={()  => this.onTemplateToggleActivation(id, !(status))}>{status? 'Deactivate': 'Activate'}</a></li>
+                    <li><a href="javascript:;" onClick={()  => this.onTemplateToggleActivation(id, !(active))}>{active? 'Deactivate': 'Activate'}</a></li>
                 </ul>
         </div>);
         } else {
@@ -101,22 +101,22 @@ class TemplatesTable extends Component {
             <tbody>
                 {this.props.tableData.map((item, index) =>
                     <tr key={index}>
-                    <td className="nowrap" onClick={()  => this.onTableRowClick(item.edit_url)}>{item.name}</td>
+                    <td className="nowrap" onClick={()  => this.onTableRowClick(item.edit_url)}>{item.title}</td>
                     <td className="td-center nowrap" onClick={()  => this.onTableRowClick(item.edit_url)}>{item.instances}</td>
                     <td className="td-center nowrap" onClick={()  => this.onTableRowClick(item.edit_url)}>{item.completed}</td>
-                    <td className="td-center nowrap" onClick={()  => this.onTableRowClick(item.edit_url)}>{item.status?
+                    <td className="td-center nowrap" onClick={()  => this.onTableRowClick(item.edit_url)}>{item.active?
                         <span className={`bs-label bs-label-success`}>Active</span>
                         :<span className={`bs-label bs-label-danger`}>Inactive</span>
                     }
                     </td>
                     <td data-heading="More" className="td-center last">
-                        {this.renderMoreButton(item.id, item.edit_url, item.preview_url, item.status)}
+                        {this.renderMoreButton(item.id, item.edit_url, item.preview_url, item.active)}
                     </td>
                 </tr>
                 )}
             </tbody>
             </table>
-            {this.props.totalPages > 1?
+
             <div className="row">
                 <div className="col-sm-12 form-inline">
                     <select className="form-control" defaultValue={this.props.rowCount}
@@ -126,6 +126,7 @@ class TemplatesTable extends Component {
                         )}
                     </select>
                     &nbsp;
+                    {this.props.totalPages > 1?
                     <ReactPaginate  previousLabel={"previous"}
                               nextLabel={"next"}
                               breakLabel={<a href="">...</a>}
@@ -138,9 +139,10 @@ class TemplatesTable extends Component {
                               containerClassName={"pagination"}
                               subContainerClassName={"pages pagination"}
                               activeClassName={"active"} />
+                    :null}
                     </div>
                 </div>
-                :null}
+
             </div>
         );
     }

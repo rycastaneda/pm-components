@@ -1,5 +1,6 @@
 import { EVALUATION_TEMPLATES_FETCHED,
     EVALUATION_TEMPLATE_UPDATED,
+    INITIALIZED,
     IS_BUSY,
     REQUEST_FAILED } from '../constants/ActionTypes';
 import { MAXROWS_DEFAULT,
@@ -7,6 +8,8 @@ import { MAXROWS_DEFAULT,
 
 const INITIAL_DATA = {
     currentTemplateList:[],
+    users:[],
+    filterUserId:'',
     filterKeyword:'',
     filterStatus:STATUS_DEFAULT,
     filterDate:null,
@@ -20,40 +23,44 @@ const INITIAL_DATA = {
 export function evaluationTemplates(state = INITIAL_DATA, action) {
 
     switch (action.type) {
-
+        case INITIALIZED: {
+            let { users, templates, currentPage, totalPages, isBusy  } = action;
+            let currentTemplateList = templates;
+            return { ...state, users, currentTemplateList, currentPage, totalPages, isBusy };
+        }
         case EVALUATION_TEMPLATES_FETCHED:
             {
-                let newState = Object.assign({}, state);
-                newState.currentTemplateList = action.evaluationTemplates;
-                newState.currentPage = action.currentPage;
-                newState.totalPages = action.totalPages;
-                newState.isBusy = false;
-                return newState;
+                let { templates, currentPage, totalPages } = action;
+                let currentTemplateList = templates;
+                let isBusy = false;
+                return { ...state, isBusy, currentTemplateList, currentPage, totalPages };
             }
         case EVALUATION_TEMPLATE_UPDATED:
             {
-                let newState = Object.assign({}, state);
-                state.currentTemplateList.forEach((item) => {
+                let { currentTemplateList } = state;
+                let { active, id } = action;
+                for (let i in currentTemplateList) {
+                    let item = currentTemplateList[i];
+                    if (item.id===id) {
 
-                    if (item.id === action.id) {
-                        item.status = action.status;
+                        currentTemplateList[i] = { ...item, active };
                     }
-                });
-                const currentTemplateList = JSON.parse(JSON.stringify(state.currentTemplateList));
-                newState.currentTemplateList = currentTemplateList;
-
-                newState.isBusy = false;
-                return newState;
+                }
+                currentTemplateList = [...currentTemplateList];
+                let isBusy = false;
+                return { ...state, isBusy, currentTemplateList  };
             }
         case IS_BUSY:
-            state.isBusy = action.status;
-            return Object.assign({}, state);
-
+            {
+                let isBusy = action.status;
+                return { ...state, isBusy };
+            }
         case REQUEST_FAILED:
-            state.isBusy = false;
-            state.errorMessage = action.message;
-            return Object.assign({}, state);
-
+            {
+                let isBusy = false;
+                let { errorMessage } = action;
+                return { ...state, isBusy, errorMessage };
+            }
         default:
             return state;
     }
