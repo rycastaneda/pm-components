@@ -27,7 +27,7 @@ class EvaluationAssignment extends Component {
         /* const { boilerplate } = this.props; */
         const {
             evaluationTemplates,
-            evaluationTypes,
+            selectedTemplateId,
             evaluationAssignees,
             selectedAssignees,
             evaluationTypesRfq,
@@ -48,11 +48,12 @@ class EvaluationAssignment extends Component {
                             <EvaluationTemplatesDropdown evaluationTemplates={evaluationTemplates} />
                         </div>
                     </div>
-                    { evaluationTypes.length > 0 ?
+
+                    { selectedTemplateId !== '' ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationIsOn">Evaluation Type</label>
-                                <EvaluationTypeDropdown evaluationTypes={evaluationTypes} isLoading={isLoading} />
+                                <EvaluationTypeDropdown isLoading={isLoading} />
                             </div>
                         </div>
                         : null
@@ -163,6 +164,7 @@ EvaluationAssignment.propTypes = {
     matchedItems: PropTypes.array.isRequired,
     evaluationEngagements: PropTypes.array.isRequired,
     evaluationSuppliers: PropTypes.array.isRequired,
+    selectedTemplateId: PropTypes.string.isRequired,
     evaluationTypeSelected: PropTypes.string.isRequired,
     rfqTypeSelectedId: PropTypes.string,
     isLoading: PropTypes.bool.isRequired,
@@ -185,6 +187,7 @@ const mapStateToProps = (state, ownProps) => {
         evaluationTypeSelected,
         selectedAssignees,
         isLoading,
+        selectedTemplateId,
         selectedAssignmentEntityInstanceId,
         rfqTypeSelectedId,
         matchedSupplierId,
@@ -192,7 +195,6 @@ const mapStateToProps = (state, ownProps) => {
 
     const evaluationTemplates = selectFromStore(state.evaluationAssignment, '/evaluation-templates', 'evaluationTemplates');
     const evaluationAssignees = concatLabelKey(selectFromStore(state.evaluationAssignment, '/staff', 'staff'));
-    const evaluationTypes = selectFromStore(state.evaluationAssignment, '/evaluation-template-assignment-types', 'evaluationTemplateAssignmentTypes');
     const evaluationEngagements = selectFromStore(state.evaluationAssignment, '/engagements', 'engagements');
     const evaluationSuppliers = selectFromStore(state.evaluationAssignment, '/preferred-suppliers', 'preferredSuppliers');
     const evaluationTypesRfq = selectFromStore(state.evaluationAssignment, '/request-for-quotations', 'requestForQuotations');
@@ -203,7 +205,7 @@ const mapStateToProps = (state, ownProps) => {
 
     return {
         ...ownProps,
-        evaluationTypes,
+        selectedTemplateId,
         evaluationTemplates,
         evaluationTypesRfq,
         matchedSuppliers,
