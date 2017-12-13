@@ -23,8 +23,9 @@ const EngagementsDropdown = ({ evaluationEngagements, isLoading, actions }) => (
                 </select>
             </div>
             :
-            <div>
-                <span>Loading...</span>
+            <div className="input-group">
+                <select className="form-control" disabled><option>Loading Engagements ...</option></select>
+                <span className="spinner-animation form-control-feedback"></span>
             </div>
         }
     </div>
