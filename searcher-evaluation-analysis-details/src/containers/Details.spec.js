@@ -3,10 +3,9 @@ import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { Details } from './Details';
-import { Criterion } from './Criterion';
 import Loader from '../components/Loader';
 import ViewSelector from '../components/ViewSelector';
-import ComparisonTable from '../components/ComparisonTable';
+import ComparisonTable from './ComparisonTable';
 
 const setup = props => {
     const component = shallow(<Details {...props} />);
@@ -77,23 +76,7 @@ describe('Details container: ', () => {
         dispatch: sinon.spy(),
         criteria: [criterion, { ...criterion, id: 2 }],
         currentView: 'single',
-        isLoading: true,
-        supplierData: [
-            {
-                id: 1,
-                name: 'tester 1',
-                scores: {
-                    2: 100
-                }
-            },
-            {
-                id: 2,
-                name: 'tester 2',
-                scores: {
-                    2: 95
-                }
-            }
-        ]
+        isLoading: true
     };
 
     let { component } = setup(props);

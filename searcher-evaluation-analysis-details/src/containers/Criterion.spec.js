@@ -18,6 +18,7 @@ const componentProps = {
     weight: 50,
     isOpen: false,
     currentTab: 'responses',
+    currentView: 'all',
     questions: [
         {
             id: 1,
@@ -83,11 +84,18 @@ describe('Criterion container: ', () => {
             .true;
     });
 
-    it('should render Header with props', () => {
+    it('should render Header if current view is not in single mode', () => {
         const header = component.find(Header);
         expect(header).to.have.length(1);
         const props = header.props();
         expect(props).to.have.property('currentTab', 'responses');
+    });
+
+    it('should not render Header if current view in single mode', () => {
+        const { component } = setup({ ...componentProps, currentView: 'single' });
+
+        const header = component.find(Header);
+        expect(header).to.have.length(0);
     });
 
     it('should be able to expand the accordion and render Questions', () => {
