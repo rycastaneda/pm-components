@@ -2,21 +2,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import build from 'redux-object';
 import * as actions from '../../actions/evaluationAssignmentsAction';
 
 const EngagementsDropdown = ({ evaluationEngagements, isLoading, actions }) => (
     <div>
-        <select name="evaluationLink"
-                className="form-control"
-                onChange={
-                    event => actions.updateChangeEngagements(event.target.value)
-                }>
-            <option key="-" value={null}>{!isLoading ? 'Select..' : 'Loading...'}</option>
-            { evaluationEngagements.map(
-                (item, index) =>
-                    <option key={index} value={item.id}>{item.engagementText}</option>
-            )}
-        </select>
+
+        { !isLoading ?
+            <div>
+                <select name="evaluationLink"
+                        className="form-control"
+                        onChange={
+                            event => actions.updateChangeEngagements(event.target.value)
+                        }>
+                    <option key="-" value={null}>Select..</option>
+                    { evaluationEngagements.map(
+                        (item, index) =>
+                            <option key={index} value={item.id}>{item.engagementText}</option>
+                    )}
+                </select>
+            </div>
+            :
+            <div>
+                <span>Loading...</span>
+            </div>
+        }
     </div>
 );
 
@@ -32,4 +42,14 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(null, mapDispatchToProps)(EngagementsDropdown);
+const mapStateToProps = (state, ownProps) => {
+    const  isLoading = state.evaluationAssignment.meta['/engagements'].loading;
+    const evaluationEngagements = (state.evaluationAssignment.meta['/engagements'].data || []).map(object => build(state.evaluationAssignment, 'engagements', object.id));
+    return {
+        ...ownProps,
+        isLoading,
+        evaluationEngagements,
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EngagementsDropdown);

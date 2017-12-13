@@ -13,7 +13,7 @@ const EvaluationTypeDropdown = ({ evaluationTypes, actions, isLoading }) => (
                 <select name="evaluationIsOn"
                         className="form-control"
                         onChange={ evt => actions.updateChangeEvaluationType(evt.target.value) }>
-                    <option key="-" value={null}>{'Select..'}</option>
+                    <option key="-" value={null}>Select..</option>
                     {evaluationTypes.map(
                         item => <option key={item.id} value={item.id}>{item.title}</option>
                     )}
@@ -32,7 +32,6 @@ EvaluationTypeDropdown.propTypes = {
     actions: PropTypes.object,
     isLoading: PropTypes.bool,
     evaluationTypes: PropTypes.array.isRequired,
-
 };
 
 const mapDispatchToProps = (dispatch) => {
