@@ -23,8 +23,9 @@ const PreferredSuppliersDropdown = ({ evaluationSuppliers, isLoading, actions })
                 </select>
             </div>
             :
-            <div>
-                <span>Loading Suppliers ...</span>
+            <div className="input-group">
+                <select className="form-control" disabled><option>Loading Preferred Suppliers ...</option></select>
+                <span className="spinner-animation form-control-feedback"></span>
             </div>
         }
     </div>
