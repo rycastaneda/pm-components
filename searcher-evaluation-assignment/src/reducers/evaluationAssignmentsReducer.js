@@ -38,6 +38,8 @@ export function evaluationAssignment(state = initialState, action) {
             return {
                 ...state,
                 evaluationTypeSelected: action.evaluationType,
+                rfqTypeSelectedId: '',
+                matchedSupplierId: '',
             };
 
         case actionTypes.ASSIGNMENT_CREATION_UPDATE_CHANGE_RFQ:

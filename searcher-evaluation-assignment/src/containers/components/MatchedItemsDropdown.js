@@ -7,6 +7,7 @@ import * as actions from '../../actions/evaluationAssignmentsAction';
 
 const MatchedItemsDropdown = ({ matchedItems, isLoading, actions }) => (
     <div>
+
         { !isLoading ?
             <div>
                 <select name="evaluationLink"
@@ -14,7 +15,7 @@ const MatchedItemsDropdown = ({ matchedItems, isLoading, actions }) => (
                         onChange={
                             event => actions.updateChangeMatchedItems(event.target.value)
                         }>
-                    <option key="-" value={null}>Select..</option>
+                    <option key="-" value={null}>Select RFQ Item</option>
                     {matchedItems.map(
                         (item, index) =>
                             <option key={index} value={item.id}>{item.title}</option>
@@ -26,6 +27,7 @@ const MatchedItemsDropdown = ({ matchedItems, isLoading, actions }) => (
                 <span>Loading...</span>
             </div>
         }
+
     </div>
 );
 

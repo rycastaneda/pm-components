@@ -14,7 +14,7 @@ const MatchedSuppliersDropdown = ({ matchedSuppliers, actions, isLoading }) => (
                         onChange={
                             event => actions.updateChangeMatchedSuppliers(event.target.value)
                         }>
-                    <option key="-" value={null}>Select..</option>
+                    <option key="-" value={null}>Select Supplier</option>
                     {matchedSuppliers.map(
                         (item, index) =>
                             <option key={index} value={item.id}>{item.title}</option>
@@ -22,13 +22,14 @@ const MatchedSuppliersDropdown = ({ matchedSuppliers, actions, isLoading }) => (
                 </select>
 
                 <div className={`bs-callout bs-callout-warning ${matchedSuppliers.length === 0 ? 'visible':'hidden'}`}>
-                    The selected RFQ doesn't match any suppliers, please select other option
+                    The selected RFQ does not match any suppliers, please select other option.
                 </div>
             </div>
         :
-            <div>
-                <span>Loading...</span>
-            </div>
+        <div className="input-group">
+            <select className="form-control" disabled><option>Loading Suppliers ...</option></select>
+            <span className="spinner-animation form-control-feedback"></span>
+        </div>
         }
     </div>
 );

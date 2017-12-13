@@ -8,22 +8,23 @@ import * as actions from '../../actions/evaluationAssignmentsAction';
 const RfqListDropdown = ({ evaluationTypesRfq, isLoading, actions }) => (
     <div>
         { !isLoading ?
-            <div>
+            <div className="input-group">
                 <select name="evaluationLink"
                         className="form-control"
                         onChange={
                             event => actions.fetchMatchedSuppliers(event.target.value)
                         }>
-                    <option key="-" value={null}>Select..</option>
+                    <option key="-" value={null}>Select RFQ</option>
                     {evaluationTypesRfq.map(
                         (item, index) =>
-                            <option key={index} value={item.id}>{item.quoteTitle}</option>
+                            <option key={index} value={item.id}>#{item.id} &ndash; {item.quoteTitle}</option>
                     )}
                 </select>
             </div>
             :
-            <div>
-                <span>Loading...</span>
+            <div className="input-group">
+                <select className="form-control" disabled><option>Loading RFQs...</option></select>
+                <span className="spinner-animation form-control-feedback"></span>
             </div>
         }
     </div>
