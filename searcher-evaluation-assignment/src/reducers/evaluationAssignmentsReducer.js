@@ -1,4 +1,4 @@
-import merge from 'lodash/merge';
+import merge from 'lodash.merge';
 import * as actionTypes from '../constants/ActionTypes';
 import { API_DATA_REQUEST, API_DATA_SUCCESS } from '../middleware/api';
 

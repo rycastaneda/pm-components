@@ -1,5 +1,7 @@
 
 import axios from 'axios';
+import normalize from 'json-api-normalizer';
+import  build  from 'redux-object';
 import {
     parseDataFromFetchTemplate,
     parseDataForCreateTemplate,
@@ -227,7 +229,7 @@ export function  onAllowScaleDefinitionChange(criteriaId, questionId, isAllowSca
         return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
         .then((response) => {
             const question = parseDataFromCreateQuestion(response.data);
-
+            
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
@@ -264,22 +266,21 @@ export function deleteQuestion(criteriaId, questionId) {
         });
     };
 }
-export function onScaleDefinitionChange(criteriaId, questionId, scaleDefinitionId, text, score, refId) {
+export function onScaleDefinitionChange(criteriaId, questionId, typeDefinitionId, text, score, scaleDefinitionId) {
     return (dispatch, getState) => {
         const templateId = getState().evaluationTemplateCreator.id;
         const url =TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId+'/scale-definitions';
-
-        let data = parseDataForScaleDefinition(scaleDefinitionId, text, score);
-
-        if (refId===null) {
+        let data = parseDataForScaleDefinition(typeDefinitionId, scaleDefinitionId, text, score);
+        if (scaleDefinitionId===undefined) {
             return axios.post(url, data)
                 .then((response) => {
-                    response;
+                    let responseScaleDef = normalize(response.data, { endpoint:'evaluation-question-scale-definitions' });
+                    responseScaleDef = build(responseScaleDef, 'evaluationQuestionScaleDefinitions')[0];
                     let question = Object.assign({}, getState().evaluationTemplateCreator.questionsByIndex[questionId]);
                     const index = question.scaleDefinitions.findIndex((item) => {
-                        return (item.id === response.data.data.attributes.score);
+                        return (item.id === responseScaleDef.typeDefinition.id);
                     });
-                    question.scaleDefinitions[index].refId = response.data.data.id;
+                    question.scaleDefinitions[index].definitionId = response.data.data.id;
                     question.scaleDefinitions[index].label = text;
                     dispatch({ type:QUESTION_UPDATE, criteriaId, question });
                 })
@@ -290,13 +291,15 @@ export function onScaleDefinitionChange(criteriaId, questionId, scaleDefinitionI
         } else {
 
             // not working completely. Need to check with Tom
-            return axios.patch(url+'/'+refId, data)
+            return axios.patch(url+'/'+scaleDefinitionId, data)
                 .then((response) => {
-
+                    let responseScaleDef = normalize(response.data, { endpoint:'evaluation-question-scale-definitions' });
+                    responseScaleDef = build(responseScaleDef, 'evaluationQuestionScaleDefinitions')[0];
                     let question = Object.assign({}, getState().evaluationTemplateCreator.questionsByIndex[questionId]);
 
+
                     const index = question.scaleDefinitions.findIndex((item) => {
-                        return (item.id === response.data.data.id);
+                        return (item.id === responseScaleDef.typeDefinition.id);
                     });
 
                     question.scaleDefinitions[index].label = text;

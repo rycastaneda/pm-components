@@ -15,7 +15,7 @@
 	"dependencies": {
 		"classnames": "^2.2.5",
 		"json-api-normalizer": "^0.4.6",
-		"lodash": "^4.17.4",
+		"lodash.merge": "^4.6.0",
 		"redux-bees": "^0.1.7",
 		"redux-object": "^0.5.4"
 	},

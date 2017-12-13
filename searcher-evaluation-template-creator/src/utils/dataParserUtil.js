@@ -1,3 +1,5 @@
+import normalize from 'json-api-normalizer';
+import  build  from 'redux-object';
 import { QUESTION_SKELETON, CRITERION_SKELETON } from '../constants/models';
 
 
@@ -60,6 +62,7 @@ export function parseDataForCreateQuestion(text, questionType) {
     };
 }
 export function parseDataFromFetchTemplate(d) {
+    let normalizedData = normalize(d, { endpoint:'evaluation-templates' });
     let { data, included }= d;
     let result= {};
     result.id = Number(data.id);
@@ -104,10 +107,7 @@ export function parseDataFromFetchTemplate(d) {
             let includedDocuments =[];
             if (includedQuestion.relationships.documents) {
                 includedDocuments = includedQuestion.relationships.documents.data.map((documentItem) => {
-
-
                     let includedDocument= included.filter((include) => {
-
                         return ((include.type==='uploads')&&(include.id===documentItem.id));
                     });
                     includedDocument = includedDocument[0];
@@ -129,6 +129,38 @@ export function parseDataFromFetchTemplate(d) {
                 allDocumentIndexes.push(document.id);
             });
 
+            let evaluationQuestion = build(normalizedData, 'evaluationQuestions', question.id);
+
+            // let allTypeDefinitionsByIndex = {};
+            //
+            //
+            //
+            let typeDefinitionByIndex = {};
+
+            // convert object to array.
+            evaluationQuestion.type.definitions.forEach((definition) => {
+                typeDefinitionByIndex[definition.id] = definition;
+            });
+
+            if (evaluationQuestion.definitions) {
+                evaluationQuestion.definitions.forEach((def) => {
+
+                    let typeDefinitionId = def.typeDefinition.id;
+                    let typeDef = typeDefinitionByIndex[typeDefinitionId];
+                    if (typeDef) {
+                        let { score, definition, id }  = def;
+                        let definitionId = id;
+                        let label = definition;
+
+                        let newScaleDefinition = { id:typeDef.id, label, value:typeDef.value, score, definitionId };
+                        typeDefinitionByIndex[typeDefinitionId] = newScaleDefinition;
+                    }
+
+                });
+            }
+            question.scaleDefinitions = Object.values(typeDefinitionByIndex);
+
+            /*
             let includedTypeDefinitions = included.filter((include) => {
                 return ((include.type==='evaluation-question-type-definitions'));
             });
@@ -161,7 +193,7 @@ export function parseDataFromFetchTemplate(d) {
                 }
                 question.scaleDefinitions.push(definition);
 
-            });
+            }); */
             questionsByIndex[question.id] = question;
             allQuestionIndexes.push(question.id);
             criteria.questions.push(question.id);
@@ -176,28 +208,25 @@ export function parseDataFromFetchTemplate(d) {
     result.questionsByIndex = questionsByIndex;
     result.documentsByIndex = documentsByIndex;
     result.allDocumentIndexes = allDocumentIndexes;
+    
     return result;
 }
 export function parseDataFromCreateQuestion(response) {
-    let { data, included } = response;
+
+    let normalizedObject = normalize(response, { endpoint:'evaluation-questions' });
+    let evaluationQuestionData = build(normalizedObject, 'evaluationQuestions')[0];
+    let { id, text, enableScaleDefinitions, mandatoryComments, allowDocuments, documents, type, definitions } = evaluationQuestionData;
     let question = createQuestion();
-    let { attributes, relationships, id } = data;
     question.id = id;
-    question.title = attributes.text;
-    question.type = relationships.type.data.id;
-    question.isAllowScaleDefinitions = Boolean(attributes.enable_scale_definitions);
-    question.isCommentRequired = Boolean(attributes.mandatory_comments);
-    question.isAllowUpload = Boolean(attributes.allow_documents);
-
-    let evaluationTypeDefinitions = included.filter((item) => {
-        return item.type === 'evaluation-question-type-definitions';
-    });
-    let evaluationScaleDefinitions = included.filter((item) => {
-        return item.type === 'evaluation-question-scale-definitions';
-    });
+    question.title = text;
+    question.type = type.id;
+    question.isAllowScaleDefinitions = Boolean(enableScaleDefinitions);
+    question.isCommentRequired = Boolean(mandatoryComments);
+    question.isAllowUpload = Boolean(allowDocuments);
+    question.documentIds = documents?documents.map(document => document.id):[];
 
 
-    question.scaleDefinitions = evaluationTypeDefinitions.map((item) => {
+    /* question.scaleDefinitions = evaluationTypeDefinitions.map((item) => {
         let definition = evaluationScaleDefinitions.find((scaleDefinition) => {
             return Number(scaleDefinition.attributes.score) === Number(item.attributes.value);
         });
@@ -210,22 +239,51 @@ export function parseDataFromCreateQuestion(response) {
         } else {
             return { id, value, title, label:'', refId:null };
         }
+    }); */
+
+    let typeDefinitionByIndex = {};
+    type.definitions.forEach((item) => {
+        typeDefinitionByIndex[item.id] =item;
     });
-    return question;
+    if (definitions) {
+        definitions.forEach((item) => {
+            let typeDefinition = typeDefinitionByIndex[item.typeDefinition.id];
+            if (typeDefinition) {
+                let { score, definition, id }  = item;
+                let definitionId = id;
+                let label = definition;
+                let newScaleDefinition = { ...typeDefinition, score, definitionId, label };
+                typeDefinitionByIndex[item.typeDefinition.id] = newScaleDefinition;
+            }
+        });
+    }
+    question.scaleDefinitions = Object.values(typeDefinitionByIndex);
+
+    return  question;
 }
 
-export function parseDataForScaleDefinition(id, definition, score) {
+export function parseDataForScaleDefinition(typeDefinitionId, scaleDefinitionId, definition, score) {
     score = String(score);
-    return {
-        data: {
-            type: 'evaluation-question-scale-definitions',
-            id,
-            attributes: {
-                definition,
-                score
-            }
+    let data = {
+        type: 'evaluation-question-scale-definitions',
+        attributes: {
+            definition
         }
     };
+    if (scaleDefinitionId===undefined) {
+        data.attributes.score = score;
+        data.relationships = {
+            typeDefinition: {
+                data: {
+                    type: 'evaluation-question-type-definitions',
+                    id: typeDefinitionId
+                }
+            }
+        };
+    } else {
+        data.id= scaleDefinitionId;
+    }
+    return { data };
 }
 export function parseDataForUpdateQuestion(question) {
     return     {

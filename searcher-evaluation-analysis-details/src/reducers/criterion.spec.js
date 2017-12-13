@@ -3,7 +3,7 @@ import { criterion } from './criterion';
 import * as actions from '../constants/ActionTypes';
 import mockEvaluation from '../mocks/evaluation';
 
-describe('Questions reducer', () => {
+describe('Criterion reducer', () => {
     let state = {};
 
     it('should handle default state', () => {
