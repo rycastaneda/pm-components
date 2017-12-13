@@ -30,7 +30,6 @@ class EvaluationAssignment extends Component {
             selectedTemplateId,
             evaluationAssignees,
             selectedAssignees,
-            evaluationTypesRfq,
             matchedSuppliers,
             matchedItems,
             evaluationEngagements,
@@ -53,17 +52,17 @@ class EvaluationAssignment extends Component {
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationIsOn">Evaluation Type</label>
-                                <EvaluationTypeDropdown isLoading={isLoading} />
+                                <EvaluationTypeDropdown />
                             </div>
                         </div>
                         : null
                     }
 
-                    { evaluationTypesRfq.length > 0 && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1') ?
+                    { evaluationTypeSelected === '2' || evaluationTypeSelected === '1' ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">RFQ List</label>
-                                <RfqListDropdown evaluationTypesRfq={evaluationTypesRfq} />
+                                <RfqListDropdown />
                             </div>
                         </div>
                         : null
@@ -156,10 +155,8 @@ class EvaluationAssignment extends Component {
 
 EvaluationAssignment.propTypes = {
     evaluationTemplates: PropTypes.array.isRequired,
-    evaluationTypes: PropTypes.array.isRequired,
     evaluationAssignees: PropTypes.array.isRequired,
     selectedAssignees:PropTypes.array.isRequired,
-    evaluationTypesRfq: PropTypes.array.isRequired,
     matchedSuppliers: PropTypes.array.isRequired,
     matchedItems: PropTypes.array.isRequired,
     evaluationEngagements: PropTypes.array.isRequired,
@@ -197,7 +194,6 @@ const mapStateToProps = (state, ownProps) => {
     const evaluationAssignees = concatLabelKey(selectFromStore(state.evaluationAssignment, '/staff', 'staff'));
     const evaluationEngagements = selectFromStore(state.evaluationAssignment, '/engagements', 'engagements');
     const evaluationSuppliers = selectFromStore(state.evaluationAssignment, '/preferred-suppliers', 'preferredSuppliers');
-    const evaluationTypesRfq = selectFromStore(state.evaluationAssignment, '/request-for-quotations', 'requestForQuotations');
     const matchedSuppliers = selectFromStore(state.evaluationAssignment, `/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers`, 'matchedSuppliers');
     const matchedItems = selectFromStore(state.evaluationAssignment, `/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers/${matchedSupplierId}/matched-items`, 'matchedItems');
 
@@ -207,7 +203,6 @@ const mapStateToProps = (state, ownProps) => {
         ...ownProps,
         selectedTemplateId,
         evaluationTemplates,
-        evaluationTypesRfq,
         matchedSuppliers,
         matchedItems,
         evaluationTypeSelected,
