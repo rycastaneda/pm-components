@@ -71,6 +71,7 @@ function getCategory(included, matchedItemId) {
 function engagementMapper(engagements, engagementArray) {
     const engagementMapped = engagementArray.map((engagement) => {
         let matchedItemId = engagement.relationships.matchedItem.data.id;
+        // TODO: user information is no longer returned from the API, please remove any user references
         let userId = engagement.relationships.staff && engagement.relationships.staff.data.id || engagement.relationships.user && engagement.relationships.user.data.id;
         let engagementDetailIds = engagement.relationships.engagementDetails.data.length ?
             engagement.relationships.engagementDetails.data.map(engagementDetail => engagementDetail.id) : null;
