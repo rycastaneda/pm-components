@@ -29,107 +29,106 @@ class EvaluationAssignment extends Component {
             selectedTemplateId,
             evaluationAssignees,
             selectedAssignees,
-            matchedSuppliers,
-            matchedItems,
             evaluationTypeSelected,
             rfqTypeSelectedId,
+            matchedSupplierId,
             selectedAssignmentEntityInstanceId,
             actions } = this.props;
 
         return (
-                <form>
+            <form>
+                <div className="row">
+                    <div className="col-sm-4 form-group">
+                        <label htmlFor="evaluationTemplate">Evaluation Template</label>
+                        <EvaluationTemplatesDropdown evaluationTemplates={evaluationTemplates} />
+                    </div>
+                </div>
+
+                { selectedTemplateId !== '' ?
                     <div className="row">
                         <div className="col-sm-4 form-group">
-                            <label htmlFor="evaluationTemplate">Evaluation Template</label>
-                            <EvaluationTemplatesDropdown evaluationTemplates={evaluationTemplates} />
+                            <label htmlFor="evaluationIsOn">Evaluation Type</label>
+                            <EvaluationTypeDropdown />
                         </div>
                     </div>
+                    : null
+                }
 
-                    { selectedTemplateId !== '' ?
-                        <div className="row">
-                            <div className="col-sm-4 form-group">
-                                <label htmlFor="evaluationIsOn">Evaluation Type</label>
-                                <EvaluationTypeDropdown />
+                { evaluationTypeSelected === '2' || evaluationTypeSelected === '1' ?
+                    <div className="row">
+                        <div className="col-sm-4 form-group">
+                            <label htmlFor="evaluationLink">RFQ List</label>
+                            <RfqListDropdown />
+                        </div>
+                    </div>
+                    : null
+                }
+
+                { rfqTypeSelectedId !== '' && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1') ?
+                    <div className="row">
+                        <div className="col-sm-4 form-group">
+                            <label htmlFor="evaluationLink">Matched Suppliers</label>
+                            <MatchedSuppliersDropdown />
+                        </div>
+                    </div>
+                    : null
+                }
+
+                { matchedSupplierId !== '' && evaluationTypeSelected === '2' ?
+                    <div className="row">
+                        <div className="col-sm-4 form-group">
+                            <label htmlFor="evaluationLink">Matched Items</label>
+                            <MatchedItemsDropdown />
+                        </div>
+                    </div>
+                    : null
+                }
+
+                { evaluationTypeSelected === '4' ?
+                    <div className="row">
+                        <div className="col-sm-4 form-group">
+                            <label htmlFor="evaluationLink">Engagements</label>
+                            <EngagementsDropdown />
+                        </div>
+                    </div>
+                    : null
+                }
+
+                { evaluationTypeSelected === '3' ?
+                    <div className="row">
+                        <div className="col-sm-4 form-group">
+                            <label htmlFor="evaluationLink">Preferred Suppliers</label>
+                            <PreferredSuppliersDropdown />
+                        </div>
+                    </div>
+                    : null
+                }
+
+                { selectedAssignmentEntityInstanceId !== ''  ?
+                    <div className="row">
+                        <div className="col-sm-4 form-group">
+                            <label htmlFor="assignees">Evaluation Assignees</label>
+                            <div>
+                                <Select
+                                    labelKey="fullName"
+                                    closeOnSelect={true}
+                                    multi
+                                    onChange={actions.updateSelectedAssignees}
+                                    options={evaluationAssignees}
+                                    placeholder="Select assignees"
+                                    removeSelected={true}
+                                    value={selectedAssignees}
+                                />
                             </div>
                         </div>
-                        : null
-                    }
+                    </div>
+                    : null
+                }
 
-                    { evaluationTypeSelected === '2' || evaluationTypeSelected === '1' ?
-                        <div className="row">
-                            <div className="col-sm-4 form-group">
-                                <label htmlFor="evaluationLink">RFQ List</label>
-                                <RfqListDropdown />
-                            </div>
-                        </div>
-                        : null
-                    }
+                {this.renderSaveButton()}
 
-                    { rfqTypeSelectedId !== '' && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1') ?
-                        <div className="row">
-                            <div className="col-sm-4 form-group">
-                                <label htmlFor="evaluationLink">Matched Suppliers</label>
-                                <MatchedSuppliersDropdown matchedSuppliers={matchedSuppliers} />
-                            </div>
-                        </div>
-                        : null
-                    }
-
-                    { matchedItems.length > 0 && evaluationTypeSelected === '2' ?
-                        <div className="row">
-                            <div className="col-sm-4 form-group">
-                                <label htmlFor="evaluationLink">Matched Items</label>
-                                <MatchedItemsDropdown matchedItems={matchedItems} />
-                            </div>
-                        </div>
-                        : null
-                    }
-
-                    { evaluationTypeSelected === '4' ?
-                        <div className="row">
-                            <div className="col-sm-4 form-group">
-                                <label htmlFor="evaluationLink">Engagements</label>
-                                <EngagementsDropdown />
-                            </div>
-                        </div>
-                        : null
-                    }
-
-                    { evaluationTypeSelected === '3' ?
-                        <div className="row">
-                            <div className="col-sm-4 form-group">
-                                <label htmlFor="evaluationLink">Preferred Suppliers</label>
-                                <PreferredSuppliersDropdown />
-                            </div>
-                        </div>
-                        : null
-                    }
-
-                    { selectedAssignmentEntityInstanceId !== ''  ?
-                        <div className="row">
-                            <div className="col-sm-4 form-group">
-                                <label htmlFor="assignees">Evaluation Assignees</label>
-                                <div>
-                                    <Select
-                                        labelKey="fullName"
-                                        closeOnSelect={true}
-                                        multi
-                                        onChange={actions.updateSelectedAssignees}
-                                        options={evaluationAssignees}
-                                        placeholder="Select assignees"
-                                        removeSelected={true}
-                                        value={selectedAssignees}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        : null
-                    }
-
-                    {this.renderSaveButton()}
-
-                </form>
-            );
+            </form>
+        );
     }
 
     renderSaveButton() {
@@ -154,11 +153,10 @@ EvaluationAssignment.propTypes = {
     evaluationTemplates: PropTypes.array.isRequired,
     evaluationAssignees: PropTypes.array.isRequired,
     selectedAssignees:PropTypes.array.isRequired,
-    matchedSuppliers: PropTypes.array.isRequired,
-    matchedItems: PropTypes.array.isRequired,
     selectedTemplateId: PropTypes.string.isRequired,
     evaluationTypeSelected: PropTypes.string.isRequired,
-    rfqTypeSelectedId: PropTypes.string,
+    rfqTypeSelectedId: PropTypes.string.isRequired,
+    matchedSupplierId: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     selectedAssignmentEntityInstanceId: PropTypes.string.isRequired,
     matchedSuppliersIsLoading: PropTypes.bool,
@@ -187,17 +185,12 @@ const mapStateToProps = (state, ownProps) => {
 
     const evaluationTemplates = selectFromStore(state.evaluationAssignment, '/evaluation-templates', 'evaluationTemplates');
     const evaluationAssignees = concatLabelKey(selectFromStore(state.evaluationAssignment, '/staff', 'staff'));
-    const matchedSuppliers = selectFromStore(state.evaluationAssignment, `/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers`, 'matchedSuppliers');
-    const matchedItems = selectFromStore(state.evaluationAssignment, `/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers/${matchedSupplierId}/matched-items`, 'matchedItems');
-
-    console.log(`selected by endpoint from store with rfqId-${rfqTypeSelectedId} suppId-${matchedSupplierId} and :`, matchedItems);
 
     return {
         ...ownProps,
         selectedTemplateId,
         evaluationTemplates,
-        matchedSuppliers,
-        matchedItems,
+        matchedSupplierId,
         evaluationTypeSelected,
         evaluationAssignees,
         selectedAssignees,
