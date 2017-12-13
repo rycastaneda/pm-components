@@ -71,7 +71,6 @@ class EvaluationAssignment extends Component {
                             : null
                         }
 
-
                         { rfqTypeSelectedId !== '' && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1') ?
                             <div className={columnWidth}>
                                 <label htmlFor="evaluationLink">Matched Suppliers</label>
@@ -120,8 +119,6 @@ class EvaluationAssignment extends Component {
                         </div>
                         : null
                     }
-
-
 
                     { selectedAssignmentEntityInstanceId !== ''  ?
                         <div className="row">
@@ -226,4 +223,4 @@ const mapStateToProps = (state, ownProps) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EvaluationAssignment);  // adds dispatch prop
+export default connect(mapStateToProps, mapDispatchToProps)(EvaluationAssignment);
