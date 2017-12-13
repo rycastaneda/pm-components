@@ -110,7 +110,7 @@ class EvaluationAssignment extends Component {
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="assignees">Evaluation Assignees</label>
                                 <div>
-                                    <Select
+                                    <Select className="pm-react-select"
                                         labelKey="fullName"
                                         closeOnSelect={true}
                                         multi
@@ -154,7 +154,7 @@ class EvaluationAssignment extends Component {
         if (rfqTypeSelectedId !== '' && matchedSuppliers.length === 0) {
             return (
                 <div className="bs-callout bs-callout-warning">
-                    The selected RFQ doesn't match any suppliers, please select other option
+                    The selected RFQ doesn not match any suppliers, please select other option
                 </div>
             );
         }
