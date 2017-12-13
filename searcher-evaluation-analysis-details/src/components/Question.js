@@ -18,7 +18,6 @@ class Question extends Component {
 
     render() {
         const { number, questionTitle, totalScore, comments } = this.props;
-
         const listComponents = comments.length ? (
             comments.map(comment => <Comment key={comment.id} {...comment} />)
         ) : (

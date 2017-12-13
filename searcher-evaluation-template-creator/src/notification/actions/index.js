@@ -5,7 +5,6 @@ export function clearNotifications() {
     return { type: NOTIFICATION_CLEAR_MESSAGES };
 }
 
-export function showNotification(messageType = MESSAGE_TYPE_ERROR, message ='') {
-    window.console.log('sdfsdf'+NOTIFICATION_PROMPT_MESSAGE);
+export function showNotification(messageType = MESSAGE_TYPE_ERROR, message ='') {    
     return ({ type: NOTIFICATION_PROMPT_MESSAGE, messageType, message });
 }

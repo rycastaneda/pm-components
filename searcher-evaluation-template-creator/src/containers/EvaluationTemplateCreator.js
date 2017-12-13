@@ -25,16 +25,14 @@ class EvaluationTemplateCreator extends Component {
         } else {
             this.props.dispatch(initialize());
         }
-
-
     }
     componentWillUnmount() {
         clearInterval(this.intervalId_update);
         clearInterval(this.intervalId_saveAnim);
     }
     componentWillReceiveProps(nextProps) {
-        this.setState({ title:nextProps.title,  showAdd:false, isSaved:true, isTitleError:false });
-        this.intervalId_saveAnim = setInterval(() => this.setState({ isSaved:false }), INPUT_SYNC_INTERVAL);
+        this.templateTitleField.value = nextProps.title;
+        this.setState({ title:nextProps.title, showAdd:false, isSaved:true, isTitleError:false });
     }
 
     onSave() {
@@ -44,16 +42,17 @@ class EvaluationTemplateCreator extends Component {
             this.props.dispatch(addTemplate(this.state.title));
         }
     }
-    updateTitleText() {
-        this.props.dispatch(updateTemplate(this.state.title, this.props.id));
+    updateTitleText(value) {
+
+        this.props.dispatch(updateTemplate(value, this.props.id));
         clearInterval(this.intervalId_update);
 
     }
     onTitleTextChange(event) {
-        this.setState({ title:event.target.value, isTitleError:!event.target.value  });
+        clearInterval(this.intervalId_update);
+        this.setState({ title:event.target.value, isTitleError:!event.target.value.length  });
         if (this.props.id&&event.target.value) {
-            clearInterval(this.intervalId_update);
-            this.intervalId_update = setInterval(this.updateTitleText, INPUT_SYNC_INTERVAL);
+            this.intervalId_update = setInterval(this.updateTitleText(event.target.value), INPUT_SYNC_INTERVAL);
         }
     }
     getTitleInputStyle() {
@@ -66,10 +65,9 @@ class EvaluationTemplateCreator extends Component {
         return style;
     }
     render() {
+        window.console.log(this.state.title);
         const { allCriteriaIndexes, id } = this.props;
-
         return (
-
         <div className="searcher-evaluation-template-creator">
             <Notification />
             <div className="db-form-section">
@@ -84,13 +82,16 @@ class EvaluationTemplateCreator extends Component {
                                     <div className="col-md-8 col-sm-12">
                                         <input type="text"
                                             name="title"
+                                            ref = {(input) => {
+                                                this.templateTitleField = input;
+                                            } }
                                             className={this.getTitleInputStyle()}
-                                            value={this.state.title}
+                                            defaultValue = {this.state.title}
                                             title="Template Title"
                                             placeholder="Enter template title"
                                             onChange={this.onTitleTextChange}
-                                            />
-                                            { this.state.isTitleError?<span className="error danger">Title cannot be empty</span>:null}
+                                        />
+                                        { this.state.isTitleError?<span className="error danger">Title cannot be empty</span>:null}
                                     </div>
                                     <div className="col-md-4 col-sm-12">
                                         <div className="form-group">
@@ -173,7 +174,6 @@ EvaluationTemplateCreator.propTypes = {
 
 function mapStateToProps(state) {
     const { allCriteriaIndexes, title, id } = state.evaluationTemplateCreator;
-
     return { allCriteriaIndexes, title, id };
 }
 export default connect(mapStateToProps)(EvaluationTemplateCreator);

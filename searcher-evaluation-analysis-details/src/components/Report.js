@@ -4,14 +4,16 @@ import randomColor from 'randomcolor';
 
 const Report = ({ questions }) => {
     let labels = [],
-        datasets = [];
-    let staffComments = {};
-
+        datasets = [],
+        staffComments = {};
     questions.map((question, index) => {
-        labels.push({
-            title: question.questionTitle,
-            text: `Q${index + 1}`
-        });
+        if (question.comments.length) {
+            labels.push({
+                title: question.questionTitle,
+                text: `Q${index + 1}`
+            });
+        }
+
         question.comments.map(comment => {
             if (staffComments[comment.staff]) {
                 staffComments[comment.staff].push(comment.score);

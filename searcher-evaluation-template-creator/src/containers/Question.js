@@ -44,6 +44,7 @@ class Question extends Component {
             scaleDefinitions,
             isSaved
         } = this.props.question;
+
         this.state = {
             title,
             isAllowUpload,
@@ -61,6 +62,7 @@ class Question extends Component {
         this.onDocumentDrop = this.onDocumentDrop.bind(this);
         this.onRemoveDocument = this.onRemoveDocument.bind(this);
         this.onScaleDefinitionChange = this.onScaleDefinitionChange.bind(this);
+        this.updateScaleDefinition = this.updateScaleDefinition.bind(this);
         this.updateTitle = this.updateTitle.bind(this);
         this.intervalId_update = null;
         this.intervalId_saveAnim = null;
@@ -76,6 +78,7 @@ class Question extends Component {
             clearInterval(this.intervalId_saveAnim);
         }, SAVE_ANIM_INTERVAL);
     }
+
     setStateWithQuestion(question, isSaved) {
         const {
 
@@ -107,26 +110,30 @@ class Question extends Component {
         clearInterval(this.intervalId_update);
         clearInterval(this.intervalId_saveAnim);
     }
+
     addQuestion() {
         this.props.dispatch(addQuestion(this.props.criteriaId, this.state.title, this.state.type));
     }
+
     deleteQuestion() {
         this.props.dispatch(deleteQuestion(this.props.criteriaId, this.props.question.id));
     }
+
     updateTitle() {
         if (this.props.question.id!==null) {
             this.props.dispatch(onQuestionTitleChange(this.props.criteriaId, this.props.question.id, this.state.title));
         }
         clearInterval(this.intervalId_update);
     }
+
     onTitleChange(title) {
         this.setState({ title });
         if (title.length) {
             clearInterval(this.intervalId_update);
+            clearInterval(this.intervalId_saveAnim);
             this.intervalId_update = setInterval(this.updateTitle, INPUT_SYNC_INTERVAL);
         }
     }
-
 
     toggleMaximise() {
         clearInterval(this.intervalId_update);
@@ -138,38 +145,39 @@ class Question extends Component {
     onCommentRequiredChange(isCommentRequired) {
         this.props.dispatch(onQuestionAllowCommentsChange(this.props.criteriaId, this.props.question.id, isCommentRequired));
     }
+
     onAllowUploadChange(isAllowUpload) {
         this.props.dispatch(onQuestionAllowUploadChange(this.props.criteriaId, this.props.question.id, isAllowUpload));
     }
+
     onQuestionTypeChange(type) {
+        clearInterval(this.intervalId_saveAnim);
         this.setState({ type });
         if (this.props.question.id) {
             this.props.dispatch(onQuestionTypeChange(this.props.criteriaId, this.props.question.id, type));
         }
     }
-    updateScaleDefinition(id, index, label, value, refId) {
+
+    updateScaleDefinition(id, index, label, value, definitionId) {
         clearInterval(this.intervalId_update);
-        this.props.dispatch(onScaleDefinitionChange(this.props.criteriaId, this.props.question.id, id,  label, value, refId));
+        this.props.dispatch(onScaleDefinitionChange(this.props.criteriaId, this.props.question.id, id,  label, value, definitionId));
     }
 
     onScaleDefinitionChange(id, index, label) {
         let { scaleDefinitions } = this.state;
         scaleDefinitions[index] = Object.assign({}, scaleDefinitions[index], { label });
 
-        let { value, refId } = scaleDefinitions[index];
+        let { value, definitionId } = scaleDefinitions[index];
+        
         this.setState({ scaleDefinitions });
         clearInterval(this.intervalId_update);
-        this.intervalId_update = setInterval(this.updateScaleDefinition.bind(this, id, index, label, value, refId), INPUT_SYNC_INTERVAL);
+
+        this.intervalId_update = setInterval(this.updateScaleDefinition(id, index, label, value, definitionId), INPUT_SYNC_INTERVAL);
 
     }
+
     onAllowScaleDefinitionChange(isAllowScaleDefinitions) {
         let scaleDefinitions = [];
-        if (isAllowScaleDefinitions) {
-            if (this.state. type === this.props.question.type) {
-                scaleDefinitions = [...this.props.question.scaleDefinitions];
-            }
-
-        }
         this.setState({ isAllowScaleDefinitions, scaleDefinitions });
         this.props.dispatch(onAllowScaleDefinitionChange(this.props.criteriaId, this.props.question.id,  isAllowScaleDefinitions));
     }
@@ -178,6 +186,7 @@ class Question extends Component {
         const { criteriaId, question } = this.props;
         this.props.dispatch(deleteDocument(criteriaId, question.id, id));
     }
+
     onDocumentDrop(files) {
         const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx', '.dwg'];
         let invalid = [];
@@ -222,6 +231,7 @@ class Question extends Component {
         }
         return style;
     }
+
     renderMinimised() {
         return (
             <div className="row">
@@ -254,6 +264,7 @@ class Question extends Component {
             </div>
         );
     }
+
     renderMaximised() {
         const isDefsDisabled = (this.state.type === '3' || this.state.type === '4');
 
@@ -295,7 +306,7 @@ class Question extends Component {
                             <br /><br />
                             </div>
                             <button className="btn btn-sm"
-                                    onClick = {this.toggleMaximise}
+                                onClick = {this.toggleMaximise}
                             >
                                 <i className="fa fa-angle-double-up"></i>
                                 Collapse Question
@@ -326,7 +337,7 @@ class Question extends Component {
                                                         <div className="input-group">
                                                           <span className="input-group-addon scale" id="basic-addon1">{index}</span>
                                                           <input type="text"
-                                                          value={type.label}
+                                                          defaultValue={type.label}
                                                           onChange = {event =>
                                                               this.onScaleDefinitionChange(type.id, index, event.target.value)
                                                           }
@@ -396,6 +407,7 @@ class Question extends Component {
                 </fieldset>
             </div>);
     }
+
     renderFunctionButtons() {
         if (this.props.question.id===null && this.state.title) {
             return (
