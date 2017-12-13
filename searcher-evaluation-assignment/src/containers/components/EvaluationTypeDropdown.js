@@ -8,7 +8,7 @@ import * as actions from '../../actions/evaluationAssignmentsAction';
 const EvaluationTypeDropdown = ({ evaluationTypes, actions, isLoading }) => (
     <div>
 
-        { !isLoading && evaluationTypes.length !== 0 ?
+        { !isLoading ?
             <div>
                 <select name="evaluationIsOn"
                         className="form-control"
