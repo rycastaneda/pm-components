@@ -26,7 +26,7 @@ describe('ComparisonRow component: ', () => {
                 title: 'Environment'
             }
         ],
-        supplier: {
+        entity: {
             id: 1,
             name: 'Reese',
             scores: {
@@ -38,21 +38,26 @@ describe('ComparisonRow component: ', () => {
     };
     const { component } = setup(props);
 
-    it('should be able to render the rows', () => {
-        const cells = component.find('td');
-        expect(cells).to.have.length(props.criteria.length + 2);
+    it('should be able to render the first cell with entity name', () => {
+        expect(component.find('td.name').text()).to.eql(props.entity.name);
+    });
+
+    it('should be able to render the scores as cells', () => {
+        const cells = component.find('td.score');
+        expect(cells).to.have.length(props.criteria.length);
 
         let counter = 0;
         cells.forEach(cell => {
-            if (!counter) {
-                expect(cell.text()).to.eql(props.supplier.name);
-                return counter++;
-            }
-
-            const counterId = props.criteria[counter - 1].id;
-            const score = props.supplier.scores[counterId];
+            const criteriaId = props.criteria[counter].id;
+            const score = props.entity.scores[criteriaId];
             expect(+cell.text()).to.eql(score);
             counter++;
         });
+    });
+
+    it('should be able to render total scores', () => {
+        const totalScores = Object.values(props.entity.scores).reduce((a, b) => a + b);
+
+        expect(+component.find('td.total').text()).to.eql(totalScores);
     });
 });

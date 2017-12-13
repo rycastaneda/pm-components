@@ -18,13 +18,13 @@ describe('Comment component: ', () => {
     const { component } = setup(props);
 
     it('should be able to render the Comment with props', () => {
-        expect(component.find('.commentbox > .staff').text()).to.eql(
+        expect(component.find('.staff').text()).to.eql(
             props.staff
         );
-        expect(component.find('.commentbox > .comment').text()).to.eql(
+        expect(component.find('.comment').text()).to.eql(
             props.comment
         );
-        expect(+component.find('.commentbox > .score').text()).to.eql(
+        expect(+component.find('.scorebox span').text()).to.eql(
             props.score
         );
     });

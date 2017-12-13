@@ -38,7 +38,8 @@ function receiveAssignments(state, action) {
             entityId: assignment.relationships.assignmentEntityInstance.data.id,
             responseIds: assignment.relationships.questionResponses.data.map(
                 response => response.id
-            )
+            ),
+            templateId: assignment.relationships.template.data.id
         };
 
         if (!allIds.includes(assignment.id)) {

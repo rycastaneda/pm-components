@@ -33,7 +33,6 @@ export class Details extends Component {
         const criteriaComponents = criteria.map(criterion => {
             return <Criterion key={criterion.id} {...criterion} />;
         });
-
         return (
             <div ref={ref => (this.domRef = ref)}>
                 <div className="row">
@@ -67,6 +66,7 @@ Details.propTypes = {
 
 function mapStateToProps(state) {
     const {
+        assignments: rawAssignments,
         evaluation: rawEvaluation,
         criterion: rawCriterion,
         questions: rawQuestions,
@@ -109,7 +109,9 @@ function mapStateToProps(state) {
 
     let criteriaIds = rawCriterion.allIds;
     if (ui.currentView !== 'compare') {
-        criteriaIds = rawEvaluation.byId[ui.assignmentId].criteriaIds;
+        let evaluationId = rawAssignments.byId[ui.assignmentId].templateId;
+
+        criteriaIds = rawEvaluation.byId[evaluationId].criteriaIds;
     }
 
     criteria = criteriaIds.map(getCriteria);
