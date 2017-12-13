@@ -15,7 +15,7 @@ const PreferredSuppliersDropdown = ({ evaluationSuppliers, isLoading, actions })
                         onChange={
                             event => actions.updateChangeSuppliers(event.target.value)
                         }>
-                    <option key="-" value={null}>Select..</option>
+                    <option key="-" value={null}>Select Supplier</option>
                     { evaluationSuppliers.map(
                         (item, index) =>
                             <option key={index} value={item.id}>{item.supplier.title}</option>
@@ -24,7 +24,7 @@ const PreferredSuppliersDropdown = ({ evaluationSuppliers, isLoading, actions })
             </div>
             :
             <div>
-                <span>Loading...</span>
+                <span>Loading Suppliers ...</span>
             </div>
         }
     </div>

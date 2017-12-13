@@ -15,7 +15,7 @@ const EngagementsDropdown = ({ evaluationEngagements, isLoading, actions }) => (
                         onChange={
                             event => actions.updateChangeEngagements(event.target.value)
                         }>
-                    <option key="-" value={null}>Select..</option>
+                    <option key="-" value={null}>Select Engagement</option>
                     { evaluationEngagements.map(
                         (item, index) =>
                             <option key={index} value={item.id}>{item.engagementText}</option>
