@@ -33,7 +33,6 @@ EvaluationTypeDropdown.propTypes = {
     actions: PropTypes.object,
     isLoading: PropTypes.bool,
     evaluationTypes: PropTypes.array.isRequired,
-
 };
 
 const mapDispatchToProps = (dispatch) => {
