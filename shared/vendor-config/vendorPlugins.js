@@ -4,6 +4,7 @@
 // When adding component here, please add it to shared/package.json as well
 
 module.exports = [
+    'lodash',
     'react',
     'react-autosuggest',
     'react-dom',
