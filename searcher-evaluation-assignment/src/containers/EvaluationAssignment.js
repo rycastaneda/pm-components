@@ -13,7 +13,7 @@ import MatchedSuppliersDropdown from './components/MatchedSuppliersDropdown';
 import MatchedItemsDropdown from './components/MatchedItemsDropdown';
 import EngagementsDropdown from './components/EngagementsDropdown';
 import PreferredSuppliersDropdown from './components/PreferredSuppliersDropdown';
-
+import classNames from 'classnames';
 
 class EvaluationAssignment extends Component {
 
@@ -38,51 +38,68 @@ class EvaluationAssignment extends Component {
             evaluationTypeSelected,
             rfqTypeSelectedId,
             selectedAssignmentEntityInstanceId,
-            actions } = this.props;
+            actions
+            } = this.props;
+
+        const columnWidth = classNames('form-group', {
+            'col-sm-4':(rfqTypeSelectedId !== '' && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1')),
+            'col-sm-6':(rfqTypeSelectedId === '')
+        });
+
         return (
+            <div id="searcher-evaluation-assignment-container" className="db-form-section">
+
                 <form>
                     <div className="row">
                         <div className="col-sm-4 form-group">
-                            <label htmlFor="evaluationTemplate">Evaluation Template</label>
+                            <label htmlFor="evaluationTemplate" className="control-label">Evaluation Template</label>
                             <EvaluationTemplatesDropdown evaluationTemplates={evaluationTemplates} />
                         </div>
                     </div>
 
+                    <div className="row">
                     { selectedTemplateId !== '' ?
-                        <div className="row">
-                            <div className="col-sm-4 form-group">
-                                <label htmlFor="evaluationIsOn">Evaluation Type</label>
+
+                            <div className={columnWidth}>
+                                <label htmlFor="evaluationIsOn" className="control-label">Evaluation Type</label>
                                 <EvaluationTypeDropdown />
                             </div>
-                        </div>
                         : null
                     }
 
                     { evaluationTypeSelected === '2' || evaluationTypeSelected === '1' ?
-                        <div className="row">
-                            <div className="col-sm-4 form-group">
-                                <label htmlFor="evaluationLink">RFQ List</label>
+                            <div className={columnWidth}>
+                                <label htmlFor="evaluationLink" className="control-label">RFQ List</label>
                                 <RfqListDropdown />
                             </div>
-                        </div>
                         : null
                     }
 
+
                     { rfqTypeSelectedId !== '' && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1') ?
-                        <div className="row">
-                            <div className="col-sm-4 form-group">
-                                <label htmlFor="evaluationLink">Matched Suppliers</label>
-                                <MatchedSuppliersDropdown matchedSuppliers={matchedSuppliers} />
-                            </div>
+                        <div className={columnWidth}>
+                            <label htmlFor="evaluationLink">Matched Suppliers</label>
+                            <MatchedSuppliersDropdown matchedSuppliers={matchedSuppliers} />
                         </div>
                         : null
                     }
+                    </div>
 
                     { matchedItems.length > 0 && evaluationTypeSelected === '2' ?
                         <div className="row">
-                            <div className="col-sm-4 form-group">
-                                <label htmlFor="evaluationLink">Matched Items</label>
-                                <MatchedItemsDropdown matchedItems={matchedItems} />
+                            <div className="col-sm-4">
+                                <div className="row">
+                                    <div className="col-sm-2 text-center">
+                                        <br />
+                                        <br />
+                                        <span>↳</span>
+                                    </div>
+                                    <div className="col-sm-10">
+                                        <label htmlFor="evaluationLink">Matched Items</label>
+                                        <MatchedItemsDropdown matchedItems={matchedItems} />
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         : null
@@ -110,16 +127,20 @@ class EvaluationAssignment extends Component {
 
                     { selectedAssignmentEntityInstanceId !== ''  ?
                         <div className="row">
+                            <div className="col-sm-12">
+                                <hr />
+                            </div>
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="assignees">Evaluation Assignees</label>
                                 <div>
                                     <Select
+                                        className="pm-react-select"
                                         labelKey="fullName"
                                         closeOnSelect={true}
                                         multi
                                         onChange={actions.updateSelectedAssignees}
                                         options={evaluationAssignees}
-                                        placeholder="Select assignees"
+                                        placeholder="Select Assignees"
                                         removeSelected={true}
                                         value={selectedAssignees}
                                     />
@@ -132,6 +153,7 @@ class EvaluationAssignment extends Component {
                     {this.renderSaveButton()}
 
                 </form>
+            </div>
             );
     }
 
@@ -145,7 +167,7 @@ class EvaluationAssignment extends Component {
         return (
             <div className="row">
                 <div className="col-sm-4">
-                    <button title="Save" type="button" onClick={actions.createAssignment}>{isLoading ? 'Saving...' : 'Save'}</button>
+                    <button title="Save" className="btn btn-md " type="button" onClick={actions.createAssignment}>{isLoading ? 'Saving...' : 'Save'}</button>
                 </div>
             </div>
         );
@@ -169,6 +191,7 @@ EvaluationAssignment.propTypes = {
     matchedSuppliersIsLoading: PropTypes.bool,
     actions: PropTypes.object,
     apiActions: PropTypes.object,
+    columnWidth: PropTypes.string
 };
 
 const mapDispatchToProps = (dispatch) => {

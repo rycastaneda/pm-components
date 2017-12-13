@@ -13,15 +13,16 @@ const EvaluationTypeDropdown = ({ evaluationTypes, actions, isLoading }) => (
                 <select name="evaluationIsOn"
                         className="form-control"
                         onChange={ evt => actions.updateChangeEvaluationType(evt.target.value) }>
-                    <option key="-" value={null}>{'Select..'}</option>
+                    <option key="-" value={null}>{'Select Evaluation Type'}</option>
                     {evaluationTypes.map(
                         item => <option key={item.id} value={item.id}>{item.title}</option>
                     )}
                 </select>
             </div>
             :
-            <div>
-                <span>Loading...</span>
+            <div className="input-group">
+                <select className="form-control" disabled><option>Loading Evaluation Types ...</option></select>
+                <span className="spinner-animation form-control-feedback"></span>
             </div>
         }
 

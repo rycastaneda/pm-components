@@ -11,7 +11,7 @@ const MatchedItemsDropdown = ({ matchedItems, actions }) => (
                 onChange={
                     event => actions.updateChangeMatchedItems(event.target.value)
                 }>
-            <option key="-" value={null}>Select..</option>
+            <option key="-" value={null}>Select RFQ Item</option>
             {matchedItems.map(
                 (item, index) =>
                     <option key={index} value={item.id}>{item.title}</option>
