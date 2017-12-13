@@ -2,18 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import build from 'redux-object';
 import * as actions from '../../actions/evaluationAssignmentsAction';
 
-const MatchedSuppliersDropdown = ({ matchedSuppliers, actions, matchedSuppliersIsLoading }) => (
+const MatchedSuppliersDropdown = ({ matchedSuppliers, actions, isLoading }) => (
     <div>
-        { !matchedSuppliersIsLoading ?
+        { !isLoading ?
             <div>
                 <select name="evaluationLink"
                         className={`form-control ${matchedSuppliers.length === 0 ? 'hidden':'visible'}`}
                         onChange={
                             event => actions.updateChangeMatchedSuppliers(event.target.value)
                         }>
-                    <option key="-" value={null}>Select..</option>
+                    <option key="-" value={null}>Select Supplier</option>
                     {matchedSuppliers.map(
                         (item, index) =>
                             <option key={index} value={item.id}>{item.title}</option>
@@ -21,13 +22,14 @@ const MatchedSuppliersDropdown = ({ matchedSuppliers, actions, matchedSuppliersI
                 </select>
 
                 <div className={`bs-callout bs-callout-warning ${matchedSuppliers.length === 0 ? 'visible':'hidden'}`}>
-                    The selected RFQ doesn't match any suppliers, please select other option
+                    The selected RFQ does not match any suppliers, please select other option.
                 </div>
             </div>
         :
-            <div>
-                <span>Loading...</span>
-            </div>
+        <div className="input-group">
+            <select className="form-control" disabled><option>Loading Suppliers ...</option></select>
+            <span className="spinner-animation form-control-feedback"></span>
+        </div>
         }
     </div>
 );
@@ -35,7 +37,7 @@ const MatchedSuppliersDropdown = ({ matchedSuppliers, actions, matchedSuppliersI
 MatchedSuppliersDropdown.propTypes = {
     actions: PropTypes.object,
     matchedSuppliers: PropTypes.array.isRequired,
-    matchedSuppliersIsLoading: PropTypes.bool.isRequired,
+    isLoading: PropTypes.bool.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -46,11 +48,13 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state, ownProps) => {
     const { rfqTypeSelectedId } = state.evaluationAssignment;
-    const matchedSuppliersIsLoading = state.evaluationAssignment.meta[`/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers`].loading;
+    const isLoading = state.evaluationAssignment.meta[`/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers`].loading;
+    const matchedSuppliers = (state.evaluationAssignment.meta[`/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers`].data || []).map(object => build(state.evaluationAssignment, 'matchedSuppliers', object.id));
 
     return {
         ...ownProps,
-        matchedSuppliersIsLoading,
+        isLoading,
+        matchedSuppliers,
     };
 };
 

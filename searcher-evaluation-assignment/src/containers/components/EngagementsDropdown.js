@@ -15,7 +15,7 @@ const EngagementsDropdown = ({ evaluationEngagements, isLoading, actions }) => (
                         onChange={
                             event => actions.updateChangeEngagements(event.target.value)
                         }>
-                    <option key="-" value={null}>Select..</option>
+                    <option key="-" value={null}>Select Engagement</option>
                     { evaluationEngagements.map(
                         (item, index) =>
                             <option key={index} value={item.id}>{item.engagementText}</option>
@@ -23,8 +23,9 @@ const EngagementsDropdown = ({ evaluationEngagements, isLoading, actions }) => (
                 </select>
             </div>
             :
-            <div>
-                <span>Loading...</span>
+            <div className="input-group">
+                <select className="form-control" disabled><option>Loading Engagements ...</option></select>
+                <span className="spinner-animation form-control-feedback"></span>
             </div>
         }
     </div>
