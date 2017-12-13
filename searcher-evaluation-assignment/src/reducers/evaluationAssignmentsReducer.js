@@ -38,7 +38,6 @@ export function evaluationAssignment(state = initialState, action) {
             return {
                 ...state,
                 evaluationTypeSelected: action.evaluationType,
-                isLoading: true,
             };
 
         case actionTypes.ASSIGNMENT_CREATION_UPDATE_CHANGE_RFQ:

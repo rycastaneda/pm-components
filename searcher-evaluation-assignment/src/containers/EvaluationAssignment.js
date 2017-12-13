@@ -24,21 +24,18 @@ class EvaluationAssignment extends Component {
     }
 
     render() {
-        /* const { boilerplate } = this.props; */
         const {
             evaluationTemplates,
-            evaluationTypes,
+            selectedTemplateId,
             evaluationAssignees,
             selectedAssignees,
-            evaluationTypesRfq,
             matchedSuppliers,
             matchedItems,
-            evaluationEngagements,
-            evaluationSuppliers,
-            isLoading,
             evaluationTypeSelected,
+            rfqTypeSelectedId,
             selectedAssignmentEntityInstanceId,
             actions } = this.props;
+
         return (
                 <form>
                     <div className="row">
@@ -47,26 +44,28 @@ class EvaluationAssignment extends Component {
                             <EvaluationTemplatesDropdown evaluationTemplates={evaluationTemplates} />
                         </div>
                     </div>
-                    { evaluationTypes.length > 0 ?
+
+                    { selectedTemplateId !== '' ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationIsOn">Evaluation Type</label>
-                                <EvaluationTypeDropdown evaluationTypes={evaluationTypes} isLoading={isLoading} />
+                                <EvaluationTypeDropdown />
                             </div>
                         </div>
                         : null
                     }
-                    { evaluationTypesRfq.length > 0 && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1') ?
+
+                    { evaluationTypeSelected === '2' || evaluationTypeSelected === '1' ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">RFQ List</label>
-                                <RfqListDropdown evaluationTypesRfq={evaluationTypesRfq} />
-                                {this.renderEmptyRfqResponseMessage()}
+                                <RfqListDropdown />
                             </div>
                         </div>
                         : null
                     }
-                    { matchedSuppliers.length > 0  && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1') ?
+
+                    { rfqTypeSelectedId !== '' && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1') ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">Matched Suppliers</label>
@@ -75,6 +74,7 @@ class EvaluationAssignment extends Component {
                         </div>
                         : null
                     }
+
                     { matchedItems.length > 0 && evaluationTypeSelected === '2' ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
@@ -85,21 +85,21 @@ class EvaluationAssignment extends Component {
                         : null
                     }
 
-                    { evaluationEngagements.length > 0 && evaluationTypeSelected === '4' ?
+                    { evaluationTypeSelected === '4' ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">Engagements</label>
-                                <EngagementsDropdown evaluationEngagements={evaluationEngagements} isloading={isLoading} />
+                                <EngagementsDropdown />
                             </div>
                         </div>
                         : null
                     }
 
-                    { evaluationSuppliers.length > 0 && evaluationTypeSelected === '3' ?
+                    { evaluationTypeSelected === '3' ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">Preferred Suppliers</label>
-                                <PreferredSuppliersDropdown evaluationSuppliers={evaluationSuppliers} isLoading={isLoading} />
+                                <PreferredSuppliersDropdown />
                             </div>
                         </div>
                         : null
@@ -148,34 +148,20 @@ class EvaluationAssignment extends Component {
         );
     }
 
-    renderEmptyRfqResponseMessage() {
-        const { rfqTypeSelectedId, matchedSuppliers } = this.props;
-
-        if (rfqTypeSelectedId !== '' && matchedSuppliers.length === 0) {
-            return (
-                <div className="bs-callout bs-callout-warning">
-                    The selected RFQ doesn't match any suppliers, please select other option
-                </div>
-            );
-        }
-        return null;
-    }
 }
 
 EvaluationAssignment.propTypes = {
     evaluationTemplates: PropTypes.array.isRequired,
-    evaluationTypes: PropTypes.array.isRequired,
     evaluationAssignees: PropTypes.array.isRequired,
     selectedAssignees:PropTypes.array.isRequired,
-    evaluationTypesRfq: PropTypes.array.isRequired,
     matchedSuppliers: PropTypes.array.isRequired,
     matchedItems: PropTypes.array.isRequired,
-    evaluationEngagements: PropTypes.array.isRequired,
-    evaluationSuppliers: PropTypes.array.isRequired,
+    selectedTemplateId: PropTypes.string.isRequired,
     evaluationTypeSelected: PropTypes.string.isRequired,
     rfqTypeSelectedId: PropTypes.string,
     isLoading: PropTypes.bool.isRequired,
     selectedAssignmentEntityInstanceId: PropTypes.string.isRequired,
+    matchedSuppliersIsLoading: PropTypes.bool,
     actions: PropTypes.object,
     apiActions: PropTypes.object,
 };
@@ -193,6 +179,7 @@ const mapStateToProps = (state, ownProps) => {
         evaluationTypeSelected,
         selectedAssignees,
         isLoading,
+        selectedTemplateId,
         selectedAssignmentEntityInstanceId,
         rfqTypeSelectedId,
         matchedSupplierId,
@@ -200,10 +187,6 @@ const mapStateToProps = (state, ownProps) => {
 
     const evaluationTemplates = selectFromStore(state.evaluationAssignment, '/evaluation-templates', 'evaluationTemplates');
     const evaluationAssignees = concatLabelKey(selectFromStore(state.evaluationAssignment, '/staff', 'staff'));
-    const evaluationTypes = selectFromStore(state.evaluationAssignment, '/evaluation-template-assignment-types', 'evaluationTemplateAssignmentTypes');
-    const evaluationEngagements = selectFromStore(state.evaluationAssignment, '/engagements', 'engagements');
-    const evaluationSuppliers = selectFromStore(state.evaluationAssignment, '/preferred-suppliers', 'preferredSuppliers');
-    const evaluationTypesRfq = selectFromStore(state.evaluationAssignment, '/request-for-quotations', 'requestForQuotations');
     const matchedSuppliers = selectFromStore(state.evaluationAssignment, `/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers`, 'matchedSuppliers');
     const matchedItems = selectFromStore(state.evaluationAssignment, `/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers/${matchedSupplierId}/matched-items`, 'matchedItems');
 
@@ -211,14 +194,11 @@ const mapStateToProps = (state, ownProps) => {
 
     return {
         ...ownProps,
-        evaluationTypes,
+        selectedTemplateId,
         evaluationTemplates,
-        evaluationTypesRfq,
         matchedSuppliers,
         matchedItems,
         evaluationTypeSelected,
-        evaluationEngagements,
-        evaluationSuppliers,
         evaluationAssignees,
         selectedAssignees,
         selectedAssignmentEntityInstanceId,
