@@ -1,46 +1,66 @@
-.Select-control {
+.pm-react-select {
 
+    font-size: 14px;
     text-align: left;
-}
 
-.Select-placeholder {
+    &.Select.is-focused:not(.is-open) > .Select-control {
+        border: 1px solid #dddddd;
+        box-shadow: none;
+    }
 
-    color: #333333;
-    font-size: 14px;
-}
+    .Select-control {
+        text-align: left;
+        padding-left: 2px;
+    }
 
-.Select--multi .Select-input {
+    .Select-placeholder {
+        color: #333333;
+        font-size: 14px;
+    }
 
-    margin-left: 80px;
-    font-size: 14px;
-}
+    .Select--multi {
 
-.Select-value {
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.25);
-    color: rgba(0, 0, 0, 0.7);
-    font-size: 12px;
-    border-radius: 3px;
-    position: relative;
-    width: 130px;
-    padding: 5px 10px;
-    display: inline-block;
-    margin: 5px 5px 0 0;
-    z-index: 100;
-
-    .Select-value-icon {
-        right: 5px;
-        position: absolute;
-        color: #e68020;
-        font-size: 12px;
-        cursor: pointer;
-
-        &:hover {
-            color: #000000;
+        .Select-input {
+            margin-left: 80px;
+            font-size: 14px;
         }
     }
-}
 
-#react-select-2--backspace-remove-message {
-    display: none;
+    .Select-value {
+        background: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.25);
+        color: rgba(0, 0, 0, 0.7);
+        font-size: 12px;
+        border-radius: 3px;
+        position: relative;
+        width: 130px;
+        padding: 2px 5px;
+        display: inline-block;
+        margin: 5px 5px 0 0;
+        z-index: 100;
+
+        .Select-value-icon {
+            right: 5px;
+            position: absolute;
+            color: #e68020;
+            font-size: 12px;
+            cursor: pointer;
+            border-right: 0;
+
+            &:hover {
+                color: #000000;
+                background: transparent;
+            }
+        }
+    }
+
+    #react-select-2--backspace-remove-message {
+        display: none;
+    }
+
+    .Select-input > input {
+        padding: 0;
+        line-height: 1.5;
+        font-size: 14px;
+    }
 }

@@ -13,7 +13,7 @@ import MatchedSuppliersDropdown from './components/MatchedSuppliersDropdown';
 import MatchedItemsDropdown from './components/MatchedItemsDropdown';
 import EngagementsDropdown from './components/EngagementsDropdown';
 import PreferredSuppliersDropdown from './components/PreferredSuppliersDropdown';
-
+import classNames from 'classnames';
 
 class EvaluationAssignment extends Component {
 
@@ -24,106 +24,126 @@ class EvaluationAssignment extends Component {
     }
 
     render() {
-        /* const { boilerplate } = this.props; */
         const {
             evaluationTemplates,
             selectedTemplateId,
             evaluationAssignees,
             selectedAssignees,
-            matchedSuppliers,
-            matchedItems,
-            evaluationEngagements,
-            evaluationSuppliers,
-            isLoading,
             evaluationTypeSelected,
             rfqTypeSelectedId,
+            matchedSupplierId,
             selectedAssignmentEntityInstanceId,
-            actions } = this.props;
+            actions
+            } = this.props;
+
+        const columnWidth = classNames('form-group', {
+            'col-sm-4':(rfqTypeSelectedId !== '' && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1')),
+            'col-sm-6':(rfqTypeSelectedId === '')
+        });
+
         return (
+
+            <div id="searcher-evaluation-assignment-container" className="db-form-section">
+
                 <form>
                     <div className="row">
                         <div className="col-sm-4 form-group">
-                            <label htmlFor="evaluationTemplate">Evaluation Template</label>
+                            <label htmlFor="evaluationTemplate" className="control-label">Evaluation Template</label>
                             <EvaluationTemplatesDropdown evaluationTemplates={evaluationTemplates} />
                         </div>
                     </div>
 
-                    { selectedTemplateId !== '' ?
-                        <div className="row">
-                            <div className="col-sm-4 form-group">
-                                <label htmlFor="evaluationIsOn">Evaluation Type</label>
+                    <div className="row">
+                        { selectedTemplateId !== '' ?
+
+                            <div className={columnWidth}>
+                                <label htmlFor="evaluationIsOn" className="control-label">Evaluation Type</label>
                                 <EvaluationTypeDropdown />
                             </div>
-                        </div>
-                        : null
-                    }
+                            : null
+                        }
 
-                    { evaluationTypeSelected === '2' || evaluationTypeSelected === '1' ?
-                        <div className="row">
-                            <div className="col-sm-4 form-group">
-                                <label htmlFor="evaluationLink">RFQ List</label>
+                        { evaluationTypeSelected === '2' || evaluationTypeSelected === '1' ?
+                            <div className={columnWidth}>
+                                <label htmlFor="evaluationLink" className="control-label">RFQ List</label>
                                 <RfqListDropdown />
                             </div>
-                        </div>
-                        : null
-                    }
+                            : null
+                        }
 
-                    { rfqTypeSelectedId !== '' && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1') ?
-                        <div className="row">
-                            <div className="col-sm-4 form-group">
+
+                        { rfqTypeSelectedId !== '' && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1') ?
+                            <div className={columnWidth}>
                                 <label htmlFor="evaluationLink">Matched Suppliers</label>
-                                <MatchedSuppliersDropdown matchedSuppliers={matchedSuppliers} />
+                                <MatchedSuppliersDropdown />
                             </div>
-                        </div>
-                        : null
-                    }
+                            : null
+                        }
+                    </div>
 
-                    { matchedItems.length > 0 && evaluationTypeSelected === '2' ?
+                    { matchedSupplierId !== '' && evaluationTypeSelected === '2' ?
                         <div className="row">
-                            <div className="col-sm-4 form-group">
-                                <label htmlFor="evaluationLink">Matched Items</label>
-                                <MatchedItemsDropdown matchedItems={matchedItems} />
+                            <div className="col-sm-4">
+                                <div className="row">
+                                    <div className="col-sm-2 text-center">
+                                        <br />
+                                        <br />
+                                        <span>↳</span>
+                                    </div>
+                                    <div className="col-sm-10">
+                                        <label htmlFor="evaluationLink">Matched Items</label>
+                                        <MatchedItemsDropdown  />
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         : null
                     }
 
-                    { evaluationEngagements.length > 0 && evaluationTypeSelected === '4' ?
+                    { evaluationTypeSelected === '4' ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">Engagements</label>
-                                <EngagementsDropdown evaluationEngagements={evaluationEngagements} isloading={isLoading} />
+                                <EngagementsDropdown />
                             </div>
                         </div>
                         : null
                     }
 
-                    { evaluationSuppliers.length > 0 && evaluationTypeSelected === '3' ?
+                    { evaluationTypeSelected === '3' ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">Preferred Suppliers</label>
-                                <PreferredSuppliersDropdown evaluationSuppliers={evaluationSuppliers} isLoading={isLoading} />
+                                <PreferredSuppliersDropdown />
                             </div>
                         </div>
                         : null
                     }
 
+
+
                     { selectedAssignmentEntityInstanceId !== ''  ?
                         <div className="row">
+                            <div className="col-sm-12">
+                                <hr />
+                            </div>
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="assignees">Evaluation Assignees</label>
                                 <div>
                                     <Select
+                                        className="pm-react-select"
                                         labelKey="fullName"
                                         closeOnSelect={true}
                                         multi
                                         onChange={actions.updateSelectedAssignees}
                                         options={evaluationAssignees}
-                                        placeholder="Select assignees"
+                                        placeholder="Select Assignees"
                                         removeSelected={true}
                                         value={selectedAssignees}
                                     />
                                 </div>
+
                             </div>
                         </div>
                         : null
@@ -132,7 +152,8 @@ class EvaluationAssignment extends Component {
                     {this.renderSaveButton()}
 
                 </form>
-            );
+            </div>
+        );
     }
 
     renderSaveButton() {
@@ -145,7 +166,7 @@ class EvaluationAssignment extends Component {
         return (
             <div className="row">
                 <div className="col-sm-4">
-                    <button title="Save" type="button" onClick={actions.createAssignment}>{isLoading ? 'Saving...' : 'Save'}</button>
+                    <button title="Save" className="btn btn-md " type="button" onClick={actions.createAssignment}>{isLoading ? 'Saving...' : 'Save'}</button>
                 </div>
             </div>
         );
@@ -157,18 +178,16 @@ EvaluationAssignment.propTypes = {
     evaluationTemplates: PropTypes.array.isRequired,
     evaluationAssignees: PropTypes.array.isRequired,
     selectedAssignees:PropTypes.array.isRequired,
-    matchedSuppliers: PropTypes.array.isRequired,
-    matchedItems: PropTypes.array.isRequired,
-    evaluationEngagements: PropTypes.array.isRequired,
-    evaluationSuppliers: PropTypes.array.isRequired,
     selectedTemplateId: PropTypes.string.isRequired,
     evaluationTypeSelected: PropTypes.string.isRequired,
-    rfqTypeSelectedId: PropTypes.string,
+    rfqTypeSelectedId: PropTypes.string.isRequired,
+    matchedSupplierId: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     selectedAssignmentEntityInstanceId: PropTypes.string.isRequired,
     matchedSuppliersIsLoading: PropTypes.bool,
     actions: PropTypes.object,
     apiActions: PropTypes.object,
+    columnWidth: PropTypes.string
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -192,22 +211,13 @@ const mapStateToProps = (state, ownProps) => {
 
     const evaluationTemplates = selectFromStore(state.evaluationAssignment, '/evaluation-templates', 'evaluationTemplates');
     const evaluationAssignees = concatLabelKey(selectFromStore(state.evaluationAssignment, '/staff', 'staff'));
-    const evaluationEngagements = selectFromStore(state.evaluationAssignment, '/engagements', 'engagements');
-    const evaluationSuppliers = selectFromStore(state.evaluationAssignment, '/preferred-suppliers', 'preferredSuppliers');
-    const matchedSuppliers = selectFromStore(state.evaluationAssignment, `/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers`, 'matchedSuppliers');
-    const matchedItems = selectFromStore(state.evaluationAssignment, `/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers/${matchedSupplierId}/matched-items`, 'matchedItems');
-
-    console.log(`selected by endpoint from store with rfqId-${rfqTypeSelectedId} suppId-${matchedSupplierId} and :`, matchedItems);
 
     return {
         ...ownProps,
         selectedTemplateId,
         evaluationTemplates,
-        matchedSuppliers,
-        matchedItems,
+        matchedSupplierId,
         evaluationTypeSelected,
-        evaluationEngagements,
-        evaluationSuppliers,
         evaluationAssignees,
         selectedAssignees,
         selectedAssignmentEntityInstanceId,
