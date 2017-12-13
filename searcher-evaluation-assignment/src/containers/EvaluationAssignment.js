@@ -37,6 +37,7 @@ class EvaluationAssignment extends Component {
             evaluationSuppliers,
             isLoading,
             evaluationTypeSelected,
+            rfqTypeSelectedId,
             selectedAssignmentEntityInstanceId,
             actions } = this.props;
         return (
@@ -56,17 +57,18 @@ class EvaluationAssignment extends Component {
                         </div>
                         : null
                     }
+
                     { evaluationTypesRfq.length > 0 && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1') ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">RFQ List</label>
                                 <RfqListDropdown evaluationTypesRfq={evaluationTypesRfq} />
-                                {this.renderEmptyRfqResponseMessage()}
                             </div>
                         </div>
                         : null
                     }
-                    { matchedSuppliers.length > 0  && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1') ?
+
+                    { rfqTypeSelectedId !== '' && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1') ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="evaluationLink">Matched Suppliers</label>
@@ -75,6 +77,7 @@ class EvaluationAssignment extends Component {
                         </div>
                         : null
                     }
+
                     { matchedItems.length > 0 && evaluationTypeSelected === '2' ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
@@ -148,18 +151,6 @@ class EvaluationAssignment extends Component {
         );
     }
 
-    renderEmptyRfqResponseMessage() {
-        const { rfqTypeSelectedId, matchedSuppliers } = this.props;
-
-        if (rfqTypeSelectedId !== '' && matchedSuppliers.length === 0) {
-            return (
-                <div className="bs-callout bs-callout-warning">
-                    The selected RFQ doesn't match any suppliers, please select other option
-                </div>
-            );
-        }
-        return null;
-    }
 }
 
 EvaluationAssignment.propTypes = {
@@ -176,6 +167,7 @@ EvaluationAssignment.propTypes = {
     rfqTypeSelectedId: PropTypes.string,
     isLoading: PropTypes.bool.isRequired,
     selectedAssignmentEntityInstanceId: PropTypes.string.isRequired,
+    matchedSuppliersIsLoading: PropTypes.bool,
     actions: PropTypes.object,
     apiActions: PropTypes.object,
 };
