@@ -15,7 +15,8 @@ describe('UI reducer', () => {
                 done: false
             },
             assignmentId: '',
-            currentView: 'single'
+            currentView: 'single',
+            error: ''
         });
     });
 
@@ -39,11 +40,23 @@ describe('UI reducer', () => {
             assignmentId
         });
 
+        expect(state.error).to.eql('');
+
         expect(state.isLoading).to.deep.equal({
             who: 'evaluation',
             id: null,
             done: true
         });
+    });
+
+    it('should handle REQUEST_ERROR', () => {
+        state = ui(state, {
+            type: actions.REQUEST_ERROR
+        });
+
+        expect(state.error).to.eql(
+            'Something went wrong. Please try again later'
+        );
     });
 
     it('should handle FETCH_CRITERIA', () => {

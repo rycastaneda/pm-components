@@ -6,6 +6,7 @@ const INITIAL_STATE = {
         id: null,
         done: false
     },
+    error: '',
     assignmentId: '',
     currentView: 'single'
 };
@@ -26,7 +27,12 @@ export function ui(state = INITIAL_STATE, action) {
                 id: null,
                 done: true
             };
+            state.error = '';
             return { ...state };
+        case actions.REQUEST_ERROR:
+            state.error = 'Something went wrong. Please try again later';
+            return { ...state };
+
         case actions.CHANGE_VIEW:
             state.currentView = action.view;
             return { ...state };

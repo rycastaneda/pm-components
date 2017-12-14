@@ -76,7 +76,8 @@ describe('Details container: ', () => {
         dispatch: sinon.spy(),
         criteria: [criterion, { ...criterion, id: 2 }],
         currentView: 'single',
-        isLoading: true
+        isLoading: true,
+        error: ''
     };
 
     let { component } = setup(props);
@@ -90,6 +91,15 @@ describe('Details container: ', () => {
         let viewSelector = component.find(ViewSelector);
         expect(viewSelector).to.have.length(1);
         expect(viewSelector.props()).to.have.property('view', 'single');
+    });
+
+    it('should be able to show error message', () => {
+        let { component } = setup({
+            ...props,
+            error: 'Something went wrong. Please try again later'
+        });
+
+        expect(component.find('.bs-callout-danger')).to.have.length(1);
     });
 
     it('should be able to render criteria', () => {
