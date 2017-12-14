@@ -160,6 +160,7 @@ class Question extends Component {
 
     updateScaleDefinition(id, index, label, value, definitionId) {
         clearInterval(this.intervalId_update);
+        clearInterval(this.intervalId_saveAnim);
         this.props.dispatch(onScaleDefinitionChange(this.props.criteriaId, this.props.question.id, id,  label, value, definitionId));
     }
 
@@ -168,12 +169,13 @@ class Question extends Component {
         scaleDefinitions[index] = Object.assign({}, scaleDefinitions[index], { label });
 
         let { value, definitionId } = scaleDefinitions[index];
-        
+
         this.setState({ scaleDefinitions });
         clearInterval(this.intervalId_update);
-
-        this.intervalId_update = setInterval(this.updateScaleDefinition(id, index, label, value, definitionId), INPUT_SYNC_INTERVAL);
-
+        clearInterval(this.intervalId_saveAnim);
+        this.intervalId_update = setInterval(() => {
+            this.updateScaleDefinition(id, index, label, value, definitionId);
+        }, INPUT_SYNC_INTERVAL);
     }
 
     onAllowScaleDefinitionChange(isAllowScaleDefinitions) {

@@ -64,8 +64,7 @@ class EvaluationTemplateCreator extends Component {
         }
         return style;
     }
-    render() {
-        window.console.log(this.state.title);
+    render() {        
         const { allCriteriaIndexes, id } = this.props;
         return (
         <div className="searcher-evaluation-template-creator">
