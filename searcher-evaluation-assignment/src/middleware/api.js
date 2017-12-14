@@ -9,7 +9,7 @@ function callApi(endpoint, options = {}) {
 
     return axios.get(endpoint, options)
         .then((response) => {
-            console.log('from middleware: normalise:', response);
+            console.log('from middleware: normalise:', normalize(response.data, { endpoint }));
             return Object.assign({}, normalize(response.data, { endpoint }));
         });
 }

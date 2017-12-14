@@ -1,4 +1,6 @@
-import merge from 'lodash.merge';
+import merge from 'deepmerge';
+// import merge from 'lodash.merge';
+// import dotProp from 'dot-prop-immutable';
 import * as actionTypes from '../constants/ActionTypes';
 import { API_DATA_REQUEST, API_DATA_SUCCESS } from '../middleware/api';
 
@@ -19,14 +21,12 @@ export function evaluationAssignment(state = initialState, action) {
 
         case API_DATA_SUCCESS:
             return merge(
-                {},
                 state,
-                merge({}, action.response, { meta: { [action.endpoint]: { loading: false } } })
+                merge(action.response, { meta: { [action.endpoint]: { loading: false } } })
             );
 
         case API_DATA_REQUEST:
-            return merge({}, state, { meta: { [action.endpoint]: { loading: true } } });
-
+            return merge(state, { meta: { [action.endpoint]: { loading: true } } });
 
         case actionTypes.ASSIGNMENT_CREATION_EVALUATION_TEMPLATE_UPDATE_CHANGE:
             return {

@@ -7,15 +7,15 @@
 		"repo": "git@bitbucket.org:minergroup/plantminer-components.git"
 	},
 	"scripts": {
-        "build": " webpack --config webpack.production.config.js --progress --profile --colors",
+		"build": " webpack --config webpack.production.config.js --progress --profile --colors",
 		"start": "webpack-dev-server --progress --profile --colors",
 		"lint": "eslint src",
 		"test": "mocha tests.config.js src/**/*.spec.js"
 	},
 	"dependencies": {
 		"classnames": "^2.2.5",
+		"deepmerge": "^2.0.1",
 		"json-api-normalizer": "^0.4.6",
-		"lodash.merge": "^4.6.0",
 		"redux-bees": "^0.1.7",
 		"redux-object": "^0.5.4"
 	},
