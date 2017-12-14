@@ -2631,7 +2631,9 @@
 	function updateCriteria(id, title, weight) {
 	    return function (dispatch, getState) {
 	        var templateId = getState().evaluationTemplateCreator.id;
+
 	        var data = (0, _dataParserUtil.parseDataForUpdateCriteria)(id, title, weight);
+
 	        return _axios2.default.patch(TEMPLATE_SERVICE_URL + '/' + templateId + '/criteria/' + id, data).then(function () {
 	            dispatch({ type: _ActionTypes.CRITERIA_UPDATE, id: id, title: title, weight: weight });
 	        }).catch(function (error) {
@@ -6970,8 +6972,8 @@
 	                title = _state.title,
 	                weight = _state.weight;
 
-	            if (title.length && weight.length) {
-	                this.props.dispatch((0, _evaluationTemplateCreator.updateCriteria)(this.props.criteriaId, this.state.title, this.state.weight));
+	            if (title.length) {
+	                this.props.dispatch((0, _evaluationTemplateCreator.updateCriteria)(this.props.criteriaId, title, weight));
 	            }
 
 	            clearInterval(this.intervalId);
