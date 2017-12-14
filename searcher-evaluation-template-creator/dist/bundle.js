@@ -2631,7 +2631,9 @@
 	function updateCriteria(id, title, weight) {
 	    return function (dispatch, getState) {
 	        var templateId = getState().evaluationTemplateCreator.id;
+
 	        var data = (0, _dataParserUtil.parseDataForUpdateCriteria)(id, title, weight);
+
 	        return _axios2.default.patch(TEMPLATE_SERVICE_URL + '/' + templateId + '/criteria/' + id, data).then(function () {
 	            dispatch({ type: _ActionTypes.CRITERIA_UPDATE, id: id, title: title, weight: weight });
 	        }).catch(function (error) {
@@ -6970,8 +6972,8 @@
 	                title = _state.title,
 	                weight = _state.weight;
 
-	            if (title.length && weight.length) {
-	                this.props.dispatch((0, _evaluationTemplateCreator.updateCriteria)(this.props.criteriaId, this.state.title, this.state.weight));
+	            if (title.length) {
+	                this.props.dispatch((0, _evaluationTemplateCreator.updateCriteria)(this.props.criteriaId, title, weight));
 	            }
 
 	            clearInterval(this.intervalId);
@@ -7487,7 +7489,6 @@
 	        value: function render() {
 	            var _this2 = this;
 
-	            window.console.log(this.state.title);
 	            var _props = this.props,
 	                allCriteriaIndexes = _props.allCriteriaIndexes,
 	                id = _props.id;
@@ -7894,11 +7895,14 @@
 	        key: 'updateScaleDefinition',
 	        value: function updateScaleDefinition(id, index, label, value, definitionId) {
 	            clearInterval(this.intervalId_update);
+	            clearInterval(this.intervalId_saveAnim);
 	            this.props.dispatch((0, _evaluationTemplateCreator.onScaleDefinitionChange)(this.props.criteriaId, this.props.question.id, id, label, value, definitionId));
 	        }
 	    }, {
 	        key: 'onScaleDefinitionChange',
 	        value: function onScaleDefinitionChange(id, index, label) {
+	            var _this3 = this;
+
 	            var scaleDefinitions = this.state.scaleDefinitions;
 
 	            scaleDefinitions[index] = (0, _assign2.default)({}, scaleDefinitions[index], { label: label });
@@ -7910,8 +7914,10 @@
 
 	            this.setState({ scaleDefinitions: scaleDefinitions });
 	            clearInterval(this.intervalId_update);
-
-	            this.intervalId_update = setInterval(this.updateScaleDefinition(id, index, label, value, definitionId), _constants.INPUT_SYNC_INTERVAL);
+	            clearInterval(this.intervalId_saveAnim);
+	            this.intervalId_update = setInterval(function () {
+	                _this3.updateScaleDefinition(id, index, label, value, definitionId);
+	            }, _constants.INPUT_SYNC_INTERVAL);
 	        }
 	    }, {
 	        key: 'onAllowScaleDefinitionChange',
@@ -8049,7 +8055,7 @@
 	    }, {
 	        key: 'renderMaximised',
 	        value: function renderMaximised() {
-	            var _this3 = this;
+	            var _this4 = this;
 
 	            var isDefsDisabled = this.state.type === '3' || this.state.type === '4';
 
@@ -8084,7 +8090,7 @@
 	                                'select',
 	                                { className: 'form-control', value: this.state.type,
 	                                    onChange: function onChange(event) {
-	                                        return _this3.onQuestionTypeChange(event.target.value);
+	                                        return _this4.onQuestionTypeChange(event.target.value);
 	                                    } },
 	                                this.props.questionTypes.map(function (type, index) {
 	                                    return _react2.default.createElement(
@@ -8114,7 +8120,7 @@
 	                            _react2.default.createElement('input', { className: 'form-control',
 	                                defaultValue: this.state.title,
 	                                onChange: function onChange(event) {
-	                                    return _this3.onTitleChange(event.target.value);
+	                                    return _this4.onTitleChange(event.target.value);
 	                                } })
 	                        )
 	                    ),
@@ -8165,7 +8171,7 @@
 	                                                _react2.default.createElement('input', { type: 'checkbox', disabled: isDefsDisabled,
 	                                                    checked: this.state.isAllowScaleDefinitions,
 	                                                    onChange: function onChange(event) {
-	                                                        return _this3.onAllowScaleDefinitionChange(event.target.checked);
+	                                                        return _this4.onAllowScaleDefinitionChange(event.target.checked);
 	                                                    }
 	                                                }),
 	                                                _models.QUESTION_OPTIONS[0].label
@@ -8188,7 +8194,7 @@
 	                                                            _react2.default.createElement('input', { type: 'text',
 	                                                                defaultValue: type.label,
 	                                                                onChange: function onChange(event) {
-	                                                                    return _this3.onScaleDefinitionChange(type.id, index, event.target.value);
+	                                                                    return _this4.onScaleDefinitionChange(type.id, index, event.target.value);
 	                                                                },
 	                                                                className: 'form-control', 'aria-describedby': 'basic-addon1', placeholder: 'Enter Definition' })
 	                                                        )
@@ -8210,7 +8216,7 @@
 	                                                    defaultChecked: this.props.question.isAllowUpload,
 	                                                    value: this.state.isAllowUpload,
 	                                                    onChange: function onChange(event) {
-	                                                        return _this3.onAllowUploadChange(event.target.checked);
+	                                                        return _this4.onAllowUploadChange(event.target.checked);
 	                                                    }
 	                                                }),
 	                                                _models.QUESTION_OPTIONS[1].label
@@ -8230,7 +8236,7 @@
 	                                                    defaultChecked: this.props.question.isCommentRequired,
 	                                                    value: this.state.isCommentRequired,
 	                                                    onChange: function onChange(event) {
-	                                                        return _this3.onCommentRequiredChange(event.target.checked);
+	                                                        return _this4.onCommentRequiredChange(event.target.checked);
 	                                                    } }),
 	                                                _models.QUESTION_OPTIONS[2].label
 	                                            )
@@ -8274,7 +8280,7 @@
 	                                            key: index,
 	                                            file: document,
 	                                            preview: false,
-	                                            onFileRemove: _this3.onRemoveDocument
+	                                            onFileRemove: _this4.onRemoveDocument
 	                                        });
 	                                    })
 	                                )

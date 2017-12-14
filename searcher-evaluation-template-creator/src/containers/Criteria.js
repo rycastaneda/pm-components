@@ -46,8 +46,8 @@ class Criteria extends Component {
     }
     updateCriteriaChange() {
         let { title, weight } = this.state;
-        if (title.length&&weight.length) {
-            this.props.dispatch(updateCriteria(this.props.criteriaId, this.state.title, this.state.weight));
+        if (title.length) {        
+            this.props.dispatch(updateCriteria(this.props.criteriaId, title, weight));
         }
 
         clearInterval(this.intervalId);
