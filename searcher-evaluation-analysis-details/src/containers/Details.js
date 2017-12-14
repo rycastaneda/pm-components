@@ -29,29 +29,35 @@ export class Details extends Component {
     }
 
     render() {
-        const { criteria, currentView, isLoading } = this.props;
+        const { criteria, currentView, isLoading, error } = this.props;
         const criteriaComponents = criteria.map(criterion => {
             return <Criterion key={criterion.id} {...criterion} />;
         });
         return (
             <div ref={ref => (this.domRef = ref)}>
-                <div className="row">
-                    <div className="pull-right">
-                        <ViewSelector
-                            view={currentView}
-                            changeView={this.changeView}
-                        />
+                {error ? (
+                    <div className="bs-callout bs-callout-danger">{error}</div>
+                ) : (
+                    <div>
+                        <div className="row">
+                            <div className="pull-right">
+                                <ViewSelector
+                                    view={currentView}
+                                    changeView={this.changeView}
+                                />
+                            </div>
+                        </div>
+                        <div className="row mar-top-sm criteria-list">
+                            {isLoading ? (
+                                <Loader />
+                            ) : currentView === 'compare' ? (
+                                <ComparisonTable criteria={criteria} />
+                            ) : (
+                                criteriaComponents
+                            )}
+                        </div>
                     </div>
-                </div>
-                <div className="row mar-top-sm criteria-list">
-                    {isLoading ? (
-                        <Loader />
-                    ) : currentView === 'compare' ? (
-                        <ComparisonTable criteria={criteria} />
-                    ) : (
-                        criteriaComponents
-                    )}
-                </div>
+                )}
             </div>
         );
     }
@@ -61,7 +67,8 @@ Details.propTypes = {
     dispatch: PropTypes.func.isRequired,
     criteria: PropTypes.array.isRequired,
     currentView: PropTypes.string.isRequired,
-    isLoading: PropTypes.bool.isRequired
+    isLoading: PropTypes.bool.isRequired,
+    error: PropTypes.string
 };
 
 function mapStateToProps(state) {
@@ -78,6 +85,7 @@ function mapStateToProps(state) {
     let criteria = [];
     let isLoading = ui.isLoading.who === 'evaluation' && !ui.isLoading.done;
     let currentView = ui.currentView;
+    let error = ui.error;
 
     const getComments = commentId => {
         let comment = rawComments.byId[commentId];
@@ -103,7 +111,8 @@ function mapStateToProps(state) {
         return {
             criteria,
             currentView,
-            isLoading
+            isLoading,
+            error
         };
     }
 
@@ -116,7 +125,7 @@ function mapStateToProps(state) {
 
     criteria = criteriaIds.map(getCriteria);
 
-    return { criteria, currentView, isLoading };
+    return { criteria, currentView, isLoading, error };
 }
 
 export default connect(mapStateToProps)(Details); // adds dispatch prop
