@@ -24,7 +24,10 @@ const MatchedItemsDropdown = ({ matchedItems, isLoading, actions }) => (
             </div>
             :
             <div>
-                <span>Loading...</span>
+                <div className="input-group">
+                    <select className="form-control" disabled><option>Loading RFQ Items...</option></select>
+                    <span className="spinner-animation form-control-feedback"></span>
+                </div>
             </div>
         }
 
