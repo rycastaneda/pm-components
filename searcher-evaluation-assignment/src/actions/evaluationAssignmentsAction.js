@@ -35,17 +35,15 @@ export const createAssignment = () => (dispatch, getState) => {
         }
     };
 
-    console.log('data to be sent: ', data);
-
     axios.post('/evaluation-template-assignments', data)
         .then((response) => {
-            console.log(response);
             dispatch({
                 type: actionTypes.ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_SUCCESS,
+                response
             });
         })
         .catch((error) => {
-            console.log(error);
+            throw error;
         });
 
 };
