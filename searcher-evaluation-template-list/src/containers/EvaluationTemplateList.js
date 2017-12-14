@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import TemplatesFilter from '../components/TemplatesFilter';
+import Notification from '../notification/Notification';
 import { STATUS_LIST, MAXROWS_LIST } from '../constants/DataConstants';
 import {
     onEvaluationTemplatesDisplayedLengthChange,
@@ -12,7 +13,9 @@ import {
     initialize
 } from '../actions/evaluationTemplates';
 import TemplatesTable from '../components/TemplatesTable';
+
 class EvaluationTemplateList extends Component {
+
     constructor(props) {
         super(props);
         this.onFilterSubmit = this.onFilterSubmit.bind(this);
@@ -22,8 +25,7 @@ class EvaluationTemplateList extends Component {
         this.props.dispatch(initialize());
     }
 
-
-    onFilterSubmit(keyword, status, date, userId) {        
+    onFilterSubmit(keyword, status, date, userId) {
         this.props.dispatch(
             onEvaluationTemplatesFilterChange(keyword, status, date, userId)
         );
@@ -58,6 +60,7 @@ class EvaluationTemplateList extends Component {
         } = this.props;
         return (
             <div className="searcher-evaluation-template-list">
+                <Notification />
                 <TemplatesFilter
                     templateStatusesList={STATUS_LIST}
                     users = {users}

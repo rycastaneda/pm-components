@@ -1,13 +1,12 @@
 import normalize from 'json-api-normalizer';
-
+import  build  from 'redux-object';
 export const EVALUATION_TEMPLATE_SERVICE ='evaluation-templates';
-export const EVALUATION_SERVICE ='evaluation-template-assignments';
+export const EVALUATION_ASSIGNMENT_SERVICE ='evaluation-template-assignments';
 
 // const EDIT_PAGE ='/searcher/evaluation/edit_template/';
 // const PREVIEW_PAGE ='/searcher/evaluation/preview_template/';
 
 export function getAssignmentServiceUrlFor(queryParams) {
-    window.console.log(queryParams);
     let urlPostfix = '';
     let { currentPage, maxRowLength, selectedStatus, selectedLinkedTo, selectedTemplate, selectedAssignedTo, selectedSupplier, selectedEntityInstanceId, selectedAssignedOn } =queryParams;
     if (currentPage) {
@@ -42,66 +41,89 @@ export function getAssignmentServiceUrlFor(queryParams) {
     }
 
     if (urlPostfix.length) {
-        return EVALUATION_SERVICE + urlPostfix;
+        return EVALUATION_ASSIGNMENT_SERVICE + urlPostfix;
     }
-    return EVALUATION_SERVICE;
+    return EVALUATION_ASSIGNMENT_SERVICE;
 }
 
-
-export function getDataFromAssignmentService(data) {
-
-
-    let evaluationAssignments = parseEvaluationAssignments(normalize(data));
-
-    let totalPages =data.meta.pagination.total_pages;
-    let currentPage =data.meta.pagination.current_page;
-    let result ={ evaluationAssignments, totalPages, currentPage };
-    return result;
-}
 export function getDataForSave(id, active) {
     const activeStatus = active?1:0;
     return { data:{ type:'evaluation-templates', id, attributes:{ active:activeStatus } } };
 }
 
 export function parseInitializeResponse({ evaluationTemplates, evaluationTemplateAssignmentTypes, preferredSuppliers, staff, evaluationTemplateAssignmentStatuses, evaluationAssignments }) {
-    evaluationTemplateAssignmentTypes = normalize(evaluationTemplateAssignmentTypes)['evaluationTemplateAssignmentTypes'];
-    evaluationTemplateAssignmentTypes = Object.values(evaluationTemplateAssignmentTypes).map((item) => {
-        let { id, attributes } = item;
-        let { title } = attributes;
-         // let { supplierEmail } = attributes;
+    window.console.log(build(normalize(evaluationAssignments, { endpoint:'evaluation-template-assignments' }), 'evaluationTemplateAssignments'));
+    evaluationTemplateAssignmentTypes = normalize(evaluationTemplateAssignmentTypes, { endpoint:'evaluation-template-assignment-types' });
+    evaluationTemplateAssignmentTypes = build(evaluationTemplateAssignmentTypes, 'evaluationTemplateAssignmentTypes');
+    evaluationTemplateAssignmentTypes = evaluationTemplateAssignmentTypes.map((item) => {
+        let { id, title } = item;
         return { id, title };
     });
-    let templates = normalize(evaluationTemplates)['evaluationTemplates'];
-    evaluationTemplates = Object.values(templates).map((item) => {
-        let { id, attributes } = item;
-        let { title } = attributes;
+
+    evaluationTemplates = normalize(evaluationTemplates, { endpoint:'evaluation-templates' });
+    evaluationTemplates = build(evaluationTemplates, 'evaluationTemplates');
+    evaluationTemplates = evaluationTemplates.map((item) => {
+        let { id, title } = item;
         return { id, title };
     });
-    preferredSuppliers = normalize(preferredSuppliers)['preferredSuppliers'];
-    preferredSuppliers = Object.values(preferredSuppliers).map((item) => {
-        let { id, attributes } = item;
-        let { supplierEmail } = attributes;
+
+    preferredSuppliers = normalize(preferredSuppliers, { endpoint:'preferred-suppliers' });
+    preferredSuppliers = build(preferredSuppliers, 'preferredSuppliers');
+    preferredSuppliers = preferredSuppliers.map((item) => {
+
+        let { id, supplierEmail } = item;
         return { id, userName:supplierEmail };
     });
-    staff = normalize(staff)['staff'];
-    staff = Object.values(staff).map((item) => {
-        let { id, attributes } = item;
-        let { firstName, lastName } = attributes;
-        return { id, firstName, lastName };
+
+    staff = normalize(staff, { endpoint:'staff' });
+    staff = build(staff, 'staff');
+    staff = staff.map((item) => {
+        let { id, firstName, lastName  } = item;
+        return { id, firstName, lastName  };
     });
-    let assignmentStatuses = normalize(evaluationTemplateAssignmentStatuses)['evaluationTemplateAssignmentStatuses'];
-    evaluationTemplateAssignmentStatuses = Object.values(assignmentStatuses).map((item) => {
-        let { id, attributes } = item;
-        let { title } = attributes;
-        return { id, title };
+
+    evaluationTemplateAssignmentStatuses = normalize(evaluationTemplateAssignmentStatuses, { endpoint:'evaluation-template-assignment-statuses' });
+    evaluationTemplateAssignmentStatuses = build(evaluationTemplateAssignmentStatuses, 'evaluationTemplateAssignmentStatuses');
+    evaluationTemplateAssignmentStatuses = evaluationTemplateAssignmentStatuses.map((item) => {
+        let { id, title } = item;
+        return { id, title  };
     });
 
     let result = getDataFromAssignmentService(evaluationAssignments);
 
     return { evaluationTemplates, staff, preferredSuppliers, evaluationTemplateAssignmentTypes, evaluationTemplateAssignmentStatuses, ...result };
 }
+export function getDataFromAssignmentService(evaluationAssignments) {
+    let totalPages =evaluationAssignments.meta.pagination.total_pages;
+    let currentPage =evaluationAssignments.meta.pagination.current_page;
+    evaluationAssignments = normalize(evaluationAssignments, { endpoint:'evaluation-template-assignments' });
+    evaluationAssignments = build(evaluationAssignments, 'evaluationTemplateAssignments');
+    window.console.log(evaluationAssignments);
+    evaluationAssignments = evaluationAssignments.map((item) => {
+        let { id, createdAt, template, chairStaff, assigneeUser, assignmentStatus, assignmentType, assignmentEntityInstance
+ } = item;
+        window.console.log(item);
+        window.console.log(id, createdAt, template, chairStaff, assigneeUser, assignmentStatus, assignmentType, assignmentEntityInstance);
+        createdAt = new Date(createdAt.date);
+        let assignedOn = createdAt.getDate()+'/'+createdAt.getMonth()+'/'+createdAt.getFullYear();
+
+        let evaluationTemplate = { id:template.id, active:template.id, title:template.title };
+        let assignedUser = { id:assigneeUser.id, userName: assigneeUser.username };
+        let linkedTo = { id:assignmentType.id, title:assignmentType.title };
+        assignmentStatus = { id:assignmentStatus.id, title:assignmentStatus.title };
+
+        let supplier = { id: 0, title:' supplierObj.attributes.title', type:'entityInstance.type', typeId:'entityInstance.id' };
+        return { id, assignedOn, evaluationTemplate, assignedUser, linkedTo, assignmentStatus, supplier };
+    });
+
+    let result = { evaluationAssignments, totalPages, currentPage };
+    return result;
+}
+/*
 function parseEvaluationAssignments(evaluationAssignments) {
     let arr =[];
+// evaluationAssignments = normalize(evaluationAssignments);
+    window.console.log(evaluationAssignments);
     Object.keys(evaluationAssignments.evaluationTemplateAssignments).map((key) => {
         let obj = {};
         let assignment =  evaluationAssignments.evaluationTemplateAssignments[key];
@@ -123,3 +145,4 @@ function parseEvaluationAssignments(evaluationAssignments) {
     });
     return arr;
 }
+*/

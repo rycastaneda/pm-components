@@ -11,6 +11,9 @@ import {
     IS_BUSY
 } from '../constants/ActionTypes';
 import { MAXROWS_DEFAULT } from '../constants/DataConstants';
+import { MESSAGE_TYPE_ERROR } from '../notification/constants';
+import { showNotification } from '../notification/actions';
+
 export function previewTemplate(id) {
     id;
 }
@@ -127,7 +130,9 @@ function getPromiseForAssignmentService(url, queryParams, dispatch) {
 function getPromiseForService(url, dispatch) {
     return axios.get(url)
     .catch((error) => {
-        dispatch({ type:REQUEST_FAILED, message: error.message });
+        let { message } = error;
+        dispatch({ type:REQUEST_FAILED });
+        dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
     });
 }
 export function isBusy(status) {

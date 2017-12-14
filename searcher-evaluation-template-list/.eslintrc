@@ -6,7 +6,7 @@
     "ecmaFeatures": {
       "impliedStrict": true,
       "jsx": true,
-      "experimentalObjectRestSpread": true
+       "experimentalObjectRestSpread": true
     }
   },
   "env": {

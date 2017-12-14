@@ -4508,6 +4508,10 @@ reduce-function-call@^1.0.1:
   dependencies:
     balanced-match "^0.4.2"
 
+redux-object@^0.5.4:
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/redux-object/-/redux-object-0.5.4.tgz#907af02ca83fc713ab645a165c75ed208d387b57"
+
 redux-thunk@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.1.0.tgz#c724bfee75dbe352da2e3ba9bc14302badd89a98"

@@ -57,7 +57,6 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
 
         case REQUEST_FAILED:
             state.isBusy = false;
-            state.errorMessage = action.message;
             return Object.assign({}, state);
         case INITIALIZED:
             {

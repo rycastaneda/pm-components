@@ -81,7 +81,7 @@ class EvaluationAssignmentsFilter extends Component {
     }
     render() {
 
-        let { evaluationTemplateList, assignedToList, supplierList, assignmentStatusesList } = this.props;
+        let { evaluationTemplateList, assignedToList, assignmentStatusesList } = this.props;
         return (
             <div>
 
@@ -151,22 +151,8 @@ class EvaluationAssignmentsFilter extends Component {
                                     </div>
                                 </div>
                             </div>
+
                             <div className="col-xs-6">
-                                <div className="form-group">
-                                    <label>Supplier Name</label>
-                                    <select className = "form-control form-control-sm"
-                                    value={this.state.selectedSupplier}
-                                    onChange={event =>
-                                        this.onSupplierChange(
-                                            event.target.value
-                                        )}>
-                                        <option value={''} >None</option>
-                                        {   supplierList.map((item, index) =>
-                                            <option key={item.id} value={index}>{item.userName}</option>)
-                                        }
-                                    </select>
-                                </div>
-                            </div><div className="col-xs-6">
                                 <div className="form-group">
                                     <label>Linked to</label>
                                     <select

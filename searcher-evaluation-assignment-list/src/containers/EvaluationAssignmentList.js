@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import AssignmentsFilter from '../components/AssignmentsFilter';
 import { MAXROWS_LIST } from '../constants/DataConstants';
+import Notification from '../notification/Notification';
 import {
     onEvaluationTemplatesDisplayedLengthChange,
 
@@ -42,6 +43,7 @@ class EvaluationAssignmentList extends Component {
         } = this.props;
         return (
             <div className="searcher-evaluation-assignment-list">
+                <Notification />
                 <AssignmentsFilter
                     evaluationTemplateList = {this.props.evaluationTemplates}
                     assignmentStatusesList = {this.props.evaluationTemplateAssignmentStatuses}
@@ -84,7 +86,6 @@ EvaluationAssignmentList.propTypes = {
 function mapStateToProps(state) {
     const {
         isBusy,
-        errorMessage,
         evaluationTemplates,
         staff,
         preferredSuppliers,
@@ -98,7 +99,6 @@ function mapStateToProps(state) {
 
     return {
         isBusy,
-        errorMessage,
         staff,
         preferredSuppliers,
         evaluationTemplateAssignmentTypes,

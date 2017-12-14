@@ -14,6 +14,9 @@ import { INITIALIZED,
     IS_BUSY
 } from '../constants/ActionTypes';
 
+import { MESSAGE_TYPE_ERROR } from '../notification/constants';
+import { showNotification } from '../notification/actions';
+
 export function previewTemplate(id) {
     id;
 }
@@ -25,7 +28,9 @@ export function changeTemplateStatus(id, active) {
             dispatch({ type: EVALUATION_TEMPLATE_UPDATED, id, active });
         })
         .catch((error) => {
-            dispatch({ type:REQUEST_FAILED, message: error.message });
+            let { message } = error;
+            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            dispatch({ type: REQUEST_FAILED });
         });
     };
 }
@@ -86,7 +91,9 @@ function getPromiseForTemplateService(url, dispatch) {
 function getPromiseForService(url, dispatch) {
     return axios.get(url)
     .catch((error) => {
-        dispatch({ type:REQUEST_FAILED, message: error.message });
+        let { message } = error;
+        dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+        dispatch({ type: REQUEST_FAILED });
     });
 }
 export function isBusy(status) {

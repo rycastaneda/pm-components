@@ -58,8 +58,7 @@ export function evaluationTemplates(state = INITIAL_DATA, action) {
         case REQUEST_FAILED:
             {
                 let isBusy = false;
-                let { errorMessage } = action;
-                return { ...state, isBusy, errorMessage };
+                return { ...state, isBusy };
             }
         default:
             return state;
