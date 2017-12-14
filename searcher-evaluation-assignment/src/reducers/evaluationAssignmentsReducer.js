@@ -1,6 +1,4 @@
 import merge from 'deepmerge';
-// import merge from 'lodash.merge';
-// import dotProp from 'dot-prop-immutable';
 import * as actionTypes from '../constants/ActionTypes';
 import { API_DATA_REQUEST, API_DATA_SUCCESS } from '../middleware/api';
 
@@ -54,7 +52,6 @@ export function evaluationAssignment(state = initialState, action) {
                 ...state,
                 matchedSupplierId: action.matchedSupplierId,
             };
-
 
         case actionTypes.ASSIGNMENT_CREATION_PREFERRED_SUPPLIERS_UPDATE_CHANGE:
             return {
