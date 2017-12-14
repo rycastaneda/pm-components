@@ -6,7 +6,6 @@
 		"build-vendor": "npm i && webpack --config vendor-config/webpack.vendor.config.js"
 	},
 	"devDependencies": {
-		"lodash": "^4.17.4",
 		"react": "15.3.2",
 		"react-autosuggest": "6.0.4",
 		"react-dom": "15.3.2",
