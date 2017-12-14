@@ -12,8 +12,7 @@ function getInitialData() {
     return { messages:[] };
 }
 
-export function notification(state = getInitialData(), action) {
-    window.console.log(action);
+export function notification(state = getInitialData(), action) {    
     switch (action.type) {
         case NOTIFICATION_PROMPT_MESSAGE:
             {
