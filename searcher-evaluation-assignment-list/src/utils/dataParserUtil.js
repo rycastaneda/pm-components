@@ -12,6 +12,7 @@ export function getAssignmentServiceUrlFor(queryParams) {
     if (currentPage) {
         urlPostfix += '?page=' + currentPage;
     }
+    urlPostfix += '&include=assigneeUser.staff';
     if (maxRowLength) {
         urlPostfix += '&per_page=' + maxRowLength;
     }
@@ -52,7 +53,7 @@ export function getDataForSave(id, active) {
 }
 
 export function parseInitializeResponse({ evaluationTemplates, evaluationTemplateAssignmentTypes, preferredSuppliers, staff, evaluationTemplateAssignmentStatuses, evaluationAssignments }) {
-    window.console.log(build(normalize(evaluationAssignments, { endpoint:'evaluation-template-assignments' }), 'evaluationTemplateAssignments'));
+    let result = getDataFromAssignmentService(evaluationAssignments);
     evaluationTemplateAssignmentTypes = normalize(evaluationTemplateAssignmentTypes, { endpoint:'evaluation-template-assignment-types' });
     evaluationTemplateAssignmentTypes = build(evaluationTemplateAssignmentTypes, 'evaluationTemplateAssignmentTypes');
     evaluationTemplateAssignmentTypes = evaluationTemplateAssignmentTypes.map((item) => {
@@ -77,9 +78,10 @@ export function parseInitializeResponse({ evaluationTemplates, evaluationTemplat
 
     staff = normalize(staff, { endpoint:'staff' });
     staff = build(staff, 'staff');
+
     staff = staff.map((item) => {
-        let { id, firstName, lastName  } = item;
-        return { id, firstName, lastName  };
+        let { userId, firstName, lastName  } = item;
+        return { id:userId, firstName, lastName  };
     });
 
     evaluationTemplateAssignmentStatuses = normalize(evaluationTemplateAssignmentStatuses, { endpoint:'evaluation-template-assignment-statuses' });
@@ -89,60 +91,55 @@ export function parseInitializeResponse({ evaluationTemplates, evaluationTemplat
         return { id, title  };
     });
 
-    let result = getDataFromAssignmentService(evaluationAssignments);
-
     return { evaluationTemplates, staff, preferredSuppliers, evaluationTemplateAssignmentTypes, evaluationTemplateAssignmentStatuses, ...result };
 }
 export function getDataFromAssignmentService(evaluationAssignments) {
-    let totalPages =evaluationAssignments.meta.pagination.total_pages;
-    let currentPage =evaluationAssignments.meta.pagination.current_page;
+
+    let totalPages = Number(evaluationAssignments.meta.pagination.total_pages);
+    let currentPage = Number(evaluationAssignments.meta.pagination.current_page);
+
     evaluationAssignments = normalize(evaluationAssignments, { endpoint:'evaluation-template-assignments' });
     evaluationAssignments = build(evaluationAssignments, 'evaluationTemplateAssignments');
-    window.console.log(evaluationAssignments);
-    evaluationAssignments = evaluationAssignments.map((item) => {
-        let { id, createdAt, template, chairStaff, assigneeUser, assignmentStatus, assignmentType, assignmentEntityInstance
- } = item;
-        window.console.log(item);
-        window.console.log(id, createdAt, template, chairStaff, assigneeUser, assignmentStatus, assignmentType, assignmentEntityInstance);
-        createdAt = new Date(createdAt.date);
-        let assignedOn = createdAt.getDate()+'/'+createdAt.getMonth()+'/'+createdAt.getFullYear();
 
-        let evaluationTemplate = { id:template.id, active:template.id, title:template.title };
-        let assignedUser = { id:assigneeUser.id, userName: assigneeUser.username };
-        let linkedTo = { id:assignmentType.id, title:assignmentType.title };
-        assignmentStatus = { id:assignmentStatus.id, title:assignmentStatus.title };
+    if (evaluationAssignments) {
+        evaluationAssignments = evaluationAssignments.map((item) => {
+            let { id,
+                createdAt,
+                template,
+                assigneeUser,
+                assignmentStatus,
+                assignmentType,
+                assignmentEntityInstance
+            } = item;
 
-        let supplier = { id: 0, title:' supplierObj.attributes.title', type:'entityInstance.type', typeId:'entityInstance.id' };
-        return { id, assignedOn, evaluationTemplate, assignedUser, linkedTo, assignmentStatus, supplier };
-    });
+            createdAt = new Date(createdAt.date);
+            let assignedOn = createdAt.getDate()+'/'+createdAt.getMonth()+'/'+createdAt.getFullYear();
+            let evaluationTemplate = { id:template.id, active:template.id, title:template.title };
+            let assignedUser = assigneeUser.staff;
+            let userName = assignedUser.lastName+', '+assignedUser.firstName;
+            assignedUser = { id:assigneeUser.userId, userName };
+            let linkedTo = { id:assignmentType.id, title:assignmentType.title };
+            assignmentStatus = { id:assignmentStatus.id, title:assignmentStatus.title };
 
+            let supplier;
+            switch (assignmentType.id) {
+                case '1':
+                    supplier = { id: assignmentEntityInstance.id, title:assignmentEntityInstance.title };
+                    break;
+                case '2':
+                    supplier = assignmentEntityInstance.matchedSupplier[0];
+                    supplier = { id: supplier.id, title:supplier.title };
+                    break;
+                default:
+                    supplier = assignmentEntityInstance.supplier;
+                    supplier = { id: supplier.id, title:supplier.title };
+            }
+
+            return { id, assignedOn, evaluationTemplate, assignedUser, linkedTo, assignmentStatus, supplier };
+        });
+    } else {
+        evaluationAssignments =[];
+    }
     let result = { evaluationAssignments, totalPages, currentPage };
     return result;
 }
-/*
-function parseEvaluationAssignments(evaluationAssignments) {
-    let arr =[];
-// evaluationAssignments = normalize(evaluationAssignments);
-    window.console.log(evaluationAssignments);
-    Object.keys(evaluationAssignments.evaluationTemplateAssignments).map((key) => {
-        let obj = {};
-        let assignment =  evaluationAssignments.evaluationTemplateAssignments[key];
-        obj.id = assignment.id;
-        let assignedOnObj = new Date(assignment.attributes.createdAt.date);
-        obj.assignedOn = assignedOnObj.getDate()+'/'+assignedOnObj.getMonth()+'/'+assignedOnObj.getFullYear();
-        let templateObj = evaluationAssignments.evaluationTemplates[assignment.relationships.template.data.id];
-        obj.evaluationTemplate = { id: templateObj.id, active: templateObj.attributes.active, title: templateObj.attributes.title };
-        let userObj= evaluationAssignments.users[assignment.relationships.assigneeUser.data.id];
-        obj.assignedUser = { id:userObj.id, userName:userObj.attributes.username };
-        let linkedToObj = evaluationAssignments.evaluationTemplateAssignmentTypes[assignment.relationships.assignmentType.data.id];
-        obj.linkedTo = { id: linkedToObj.id, title: linkedToObj.attributes.title };
-        let entityInstance = assignment.relationships.assignmentEntityInstance.data;
-        let supplierObj = evaluationAssignments[entityInstance.type][entityInstance.id];
-        obj.supplier = { id: supplierObj.id, title: supplierObj.attributes.title, type:entityInstance.type, typeId:entityInstance.id };
-        let statusObj = evaluationAssignments.evaluationTemplateAssignmentStatuses[assignment.relationships.assignmentStatus.data.id];
-        obj.assignmentStatus = { id:statusObj.id, title:statusObj.attributes.title };
-        arr.push(obj);
-    });
-    return arr;
-}
-*/

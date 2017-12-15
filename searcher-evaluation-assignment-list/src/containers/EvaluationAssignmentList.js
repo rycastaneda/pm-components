@@ -5,7 +5,6 @@ import { MAXROWS_LIST } from '../constants/DataConstants';
 import Notification from '../notification/Notification';
 import {
     onEvaluationTemplatesDisplayedLengthChange,
-
     onEvaluationAssignmentFilterChange,
     onEvaluationTemplatesPageChange,
     initialize
@@ -21,7 +20,6 @@ class EvaluationAssignmentList extends Component {
         this.props.dispatch(initialize());
     }
 
-
     onFilterSubmit(result) {
         this.props.dispatch(
             onEvaluationAssignmentFilterChange(result)
@@ -31,6 +29,7 @@ class EvaluationAssignmentList extends Component {
     tableRowLengthChanged(val) {
         this.props.dispatch(onEvaluationTemplatesDisplayedLengthChange(val));
     }
+
     paginateTo(page) {
         this.props.dispatch(onEvaluationTemplatesPageChange(page));
     }

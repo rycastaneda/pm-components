@@ -40,7 +40,6 @@ export function initialize() {
             let staff = response[3].data;
             let preferredSuppliers = response[4].data;
             let evaluationAssignments = response[5].data;
-
             let result = parseInitializeResponse({ evaluationTemplates,
                 evaluationTemplateAssignmentTypes,
                 evaluationTemplateAssignmentStatuses,

@@ -40,11 +40,11 @@ class AssignmentsTable extends Component {
     renderStatus(status) {
         switch (status.id) {
             case '1':
-                return <span className="badge badge--dark badge-text-danger">{status.title}</span>;
+                return <span className="bs-label bs-label-danger">{status.title}</span>;
             case '2':
-                return <span className="badge badge--dark badge-text-warning">{status.title}</span>;
+                return <span className="bs-label bs-label-warning">{status.title}</span>;
             case '3':
-                return <span className="badge badge--dark badge-text-success">{status.title}</span>;
+                return <span className="bs-label bs-label-success">{status.title}</span>;
         }
     }
     hideMenu() {
@@ -88,6 +88,7 @@ class AssignmentsTable extends Component {
 
     }
     render() {
+        window.console.log('view', this.props.totalPages);
         return (
         <div>
             <table className="table db-table db-table-sort">
@@ -97,7 +98,8 @@ class AssignmentsTable extends Component {
                     <th>Evaluation</th>
                     <th>Linked To</th>
                     <th>Assigned User</th>
-                    <th>Supplier Name</th>
+
+                    <th>Supplier</th>
                     <th>Status</th>
                     <th>More</th>
                 </tr>
@@ -105,22 +107,23 @@ class AssignmentsTable extends Component {
             <tbody>
                 {this.props.tableData.map(item =>
                     <tr key={item.id}>
-                    <td className="td-center nowrap">
+                    <td className="nowrap">
                         {item.assignedOn}
                     </td>
-                    <td className="td-center nowrap">
+                    <td className="nowrap">
                         {item.evaluationTemplate.title}
                     </td>
-                    <td className="td-center nowrap">
-                        {item.linkedTo.title}
+                    <td className="nowrap">
+                        {item.linkedTo.title} [{item.supplier.id}]
                     </td>
-                    <td className="td-center nowrap">
+                    <td className="nowrap">
                         {item.assignedUser.userName}
                     </td>
-                    <td className="td-center nowrap">
+
+                    <td className="nowrap">
                         {item.supplier.title}
                     </td>
-                    <td className="td-center nowrap">
+                    <td className="text-center nowrap">
                         {this.renderStatus(item.assignmentStatus)}
                     </td>
                     <td data-heading="More" className="td-center  last">
@@ -130,7 +133,6 @@ class AssignmentsTable extends Component {
                 )}
             </tbody>
             </table>
-            {this.props.totalPages > 1?
             <div className="row">
                 <div className="col-sm-12 form-inline">
                     <select className="form-control" defaultValue={this.props.rowCount}
@@ -140,6 +142,7 @@ class AssignmentsTable extends Component {
                         )}
                     </select>
                     &nbsp;
+                    {this.props.totalPages > 1?
                     <ReactPaginate  previousLabel={"previous"}
                               nextLabel={"next"}
                               breakLabel={<a href="">...</a>}
@@ -152,9 +155,9 @@ class AssignmentsTable extends Component {
                               containerClassName={"pagination"}
                               subContainerClassName={"pages pagination"}
                               activeClassName={"active"} />
+                    :null}
                     </div>
                 </div>
-                :null}
         </div>);
     }
 }

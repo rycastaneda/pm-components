@@ -27,7 +27,6 @@ const INITIAL_DATA = {
 };
 
 export function evaluationAssignments(state = INITIAL_DATA, action) {
-
     switch (action.type) {
 
         case EVALUATION_ASSIGMENTS_FETCHED:
@@ -60,8 +59,8 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
             return Object.assign({}, state);
         case INITIALIZED:
             {
-                let { evaluationTemplates, evaluationTemplateAssignmentTypes, staff, preferredSuppliers, evaluationTemplateAssignmentStatuses, evaluationAssignments } = action;
-                return { ...state, evaluationTemplateAssignmentTypes, evaluationTemplates, staff, preferredSuppliers, evaluationTemplateAssignmentStatuses, evaluationAssignments };
+                let { evaluationTemplates, currentPage, totalPages, evaluationTemplateAssignmentTypes, staff, preferredSuppliers, evaluationTemplateAssignmentStatuses, evaluationAssignments } = action;
+                return { ...state, evaluationTemplates, currentPage, totalPages, evaluationTemplateAssignmentTypes,  staff, preferredSuppliers, evaluationTemplateAssignmentStatuses, evaluationAssignments };
             }
         default:
             return state;
