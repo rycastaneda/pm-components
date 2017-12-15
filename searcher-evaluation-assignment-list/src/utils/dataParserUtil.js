@@ -2,6 +2,7 @@ import normalize from 'json-api-normalizer';
 import  build  from 'redux-object';
 export const EVALUATION_TEMPLATE_SERVICE ='evaluation-templates';
 export const EVALUATION_ASSIGNMENT_SERVICE ='evaluation-template-assignments';
+export const EVALUATION_ASSIGNMENT_COMPLETION ='/searcher/evaluation_assignments/complete/';
 
 // const EDIT_PAGE ='/searcher/evaluation/edit_template/';
 // const PREVIEW_PAGE ='/searcher/evaluation/preview_template/';
@@ -136,8 +137,8 @@ export function getDataFromAssignmentService(evaluationAssignments) {
                     supplier = assignmentEntityInstance.supplier;
                     supplier = { id: supplier.id, title:supplier.title };
             }
-
-            return { id, assignedOn, evaluationTemplate, assignedUser, linkedTo, assignmentStatus, supplier };
+            let complete_url = EVALUATION_ASSIGNMENT_COMPLETION+id;
+            return { id, assignedOn, evaluationTemplate, assignedUser, linkedTo, assignmentStatus, supplier, complete_url };
         });
     } else {
         evaluationAssignments =[];

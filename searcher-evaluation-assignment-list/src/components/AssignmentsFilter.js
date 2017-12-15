@@ -21,6 +21,8 @@ class EvaluationAssignmentsFilter extends Component {
         this.onTemplateChange = this.onTemplateChange.bind(this);
         this.onAdvancedSubmit = this.onAdvancedSubmit.bind(this);
         this.onToggleFilter = this.onToggleFilter.bind(this);
+        this.onKeyPress = this.onKeyPress.bind(this);
+
     }
 
     onTemplateChange(val) {
@@ -39,12 +41,19 @@ class EvaluationAssignmentsFilter extends Component {
 
         this.setState({ selectedAssignedTo: val });
     }
-    onSupplierChange(index) {
-        let supplier = null;
-        if (index) {
-            supplier = index;
+
+    onKeyPress(event) {
+        if (event.key === 'Enter') {
+            if (this.state.isFilterShown) {
+                this.onAdvancedSubmit();
+            } else {
+                this.onNormalSubmit();
+            }
+
         }
-        window.console.log(supplier);
+    }
+
+    onSupplierChange(index) {
         this.setState({ selectedSupplier: index });
     }
     onAdvancedSubmit() {
@@ -121,10 +130,6 @@ class EvaluationAssignmentsFilter extends Component {
                             </div><div className="col-xs-6">
                                 <div className="form-group">
                                     <label>Assigned To</label>
-
-
-
-
                                     <select className = "form-control form-control-sm"
                                         value={this.state.selectedAssignedTo}
                                         onChange={event =>
