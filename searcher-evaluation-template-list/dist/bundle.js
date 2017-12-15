@@ -22725,13 +22725,15 @@
 	        }
 	    }, {
 	        key: 'renderMoreButton',
-	        value: function renderMoreButton(id, edit_url, preview_url, active) {
+	        value: function renderMoreButton(id, edit_url, preview_url, active, instances) {
 	            var _this2 = this;
 
+	            instances = Number(instances);
 	            if (this.state.menuVisibleItemId === id) {
 	                return _react2.default.createElement(
 	                    'div',
-	                    { className: 'dropdown open', ref: function ref(ul) {
+	                    { className: 'dropdown open',
+	                        ref: function ref(ul) {
 	                            if (ul !== null) {
 	                                _this2.actionDropdown = ul;
 	                            }
@@ -22756,7 +22758,7 @@
 	                                'Preview'
 	                            )
 	                        ),
-	                        _react2.default.createElement(
+	                        active && instances >= 1 ? null : _react2.default.createElement(
 	                            'li',
 	                            null,
 	                            _react2.default.createElement(
@@ -22765,17 +22767,18 @@
 	                                'Edit'
 	                            )
 	                        ),
-	                        _react2.default.createElement(
+	                        active ? _react2.default.createElement(
 	                            'li',
 	                            null,
 	                            _react2.default.createElement(
 	                                'a',
-	                                { href: 'javascript:;', onClick: function onClick() {
+	                                { href: 'javascript:;',
+	                                    onClick: function onClick() {
 	                                        return _this2.onTemplateToggleActivation(id, !active);
 	                                    } },
-	                                active ? 'Deactivate' : 'Activate'
+	                                'Deactivate'
 	                            )
-	                        )
+	                        ) : null
 	                    )
 	                );
 	            } else {
@@ -22883,7 +22886,7 @@
 	                                _react2.default.createElement(
 	                                    'td',
 	                                    { 'data-heading': 'More', className: 'td-center last' },
-	                                    _this3.renderMoreButton(item.id, item.edit_url, item.preview_url, item.active)
+	                                    _this3.renderMoreButton(item.id, item.edit_url, item.preview_url, item.active, item.instances)
 	                                )
 	                            );
 	                        })

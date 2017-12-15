@@ -51,14 +51,16 @@ class TemplatesTable extends Component {
     hideMenu() {
         this.setState({ menuVisibleItemId:null });
     }
-    renderMoreButton(id, edit_url, preview_url, active) {
+    renderMoreButton(id, edit_url, preview_url, active, instances) {
+        instances = Number(instances);        
         if (this.state.menuVisibleItemId===id) {
             return (
-            <div className="dropdown open"   ref={(ul) => {
-                if (ul!==null) {
-                    this.actionDropdown=ul;
-                }
-            }}>
+            <div className="dropdown open"
+                ref={(ul) => {
+                    if (ul!==null) {
+                        this.actionDropdown=ul;
+                    }
+                }}>
                 <a className="btn btn-sm"
                     onClick={this.toggleMenu.bind(this, id)}
                     href="javascript:">
@@ -66,9 +68,25 @@ class TemplatesTable extends Component {
                     <i className="caret" ></i>
                 </a>
                 <ul className="dropdown-menu">
-                    <li ><a href={preview_url} >Preview</a></li>
-                    <li><a href={edit_url} >Edit</a></li>
-                    <li><a href="javascript:;" onClick={()  => this.onTemplateToggleActivation(id, !(active))}>{active? 'Deactivate': 'Activate'}</a></li>
+                    <li>
+                        <a href={preview_url} >Preview</a>
+                    </li>
+                    { (active&&instances>=1)?
+                        null:
+                        <li>
+                            <a href={edit_url} >Edit</a>
+                        </li>
+                    }
+                    {
+                        active?
+                        <li>
+                            <a href="javascript:;"
+                                onClick={ ()  => this.onTemplateToggleActivation(id, !(active))}>{'Deactivate'}
+                            </a>
+                        </li>
+                        :null
+                    }
+
                 </ul>
         </div>);
         } else {
@@ -78,7 +96,7 @@ class TemplatesTable extends Component {
                         onClick={this.toggleMenu.bind(this, id)}
                         href="javascript:">
                         More &nbsp;
-                        <i className="caret" ></i>
+                        <i className="caret"></i>
                     </a>
                 </div>
             );
@@ -110,7 +128,7 @@ class TemplatesTable extends Component {
                     }
                     </td>
                     <td data-heading="More" className="td-center last">
-                        {this.renderMoreButton(item.id, item.edit_url, item.preview_url, item.active)}
+                        {this.renderMoreButton(item.id, item.edit_url, item.preview_url, item.active, item.instances)}
                     </td>
                 </tr>
                 )}
