@@ -22669,7 +22669,6 @@
 	        _this.handlePageClick = _this.handlePageClick.bind(_this);
 	        _this.onTemplateToggleActivation = _this.onTemplateToggleActivation.bind(_this);
 	        _this.onDropdownClickOutside = _this.onDropdownClickOutside.bind(_this);
-
 	        return _this;
 	    }
 
@@ -22724,11 +22723,30 @@
 	            this.setState({ menuVisibleItemId: null });
 	        }
 	    }, {
+	        key: 'getClassNameForEditButton',
+	        value: function getClassNameForEditButton(active, instances) {
+	            if (!active && instances < 1) {
+	                return '';
+	            } else {
+	                return 'disabled';
+	            }
+	        }
+	    }, {
+	        key: 'getClassNameForActivateButton',
+	        value: function getClassNameForActivateButton(active, instances) {
+	            if (!active && instances < 1) {
+	                return 'disabled';
+	            } else {
+	                return '';
+	            }
+	        }
+	    }, {
 	        key: 'renderMoreButton',
 	        value: function renderMoreButton(id, edit_url, preview_url, active, instances) {
 	            var _this2 = this;
 
 	            instances = Number(instances);
+	            instances;
 	            if (this.state.menuVisibleItemId === id) {
 	                return _react2.default.createElement(
 	                    'div',
@@ -22758,27 +22776,27 @@
 	                                'Preview'
 	                            )
 	                        ),
-	                        active && instances >= 1 ? null : _react2.default.createElement(
+	                        _react2.default.createElement(
 	                            'li',
-	                            null,
+	                            { className: this.getClassNameForEditButton(active, instances) },
 	                            _react2.default.createElement(
 	                                'a',
-	                                { href: edit_url },
+	                                { disabled: 'true', href: edit_url },
 	                                'Edit'
 	                            )
 	                        ),
-	                        active ? _react2.default.createElement(
+	                        _react2.default.createElement(
 	                            'li',
-	                            null,
+	                            { className: this.getClassNameForActivateButton(active, instances) },
 	                            _react2.default.createElement(
 	                                'a',
 	                                { href: 'javascript:;',
 	                                    onClick: function onClick() {
 	                                        return _this2.onTemplateToggleActivation(id, !active);
 	                                    } },
-	                                'Deactivate'
+	                                active ? 'Deactivate' : 'Activate'
 	                            )
-	                        ) : null
+	                        )
 	                    )
 	                );
 	            } else {

@@ -13,7 +13,6 @@ class TemplatesTable extends Component {
         this.handlePageClick= this.handlePageClick.bind(this);
         this.onTemplateToggleActivation = this.onTemplateToggleActivation.bind(this);
         this.onDropdownClickOutside = this.onDropdownClickOutside.bind(this);
-
     }
 
     componentWillMount() {
@@ -47,12 +46,26 @@ class TemplatesTable extends Component {
     handlePageClick({ selected }) {
         this.props.goToPage(selected+1);
     }
-
     hideMenu() {
         this.setState({ menuVisibleItemId:null });
     }
+    getClassNameForEditButton(active, instances) {
+        if (!active&&(instances<1)) {
+            return '';
+        } else {
+            return 'disabled';
+        }
+    }
+    getClassNameForActivateButton(active, instances) {
+        if (!active&&(instances<1)) {
+            return 'disabled';
+        } else {
+            return '';
+        }
+    }
     renderMoreButton(id, edit_url, preview_url, active, instances) {
-        instances = Number(instances);        
+        instances = Number(instances);
+        instances;
         if (this.state.menuVisibleItemId===id) {
             return (
             <div className="dropdown open"
@@ -71,22 +84,14 @@ class TemplatesTable extends Component {
                     <li>
                         <a href={preview_url} >Preview</a>
                     </li>
-                    { (active&&instances>=1)?
-                        null:
-                        <li>
-                            <a href={edit_url} >Edit</a>
-                        </li>
-                    }
-                    {
-                        active?
-                        <li>
-                            <a href="javascript:;"
-                                onClick={ ()  => this.onTemplateToggleActivation(id, !(active))}>{'Deactivate'}
-                            </a>
-                        </li>
-                        :null
-                    }
-
+                    <li className={this.getClassNameForEditButton(active, instances)}>
+                        <a disabled ="true" href={edit_url} >Edit</a>
+                    </li>
+                    <li className={this.getClassNameForActivateButton(active, instances)}>
+                        <a href="javascript:;"
+                            onClick={ ()  => this.onTemplateToggleActivation(id, !(active))}>{active?'Deactivate':'Activate'}
+                        </a>
+                    </li>
                 </ul>
         </div>);
         } else {
