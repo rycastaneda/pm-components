@@ -23,7 +23,7 @@ export function initialize() {
 
     return (dispatch) => {
         axios.all([
-            axios.get('evaluation-templates?filter[active]=1'),
+            axios.get('evaluation-templates'),
             axios.get('evaluation-template-assignment-types'),
             axios.get('evaluation-template-assignment-statuses'),
             axios.get('staff'),
