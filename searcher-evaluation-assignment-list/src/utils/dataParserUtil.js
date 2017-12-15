@@ -12,7 +12,7 @@ export function getAssignmentServiceUrlFor(queryParams) {
     if (currentPage) {
         urlPostfix += '?page=' + currentPage;
     }
-    urlPostfix += '&include=assigneeUser.staff';
+    urlPostfix += '&include=template.criteria.questions,assigneeUser.staff';
     if (maxRowLength) {
         urlPostfix += '&per_page=' + maxRowLength;
     }
@@ -53,6 +53,7 @@ export function getDataForSave(id, active) {
 }
 
 export function parseInitializeResponse({ evaluationTemplates, evaluationTemplateAssignmentTypes, preferredSuppliers, staff, evaluationTemplateAssignmentStatuses, evaluationAssignments }) {
+
     let result = getDataFromAssignmentService(evaluationAssignments);
     evaluationTemplateAssignmentTypes = normalize(evaluationTemplateAssignmentTypes, { endpoint:'evaluation-template-assignment-types' });
     evaluationTemplateAssignmentTypes = build(evaluationTemplateAssignmentTypes, 'evaluationTemplateAssignmentTypes');
@@ -90,6 +91,7 @@ export function parseInitializeResponse({ evaluationTemplates, evaluationTemplat
         let { id, title } = item;
         return { id, title  };
     });
+
 
     return { evaluationTemplates, staff, preferredSuppliers, evaluationTemplateAssignmentTypes, evaluationTemplateAssignmentStatuses, ...result };
 }

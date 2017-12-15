@@ -69,7 +69,7 @@ export function onEvaluationTemplatesPageChange(currPage) {
             selectedSupplier,
             selectedAssignedOn,
             preferred_supplier_id };
-        getPromiseForAssignmentService(getAssignmentServiceUrlFor (queryParams), dispatch);
+        getPromiseForAssignmentService(getAssignmentServiceUrlFor (queryParams), queryParams, dispatch);
     };
 }
 
