@@ -1,19 +1,18 @@
 import axios from 'axios';
-import * as actionTypes from '../constants/ActionTypes';
+import * as actionTypes from './actionTypes';
 
-export const fetchSupplierInteractions = (apiUrl) => (dispatch) => {
-
+export const fetchSupplierInteractions = apiUrl => (dispatch) => {
     dispatch({
         type: actionTypes.SUPPLIER_INTERACTIONS_REQUEST_START,
     });
 
-    console.log(apiUrl)
+    console.log(apiUrl);
 
     axios
         .get(apiUrl)
         .then((response) => {
             // might normalise response here
-            console.log("response: ", response);
+            console.log('response: ', response);
             dispatch({
                 type: actionTypes.SUPPLIER_INTERACTIONS_REQUEST_SUCCESS,
                 interactions: response.data.interactions,
@@ -28,5 +27,5 @@ export const testAction = (paramBool) => {
     return {
         type: actionTypes.SUPPLIER_INTERACTIONS_REQUEST_START,
         paramBool,
-    }
-}
+    };
+};

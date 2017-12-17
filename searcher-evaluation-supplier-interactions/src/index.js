@@ -5,17 +5,18 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
-import SupplierInteractionsContainer from './containers/SupplierInteractionsContainer';
+import SupplierInteractionsContainer from './components/SupplierInteractions/main';
 import api from '../../shared/api.config';
+import apiMiddleWare from './middleware/api';
 import './styles/index.scss';
 !window._babelPolyfill && require('babel-polyfill'); // prevent polyfill from importing twice
 import axios from 'axios';
 
 // Add redux dev tools unless we have a production build
 const enhance = process.env.NODE_ENV !== 'production' && window.devToolsExtension ? compose(
-    applyMiddleware(thunkMiddleware),
+    applyMiddleware(thunkMiddleware, apiMiddleWare),
     window.devToolsExtension && window.devToolsExtension()
-) : applyMiddleware(thunkMiddleware);
+) : applyMiddleware(thunkMiddleware, apiMiddleWare);
 
 // Configure store with thunk middleware to allow async requests
 const store = createStore(
