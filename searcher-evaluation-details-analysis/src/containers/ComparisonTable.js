@@ -92,7 +92,7 @@ function mapStateToProps(state) {
             scores
         });
     });
-    console.log('entities', entities); // eslint-disable-line quotes, no-console
+
     return {
         entities
     };
