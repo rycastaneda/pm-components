@@ -83,13 +83,16 @@ function mapStateToProps(state) {
             }
         });
 
+        let entity =
+            rawEntity.byType[assignment.entityType][assignment.entityId];
+
         entities.push({
-            id: assignment.entityId,
-            name: rawEntity.byId[assignment.entityId].title,
+            id: assignmentId,
+            name: entity.title,
             scores
         });
     });
-
+    console.log('entities', entities); // eslint-disable-line quotes, no-console
     return {
         entities
     };
