@@ -62,17 +62,22 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
             }
         case INITIALIZED:
             {
-            	let isBusy = false;
+                let isBusy = false;
                 let { evaluationTemplates, isDeleteEnabled, currentPage, totalPages, evaluationTemplateAssignmentTypes, staff, preferredSuppliers, evaluationTemplateAssignmentStatuses, evaluationAssignments } = action;
-                return { ...state, evaluationTemplates, isDeleteEnabled, currentPage, totalPages, evaluationTemplateAssignmentTypes,  staff, preferredSuppliers, evaluationTemplateAssignmentStatuses, evaluationAssignments, isBusy }
+                return { ...state, evaluationTemplates, isDeleteEnabled, currentPage, totalPages, evaluationTemplateAssignmentTypes,  staff, preferredSuppliers, evaluationTemplateAssignmentStatuses, evaluationAssignments, isBusy };
+            }
         case IS_BUSY:
-            state.isBusy = action.status;
-            return Object.assign({}, state);
+            {
+                let isBusy = action.status;
+                return { ...state, isBusy };
 
+            }
         case REQUEST_FAILED:
-            state.isBusy = false;
-            return Object.assign({}, state);
+            {
+                let isBusy = false;
+                return { ...state, isBusy };
 
+            }
         default:
             return state;
     }

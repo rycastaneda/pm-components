@@ -22693,11 +22693,6 @@
 	            }
 	        }
 	    }, {
-	        key: 'onTableRowClick',
-	        value: function onTableRowClick(url) {
-	            document.location.href = url;
-	        }
-	    }, {
 	        key: 'onTemplateToggleActivation',
 	        value: function onTemplateToggleActivation(id, active) {
 	            this.hideMenu();
@@ -22867,23 +22862,17 @@
 	                                { key: index },
 	                                _react2.default.createElement(
 	                                    'td',
-	                                    { className: 'nowrap', onClick: function onClick() {
-	                                            return _this3.onTableRowClick(item.edit_url);
-	                                        } },
+	                                    { className: 'nowrap' },
 	                                    item.title
 	                                ),
 	                                _react2.default.createElement(
 	                                    'td',
-	                                    { className: 'td-center nowrap', onClick: function onClick() {
-	                                            return _this3.onTableRowClick(item.edit_url);
-	                                        } },
+	                                    { className: 'td-center nowrap' },
 	                                    item.instances
 	                                ),
 	                                _react2.default.createElement(
 	                                    'td',
-	                                    { className: 'td-center nowrap', onClick: function onClick() {
-	                                            return _this3.onTableRowClick(item.edit_url);
-	                                        } },
+	                                    { className: 'td-center nowrap' },
 	                                    item.completed
 	                                ),
 	                                _react2.default.createElement(
