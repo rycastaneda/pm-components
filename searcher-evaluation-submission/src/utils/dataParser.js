@@ -38,8 +38,8 @@ export function parseInitialize(data, assignmentId) {
         evaluationQuestionResponses,
         evaluationQuestionTypeDefinitions,
         evaluationQuestionScaleDefinitions,
-        evaluationTemplateAssignmentStatuses } = normalize(data);
-
+        evaluationTemplateAssignmentStatuses,
+        evaluationQuestionResponseDocuments } = normalize(data);
     evaluationTemplateAssignments = evaluationTemplateAssignments[assignmentId];
 
     result.id = evaluationTemplateAssignments.relationships.template.data.id;
@@ -72,7 +72,6 @@ export function parseInitialize(data, assignmentId) {
         let {  documents, type } = relationships;
         type = type.data.id;
         let scaleDefinitions = [];
-
         if (documents) {
             documents = documents.data.map(item => item.id);
         } else {
@@ -104,6 +103,7 @@ export function parseInitialize(data, assignmentId) {
 
     });
     result.uploadedDocumentByIndex={};
+
     result.scaleDefinitionByIndex = {};
     Object.values(evaluationQuestionScaleDefinitions).forEach((item) => {
         let { id, attributes, relationships } = item;
@@ -138,5 +138,10 @@ export function parseInitialize(data, assignmentId) {
     });
 
     result.attachmentByIndex = {};
+    Object.values(evaluationQuestionResponseDocuments).forEach((item) => {
+        let { id, attributes } = item;
+        let { downloadUrl, originalName } = attributes;
+        result.attachmentByIndex[String(id)] = { id, label:originalName, url:downloadUrl };
+    });
     return result;
 }

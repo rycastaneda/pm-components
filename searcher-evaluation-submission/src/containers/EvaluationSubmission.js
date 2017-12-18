@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Criteria from './Criteria';
 import { initialize } from '../actions/evaluationSubmissionAction';
-
+import Notification from '../notification/Notification';
 // import Button from '../components/Button';
 
 class EvaluationSubmission extends Component {
@@ -22,6 +22,7 @@ class EvaluationSubmission extends Component {
         const { criteriaIds, title, assignmentStatus } = this.props;
         return (
             <div ref ={ element => this.htmlElement = element }>
+                <Notification />
                 <h1>
                 {title} -<small>{assignmentStatus.title}</small>
                 </h1>

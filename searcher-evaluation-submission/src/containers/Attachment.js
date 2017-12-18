@@ -20,8 +20,14 @@ Attachment.propTypes = {
 
 function mapStateToProps(state, props) {
     let { attachmentByIndex } = state.evaluationSubmission;
+
     let { questionId, attachmentId } = props;
+
     let attachment = attachmentByIndex[attachmentId];
+    if (attachment===undefined) {
+        let label = 'Could not find matching document for '+attachmentId;
+        attachment = { label, url: attachmentId };
+    }
     return { attachment, questionId  };
 }
 export default connect(mapStateToProps)(Attachment);

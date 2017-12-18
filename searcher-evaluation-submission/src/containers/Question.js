@@ -119,7 +119,7 @@ class Question extends Component {
                     <div className="col-md-8 col-sm-12">
                         <h2>Documents</h2>
                         <ul className="attachments">
-                            { document.map((attachmentId, index) =>
+                            { documents.map((attachmentId, index) =>
                                 <li key={index}>
                                     <Attachment
                                         questionId={id}
