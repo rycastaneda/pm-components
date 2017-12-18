@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TableRow from './TableRow';
 import Spinner from '../../components/Spinner/main';
+
 const SupplierInteractionsTable = ({ interactions, isLoading }) => (
     <div>
         <table className="table db-table db-table-sort db-table-sort-nojs">

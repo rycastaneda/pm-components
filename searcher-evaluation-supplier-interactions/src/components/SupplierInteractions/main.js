@@ -10,8 +10,8 @@ import Pagination from '../../components/Pagination/main';
 
 class SupplierInteractionsContainer extends Component {
     componentDidMount() {
-        const { apiActions } = this.props;
-        apiActions.fetchInteractions();
+        const { actions } = this.props;
+        actions.fetchSupplierInteractions('/preferred-suppliers/639/interactions');
     }
 
     render() {

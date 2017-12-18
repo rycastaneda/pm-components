@@ -6,7 +6,9 @@ export const API_DATA_SUCCESS = 'API_DATA_SUCCESS';
 export const API_DATA_FAILURE = 'API_DATA_FAILURE';
 
 function callApi(endpoint, options = {}) {
-    return axios.get(endpoint, options).then((response) => {
+    return axios.get(endpoint, options, { headers: {
+        'x-api-key': '4605c13cb21c4a269e70b2a38d3d982f',
+    } }).then((response) => {
         return Object.assign({}, normalize(response.data, { endpoint }));
     });
 }
