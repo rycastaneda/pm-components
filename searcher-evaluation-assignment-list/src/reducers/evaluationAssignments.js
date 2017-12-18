@@ -1,4 +1,6 @@
-import { EVALUATION_ASSIGMENTS_FETCHED,
+import {
+    EVALUATION_ASSIGMENTS_FETCHED,
+    EVALUATION_ASSIGNMENT_DELETE,
     IS_BUSY,
     REQUEST_FAILED,
     INITIALIZED } from '../constants/ActionTypes';
@@ -11,6 +13,7 @@ const INITIAL_DATA = {
     selectedSupplier:'',
     selectedAssignedOn:'',
     selectedEntityInstanceId:'',
+    isDeleteEnabled:true,
     filterDate:null,
     isBusy:false,
     errorMessage:null,
@@ -50,6 +53,18 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
                     selectedAssignedOn,
                     isBusy };
             }
+        case EVALUATION_ASSIGNMENT_DELETE:
+            {
+                let { id } = action;
+                let evaluationAssignments = state.evaluationAssignments.filter(item => item.id!==id);
+                return { ...state, evaluationAssignments };
+
+            }
+        case INITIALIZED:
+            {
+                let { evaluationTemplates, isDeleteEnabled, currentPage, totalPages, evaluationTemplateAssignmentTypes, staff, preferredSuppliers, evaluationTemplateAssignmentStatuses, evaluationAssignments } = action;
+                return { ...state, evaluationTemplates, isDeleteEnabled, currentPage, totalPages, evaluationTemplateAssignmentTypes,  staff, preferredSuppliers, evaluationTemplateAssignmentStatuses, evaluationAssignments };
+            }
         case IS_BUSY:
             state.isBusy = action.status;
             return Object.assign({}, state);
@@ -57,11 +72,7 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
         case REQUEST_FAILED:
             state.isBusy = false;
             return Object.assign({}, state);
-        case INITIALIZED:
-            {
-                let { evaluationTemplates, currentPage, totalPages, evaluationTemplateAssignmentTypes, staff, preferredSuppliers, evaluationTemplateAssignmentStatuses, evaluationAssignments } = action;
-                return { ...state, evaluationTemplates, currentPage, totalPages, evaluationTemplateAssignmentTypes,  staff, preferredSuppliers, evaluationTemplateAssignmentStatuses, evaluationAssignments };
-            }
+
         default:
             return state;
     }

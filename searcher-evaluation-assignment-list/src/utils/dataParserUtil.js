@@ -38,8 +38,8 @@ export function getAssignmentServiceUrlFor(queryParams) {
     }
     if (selectedAssignedOn&&selectedAssignedOn!=='') {
         let assignedOn = new Date(selectedAssignedOn);
-        selectedAssignedOn = assignedOn.getDate()+'/'+assignedOn.getMonth()+'/'+assignedOn.getFullYear();
-        urlPostfix +='&filter[date]='+selectedAssignedOn;
+        selectedAssignedOn = assignedOn.getFullYear()+'-'+(assignedOn.getMonth()+1)+'-'+assignedOn.getDate();
+        urlPostfix +='&filter[created_at]='+selectedAssignedOn;
     }
 
     if (urlPostfix.length) {
@@ -53,9 +53,13 @@ export function getDataForSave(id, active) {
     return { data:{ type:'evaluation-templates', id, attributes:{ active:activeStatus } } };
 }
 
-export function parseInitializeResponse({ evaluationTemplates, evaluationTemplateAssignmentTypes, preferredSuppliers, staff, evaluationTemplateAssignmentStatuses, evaluationAssignments }) {
+export function parseInitializeResponse({ userProfile, evaluationTemplates, evaluationTemplateAssignmentTypes, preferredSuppliers, staff, evaluationTemplateAssignmentStatuses, evaluationAssignments }) {
 
     let result = getDataFromAssignmentService(evaluationAssignments);
+    userProfile = normalize(userProfile, { endpoint:'user' });
+    userProfile = build(userProfile, 'user');
+    userProfile;
+    let isDeleteEnabled = true;
     evaluationTemplateAssignmentTypes = normalize(evaluationTemplateAssignmentTypes, { endpoint:'evaluation-template-assignment-types' });
     evaluationTemplateAssignmentTypes = build(evaluationTemplateAssignmentTypes, 'evaluationTemplateAssignmentTypes');
     evaluationTemplateAssignmentTypes = evaluationTemplateAssignmentTypes.map((item) => {
@@ -94,7 +98,7 @@ export function parseInitializeResponse({ evaluationTemplates, evaluationTemplat
     });
 
 
-    return { evaluationTemplates, staff, preferredSuppliers, evaluationTemplateAssignmentTypes, evaluationTemplateAssignmentStatuses, ...result };
+    return { evaluationTemplates, staff, preferredSuppliers, evaluationTemplateAssignmentTypes, evaluationTemplateAssignmentStatuses, isDeleteEnabled, ...result };
 }
 export function getDataFromAssignmentService(evaluationAssignments) {
 
@@ -116,7 +120,7 @@ export function getDataFromAssignmentService(evaluationAssignments) {
             } = item;
 
             createdAt = new Date(createdAt.date);
-            let assignedOn = createdAt.getDate()+'/'+createdAt.getMonth()+'/'+createdAt.getFullYear();
+            let assignedOn = createdAt.getDate()+'-'+createdAt.getMonth()+'-'+createdAt.getFullYear();
             let evaluationTemplate = { id:template.id, active:template.id, title:template.title };
             let assignedUser = assigneeUser.staff;
             let userName = assignedUser.lastName+', '+assignedUser.firstName;

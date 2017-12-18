@@ -65,6 +65,7 @@ class AssignmentsTable extends Component {
                     <i className="caret" ></i>
                 </a>
                 <ul className="dropdown-menu">
+                    { this.props.isDeletable? <li><a href="javascript:;" onClick ={() => this.props.onAssignmentDelete(id)} >Delete</a></li>:null }
                     <li ><a href={complete_url} >Complete evaluation</a></li>
                     <li><a href="javascript:;" >Mark as in Progress</a></li>
                     <li><a href="javascript:;">Analysis</a></li>
@@ -113,7 +114,7 @@ class AssignmentsTable extends Component {
                         {item.evaluationTemplate.title}
                     </td>
                     <td className="nowrap">
-                        {item.linkedTo.title} [{item.supplier.id}]
+                        {item.linkedTo.title}#{item.supplier.id}
                     </td>
                     <td className="nowrap">
                         {item.assignedUser.userName}
@@ -162,6 +163,8 @@ class AssignmentsTable extends Component {
 }
 
 AssignmentsTable.propTypes = {
+    onAssignmentDelete:PropTypes.func.isRequired,
+    isDeletable: PropTypes.bool.isRequired,
     tableData: PropTypes.array.isRequired,
     rowCountList: PropTypes.array.isRequired,
     rowCount: PropTypes.number.isRequired,

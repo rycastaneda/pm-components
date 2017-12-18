@@ -7,6 +7,7 @@ import {
 import {
     REQUEST_FAILED,
     EVALUATION_ASSIGMENTS_FETCHED,
+    EVALUATION_ASSIGNMENT_DELETE,
     INITIALIZED,
     IS_BUSY
 } from '../constants/ActionTypes';
@@ -17,12 +18,25 @@ import { showNotification } from '../notification/actions';
 export function previewTemplate(id) {
     id;
 }
-
+export function onEvaluationAssignmentDelete(id) {
+    return (dispatch) => {
+        axios.delete('evaluation-template-assignments/'+id).then(() => {
+            return { type: EVALUATION_ASSIGNMENT_DELETE, id };
+        })
+        .catch((error) => {
+            let { message } = error;
+            dispatch({ type:REQUEST_FAILED });
+            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+        });
+    };
+}
 
 export function initialize() {
 
     return (dispatch) => {
         axios.all([
+            // should be replaced by user profile service
+            axios.get('evaluation-templates'),
             axios.get('evaluation-templates'),
             axios.get('evaluation-template-assignment-types'),
             axios.get('evaluation-template-assignment-statuses'),
@@ -32,15 +46,16 @@ export function initialize() {
                 getAssignmentServiceUrlFor({ maxRowLength: MAXROWS_DEFAULT, currentPage:1 }),
                 dispatch
             )
-        ]).then((response) => {
 
-            let evaluationTemplates = response[0].data;
-            let evaluationTemplateAssignmentTypes =response[1].data;
-            let evaluationTemplateAssignmentStatuses =response[2].data;
-            let staff = response[3].data;
-            let preferredSuppliers = response[4].data;
-            let evaluationAssignments = response[5].data;
-            let result = parseInitializeResponse({ evaluationTemplates,
+        ]).then((response) => {
+            let userProfile = response[0].data;
+            let evaluationTemplates = response[1].data;
+            let evaluationTemplateAssignmentTypes =response[2].data;
+            let evaluationTemplateAssignmentStatuses =response[3].data;
+            let staff = response[4].data;
+            let preferredSuppliers = response[5].data;
+            let evaluationAssignments = response[6].data;
+            let result = parseInitializeResponse({ userProfile, evaluationTemplates,
                 evaluationTemplateAssignmentTypes,
                 evaluationTemplateAssignmentStatuses,
                 staff,
@@ -122,8 +137,11 @@ export function onEvaluationAssignmentFilterChange({ selectedStatus,
 function getPromiseForAssignmentService(url, queryParams, dispatch) {
     return getPromiseForService(url, dispatch)
     .then((response) => {
-        let result = getDataFromAssignmentService(response.data);
-        dispatch({ type:EVALUATION_ASSIGMENTS_FETCHED, ...result, ...queryParams });
+        if (response) {
+            let result = getDataFromAssignmentService(response.data);
+            dispatch({ type:EVALUATION_ASSIGMENTS_FETCHED, ...result, ...queryParams });
+        }
+
     });
 }
 function getPromiseForService(url, dispatch) {
