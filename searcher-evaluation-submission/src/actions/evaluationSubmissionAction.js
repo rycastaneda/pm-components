@@ -154,7 +154,7 @@ function updateQuestion(question, assignmentId, dispatch) {
     let endpoint = '/evaluation-template-assignments/'+assignmentId+'/question-responses';
     let parsedQuestionData = parseDataForUpdateQuestion(question) ;
     if (question.isAttempted) {
-        promise = axios.patch(endpoint, parsedQuestionData);
+        promise = axios.patch(endpoint+'/'+question.responseId, parsedQuestionData);
     } else {
         promise = axios.post(endpoint, parsedQuestionData);
     }

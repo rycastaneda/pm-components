@@ -4,6 +4,7 @@ export function parseDataForUpdateQuestion(question) {
 
     return {
         data:{
+            id:question.responseId,
             type:'evaluation-question-responses',
             attributes:{
                 response_value:question.selectedDefinition,
