@@ -12,7 +12,7 @@ const INITIAL_DATA = {
     selectedAssignedOn:'',
     selectedEntityInstanceId:'',
     filterDate:null,
-    isBusy:false,
+    isBusy:true,
     errorMessage:null,
     totalPages:1,
     currentPage:1,
@@ -58,9 +58,9 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
             state.isBusy = false;
             return Object.assign({}, state);
         case INITIALIZED:
-            {
+            {  let isBusy = false;
                 let { evaluationTemplates, currentPage, totalPages, evaluationTemplateAssignmentTypes, staff, preferredSuppliers, evaluationTemplateAssignmentStatuses, evaluationAssignments } = action;
-                return { ...state, evaluationTemplates, currentPage, totalPages, evaluationTemplateAssignmentTypes,  staff, preferredSuppliers, evaluationTemplateAssignmentStatuses, evaluationAssignments };
+                return { ...state, evaluationTemplates, currentPage, totalPages, evaluationTemplateAssignmentTypes,  staff, preferredSuppliers, evaluationTemplateAssignmentStatuses, evaluationAssignments, isBusy };
             }
         default:
             return state;

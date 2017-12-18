@@ -53,6 +53,7 @@ class EvaluationAssignmentList extends Component {
                     onSubmit = {this.onFilterSubmit}
                 />
                 <AssignmentsTable
+                    isBusy ={this.props.isBusy}
                     tableData= {this.props.evaluationAssignments}
                     rowCountList= {MAXROWS_LIST}
                     currentPage= {currentPage}
@@ -95,7 +96,7 @@ function mapStateToProps(state) {
         maxRowLength,
         evaluationAssignments
     } = state.evaluationAssignments;
-
+    window.console.log(isBusy);
     return {
         isBusy,
         staff,
