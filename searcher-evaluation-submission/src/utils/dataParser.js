@@ -17,7 +17,7 @@ export function parseDataForUpdateQuestion(question) {
                         id:Number(question.id)
                     }
                 },
-                questionType: {
+                type: {
                     data:{
                         type:'evaluation-question-types',
                         id:Number(question.type)
