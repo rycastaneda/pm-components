@@ -57,7 +57,8 @@ class EvaluationAssignmentList extends Component {
                     onSubmit = {this.onFilterSubmit}
                 />
                 <AssignmentsTable
-                    tableData= {this.props.evaluationAssignments}                    
+                    isBusy ={this.props.isBusy}
+                    tableData= {this.props.evaluationAssignments}
                     isDeletable = {true}
                     onAssignmentDelete ={this.onAssignmentDelete}
                     rowCountList= {MAXROWS_LIST}

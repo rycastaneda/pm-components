@@ -40,4 +40,8 @@
         background: #e68020;
         animation: spinner-animation 0.5s linear infinite;
     }
+
+    &.form-control-feedback {
+        top: 0;
+    }
 }

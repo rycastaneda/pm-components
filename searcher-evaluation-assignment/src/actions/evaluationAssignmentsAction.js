@@ -41,6 +41,8 @@ export const createAssignment = () => (dispatch, getState) => {
                 type: actionTypes.ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_SUCCESS,
                 response
             });
+            // back to assignments list page
+            window.location.href = '/searcher/evaluation_assignments/list';
         })
         .catch((error) => {
             throw error;
