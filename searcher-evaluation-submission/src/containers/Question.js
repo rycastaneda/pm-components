@@ -80,7 +80,7 @@ class Question extends Component {
             selectedDefinition,
             mandatoryComments,
             allowDocuments,
-            documents,
+            questionAttachments,
             questionType,
             title,
             id } = question;
@@ -114,12 +114,12 @@ class Question extends Component {
                     </div>
                 </div>
 
-                { documents.length > 0 &&
+                { questionAttachments.length > 0 &&
                 <div className="row">
                     <div className="col-md-8 col-sm-12">
                         <h2>Documents</h2>
                         <ul className="attachments">
-                            { documents.map((attachmentId, index) =>
+                            { questionAttachments.map((attachmentId, index) =>
                                 <li key={index}>
                                     <Attachment
                                         questionId={id}

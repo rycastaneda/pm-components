@@ -74,8 +74,7 @@ Criteria.propTypes = {
     dispatch: PropTypes.func.isRequired
 };
 
-function mapStateToProps(state, props) {
-    window.console.log('criteria');
+function mapStateToProps(state, props) {    
     let { criteriaByIndex } = state.evaluationSubmission;
     let { criteriaId } = props;
     let criteria = criteriaByIndex[criteriaId];

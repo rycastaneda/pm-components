@@ -40,7 +40,9 @@ export function parseInitialize(data, assignmentId) {
         evaluationQuestionTypeDefinitions,
         evaluationQuestionScaleDefinitions,
         evaluationTemplateAssignmentStatuses,
-        evaluationQuestionResponseDocuments } = normalize(data);
+        evaluationQuestionResponseDocuments,
+        uploads } = normalize(data);
+
     evaluationTemplateAssignments = evaluationTemplateAssignments[assignmentId];
 
     result.id = evaluationTemplateAssignments.relationships.template.data.id;
@@ -73,10 +75,9 @@ export function parseInitialize(data, assignmentId) {
         let {  documents, type } = relationships;
         type = type.data.id;
         let scaleDefinitions = [];
+        let questionAttachments =[];
         if (documents) {
-            documents = documents.data.map(item => item.id);
-        } else {
-            documents =[];
+            questionAttachments = documents.data.map(item => item.id);
         }
 
         if (enableScaleDefinitions === 1) {
@@ -93,7 +94,7 @@ export function parseInitialize(data, assignmentId) {
             enableScaleDefinitions,
             mandatoryComments,
             sortOrder,
-            documents,
+            questionAttachments,
             uploadedDocuments:[],
             responseId:null,
             comment:'',
@@ -130,19 +131,32 @@ export function parseInitialize(data, assignmentId) {
     });
 
     Object.values(evaluationQuestionResponses).forEach((item) => {
+        window.console.log(item);
         let questionId = item.relationships.question.data.id;
         let question = result.questionByIndex[String(questionId)];
         question.comment = item.attributes.comment;
         question.selectedDefinition = item.attributes.responseValue;
         question.isAttempted = true;
         question.responseId = item.id;
-    });
+        if (item.relationships.documents.data.length) {
+            question.uploadedDocuments = item.relationships.documents.data.map(item => item.id);
+        }
 
-    result.attachmentByIndex = {};
+    });
+    result.uploadedDocumentByIndex ={};
     Object.values(evaluationQuestionResponseDocuments).forEach((item) => {
         let { id, attributes } = item;
         let { downloadUrl, originalName } = attributes;
-        result.attachmentByIndex[String(id)] = { id, label:originalName, url:downloadUrl };
+        let status = 'success';
+        let progress = 100;
+        let referenceId = id;
+        result.uploadedDocumentByIndex[String(id)] = { id, name:originalName, referenceUrl:downloadUrl, status, progress, referenceId };
+    });
+    result.questionAttachmentByIndex = {};
+    Object.values(uploads).forEach((item) => {
+        let { id, attributes } = item;
+        let { downloadUrl, originalName } = attributes;
+        result.questionAttachmentByIndex[String(id)] = { id, label:originalName, url:downloadUrl };
     });
     return result;
 }
