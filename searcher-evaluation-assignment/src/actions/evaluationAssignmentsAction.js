@@ -42,7 +42,7 @@ export const createAssignment = () => (dispatch, getState) => {
                 response
             });
             // back to assignments list page
-            window.location.assign('/searcher/evaluation_assignments/list');
+            window.location.href = '/searcher/evaluation_assignments/list';
         })
         .catch((error) => {
             throw error;
