@@ -103,8 +103,6 @@ function mapStateToProps(state) {
         evaluationAssignments
     } = state.evaluationAssignments;
 
-    window.console.log('state from mapStateToProps: ', state.evaluationAssignments.maxRowLength);
-
     return {
         isBusy,
         staff,
