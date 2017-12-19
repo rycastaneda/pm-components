@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Criteria from './Criteria';
 import { initialize, addTemplate, updateTemplate, fetchTemplate, publishTemplate } from '../actions/evaluationTemplateCreator';
 import Notification from '../notification/Notification';
+import Modal from '../modal/Modal';
 import { INPUT_SYNC_INTERVAL } from '../constants';
 class EvaluationTemplateCreator extends Component {
 
@@ -69,6 +70,7 @@ class EvaluationTemplateCreator extends Component {
         return (
         <div className="searcher-evaluation-template-creator">
             <Notification />
+            <Modal />
             <div className="db-form-section">
                 <div className="row">
                     <div className="col-md-12">

@@ -16,21 +16,20 @@ import {
     DOCUMENT_UPLOAD_IN_PROGRESS,
     DOCUMENTS_UPLOADING,
     DOCUMENT_DELETE,
-    IS_BUSY,
-    PROMPT_MESSAGE,
-    CLEAR_MESSAGES
+    IS_BUSY
+
 } from '../constants/ActionTypes';
 
 import {
     UPLOAD_IN_PROGRESS,
     UPLOAD_SUCCESS,
-    UPLOAD_FAILED,
-    MESSAGE_TYPE_ERROR,
-    MESSAGE_TYPE_SUCCESS
+    UPLOAD_FAILED
+
 } from '../constants';
 
 function getInitialData() {
-    return {  isBusy:false,
+    return {
+        isBusy:false,
         messages:[],
         id:null,
         title:'',
@@ -41,7 +40,7 @@ function getInitialData() {
         documentsByIndex:{},
         allDocumentIndexes:[],
         questionTypes:[]
-      };
+    };
 }
 
 export function evaluationTemplateCreator(state = getInitialData(), action) {
@@ -243,26 +242,6 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
         case IS_BUSY:
             {
                 state.isBusy = action.status;
-                return Object.assign({}, state);
-            }
-        case PROMPT_MESSAGE:
-            {
-                state.isBusy = false;
-                let { message, messageType } = action;
-                switch (action.messageType) {
-                    case MESSAGE_TYPE_ERROR:
-                        state.messages =[...state.messages, { messageClass:'error', message, messageType }];
-                        break;
-                    case MESSAGE_TYPE_SUCCESS:
-                        state.messages =[...state.messages, { messageClass:'success', message, messageType }];
-                        break;
-                }
-
-                return Object.assign({}, state);
-            }
-        case CLEAR_MESSAGES:
-            {
-                state.messages = [];
                 return Object.assign({}, state);
             }
         default:

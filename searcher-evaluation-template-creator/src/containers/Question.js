@@ -70,18 +70,19 @@ class Question extends Component {
 
     componentWillReceiveProps(nextProps) {
         let { question }  = nextProps;
+
         this.setStateWithQuestion(question, question.isSaved);
-        clearInterval(this.intervalId_saveAnim);
-        clearInterval(this.intervalId_update);
+        this.clearAllIntervals();
         this.intervalId_saveAnim = setInterval(() => {
             this.setState({ isSaved:false });
             clearInterval(this.intervalId_saveAnim);
-        }, SAVE_ANIM_INTERVAL);
+        },
+        SAVE_ANIM_INTERVAL);
     }
 
     setStateWithQuestion(question, isSaved) {
-        const {
 
+        const {
             title,
             isAllowUpload,
             isCommentRequired,
@@ -89,6 +90,8 @@ class Question extends Component {
             type,
             scaleDefinitions
         } = question;
+        const documentError ='';
+        window.console.log('isCommentRequired', isCommentRequired);
         this.setState({
             title,
             isAllowUpload,
@@ -96,9 +99,10 @@ class Question extends Component {
             isAllowScaleDefinitions,
             type,
             scaleDefinitions,
-            documentError:'',
+            documentError,
             isSaved
         });
+
     }
 
     updateQuestionIndex() {
@@ -107,8 +111,7 @@ class Question extends Component {
     }
 
     componentWillUnmount() {
-        clearInterval(this.intervalId_update);
-        clearInterval(this.intervalId_saveAnim);
+        this.clearAllIntervals();
     }
 
     addQuestion() {
@@ -127,17 +130,23 @@ class Question extends Component {
     }
 
     onTitleChange(title) {
+
         this.setState({ title });
+
         if (title.length) {
-            clearInterval(this.intervalId_update);
-            clearInterval(this.intervalId_saveAnim);
+            this.clearAllIntervals();
             this.intervalId_update = setInterval(this.updateTitle, INPUT_SYNC_INTERVAL);
         }
+
+    }
+
+    clearAllIntervals() {
+        clearInterval(this.intervalId_update);
+        clearInterval(this.intervalId_saveAnim);
     }
 
     toggleMaximise() {
-        clearInterval(this.intervalId_update);
-        clearInterval(this.intervalId_saveAnim);
+        this.clearAllIntervals();
         let { question } = this.props;
         this.props.dispatch(toggleMaximiseQuestion(question.id, !question.isMaximised));
     }
@@ -159,8 +168,7 @@ class Question extends Component {
     }
 
     updateScaleDefinition(id, index, label, value, definitionId) {
-        clearInterval(this.intervalId_update);
-        clearInterval(this.intervalId_saveAnim);
+        this.clearAllIntervals();
         this.props.dispatch(onScaleDefinitionChange(this.props.criteriaId, this.props.question.id, id,  label, value, definitionId));
     }
 
@@ -171,8 +179,7 @@ class Question extends Component {
         let { value, definitionId } = scaleDefinitions[index];
 
         this.setState({ scaleDefinitions });
-        clearInterval(this.intervalId_update);
-        clearInterval(this.intervalId_saveAnim);
+        this.clearAllIntervals();
         this.intervalId_update = setInterval(() => {
             this.updateScaleDefinition(id, index, label, value, definitionId);
         }, INPUT_SYNC_INTERVAL);
@@ -210,10 +217,8 @@ class Question extends Component {
 
             return;
         }
-
-        this.setState({
-            documentError: ''
-        });
+        const documentError ='';
+        this.setState({ documentError });
 
         const documents = files.map((file, key) => {
             file.id = +new Date() + key;
@@ -307,9 +312,9 @@ class Question extends Component {
                             <div className="hidden-sm">
                             <br /><br />
                             </div>
-                            <button className="btn btn-sm"
-                                onClick = {this.toggleMaximise}
-                            >
+                            <button
+                                className="btn btn-sm"
+                                onClick = {this.toggleMaximise} >
                                 <i className="fa fa-angle-double-up"></i>
                                 Collapse Question
                             </button>
@@ -318,7 +323,7 @@ class Question extends Component {
                             <div className="form-group">
                                 <label className="control-label">Options</label>
                                 <ul>
-                                { isDefsDisabled !== true?
+                                {  isDefsDisabled !== true?
                                     <li>
                                         <div className="checkbox">
                                             <label>
@@ -328,13 +333,11 @@ class Question extends Component {
                                                         this.onAllowScaleDefinitionChange(event.target.checked)
                                                     }
                                                 />
-
                                                 {QUESTION_OPTIONS[0].label}
                                             </label>
                                         { this.state.isAllowScaleDefinitions?
                                             <ul>
                                                 {this.state.scaleDefinitions.map((type, index) =>
-
                                                     <li key={index} className="mar-btm-sm">
                                                         <div className="input-group">
                                                           <span className="input-group-addon scale" id="basic-addon1">{index}</span>

@@ -10,7 +10,8 @@ export  function getItemByAttrib(arr, attrib, value) {
         }
     }
 }
-export function parseInitialData(data) {
+export function parseInitialData(responseData) {
+    let { data } = responseData;
     return  data.map((item) => {
         let  type = item.id;
         let { title } = item.attributes;
@@ -40,9 +41,11 @@ export function parseDataForUpdateCriteria(id, title, weight) {
     weight = Number(weight);
     return { data:{ type: 'evaluation-criteria', id,  attributes: { title, weight } } };
 }
+
 export function parseDataForDeleteCriteria(id) {
     return { data:{ type: 'evaluation-criteria', id, attributes: { active:0 } } };
 }
+
 export function parseDataForCreateQuestion(text, questionType) {
     let  id  = questionType;
     return {
@@ -57,7 +60,8 @@ export function parseDataForCreateQuestion(text, questionType) {
                         type:'evaluation-question-types',
                         id
                     }
-                } }
+                }
+            }
         }
     };
 }
@@ -93,7 +97,7 @@ export function parseDataFromFetchTemplate(d) {
                 }
             });
 
-            includedQuestion =includedQuestion[0];
+            includedQuestion = includedQuestion[0];
 
             let question = createQuestion(Number(includedQuestion.relationships.type.data.id));
             let { attributes } = includedQuestion;
@@ -208,7 +212,7 @@ export function parseDataFromFetchTemplate(d) {
     result.questionsByIndex = questionsByIndex;
     result.documentsByIndex = documentsByIndex;
     result.allDocumentIndexes = allDocumentIndexes;
-    
+
     return result;
 }
 export function parseDataFromCreateQuestion(response) {
@@ -315,6 +319,7 @@ export function createQuestion(type ='1') {
 export function createCriteria() {
     return deepClone(CRITERION_SKELETON);
 }
-export function createCriterionFromData(data) {
+export function createCriterionFromData(responseData) {
+    let { data } = responseData;
     return Object.assign(createCriteria(), { id:data.id, title: data.attributes.title, weight: data.attributes.weight });
 }

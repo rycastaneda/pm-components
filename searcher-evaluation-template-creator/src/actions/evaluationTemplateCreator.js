@@ -18,6 +18,8 @@ import {
 } from '../utils/dataParserUtil';
 import {
     INITIALIZED,
+    TEMPLATE_CREATED,
+    TEMPLATE_UPDATED,
     TEMPLATE_FETCHED,
     CRITERIA_ADD,
     CRITERIA_DELETE,
@@ -31,19 +33,25 @@ import {
     QUESTION_ADD,
     QUESTION_UPDATE,
     QUESTION_DELETE,
-    QUESTION_MAXIMISE_CHANGE,
-    TEMPLATE_CREATED,
-    TEMPLATE_UPDATED
+    QUESTION_MAXIMISE_CHANGE
 } from '../constants/ActionTypes';
-import { MESSAGE_TYPE_ERROR, MESSAGE_TYPE_SUCCESS } from '../notification/constants';
+
+import { MESSAGE_TYPE_ERROR } from '../notification/constants';
 import { showNotification } from '../notification/actions';
+import { showModal } from '../modal/actions';
+
 const TEMPLATE_SERVICE_URL = 'evaluation-templates';
+export const EVALUATION_TEMPLATE_LIST_PAGE ='/searcher/evaluation_templates/list';
 export function publishTemplate() {
     return (dispatch, getState) => {
         const templateId = getState().evaluationTemplateCreator.id;
         return axios.post(TEMPLATE_SERVICE_URL+'/'+templateId+'/finalise', {})
         .then(() => {
-            dispatch(showNotification(MESSAGE_TYPE_SUCCESS, 'Template Published.'));
+            const title = 'Template Published';
+            const comment = 'Template published successfully. Please close this popup to go back to template listing.';
+            dispatch(showModal(title, comment, () => {
+                window.location.href = EVALUATION_TEMPLATE_LIST_PAGE;
+            }));
         })
         .catch((error) => {
             // dispatch({ type:REQUEST_FAILED, message: error.message });
@@ -55,21 +63,26 @@ export function publishTemplate() {
         });
     };
 }
+
 export function toggleMaximiseQuestion(id, isMaximised) {
     return { type:QUESTION_MAXIMISE_CHANGE, id, isMaximised };
 }
+
 export function toggleMaximiseCriteria(id, isMaximised) {
     return { type:CRITERIA_MAXIMISE_CHANGE, id, isMaximised };
 }
+
 export function initialize() {
+
     return (dispatch) => {
         return axios.get('evaluation-question-types')
         .then((response) => {
-            let questionTypes = parseInitialData(response.data.data);
+            let questionTypes = parseInitialData(response.data);
             if (questionTypes.length) {
                 dispatch({ type:INITIALIZED, questionTypes });
             } else {
-                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Unable to proceed. Initial data returned by the service is empty'));
+                const message = 'Unable to proceed. Initial data returned by the service is empty';
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
             }
 
         })
@@ -94,10 +107,12 @@ export function addTemplate(title) {
     };
 }
 
-export function updateTemplate(title, id) {
+export function updateTemplate(title, templateId) {
     return (dispatch) => {
-        const data = parseDataForUpdateTemplate(title, id);
-        return axios.patch(TEMPLATE_SERVICE_URL+'/'+id, data)
+        const data = parseDataForUpdateTemplate(title, templateId);
+        let serviceUrl = TEMPLATE_SERVICE_URL;
+        serviceUrl += '/'+templateId;
+        return axios.patch(serviceUrl, data)
         .then(() => {
             dispatch({ type:TEMPLATE_UPDATED, title });
         })
@@ -107,13 +122,19 @@ export function updateTemplate(title, id) {
         });
     };
 }
+
 export function addCriteria(title, weight) {
     return (dispatch, getState) => {
-        const { id } = getState().evaluationTemplateCreator;
+        const { evaluationTemplateCreator } =getState();
+        const templateId = evaluationTemplateCreator.id;
         const data = parseDataForCreateCriteria(title, weight);
-        return axios.post(TEMPLATE_SERVICE_URL+'/'+id+'/criteria', data)
+        let serviceUrl = TEMPLATE_SERVICE_URL;
+        serviceUrl += '/'+templateId;
+        serviceUrl += '/criteria';
+
+        return axios.post(serviceUrl, data)
         .then((response) => {
-            dispatch({ type:CRITERIA_ADD, criterion: createCriterionFromData(response.data.data) });
+            dispatch({ type:CRITERIA_ADD, criterion: createCriterionFromData(response.data) });
         })
         .catch((error) => {
             let { message } = error;
@@ -124,10 +145,13 @@ export function addCriteria(title, weight) {
 
 export function deleteCriteria(id) {
     return (dispatch, getState) => {
-        const templateId = getState().evaluationTemplateCreator.id;
+        const { evaluationTemplateCreator } =getState();
+        const templateId = evaluationTemplateCreator.id;
         const data = parseDataForDeleteCriteria(id);
-
-        return axios.delete(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+id, data)
+        let serviceUrl = TEMPLATE_SERVICE_URL;
+        serviceUrl += '/'+templateId;
+        serviceUrl += '/criteria/'+id;
+        return axios.delete(serviceUrl, data)
         .then(() => {
             dispatch({ type:CRITERIA_DELETE, id });
         })
@@ -140,10 +164,13 @@ export function deleteCriteria(id) {
 
 export function updateCriteria(id, title, weight) {
     return (dispatch, getState) => {
-        const templateId = getState().evaluationTemplateCreator.id;
+        const { evaluationTemplateCreator } =getState();
+        const templateId = evaluationTemplateCreator.id;
         const data = parseDataForUpdateCriteria(id, title, weight);
-        return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+id,
-        data)
+        let serviceUrl = TEMPLATE_SERVICE_URL;
+        serviceUrl += '/'+templateId;
+        serviceUrl += '/criteria/'+id;
+        return axios.patch(serviceUrl, data)
         .then(() => {
             dispatch({ type:CRITERIA_UPDATE, id, title, weight });
         })
@@ -156,10 +183,14 @@ export function updateCriteria(id, title, weight) {
 
 export function addQuestionToCriteria(criteriaId, questionTitle, questionType) {
     return (dispatch, getState) => {
-        const id = getState().evaluationTemplateCreator.id;
+        const { evaluationTemplateCreator } =getState();
+        const templateId = evaluationTemplateCreator.id;
         const data = parseDataForCreateQuestion(questionTitle, questionType);
-        return axios.post(TEMPLATE_SERVICE_URL+'/'+id+'/criteria/'+criteriaId+'/questions',
-        data)
+        let serviceUrl = TEMPLATE_SERVICE_URL;
+        serviceUrl += '/'+templateId;
+        serviceUrl += '/criteria/'+criteriaId;
+        serviceUrl += '/questions';
+        return axios.post(serviceUrl, data)
         .then((response) => {
             const question = parseDataFromCreateQuestion(response.data) ;
             dispatch({ type:QUESTION_ADD, criteriaId, question });
@@ -173,10 +204,18 @@ export function addQuestionToCriteria(criteriaId, questionTitle, questionType) {
 
 export function onQuestionTypeChange(criteriaId, questionId, type) {
     return (dispatch, getState) => {
-        let templateId =getState().evaluationTemplateCreator.id;
-        let question = getState().evaluationTemplateCreator.questionsByIndex[questionId];
-        let data = parseDataForUpdateQuestion(Object.assign({}, question, { type }));
-        return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
+        const { evaluationTemplateCreator } =getState();
+        const templateId = evaluationTemplateCreator.id;
+        let question = evaluationTemplateCreator.questionsByIndex[questionId];
+        question = { ...question, type };
+        let data = parseDataForUpdateQuestion(question);
+
+        let serviceUrl = TEMPLATE_SERVICE_URL;
+        serviceUrl += '/'+templateId;
+        serviceUrl += '/criteria/'+criteriaId;
+        serviceUrl += '/questions/'+questionId;
+
+        return axios.patch(serviceUrl, data)
         .then((response) => {
             const question = parseDataFromCreateQuestion(response.data) ;
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
@@ -189,13 +228,21 @@ export function onQuestionTypeChange(criteriaId, questionId, type) {
 }
 export function onQuestionTitleChange(criteriaId, questionId, title) {
     return (dispatch, getState) => {
-        let templateId =getState().evaluationTemplateCreator.id;
-        let qn = getState().evaluationTemplateCreator.questionsByIndex[questionId];
-        let data = parseDataForUpdateQuestion(Object.assign({}, qn, { title }));
-        return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
+
+        const { evaluationTemplateCreator } =getState();
+        const templateId = evaluationTemplateCreator.id;
+
+        let question = evaluationTemplateCreator.questionsByIndex[questionId];
+        question = { ...question, title };
+        let data = parseDataForUpdateQuestion(question);
+
+        let serviceUrl = TEMPLATE_SERVICE_URL;
+        serviceUrl += '/'+templateId;
+        serviceUrl += '/criteria/'+criteriaId;
+        serviceUrl += '/questions/'+questionId;
+
+        return axios.patch(serviceUrl, data)
         .then(() => {
-            qn = getState().evaluationTemplateCreator.questionsByIndex[questionId];
-            const question = Object.assign({}, qn, { title });
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
@@ -207,72 +254,117 @@ export function onQuestionTitleChange(criteriaId, questionId, title) {
 
 export function onQuestionAllowUploadChange(criteriaId, questionId, isAllowUpload) {
     return (dispatch, getState) => {
-        let templateId =getState().evaluationTemplateCreator.id;
-        let question = getState().evaluationTemplateCreator.questionsByIndex[questionId];
-        let data = parseDataForUpdateQuestion(Object.assign({}, question, { isAllowUpload }));
-        return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
-        .then(() => {
 
+        const { evaluationTemplateCreator } =getState();
+        const templateId = evaluationTemplateCreator.id;
+
+        let question = evaluationTemplateCreator.questionsByIndex[questionId];
+        question = { ...question, isAllowUpload };
+
+        const data = parseDataForUpdateQuestion(question);
+
+        let serviceUrl = TEMPLATE_SERVICE_URL;
+        serviceUrl += '/'+templateId;
+        serviceUrl += '/criteria/'+criteriaId;
+        serviceUrl += '/questions/'+questionId;
+
+        return axios.patch(serviceUrl, data)
+        .then(() => {
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            let { message } = error;
+            const { message } = error;
             dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
         });
     };
 }
+
 export function  onAllowScaleDefinitionChange(criteriaId, questionId, isAllowScaleDefinitions) {
     return (dispatch, getState) => {
-        let templateId =getState().evaluationTemplateCreator.id;
-        let question = getState().evaluationTemplateCreator.questionsByIndex[questionId];
-        let data = parseDataForUpdateQuestion(Object.assign({}, question, { isAllowScaleDefinitions }));
-        return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
-        .then((response) => {
-            const question = parseDataFromCreateQuestion(response.data);
-            
-            dispatch({ type:QUESTION_UPDATE, criteriaId, question });
-        })
-        .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
-        });
-    };
-}
-export function onQuestionAllowCommentsChange(criteriaId, questionId, isCommentRequired) {
-    return (dispatch, getState) => {
-        let templateId =getState().evaluationTemplateCreator.id;
-        let question = getState().evaluationTemplateCreator.questionsByIndex[questionId];
-        let data = parseDataForUpdateQuestion(Object.assign({}, question, { isCommentRequired }));
-        return axios.patch(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId, data)
+        const { evaluationTemplateCreator } =getState();
+        const templateId = evaluationTemplateCreator.id;
+
+        let question = evaluationTemplateCreator.questionsByIndex[questionId];
+        question = { ...question, isAllowScaleDefinitions };
+
+        const data = parseDataForUpdateQuestion(question);
+
+        let serviceUrl = TEMPLATE_SERVICE_URL;
+        serviceUrl += '/'+templateId;
+        serviceUrl += '/criteria/'+criteriaId;
+        serviceUrl += '/questions/'+questionId;
+
+        return axios.patch(serviceUrl, data)
         .then(() => {
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            let { message } = error;
+            const { message } = error;
             dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
         });
     };
 }
+
+export function onQuestionAllowCommentsChange(criteriaId, questionId, isCommentRequired) {
+    return (dispatch, getState) => {
+        const { evaluationTemplateCreator } =getState();
+        const templateId = evaluationTemplateCreator.id;
+
+        let question = evaluationTemplateCreator.questionsByIndex[questionId];
+        question = { ...question, isCommentRequired };
+
+        let serviceUrl = TEMPLATE_SERVICE_URL;
+        serviceUrl += '/'+templateId;
+        serviceUrl += '/criteria/'+criteriaId;
+        serviceUrl += '/questions/'+questionId;
+
+        const data = parseDataForUpdateQuestion(question);
+
+        return axios.patch(serviceUrl, data)
+        .then(() => {
+            dispatch({ type:QUESTION_UPDATE, criteriaId, question });
+        })
+        .catch((error) => {
+            const { message } = error;
+            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+        });
+    };
+}
+
 export function deleteQuestion(criteriaId, questionId) {
     return (dispatch, getState) => {
         const templateId = getState().evaluationTemplateCreator.id;
-        return axios.delete(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId)
+
+        let serviceUrl = TEMPLATE_SERVICE_URL;
+        serviceUrl += '/'+templateId;
+        serviceUrl += '/criteria/'+criteriaId;
+        serviceUrl += '/questions/'+questionId;
+
+        return axios.delete(serviceUrl)
         .then(() => {
             dispatch({ type:QUESTION_DELETE, criteriaId, questionId });
         })
         .catch((error) => {
-            let { message } = error;
+            const { message } = error;
             dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
         });
     };
 }
+
 export function onScaleDefinitionChange(criteriaId, questionId, typeDefinitionId, text, score, scaleDefinitionId) {
     return (dispatch, getState) => {
+
         const templateId = getState().evaluationTemplateCreator.id;
-        const url =TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId+'/scale-definitions';
-        let data = parseDataForScaleDefinition(typeDefinitionId, scaleDefinitionId, text, score);
+        let serviceUrl = TEMPLATE_SERVICE_URL;
+        serviceUrl += '/'+templateId;
+        serviceUrl += '/criteria/'+criteriaId;
+        serviceUrl += '/questions/'+questionId;
+        serviceUrl += '/scale-definitions';
+        const data = parseDataForScaleDefinition(typeDefinitionId, scaleDefinitionId, text, score);
+
         if (scaleDefinitionId===undefined) {
-            return axios.post(url, data)
+
+            return axios.post(serviceUrl, data)
                 .then((response) => {
                     let responseScaleDef = normalize(response.data, { endpoint:'evaluation-question-scale-definitions' });
                     responseScaleDef = build(responseScaleDef, 'evaluationQuestionScaleDefinitions')[0];
@@ -285,19 +377,16 @@ export function onScaleDefinitionChange(criteriaId, questionId, typeDefinitionId
                     dispatch({ type:QUESTION_UPDATE, criteriaId, question });
                 })
                 .catch((error) => {
-                    let { message } = error;
+                    const { message } = error;
                     dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
                 });
         } else {
-
-            // not working completely. Need to check with Tom
-            return axios.patch(url+'/'+scaleDefinitionId, data)
+            serviceUrl +=scaleDefinitionId;
+            return axios.patch(serviceUrl, data)
                 .then((response) => {
                     let responseScaleDef = normalize(response.data, { endpoint:'evaluation-question-scale-definitions' });
                     responseScaleDef = build(responseScaleDef, 'evaluationQuestionScaleDefinitions')[0];
-                    let question = Object.assign({}, getState().evaluationTemplateCreator.questionsByIndex[questionId]);
-
-
+                    let question = { ...getState().evaluationTemplateCreator.questionsByIndex[questionId] };
                     const index = question.scaleDefinitions.findIndex((item) => {
                         return (item.id === responseScaleDef.typeDefinition.id);
                     });
@@ -306,31 +395,39 @@ export function onScaleDefinitionChange(criteriaId, questionId, typeDefinitionId
                     dispatch({ type:QUESTION_UPDATE, criteriaId, question });
                 })
                 .catch((error) => {
-                    let { message } = error;
+                    const { message } = error;
                     dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
                 });
         }
     };
 }
+
 export function addDocumentsForQuestion(criteriaId, questionId, documents) {
     return (dispatch, getState) => {
+
         const templateId = getState().evaluationTemplateCreator.id;
+
         dispatch({
             type: DOCUMENTS_UPLOADING,
             questionId,
             documents
         });
-        const url =TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId+'/documents';
+
+        let serviceUrl =TEMPLATE_SERVICE_URL;
+        serviceUrl += '/'+templateId;
+        serviceUrl += '/criteria/'+criteriaId;
+        serviceUrl += '/questions/'+questionId;
+        serviceUrl += '/documents';
+
         return  axios.all(
                 documents.map((document) => {
                     let formData = new FormData();
-
                     formData.append('template_id', templateId);
                     formData.append('criteria_id', criteriaId);
                     formData.append('question_id', questionId);
                     formData.append('document', document);
 
-                    return axios.post(url, formData, {
+                    return axios.post(serviceUrl, formData, {
                         onUploadProgress: function(progressEvent) {
                             var percentCompleted = progressEvent.loaded / progressEvent.total;
                             dispatch(incrementProgress(document.id, Math.ceil(percentCompleted * 100)));
@@ -354,29 +451,36 @@ export function addDocumentsForQuestion(criteriaId, questionId, documents) {
                     });
                 })
             ).then((response) => {
-                if (!response.every(response => response.status === 200)) { // Respond to error if necessary
-
+                if (!response.every(response => response.status === 200)) {
                     dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Error in uploading the document.'));
                 }
             });
     };
 }
 
-
 export function deleteDocument(criteriaId, questionId, id) {
     return (dispatch, getState) => {
+
         const templateId = getState().evaluationTemplateCreator.id;
         const reffId = getState().evaluationTemplateCreator.documentsByIndex[id].referenceId;
-        return axios.delete(TEMPLATE_SERVICE_URL+'/'+templateId+'/criteria/'+criteriaId+'/questions/'+questionId+'/documents/'+reffId)
+
+        let serviceUrl = TEMPLATE_SERVICE_URL;
+        serviceUrl+='/'+templateId;
+        serviceUrl+='/criteria/'+criteriaId;
+        serviceUrl+='/questions/'+questionId;
+        serviceUrl+='/documents/'+reffId;
+
+        return axios.delete(serviceUrl)
         .then(() => {
             dispatch({ type:DOCUMENT_DELETE, questionId, id });
         })
         .catch((error) => {
-            let { message } = error;
+            const { message } = error;
             dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
         });
     };
 }
+
 export function incrementProgress(documentId, progress) {
     return {
         type: DOCUMENT_UPLOAD_IN_PROGRESS,
@@ -384,6 +488,7 @@ export function incrementProgress(documentId, progress) {
         progress
     };
 }
+
 export function fetchTemplate(id) {
     return (dispatch) => {
         axios.all([
@@ -393,30 +498,28 @@ export function fetchTemplate(id) {
                 if (questionTypes.length) {
                     dispatch({ type:INITIALIZED, questionTypes });
                 } else {
-                    let message  = 'Unable to proceed. Initial data returned by the service is empty';
+                    const message = 'Unable to proceed. Initial data returned by the service is empty';
                     dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
                 }
 
             })
             .catch((error) => {
-                let { message } = error;
+                const { message } = error;
                 dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
             }),
             getPromiseForService(TEMPLATE_SERVICE_URL+'/'+id+'?include=criteria.questions', dispatch)
             .then((response) => {
-                let template = parseDataFromFetchTemplate(response.data);
+                const template = parseDataFromFetchTemplate(response.data);
                 dispatch ({ type: TEMPLATE_FETCHED, template });
             })
-        ]
-        );
-
+        ]);
     };
 }
 
 function getPromiseForService(url, dispatch) {
     return axios.get(url)
     .catch((error) => {
-        let { message } = error;
+        const { message } = error;
         dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
     });
 }

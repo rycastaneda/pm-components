@@ -104,7 +104,6 @@ export function parseInitialize(data, assignmentId) {
         };
 
     });
-    result.uploadedDocumentByIndex={};
 
     result.scaleDefinitionByIndex = {};
     Object.values(evaluationQuestionScaleDefinitions).forEach((item) => {
@@ -131,7 +130,6 @@ export function parseInitialize(data, assignmentId) {
     });
 
     Object.values(evaluationQuestionResponses).forEach((item) => {
-        window.console.log(item);
         let questionId = item.relationships.question.data.id;
         let question = result.questionByIndex[String(questionId)];
         question.comment = item.attributes.comment;
@@ -141,8 +139,8 @@ export function parseInitialize(data, assignmentId) {
         if (item.relationships.documents.data.length) {
             question.uploadedDocuments = item.relationships.documents.data.map(item => item.id);
         }
-
     });
+
     result.uploadedDocumentByIndex ={};
     Object.values(evaluationQuestionResponseDocuments).forEach((item) => {
         let { id, attributes } = item;
@@ -152,11 +150,13 @@ export function parseInitialize(data, assignmentId) {
         let referenceId = id;
         result.uploadedDocumentByIndex[String(id)] = { id, name:originalName, referenceUrl:downloadUrl, status, progress, referenceId };
     });
+
     result.questionAttachmentByIndex = {};
     Object.values(uploads).forEach((item) => {
         let { id, attributes } = item;
         let { downloadUrl, originalName } = attributes;
         result.questionAttachmentByIndex[String(id)] = { id, label:originalName, url:downloadUrl };
     });
+
     return result;
 }
