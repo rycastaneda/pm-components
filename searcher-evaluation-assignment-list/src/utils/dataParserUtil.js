@@ -61,6 +61,8 @@ export function parseInitializeResponse({ userProfile, evaluationTemplates, eval
     userProfile = build(userProfile, 'users').map(item => {
         let { id, staff } = item;
         let { firstName, lastName, pitRoles, userId } =staff;
+        // user is needs to be a string
+        userId = String(userId);
         let { name } =pitRoles[0];
         return { id, firstName, lastName, userId, pitRole:name };
     })[0];
@@ -69,10 +71,10 @@ export function parseInitializeResponse({ userProfile, evaluationTemplates, eval
         // admin can delete all assignments
         let isDeletable = Boolean(userProfile.pitRole==='admin');
         // creator can delete his own assignments
-        isDeletable = isDeletable || (item.createdBy=== userProfile.userId);
+        isDeletable = isDeletable||(item.createdBy=== userProfile.userId);
         return { ...item, isDeletable };
     });
-    
+
     evaluationTemplateAssignmentTypes = normalize(evaluationTemplateAssignmentTypes, { endpoint:'evaluation-template-assignment-types' });
     evaluationTemplateAssignmentTypes = build(evaluationTemplateAssignmentTypes, 'evaluationTemplateAssignmentTypes');
     evaluationTemplateAssignmentTypes = evaluationTemplateAssignmentTypes.map((item) => {
@@ -131,6 +133,7 @@ export function getDataFromAssignmentService(evaluationAssignments) {
                 assignmentType,
                 assignmentEntityInstance,
             } = item;
+            createdBy = createdBy.id;
             createdAt = new Date(createdAt.date);
             let assignedOn = createdAt.getDate()+'-'+createdAt.getMonth()+'-'+createdAt.getFullYear();
             let evaluationTemplate = { id:template.id, active:template.id, title:template.title };
