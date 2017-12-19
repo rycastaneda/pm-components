@@ -73,7 +73,7 @@ export function toggleMaximiseCriteria(id, isMaximised) {
 }
 
 export function initialize() {
-
+    window.console.log('initialize');
     return (dispatch) => {
         return axios.get('evaluation-question-types')
         .then((response) => {
@@ -494,7 +494,7 @@ export function fetchTemplate(id) {
         axios.all([
             axios.get('evaluation-question-types')
             .then((response) => {
-                let questionTypes = parseInitialData(response.data.data);
+                let questionTypes = parseInitialData(response.data);
                 if (questionTypes.length) {
                     dispatch({ type:INITIALIZED, questionTypes });
                 } else {

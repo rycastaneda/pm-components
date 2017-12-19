@@ -450,7 +450,6 @@ Question.propTypes = {
 
 function mapStateToProps(state, props) {
     const { questionsByIndex, documentsByIndex, questionTypes } = state.evaluationTemplateCreator;
-
     let question = props.questionId ? questionsByIndex[props.questionId]: createQuestion(questionTypes[0].type);
     const questionIndex = props.questionIndex;
     let documents = [];

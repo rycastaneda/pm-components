@@ -90,15 +90,12 @@ export function parseDataFromFetchTemplate(d) {
         criteria.weight = includeCriteria.attributes.weight;
 
         includeCriteria.relationships.questions.data.forEach((questionItem) => {
-
             let includedQuestion = included.filter((include) => {
                 if ((include.type==='evaluation-questions')&&(include.id===questionItem.id)) {
                     return include;
                 }
             });
-
             includedQuestion = includedQuestion[0];
-
             let question = createQuestion(Number(includedQuestion.relationships.type.data.id));
             let { attributes } = includedQuestion;
             question.id = includedQuestion.id;
@@ -123,7 +120,6 @@ export function parseDataFromFetchTemplate(d) {
                     document.id = includedDocument.id;
                     document.referenceId = includedDocument.id;
                     document.referenceUrl= includedDocument.attributes.download_url;
-
                     return document;
                 });
             }
@@ -135,10 +131,6 @@ export function parseDataFromFetchTemplate(d) {
 
             let evaluationQuestion = build(normalizedData, 'evaluationQuestions', question.id);
 
-            // let allTypeDefinitionsByIndex = {};
-            //
-            //
-            //
             let typeDefinitionByIndex = {};
 
             // convert object to array.
@@ -155,49 +147,12 @@ export function parseDataFromFetchTemplate(d) {
                         let { score, definition, id }  = def;
                         let definitionId = id;
                         let label = definition;
-
                         let newScaleDefinition = { id:typeDef.id, label, value:typeDef.value, score, definitionId };
                         typeDefinitionByIndex[typeDefinitionId] = newScaleDefinition;
                     }
-
                 });
             }
             question.scaleDefinitions = Object.values(typeDefinitionByIndex);
-
-            /*
-            let includedTypeDefinitions = included.filter((include) => {
-                return ((include.type==='evaluation-question-type-definitions'));
-            });
-            let includedDefinitions=[];
-            if (includedQuestion.relationships.definitions) {
-
-                includedDefinitions = includedQuestion.relationships.definitions.data.map((definitionItem) => {
-                    let includedDefinition = included.filter((include) => {
-                        return ((include.type==='evaluation-question-scale-definitions')&&(include.id===definitionItem.id));
-                    });
-                    return includedDefinition[0];
-                });
-            }
-            includedTypeDefinitions.forEach((def) => {
-                let definition = {};
-                definition.value = Number(def.attributes.value);
-                definition.title = String(def.attributes.title);
-                definition.id = String(def.attributes.value);
-                let includedDefinition = includedDefinitions.filter((def2) => {
-                    return (Number(def2.attributes.score)===Number(def.attributes.value));
-                });
-                if (includedDefinition.length) {
-                    includedDefinition = includedDefinition[0];
-                    definition.label = includedDefinition.attributes.definition;
-                    definition.refId = includedDefinition.id;
-
-                } else {
-                    definition.refId = null;
-                    definition.label = '';
-                }
-                question.scaleDefinitions.push(definition);
-
-            }); */
             questionsByIndex[question.id] = question;
             allQuestionIndexes.push(question.id);
             criteria.questions.push(question.id);
@@ -212,11 +167,9 @@ export function parseDataFromFetchTemplate(d) {
     result.questionsByIndex = questionsByIndex;
     result.documentsByIndex = documentsByIndex;
     result.allDocumentIndexes = allDocumentIndexes;
-
     return result;
 }
 export function parseDataFromCreateQuestion(response) {
-
     let normalizedObject = normalize(response, { endpoint:'evaluation-questions' });
     let evaluationQuestionData = build(normalizedObject, 'evaluationQuestions')[0];
     let { id, text, enableScaleDefinitions, mandatoryComments, allowDocuments, documents, type, definitions } = evaluationQuestionData;
@@ -228,22 +181,6 @@ export function parseDataFromCreateQuestion(response) {
     question.isCommentRequired = Boolean(mandatoryComments);
     question.isAllowUpload = Boolean(allowDocuments);
     question.documentIds = documents?documents.map(document => document.id):[];
-
-
-    /* question.scaleDefinitions = evaluationTypeDefinitions.map((item) => {
-        let definition = evaluationScaleDefinitions.find((scaleDefinition) => {
-            return Number(scaleDefinition.attributes.score) === Number(item.attributes.value);
-        });
-        let { id, attributes }= item;
-        let { value, title } = attributes;
-        if (definition) {
-
-            return { id, value, title, label:definition.attributes.definition, refId:definition.id };
-
-        } else {
-            return { id, value, title, label:'', refId:null };
-        }
-    }); */
 
     let typeDefinitionByIndex = {};
     type.definitions.forEach((item) => {

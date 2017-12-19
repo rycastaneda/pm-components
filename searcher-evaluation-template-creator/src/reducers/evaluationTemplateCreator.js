@@ -47,7 +47,8 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
     switch (action.type) {
         case INITIALIZED: {
             let { questionTypes } = action;
-            return Object.assign({}, state, { questionTypes });
+            return { ...state, questionTypes };
+
         }
         case QUESTION_MAXIMISE_CHANGE: {
             let { questionsByIndex } = state;
