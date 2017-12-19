@@ -78,7 +78,7 @@ EvaluationAssignmentList.propTypes = {
     currentPage: PropTypes.number.isRequired,
     totalPages: PropTypes.number.isRequired,
     errorMessage: PropTypes.string,
-    maxRowLength: PropTypes.number,
+    maxRowLength: PropTypes.string,
     dispatch: PropTypes.func.isRequired
 };
 
@@ -95,6 +95,8 @@ function mapStateToProps(state) {
         maxRowLength,
         evaluationAssignments
     } = state.evaluationAssignments;
+
+    window.console.log('state from mapStateToProps: ', state.evaluationAssignments.maxRowLength);
 
     return {
         isBusy,

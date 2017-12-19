@@ -8,6 +8,7 @@ export const EVALUATION_ASSIGNMENT_COMPLETION ='/searcher/evaluation_assignments
 // const PREVIEW_PAGE ='/searcher/evaluation/preview_template/';
 
 export function getAssignmentServiceUrlFor(queryParams) {
+
     let urlPostfix = '';
     let { currentPage, maxRowLength, selectedStatus, selectedLinkedTo, selectedTemplate, selectedAssignedTo, selectedSupplier, selectedEntityInstanceId, selectedAssignedOn } =queryParams;
     if (currentPage) {
