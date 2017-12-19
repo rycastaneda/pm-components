@@ -162,7 +162,7 @@ class AssignmentsTable extends Component {
                 <div className="col-sm-12 form-inline">
                     <select className="form-control" defaultValue={this.props.rowCount}
                         onChange={event => this.props.rowCountChange(event.target.value) }>
-                        {this.props.rowCountList.map((item, index) =>
+                        { this.props.rowCountList.map((item, index) =>
                             <option key={index}>{item}</option>
                         )}
                     </select>
@@ -194,7 +194,7 @@ AssignmentsTable.propTypes = {
     isDeletable: PropTypes.bool.isRequired,
     tableData: PropTypes.array.isRequired,
     rowCountList: PropTypes.array.isRequired,
-    rowCount: PropTypes.number.isRequired,
+    rowCount: PropTypes.string.isRequired,
     totalPages:PropTypes.number.isRequired,
     currentPage:PropTypes.number.isRequired,
     goToPage:PropTypes.func.isRequired,

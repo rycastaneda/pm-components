@@ -9,7 +9,8 @@ import {
     EVALUATION_ASSIGMENTS_FETCHED,
     EVALUATION_ASSIGNMENT_DELETE,
     INITIALIZED,
-    IS_BUSY
+    IS_BUSY,
+    EVALUATION_ASSIGNMENTS_LIST_UPDATE_CHANGE_ROWS_LENGTH,
 } from '../constants/ActionTypes';
 import { MAXROWS_DEFAULT } from '../constants/DataConstants';
 import { MESSAGE_TYPE_ERROR } from '../notification/constants';
@@ -105,6 +106,12 @@ export function onEvaluationTemplatesDisplayedLengthChange(perPage) {
             selectedSupplier,
             selectedAssignedOn,
             selectedEntityInstanceId };
+
+        dispatch({
+            type: EVALUATION_ASSIGNMENTS_LIST_UPDATE_CHANGE_ROWS_LENGTH,
+            perPage
+        });
+
         getPromiseForAssignmentService(getAssignmentServiceUrlFor(queryParams), queryParams, dispatch);
     };
 }
@@ -144,6 +151,7 @@ function getPromiseForAssignmentService(url, queryParams, dispatch) {
 
     });
 }
+
 function getPromiseForService(url, dispatch) {
     return axios.get(url)
     .catch((error) => {
@@ -152,6 +160,7 @@ function getPromiseForService(url, dispatch) {
         dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
     });
 }
+
 export function isBusy(status) {
     return {
         type: IS_BUSY,

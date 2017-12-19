@@ -85,7 +85,7 @@ EvaluationAssignmentList.propTypes = {
     currentPage: PropTypes.number.isRequired,
     totalPages: PropTypes.number.isRequired,
     errorMessage: PropTypes.string,
-    maxRowLength: PropTypes.number,
+    maxRowLength: PropTypes.string,
     dispatch: PropTypes.func.isRequired
 };
 
