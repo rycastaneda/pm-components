@@ -37,7 +37,7 @@ export function initialize() {
     return (dispatch) => {
         axios.all([
             // should be replaced by user profile service
-            axios.get('evaluation-templates'),
+            axios.get('user?include=staff.pitRoles'),
             axios.get('evaluation-templates'),
             axios.get('evaluation-template-assignment-types'),
             axios.get('evaluation-template-assignment-statuses'),

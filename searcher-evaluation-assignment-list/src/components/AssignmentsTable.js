@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 
 import ReactPaginate from 'react-paginate';
-
+import Preloader from './PreloaderAnimation';
 class AssignmentsTable extends Component {
 
 
@@ -50,7 +50,7 @@ class AssignmentsTable extends Component {
     hideMenu() {
         this.setState({ menuVisibleItemId:null });
     }
-    renderMoreButton(id, complete_url) {
+    renderMoreButton(id, complete_url, isDeletable) {
         if (this.state.menuVisibleItemId===id) {
             return (
             <div className="dropdown open" ref={(ul) => {
@@ -65,7 +65,7 @@ class AssignmentsTable extends Component {
                     <i className="caret" ></i>
                 </a>
                 <ul className="dropdown-menu">
-                    { this.props.isDeletable? <li><a href="javascript:;" onClick ={() => this.props.onAssignmentDelete(id)} >Delete</a></li>:null }
+                    { isDeletable? <li><a href="javascript:;" onClick ={() => this.props.onAssignmentDelete(id)} >Delete</a></li>:null }
                     <li ><a href={complete_url} >Complete evaluation</a></li>
                     <li><a href="javascript:;" >Mark as in Progress</a></li>
                     <li><a href="javascript:;">Analysis</a></li>
@@ -108,23 +108,7 @@ class AssignmentsTable extends Component {
             { this.props.isBusy?
                 <tr>
                     <td colSpan="7">
-                    <div className="loading-animation">
-                          <span></span>
-                          <span></span>
-                          <span></span>
-                          <span></span>
-                          <span></span>
-                          <span></span>
-                          <span></span>
-                          <span></span>
-                          <span></span>
-                          <span></span>
-                          <span></span>
-                          <span></span>
-                          <span></span>
-                          <span></span>
-                          <span></span>
-                        </div>
+                        <Preloader />
                     </td>
                 </tr>
                 :
@@ -150,7 +134,7 @@ class AssignmentsTable extends Component {
                            {this.renderStatus(item.assignmentStatus)}
                        </td>
                        <td data-heading="More" className="td-center  last">
-                           {this.renderMoreButton(item.id, item.complete_url)}
+                           {this.renderMoreButton(item.id, item.complete_url, item.isDeletable)}
                        </td>
                    </tr>
                    )

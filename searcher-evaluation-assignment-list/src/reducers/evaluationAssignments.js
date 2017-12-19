@@ -15,7 +15,6 @@ const INITIAL_DATA = {
     selectedSupplier: '',
     selectedAssignedOn: '',
     selectedEntityInstanceId: '',
-    isDeleteEnabled: true,
     filterDate: null,
     isBusy: true,
     errorMessage: null,
@@ -29,6 +28,7 @@ const INITIAL_DATA = {
     evaluationTemplateAssignmentTypes: [],
     evaluationTemplateAssignmentStatuses: [],
     evaluationTemplates: [],
+    userProfile:null
 };
 
 export function evaluationAssignments(state = INITIAL_DATA, action) {
@@ -46,6 +46,7 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
                 selectedAssignedOn,
             } = action;
             let isBusy = false;
+
             return {
                 ...state,
                 evaluationAssignments,
@@ -57,6 +58,7 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
                 selectedSupplier,
                 selectedEntityInstanceId,
                 selectedAssignedOn,
+
                 isBusy,
             };
         }
@@ -71,7 +73,6 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
             let isBusy = false;
             let {
                 evaluationTemplates,
-                isDeleteEnabled,
                 currentPage,
                 totalPages,
                 evaluationTemplateAssignmentTypes,
@@ -79,11 +80,11 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
                 preferredSuppliers,
                 evaluationTemplateAssignmentStatuses,
                 evaluationAssignments,
-            } = action;
+                userProfile
+            } = action;            
             return {
                 ...state,
                 evaluationTemplates,
-                isDeleteEnabled,
                 currentPage,
                 totalPages,
                 evaluationTemplateAssignmentTypes,
@@ -91,6 +92,7 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
                 preferredSuppliers,
                 evaluationTemplateAssignmentStatuses,
                 evaluationAssignments,
+                userProfile,
                 isBusy,
             };
         }

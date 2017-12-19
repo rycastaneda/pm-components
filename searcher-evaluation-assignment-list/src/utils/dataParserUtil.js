@@ -57,10 +57,22 @@ export function getDataForSave(id, active) {
 export function parseInitializeResponse({ userProfile, evaluationTemplates, evaluationTemplateAssignmentTypes, preferredSuppliers, staff, evaluationTemplateAssignmentStatuses, evaluationAssignments }) {
 
     let result = getDataFromAssignmentService(evaluationAssignments);
-    userProfile = normalize(userProfile, { endpoint:'user' });
-    userProfile = build(userProfile, 'user');
-    userProfile;
-    let isDeleteEnabled = true;
+    userProfile = normalize(userProfile, { endpoint:'users' });
+    userProfile = build(userProfile, 'users').map(item => {
+        let { id, staff } = item;
+        let { firstName, lastName, pitRoles, userId } =staff;
+        let { name } =pitRoles[0];
+        return { id, firstName, lastName, userId, pitRole:name };
+    })[0];
+
+    result.evaluationAssignments = result.evaluationAssignments.map((item) => {
+        // admin can delete all assignments
+        let isDeletable = Boolean(userProfile.pitRole==='admin');
+        // creator can delete his own assignments
+        isDeletable = isDeletable || (item.createdBy=== userProfile.userId);
+        return { ...item, isDeletable };
+    });
+    
     evaluationTemplateAssignmentTypes = normalize(evaluationTemplateAssignmentTypes, { endpoint:'evaluation-template-assignment-types' });
     evaluationTemplateAssignmentTypes = build(evaluationTemplateAssignmentTypes, 'evaluationTemplateAssignmentTypes');
     evaluationTemplateAssignmentTypes = evaluationTemplateAssignmentTypes.map((item) => {
@@ -99,7 +111,7 @@ export function parseInitializeResponse({ userProfile, evaluationTemplates, eval
     });
 
 
-    return { evaluationTemplates, staff, preferredSuppliers, evaluationTemplateAssignmentTypes, evaluationTemplateAssignmentStatuses, isDeleteEnabled, ...result };
+    return { evaluationTemplates, staff, preferredSuppliers, evaluationTemplateAssignmentTypes, evaluationTemplateAssignmentStatuses, userProfile, ...result };
 }
 export function getDataFromAssignmentService(evaluationAssignments) {
 
@@ -108,24 +120,23 @@ export function getDataFromAssignmentService(evaluationAssignments) {
 
     evaluationAssignments = normalize(evaluationAssignments, { endpoint:'evaluation-template-assignments' });
     evaluationAssignments = build(evaluationAssignments, 'evaluationTemplateAssignments');
-
     if (evaluationAssignments) {
         evaluationAssignments = evaluationAssignments.map((item) => {
             let { id,
                 createdAt,
+                createdBy,
                 template,
                 assigneeUser,
                 assignmentStatus,
                 assignmentType,
-                assignmentEntityInstance
+                assignmentEntityInstance,
             } = item;
-
             createdAt = new Date(createdAt.date);
             let assignedOn = createdAt.getDate()+'-'+createdAt.getMonth()+'-'+createdAt.getFullYear();
             let evaluationTemplate = { id:template.id, active:template.id, title:template.title };
             let assignedUser = assigneeUser.staff;
             let userName = assignedUser.lastName+', '+assignedUser.firstName;
-            assignedUser = { id:assigneeUser.userId, userName };
+            assignedUser = { id:assignedUser.userId, userName };
             let linkedTo = { id:assignmentType.id, title:assignmentType.title };
             assignmentStatus = { id:assignmentStatus.id, title:assignmentStatus.title };
 
@@ -143,7 +154,8 @@ export function getDataFromAssignmentService(evaluationAssignments) {
                     supplier = { id: supplier.id, title:supplier.title };
             }
             let complete_url = EVALUATION_ASSIGNMENT_COMPLETION+id;
-            return { id, assignedOn, evaluationTemplate, assignedUser, linkedTo, assignmentStatus, supplier, complete_url };
+            let isDeletable =false;
+            return { id, assignedOn, createdBy, evaluationTemplate, isDeletable, assignedUser, linkedTo, assignmentStatus, supplier, complete_url };
         });
     } else {
         evaluationAssignments =[];
