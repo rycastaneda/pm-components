@@ -23,17 +23,24 @@ class EvaluationSubmission extends Component {
         return (
             <div ref ={ element => this.htmlElement = element }>
                 <Notification />
-                <h1>
-                {title} -<small>{assignmentStatus.title}</small>
-                </h1>
-                { criteriaIds.map(
-                    (criteriaId, index) =>
-                    <div key={index}>
-                        <Criteria criteriaId = {criteriaId} />
+                <div className="row">
+                    <div className="col-sm-6">
+                        <h1>{title}</h1>
+                        { criteriaIds.map(
+                            (criteriaId, index) =>
+                            <div key={index}>
+                                <Criteria criteriaId = {criteriaId} />
+                            </div>
+                        )}
                     </div>
-                )}
-                <div className="pull-right">
-                    <button className="btn btn-md">Finish</button>
+                    <div className="col-sm-6 text-right">
+                        <span className="bs-label bs-label-info">{assignmentStatus.title}</span>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-sm-12 pull-text-right">
+                        <button className="btn btn-md">Finish</button>
+                    </div>
                 </div>
             </div>
         );
