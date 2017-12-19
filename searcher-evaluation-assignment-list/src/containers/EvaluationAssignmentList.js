@@ -7,6 +7,7 @@ import {
     onEvaluationTemplatesDisplayedLengthChange,
     onEvaluationAssignmentFilterChange,
     onEvaluationTemplatesPageChange,
+    onEvaluationAssignmentDelete,
     initialize
 } from '../actions/evaluationAssignments';
 import AssignmentsTable from '../components/AssignmentsTable';
@@ -14,6 +15,7 @@ class EvaluationAssignmentList extends Component {
     constructor(props) {
         super(props);
         this.onFilterSubmit = this.onFilterSubmit.bind(this);
+        this.onAssignmentDelete = this.onAssignmentDelete.bind(this);
     }
 
     componentDidMount() {
@@ -25,7 +27,9 @@ class EvaluationAssignmentList extends Component {
             onEvaluationAssignmentFilterChange(result)
         );
     }
-
+    onAssignmentDelete(id) {
+        this.props.dispatch(onEvaluationAssignmentDelete(id));
+    }
     tableRowLengthChanged(val) {
         this.props.dispatch(onEvaluationTemplatesDisplayedLengthChange(val));
     }
@@ -53,7 +57,10 @@ class EvaluationAssignmentList extends Component {
                     onSubmit = {this.onFilterSubmit}
                 />
                 <AssignmentsTable
+                    isBusy ={this.props.isBusy}
                     tableData= {this.props.evaluationAssignments}
+                    isDeletable = {true}
+                    onAssignmentDelete ={this.onAssignmentDelete}
                     rowCountList= {MAXROWS_LIST}
                     currentPage= {currentPage}
                     totalPages= {totalPages}

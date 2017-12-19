@@ -1,5 +1,6 @@
 import {
     EVALUATION_ASSIGMENTS_FETCHED,
+    EVALUATION_ASSIGNMENT_DELETE,
     IS_BUSY,
     REQUEST_FAILED,
     INITIALIZED,
@@ -14,8 +15,9 @@ const INITIAL_DATA = {
     selectedSupplier: '',
     selectedAssignedOn: '',
     selectedEntityInstanceId: '',
+    isDeleteEnabled: true,
     filterDate: null,
-    isBusy: false,
+    isBusy: true,
     errorMessage: null,
     totalPages: 1,
     currentPage: 1,
@@ -58,17 +60,18 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
                 isBusy,
             };
         }
-        case IS_BUSY:
-            state.isBusy = action.status;
-            return Object.assign({}, state);
-
-        case REQUEST_FAILED:
-            state.isBusy = false;
-            return Object.assign({}, state);
-
+        case EVALUATION_ASSIGNMENT_DELETE: {
+            let { id } = action;
+            let evaluationAssignments = state.evaluationAssignments.filter(
+                (item) => item.id !== id
+            );
+            return { ...state, evaluationAssignments };
+        }
         case INITIALIZED: {
+            let isBusy = false;
             let {
                 evaluationTemplates,
+                isDeleteEnabled,
                 currentPage,
                 totalPages,
                 evaluationTemplateAssignmentTypes,
@@ -80,6 +83,7 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
             return {
                 ...state,
                 evaluationTemplates,
+                isDeleteEnabled,
                 currentPage,
                 totalPages,
                 evaluationTemplateAssignmentTypes,
@@ -87,13 +91,22 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
                 preferredSuppliers,
                 evaluationTemplateAssignmentStatuses,
                 evaluationAssignments,
+                isBusy,
             };
+        }
+        case IS_BUSY: {
+            let isBusy = action.status;
+            return { ...state, isBusy };
+        }
+        case REQUEST_FAILED: {
+            let isBusy = false;
+            return { ...state, isBusy };
         }
 
         case EVALUATION_ASSIGNMENTS_LIST_UPDATE_CHANGE_ROWS_LENGTH:
             return {
                 ...state,
-                maxRowLength: action.perPage
+                maxRowLength: action.perPage,
             };
 
         default:

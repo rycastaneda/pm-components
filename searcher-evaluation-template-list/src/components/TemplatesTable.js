@@ -30,10 +30,6 @@ class TemplatesTable extends Component {
         }
     }
 
-    onTableRowClick(url) {
-        document.location.href = url;
-    }
-
     onTemplateToggleActivation(id, active) {
         this.hideMenu();
         this.props.onTemplateToggleActivation(id, active);
@@ -124,9 +120,9 @@ class TemplatesTable extends Component {
             <tbody>
                 {this.props.tableData.map((item, index) =>
                     <tr key={index}>
-                    <td className="nowrap" onClick={()  => this.onTableRowClick(item.edit_url)}>{item.title}</td>
-                    <td className="td-center nowrap" onClick={()  => this.onTableRowClick(item.edit_url)}>{item.instances}</td>
-                    <td className="td-center nowrap" onClick={()  => this.onTableRowClick(item.edit_url)}>{item.completed}</td>
+                    <td className="nowrap">{item.title}</td>
+                    <td className="td-center nowrap">{item.instances}</td>
+                    <td className="td-center nowrap">{item.completed}</td>
                     <td className="td-center nowrap" onClick={()  => this.onTableRowClick(item.edit_url)}>{item.active?
                         <span className={`bs-label bs-label-success`}>Active</span>
                         :<span className={`bs-label bs-label-danger`}>Inactive</span>

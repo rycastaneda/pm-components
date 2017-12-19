@@ -65,6 +65,7 @@ class AssignmentsTable extends Component {
                     <i className="caret" ></i>
                 </a>
                 <ul className="dropdown-menu">
+                    { this.props.isDeletable? <li><a href="javascript:;" onClick ={() => this.props.onAssignmentDelete(id)} >Delete</a></li>:null }
                     <li ><a href={complete_url} >Complete evaluation</a></li>
                     <li><a href="javascript:;" >Mark as in Progress</a></li>
                     <li><a href="javascript:;">Analysis</a></li>
@@ -104,32 +105,57 @@ class AssignmentsTable extends Component {
                 </tr>
             </thead>
             <tbody>
-                {this.props.tableData.map(item =>
-                    <tr key={item.id}>
-                    <td className="nowrap">
-                        {item.assignedOn}
-                    </td>
-                    <td className="nowrap">
-                        {item.evaluationTemplate.title}
-                    </td>
-                    <td className="nowrap">
-                        {item.linkedTo.title} [{item.supplier.id}]
-                    </td>
-                    <td className="nowrap">
-                        {item.assignedUser.userName}
-                    </td>
-
-                    <td className="nowrap">
-                        {item.supplier.title}
-                    </td>
-                    <td className="text-center nowrap">
-                        {this.renderStatus(item.assignmentStatus)}
-                    </td>
-                    <td data-heading="More" className="td-center  last">
-                        {this.renderMoreButton(item.id, item.complete_url)}
+            { this.props.isBusy?
+                <tr>
+                    <td colSpan="7">
+                    <div className="loading-animation">
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                        </div>
                     </td>
                 </tr>
-                )}
+                :
+                    this.props.tableData.map(item =>
+                       <tr key={item.id}>
+                       <td className="nowrap">
+                           {item.assignedOn}
+                       </td>
+                       <td className="nowrap">
+                           {item.evaluationTemplate.title}
+                       </td>
+                       <td className="nowrap">
+                        {item.linkedTo.title}#{item.supplier.id}
+                       </td>
+                       <td className="nowrap">
+                           {item.assignedUser.userName}
+                       </td>
+
+                       <td className="nowrap">
+                           {item.supplier.title}
+                       </td>
+                       <td className="text-center nowrap">
+                           {this.renderStatus(item.assignmentStatus)}
+                       </td>
+                       <td data-heading="More" className="td-center  last">
+                           {this.renderMoreButton(item.id, item.complete_url)}
+                       </td>
+                   </tr>
+                   )
+
+            }
             </tbody>
             </table>
             <div className="row">
@@ -154,7 +180,9 @@ class AssignmentsTable extends Component {
                               containerClassName={"pagination"}
                               subContainerClassName={"pages pagination"}
                               activeClassName={"active"} />
-                    :null}
+                    :null
+
+                }
                     </div>
                 </div>
         </div>);
@@ -162,13 +190,16 @@ class AssignmentsTable extends Component {
 }
 
 AssignmentsTable.propTypes = {
+    onAssignmentDelete:PropTypes.func.isRequired,
+    isDeletable: PropTypes.bool.isRequired,
     tableData: PropTypes.array.isRequired,
     rowCountList: PropTypes.array.isRequired,
     rowCount: PropTypes.string.isRequired,
     totalPages:PropTypes.number.isRequired,
     currentPage:PropTypes.number.isRequired,
     goToPage:PropTypes.func.isRequired,
-    rowCountChange: PropTypes.func.isRequired
+    rowCountChange: PropTypes.func.isRequired,
+    isBusy: PropTypes.bool.isRequired
 };
 
 export default AssignmentsTable;

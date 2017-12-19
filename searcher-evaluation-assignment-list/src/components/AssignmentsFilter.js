@@ -127,7 +127,8 @@ class EvaluationAssignmentsFilter extends Component {
                                         }
                                     </select>
                                 </div>
-                            </div><div className="col-xs-6">
+                            </div>
+                            <div className="col-xs-6">
                                 <div className="form-group">
                                     <label>Assigned To</label>
                                     <select className = "form-control form-control-sm"
@@ -136,18 +137,20 @@ class EvaluationAssignmentsFilter extends Component {
                                             this.onAssignedToChange(
                                                 event.target.value
                                             )}>
-                                        <option value={''} >None</option>
+                                        <option value={''} >Any Assignee</option>
                                         {   assignedToList.map(item =>
                                             <option key={item.id} value={item.id}>{item.firstName} {item.lastName}</option>)
                                         }
                                     </select>
                                 </div>
-                            </div><div className="col-xs-6">
+                            </div>
+                            <div className="col-xs-6">
                                 <div>
                                     <label>Date Assigned</label>
                                     <div className="input-group">
                                         <span className="input-group-addon"><i className="fa fa-calendar"></i></span>
                                         <Datetime
+                                            placeholder="Any Date"
                                             onSelectedDateChange={
                                                 this.onSelectedDateChange
                                             }
@@ -167,7 +170,7 @@ class EvaluationAssignmentsFilter extends Component {
                                                 event.target.value
                                             )}
                                         value={this.state.selectedLinkedTo}>
-                                        <option value={''} >None</option>
+                                        <option value={''} >Any</option>
                                         {this.props.assignmentTypeList.map(
                                             (item, index) => (
                                                 <option value={item.id} key={index}>
@@ -188,7 +191,7 @@ class EvaluationAssignmentsFilter extends Component {
                                                 event.target.value
                                             )}
                                         value={this.state.selectedStatus}>
-                                        <option value={''} >None</option>
+                                        <option value={''} >Any Status</option>
                                         { assignmentStatusesList.map(
                                             (item, index) => (
                                                 <option value={item.id} key={index}>

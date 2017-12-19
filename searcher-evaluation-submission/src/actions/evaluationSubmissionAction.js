@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { parseInitialize, parseDataForUpdateQuestion } from '../utils/dataParser';
+
 import { UPDATE_TEMPLATE_ASSIGNMENT,
-    PROMPT_MESSAGE,
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_UPLOAD_FAILED,
     DOCUMENT_UPLOAD_IN_PROGRESS,
@@ -12,7 +12,9 @@ import { UPDATE_TEMPLATE_ASSIGNMENT,
     ASSIGNMENT_SUBMITTED,
     CRITERIA_UPDATED,
     IS_BUSY } from '../constants/ActionTypes';
+
 import { MESSAGE_TYPE_ERROR, MESSAGE_TYPE_SUCCESS } from '../constants';
+import { showNotification } from '../notification/actions';
 
 export function initialize(requestedAssignmentId) {
     return (dispatch) => {
@@ -23,7 +25,8 @@ export function initialize(requestedAssignmentId) {
         })
         .catch((error) => {
             const { message }= error;
-            dispatch({ type:REQUEST_FAILED, message });
+            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            dispatch({ type:REQUEST_FAILED });
         });
     };
 }
@@ -34,10 +37,8 @@ export function uploadDocuments(questionId, documents) {
         let { assignmentId } = evaluationSubmission;
         let question = evaluationSubmission.questionByIndex[questionId];
         if (!question.isAttempted) {
-            dispatch({ type: PROMPT_MESSAGE,
-                messageType:MESSAGE_TYPE_ERROR,
-                message:'Please add a comment before procceding.'
-            });
+            let message = 'Please add a comment before proceeding.';
+            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
         }
         dispatch({
             type: DOCUMENTS_UPLOADING,
@@ -77,11 +78,8 @@ export function uploadDocuments(questionId, documents) {
             })
         ).then(
             () => {
-                dispatch({
-                    type: PROMPT_MESSAGE,
-                    messageType:MESSAGE_TYPE_ERROR,
-                    message:'Error'
-                });
+                let message ='An error has occured';
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
             }
         );
 
@@ -115,8 +113,11 @@ export function submitAssignment() {
         let promise = axios.post(endpoint);
         promise.then(() => {
             dispatch({ type: ASSIGNMENT_SUBMITTED });
+            let message = 'Assignment submitted successfully!';
+            dispatch(showNotification(MESSAGE_TYPE_SUCCESS, message));
         }).catch((error) => {
-            window.console.log(error);
+            let { message } = error;
+            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
         });
     };
 }
@@ -146,7 +147,6 @@ export function criteriaMaximised(criteriaId, isMaximised) {
         let criteria = { ...evaluationSubmission.criteriaByIndex[criteriaId] };
         criteria.isMaximised =isMaximised;
         dispatch({ type: CRITERIA_UPDATED, criteria });
-
     };
 }
 function updateQuestion(question, assignmentId, dispatch) {
@@ -154,21 +154,22 @@ function updateQuestion(question, assignmentId, dispatch) {
     let endpoint = '/evaluation-template-assignments/'+assignmentId+'/question-responses';
     let parsedQuestionData = parseDataForUpdateQuestion(question) ;
     if (question.isAttempted) {
-        promise = axios.patch(endpoint, parsedQuestionData);
+        promise = axios.patch(endpoint+'/'+question.responseId, parsedQuestionData);
     } else {
         promise = axios.post(endpoint, parsedQuestionData);
     }
     promise.then(() => {
         dispatch({ type: QUESTION_UPDATED, question });
     }).catch((error) => {
-        window.console.log(error);
+        let { message } = error;
+        dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
     });
 }
 export function promptError(message) {
-    return { type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_ERROR, message:message };
+    return showNotification(MESSAGE_TYPE_ERROR, message);
 }
 export function promptSuccess(message) {
-    return { type: PROMPT_MESSAGE, messageType:MESSAGE_TYPE_SUCCESS, message:message };
+    return showNotification(MESSAGE_TYPE_SUCCESS, message);
 }
 export function incrementProgress(documentId, progress) {
     return {
