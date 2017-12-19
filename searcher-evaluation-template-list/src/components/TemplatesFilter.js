@@ -10,11 +10,11 @@ class EvaluationTemplatesFilter extends Component {
         this.onSelectedDateChange= this.onSelectedDateChange.bind(this);
         this.onKeyPress = this.onKeyPress.bind(this);
         this.onKeywordChange = this.onKeywordChange.bind(this);
-        this.onNormalSubmit= this.onNormalSubmit.bind(this);
-        this.onAdvancedSubmit= this.onAdvancedSubmit.bind(this);
-        this.onToggleFilter= this.onToggleFilter.bind(this);
+        this.onNormalSubmit = this.onNormalSubmit.bind(this);
+        this.onAdvancedSubmit = this.onAdvancedSubmit.bind(this);
+        this.onToggleFilter = this.onToggleFilter.bind(this);
     }
-    
+
     onKeyPress(event) {
         if (event.key === 'Enter') {
             if (this.state.isFilterShown) {

@@ -90,7 +90,7 @@ class Question extends Component {
                     <div className="col-md-8 col-sm-11">
                         <h2 className= {`${index===0?'margin-top-0':'border-top'}`} >{id}. {title}</h2>
                         <ol className={`questionnaire ${this.getScaleDefinitionClass(enableScaleDefinitions, questionType)}`}>
-                            { typeDefinitionIds.map((definitionId, index) =>
+                            { typeDefinitionIds.length>0&&typeDefinitionIds.map((definitionId, index) =>
                                 <li key={index}>
                                     <ScaleDefinition
                                         enableScaleDefinitions = {enableScaleDefinitions}

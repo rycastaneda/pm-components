@@ -51,7 +51,9 @@ export function uploadDocuments(questionId, documents) {
                 formData.append('document', document);
                 formData.append('question_id', questionId);
                 formData.append('assignment_id', questionId);
-                let endpoint = '/evaluation-template-assignments/'+assignmentId+'/question-responses/'+question.responseId+'/documents';
+                let endpoint = '/evaluation-template-assignments/'+assignmentId;
+                endpoint +='/question-responses/'+question.responseId;
+                endpoint +='/documents';
                 let promise = axios.post(endpoint, formData, {
                     onUploadProgress: function(progressEvent) {
                         var percentCompleted = progressEvent.loaded / progressEvent.total;
@@ -76,13 +78,7 @@ export function uploadDocuments(questionId, documents) {
                 });
                 return promise;
             })
-        ).then(
-            () => {
-                let message ='An error has occured';
-                dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
-            }
         );
-
 
     };
 }
@@ -96,7 +92,9 @@ export function deleteDocument(questionId, documentId) {
         let { referenceId } = document;
         let { responseId } = question;
         let { assignmentId } = evaluationSubmission;
-        let endpoint = '/evaluation-template-assignments/'+assignmentId+'/question-responses/'+responseId+'/documents/'+referenceId;
+        let endpoint = '/evaluation-template-assignments/'+assignmentId;
+        endpoint += '/question-responses/'+responseId;
+        endpoint += '/documents/'+referenceId;
         return axios.delete(endpoint)
         .then(() => {
             DOCUMENT_DELETE;
@@ -151,7 +149,8 @@ export function criteriaMaximised(criteriaId, isMaximised) {
 }
 function updateQuestion(question, assignmentId, dispatch) {
     let promise;
-    let endpoint = '/evaluation-template-assignments/'+assignmentId+'/question-responses';
+    let endpoint = '/evaluation-template-assignments/'+assignmentId;
+    endpoint += '/question-responses';
     let parsedQuestionData = parseDataForUpdateQuestion(question) ;
     if (question.isAttempted) {
         promise = axios.patch(endpoint+'/'+question.responseId, parsedQuestionData);

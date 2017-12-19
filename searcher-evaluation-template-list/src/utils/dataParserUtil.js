@@ -51,6 +51,9 @@ export function getTemplateServiceUrlFor(keyword=null, status =null, date=null, 
 
 export function getDataFromTemplateService(data) {
 
+    let totalPages = data.meta.pagination.total_pages;
+    let currentPage = data.meta.pagination.current_page;
+    let maxRowLength = data.meta.pagination.per_page;
     let templates = build(normalize(data, { endpoint:'evaluation-templates' }), 'evaluationTemplates');
     // if template is defined parse it, else empty template list
     if (templates) {
@@ -66,11 +69,7 @@ export function getDataFromTemplateService(data) {
         templates =[];
     }
 
-
-    let totalPages = data.meta.pagination.total_pages;
-    let currentPage = data.meta.pagination.current_page;
-
-    return { templates, totalPages, currentPage } ;
+    return { templates, totalPages, currentPage, maxRowLength } ;
 }
 export function getDataForSave(id, active) {
     const activeStatus = active?1:0;

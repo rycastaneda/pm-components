@@ -8,7 +8,7 @@ class Attachment extends Component {
     render() {
         let { attachment } = this.props;
         return (
-            <a href={attachment.url}><i className={`fa fa-file-o`} ></i> {attachment.label}</a>
+            <a href={attachment.referenceUrl}><i className={`fa fa-file-o`} ></i> {attachment.name}</a>
         );
     }
 }
@@ -19,10 +19,10 @@ Attachment.propTypes = {
 };
 
 function mapStateToProps(state, props) {
-    let { questionAttachmentByIndex } = state.evaluationSubmission;
+    let { uploadedDocumentByIndex } = state.evaluationSubmission;
     let { questionId, attachmentId } = props;
 
-    let attachment = questionAttachmentByIndex[attachmentId];
+    let attachment = uploadedDocumentByIndex[attachmentId];
     if (attachment===undefined) {
         let label = 'Could not find matching document for '+attachmentId;
         attachment = { label, url: attachmentId };

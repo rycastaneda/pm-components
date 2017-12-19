@@ -22074,8 +22074,16 @@
 	}
 
 	function initialize() {
-	    return function (dispatch) {
-	        _axios2.default.all([_axios2.default.get('staff'), _axios2.default.get((0, _dataParserUtil.getTemplateServiceUrlFor)())]).then(function (responses) {
+	    return function (dispatch, getState) {
+	        var _getState$evaluationT = getState().evaluationTemplates,
+	            filterKeyword = _getState$evaluationT.filterKeyword,
+	            filterStatus = _getState$evaluationT.filterStatus,
+	            filterDate = _getState$evaluationT.filterDate,
+	            filterUserId = _getState$evaluationT.filterUserId,
+	            maxRowLength = _getState$evaluationT.maxRowLength,
+	            currentPage = _getState$evaluationT.currentPage;
+
+	        _axios2.default.all([_axios2.default.get('staff'), _axios2.default.get((0, _dataParserUtil.getTemplateServiceUrlFor)(filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength, currentPage))]).then(function (responses) {
 	            var responseData = (0, _dataParserUtil.getDataFromTemplateService)(responses[1].data);
 	            var users = (0, _dataParserUtil.getUsers)(responses[0].data);
 	            var isBusy = false;
@@ -22095,24 +22103,24 @@
 
 	function onEvaluationTemplatesPageChange(currPage) {
 	    return function (dispatch, getState) {
-	        var _getState$evaluationT = getState().evaluationTemplates,
-	            filterKeyword = _getState$evaluationT.filterKeyword,
-	            filterStatus = _getState$evaluationT.filterStatus,
-	            filterDate = _getState$evaluationT.filterDate,
-	            filterUserId = _getState$evaluationT.filterUserId,
-	            perPage = _getState$evaluationT.perPage;
+	        var _getState$evaluationT2 = getState().evaluationTemplates,
+	            filterKeyword = _getState$evaluationT2.filterKeyword,
+	            filterStatus = _getState$evaluationT2.filterStatus,
+	            filterDate = _getState$evaluationT2.filterDate,
+	            filterUserId = _getState$evaluationT2.filterUserId,
+	            maxRowLength = _getState$evaluationT2.maxRowLength;
 
-	        getPromiseForTemplateService((0, _dataParserUtil.getTemplateServiceUrlFor)(filterKeyword, filterStatus, filterDate, filterUserId, perPage, currPage), dispatch);
+	        getPromiseForTemplateService((0, _dataParserUtil.getTemplateServiceUrlFor)(filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength, currPage), dispatch);
 	    };
 	}
 
 	function onEvaluationTemplatesDisplayedLengthChange(perPage) {
 	    return function (dispatch, getState) {
-	        var _getState$evaluationT2 = getState().evaluationTemplates,
-	            filterKeyword = _getState$evaluationT2.filterKeyword,
-	            filterStatus = _getState$evaluationT2.filterStatus,
-	            filterDate = _getState$evaluationT2.filterDate,
-	            filterUserId = _getState$evaluationT2.filterUserId;
+	        var _getState$evaluationT3 = getState().evaluationTemplates,
+	            filterKeyword = _getState$evaluationT3.filterKeyword,
+	            filterStatus = _getState$evaluationT3.filterStatus,
+	            filterDate = _getState$evaluationT3.filterDate,
+	            filterUserId = _getState$evaluationT3.filterUserId;
 
 	        getPromiseForTemplateService((0, _dataParserUtil.getTemplateServiceUrlFor)(filterKeyword, filterStatus, filterDate, filterUserId, perPage, 1), dispatch);
 	    };
@@ -22120,9 +22128,9 @@
 
 	function onEvaluationTemplatesFilterChange(keyword, status, date, userId) {
 	    return function (dispatch, getState) {
-	        var _getState$evaluationT3 = getState().evaluationTemplates,
-	            maxRowLength = _getState$evaluationT3.maxRowLength,
-	            startIndex = _getState$evaluationT3.startIndex;
+	        var _getState$evaluationT4 = getState().evaluationTemplates,
+	            maxRowLength = _getState$evaluationT4.maxRowLength,
+	            startIndex = _getState$evaluationT4.startIndex;
 
 	        getPromiseForTemplateService((0, _dataParserUtil.getTemplateServiceUrlFor)(keyword, status, date, userId, maxRowLength, startIndex), dispatch);
 	    };
@@ -22133,7 +22141,8 @@
 	        var _getDataFromTemplateS = (0, _dataParserUtil.getDataFromTemplateService)(response.data),
 	            templates = _getDataFromTemplateS.templates,
 	            totalPages = _getDataFromTemplateS.totalPages,
-	            currentPage = _getDataFromTemplateS.currentPage;
+	            currentPage = _getDataFromTemplateS.currentPage,
+	            maxRowLength = _getDataFromTemplateS.maxRowLength;
 
 	        var isBusy = false;
 	        dispatch({
@@ -22141,6 +22150,7 @@
 	            templates: templates,
 	            totalPages: totalPages,
 	            currentPage: currentPage,
+	            maxRowLength: maxRowLength,
 	            isBusy: isBusy
 	        });
 	    });
@@ -23434,11 +23444,12 @@
 	            {
 	                var _templates = action.templates,
 	                    _currentPage = action.currentPage,
-	                    _totalPages = action.totalPages;
+	                    _totalPages = action.totalPages,
+	                    maxRowLength = action.maxRowLength;
 
 	                var _currentTemplateList = _templates;
 	                var _isBusy = false;
-	                return (0, _extends3.default)({}, state, { isBusy: _isBusy, currentTemplateList: _currentTemplateList, currentPage: _currentPage, totalPages: _totalPages });
+	                return (0, _extends3.default)({}, state, { isBusy: _isBusy, currentTemplateList: _currentTemplateList, currentPage: _currentPage, totalPages: _totalPages, maxRowLength: maxRowLength });
 	            }
 	        case _ActionTypes.EVALUATION_TEMPLATE_UPDATED:
 	            {
@@ -23604,6 +23615,9 @@
 
 	function getDataFromTemplateService(data) {
 
+	    var totalPages = data.meta.pagination.total_pages;
+	    var currentPage = data.meta.pagination.current_page;
+	    var maxRowLength = data.meta.pagination.per_page;
 	    var templates = (0, _reduxObject2.default)((0, _jsonApiNormalizer2.default)(data, { endpoint: 'evaluation-templates' }), 'evaluationTemplates');
 	    // if template is defined parse it, else empty template list
 	    if (templates) {
@@ -23624,10 +23638,7 @@
 	        templates = [];
 	    }
 
-	    var totalPages = data.meta.pagination.total_pages;
-	    var currentPage = data.meta.pagination.current_page;
-
-	    return { templates: templates, totalPages: totalPages, currentPage: currentPage };
+	    return { templates: templates, totalPages: totalPages, currentPage: currentPage, maxRowLength: maxRowLength };
 	}
 	function getDataForSave(id, active) {
 	    var activeStatus = active ? 1 : 0;

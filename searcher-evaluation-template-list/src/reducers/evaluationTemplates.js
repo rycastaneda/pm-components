@@ -24,16 +24,16 @@ export function evaluationTemplates(state = INITIAL_DATA, action) {
 
     switch (action.type) {
         case INITIALIZED: {
-            let { users, templates, currentPage, totalPages, isBusy  } = action;
+            let { users, templates, currentPage, totalPages, isBusy } = action;
             let currentTemplateList = templates;
             return { ...state, users, currentTemplateList, currentPage, totalPages, isBusy };
         }
         case EVALUATION_TEMPLATES_FETCHED:
             {
-                let { templates, currentPage, totalPages } = action;
+                let { templates, currentPage, totalPages, maxRowLength } = action;
                 let currentTemplateList = templates;
                 let isBusy = false;
-                return { ...state, isBusy, currentTemplateList, currentPage, totalPages };
+                return { ...state, isBusy, currentTemplateList, currentPage, totalPages, maxRowLength };
             }
         case EVALUATION_TEMPLATE_UPDATED:
             {

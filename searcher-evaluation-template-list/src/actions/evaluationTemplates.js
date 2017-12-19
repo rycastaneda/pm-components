@@ -36,8 +36,12 @@ export function changeTemplateStatus(id, active) {
 }
 
 export function initialize() {
-    return (dispatch) => {
-        axios.all([axios.get('staff'), axios.get(getTemplateServiceUrlFor())])
+    return (dispatch, getState) => {
+        const { filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength, currentPage }= getState().evaluationTemplates;
+        axios.all([
+            axios.get('staff'),
+            axios.get(getTemplateServiceUrlFor(filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength, currentPage))
+        ])
         .then((responses) => {
             const responseData = getDataFromTemplateService(responses[1].data);
             const users = getUsers(responses[0].data);
@@ -55,8 +59,8 @@ export function initialize() {
 
 export function onEvaluationTemplatesPageChange(currPage) {
     return (dispatch, getState) => {
-        const { filterKeyword, filterStatus, filterDate, filterUserId, perPage }= getState().evaluationTemplates;
-        getPromiseForTemplateService(getTemplateServiceUrlFor(filterKeyword, filterStatus, filterDate, filterUserId, perPage, currPage), dispatch);
+        const { filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength }= getState().evaluationTemplates;
+        getPromiseForTemplateService(getTemplateServiceUrlFor(filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength, currPage), dispatch);
     };
 }
 
@@ -77,13 +81,14 @@ export function onEvaluationTemplatesFilterChange(keyword, status, date, userId)
 function getPromiseForTemplateService(url, dispatch) {
     return getPromiseForService(url, dispatch)
     .then((response) => {
-        const { templates, totalPages, currentPage }= getDataFromTemplateService(response.data);
+        const { templates, totalPages, currentPage, maxRowLength }= getDataFromTemplateService(response.data);
         const isBusy = false;
         dispatch({
             type: EVALUATION_TEMPLATES_FETCHED,
             templates,
             totalPages,
             currentPage,
+            maxRowLength,
             isBusy
         });
     });
