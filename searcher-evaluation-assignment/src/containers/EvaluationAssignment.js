@@ -135,7 +135,7 @@ class EvaluationAssignment extends Component {
                                         closeOnSelect={true}
                                         onChange={actions.updateSelectedAssigneeChairman}
                                         options={evaluationAssignees}
-                                        placeholder="Select Assignees"
+                                        placeholder="Select Assignment Chair"
                                         removeSelected={true}
                                         value={selectedAssigneeChairman}
                                     />
