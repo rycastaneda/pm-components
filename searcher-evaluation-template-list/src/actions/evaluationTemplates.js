@@ -93,6 +93,7 @@ function getPromiseForTemplateService(url, dispatch) {
         });
     });
 }
+
 function getPromiseForService(url, dispatch) {
     return axios.get(url)
     .catch((error) => {

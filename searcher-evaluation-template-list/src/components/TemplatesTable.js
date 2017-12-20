@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-
+import moment from 'moment';
 import ReactPaginate from 'react-paginate';
 
 class TemplatesTable extends Component {
@@ -104,6 +104,7 @@ class TemplatesTable extends Component {
         }
 
     }
+
     render() {
         return (
         <div>
@@ -113,6 +114,7 @@ class TemplatesTable extends Component {
                 <th>Template name</th>
                 <th>Instances</th>
                 <th>Completed</th>
+                <th>Creation Date</th>
                 <th>Status</th>
                 <th>More</th>
             </tr>
@@ -123,6 +125,7 @@ class TemplatesTable extends Component {
                     <td className="nowrap">{item.title}</td>
                     <td className="td-center nowrap">{item.instances}</td>
                     <td className="td-center nowrap">{item.completed}</td>
+                    <td className="td-center nowrap">{moment(item.date).format('DD/MM/YYYY')}</td>
                     <td className="td-center nowrap" onClick={()  => this.onTableRowClick(item.edit_url)}>{item.active?
                         <span className={`bs-label bs-label-success`}>Active</span>
                         :<span className={`bs-label bs-label-danger`}>Inactive</span>
