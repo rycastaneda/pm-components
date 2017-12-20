@@ -1,5 +1,6 @@
 import {
     EVALUATION_ASSIGMENTS_FETCHED,
+    EVALUATION_STATUS_UPDATED,
     EVALUATION_ASSIGNMENT_DELETE,
     IS_BUSY,
     REQUEST_FAILED,
@@ -69,6 +70,16 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
             );
             return { ...state, evaluationAssignments };
         }
+        case EVALUATION_STATUS_UPDATED: {
+            let { id, assignmentStatus } = action;
+            let evaluationAssignments = state.evaluationAssignments.map((item) => {
+                if (item.id===id) {                    
+                    item ={ ...item, assignmentStatus };
+                }
+                return item;
+            });
+            return { ...state, evaluationAssignments };
+        }
         case INITIALIZED: {
             let isBusy = false;
             let {
@@ -81,7 +92,7 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
                 evaluationTemplateAssignmentStatuses,
                 evaluationAssignments,
                 userProfile
-            } = action;            
+            } = action;
             return {
                 ...state,
                 evaluationTemplates,

@@ -29,7 +29,6 @@ export function parseDataForUpdateQuestion(question) {
 
 }
 export function parseInitialize(data, assignmentId) {
-    assignmentId = 1;
     let result = { assignmentId };
     let { evaluationTemplateAssignments,
         evaluationTemplates,
