@@ -53,10 +53,29 @@ export function getDataForSave(id, active) {
     const activeStatus = active?1:0;
     return { data:{ type:'evaluation-templates', id, attributes:{ active:activeStatus } } };
 }
+export function getDataForMarkInProgress(id) {
 
+    return {
+        data:{
+            id,
+            type:'evaluation-template-assignments',
+            relationships:{
+                assignmentStatus:{
+                    data:{
+                        id:'2',
+                        type:'evaluation-template-assignment-statuses'
+                    }
+                }
+            }
+        }
+    };
+}
 export function parseInitializeResponse({ userProfile, evaluationTemplates, evaluationTemplateAssignmentTypes, preferredSuppliers, staff, evaluationTemplateAssignmentStatuses, evaluationAssignments }) {
 
+
+
     let result = getDataFromAssignmentService(evaluationAssignments);
+
     userProfile = normalize(userProfile, { endpoint:'users' });
     userProfile = build(userProfile, 'users').map(item => {
         let { id, staff } = item;
@@ -116,10 +135,19 @@ export function parseInitializeResponse({ userProfile, evaluationTemplates, eval
     return { evaluationTemplates, staff, preferredSuppliers, evaluationTemplateAssignmentTypes, evaluationTemplateAssignmentStatuses, userProfile, ...result };
 }
 export function getDataFromAssignmentService(evaluationAssignments) {
-
     let totalPages = Number(evaluationAssignments.meta.pagination.total_pages);
     let currentPage = Number(evaluationAssignments.meta.pagination.current_page);
+    evaluationAssignments = parseAssignmentsFromData(evaluationAssignments);
+    return { evaluationAssignments, totalPages, currentPage };
 
+}
+
+export function parseAssignmentStatusFromData(data) {
+    data = normalize(data, { endpoint:'evaluation-template-assignments' });
+    data = build(data, 'evaluationTemplateAssignmentStatuses');
+    return (data[0]);
+}
+export function parseAssignmentsFromData(evaluationAssignments) {
     evaluationAssignments = normalize(evaluationAssignments, { endpoint:'evaluation-template-assignments' });
     evaluationAssignments = build(evaluationAssignments, 'evaluationTemplateAssignments');
     if (evaluationAssignments) {
@@ -131,8 +159,9 @@ export function getDataFromAssignmentService(evaluationAssignments) {
                 assigneeUser,
                 assignmentStatus,
                 assignmentType,
-                assignmentEntityInstance,
+                assignmentEntityInstance
             } = item;
+
             createdBy = createdBy.id;
             createdAt = new Date(createdAt.date);
             let assignedOn = createdAt.getDate()+'-'+createdAt.getMonth()+'-'+createdAt.getFullYear();
@@ -163,6 +192,5 @@ export function getDataFromAssignmentService(evaluationAssignments) {
     } else {
         evaluationAssignments =[];
     }
-    let result = { evaluationAssignments, totalPages, currentPage };
-    return result;
+    return evaluationAssignments;
 }

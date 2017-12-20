@@ -4,7 +4,6 @@ import ReactPaginate from 'react-paginate';
 import Preloader from './PreloaderAnimation';
 class AssignmentsTable extends Component {
 
-
     constructor(props) {
         super(props);
         this.actionDropdown= null;
@@ -12,6 +11,8 @@ class AssignmentsTable extends Component {
         this.hideMenu= this.hideMenu.bind(this);
         this.handlePageClick= this.handlePageClick.bind(this);
         this.onDropdownClickOutside = this.onDropdownClickOutside.bind(this);
+        this.onMarkAsInProgressClick = this.onMarkAsInProgressClick.bind(this);
+        this.onDeleteClick = this.onDeleteClick.bind(this);
     }
 
     componentWillMount() {
@@ -50,7 +51,18 @@ class AssignmentsTable extends Component {
     hideMenu() {
         this.setState({ menuVisibleItemId:null });
     }
-    renderMoreButton(id, complete_url, isDeletable) {
+    onDeleteClick(id) {
+        this.props.onAssignmentDelete(id);
+        this.hideMenu();
+    }
+    onMarkAsInProgressClick(id) {
+        window.console.log(id);
+        this.props.onAssignmentMarkAsInProgress(id);
+        this.hideMenu();
+    }
+    renderMoreButton(assignment, complete_url, isDeletable, statusId) {
+        let isInProgressStatus = (statusId ==='2');
+        let { id } = assignment;
         if (this.state.menuVisibleItemId===id) {
             return (
             <div className="dropdown open" ref={(ul) => {
@@ -65,9 +77,9 @@ class AssignmentsTable extends Component {
                     <i className="caret" ></i>
                 </a>
                 <ul className="dropdown-menu">
-                    { isDeletable? <li><a href="javascript:;" onClick ={() => this.props.onAssignmentDelete(id)} >Delete</a></li>:null }
+                    { !isInProgressStatus&&isDeletable? <li><a href="javascript:;" onClick ={() => this.onDeleteClick(id)} >Delete</a></li>:null }
                     <li ><a href={complete_url} >Complete evaluation</a></li>
-                    <li><a href="javascript:;" >Mark as in Progress</a></li>
+                    {isInProgressStatus?null:<li><a href="javascript:;" onClick={() => this.onMarkAsInProgressClick(id)} >Mark as in Progress</a></li>}
                     <li><a href="javascript:;">Analysis</a></li>
                     <li><a href="javascript:;">View Single</a></li>
                     <li><a href="javascript:;">View All</a></li>
@@ -134,7 +146,7 @@ class AssignmentsTable extends Component {
                            {this.renderStatus(item.assignmentStatus)}
                        </td>
                        <td data-heading="More" className="td-center  last">
-                           {this.renderMoreButton(item.id, item.complete_url, item.isDeletable)}
+                           {this.renderMoreButton(item, item.complete_url, item.isDeletable, item.assignmentStatus.id)}
                        </td>
                    </tr>
                    )
@@ -175,6 +187,7 @@ class AssignmentsTable extends Component {
 
 AssignmentsTable.propTypes = {
     onAssignmentDelete:PropTypes.func.isRequired,
+    onAssignmentMarkAsInProgress: PropTypes.func.isRequired,
     isDeletable: PropTypes.bool.isRequired,
     tableData: PropTypes.array.isRequired,
     rowCountList: PropTypes.array.isRequired,

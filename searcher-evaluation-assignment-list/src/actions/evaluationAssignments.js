@@ -2,16 +2,22 @@ import axios from 'axios';
 import {
     getDataFromAssignmentService,
     getAssignmentServiceUrlFor,
-    parseInitializeResponse
+    parseInitializeResponse,
+    parseAssignmentStatusFromData
 } from '../utils/dataParserUtil';
 import {
     REQUEST_FAILED,
     EVALUATION_ASSIGMENTS_FETCHED,
+    EVALUATION_STATUS_UPDATED,
     EVALUATION_ASSIGNMENT_DELETE,
     INITIALIZED,
     IS_BUSY,
     EVALUATION_ASSIGNMENTS_LIST_UPDATE_CHANGE_ROWS_LENGTH,
 } from '../constants/ActionTypes';
+import {
+    EVALUATION_ASSIGNMENT_SERVICE,
+    getDataForMarkInProgress
+} from '../utils/dataParserUtil';
 import { MAXROWS_DEFAULT } from '../constants/DataConstants';
 import { MESSAGE_TYPE_ERROR } from '../notification/constants';
 import { showNotification } from '../notification/actions';
@@ -62,12 +68,24 @@ export function initialize() {
                 staff,
                 preferredSuppliers,
                 evaluationAssignments });
-
             dispatch({ type:INITIALIZED,  ...result });
         });
     };
 }
-
+export function onMarkInProgress(id) {
+    return  (dispatch) => {
+        axios.patch(EVALUATION_ASSIGNMENT_SERVICE+'/'+id, getDataForMarkInProgress(id))
+        .then((response) => {
+            let assignmentStatus = parseAssignmentStatusFromData(response.data);
+            dispatch({ type: EVALUATION_STATUS_UPDATED, id, assignmentStatus });
+        })
+        .catch((error) => {
+            let { message } = error;
+            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            dispatch({ type: REQUEST_FAILED });
+        });
+    };
+}
 export function onEvaluationTemplatesPageChange(currPage) {
     return (dispatch, getState) => {
         let { maxRowLength, selectedLinkedTo,
