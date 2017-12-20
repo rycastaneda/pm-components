@@ -78,9 +78,11 @@ class AssignmentsTable extends Component {
                 </a>
                 <ul className="dropdown-menu">
                     { !isInProgressStatus&&isDeletable? <li><a href="javascript:;" onClick ={() => this.onDeleteClick(id)} >Delete</a></li>:null }
-                    <li ><a href={complete_url} >Complete evaluation</a></li>
+                    <li ><a href={complete_url} >Complete Evaluation</a></li>
                     {isInProgressStatus?null:<li><a href="javascript:;" onClick={() => this.onMarkAsInProgressClick(id)} >Mark as in Progress</a></li>}
-                    <li><a href="javascript:;">Analysis</a></li>
+                    <li role="separator" className="divider"></li>
+                    <li className="dropdown-header">Analysis</li>
+                    <li role="separator" className="divider"></li>
                     <li><a href="javascript:;">View Single</a></li>
                     <li><a href="javascript:;">View All</a></li>
                     <li><a href="javascript:;">View Comparison</a></li>
