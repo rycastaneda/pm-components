@@ -22,8 +22,10 @@ class Criteria extends Component {
                                     <div className="col-md-6">
                                         <div className="pmaccordion__title font-rg">{criteria.title}</div>
                                     </div>
-                                    <div className="weight text-right">
-                                        Weighting: {criteria.weight}%
+                                    <div className="col-md-6 text-right">
+                                        <div className="weight">
+                                            Weighting: <strong>{criteria.weight}%</strong>
+                                        </div>
                                     </div>
                                 </div>
                             </a>
@@ -54,8 +56,10 @@ class Criteria extends Component {
                                     <div className="col-md-6">
                                         <div className="pmaccordion__title font-rg">{criteria.title}</div>
                                     </div>
-                                    <div className="weight text-right">
-                                        Weighting: {criteria.weight}%
+                                    <div className="col-md-6 text-right">
+                                        <div className="weight">
+                                            Weighting: <strong>{criteria.weight}%</strong>
+                                        </div>
                                     </div>
                                 </div>
                             </a>
@@ -74,7 +78,7 @@ Criteria.propTypes = {
     dispatch: PropTypes.func.isRequired
 };
 
-function mapStateToProps(state, props) {    
+function mapStateToProps(state, props) {
     let { criteriaByIndex } = state.evaluationSubmission;
     let { criteriaId } = props;
     let criteria = criteriaByIndex[criteriaId];

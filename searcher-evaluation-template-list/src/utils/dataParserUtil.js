@@ -17,9 +17,9 @@ export function getUsers(userData) {
 
 export function getTemplateServiceUrlFor(keyword=null, status =null, date=null, userId=null, maxRowLength=null, page=null) {
 
-    let urlPostfix='';
+    let urlPostfix='meta=instances,completed';
     if (page) {
-        urlPostfix +='page='+page;
+        urlPostfix +='&page='+page;
     }
     if (maxRowLength) {
         urlPostfix +='&per_page='+maxRowLength;
@@ -50,7 +50,6 @@ export function getTemplateServiceUrlFor(keyword=null, status =null, date=null, 
 }
 
 export function getDataFromTemplateService(data) {
-
     let totalPages = data.meta.pagination.total_pages;
     let currentPage = data.meta.pagination.current_page;
     let maxRowLength = data.meta.pagination.per_page;
@@ -58,12 +57,11 @@ export function getDataFromTemplateService(data) {
     // if template is defined parse it, else empty template list
     if (templates) {
         templates = templates.map((template) => {
-            let { id, title, completed, instances, active } = template;
+            const { id, title, meta, active } = template;
+            const { date } = template.createdAt;
             let preview_url = PREVIEW_PAGE+id;
             let edit_url = EDIT_PAGE+id;
-            completed = completed?completed:0;
-            instances = instances?instances:0;
-            return { id, title, completed, instances, active, preview_url, edit_url };
+            return { id, title, date, completed:meta.completed, instances:meta.instances, active, preview_url, edit_url };
         });
     } else {
         templates =[];
@@ -71,6 +69,7 @@ export function getDataFromTemplateService(data) {
 
     return { templates, totalPages, currentPage, maxRowLength } ;
 }
+
 export function getDataForSave(id, active) {
     const activeStatus = active?1:0;
     return { data:{ type:'evaluation-templates', id, attributes:{ active:activeStatus } } };

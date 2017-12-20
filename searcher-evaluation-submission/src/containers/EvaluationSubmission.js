@@ -21,20 +21,24 @@ class EvaluationSubmission extends Component {
     render() {
         const { criteriaIds, title, assignmentStatus } = this.props;
         return (
-            <div ref ={ element => this.htmlElement = element }>
+            <div id="searcher-evaluation-submission" ref ={ element => this.htmlElement = element }>
                 <Notification />
                 <div className="row">
                     <div className="col-sm-6">
                         <h1>{title}</h1>
-                        { criteriaIds.map(
-                            (criteriaId, index) =>
-                            <div key={index}>
-                                <Criteria criteriaId = {criteriaId} />
-                            </div>
-                        )}
                     </div>
                     <div className="col-sm-6 text-right">
                         <span className="bs-label bs-label-info">{assignmentStatus.title}</span>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-sm-12">
+                    { criteriaIds.map(
+                        (criteriaId, index) =>
+                        <div key={index}>
+                            <Criteria criteriaId = {criteriaId} />
+                        </div>
+                    )}
                     </div>
                 </div>
                 <div className="row">
