@@ -22155,6 +22155,7 @@
 	        });
 	    });
 	}
+
 	function getPromiseForService(url, dispatch) {
 	    return _axios2.default.get(url).catch(function (error) {
 	        var message = error.message;
@@ -22659,6 +22660,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _moment = __webpack_require__(2);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
 	var _reactPaginate = __webpack_require__(732);
 
 	var _reactPaginate2 = _interopRequireDefault(_reactPaginate);
@@ -22728,24 +22733,6 @@
 	            this.setState({ menuVisibleItemId: null });
 	        }
 	    }, {
-	        key: 'getClassNameForEditButton',
-	        value: function getClassNameForEditButton(active, instances) {
-	            if (!active && instances < 1) {
-	                return '';
-	            } else {
-	                return 'disabled';
-	            }
-	        }
-	    }, {
-	        key: 'getClassNameForActivateButton',
-	        value: function getClassNameForActivateButton(active, instances) {
-	            if (!active && instances < 1) {
-	                return 'disabled';
-	            } else {
-	                return '';
-	            }
-	        }
-	    }, {
 	        key: 'renderMoreButton',
 	        value: function renderMoreButton(id, edit_url, preview_url, active, instances) {
 	            var _this2 = this;
@@ -22781,18 +22768,18 @@
 	                                'Preview'
 	                            )
 	                        ),
-	                        _react2.default.createElement(
+	                        !active && instances < 1 ? _react2.default.createElement(
 	                            'li',
-	                            { className: this.getClassNameForEditButton(active, instances) },
+	                            null,
 	                            _react2.default.createElement(
 	                                'a',
 	                                { disabled: 'true', href: edit_url },
 	                                'Edit'
 	                            )
-	                        ),
-	                        _react2.default.createElement(
+	                        ) : null,
+	                        !active && instances < 1 ? null : _react2.default.createElement(
 	                            'li',
-	                            { className: this.getClassNameForActivateButton(active, instances) },
+	                            null,
 	                            _react2.default.createElement(
 	                                'a',
 	                                { href: 'javascript:;',
@@ -22854,6 +22841,11 @@
 	                            _react2.default.createElement(
 	                                'th',
 	                                null,
+	                                'Creation Date'
+	                            ),
+	                            _react2.default.createElement(
+	                                'th',
+	                                null,
 	                                'Status'
 	                            ),
 	                            _react2.default.createElement(
@@ -22884,6 +22876,11 @@
 	                                    'td',
 	                                    { className: 'td-center nowrap' },
 	                                    item.completed
+	                                ),
+	                                _react2.default.createElement(
+	                                    'td',
+	                                    { className: 'td-center nowrap' },
+	                                    (0, _moment2.default)(item.date).format('DD/MM/YYYY')
 	                                ),
 	                                _react2.default.createElement(
 	                                    'td',
@@ -23581,9 +23578,9 @@
 	    var page = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : null;
 
 
-	    var urlPostfix = '';
+	    var urlPostfix = 'meta=instances,completed';
 	    if (page) {
-	        urlPostfix += 'page=' + page;
+	        urlPostfix += '&page=' + page;
 	    }
 	    if (maxRowLength) {
 	        urlPostfix += '&per_page=' + maxRowLength;
@@ -23614,7 +23611,6 @@
 	}
 
 	function getDataFromTemplateService(data) {
-
 	    var totalPages = data.meta.pagination.total_pages;
 	    var currentPage = data.meta.pagination.current_page;
 	    var maxRowLength = data.meta.pagination.per_page;
@@ -23624,15 +23620,13 @@
 	        templates = templates.map(function (template) {
 	            var id = template.id,
 	                title = template.title,
-	                completed = template.completed,
-	                instances = template.instances,
+	                meta = template.meta,
 	                active = template.active;
+	            var date = template.createdAt.date;
 
 	            var preview_url = PREVIEW_PAGE + id;
 	            var edit_url = EDIT_PAGE + id;
-	            completed = completed ? completed : 0;
-	            instances = instances ? instances : 0;
-	            return { id: id, title: title, completed: completed, instances: instances, active: active, preview_url: preview_url, edit_url: edit_url };
+	            return { id: id, title: title, date: date, completed: meta.completed, instances: meta.instances, active: active, preview_url: preview_url, edit_url: edit_url };
 	        });
 	    } else {
 	        templates = [];
@@ -23640,6 +23634,7 @@
 
 	    return { templates: templates, totalPages: totalPages, currentPage: currentPage, maxRowLength: maxRowLength };
 	}
+
 	function getDataForSave(id, active) {
 	    var activeStatus = active ? 1 : 0;
 	    return { data: { type: 'evaluation-templates', id: id, attributes: { active: activeStatus } } };

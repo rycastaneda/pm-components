@@ -45,20 +45,6 @@ class TemplatesTable extends Component {
     hideMenu() {
         this.setState({ menuVisibleItemId:null });
     }
-    getClassNameForEditButton(active, instances) {
-        if (!active&&(instances<1)) {
-            return '';
-        } else {
-            return 'disabled';
-        }
-    }
-    getClassNameForActivateButton(active, instances) {
-        if (!active&&(instances<1)) {
-            return 'disabled';
-        } else {
-            return '';
-        }
-    }
     renderMoreButton(id, edit_url, preview_url, active, instances) {
         instances = Number(instances);
         instances;
@@ -80,14 +66,22 @@ class TemplatesTable extends Component {
                     <li>
                         <a href={preview_url} >Preview</a>
                     </li>
-                    <li className={this.getClassNameForEditButton(active, instances)}>
-                        <a disabled ="true" href={edit_url} >Edit</a>
-                    </li>
-                    <li className={this.getClassNameForActivateButton(active, instances)}>
-                        <a href="javascript:;"
+                    { !active&&(instances<1)?
+                        <li>
+                            <a disabled ="true" href={edit_url} >Edit</a>
+                        </li>
+                        :
+                        null
+                    }
+                    { !active&&(instances<1)?
+                        null
+                        :
+                        <li>
+                            <a href="javascript:;"
                             onClick={ ()  => this.onTemplateToggleActivation(id, !(active))}>{active?'Deactivate':'Activate'}
-                        </a>
-                    </li>
+                            </a>
+                        </li>
+                    }
                 </ul>
         </div>);
         } else {
