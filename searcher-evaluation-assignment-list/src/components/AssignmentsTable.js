@@ -109,7 +109,7 @@ class AssignmentsTable extends Component {
             <thead>
                 <tr>
                     <th>Date Assigned</th>
-                    <th>Evaluation</th>
+                    <th>Evaluation Template</th>
                     <th>Linked To</th>
                     <th>Assigned User</th>
 
@@ -135,7 +135,7 @@ class AssignmentsTable extends Component {
                            {item.evaluationTemplate.title}
                        </td>
                        <td className="nowrap">
-                        {item.linkedTo.title}#{item.supplier.id}
+                        {item.linkedTo.title} #{item.supplier.id}
                        </td>
                        <td className="nowrap">
                            {item.assignedUser.userName}

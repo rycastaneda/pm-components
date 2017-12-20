@@ -2576,7 +2576,7 @@
 	        var templateId = getState().evaluationTemplateCreator.id;
 	        return _axios2.default.post(TEMPLATE_SERVICE_URL + '/' + templateId + '/finalise', {}).then(function () {
 	            var title = 'Template Published';
-	            var comment = 'Template published successfully. Please close this popup to go back to template listing.';
+	            var comment = 'Your Template has been successfully published.';
 	            dispatch((0, _actions2.showModal)(title, comment, function () {
 	                window.location.href = EVALUATION_TEMPLATE_LIST_PAGE;
 	            }));
@@ -4688,11 +4688,11 @@
 	}
 
 	function showModal() {
-	    var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-	    var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+	    var title = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+	    var message = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
 	    var onClose = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
-	    return { type: _ActionTypes.MODAL_PROMPT_MESSAGE, message: message, title: title, onClose: onClose };
+	    return { type: _ActionTypes.MODAL_PROMPT_MESSAGE, title: title, message: message, onClose: onClose };
 	}
 	;
 
@@ -8646,11 +8646,6 @@
 	                                'div',
 	                                { className: 'modal-header' },
 	                                _react2.default.createElement(
-	                                    'button',
-	                                    { type: 'button', className: 'close', 'data-dismiss': 'modal', onClick: this.onCloseModal },
-	                                    '\xD7'
-	                                ),
-	                                _react2.default.createElement(
 	                                    'h4',
 	                                    { className: 'modal-title' },
 	                                    title
@@ -8663,6 +8658,15 @@
 	                                    'p',
 	                                    null,
 	                                    message
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'modal-footer' },
+	                                _react2.default.createElement(
+	                                    'button',
+	                                    { type: 'button', className: 'btn btn-sm btn-success pmfilters__success', onClick: this.onCloseModal },
+	                                    ' Back to Templates \u203A'
 	                                )
 	                            )
 	                        )
