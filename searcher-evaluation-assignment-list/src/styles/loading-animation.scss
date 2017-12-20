@@ -7,12 +7,12 @@ $speed: 2.5s;
     right: 0;
     margin: auto;
     width: 175px;
-    height: 100px;
+    height: 70px;
 
     span {
         display: block;
-        background: #cccccc;
-        width: 7px;
+        background: #e68020;
+        width: 5px;
         height: 10%;
         border-radius: 14px;
         margin-right: 5px;
@@ -88,19 +88,19 @@ $speed: 2.5s;
 @keyframes load {
 
     0% {
-        background: #cccccc;
+        background: rgba(230, 128, 32, 0.2);
         margin-top: 25%;
         height: 10%;
     }
 
     50% {
-        background: #444444;
+        background: rgba(230, 128, 32, 0.5);
         height: 100%;
         margin-top: 0%;
     }
 
     100% {
-        background: #cccccc;
+        background: rgba(230, 128, 32, 1);
         height: 10%;
         margin-top: 25%;
     }
