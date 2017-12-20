@@ -48,7 +48,7 @@ export function publishTemplate() {
         return axios.post(TEMPLATE_SERVICE_URL+'/'+templateId+'/finalise', {})
         .then(() => {
             const title = 'Template Published';
-            const comment = 'Template published successfully. Please close this popup to go back to template listing.';
+            const comment = 'Your Template has been successfully published.';
             dispatch(showModal(title, comment, () => {
                 window.location.href = EVALUATION_TEMPLATE_LIST_PAGE;
             }));
