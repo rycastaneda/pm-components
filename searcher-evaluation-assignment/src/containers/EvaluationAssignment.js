@@ -191,7 +191,7 @@ EvaluationAssignment.propTypes = {
     evaluationTemplates: PropTypes.array.isRequired,
     evaluationAssignees: PropTypes.array.isRequired,
     selectedAssignees:PropTypes.array.isRequired,
-    selectedAssigneeChairman:PropTypes.object.isRequired,
+    selectedAssigneeChairman:PropTypes.object,
     selectedTemplateId: PropTypes.string.isRequired,
     evaluationTypeSelected: PropTypes.string.isRequired,
     rfqTypeSelectedId: PropTypes.string.isRequired,

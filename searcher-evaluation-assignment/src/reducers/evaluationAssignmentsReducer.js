@@ -4,7 +4,7 @@ import { API_DATA_REQUEST, API_DATA_SUCCESS } from '../middleware/api';
 
 const initialState = {
     selectedAssignees: [],
-    selectedAssigneeChairman: {},
+    selectedAssigneeChairman: null,
     selectedTemplateId: '',
     selectedAssignmentEntityInstanceId: '',
     evaluationTypeSelected: '',

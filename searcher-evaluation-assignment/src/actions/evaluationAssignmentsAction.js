@@ -144,7 +144,7 @@ export const updateSelectedAssignees = (assignees) => {
 export const updateSelectedAssigneeChairman = (assigneeChairman) => {
     return {
         type: actionTypes.ASSIGNMENT_CREATION_ASSIGNEES_CHAIRMAN_CHANGE_UPDATE,
-        assigneeChairman: assigneeChairman === null ? {} : assigneeChairman,
+        assigneeChairman,
     };
 };
 
