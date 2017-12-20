@@ -32,11 +32,13 @@ class Modal extends Component {
                     <div className="modal-dialog">
                         <div className="modal-content">
                           <div className="modal-header">
-                            <button type="button" className="close" data-dismiss="modal" onClick ={this.onCloseModal} >×</button>
                             <h4 className="modal-title">{title}</h4>
                           </div>
                           <div className="modal-body">
                             <p>{message}</p>
+                          </div>
+                          <div className="modal-footer">
+                            <button type="button" className="btn btn-sm btn-success pmfilters__success" onClick ={this.onCloseModal}> Back to Templates &rsaquo;</button>
                           </div>
                         </div>
                     </div>
