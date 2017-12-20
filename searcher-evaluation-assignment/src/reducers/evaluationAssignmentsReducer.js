@@ -4,6 +4,7 @@ import { API_DATA_REQUEST, API_DATA_SUCCESS } from '../middleware/api';
 
 const initialState = {
     selectedAssignees: [],
+    selectedAssigneeChairman: null,
     selectedTemplateId: '',
     selectedAssignmentEntityInstanceId: '',
     evaluationTypeSelected: '',
@@ -62,6 +63,12 @@ export function evaluationAssignment(state = initialState, action) {
             return {
                 ...state,
                 selectedAssignees: action.assignees,
+            };
+
+        case actionTypes.ASSIGNMENT_CREATION_ASSIGNEES_CHAIRMAN_CHANGE_UPDATE:
+            return {
+                ...state,
+                selectedAssigneeChairman: action.assigneeChairman,
             };
 
         case actionTypes.ASSIGNMENT_CREATION_SET_ASSIGNMENT_ENTITY_INSTANCE_ID:

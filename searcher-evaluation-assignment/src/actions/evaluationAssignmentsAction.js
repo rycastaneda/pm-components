@@ -3,7 +3,7 @@ import axios from 'axios';
 import * as apiActions from './apiActions';
 
 export const createAssignment = () => (dispatch, getState) => {
-    const { selectedTemplateId, selectedAssignees, selectedAssignmentEntityInstanceId, evaluationTypeSelected } = getState().evaluationAssignment;
+    const { selectedTemplateId, selectedAssignees, selectedAssigneeChairman, selectedAssignmentEntityInstanceId, evaluationTypeSelected } = getState().evaluationAssignment;
     dispatch({
         type: actionTypes.ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_REQUEST_START,
     });
@@ -21,6 +21,10 @@ export const createAssignment = () => (dispatch, getState) => {
                         'type': 'evaluation-templates',
                         'id': selectedTemplateId
                     }
+                },
+                'chairStaff': {
+                    'type': 'staff',
+                    'id': selectedAssigneeChairman.id
                 },
                 'assigneeUser' : {
                     'data' : selectedAssignees
@@ -134,6 +138,13 @@ export const updateSelectedAssignees = (assignees) => {
     return {
         type: actionTypes.ASSIGNMENT_CREATION_ASSIGNEES_CHANGE_UPDATE,
         assignees,
+    };
+};
+
+export const updateSelectedAssigneeChairman = (assigneeChairman) => {
+    return {
+        type: actionTypes.ASSIGNMENT_CREATION_ASSIGNEES_CHAIRMAN_CHANGE_UPDATE,
+        assigneeChairman,
     };
 };
 

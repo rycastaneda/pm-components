@@ -29,11 +29,12 @@ class EvaluationAssignment extends Component {
             selectedTemplateId,
             evaluationAssignees,
             selectedAssignees,
+            selectedAssigneeChairman,
             evaluationTypeSelected,
             rfqTypeSelectedId,
             matchedSupplierId,
             selectedAssignmentEntityInstanceId,
-            actions
+            actions,
             } = this.props;
 
         const columnWidth = classNames('form-group', {
@@ -126,6 +127,22 @@ class EvaluationAssignment extends Component {
                                 <hr />
                             </div>
                             <div className="col-sm-4 form-group">
+                                <label htmlFor="assignees">Evaluation Assignment Chair</label>
+                                <div>
+                                    <Select
+                                        className="pm-react-select"
+                                        labelKey="fullName"
+                                        closeOnSelect={true}
+                                        onChange={actions.updateSelectedAssigneeChairman}
+                                        options={evaluationAssignees}
+                                        placeholder="Select Assignment Chair"
+                                        removeSelected={true}
+                                        value={selectedAssigneeChairman}
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-sm-12" />
+                            <div className="col-sm-4 form-group">
                                 <label htmlFor="assignees">Evaluation Assignees</label>
                                 <div>
                                     <Select
@@ -140,7 +157,6 @@ class EvaluationAssignment extends Component {
                                         value={selectedAssignees}
                                     />
                                 </div>
-
                             </div>
                         </div>
                         : null
@@ -175,6 +191,7 @@ EvaluationAssignment.propTypes = {
     evaluationTemplates: PropTypes.array.isRequired,
     evaluationAssignees: PropTypes.array.isRequired,
     selectedAssignees:PropTypes.array.isRequired,
+    selectedAssigneeChairman:PropTypes.object,
     selectedTemplateId: PropTypes.string.isRequired,
     evaluationTypeSelected: PropTypes.string.isRequired,
     rfqTypeSelectedId: PropTypes.string.isRequired,
@@ -184,7 +201,7 @@ EvaluationAssignment.propTypes = {
     matchedSuppliersIsLoading: PropTypes.bool,
     actions: PropTypes.object,
     apiActions: PropTypes.object,
-    columnWidth: PropTypes.string
+    columnWidth: PropTypes.string,
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -199,6 +216,7 @@ const mapStateToProps = (state, ownProps) => {
     const {
         evaluationTypeSelected,
         selectedAssignees,
+        selectedAssigneeChairman,
         isLoading,
         selectedTemplateId,
         selectedAssignmentEntityInstanceId,
@@ -217,6 +235,7 @@ const mapStateToProps = (state, ownProps) => {
         evaluationTypeSelected,
         evaluationAssignees,
         selectedAssignees,
+        selectedAssigneeChairman,
         selectedAssignmentEntityInstanceId,
         rfqTypeSelectedId,
         isLoading,
