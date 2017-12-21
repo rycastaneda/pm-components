@@ -45,14 +45,12 @@ export function initialize() {
         .then((responses) => {
             const responseData = getDataFromTemplateService(responses[1].data);
             const users = getUsers(responses[0].data);
-            let isBusy = false;
             let { templates, totalPages, currentPage } = responseData;
             dispatch({ type: INITIALIZED,
                 users,
                 templates,
                 totalPages,
-                currentPage,
-                isBusy });
+                currentPage });
         });
     };
 }
@@ -82,14 +80,12 @@ function getPromiseForTemplateService(url, dispatch) {
     return getPromiseForService(url, dispatch)
     .then((response) => {
         const { templates, totalPages, currentPage, maxRowLength }= getDataFromTemplateService(response.data);
-        const isBusy = false;
         dispatch({
             type: EVALUATION_TEMPLATES_FETCHED,
             templates,
             totalPages,
             currentPage,
-            maxRowLength,
-            isBusy
+            maxRowLength
         });
     });
 }

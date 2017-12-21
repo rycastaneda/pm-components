@@ -114,7 +114,7 @@ class EvaluationAssignment extends Component {
                     { evaluationTypeSelected === '3' ?
                         <div className="row">
                             <div className="col-sm-4 form-group">
-                                <label htmlFor="evaluationLink">Preferred Suppliers</label>
+                                <label htmlFor="evaluationLink">Suppliers</label>
                                 <PreferredSuppliersDropdown />
                             </div>
                         </div>

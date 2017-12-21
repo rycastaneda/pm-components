@@ -107,7 +107,7 @@ class EvaluationTemplatesFilter extends Component {
                                 <select className="form-control form-control-sm" onChange={event => this.onSelectedUserChange(event.target.value)} value={this.state.selectedUserId}>
                                     <option value="">{'Any User'}</option>
                                     {
-                                        this.props.users.map((user, index) => <option key={index} value={user.id} >{ `${user.lastName}, ${user.firstName}` }</option>)
+                                        this.props.users.map((user, index) => <option key={index} value={user.id} >{ `${user.firstName} ${user.lastName}` }</option>)
                                     }
                                 </select>
                             </div>
