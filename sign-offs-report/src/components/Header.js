@@ -1,17 +1,16 @@
 import React, { PropTypes } from 'react';
 
-const Header = ({ text, field, direction, onClick }) => {
+const Header = ({ text, field, direction, onClick, sortable }) => {
     let directionClass = '';
-    const noSorting = ['comments'];
 
-    if (direction && !noSorting.includes(field)) {
+    if (sortable) {
         directionClass = `th-sort-${direction}`;
     }
 
     return (
         <th
             className={`td-center ${directionClass}`}
-            onClick={onClick}
+            onClick={sortable ? onClick : () => {}}
             id={field}>
             {text}
         </th>
@@ -22,6 +21,7 @@ Header.propTypes = {
     text: PropTypes.string,
     field: PropTypes.string,
     direction: PropTypes.string,
+    sortable: PropTypes.bool,
     onClick: PropTypes.func.isRequired
 };
 

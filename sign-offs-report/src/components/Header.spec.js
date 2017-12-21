@@ -18,12 +18,14 @@ describe('Header component: ', () => {
             text: 'Supplier',
             field: 'supplier',
             direction: `asc`,
+            sortable: true,
             onClick
         };
         const { component } = setup(props);
 
         expect(component.text()).to.contain(props.text);
-        expect(component.find('.th-sort-asc').hasClass('th-sort-asc')).to.be.true;
+        expect(component.find('.th-sort-asc').hasClass('th-sort-asc')).to.be
+            .true;
         component.simulate('click');
         expect(onClick.called).to.be.true;
     });
@@ -33,6 +35,7 @@ describe('Header component: ', () => {
             text: 'Supplier',
             field: 'comment',
             direction: `asc`,
+            sortable: false,
             onClick
         };
         const { component } = setup(props);

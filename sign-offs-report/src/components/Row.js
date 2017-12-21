@@ -3,7 +3,6 @@ import { format } from 'date-fns';
 
 const Row = ({
     id,
-    supplier,
     panels,
     section,
     assignee,
@@ -13,7 +12,7 @@ const Row = ({
     toggleCommentsModal
 }) => (
     <tr>
-        <td>{supplier}</td>
+        <td />
         <td>{panels}</td>
         <td>{section}</td>
         <td>{assignee}</td>
@@ -37,7 +36,6 @@ const Row = ({
 
 Row.propTypes = {
     id: PropTypes.string,
-    supplier: PropTypes.string,
     panels: PropTypes.string,
     section: PropTypes.string,
     assignee: PropTypes.string,

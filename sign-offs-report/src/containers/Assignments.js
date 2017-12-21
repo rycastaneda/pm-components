@@ -4,7 +4,8 @@ import {
     fetchAssignments,
     fetchStaff,
     fetchComments,
-    toggleCommentModal
+    toggleCommentModal,
+    toggleSupplierRow
 } from '../actions/assignments';
 import Filters from './Filters';
 import Table from '../components/Table';
@@ -22,6 +23,7 @@ export class Assignments extends Component {
         this.changePage = this.changePage.bind(this);
         this.toggleCommentsModal = this.toggleCommentsModal.bind(this);
         this.fetchComments = this.fetchComments.bind(this);
+        this.toggleSupplierRow = this.toggleSupplierRow.bind(this);
     }
 
     componentDidMount() {
@@ -69,6 +71,12 @@ export class Assignments extends Component {
         const { dispatch, currentAssignment } = this.props;
 
         dispatch(toggleCommentModal(event.target.id || currentAssignment.id));
+    }
+
+    toggleSupplierRow(supplierId) {
+        const { dispatch } = this.props;
+
+        dispatch(toggleSupplierRow(supplierId));
     }
 
     fetchComments() {
@@ -125,6 +133,7 @@ export class Assignments extends Component {
                     orderByField={orderByField}
                     changeOrderBy={this.changeOrderBy}
                     toggleCommentsModal={this.toggleCommentsModal}
+                    toggleSupplierRow={this.toggleSupplierRow}
                 />
 
                 <PaginatePerPage
@@ -167,11 +176,17 @@ function mapStateToProps(state) {
     const {
         ui,
         assignments: rawAssignments,
+        suppliers: rawSuppliers,
         staff: rawStaff,
         comments: rawComments
     } = state;
-    let assignments = rawAssignments.allIds.map(reportId => {
-        return rawAssignments.byId[reportId];
+
+    let assignments = rawSuppliers.allIds.map(supplierId => {
+        let supplier = rawSuppliers.byId[supplierId];
+        supplier.assignments = supplier.assignmentIds.map(
+            assignmentId => rawAssignments.byId[assignmentId]
+        );
+        return supplier;
     });
 
     let staff = {

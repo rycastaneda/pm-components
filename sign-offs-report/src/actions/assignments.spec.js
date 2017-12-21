@@ -65,4 +65,12 @@ describe('Assignments actions', function() {
             assignmentId
         });
     });
+
+    it('should call TOGGLE_SUPPLIER_ROW', function() {
+        const supplierId = 1;
+        expect(actions.toggleSupplierRow(supplierId)).to.eql({
+            type: types.TOGGLE_SUPPLIER_ROW,
+            supplierId
+        });
+    });
 });

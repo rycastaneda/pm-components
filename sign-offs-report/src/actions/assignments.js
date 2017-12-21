@@ -56,6 +56,13 @@ export function toggleCommentModal(assignmentId) {
     };
 }
 
+export function toggleSupplierRow(supplierId) {
+    return {
+        type: actions.TOGGLE_SUPPLIER_ROW,
+        supplierId
+    };
+}
+
 export function fetchStaff() {
     return dispatch => {
         dispatch({

@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Header from './Header';
+import RowHeader from './RowHeader';
 import Row from './Row';
 import Loader from './Loader';
 
@@ -9,6 +10,7 @@ const Table = ({
     orderByDirection,
     changeOrderBy,
     toggleCommentsModal,
+    toggleSupplierRow,
     isLoading
 }) => {
     const direction = field => {
@@ -18,33 +20,83 @@ const Table = ({
     const headers = [
         {
             text: 'Supplier',
-            field: 'supplier'
+            field: 'supplier',
+            sortable: true
         },
         {
             text: 'Panel',
-            field: 'panel'
+            field: 'panel',
+            sortable: false
         },
         {
             text: 'Section',
-            field: 'section'
+            field: 'section',
+            sortable: false
         },
         {
             text: 'Assigned To',
-            field: 'assignee'
+            field: 'assignee',
+            sortable: false
         },
         {
             text: 'Status',
-            field: 'status'
+            field: 'status',
+            sortable: false
         },
         {
             text: 'Last Updated',
-            field: 'lastUpdated'
+            field: 'lastUpdated',
+            sortable: false
         },
         {
             text: 'Comments',
-            field: 'comments'
+            field: 'comments',
+            sortable: false
         }
     ];
+
+    const tableData = () => {
+        if (!data || !data.length) {
+            return (
+                <tr>
+                    <td colSpan="7" className="td-center">
+                        {isLoading ? (
+                            <Loader icon=" fa-2x" />
+                        ) : (
+                            'No data available'
+                        )}
+                    </td>
+                </tr>
+            );
+        }
+
+        return data.map(supplier => {
+            let rows = [
+                <RowHeader
+                    toggleSupplierRow={toggleSupplierRow}
+                    id={supplier.id}
+                    key={supplier.supplierId}
+                    isOpen={supplier.isOpen}
+                    supplier={supplier.supplierTitle}
+                    count={supplier.assignments.length}
+                />
+            ];
+
+            if (supplier.isOpen) {
+                supplier.assignments.map(row => {
+                    rows.push(
+                        <Row
+                            key={row.id}
+                            {...row}
+                            toggleCommentsModal={toggleCommentsModal}
+                        />
+                    );
+                });
+            }
+
+            return rows;
+        });
+    };
 
     return (
         <table className="table db-table db-table-sort db-table-link db-table-sort-nojs">
@@ -60,27 +112,7 @@ const Table = ({
                     ))}
                 </tr>
             </thead>
-            <tbody>
-                {data && data.length ? (
-                    data.map(row => (
-                        <Row
-                            key={row.id}
-                            {...row}
-                            toggleCommentsModal={toggleCommentsModal}
-                        />
-                    ))
-                ) : (
-                    <tr>
-                        <td colSpan="7" className="td-center">
-                            {isLoading ? (
-                                <Loader icon=" fa-2x" />
-                            ) : (
-                                'No data available'
-                            )}
-                        </td>
-                    </tr>
-                )}
-            </tbody>
+            <tbody>{tableData()}</tbody>
         </table>
     );
 };
@@ -91,6 +123,7 @@ Table.propTypes = {
     orderByDirection: PropTypes.string.isRequired,
     changeOrderBy: PropTypes.func.isRequired,
     toggleCommentsModal: PropTypes.func.isRequired,
+    toggleSupplierRow: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired
 };
 

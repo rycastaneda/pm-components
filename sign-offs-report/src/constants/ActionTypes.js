@@ -11,6 +11,8 @@ export const TOGGLE_COMMENT_MODAL = 'TOGGLE_COMMENT_MODAL';
 export const FETCH_COMMENT = 'FETCH_COMMENT';
 export const RECEIVE_COMMENT = 'RECEIVE_COMMENT';
 
+export const TOGGLE_SUPPLIER_ROW = 'TOGGLE_SUPPLIER_ROW';
+
 export const API_ERROR = 'API_ERROR';
 
 export const PENDING = 0;
