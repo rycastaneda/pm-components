@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { parseInitialize, parseDataForUpdateQuestion } from '../utils/dataParser';
-import normalize from 'json-api-normalizer';
+
 import { UPDATE_TEMPLATE_ASSIGNMENT,
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_UPLOAD_FAILED,
@@ -27,11 +27,16 @@ export function initialize(requestedAssignmentId) {
 
             if (error.response) {
                 let { errors } = error.response.data;
-                window.console.log(normalize(error.response.data));
-                errors.forEach((er) => {
-                    let message = er.detail;
+                if (typeof(errors)==='object') {
+                    let message = errors.detail;
                     dispatch(promptError(message));
-                });
+                } else {
+                    errors.forEach((er) => {
+                        let message = er.detail;
+                        dispatch(promptError(message));
+                    });
+                }
+
             } else {
                 let { message } = error;
                 dispatch(promptError(message));
@@ -115,10 +120,16 @@ export function deleteDocument(questionId, documentId) {
 
             if (error.response) {
                 let { errors } = error.response.data;
-                errors.forEach((error) => {
-                    let message = error.detail;
+                if (typeof(errors)==='object') {
+                    let message = errors.detail;
                     dispatch(promptError(message));
-                });
+                } else {
+                    errors.forEach((er) => {
+                        let message = er.detail;
+                        dispatch(promptError(message));
+                    });
+                }
+
             } else {
                 let { message } = error;
                 dispatch(promptError(message));
@@ -139,13 +150,20 @@ export function submitAssignment() {
             dispatch({ type: ASSIGNMENT_SUBMITTED });
             let message = 'Assignment submitted successfully!';
             dispatch(showNotification(MESSAGE_TYPE_SUCCESS, message));
-        }).catch((error) => {
-            let { errors } = error.response.data;
-            if (errors) {
-                errors.forEach((error) => {
-                    let message = error.detail;
+        })
+        .catch((error) => {
+            if (error.response) {
+                let { errors } = error.response.data;
+                if (typeof(errors)==='object') {
+                    let message = errors.detail;
                     dispatch(promptError(message));
-                });
+                } else {
+                    errors.forEach((er) => {
+                        let message = er.detail;
+                        dispatch(promptError(message));
+                    });
+                }
+
             } else {
                 let { message } = error;
                 dispatch(promptError(message));
@@ -196,10 +214,15 @@ function updateQuestion(question, assignmentId, dispatch) {
     }).catch((error) => {
         if (error.response) {
             let { errors } = error.response.data;
-            errors.forEach((error) => {
-                let message = error.detail;
+            if (typeof(errors)==='object') {
+                let message = errors.detail;
                 dispatch(promptError(message));
-            });
+            } else {
+                errors.forEach((er) => {
+                    let message = er.detail;
+                    dispatch(promptError(message));
+                });
+            }
         } else {
             let { message } = error;
             dispatch(promptError(message));
