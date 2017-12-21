@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { parseInitialize, parseDataForUpdateQuestion } from '../utils/dataParser';
-
+import normalize from 'json-api-normalizer';
 import { UPDATE_TEMPLATE_ASSIGNMENT,
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_UPLOAD_FAILED,
@@ -24,8 +24,19 @@ export function initialize(requestedAssignmentId) {
             dispatch({ type:UPDATE_TEMPLATE_ASSIGNMENT, ...result });
         })
         .catch((error) => {
-            const { message }= error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+
+            if (error.response) {
+                let { errors } = error.response.data;
+                window.console.log(normalize(error.response.data));
+                errors.forEach((er) => {
+                    let message = er.detail;
+                    dispatch(promptError(message));
+                });
+            } else {
+                let { message } = error;
+                dispatch(promptError(message));
+            }
+
             dispatch({ type:REQUEST_FAILED });
         });
     };
@@ -99,6 +110,21 @@ export function deleteDocument(questionId, documentId) {
         .then(() => {
             DOCUMENT_DELETE;
             dispatch({ type:DOCUMENT_DELETE, questionId, documentId });
+        })
+        .catch((error) => {
+
+            if (error.response) {
+                let { errors } = error.response.data;
+                errors.forEach((error) => {
+                    let message = error.detail;
+                    dispatch(promptError(message));
+                });
+            } else {
+                let { message } = error;
+                dispatch(promptError(message));
+            }
+
+            dispatch({ type:REQUEST_FAILED });
         });
     };
 
@@ -114,8 +140,16 @@ export function submitAssignment() {
             let message = 'Assignment submitted successfully!';
             dispatch(showNotification(MESSAGE_TYPE_SUCCESS, message));
         }).catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            let { errors } = error.response.data;
+            if (errors) {
+                errors.forEach((error) => {
+                    let message = error.detail;
+                    dispatch(promptError(message));
+                });
+            } else {
+                let { message } = error;
+                dispatch(promptError(message));
+            }
         });
     };
 }
@@ -158,10 +192,18 @@ function updateQuestion(question, assignmentId, dispatch) {
         promise = axios.post(endpoint, parsedQuestionData);
     }
     promise.then(() => {
-        dispatch({ type: QUESTION_UPDATED, question });
+        dispatch({ type: QUESTION_UPDATED });
     }).catch((error) => {
-        let { message } = error;
-        dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+        if (error.response) {
+            let { errors } = error.response.data;
+            errors.forEach((error) => {
+                let message = error.detail;
+                dispatch(promptError(message));
+            });
+        } else {
+            let { message } = error;
+            dispatch(promptError(message));
+        }
     });
 }
 export function promptError(message) {

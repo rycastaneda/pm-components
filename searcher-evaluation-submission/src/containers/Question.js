@@ -63,8 +63,6 @@ class Question extends Component {
         this.props.dispatch(setOptionValue(this.props.questionId, null, null));
     }
     getScaleDefinitionClass(enableScaleDefinitions, questionType) {
-
-        window.console.log(questionType);
         if (enableScaleDefinitions) {
             return 'defined-scale';
         } else {
@@ -86,7 +84,6 @@ class Question extends Component {
             type,
             title,
             id } = question;
-        window.console.log(question);
         return (
             <div>
                 <div className="row">
@@ -97,7 +94,7 @@ class Question extends Component {
                             <ol className={`questionnaire ${this.getScaleDefinitionClass(enableScaleDefinitions, type)}`}>
                                 { typeDefinitionIds.length>0&&typeDefinitionIds.map((definitionId, index) =>
                                     <li key={index}>
-                                        <ScaleDefinition                
+                                        <ScaleDefinition
                                             questionType = {type}
                                             enableScaleDefinitions = {enableScaleDefinitions}
                                             selectedDefinition = { selectedDefinition }
@@ -192,7 +189,6 @@ function mapStateToProps(state, props) {
 
     let { questionId, index } = props;
     let { questionByIndex, questionTypeByIndex, uploadedDocumentByIndex } = state.evaluationSubmission;
-    window.console.log(questionTypeByIndex);
     let question = questionByIndex[questionId];
     let typeDefinitionIds = questionTypeByIndex[question.type].definitions;
     let uploadedDocuments = question.uploadedDocuments.map(item => uploadedDocumentByIndex[String(item)]);
