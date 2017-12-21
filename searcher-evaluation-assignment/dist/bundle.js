@@ -8992,7 +8992,7 @@
 	                            _react2.default.createElement(
 	                                'label',
 	                                { htmlFor: 'evaluationLink' },
-	                                'Preferred Suppliers'
+	                                'Suppliers'
 	                            ),
 	                            _react2.default.createElement(_PreferredSuppliersDropdown2.default, null)
 	                        )
@@ -9865,7 +9865,7 @@
 	                _react2.default.createElement(
 	                    'option',
 	                    null,
-	                    'Loading Preferred Suppliers ...'
+	                    'Loading Suppliers ...'
 	                )
 	            ),
 	            _react2.default.createElement('span', { className: 'spinner-animation form-control-feedback' })
