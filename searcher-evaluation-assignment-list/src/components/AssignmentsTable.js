@@ -55,14 +55,15 @@ class AssignmentsTable extends Component {
         this.props.onAssignmentDelete(id);
         this.hideMenu();
     }
-    onMarkAsInProgressClick(id) {        
+    onMarkAsInProgressClick(id) {
         this.props.onAssignmentMarkAsInProgress(id);
         this.hideMenu();
     }
     renderMoreButton(assignment, complete_url, isDeletable, statusId) {
         let isInProgressStatus = (statusId ==='2');
+        let isComplete = (statusId === '3');
         let { id } = assignment;
-        if (this.state.menuVisibleItemId===id) {
+        if (this.state.menuVisibleItemId === id) {
             return (
             <div className="db-function-dropdown click" ref={(ul) => {
                 if (ul!==null) {
@@ -76,13 +77,35 @@ class AssignmentsTable extends Component {
                     <i className="fa fa-caret-down" ></i>
                 </a>
                 <ul className="db-function-menu">
-                    { !isInProgressStatus&&isDeletable? <li><a href="javascript:;" onClick ={() => this.onDeleteClick(id)} ><i className="fa fa-trash-o"></i> Delete</a></li>:null }
-                    <li ><a href={complete_url} ><i className="fa fa-check"></i> Complete Evaluation</a></li>
-                    {isInProgressStatus?null:<li><a href="javascript:;" onClick={() => this.onMarkAsInProgressClick(id)} ><i className="fa fa-clock-o"></i> Mark as in Progress</a></li>}
+                    { !isInProgressStatus&&isDeletable?
+                        <li>
+                            <a href="javascript:;"
+                            onClick ={() => this.onDeleteClick(id)} >
+                                <i className="fa fa-trash-o"></i> Delete
+                            </a>
+                        </li>
+                        :null
+                    }
+                    <li>
+                        <a href={complete_url}>
+                            <i className="fa fa-check"></i> Complete Evaluation
+                        </a>
+                    </li>
+                    { isComplete?
+                        <li>
+                            <a href="javascript:;" onClick={() => this.onMarkAsInProgressClick(id)} >
+                            <i className="fa fa-clock-o"></i> Mark as in Progress</a>
+                        </li>
+                        :null
+                    }
                     <li role="separator" className="divider"></li>
                     <li className="dropdown-header">Analysis</li>
                     <li role="separator" className="divider"></li>
-                    <li><a href="javascript:;"><i className="fa fa-area-chart"></i> View Single</a></li>
+                    <li>
+                        <a href="javascript:;">
+                            <i className="fa fa-area-chart"></i> View Single
+                        </a>
+                    </li>
                     <li><a href="javascript:;"><i className="fa fa-pie-chart"></i> View All</a></li>
                     <li><a href="javascript:;"><i className="fa fa-exchange"></i> View Comparison</a></li>
                 </ul>
