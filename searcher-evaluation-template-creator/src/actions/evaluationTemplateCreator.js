@@ -387,7 +387,7 @@ export function onScaleDefinitionChange(criteriaId, questionId, typeDefinitionId
                     dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
                 });
         } else {
-            serviceUrl +=scaleDefinitionId;
+            serviceUrl +=('/'+scaleDefinitionId);
             return axios.patch(serviceUrl, data)
                 .then((response) => {
                     let responseScaleDef = normalize(response.data, { endpoint:'evaluation-question-scale-definitions' });

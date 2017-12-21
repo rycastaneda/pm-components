@@ -2915,7 +2915,7 @@
 	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, message));
 	            });
 	        } else {
-	            serviceUrl += scaleDefinitionId;
+	            serviceUrl += '/' + scaleDefinitionId;
 	            return _axios2.default.patch(serviceUrl, data).then(function (response) {
 	                var responseScaleDef = (0, _jsonApiNormalizer2.default)(response.data, { endpoint: 'evaluation-question-scale-definitions' });
 	                responseScaleDef = (0, _reduxObject2.default)(responseScaleDef, 'evaluationQuestionScaleDefinitions')[0];
@@ -7263,7 +7263,12 @@
 	                                        'Criteria'
 	                                    )
 	                                ),
-	                                _react2.default.createElement('input', { type: 'text', name: 'title', className: this.getTitleInputStyle(), defaultValue: this.state.title, title: 'Criteria', placeholder: 'Criteria Title',
+	                                _react2.default.createElement('input', { type: 'text', name: 'title',
+	                                    maxLength: '255',
+	                                    className: this.getTitleInputStyle(),
+	                                    defaultValue: this.state.title,
+	                                    title: 'Criteria',
+	                                    placeholder: 'Criteria Title',
 	                                    onChange: function onChange(event) {
 	                                        return _this2.onTitleChange(event.target.value);
 	                                    } }),
