@@ -73,7 +73,7 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
         case EVALUATION_STATUS_UPDATED: {
             let { id, assignmentStatus } = action;
             let evaluationAssignments = state.evaluationAssignments.map((item) => {
-                if (item.id===id) {                    
+                if (item.id===id) {
                     item ={ ...item, assignmentStatus };
                 }
                 return item;
