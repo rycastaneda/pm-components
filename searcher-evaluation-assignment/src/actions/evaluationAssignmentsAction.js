@@ -23,8 +23,10 @@ export const createAssignment = () => (dispatch, getState) => {
                     }
                 },
                 'chairStaff': {
-                    'type': 'staff',
-                    'id': selectedAssigneeChairman.id
+                    'data' : {
+                        'type': 'staff',
+                        'id': selectedAssigneeChairman.id
+                    }
                 },
                 'assigneeUser' : {
                     'data' : selectedAssignees
@@ -147,4 +149,3 @@ export const updateSelectedAssigneeChairman = (assigneeChairman) => {
         assigneeChairman,
     };
 };
-

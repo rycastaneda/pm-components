@@ -16,7 +16,6 @@ import {
 } from '../utils/dataParserUtil';
 
 import {
-    toggleMaximiseQuestion,
     onQuestionTypeChange,
     onQuestionAllowCommentsChange,
     onQuestionAllowUploadChange,
@@ -26,10 +25,12 @@ import {
     onQuestionTitleChange,
     deleteQuestion,
     deleteDocument,
-    addDocumentsForQuestion as addDocuments
+    addDocumentsForQuestion as addDocuments,
+    setUpdateActiveQuestion
 } from '../actions/evaluationTemplateCreator';
 
 import { INPUT_SYNC_INTERVAL, SAVE_ANIM_INTERVAL } from '../constants';
+import * as actionTypes from '../constants/ActionTypes';
 
 class Question extends Component {
 
@@ -58,7 +59,6 @@ class Question extends Component {
         };
         this.addQuestion = this.addQuestion.bind(this);
         this.deleteQuestion = this.deleteQuestion.bind(this);
-        this.toggleMaximise = this.toggleMaximise.bind(this);
         this.onDocumentDrop = this.onDocumentDrop.bind(this);
         this.onRemoveDocument = this.onRemoveDocument.bind(this);
         this.onScaleDefinitionChange = this.onScaleDefinitionChange.bind(this);
@@ -143,12 +143,6 @@ class Question extends Component {
     clearAllIntervals() {
         clearInterval(this.intervalId_update);
         clearInterval(this.intervalId_saveAnim);
-    }
-
-    toggleMaximise() {
-        this.clearAllIntervals();
-        let { question } = this.props;
-        this.props.dispatch(toggleMaximiseQuestion(question.id, !question.isMaximised));
     }
 
     onCommentRequiredChange(isCommentRequired) {
@@ -240,6 +234,7 @@ class Question extends Component {
     }
 
     renderMinimised() {
+        const { dispatch, question } = this.props;
         return (
             <div className="row">
                 <div className="col-md-12">
@@ -256,7 +251,10 @@ class Question extends Component {
                             <div className="col-md-6 text-right">
                                 <div className="form-group">
                                     <br />
-                                    <button className="btn btn-sm" onClick={ this.toggleMaximise }>
+                                    <button className="btn btn-sm" onClick={ () => {
+                                        this.clearAllIntervals();
+                                        dispatch(setUpdateActiveQuestion(question.id));
+                                    } }>
                                         <i className="fa fa-pencil"></i>Edit Question
                                     </button>
                                     &nbsp;
@@ -274,7 +272,7 @@ class Question extends Component {
 
     renderMaximised() {
         const isDefsDisabled = (this.state.type === '3' || this.state.type === '4');
-
+        const { dispatch } = this.props;
         return (
             <div>
                 <h3>Question {this.props.questionIndex}</h3>
@@ -314,7 +312,9 @@ class Question extends Component {
                             </div>
                             <button
                                 className="btn btn-sm"
-                                onClick = {this.toggleMaximise} >
+                                onClick = {() => {
+                                    dispatch({ type: actionTypes.TEMPLATE_CREATOR_CLEAR_ACTIVE_QUESTIONS });
+                                }}>
                                 <i className="fa fa-angle-double-up"></i>
                                 Collapse Question
                             </button>
@@ -330,6 +330,7 @@ class Question extends Component {
                                                 <input type="checkbox" disabled = {isDefsDisabled}
                                                     checked={this.state.isAllowScaleDefinitions}
                                                     onChange={ event =>
+
                                                         this.onAllowScaleDefinitionChange(event.target.checked)
                                                     }
                                                 />
@@ -433,8 +434,13 @@ class Question extends Component {
             return null;
         }
     }
+
     render() {
-        return this.props.question.isMaximised? this.renderMaximised():this.renderMinimised();
+        const { activeQuestions, question } = this.props;
+        if (activeQuestions.find(element => element === question.id) || question.id === null) {
+            return this.renderMaximised();
+        }
+        return this.renderMinimised();
     }
 }
 
@@ -445,18 +451,19 @@ Question.propTypes = {
     questionIndex: PropTypes.number,
     criteriaId: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
-    questionTypes:PropTypes.array.isRequired
+    questionTypes:PropTypes.array.isRequired,
+    activeQuestions:PropTypes.array
 };
 
 function mapStateToProps(state, props) {
-    const { questionsByIndex, documentsByIndex, questionTypes } = state.evaluationTemplateCreator;
+    const { questionsByIndex, documentsByIndex, questionTypes, activeQuestions } = state.evaluationTemplateCreator;
     let question = props.questionId ? questionsByIndex[props.questionId]: createQuestion(questionTypes[0].type);
     const questionIndex = props.questionIndex;
     let documents = [];
     documents = question.documentIds.map((id) => {
         return documentsByIndex[id];
     });
-    return { question, documents, questionTypes, questionIndex };
+    return { question, documents, questionTypes, questionIndex, activeQuestions };
 }
 
 export default connect(mapStateToProps)(Question);

@@ -10,14 +10,14 @@ import {
     QUESTION_ADD,
     QUESTION_DELETE,
     QUESTION_UPDATE,
-    QUESTION_MAXIMISE_CHANGE,
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_UPLOAD_FAILED,
     DOCUMENT_UPLOAD_IN_PROGRESS,
     DOCUMENTS_UPLOADING,
     DOCUMENT_DELETE,
-    IS_BUSY
-
+    IS_BUSY,
+    TEMPLATE_CREATOR_SET_UPDATE_ACTIVE_QUESTION,
+    TEMPLATE_CREATOR_CLEAR_ACTIVE_QUESTIONS
 } from '../constants/ActionTypes';
 
 import {
@@ -39,7 +39,8 @@ function getInitialData() {
         allQuestionIndexes:[],
         documentsByIndex:{},
         allDocumentIndexes:[],
-        questionTypes:[]
+        questionTypes:[],
+        activeQuestions:[]
     };
 }
 
@@ -49,13 +50,6 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
             let { questionTypes } = action;
             return { ...state, questionTypes };
 
-        }
-        case QUESTION_MAXIMISE_CHANGE: {
-            let { questionsByIndex } = state;
-            let question = questionsByIndex[action.id];
-            question = Object.assign({}, question, { isMaximised:action.isMaximised });
-            questionsByIndex[action.id] = question;
-            return Object.assign({}, state, { questionsByIndex });
         }
         case CRITERIA_MAXIMISE_CHANGE: {
             let { criteriaByIndex } = state;
@@ -240,6 +234,22 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                     questionsByIndex
                 });
             }
+
+        case TEMPLATE_CREATOR_SET_UPDATE_ACTIVE_QUESTION:
+            // NOTE: We can also add items here if
+            // in future specs change and more than 1 question can be expanded/edited
+            return {
+                ...state,
+                activeQuestions: [action.questionId]
+            };
+
+        case TEMPLATE_CREATOR_CLEAR_ACTIVE_QUESTIONS:
+            return {
+                ...state,
+                activeQuestions: []
+            };
+
+
         case IS_BUSY:
             {
                 state.isBusy = action.status;

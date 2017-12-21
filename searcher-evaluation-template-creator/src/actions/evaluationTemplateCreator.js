@@ -33,7 +33,7 @@ import {
     QUESTION_ADD,
     QUESTION_UPDATE,
     QUESTION_DELETE,
-    QUESTION_MAXIMISE_CHANGE
+    TEMPLATE_CREATOR_SET_UPDATE_ACTIVE_QUESTION
 } from '../constants/ActionTypes';
 
 import { MESSAGE_TYPE_ERROR } from '../notification/constants';
@@ -62,10 +62,6 @@ export function publishTemplate() {
 
         });
     };
-}
-
-export function toggleMaximiseQuestion(id, isMaximised) {
-    return { type:QUESTION_MAXIMISE_CHANGE, id, isMaximised };
 }
 
 export function toggleMaximiseCriteria(id, isMaximised) {
@@ -182,6 +178,7 @@ export function updateCriteria(id, title, weight) {
 }
 
 export function addQuestionToCriteria(criteriaId, questionTitle, questionType) {
+
     return (dispatch, getState) => {
         const { evaluationTemplateCreator } =getState();
         const templateId = evaluationTemplateCreator.id;
@@ -523,3 +520,10 @@ function getPromiseForService(url, dispatch) {
         dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
     });
 }
+
+export const setUpdateActiveQuestion = (questionId) => {
+    return {
+        type: TEMPLATE_CREATOR_SET_UPDATE_ACTIVE_QUESTION,
+        questionId
+    };
+};

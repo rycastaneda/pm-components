@@ -5,10 +5,12 @@ import { connect } from 'react-redux';
 import { addCriteria,
     updateCriteria,
     deleteCriteria,
-toggleMaximiseCriteria } from '../actions/evaluationTemplateCreator';
+    toggleMaximiseCriteria
+    } from '../actions/evaluationTemplateCreator';
 import { createCriteria, createQuestion } from '../utils/dataParserUtil';
 
 import { INPUT_SYNC_INTERVAL } from '../constants';
+import * as actionTypes from '../constants/ActionTypes';
 class Criteria extends Component {
     constructor(props) {
         super(props);
@@ -113,7 +115,9 @@ class Criteria extends Component {
     }
 
     render() {
-        let { title, weight } =this.state;
+        let { title, weight } = this.state;
+        const { dispatch } = this.props;
+
         if (this.props.criteria.isMaximised) {
             return (
                 <div>
@@ -195,7 +199,10 @@ class Criteria extends Component {
                                 <div className="row">
                                     <div className="col-md-12 new-question mar-btm">
                                         <button className="btn btn-sm"
-                                            onClick={() => this.setState({ showAdd: !this.state.showAdd })}>
+                                            onClick={ () => {
+                                                this.setState({ showAdd: !this.state.showAdd });
+                                                dispatch({ type: actionTypes.TEMPLATE_CREATOR_CLEAR_ACTIVE_QUESTIONS });
+                                            }}>
                                             <i className="fa fa-plus"></i>Add New Question
                                         </button>
                                     </div>
