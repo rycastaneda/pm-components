@@ -22,7 +22,6 @@ class EvaluationAssignmentsFilter extends Component {
         this.onAdvancedSubmit = this.onAdvancedSubmit.bind(this);
         this.onToggleFilter = this.onToggleFilter.bind(this);
         this.onKeyPress = this.onKeyPress.bind(this);
-
     }
 
     onTemplateChange(val) {
