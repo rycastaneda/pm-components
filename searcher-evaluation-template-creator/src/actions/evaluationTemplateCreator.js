@@ -24,12 +24,14 @@ import {
     CRITERIA_ADD,
     CRITERIA_DELETE,
     CRITERIA_UPDATE,
+    MINIMISE_ALL_CRITERIA,
     CRITERIA_MAXIMISE_CHANGE,
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_UPLOAD_FAILED,
     DOCUMENT_UPLOAD_IN_PROGRESS,
     DOCUMENTS_UPLOADING,
     DOCUMENT_DELETE,
+    MINIMISE_ALL_QUESTIONS,
     QUESTION_ADD,
     QUESTION_UPDATE,
     QUESTION_DELETE,
@@ -63,7 +65,12 @@ export function publishTemplate() {
         });
     };
 }
-
+export function minimiseAllQuestions() {
+    return { type:MINIMISE_ALL_QUESTIONS };
+}
+export function minimiseAllCriteria() {
+    return { type:MINIMISE_ALL_CRITERIA };
+}
 export function toggleMaximiseQuestion(id, isMaximised) {
     return { type:QUESTION_MAXIMISE_CHANGE, id, isMaximised };
 }

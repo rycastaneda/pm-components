@@ -129,14 +129,11 @@ class Question extends Component {
     }
 
     onTitleChange(title) {
-
         this.setState({ title });
-
         if (title.length) {
             this.clearAllIntervals();
             this.intervalId_update = setInterval(this.updateTitle, INPUT_SYNC_INTERVAL);
         }
-
     }
 
     clearAllIntervals() {

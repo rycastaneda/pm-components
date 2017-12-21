@@ -16,6 +16,8 @@ import {
     DOCUMENT_UPLOAD_IN_PROGRESS,
     DOCUMENTS_UPLOADING,
     DOCUMENT_DELETE,
+    MINIMISE_ALL_QUESTIONS,
+    MINIMISE_ALL_CRITERIA,
     IS_BUSY
 
 } from '../constants/ActionTypes';
@@ -53,23 +55,62 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
         case QUESTION_MAXIMISE_CHANGE: {
             let { id, isMaximised } = action;
             let { questionsByIndex } = state;
-            Object.values(questionsByIndex).forEach((item) => {
-                item.isMaximised = false;
-            });
+            if (isMaximised) {
+                // if a question is maximised minimse others.
+                Object.values(questionsByIndex).forEach((item) => {
+                    item.isMaximised = false;
+                });
+            }
             let question = questionsByIndex[id];
             questionsByIndex[id] = { ...question, isMaximised };
             return { ...state, questionsByIndex };
         }
         case CRITERIA_MAXIMISE_CHANGE: {
             let { id, isMaximised } = action;
-            let { criteriaByIndex } = state;
-            Object.values(criteriaByIndex).forEach((item) => {
-                item.isMaximised = false;
-            });
+            let { criteriaByIndex, questionsByIndex } = state;
+            if (isMaximised) {
+                // if a criteria is maximised minimse others.
+                Object.values(criteriaByIndex).forEach((item) => {
+                    let { id } = item;
+                    let isMaximised = false;
+                    let criteria = criteriaByIndex[id];
+                    criteriaByIndex[id] = { ...criteria, isMaximised };
+                });
+            } else {
+                // if a criteria is minimised, minimise all its questions aswell.
+                Object.values(questionsByIndex).forEach((item) => {
+                    let isMaximised = false;
+                    let { id } = item;
+                    let question = questionsByIndex[id];
+                    questionsByIndex[id] = { ...question, isMaximised };
+                });
+            }
             let criteria = criteriaByIndex[id];
             criteriaByIndex[id] = { ...criteria, isMaximised };
-            return { ...state, criteriaByIndex };
+            return { ...state, criteriaByIndex, questionsByIndex };
         }
+        case MINIMISE_ALL_QUESTIONS :
+            {
+                let { questionsByIndex } = state;
+                Object.values(questionsByIndex).forEach((item) => {
+                    let { id } = item;
+                    let isMaximised = false;
+                    let question = questionsByIndex[id];
+                    questionsByIndex[id] = { ...question, isMaximised };
+                });
+                return { ...state, questionsByIndex };
+            }
+        case MINIMISE_ALL_CRITERIA:
+            {
+                let { criteriaByIndex } = state;
+                Object.values(criteriaByIndex).forEach((item) => {
+                    let { id } = item;
+                    let isMaximised = false;
+                    let criteria = criteriaByIndex[id];
+                    criteriaByIndex[id] = { ...criteria, isMaximised };
+                });
+                return { ...state, criteriaByIndex };
+            }
         case TEMPLATE_FETCHED:
             {
                 let { template } = action;

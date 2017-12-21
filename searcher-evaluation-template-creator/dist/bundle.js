@@ -2524,6 +2524,8 @@
 	var _extends3 = _interopRequireDefault(_extends2);
 
 	exports.publishTemplate = publishTemplate;
+	exports.minimiseAllQuestions = minimiseAllQuestions;
+	exports.minimiseAllCriteria = minimiseAllCriteria;
 	exports.toggleMaximiseQuestion = toggleMaximiseQuestion;
 	exports.toggleMaximiseCriteria = toggleMaximiseCriteria;
 	exports.initialize = initialize;
@@ -2590,7 +2592,12 @@
 	        });
 	    };
 	}
-
+	function minimiseAllQuestions() {
+	    return { type: _ActionTypes.MINIMISE_ALL_QUESTIONS };
+	}
+	function minimiseAllCriteria() {
+	    return { type: _ActionTypes.MINIMISE_ALL_CRITERIA };
+	}
 	function toggleMaximiseQuestion(id, isMaximised) {
 	    return { type: _ActionTypes.QUESTION_MAXIMISE_CHANGE, id: id, isMaximised: isMaximised };
 	}
@@ -3055,6 +3062,10 @@
 
 	    __REACT_HOT_LOADER__.register(publishTemplate, 'publishTemplate', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/actions/evaluationTemplateCreator.js');
 
+	    __REACT_HOT_LOADER__.register(minimiseAllQuestions, 'minimiseAllQuestions', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/actions/evaluationTemplateCreator.js');
+
+	    __REACT_HOT_LOADER__.register(minimiseAllCriteria, 'minimiseAllCriteria', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/actions/evaluationTemplateCreator.js');
+
 	    __REACT_HOT_LOADER__.register(toggleMaximiseQuestion, 'toggleMaximiseQuestion', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/actions/evaluationTemplateCreator.js');
 
 	    __REACT_HOT_LOADER__.register(toggleMaximiseCriteria, 'toggleMaximiseCriteria', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/actions/evaluationTemplateCreator.js');
@@ -3246,7 +3257,7 @@
 	        criteria.id = crtieriaItem.id;
 	        criteria.title = includeCriteria.attributes.title;
 	        criteria.weight = includeCriteria.attributes.weight;
-
+	        criteria.isMaximised = false;
 	        includeCriteria.relationships.questions.data.forEach(function (questionItem) {
 	            var includedQuestion = included.filter(function (include) {
 	                if (include.type === 'evaluation-questions' && include.id === questionItem.id) {
@@ -4570,8 +4581,10 @@
 	var PROMPT_MESSAGE = exports.PROMPT_MESSAGE = 'PROMPT_MESSAGE';
 	var CLEAR_MESSAGES = exports.CLEAR_MESSAGES = 'CLEAR_MESSAGES';
 	var INITIALIZED = exports.INITIALIZED = 'INITIALIZED';
-	var QUESTION_MAXIMISE_CHANGE = exports.QUESTION_MAXIMISE_CHANGE = 'QUESTION_MAXIMISE_CHANGE';
 	var CRITERIA_MAXIMISE_CHANGE = exports.CRITERIA_MAXIMISE_CHANGE = 'CRITERIA_MAXIMISE_CHANGE';
+	var MINIMISE_ALL_CRITERIA = exports.MINIMISE_ALL_CRITERIA = 'MINIMISE_ALL_CRITERIA';
+	var QUESTION_MAXIMISE_CHANGE = exports.QUESTION_MAXIMISE_CHANGE = 'QUESTION_MAXIMISE_CHANGE';
+	var MINIMISE_ALL_QUESTIONS = exports.MINIMISE_ALL_QUESTIONS = 'MINIMISE_ALL_QUESTIONS';
 	;
 
 	(function () {
@@ -4615,9 +4628,13 @@
 
 	  __REACT_HOT_LOADER__.register(INITIALIZED, 'INITIALIZED', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/constants/ActionTypes.js');
 
+	  __REACT_HOT_LOADER__.register(CRITERIA_MAXIMISE_CHANGE, 'CRITERIA_MAXIMISE_CHANGE', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/constants/ActionTypes.js');
+
+	  __REACT_HOT_LOADER__.register(MINIMISE_ALL_CRITERIA, 'MINIMISE_ALL_CRITERIA', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/constants/ActionTypes.js');
+
 	  __REACT_HOT_LOADER__.register(QUESTION_MAXIMISE_CHANGE, 'QUESTION_MAXIMISE_CHANGE', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/constants/ActionTypes.js');
 
-	  __REACT_HOT_LOADER__.register(CRITERIA_MAXIMISE_CHANGE, 'CRITERIA_MAXIMISE_CHANGE', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/constants/ActionTypes.js');
+	  __REACT_HOT_LOADER__.register(MINIMISE_ALL_QUESTIONS, 'MINIMISE_ALL_QUESTIONS', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/constants/ActionTypes.js');
 	})();
 
 	;
@@ -7150,7 +7167,6 @@
 	            if (title.length) {
 	                this.props.dispatch((0, _evaluationTemplateCreator.updateCriteria)(this.props.criteriaId, title, weight));
 	            }
-
 	            clearInterval(this.intervalId);
 	        }
 	    }, {
@@ -7159,7 +7175,6 @@
 	            this.setState({ title: title, isTitleError: !title.length });
 	            clearInterval(this.intervalId);
 	            if (this.props.criteria.id && title.length) {
-
 	                this.intervalId = setInterval(this.updateCriteriaChange, _constants.INPUT_SYNC_INTERVAL);
 	            }
 	        }
@@ -7220,89 +7235,106 @@
 	            return index + 1;
 	        }
 	    }, {
-	        key: 'render',
-	        value: function render() {
+	        key: 'renderMaximised',
+	        value: function renderMaximised() {
 	            var _this2 = this;
 
-	            var _state2 = this.state,
-	                title = _state2.title,
-	                weight = _state2.weight;
-
-	            if (this.props.criteria.isMaximised) {
-	                return _react2.default.createElement(
-	                    'div',
-	                    null,
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'fieldset',
+	                    { className: 'criteria-container' },
 	                    _react2.default.createElement(
-	                        'fieldset',
-	                        { className: 'criteria-container' },
+	                        'div',
+	                        { className: 'row' },
 	                        _react2.default.createElement(
 	                            'div',
-	                            { className: 'row' },
+	                            { className: 'col-md-4 col-sm-12' },
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-md-4 col-sm-12' },
+	                                { className: 'form-group' },
+	                                _react2.default.createElement(
+	                                    'label',
+	                                    { className: 'control-label' },
+	                                    _react2.default.createElement(
+	                                        'span',
+	                                        { className: 'required', 'aria-required': 'true' },
+	                                        'Criteria'
+	                                    )
+	                                ),
+	                                _react2.default.createElement('input', { type: 'text', name: 'title', className: this.getTitleInputStyle(), defaultValue: this.state.title, title: 'Criteria', placeholder: 'Criteria Title',
+	                                    onChange: function onChange(event) {
+	                                        return _this2.onTitleChange(event.target.value);
+	                                    } }),
+	                                this.state.isTitleError ? _react2.default.createElement(
+	                                    'span',
+	                                    { className: 'error danger' },
+	                                    'Please add a Title'
+	                                ) : null
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-md-2 col-sm-12' },
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'form-group' },
+	                                _react2.default.createElement(
+	                                    'label',
+	                                    { className: 'control-label' },
+	                                    _react2.default.createElement(
+	                                        'span',
+	                                        { className: 'required', 'aria-required': 'true' },
+	                                        'Weighting',
+	                                        _react2.default.createElement('i', { className: 'fa fa-info-circle', 'data-tooltip': 'The total weighting across all criteria must equal 100%.', 'aria-hidden': 'true' })
+	                                    )
+	                                ),
 	                                _react2.default.createElement(
 	                                    'div',
-	                                    { className: 'form-group' },
-	                                    _react2.default.createElement(
-	                                        'label',
-	                                        { className: 'control-label' },
-	                                        _react2.default.createElement(
-	                                            'span',
-	                                            { className: 'required', 'aria-required': 'true' },
-	                                            'Criteria'
-	                                        )
-	                                    ),
-	                                    _react2.default.createElement('input', { type: 'text', name: 'title', className: this.getTitleInputStyle(), defaultValue: this.state.title, title: 'Criteria', placeholder: 'Criteria Title',
+	                                    { className: 'input-group' },
+	                                    _react2.default.createElement('input', { type: 'number', min: '0', step: '1', name: 'weight', defaultValue: this.state.weight, className: this.getWeightInputStyle(), title: 'Criteria Weight', placeholder: 'Value',
 	                                        onChange: function onChange(event) {
-	                                            return _this2.onTitleChange(event.target.value);
-	                                        } }),
-	                                    this.state.isTitleError ? _react2.default.createElement(
+	                                            return _this2.onWeightChange(event.target.value);
+	                                        }, 'aria-describedby': 'weighting-addon' }),
+	                                    _react2.default.createElement(
 	                                        'span',
-	                                        { className: 'error danger' },
-	                                        'Please add a Title'
-	                                    ) : null
-	                                )
-	                            ),
+	                                        { className: 'input-group-addon', id: 'weighting-addon' },
+	                                        '%'
+	                                    )
+	                                ),
+	                                this.state.isWeightError ? _react2.default.createElement(
+	                                    'span',
+	                                    { className: 'error danger' },
+	                                    'Accepted values: 0 to 100'
+	                                ) : null
+	                            )
+	                        ),
+	                        this.props.criteria.id === null && this.state.title ? _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-md-2 col-sm-12' },
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-md-2 col-sm-12' },
+	                                { className: 'form-group pull-right' },
 	                                _react2.default.createElement(
 	                                    'div',
-	                                    { className: 'form-group' },
-	                                    _react2.default.createElement(
-	                                        'label',
-	                                        { className: 'control-label' },
-	                                        _react2.default.createElement(
-	                                            'span',
-	                                            { className: 'required', 'aria-required': 'true' },
-	                                            'Weighting',
-	                                            _react2.default.createElement('i', { className: 'fa fa-info-circle', 'data-tooltip': 'The total weighting across all criteria must equal 100%.', 'aria-hidden': 'true' })
-	                                        )
-	                                    ),
-	                                    _react2.default.createElement(
-	                                        'div',
-	                                        { className: 'input-group' },
-	                                        _react2.default.createElement('input', { type: 'number', min: '0', step: '1', name: 'weight', defaultValue: this.state.weight, className: this.getWeightInputStyle(), title: 'Criteria Weight', placeholder: 'Value',
-	                                            onChange: function onChange(event) {
-	                                                return _this2.onWeightChange(event.target.value);
-	                                            }, 'aria-describedby': 'weighting-addon' }),
-	                                        _react2.default.createElement(
-	                                            'span',
-	                                            { className: 'input-group-addon', id: 'weighting-addon' },
-	                                            '%'
-	                                        )
-	                                    ),
-	                                    this.state.isWeightError ? _react2.default.createElement(
-	                                        'span',
-	                                        { className: 'error danger' },
-	                                        'Accepted values: 0 to 100'
-	                                    ) : null
+	                                    { className: 'hidden-sm' },
+	                                    _react2.default.createElement('br', null),
+	                                    _react2.default.createElement('br', null)
+	                                ),
+	                                _react2.default.createElement(
+	                                    'button',
+	                                    { className: 'btn btn-sm', disabled: !this.state.title, onClick: this.onSave },
+	                                    _react2.default.createElement('i', { className: 'fa fa-plus' }),
+	                                    'Add Criteria'
 	                                )
-	                            ),
-	                            this.props.criteria.id === null && this.state.title ? _react2.default.createElement(
+	                            )
+	                        ) : _react2.default.createElement(
+	                            'div',
+	                            null,
+	                            this.state.title || this.state.title !== this.props.criteria.title || this.state.weight !== this.props.criteria.weight ? _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-md-2 col-sm-12' },
+	                                { className: 'col-md-6 col-sm-12' },
 	                                _react2.default.createElement(
 	                                    'div',
 	                                    { className: 'form-group pull-right' },
@@ -7314,186 +7346,176 @@
 	                                    ),
 	                                    _react2.default.createElement(
 	                                        'button',
-	                                        { className: 'btn btn-sm', disabled: !this.state.title, onClick: this.onSave },
-	                                        _react2.default.createElement('i', { className: 'fa fa-plus' }),
-	                                        'Add Criteria'
+	                                        { className: 'btn btn-sm',
+	                                            onClick: this.toggleMaximise },
+	                                        _react2.default.createElement('i', { className: 'fa fa-angle-double-up' }),
+	                                        ' Collapse Criteria'
 	                                    )
 	                                )
-	                            ) : _react2.default.createElement(
-	                                'div',
-	                                null,
-	                                this.state.title || this.state.title !== this.props.criteria.title || this.state.weight !== this.props.criteria.weight ? _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'col-md-6 col-sm-12' },
-	                                    _react2.default.createElement(
-	                                        'div',
-	                                        { className: 'form-group pull-right' },
-	                                        _react2.default.createElement(
-	                                            'div',
-	                                            { className: 'hidden-sm' },
-	                                            _react2.default.createElement('br', null),
-	                                            _react2.default.createElement('br', null)
-	                                        ),
-	                                        _react2.default.createElement(
-	                                            'button',
-	                                            { className: 'btn btn-sm',
-	                                                onClick: this.toggleMaximise },
-	                                            _react2.default.createElement('i', { className: 'fa fa-angle-double-up' }),
-	                                            ' Collapse Criteria'
-	                                        )
-	                                    )
-	                                ) : null
-	                            )
-	                        ),
-	                        this.props.criteria.questions.length ? _react2.default.createElement(
-	                            'div',
-	                            { className: 'row' },
-	                            _react2.default.createElement(
-	                                'div',
-	                                { className: 'col-md-12' },
-	                                _react2.default.createElement('hr', null)
-	                            )
-	                        ) : null,
+	                            ) : null
+	                        )
+	                    ),
+	                    this.props.criteria.questions.length ? _react2.default.createElement(
+	                        'div',
+	                        { className: 'row' },
 	                        _react2.default.createElement(
 	                            'div',
-	                            null,
-	                            this.props.criteria.questions.length ? _react2.default.createElement(
-	                                'div',
-	                                null,
-	                                _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'row' },
-	                                    this.props.criteria.questions.map(function (item, index) {
-	                                        return _react2.default.createElement(
-	                                            'div',
-	                                            { className: 'row', key: item },
-	                                            _react2.default.createElement(_Question2.default, { criteriaId: _this2.props.criteria.id, questionId: item, questionIndex: index + 1 })
-	                                        );
-	                                    })
-	                                ),
-	                                _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'row' },
-	                                    _react2.default.createElement(
-	                                        'div',
-	                                        { className: 'col-md-12 new-question mar-btm' },
-	                                        _react2.default.createElement(
-	                                            'button',
-	                                            { className: 'btn btn-sm',
-	                                                onClick: function onClick() {
-	                                                    return _this2.setState({ showAdd: !_this2.state.showAdd });
-	                                                } },
-	                                            _react2.default.createElement('i', { className: 'fa fa-plus' }),
-	                                            'Add New Question'
-	                                        )
-	                                    )
-	                                ),
-	                                _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'row' },
-	                                    _react2.default.createElement(
-	                                        'div',
-	                                        { className: 'row' },
-	                                        this.state.showAdd ? _react2.default.createElement(_Question2.default, { criteriaId: this.props.criteria.id, question: this.newQuestion, questionIndex: this.props.criteria.questions.length + 1 }) : null
-	                                    )
-	                                )
-	                            ) : _react2.default.createElement(
-	                                'div',
-	                                null,
-	                                this.props.criteria.id ? _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'row' },
-	                                    _react2.default.createElement(
-	                                        'div',
-	                                        { className: 'row' },
-	                                        _react2.default.createElement(_Question2.default, { criteriaId: this.props.criteria.id, question: this.newQuestion, questionIndex: this.props.criteria.questions.length + 1 })
-	                                    )
-	                                ) : null
-	                            )
+	                            { className: 'col-md-12' },
+	                            _react2.default.createElement('hr', null)
 	                        )
-	                    )
-	                );
-	            } else {
-	                return _react2.default.createElement(
-	                    'div',
-	                    { className: 'row' },
+	                    ) : null,
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-sm-12' },
+	                        null,
+	                        this.props.criteria.questions.length ? _react2.default.createElement(
+	                            'div',
+	                            null,
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'row' },
+	                                this.props.criteria.questions.map(function (item, index) {
+	                                    return _react2.default.createElement(
+	                                        'div',
+	                                        { className: 'row', key: item },
+	                                        _react2.default.createElement(_Question2.default, { criteriaId: _this2.props.criteria.id, questionId: item, questionIndex: index + 1 })
+	                                    );
+	                                })
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'row' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'col-md-12 new-question mar-btm' },
+	                                    _react2.default.createElement(
+	                                        'button',
+	                                        { className: 'btn btn-sm',
+	                                            onClick: function onClick() {
+	                                                _this2.setState({ showAdd: !_this2.state.showAdd });
+	                                                _this2.props.dispatch((0, _evaluationTemplateCreator.minimiseAllQuestions)());
+	                                            } },
+	                                        _react2.default.createElement('i', { className: 'fa fa-plus' }),
+	                                        'Add New Question'
+	                                    )
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'row' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'row' },
+	                                    this.state.showAdd ? _react2.default.createElement(_Question2.default, { criteriaId: this.props.criteria.id, question: this.newQuestion, questionIndex: this.props.criteria.questions.length + 1 }) : null
+	                                )
+	                            )
+	                        ) : _react2.default.createElement(
+	                            'div',
+	                            null,
+	                            this.props.criteria.id ? _react2.default.createElement(
+	                                'div',
+	                                { className: 'row' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'row' },
+	                                    _react2.default.createElement(_Question2.default, { criteriaId: this.props.criteria.id, question: this.newQuestion, questionIndex: this.props.criteria.questions.length + 1 })
+	                                )
+	                            ) : null
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }, {
+	        key: 'renderMinimised',
+	        value: function renderMinimised() {
+	            var _state2 = this.state,
+	                title = _state2.title,
+	                weight = _state2.weight;
+
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'row' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'col-sm-12' },
+	                    _react2.default.createElement(
+	                        'fieldset',
+	                        { className: 'criteria-container collapsed' },
 	                        _react2.default.createElement(
-	                            'fieldset',
-	                            { className: 'criteria-container collapsed' },
+	                            'div',
+	                            { className: 'col-md-6' },
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-md-6' },
+	                                { className: 'form-group' },
+	                                _react2.default.createElement(
+	                                    'label',
+	                                    { className: 'control-label' },
+	                                    _react2.default.createElement(
+	                                        'span',
+	                                        { className: 'required', 'aria-required': 'true', required: true },
+	                                        'Criteria'
+	                                    )
+	                                ),
 	                                _react2.default.createElement(
 	                                    'div',
-	                                    { className: 'form-group' },
-	                                    _react2.default.createElement(
-	                                        'label',
-	                                        { className: 'control-label' },
-	                                        _react2.default.createElement(
-	                                            'span',
-	                                            { className: 'required', 'aria-required': 'true', required: true },
-	                                            'Criteria'
-	                                        )
-	                                    ),
-	                                    _react2.default.createElement(
-	                                        'div',
-	                                        null,
-	                                        title
-	                                    )
+	                                    null,
+	                                    title
 	                                )
-	                            ),
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-md-2 text-center' },
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-md-2 text-center' },
+	                                { className: 'form-group' },
+	                                _react2.default.createElement(
+	                                    'label',
+	                                    { className: 'control-label' },
+	                                    _react2.default.createElement(
+	                                        'span',
+	                                        { className: 'required', 'aria-required': 'true' },
+	                                        'Weighting'
+	                                    )
+	                                ),
 	                                _react2.default.createElement(
 	                                    'div',
-	                                    { className: 'form-group' },
-	                                    _react2.default.createElement(
-	                                        'label',
-	                                        { className: 'control-label' },
-	                                        _react2.default.createElement(
-	                                            'span',
-	                                            { className: 'required', 'aria-required': 'true' },
-	                                            'Weighting'
-	                                        )
-	                                    ),
-	                                    _react2.default.createElement(
-	                                        'div',
-	                                        null,
-	                                        weight,
-	                                        ' %'
-	                                    )
+	                                    null,
+	                                    weight,
+	                                    ' %'
 	                                )
-	                            ),
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-md-4 text-right' },
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-md-4 text-right' },
+	                                { className: 'form-group' },
+	                                _react2.default.createElement('br', null),
 	                                _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'form-group' },
-	                                    _react2.default.createElement('br', null),
-	                                    _react2.default.createElement(
-	                                        'button',
-	                                        { className: 'btn btn-sm', onClick: this.toggleMaximise },
-	                                        _react2.default.createElement('i', { className: 'fa fa-pencil' }),
-	                                        'Edit Criteria'
-	                                    ),
-	                                    '\xA0',
-	                                    _react2.default.createElement(
-	                                        'button',
-	                                        { className: 'btn btn-sm', onClick: this.onDelete },
-	                                        _react2.default.createElement('i', { className: 'fa fa-trash-o' }),
-	                                        'Delete Criteria'
-	                                    )
+	                                    'button',
+	                                    { className: 'btn btn-sm', onClick: this.toggleMaximise },
+	                                    _react2.default.createElement('i', { className: 'fa fa-pencil' }),
+	                                    'Edit Criteria'
+	                                ),
+	                                '\xA0',
+	                                _react2.default.createElement(
+	                                    'button',
+	                                    { className: 'btn btn-sm', onClick: this.onDelete },
+	                                    _react2.default.createElement('i', { className: 'fa fa-trash-o' }),
+	                                    'Delete Criteria'
 	                                )
 	                            )
 	                        )
 	                    )
-	                );
-	            }
+	                )
+	            );
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return this.props.criteria.isMaximised ? this.renderMaximised() : this.renderMinimised();
 	        }
 	    }]);
 	    return Criteria;
@@ -7609,6 +7631,7 @@
 	        value: function componentDidMount() {
 	            var element = document.querySelector('[data-component="searcher-evaluation-template-creator"]');
 	            var id = Number(element.getAttribute('data-template-id'));
+
 	            if (id) {
 	                this.props.dispatch((0, _evaluationTemplateCreator.fetchTemplate)(id));
 	            } else {
@@ -7767,7 +7790,8 @@
 	                                        'button',
 	                                        { className: 'btn',
 	                                            onClick: function onClick() {
-	                                                return _this2.setState({ showAdd: !_this2.state.showAdd });
+	                                                _this2.setState({ showAdd: !_this2.state.showAdd });
+	                                                _this2.props.dispatch((0, _evaluationTemplateCreator.minimiseAllCriteria)());
 	                                            } },
 	                                        _react2.default.createElement('i', { className: 'fa fa-plus' }),
 	                                        'Add New Criteria'
@@ -7790,7 +7814,7 @@
 	                        { className: 'row' },
 	                        _react2.default.createElement(
 	                            'div',
-	                            { className: 'col-md-12 text-right' },
+	                            { className: 'col-md-12 text-right ' + (id !== null ? 'show' : 'hidden') },
 	                            _react2.default.createElement('hr', null),
 	                            _react2.default.createElement(
 	                                'div',
@@ -8036,9 +8060,7 @@
 	    }, {
 	        key: 'onTitleChange',
 	        value: function onTitleChange(title) {
-
 	            this.setState({ title: title });
-
 	            if (title.length) {
 	                this.clearAllIntervals();
 	                this.intervalId_update = setInterval(this.updateTitle, _constants.INPUT_SYNC_INTERVAL);
@@ -9064,9 +9086,12 @@
 	                    isMaximised = action.isMaximised;
 	                var questionsByIndex = state.questionsByIndex;
 
-	                (0, _values2.default)(questionsByIndex).forEach(function (item) {
-	                    item.isMaximised = false;
-	                });
+	                if (isMaximised) {
+	                    // if a question is maximised minimse others.
+	                    (0, _values2.default)(questionsByIndex).forEach(function (item) {
+	                        item.isMaximised = false;
+	                    });
+	                }
 	                var question = questionsByIndex[id];
 	                questionsByIndex[id] = (0, _extends3.default)({}, question, { isMaximised: isMaximised });
 	                return (0, _extends3.default)({}, state, { questionsByIndex: questionsByIndex });
@@ -9075,32 +9100,75 @@
 	            {
 	                var _id = action.id,
 	                    _isMaximised = action.isMaximised;
-	                var criteriaByIndex = state.criteriaByIndex;
+	                var criteriaByIndex = state.criteriaByIndex,
+	                    _questionsByIndex = state.questionsByIndex;
 
-	                (0, _values2.default)(criteriaByIndex).forEach(function (item) {
-	                    item.isMaximised = false;
-	                });
+	                if (_isMaximised) {
+	                    // if a criteria is maximised minimse others.
+	                    (0, _values2.default)(criteriaByIndex).forEach(function (item) {
+	                        var id = item.id;
+
+	                        var isMaximised = false;
+	                        var criteria = criteriaByIndex[id];
+	                        criteriaByIndex[id] = (0, _extends3.default)({}, criteria, { isMaximised: isMaximised });
+	                    });
+	                } else {
+	                    // if a criteria is minimised, minimise all its questions aswell.
+	                    (0, _values2.default)(_questionsByIndex).forEach(function (item) {
+	                        var isMaximised = false;
+	                        var id = item.id;
+
+	                        var question = _questionsByIndex[id];
+	                        _questionsByIndex[id] = (0, _extends3.default)({}, question, { isMaximised: isMaximised });
+	                    });
+	                }
 	                var criteria = criteriaByIndex[_id];
 	                criteriaByIndex[_id] = (0, _extends3.default)({}, criteria, { isMaximised: _isMaximised });
-	                return (0, _extends3.default)({}, state, { criteriaByIndex: criteriaByIndex });
+	                return (0, _extends3.default)({}, state, { criteriaByIndex: criteriaByIndex, questionsByIndex: _questionsByIndex });
+	            }
+	        case _ActionTypes.MINIMISE_ALL_QUESTIONS:
+	            {
+	                var _questionsByIndex2 = state.questionsByIndex;
+
+	                (0, _values2.default)(_questionsByIndex2).forEach(function (item) {
+	                    var id = item.id;
+
+	                    var isMaximised = false;
+	                    var question = _questionsByIndex2[id];
+	                    _questionsByIndex2[id] = (0, _extends3.default)({}, question, { isMaximised: isMaximised });
+	                });
+	                return (0, _extends3.default)({}, state, { questionsByIndex: _questionsByIndex2 });
+	            }
+	        case _ActionTypes.MINIMISE_ALL_CRITERIA:
+	            {
+	                var _criteriaByIndex = state.criteriaByIndex;
+
+	                (0, _values2.default)(_criteriaByIndex).forEach(function (item) {
+	                    var id = item.id;
+
+	                    var isMaximised = false;
+	                    var criteria = _criteriaByIndex[id];
+	                    _criteriaByIndex[id] = (0, _extends3.default)({}, criteria, { isMaximised: isMaximised });
+	                });
+	                return (0, _extends3.default)({}, state, { criteriaByIndex: _criteriaByIndex });
 	            }
 	        case _ActionTypes.TEMPLATE_FETCHED:
 	            {
 	                var template = action.template;
 	                var _id2 = template.id,
 	                    title = template.title,
-	                    _criteriaByIndex = template.criteriaByIndex,
+	                    _criteriaByIndex2 = template.criteriaByIndex,
 	                    allCriteriaIndexes = template.allCriteriaIndexes,
-	                    _questionsByIndex = template.questionsByIndex,
+	                    _questionsByIndex3 = template.questionsByIndex,
 	                    allQuestionIndexes = template.allQuestionIndexes,
 	                    documentsByIndex = template.documentsByIndex,
 	                    allDocumentIndexes = template.allDocumentIndexes;
 
 	                return (0, _assign2.default)({}, state, { id: _id2,
 	                    title: title,
-	                    criteriaByIndex: _criteriaByIndex,
+	                    criteriaByIndex: _criteriaByIndex2,
 	                    allCriteriaIndexes: allCriteriaIndexes,
-	                    questionsByIndex: _questionsByIndex,
+	                    questionsByIndex: _questionsByIndex3,
 	                    allQuestionIndexes: allQuestionIndexes,
 	                    documentsByIndex: documentsByIndex,
 	                    allDocumentIndexes: allDocumentIndexes
@@ -9132,7 +9200,7 @@
 	                    _title = action.title,
 	                    weight = action.weight;
 
-	                var _criteriaByIndex2 = (0, _assign2.default)({}, state.criteriaByIndex);
+	                var _criteriaByIndex3 = (0, _assign2.default)({}, state.criteriaByIndex);
 	                for (var i in state.allQuestionIndexes) {
 	                    if (state.questionsByIndex[state.allQuestionIndexes[i]].isSaved) {
 	                        state.questionsByIndex[state.allQuestionIndexes[i]].isSaved = false;
@@ -9143,29 +9211,29 @@
 	                        state.criteriaByIndex[state.allCriteriaIndexes[_i]].isSaved = false;
 	                    }
 	                }
-	                _criteriaByIndex2[_id3] = (0, _assign2.default)({}, _criteriaByIndex2[_id3], { title: _title, weight: weight, isSaved: true });
+	                _criteriaByIndex3[_id3] = (0, _assign2.default)({}, _criteriaByIndex3[_id3], { title: _title, weight: weight, isSaved: true });
 
-	                return (0, _assign2.default)({}, state, { criteriaByIndex: _criteriaByIndex2 });
+	                return (0, _assign2.default)({}, state, { criteriaByIndex: _criteriaByIndex3 });
 	            }
 	        case _ActionTypes.CRITERIA_DELETE:
 	            {
 	                var _allCriteriaIndexes = state.allCriteriaIndexes.filter(function (id) {
 	                    return id !== action.id;
 	                });
-	                var _criteriaByIndex3 = (0, _assign2.default)({}, state.criteriaByIndex);
+	                var _criteriaByIndex4 = (0, _assign2.default)({}, state.criteriaByIndex);
 	                var _allQuestionIndexes = [].concat((0, _toConsumableArray3.default)(state.allQuestionIndexes));
-	                var _questionsByIndex2 = (0, _assign2.default)({}, state.questionsByIndex);
+	                var _questionsByIndex4 = (0, _assign2.default)({}, state.questionsByIndex);
 	                var questions = state.criteriaByIndex[action.id].questions;
 	                questions.forEach(function (questionId) {
-	                    delete _questionsByIndex2[questionId];
+	                    delete _questionsByIndex4[questionId];
 	                    _allQuestionIndexes = _allQuestionIndexes.slice(_allQuestionIndexes.indexOf(questionId), 1);
 	                });
-	                delete _criteriaByIndex3[action.id];
+	                delete _criteriaByIndex4[action.id];
 	                return (0, _assign2.default)({}, state, {
 	                    allCriteriaIndexes: _allCriteriaIndexes,
-	                    criteriaByIndex: _criteriaByIndex3,
+	                    criteriaByIndex: _criteriaByIndex4,
 	                    allQuestionIndexes: _allQuestionIndexes,
-	                    questionsByIndex: _questionsByIndex2
+	                    questionsByIndex: _questionsByIndex4
 	                });
 	            }
 	        case _ActionTypes.DOCUMENT_UPLOAD_SUCCESS:
@@ -9216,8 +9284,8 @@
 	            }
 	        case _ActionTypes.DOCUMENT_DELETE:
 	            {
-	                var _questionsByIndex3 = (0, _assign2.default)({}, state.questionsByIndex);
-	                var _question = _questionsByIndex3[action.questionId];
+	                var _questionsByIndex5 = (0, _assign2.default)({}, state.questionsByIndex);
+	                var _question = _questionsByIndex5[action.questionId];
 	                var _allDocumentIndexes = state.allDocumentIndexes.filter(function (id) {
 	                    return id !== action.id;
 	                });
@@ -9226,8 +9294,8 @@
 	                _question.documentIds = _question.documentIds.filter(function (id) {
 	                    return id !== action.id;
 	                });
-	                _questionsByIndex3[action.id] = _question;
-	                return (0, _assign2.default)({}, state, { allDocumentIndexes: _allDocumentIndexes, documentsByIndex: _documentsByIndex2, questionsByIndex: _questionsByIndex3 });
+	                _questionsByIndex5[action.id] = _question;
+	                return (0, _assign2.default)({}, state, { allDocumentIndexes: _allDocumentIndexes, documentsByIndex: _documentsByIndex2, questionsByIndex: _questionsByIndex5 });
 	            }
 	        case _ActionTypes.QUESTION_ADD:
 	            {
@@ -9235,13 +9303,13 @@
 	                    criteriaId = action.criteriaId;
 	                var _id4 = _question2.id;
 
-	                var _questionsByIndex4 = (0, _assign2.default)({}, state.questionsByIndex);
-	                var _criteriaByIndex4 = (0, _assign2.default)({}, state.criteriaByIndex);
-	                _questionsByIndex4[_id4] = _question2;
+	                var _questionsByIndex6 = (0, _assign2.default)({}, state.questionsByIndex);
+	                var _criteriaByIndex5 = (0, _assign2.default)({}, state.criteriaByIndex);
+	                _questionsByIndex6[_id4] = _question2;
 	                var _allQuestionIndexes2 = [].concat((0, _toConsumableArray3.default)(state.allQuestionIndexes), [_id4]);
 	                var _questions = [].concat((0, _toConsumableArray3.default)(state.criteriaByIndex[criteriaId].questions), [_id4]);
-	                _criteriaByIndex4[action.criteriaId] = (0, _assign2.default)({}, _criteriaByIndex4[criteriaId], { questions: _questions });
-	                return (0, _assign2.default)({}, state, { criteriaByIndex: _criteriaByIndex4, allQuestionIndexes: _allQuestionIndexes2, questionsByIndex: _questionsByIndex4 });
+	                _criteriaByIndex5[action.criteriaId] = (0, _assign2.default)({}, _criteriaByIndex5[criteriaId], { questions: _questions });
+	                return (0, _assign2.default)({}, state, { criteriaByIndex: _criteriaByIndex5, allQuestionIndexes: _allQuestionIndexes2, questionsByIndex: _questionsByIndex6 });
 	            }
 	        case _ActionTypes.QUESTION_UPDATE:
 	            {
@@ -9258,9 +9326,9 @@
 	                        state.criteriaByIndex[state.allCriteriaIndexes[_i3]].isSaved = false;
 	                    }
 	                }
-	                var _questionsByIndex5 = (0, _assign2.default)({}, state.questionsByIndex);
-	                _questionsByIndex5[_id5] = _question3;
-	                return (0, _assign2.default)({}, state, { questionsByIndex: _questionsByIndex5 });
+	                var _questionsByIndex7 = (0, _assign2.default)({}, state.questionsByIndex);
+	                _questionsByIndex7[_id5] = _question3;
+	                return (0, _assign2.default)({}, state, { questionsByIndex: _questionsByIndex7 });
 	            }
 	        case _ActionTypes.QUESTION_DELETE:
 	            {
@@ -9270,19 +9338,19 @@
 	                var _allQuestionIndexes3 = state.allQuestionIndexes.filter(function (id) {
 	                    return id !== questionId;
 	                });
-	                var _questionsByIndex6 = (0, _assign2.default)({}, state.questionsByIndex);
-	                delete _questionsByIndex6[questionId];
-	                var _criteriaByIndex5 = (0, _assign2.default)({}, state.criteriaByIndex);
+	                var _questionsByIndex8 = (0, _assign2.default)({}, state.questionsByIndex);
+	                delete _questionsByIndex8[questionId];
+	                var _criteriaByIndex6 = (0, _assign2.default)({}, state.criteriaByIndex);
 	                var _questions2 = state.criteriaByIndex[_criteriaId].questions.filter(function (qnId) {
 	                    return qnId !== questionId;
 	                });
-	                _criteriaByIndex5[_criteriaId].questions = _questions2;
-	                _criteriaByIndex5[_criteriaId] = (0, _assign2.default)({}, _criteriaByIndex5[_criteriaId], { criteriaId: _criteriaByIndex5[_criteriaId] });
+	                _criteriaByIndex6[_criteriaId].questions = _questions2;
+	                _criteriaByIndex6[_criteriaId] = (0, _assign2.default)({}, _criteriaByIndex6[_criteriaId], { criteriaId: _criteriaByIndex6[_criteriaId] });
 
 	                return (0, _assign2.default)({}, state, {
-	                    criteriaByIndex: _criteriaByIndex5,
+	                    criteriaByIndex: _criteriaByIndex6,
 	                    allQuestionIndexes: _allQuestionIndexes3,
-	                    questionsByIndex: _questionsByIndex6
+	                    questionsByIndex: _questionsByIndex8
 	                });
 	            }
 	        case _ActionTypes.IS_BUSY:
