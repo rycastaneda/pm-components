@@ -22562,7 +22562,7 @@
 	                                            return _react2.default.createElement(
 	                                                'option',
 	                                                { key: index, value: user.id },
-	                                                user.lastName + ', ' + user.firstName
+	                                                user.firstName + ' ' + user.lastName
 	                                            );
 	                                        })
 	                                    )
@@ -23623,7 +23623,6 @@
 	    // if template is defined parse it, else empty template list
 	    if (templates) {
 	        templates = templates.map(function (template) {
-	            window.console.log(template);
 	            var id = template.id,
 	                title = template.title,
 	                meta = template.meta,

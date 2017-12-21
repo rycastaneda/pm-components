@@ -12,7 +12,9 @@ import {
     initialize
 } from '../actions/evaluationAssignments';
 import AssignmentsTable from '../components/AssignmentsTable';
+
 class EvaluationAssignmentList extends Component {
+
     constructor(props) {
         super(props);
         this.onFilterSubmit = this.onFilterSubmit.bind(this);
@@ -21,7 +23,9 @@ class EvaluationAssignmentList extends Component {
     }
 
     componentDidMount() {
-        this.props.dispatch(initialize());
+        this.props.dispatch(
+            initialize()
+        );
     }
 
     onFilterSubmit(result) {
@@ -30,25 +34,28 @@ class EvaluationAssignmentList extends Component {
         );
     }
     onAssignmentDelete(id) {
-        this.props.dispatch(onEvaluationAssignmentDelete(id));
+        this.props.dispatch(
+            onEvaluationAssignmentDelete(id)
+        );
     }
     onAssignmentMarkAsInProgress(id) {
-        this.props.dispatch(onMarkInProgress(id));
+        this.props.dispatch(
+            onMarkInProgress(id)
+        );
     }
     tableRowLengthChanged(val) {
-        this.props.dispatch(onEvaluationTemplatesDisplayedLengthChange(val));
+        this.props.dispatch(
+            onEvaluationTemplatesDisplayedLengthChange(val)
+        );
     }
 
     paginateTo(page) {
-        this.props.dispatch(onEvaluationTemplatesPageChange(page));
+        this.props.dispatch(
+            onEvaluationTemplatesPageChange(page)
+        );
     }
 
     render() {
-        let {
-            currentPage,
-            totalPages,
-            maxRowLength
-        } = this.props;
         return (
             <div className="searcher-evaluation-assignment-list">
                 <Notification />
@@ -62,18 +69,18 @@ class EvaluationAssignmentList extends Component {
                     onSubmit = {this.onFilterSubmit}
                 />
                 <AssignmentsTable
-                    isBusy ={this.props.isBusy}
-                    tableData= {this.props.evaluationAssignments}
+                    isBusy = {this.props.isBusy}
+                    tableData = {this.props.evaluationAssignments}
                     isDeletable = {true}
-                    onAssignmentDelete ={this.onAssignmentDelete}
+                    onAssignmentDelete = {this.onAssignmentDelete}
                     onAssignmentMarkAsInProgress = {this.onAssignmentMarkAsInProgress}
-                    rowCountList= {MAXROWS_LIST}
-                    currentPage= {currentPage}
-                    totalPages= {totalPages}
-                    rowCount= {maxRowLength}
-                    onMaxRowLengthChange={this.tableRowLengthChanged.bind(this)}
-                    rowCountChange={this.tableRowLengthChanged.bind(this)}
-                    goToPage={this.paginateTo.bind(this)}
+                    rowCountList = {MAXROWS_LIST}
+                    currentPage = {this.props.currentPage}
+                    totalPages = {this.props.totalPages}
+                    rowCount = {this.props.maxRowLength}
+                    onMaxRowLengthChange = {this.tableRowLengthChanged.bind(this)}
+                    rowCountChange = {this.tableRowLengthChanged.bind(this)}
+                    goToPage = {this.paginateTo.bind(this)}
                 />
             </div>
         );
