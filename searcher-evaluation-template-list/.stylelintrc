@@ -1,9 +1,5 @@
 {
 	"rules": {
-		"at-rule-blacklist": [
-			"extend",
-			"keyframes"
-		],
 		"at-rule-empty-line-before": [
 			"always",
 			{

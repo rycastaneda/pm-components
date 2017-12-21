@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
 import ReactPaginate from 'react-paginate';
+import Preloader from './PreloaderAnimation';
 
 class TemplatesTable extends Component {
 
@@ -114,7 +115,14 @@ class TemplatesTable extends Component {
             </tr>
             </thead>
             <tbody>
-                {this.props.tableData.map((item, index) =>
+            { this.props.isBusy?
+                <tr>
+                    <td colSpan="7">
+                        <Preloader />
+                    </td>
+                </tr>
+                :
+                this.props.tableData.map((item, index) =>
                     <tr key={index}>
                     <td className="nowrap">{item.title}</td>
                     <td className="td-center nowrap">{item.instances}</td>
@@ -174,7 +182,8 @@ TemplatesTable.propTypes = {
     rowCountChange: PropTypes.func.isRequired,
     onTemplateToggleActivation: PropTypes.func.isRequired,
     onTemplateEdit: PropTypes.func.isRequired,
-    onTemplatePreview: PropTypes.func.isRequired
+    onTemplatePreview: PropTypes.func.isRequired,
+    isBusy: PropTypes.bool.isRequired
 };
 
 export default TemplatesTable;
