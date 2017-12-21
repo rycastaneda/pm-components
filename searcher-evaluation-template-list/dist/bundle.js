@@ -22255,7 +22255,6 @@
 	        } else {
 	            _this.state = { selectedDate: _this.props.selectedDate };
 	        }
-
 	        return _this;
 	    }
 
@@ -22271,12 +22270,14 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            return _react2.default.createElement(_reactDatetime2.default, { className: 'po-date',
+	            return _react2.default.createElement(_reactDatetime2.default, {
+	                className: 'po-date',
 	                timeFormat: false,
 	                closeOnSelect: true,
 	                onChange: this.props.onSelectedDateChange,
 	                value: this.state.selectedDate,
-	                dateFormat: 'DD-MM-YYYY'
+	                dateFormat: 'DD-MM-YYYY',
+	                inputProps: { placeholder: 'dd-mm-yyyy' }
 	            });
 	        }
 	    }]);
@@ -22555,7 +22556,7 @@
 	                                        _react2.default.createElement(
 	                                            'option',
 	                                            { value: '' },
-	                                            'All Users'
+	                                            'Any User'
 	                                        ),
 	                                        this.props.users.map(function (user, index) {
 	                                            return _react2.default.createElement(
