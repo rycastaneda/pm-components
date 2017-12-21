@@ -75,7 +75,7 @@
 
 	var _reactDom = __webpack_require__(619);
 
-	var _redux = __webpack_require__(229);
+	var _redux = __webpack_require__(230);
 
 	var _reactRedux = __webpack_require__(65);
 
@@ -83,15 +83,15 @@
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _index = __webpack_require__(257);
+	var _index = __webpack_require__(258);
 
 	var _index2 = _interopRequireDefault(_index);
 
-	var _EvaluationTemplateCreator = __webpack_require__(250);
+	var _EvaluationTemplateCreator = __webpack_require__(251);
 
 	var _EvaluationTemplateCreator2 = _interopRequireDefault(_EvaluationTemplateCreator);
 
-	var _api = __webpack_require__(258);
+	var _api = __webpack_require__(259);
 
 	var _api2 = _interopRequireDefault(_api);
 
@@ -103,7 +103,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	!window._babelPolyfill && __webpack_require__(259); // prevent polyfill from importing twice
+	!window._babelPolyfill && __webpack_require__(260); // prevent polyfill from importing twice
 
 
 	// Add redux dev tools unless we have a production build
@@ -232,7 +232,7 @@
 /* 7 */
 [625, 4],
 /* 8 */
-[641, 2, 190, 31, 7],
+[641, 2, 191, 31, 7],
 /* 9 */
 [658, 30],
 /* 10 */
@@ -641,7 +641,7 @@
 
 /***/ },
 /* 19 */
-[643, 78, 49, 21, 31, 14, 190, 7],
+[643, 78, 49, 21, 31, 14, 191, 7],
 /* 20 */
 [646, 14, 10, 140],
 /* 21 */
@@ -825,10 +825,10 @@
 /* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Map = __webpack_require__(211);
+	var Map = __webpack_require__(212);
 	var $export = __webpack_require__(1);
 	var shared = __webpack_require__(95)('metadata');
-	var store = shared.store || (shared.store = new (__webpack_require__(214))());
+	var store = shared.store || (shared.store = new (__webpack_require__(215))());
 
 	var getOrCreateMetadataMap = function (target, targetKey, create) {
 	  var targetMetadata = store.get(target);
@@ -897,7 +897,7 @@
 	  var redefineAll = __webpack_require__(50);
 	  var toInteger = __webpack_require__(30);
 	  var toLength = __webpack_require__(9);
-	  var toIndex = __webpack_require__(209);
+	  var toIndex = __webpack_require__(210);
 	  var toAbsoluteIndex = __webpack_require__(52);
 	  var toPrimitive = __webpack_require__(31);
 	  var has = __webpack_require__(14);
@@ -919,7 +919,7 @@
 	  var $iterDetect = __webpack_require__(90);
 	  var setSpecies = __webpack_require__(51);
 	  var arrayFill = __webpack_require__(124);
-	  var arrayCopyWithin = __webpack_require__(182);
+	  var arrayCopyWithin = __webpack_require__(183);
 	  var $DP = __webpack_require__(8);
 	  var $GOPD = __webpack_require__(19);
 	  var dP = $DP.f;
@@ -1374,7 +1374,7 @@
 /* 36 */
 3,
 /* 37 */
-[641, 57, 170, 121, 40],
+[641, 57, 171, 121, 40],
 /* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1395,7 +1395,7 @@
 /* 41 */
 14,
 /* 42 */
-[657, 171, 112],
+[657, 172, 112],
 /* 43 */
 /***/ function(module, exports) {
 
@@ -1411,7 +1411,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var ctx = __webpack_require__(23);
-	var call = __webpack_require__(193);
+	var call = __webpack_require__(194);
 	var isArrayIter = __webpack_require__(132);
 	var anObject = __webpack_require__(2);
 	var toLength = __webpack_require__(9);
@@ -1446,11 +1446,11 @@
 
 /***/ },
 /* 46 */
-[640, 2, 199, 128, 140, 127, 130],
+[640, 2, 200, 128, 140, 127, 130],
 /* 47 */
-[645, 201, 128],
+[645, 202, 128],
 /* 48 */
-[648, 201, 128],
+[648, 202, 128],
 /* 49 */
 /***/ function(module, exports) {
 
@@ -1598,7 +1598,7 @@
 /* 59 */
 [628, 37, 74, 40],
 /* 60 */
-[648, 176, 113],
+[648, 177, 113],
 /* 61 */
 /***/ function(module, exports) {
 
@@ -1688,7 +1688,7 @@
 
 	exports.__esModule = true;
 
-	var _defineProperty = __webpack_require__(263);
+	var _defineProperty = __webpack_require__(264);
 
 	var _defineProperty2 = _interopRequireDefault(_defineProperty);
 
@@ -1720,15 +1720,15 @@
 
 	exports.__esModule = true;
 
-	var _setPrototypeOf = __webpack_require__(265);
+	var _setPrototypeOf = __webpack_require__(266);
 
 	var _setPrototypeOf2 = _interopRequireDefault(_setPrototypeOf);
 
-	var _create = __webpack_require__(262);
+	var _create = __webpack_require__(263);
 
 	var _create2 = _interopRequireDefault(_create);
 
-	var _typeof2 = __webpack_require__(168);
+	var _typeof2 = __webpack_require__(169);
 
 	var _typeof3 = _interopRequireDefault(_typeof2);
 
@@ -1758,7 +1758,7 @@
 
 	exports.__esModule = true;
 
-	var _typeof2 = __webpack_require__(168);
+	var _typeof2 = __webpack_require__(169);
 
 	var _typeof3 = _interopRequireDefault(_typeof2);
 
@@ -2330,7 +2330,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var isFunction = __webpack_require__(153),
-	    isLength = __webpack_require__(225);
+	    isLength = __webpack_require__(226);
 
 	/**
 	 * Checks if `value` is array-like. A value is considered array-like if it's
@@ -2411,7 +2411,7 @@
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
 	var utils = __webpack_require__(18);
-	var normalizeHeaderName = __webpack_require__(244);
+	var normalizeHeaderName = __webpack_require__(245);
 
 	var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 	var DEFAULT_CONTENT_TYPE = {
@@ -2524,6 +2524,8 @@
 	var _extends3 = _interopRequireDefault(_extends2);
 
 	exports.publishTemplate = publishTemplate;
+	exports.minimiseAllQuestions = minimiseAllQuestions;
+	exports.minimiseAllCriteria = minimiseAllCriteria;
 	exports.toggleMaximiseQuestion = toggleMaximiseQuestion;
 	exports.toggleMaximiseCriteria = toggleMaximiseCriteria;
 	exports.initialize = initialize;
@@ -2549,11 +2551,11 @@
 
 	var _axios2 = _interopRequireDefault(_axios);
 
-	var _jsonApiNormalizer = __webpack_require__(215);
+	var _jsonApiNormalizer = __webpack_require__(216);
 
 	var _jsonApiNormalizer2 = _interopRequireDefault(_jsonApiNormalizer);
 
-	var _reduxObject = __webpack_require__(228);
+	var _reduxObject = __webpack_require__(229);
 
 	var _reduxObject2 = _interopRequireDefault(_reduxObject);
 
@@ -2590,7 +2592,12 @@
 	        });
 	    };
 	}
-
+	function minimiseAllQuestions() {
+	    return { type: _ActionTypes.MINIMISE_ALL_QUESTIONS };
+	}
+	function minimiseAllCriteria() {
+	    return { type: _ActionTypes.MINIMISE_ALL_CRITERIA };
+	}
 	function toggleMaximiseQuestion(id, isMaximised) {
 	    return { type: _ActionTypes.QUESTION_MAXIMISE_CHANGE, id: id, isMaximised: isMaximised };
 	}
@@ -2600,7 +2607,6 @@
 	}
 
 	function initialize() {
-	    window.console.log('initialize');
 	    return function (dispatch) {
 	        return _axios2.default.get('evaluation-question-types').then(function (response) {
 	            var questionTypes = (0, _dataParserUtil.parseInitialData)(response.data);
@@ -3056,6 +3062,10 @@
 
 	    __REACT_HOT_LOADER__.register(publishTemplate, 'publishTemplate', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/actions/evaluationTemplateCreator.js');
 
+	    __REACT_HOT_LOADER__.register(minimiseAllQuestions, 'minimiseAllQuestions', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/actions/evaluationTemplateCreator.js');
+
+	    __REACT_HOT_LOADER__.register(minimiseAllCriteria, 'minimiseAllCriteria', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/actions/evaluationTemplateCreator.js');
+
 	    __REACT_HOT_LOADER__.register(toggleMaximiseQuestion, 'toggleMaximiseQuestion', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/actions/evaluationTemplateCreator.js');
 
 	    __REACT_HOT_LOADER__.register(toggleMaximiseCriteria, 'toggleMaximiseCriteria', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/actions/evaluationTemplateCreator.js');
@@ -3119,11 +3129,11 @@
 
 	var _extends3 = _interopRequireDefault(_extends2);
 
-	var _values = __webpack_require__(266);
+	var _values = __webpack_require__(167);
 
 	var _values2 = _interopRequireDefault(_values);
 
-	var _stringify = __webpack_require__(261);
+	var _stringify = __webpack_require__(262);
 
 	var _stringify2 = _interopRequireDefault(_stringify);
 
@@ -3144,11 +3154,11 @@
 	exports.createCriteria = createCriteria;
 	exports.createCriterionFromData = createCriterionFromData;
 
-	var _jsonApiNormalizer = __webpack_require__(215);
+	var _jsonApiNormalizer = __webpack_require__(216);
 
 	var _jsonApiNormalizer2 = _interopRequireDefault(_jsonApiNormalizer);
 
-	var _reduxObject = __webpack_require__(228);
+	var _reduxObject = __webpack_require__(229);
 
 	var _reduxObject2 = _interopRequireDefault(_reduxObject);
 
@@ -3247,7 +3257,7 @@
 	        criteria.id = crtieriaItem.id;
 	        criteria.title = includeCriteria.attributes.title;
 	        criteria.weight = includeCriteria.attributes.weight;
-
+	        criteria.isMaximised = false;
 	        includeCriteria.relationships.questions.data.forEach(function (questionItem) {
 	            var includedQuestion = included.filter(function (include) {
 	                if (include.type === 'evaluation-questions' && include.id === questionItem.id) {
@@ -3507,7 +3517,7 @@
 
 /***/ },
 /* 115 */
-[640, 57, 297, 113, 118, 169, 288],
+[640, 57, 297, 113, 118, 170, 288],
 /* 116 */
 92,
 /* 117 */
@@ -3779,7 +3789,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var ctx = __webpack_require__(23);
-	var invoke = __webpack_require__(191);
+	var invoke = __webpack_require__(192);
 	var html = __webpack_require__(130);
 	var cel = __webpack_require__(127);
 	var global = __webpack_require__(3);
@@ -3879,7 +3889,7 @@
 	var anInstance = __webpack_require__(43);
 	var toInteger = __webpack_require__(30);
 	var toLength = __webpack_require__(9);
-	var toIndex = __webpack_require__(209);
+	var toIndex = __webpack_require__(210);
 	var gOPN = __webpack_require__(47).f;
 	var dP = __webpack_require__(8).f;
 	var arrayFill = __webpack_require__(124);
@@ -4148,15 +4158,15 @@
 
 /***/ },
 /* 147 */
-[661, 3, 27, 45, 210, 8],
+[661, 3, 27, 45, 211, 8],
 /* 148 */
 [664, 76, 6, 61, 27],
 /* 149 */
-[666, 38, 194, 61, 21, 134],
+[666, 38, 195, 61, 21, 134],
 /* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var defineProperty = __webpack_require__(219);
+	var defineProperty = __webpack_require__(220);
 
 	/**
 	 * The base implementation of `assignValue` and `assignMergeValue` without
@@ -4283,7 +4293,7 @@
 /* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(230);
+	module.exports = __webpack_require__(231);
 
 /***/ },
 /* 156 */
@@ -4292,12 +4302,12 @@
 	'use strict';
 
 	var utils = __webpack_require__(18);
-	var settle = __webpack_require__(236);
-	var buildURL = __webpack_require__(239);
-	var parseHeaders = __webpack_require__(245);
-	var isURLSameOrigin = __webpack_require__(243);
+	var settle = __webpack_require__(237);
+	var buildURL = __webpack_require__(240);
+	var parseHeaders = __webpack_require__(246);
+	var isURLSameOrigin = __webpack_require__(244);
 	var createError = __webpack_require__(159);
-	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(238);
+	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(239);
 
 	module.exports = function xhrAdapter(config) {
 	  return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -4393,7 +4403,7 @@
 	    // This is only done if running in a standard browser environment.
 	    // Specifically not if we're in a web worker, or react-native.
 	    if (utils.isStandardBrowserEnv()) {
-	      var cookies = __webpack_require__(241);
+	      var cookies = __webpack_require__(242);
 
 	      // Add xsrf header
 	      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -4510,7 +4520,7 @@
 
 	'use strict';
 
-	var enhanceError = __webpack_require__(235);
+	var enhanceError = __webpack_require__(236);
 
 	/**
 	 * Create an Error with the specified message, config, error code, and response.
@@ -4571,8 +4581,10 @@
 	var PROMPT_MESSAGE = exports.PROMPT_MESSAGE = 'PROMPT_MESSAGE';
 	var CLEAR_MESSAGES = exports.CLEAR_MESSAGES = 'CLEAR_MESSAGES';
 	var INITIALIZED = exports.INITIALIZED = 'INITIALIZED';
-	var QUESTION_MAXIMISE_CHANGE = exports.QUESTION_MAXIMISE_CHANGE = 'QUESTION_MAXIMISE_CHANGE';
 	var CRITERIA_MAXIMISE_CHANGE = exports.CRITERIA_MAXIMISE_CHANGE = 'CRITERIA_MAXIMISE_CHANGE';
+	var MINIMISE_ALL_CRITERIA = exports.MINIMISE_ALL_CRITERIA = 'MINIMISE_ALL_CRITERIA';
+	var QUESTION_MAXIMISE_CHANGE = exports.QUESTION_MAXIMISE_CHANGE = 'QUESTION_MAXIMISE_CHANGE';
+	var MINIMISE_ALL_QUESTIONS = exports.MINIMISE_ALL_QUESTIONS = 'MINIMISE_ALL_QUESTIONS';
 	;
 
 	(function () {
@@ -4616,9 +4628,13 @@
 
 	  __REACT_HOT_LOADER__.register(INITIALIZED, 'INITIALIZED', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/constants/ActionTypes.js');
 
+	  __REACT_HOT_LOADER__.register(CRITERIA_MAXIMISE_CHANGE, 'CRITERIA_MAXIMISE_CHANGE', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/constants/ActionTypes.js');
+
+	  __REACT_HOT_LOADER__.register(MINIMISE_ALL_CRITERIA, 'MINIMISE_ALL_CRITERIA', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/constants/ActionTypes.js');
+
 	  __REACT_HOT_LOADER__.register(QUESTION_MAXIMISE_CHANGE, 'QUESTION_MAXIMISE_CHANGE', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/constants/ActionTypes.js');
 
-	  __REACT_HOT_LOADER__.register(CRITERIA_MAXIMISE_CHANGE, 'CRITERIA_MAXIMISE_CHANGE', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/constants/ActionTypes.js');
+	  __REACT_HOT_LOADER__.register(MINIMISE_ALL_QUESTIONS, 'MINIMISE_ALL_QUESTIONS', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/constants/ActionTypes.js');
 	})();
 
 	;
@@ -4802,11 +4818,17 @@
 /* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = { "default": __webpack_require__(279), __esModule: true };
+
+/***/ },
+/* 168 */
+/***/ function(module, exports, __webpack_require__) {
+
 	"use strict";
 
 	exports.__esModule = true;
 
-	var _from = __webpack_require__(260);
+	var _from = __webpack_require__(261);
 
 	var _from2 = _interopRequireDefault(_from);
 
@@ -4825,7 +4847,7 @@
 	};
 
 /***/ },
-/* 168 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4851,36 +4873,36 @@
 	};
 
 /***/ },
-/* 169 */
-[626, 71, 36],
 /* 170 */
-[630, 40, 58, 169],
+[626, 71, 36],
 /* 171 */
-[631, 110],
+[630, 40, 58, 170],
 /* 172 */
-[636, 114, 32, 178, 59, 41, 72, 292, 117, 175, 25],
+[631, 110],
 /* 173 */
-[643, 73, 74, 42, 121, 41, 170, 40],
+[636, 114, 32, 179, 59, 41, 72, 292, 117, 176, 25],
 /* 174 */
-[645, 176, 113],
+[643, 73, 74, 42, 121, 41, 171, 40],
 /* 175 */
-[646, 41, 75, 118],
+[645, 177, 113],
 /* 176 */
-[647, 41, 42, 284, 118],
+[646, 41, 75, 118],
 /* 177 */
-[649, 32, 13, 58],
+[647, 41, 42, 284, 118],
 /* 178 */
+[649, 32, 13, 58],
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(59);
 
 
 /***/ },
-/* 179 */
-[658, 120],
 /* 180 */
-[673, 301, 172],
+[658, 120],
 /* 181 */
+[673, 301, 173],
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var cof = __webpack_require__(22);
@@ -4891,7 +4913,7 @@
 
 
 /***/ },
-/* 182 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 22.1.3.3 Array.prototype.copyWithin(target, start, end = this.length)
@@ -4923,7 +4945,7 @@
 
 
 /***/ },
-/* 183 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var forOf = __webpack_require__(44);
@@ -4936,7 +4958,7 @@
 
 
 /***/ },
-/* 184 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var aFunction = __webpack_require__(12);
@@ -4970,13 +4992,13 @@
 
 
 /***/ },
-/* 185 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var aFunction = __webpack_require__(12);
 	var isObject = __webpack_require__(5);
-	var invoke = __webpack_require__(191);
+	var invoke = __webpack_require__(192);
 	var arraySlice = [].slice;
 	var factories = {};
 
@@ -5001,7 +5023,7 @@
 
 
 /***/ },
-/* 186 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5012,7 +5034,7 @@
 	var anInstance = __webpack_require__(43);
 	var forOf = __webpack_require__(44);
 	var $iterDefine = __webpack_require__(134);
-	var step = __webpack_require__(194);
+	var step = __webpack_require__(195);
 	var setSpecies = __webpack_require__(51);
 	var DESCRIPTORS = __webpack_require__(7);
 	var fastKey = __webpack_require__(39).fastKey;
@@ -5151,12 +5173,12 @@
 
 
 /***/ },
-/* 187 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://github.com/DavidBruant/Map-Set.prototype.toJSON
 	var classof = __webpack_require__(76);
-	var from = __webpack_require__(183);
+	var from = __webpack_require__(184);
 	module.exports = function (NAME) {
 	  return function toJSON() {
 	    if (classof(this) != NAME) throw TypeError(NAME + "#toJSON isn't generic");
@@ -5166,7 +5188,7 @@
 
 
 /***/ },
-/* 188 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5257,7 +5279,7 @@
 
 
 /***/ },
-/* 189 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5302,9 +5324,9 @@
 
 
 /***/ },
-/* 190 */
-[630, 7, 4, 127],
 /* 191 */
+[630, 7, 4, 127],
+/* 192 */
 /***/ function(module, exports) {
 
 	// fast apply, http://jsperf.lnkit.com/fast-apply/5
@@ -5326,7 +5348,7 @@
 
 
 /***/ },
-/* 192 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 20.1.2.3 Number.isInteger(number)
@@ -5338,9 +5360,9 @@
 
 
 /***/ },
-/* 193 */
-[634, 2],
 /* 194 */
+[634, 2],
+/* 195 */
 /***/ function(module, exports) {
 
 	module.exports = function (done, value) {
@@ -5349,7 +5371,7 @@
 
 
 /***/ },
-/* 195 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 20.2.2.16 Math.fround(x)
@@ -5378,7 +5400,7 @@
 
 
 /***/ },
-/* 196 */
+/* 197 */
 /***/ function(module, exports) {
 
 	// 20.2.2.20 Math.log1p(x)
@@ -5388,7 +5410,7 @@
 
 
 /***/ },
-/* 197 */
+/* 198 */
 /***/ function(module, exports) {
 
 	// https://rwaldron.github.io/proposal-math-extensions/
@@ -5412,17 +5434,17 @@
 
 
 /***/ },
-/* 198 */
-[639, 48, 92, 78, 10, 77, 4],
 /* 199 */
-[642, 8, 2, 48, 7],
+[639, 48, 92, 78, 10, 77, 4],
 /* 200 */
-[644, 21, 47],
+[642, 8, 2, 48, 7],
 /* 201 */
-[647, 14, 21, 84, 140],
+[644, 21, 47],
 /* 202 */
-[650, 48, 21, 78],
+[647, 14, 21, 84, 140],
 /* 203 */
+[650, 48, 21, 78],
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// all object keys, includes non-enumerable and symbols
@@ -5438,7 +5460,7 @@
 
 
 /***/ },
-/* 204 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var $parseFloat = __webpack_require__(3).parseFloat;
@@ -5452,7 +5474,7 @@
 
 
 /***/ },
-/* 205 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var $parseInt = __webpack_require__(3).parseInt;
@@ -5467,7 +5489,7 @@
 
 
 /***/ },
-/* 206 */
+/* 207 */
 /***/ function(module, exports) {
 
 	module.exports = function (exec) {
@@ -5480,7 +5502,7 @@
 
 
 /***/ },
-/* 207 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var anObject = __webpack_require__(2);
@@ -5498,7 +5520,7 @@
 
 
 /***/ },
-/* 208 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://github.com/tc39/proposal-string-pad-start-end
@@ -5520,7 +5542,7 @@
 
 
 /***/ },
-/* 209 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://tc39.github.io/ecma262/#sec-toindex
@@ -5536,13 +5558,13 @@
 
 
 /***/ },
-/* 210 */
-[662, 6],
 /* 211 */
+[662, 6],
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var strong = __webpack_require__(186);
+	var strong = __webpack_require__(187);
 	var validate = __webpack_require__(64);
 	var MAP = 'Map';
 
@@ -5563,7 +5585,7 @@
 
 
 /***/ },
-/* 212 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 21.2.5.3 get RegExp.prototype.flags()
@@ -5574,11 +5596,11 @@
 
 
 /***/ },
-/* 213 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var strong = __webpack_require__(186);
+	var strong = __webpack_require__(187);
 	var validate = __webpack_require__(64);
 	var SET = 'Set';
 
@@ -5594,15 +5616,15 @@
 
 
 /***/ },
-/* 214 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var each = __webpack_require__(26)(0);
 	var redefine = __webpack_require__(16);
 	var meta = __webpack_require__(39);
-	var assign = __webpack_require__(198);
-	var weak = __webpack_require__(188);
+	var assign = __webpack_require__(199);
+	var weak = __webpack_require__(189);
 	var isObject = __webpack_require__(5);
 	var fails = __webpack_require__(4);
 	var validate = __webpack_require__(64);
@@ -5659,13 +5681,13 @@
 
 
 /***/ },
-/* 215 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports=function(e){function t(i){if(a[i])return a[i].exports;var n=a[i]={exports:{},id:i,loaded:!1};return e[i].call(n.exports,n,n.exports,t),n.loaded=!0,n.exports}var a={};return t.m=e,t.c=a,t.p="",t(0)}([function(e,t,a){e.exports=a(1)},function(e,t,a){"use strict";function i(e){return e&&e.__esModule?e:{default:e}}function n(e){return(0,h.default)(e)?e:[e]}function r(e){return"[object Date]"===Object.prototype.toString.call(e)}function o(e){if(null===e||"object"!==("undefined"==typeof e?"undefined":c(e))||r(e))return e;if((0,h.default)(e))return e.map(o);var t={};return(0,x.default)(e).forEach(function(a){t[(0,y.default)(a)]=o(e[a])}),t}function u(e,t){var a=t.camelizeKeys,i={};return(0,x.default)(e).forEach(function(t){var n=e[t],r=a?(0,y.default)(t):t;i[r]={},"undefined"!=typeof n.data&&((0,h.default)(n.data)?i[r].data=n.data.map(function(e){return{id:e.id,type:a?(0,y.default)(e.type):e.type}}):(0,b.default)(n.data)?i[r].data=n.data:i[r].data={id:n.data.id,type:a?(0,y.default)(n.data.type):n.data.type},"undefined"!=typeof n.meta&&(i[r].meta=o(n.meta))),n.links&&(i[r].links=n.links)}),i}function d(e,t){var a=t.camelizeKeys,i={};return n(e).forEach(function(e){var t=a?(0,y.default)(e.type):e.type;i[t]=i[t]||{},i[t][e.id]=i[t][e.id]||{id:e.id},a?(i[t][e.id].attributes={},(0,x.default)(e.attributes).forEach(function(a){i[t][e.id].attributes[(0,y.default)(a)]=o(e.attributes[a])})):i[t][e.id].attributes=e.attributes,e.links&&(i[t][e.id].links={},(0,x.default)(e.links).forEach(function(a){i[t][e.id].links[a]=e.links[a]})),e.relationships&&(i[t][e.id].relationships=u(e.relationships,{camelizeKeys:a})),e.meta&&(i[t][e.id].meta=e.meta)}),i}function l(e){return e.replace(/\?.*$/,"")}function f(e,t,a){var i=a.camelizeKeys,r=a.filterEndpoint,o={};o.meta={};var d=void 0;if(r)o.meta[t]={},d=o.meta[t];else{var f=l(t);o.meta[f]={},o.meta[f][t.slice(f.length)]={},d=o.meta[f][t.slice(f.length)]}if(d.data={},e.data){var s=[];n(e.data).forEach(function(e){var t={id:e.id,type:i?(0,y.default)(e.type):e.type};e.relationships&&(t.relationships=u(e.relationships,{camelizeKeys:i})),s.push(t)}),d.data=s,e.links&&(d.links=e.links,o.meta[l(t)].links=e.links),e.meta&&(d.meta=e.meta)}return o}function s(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},a={},i=t.endpoint,n=t.filterEndpoint,r=t.camelizeKeys;if("undefined"==typeof n&&(n=!0),"undefined"==typeof r&&(r=!0),e.data&&(0,E.default)(a,d(e.data,{camelizeKeys:r})),e.included&&(0,E.default)(a,d(e.included,{camelizeKeys:r})),i){var o=n?l(i):i;(0,E.default)(a,f(e,o,{camelizeKeys:r,filterEndpoint:n}))}return a}Object.defineProperty(t,"__esModule",{value:!0});var c="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};t.default=s;var p=a(2),y=i(p),m=a(3),h=i(m),v=a(4),b=i(v),k=a(5),x=i(k),z=a(6),E=i(z)},function(e,t){e.exports=__webpack_require__(592)},function(e,t){e.exports=__webpack_require__(103)},function(e,t){e.exports=__webpack_require__(597)},function(e,t){e.exports=__webpack_require__(599)},function(e,t){e.exports=__webpack_require__(600)}]);
 
 /***/ },
-/* 216 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var getNative = __webpack_require__(151),
@@ -5678,15 +5700,15 @@
 
 
 /***/ },
-/* 217 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseTimes = __webpack_require__(541),
-	    isArguments = __webpack_require__(223),
+	    isArguments = __webpack_require__(224),
 	    isArray = __webpack_require__(103),
-	    isBuffer = __webpack_require__(224),
-	    isIndex = __webpack_require__(221),
-	    isTypedArray = __webpack_require__(226);
+	    isBuffer = __webpack_require__(225),
+	    isIndex = __webpack_require__(222),
+	    isTypedArray = __webpack_require__(227);
 
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -5733,7 +5755,7 @@
 
 
 /***/ },
-/* 218 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseAssignValue = __webpack_require__(150),
@@ -5759,7 +5781,7 @@
 
 
 /***/ },
-/* 219 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var getNative = __webpack_require__(151);
@@ -5776,7 +5798,7 @@
 
 
 /***/ },
-/* 220 */
+/* 221 */
 /***/ function(module, exports) {
 
 	/** Used to compose unicode character classes. */
@@ -5808,7 +5830,7 @@
 
 
 /***/ },
-/* 221 */
+/* 222 */
 /***/ function(module, exports) {
 
 	/** Used as references for various `Number` constants. */
@@ -5836,7 +5858,7 @@
 
 
 /***/ },
-/* 222 */
+/* 223 */
 /***/ function(module, exports) {
 
 	/**
@@ -5863,7 +5885,7 @@
 
 
 /***/ },
-/* 223 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseIsArguments = __webpack_require__(530),
@@ -5905,7 +5927,7 @@
 
 
 /***/ },
-/* 224 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(79),
@@ -5950,7 +5972,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(154)(module)))
 
 /***/ },
-/* 225 */
+/* 226 */
 /***/ function(module, exports) {
 
 	/** Used as references for various `Number` constants. */
@@ -5991,7 +6013,7 @@
 
 
 /***/ },
-/* 226 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseIsTypedArray = __webpack_require__(532),
@@ -6024,10 +6046,10 @@
 
 
 /***/ },
-/* 227 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var arrayLikeKeys = __webpack_require__(217),
+	var arrayLikeKeys = __webpack_require__(218),
 	    baseKeysIn = __webpack_require__(534),
 	    isArrayLike = __webpack_require__(104);
 
@@ -6062,26 +6084,26 @@
 
 
 /***/ },
-/* 228 */
+/* 229 */
 /***/ function(module, exports) {
 
 	module.exports=function(e){function r(n){if(t[n])return t[n].exports;var i=t[n]={exports:{},id:n,loaded:!1};return e[n].call(i.exports,i,i.exports,r),i.loaded=!0,i.exports}var t={};return r.m=e,r.c=t,r.p="",r(0)}([function(e,r,t){e.exports=t(1)},function(e,r){"use strict";function t(e,r){return r?""+e+r:null}function n(e,r,t,n,o){var a=n.ignoreLinks,u=r.relationships[t];if("undefined"!=typeof u.data)return Array.isArray(u.data)?u.data.map(function(r){return i(e,r.type,r.id,n,o)||r}):null===u.data?null:i(e,u.data.type,u.data.id,n,o)||u.data;if(!a&&u.links)throw new Error("Remote lazy loading is not supported (see: https://github.com/yury-dymov/json-api-normalizer/issues/2). To disable this error, include option 'ignoreLinks: true' in the build function like so: build(reducer, type, id, { ignoreLinks: true })")}function i(e,r){var a=arguments.length>2&&void 0!==arguments[2]?arguments[2]:null,u=arguments.length>3&&void 0!==arguments[3]?arguments[3]:{},l=arguments.length>4&&void 0!==arguments[4]?arguments[4]:{},d={eager:!1,ignoreLinks:!1,includeType:!1},s=o({},d,u),c=s.eager,f=s.includeType;if(!e[r])return null;if(null===a||Array.isArray(a)){var p=a||Object.keys(e[r]);return p.map(function(t){return i(e,r,t,s,l)})}var y=a.toString(),v=t(r,y),b=l[v];if(b)return b;var g={},h=e[r][y];return h?(h.id&&(g.id=h.id),Object.keys(h.attributes).forEach(function(e){g[e]=h.attributes[e]}),h.meta&&(g.meta=h.meta),f&&!g.type&&(g.type=r),l[v]=g,h.relationships&&Object.keys(h.relationships).forEach(function(r){c?g[r]=n(e,h,r,s,l):Object.defineProperty(g,r,{enumerable:!0,get:function(){var t="__"+r;if(g[t])return g[t];var i=n(e,h,r,s,l);return Object.defineProperty(g,t,{enumerable:!1,value:i}),g[t]}})}),"undefined"==typeof g.id&&(g.id=y),g):null}Object.defineProperty(r,"__esModule",{value:!0});var o=Object.assign||function(e){for(var r=1;r<arguments.length;r++){var t=arguments[r];for(var n in t)Object.prototype.hasOwnProperty.call(t,n)&&(e[n]=t[n])}return e};r.default=i}]);
 
 /***/ },
-/* 229 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = (__webpack_require__(11))(32);
 
 /***/ },
-/* 230 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var utils = __webpack_require__(18);
 	var bind = __webpack_require__(160);
-	var Axios = __webpack_require__(232);
+	var Axios = __webpack_require__(233);
 	var defaults = __webpack_require__(107);
 
 	/**
@@ -6116,14 +6138,14 @@
 
 	// Expose Cancel & CancelToken
 	axios.Cancel = __webpack_require__(157);
-	axios.CancelToken = __webpack_require__(231);
+	axios.CancelToken = __webpack_require__(232);
 	axios.isCancel = __webpack_require__(158);
 
 	// Expose all/spread
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(246);
+	axios.spread = __webpack_require__(247);
 
 	module.exports = axios;
 
@@ -6132,7 +6154,7 @@
 
 
 /***/ },
-/* 231 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6195,17 +6217,17 @@
 
 
 /***/ },
-/* 232 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var defaults = __webpack_require__(107);
 	var utils = __webpack_require__(18);
-	var InterceptorManager = __webpack_require__(233);
-	var dispatchRequest = __webpack_require__(234);
-	var isAbsoluteURL = __webpack_require__(242);
-	var combineURLs = __webpack_require__(240);
+	var InterceptorManager = __webpack_require__(234);
+	var dispatchRequest = __webpack_require__(235);
+	var isAbsoluteURL = __webpack_require__(243);
+	var combineURLs = __webpack_require__(241);
 
 	/**
 	 * Create a new instance of Axios
@@ -6286,7 +6308,7 @@
 
 
 /***/ },
-/* 233 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6344,13 +6366,13 @@
 
 
 /***/ },
-/* 234 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var utils = __webpack_require__(18);
-	var transformData = __webpack_require__(237);
+	var transformData = __webpack_require__(238);
 	var isCancel = __webpack_require__(158);
 	var defaults = __webpack_require__(107);
 
@@ -6429,7 +6451,7 @@
 
 
 /***/ },
-/* 235 */
+/* 236 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6454,7 +6476,7 @@
 
 
 /***/ },
-/* 236 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6485,7 +6507,7 @@
 
 
 /***/ },
-/* 237 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6511,7 +6533,7 @@
 
 
 /***/ },
-/* 238 */
+/* 239 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6553,7 +6575,7 @@
 
 
 /***/ },
-/* 239 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6627,7 +6649,7 @@
 
 
 /***/ },
-/* 240 */
+/* 241 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6645,7 +6667,7 @@
 
 
 /***/ },
-/* 241 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6704,7 +6726,7 @@
 
 
 /***/ },
-/* 242 */
+/* 243 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6724,7 +6746,7 @@
 
 
 /***/ },
-/* 243 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6798,7 +6820,7 @@
 
 
 /***/ },
-/* 244 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6816,7 +6838,7 @@
 
 
 /***/ },
-/* 245 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6859,7 +6881,7 @@
 
 
 /***/ },
-/* 246 */
+/* 247 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6892,7 +6914,7 @@
 
 
 /***/ },
-/* 247 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6905,7 +6927,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Progress = __webpack_require__(248);
+	var _Progress = __webpack_require__(249);
 
 	var _Progress2 = _interopRequireDefault(_Progress);
 
@@ -6974,7 +6996,7 @@
 	;
 
 /***/ },
-/* 248 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7040,7 +7062,7 @@
 	;
 
 /***/ },
-/* 249 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7073,7 +7095,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Question = __webpack_require__(251);
+	var _Question = __webpack_require__(252);
 
 	var _Question2 = _interopRequireDefault(_Question);
 
@@ -7145,7 +7167,6 @@
 	            if (title.length) {
 	                this.props.dispatch((0, _evaluationTemplateCreator.updateCriteria)(this.props.criteriaId, title, weight));
 	            }
-
 	            clearInterval(this.intervalId);
 	        }
 	    }, {
@@ -7154,7 +7175,6 @@
 	            this.setState({ title: title, isTitleError: !title.length });
 	            clearInterval(this.intervalId);
 	            if (this.props.criteria.id && title.length) {
-
 	                this.intervalId = setInterval(this.updateCriteriaChange, _constants.INPUT_SYNC_INTERVAL);
 	            }
 	        }
@@ -7215,89 +7235,106 @@
 	            return index + 1;
 	        }
 	    }, {
-	        key: 'render',
-	        value: function render() {
+	        key: 'renderMaximised',
+	        value: function renderMaximised() {
 	            var _this2 = this;
 
-	            var _state2 = this.state,
-	                title = _state2.title,
-	                weight = _state2.weight;
-
-	            if (this.props.criteria.isMaximised) {
-	                return _react2.default.createElement(
-	                    'div',
-	                    null,
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'fieldset',
+	                    { className: 'criteria-container' },
 	                    _react2.default.createElement(
-	                        'fieldset',
-	                        { className: 'criteria-container' },
+	                        'div',
+	                        { className: 'row' },
 	                        _react2.default.createElement(
 	                            'div',
-	                            { className: 'row' },
+	                            { className: 'col-md-4 col-sm-12' },
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-md-4 col-sm-12' },
+	                                { className: 'form-group' },
+	                                _react2.default.createElement(
+	                                    'label',
+	                                    { className: 'control-label' },
+	                                    _react2.default.createElement(
+	                                        'span',
+	                                        { className: 'required', 'aria-required': 'true' },
+	                                        'Criteria'
+	                                    )
+	                                ),
+	                                _react2.default.createElement('input', { type: 'text', name: 'title', className: this.getTitleInputStyle(), defaultValue: this.state.title, title: 'Criteria', placeholder: 'Criteria Title',
+	                                    onChange: function onChange(event) {
+	                                        return _this2.onTitleChange(event.target.value);
+	                                    } }),
+	                                this.state.isTitleError ? _react2.default.createElement(
+	                                    'span',
+	                                    { className: 'error danger' },
+	                                    'Please add a Title'
+	                                ) : null
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-md-2 col-sm-12' },
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'form-group' },
+	                                _react2.default.createElement(
+	                                    'label',
+	                                    { className: 'control-label' },
+	                                    _react2.default.createElement(
+	                                        'span',
+	                                        { className: 'required', 'aria-required': 'true' },
+	                                        'Weighting',
+	                                        _react2.default.createElement('i', { className: 'fa fa-info-circle', 'data-tooltip': 'The total weighting across all criteria must equal 100%.', 'aria-hidden': 'true' })
+	                                    )
+	                                ),
 	                                _react2.default.createElement(
 	                                    'div',
-	                                    { className: 'form-group' },
-	                                    _react2.default.createElement(
-	                                        'label',
-	                                        { className: 'control-label' },
-	                                        _react2.default.createElement(
-	                                            'span',
-	                                            { className: 'required', 'aria-required': 'true' },
-	                                            'Criteria'
-	                                        )
-	                                    ),
-	                                    _react2.default.createElement('input', { type: 'text', name: 'title', className: this.getTitleInputStyle(), defaultValue: this.state.title, title: 'Criteria', placeholder: 'Criteria Title',
+	                                    { className: 'input-group' },
+	                                    _react2.default.createElement('input', { type: 'number', min: '0', step: '1', name: 'weight', defaultValue: this.state.weight, className: this.getWeightInputStyle(), title: 'Criteria Weight', placeholder: 'Value',
 	                                        onChange: function onChange(event) {
-	                                            return _this2.onTitleChange(event.target.value);
-	                                        } }),
-	                                    this.state.isTitleError ? _react2.default.createElement(
+	                                            return _this2.onWeightChange(event.target.value);
+	                                        }, 'aria-describedby': 'weighting-addon' }),
+	                                    _react2.default.createElement(
 	                                        'span',
-	                                        { className: 'error danger' },
-	                                        'Please add a Title'
-	                                    ) : null
-	                                )
-	                            ),
+	                                        { className: 'input-group-addon', id: 'weighting-addon' },
+	                                        '%'
+	                                    )
+	                                ),
+	                                this.state.isWeightError ? _react2.default.createElement(
+	                                    'span',
+	                                    { className: 'error danger' },
+	                                    'Accepted values: 0 to 100'
+	                                ) : null
+	                            )
+	                        ),
+	                        this.props.criteria.id === null && this.state.title ? _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-md-2 col-sm-12' },
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-md-2 col-sm-12' },
+	                                { className: 'form-group pull-right' },
 	                                _react2.default.createElement(
 	                                    'div',
-	                                    { className: 'form-group' },
-	                                    _react2.default.createElement(
-	                                        'label',
-	                                        { className: 'control-label' },
-	                                        _react2.default.createElement(
-	                                            'span',
-	                                            { className: 'required', 'aria-required': 'true' },
-	                                            'Weighting',
-	                                            _react2.default.createElement('i', { className: 'fa fa-info-circle', 'data-tooltip': 'The total weighting across all criteria must equal 100%.', 'aria-hidden': 'true' })
-	                                        )
-	                                    ),
-	                                    _react2.default.createElement(
-	                                        'div',
-	                                        { className: 'input-group' },
-	                                        _react2.default.createElement('input', { type: 'number', min: '0', step: '1', name: 'weight', defaultValue: this.state.weight, className: this.getWeightInputStyle(), title: 'Criteria Weight', placeholder: 'Value',
-	                                            onChange: function onChange(event) {
-	                                                return _this2.onWeightChange(event.target.value);
-	                                            }, 'aria-describedby': 'weighting-addon' }),
-	                                        _react2.default.createElement(
-	                                            'span',
-	                                            { className: 'input-group-addon', id: 'weighting-addon' },
-	                                            '%'
-	                                        )
-	                                    ),
-	                                    this.state.isWeightError ? _react2.default.createElement(
-	                                        'span',
-	                                        { className: 'error danger' },
-	                                        'Accepted values: 0 to 100'
-	                                    ) : null
+	                                    { className: 'hidden-sm' },
+	                                    _react2.default.createElement('br', null),
+	                                    _react2.default.createElement('br', null)
+	                                ),
+	                                _react2.default.createElement(
+	                                    'button',
+	                                    { className: 'btn btn-sm', disabled: !this.state.title, onClick: this.onSave },
+	                                    _react2.default.createElement('i', { className: 'fa fa-plus' }),
+	                                    'Add Criteria'
 	                                )
-	                            ),
-	                            this.props.criteria.id === null && this.state.title ? _react2.default.createElement(
+	                            )
+	                        ) : _react2.default.createElement(
+	                            'div',
+	                            null,
+	                            this.state.title || this.state.title !== this.props.criteria.title || this.state.weight !== this.props.criteria.weight ? _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-md-2 col-sm-12' },
+	                                { className: 'col-md-6 col-sm-12' },
 	                                _react2.default.createElement(
 	                                    'div',
 	                                    { className: 'form-group pull-right' },
@@ -7309,186 +7346,176 @@
 	                                    ),
 	                                    _react2.default.createElement(
 	                                        'button',
-	                                        { className: 'btn btn-sm', disabled: !this.state.title, onClick: this.onSave },
-	                                        _react2.default.createElement('i', { className: 'fa fa-plus' }),
-	                                        'Add Criteria'
+	                                        { className: 'btn btn-sm',
+	                                            onClick: this.toggleMaximise },
+	                                        _react2.default.createElement('i', { className: 'fa fa-angle-double-up' }),
+	                                        ' Collapse Criteria'
 	                                    )
 	                                )
-	                            ) : _react2.default.createElement(
-	                                'div',
-	                                null,
-	                                this.state.title || this.state.title !== this.props.criteria.title || this.state.weight !== this.props.criteria.weight ? _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'col-md-6 col-sm-12' },
-	                                    _react2.default.createElement(
-	                                        'div',
-	                                        { className: 'form-group pull-right' },
-	                                        _react2.default.createElement(
-	                                            'div',
-	                                            { className: 'hidden-sm' },
-	                                            _react2.default.createElement('br', null),
-	                                            _react2.default.createElement('br', null)
-	                                        ),
-	                                        _react2.default.createElement(
-	                                            'button',
-	                                            { className: 'btn btn-sm',
-	                                                onClick: this.toggleMaximise },
-	                                            _react2.default.createElement('i', { className: 'fa fa-angle-double-up' }),
-	                                            ' Collapse Criteria'
-	                                        )
-	                                    )
-	                                ) : null
-	                            )
-	                        ),
-	                        this.props.criteria.questions.length ? _react2.default.createElement(
-	                            'div',
-	                            { className: 'row' },
-	                            _react2.default.createElement(
-	                                'div',
-	                                { className: 'col-md-12' },
-	                                _react2.default.createElement('hr', null)
-	                            )
-	                        ) : null,
+	                            ) : null
+	                        )
+	                    ),
+	                    this.props.criteria.questions.length ? _react2.default.createElement(
+	                        'div',
+	                        { className: 'row' },
 	                        _react2.default.createElement(
 	                            'div',
-	                            null,
-	                            this.props.criteria.questions.length ? _react2.default.createElement(
-	                                'div',
-	                                null,
-	                                _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'row' },
-	                                    this.props.criteria.questions.map(function (item, index) {
-	                                        return _react2.default.createElement(
-	                                            'div',
-	                                            { className: 'row', key: item },
-	                                            _react2.default.createElement(_Question2.default, { criteriaId: _this2.props.criteria.id, questionId: item, questionIndex: index + 1 })
-	                                        );
-	                                    })
-	                                ),
-	                                _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'row' },
-	                                    _react2.default.createElement(
-	                                        'div',
-	                                        { className: 'col-md-12 new-question mar-btm' },
-	                                        _react2.default.createElement(
-	                                            'button',
-	                                            { className: 'btn btn-sm',
-	                                                onClick: function onClick() {
-	                                                    return _this2.setState({ showAdd: !_this2.state.showAdd });
-	                                                } },
-	                                            _react2.default.createElement('i', { className: 'fa fa-plus' }),
-	                                            'Add New Question'
-	                                        )
-	                                    )
-	                                ),
-	                                _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'row' },
-	                                    _react2.default.createElement(
-	                                        'div',
-	                                        { className: 'row' },
-	                                        this.state.showAdd ? _react2.default.createElement(_Question2.default, { criteriaId: this.props.criteria.id, question: this.newQuestion, questionIndex: this.props.criteria.questions.length + 1 }) : null
-	                                    )
-	                                )
-	                            ) : _react2.default.createElement(
-	                                'div',
-	                                null,
-	                                this.props.criteria.id ? _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'row' },
-	                                    _react2.default.createElement(
-	                                        'div',
-	                                        { className: 'row' },
-	                                        _react2.default.createElement(_Question2.default, { criteriaId: this.props.criteria.id, question: this.newQuestion, questionIndex: this.props.criteria.questions.length + 1 })
-	                                    )
-	                                ) : null
-	                            )
+	                            { className: 'col-md-12' },
+	                            _react2.default.createElement('hr', null)
 	                        )
-	                    )
-	                );
-	            } else {
-	                return _react2.default.createElement(
-	                    'div',
-	                    { className: 'row' },
+	                    ) : null,
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-sm-12' },
+	                        null,
+	                        this.props.criteria.questions.length ? _react2.default.createElement(
+	                            'div',
+	                            null,
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'row' },
+	                                this.props.criteria.questions.map(function (item, index) {
+	                                    return _react2.default.createElement(
+	                                        'div',
+	                                        { className: 'row', key: item },
+	                                        _react2.default.createElement(_Question2.default, { criteriaId: _this2.props.criteria.id, questionId: item, questionIndex: index + 1 })
+	                                    );
+	                                })
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'row' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'col-md-12 new-question mar-btm' },
+	                                    _react2.default.createElement(
+	                                        'button',
+	                                        { className: 'btn btn-sm',
+	                                            onClick: function onClick() {
+	                                                _this2.setState({ showAdd: !_this2.state.showAdd });
+	                                                _this2.props.dispatch((0, _evaluationTemplateCreator.minimiseAllQuestions)());
+	                                            } },
+	                                        _react2.default.createElement('i', { className: 'fa fa-plus' }),
+	                                        'Add New Question'
+	                                    )
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'row' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'row' },
+	                                    this.state.showAdd ? _react2.default.createElement(_Question2.default, { criteriaId: this.props.criteria.id, question: this.newQuestion, questionIndex: this.props.criteria.questions.length + 1 }) : null
+	                                )
+	                            )
+	                        ) : _react2.default.createElement(
+	                            'div',
+	                            null,
+	                            this.props.criteria.id ? _react2.default.createElement(
+	                                'div',
+	                                { className: 'row' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'row' },
+	                                    _react2.default.createElement(_Question2.default, { criteriaId: this.props.criteria.id, question: this.newQuestion, questionIndex: this.props.criteria.questions.length + 1 })
+	                                )
+	                            ) : null
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }, {
+	        key: 'renderMinimised',
+	        value: function renderMinimised() {
+	            var _state2 = this.state,
+	                title = _state2.title,
+	                weight = _state2.weight;
+
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'row' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'col-sm-12' },
+	                    _react2.default.createElement(
+	                        'fieldset',
+	                        { className: 'criteria-container collapsed' },
 	                        _react2.default.createElement(
-	                            'fieldset',
-	                            { className: 'criteria-container collapsed' },
+	                            'div',
+	                            { className: 'col-md-6' },
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-md-6' },
+	                                { className: 'form-group' },
+	                                _react2.default.createElement(
+	                                    'label',
+	                                    { className: 'control-label' },
+	                                    _react2.default.createElement(
+	                                        'span',
+	                                        { className: 'required', 'aria-required': 'true', required: true },
+	                                        'Criteria'
+	                                    )
+	                                ),
 	                                _react2.default.createElement(
 	                                    'div',
-	                                    { className: 'form-group' },
-	                                    _react2.default.createElement(
-	                                        'label',
-	                                        { className: 'control-label' },
-	                                        _react2.default.createElement(
-	                                            'span',
-	                                            { className: 'required', 'aria-required': 'true', required: true },
-	                                            'Criteria'
-	                                        )
-	                                    ),
-	                                    _react2.default.createElement(
-	                                        'div',
-	                                        null,
-	                                        title
-	                                    )
+	                                    null,
+	                                    title
 	                                )
-	                            ),
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-md-2 text-center' },
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-md-2 text-center' },
+	                                { className: 'form-group' },
+	                                _react2.default.createElement(
+	                                    'label',
+	                                    { className: 'control-label' },
+	                                    _react2.default.createElement(
+	                                        'span',
+	                                        { className: 'required', 'aria-required': 'true' },
+	                                        'Weighting'
+	                                    )
+	                                ),
 	                                _react2.default.createElement(
 	                                    'div',
-	                                    { className: 'form-group' },
-	                                    _react2.default.createElement(
-	                                        'label',
-	                                        { className: 'control-label' },
-	                                        _react2.default.createElement(
-	                                            'span',
-	                                            { className: 'required', 'aria-required': 'true' },
-	                                            'Weighting'
-	                                        )
-	                                    ),
-	                                    _react2.default.createElement(
-	                                        'div',
-	                                        null,
-	                                        weight,
-	                                        ' %'
-	                                    )
+	                                    null,
+	                                    weight,
+	                                    ' %'
 	                                )
-	                            ),
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-md-4 text-right' },
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-md-4 text-right' },
+	                                { className: 'form-group' },
+	                                _react2.default.createElement('br', null),
 	                                _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'form-group' },
-	                                    _react2.default.createElement('br', null),
-	                                    _react2.default.createElement(
-	                                        'button',
-	                                        { className: 'btn btn-sm', onClick: this.toggleMaximise },
-	                                        _react2.default.createElement('i', { className: 'fa fa-pencil' }),
-	                                        'Edit Criteria'
-	                                    ),
-	                                    '\xA0',
-	                                    _react2.default.createElement(
-	                                        'button',
-	                                        { className: 'btn btn-sm', onClick: this.onDelete },
-	                                        _react2.default.createElement('i', { className: 'fa fa-trash-o' }),
-	                                        'Delete Criteria'
-	                                    )
+	                                    'button',
+	                                    { className: 'btn btn-sm', onClick: this.toggleMaximise },
+	                                    _react2.default.createElement('i', { className: 'fa fa-pencil' }),
+	                                    'Edit Criteria'
+	                                ),
+	                                '\xA0',
+	                                _react2.default.createElement(
+	                                    'button',
+	                                    { className: 'btn btn-sm', onClick: this.onDelete },
+	                                    _react2.default.createElement('i', { className: 'fa fa-trash-o' }),
+	                                    'Delete Criteria'
 	                                )
 	                            )
 	                        )
 	                    )
-	                );
-	            }
+	                )
+	            );
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return this.props.criteria.isMaximised ? this.renderMaximised() : this.renderMinimised();
 	        }
 	    }]);
 	    return Criteria;
@@ -7528,7 +7555,7 @@
 	;
 
 /***/ },
-/* 250 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7563,17 +7590,17 @@
 
 	var _reactRedux = __webpack_require__(65);
 
-	var _Criteria = __webpack_require__(249);
+	var _Criteria = __webpack_require__(250);
 
 	var _Criteria2 = _interopRequireDefault(_Criteria);
 
 	var _evaluationTemplateCreator = __webpack_require__(108);
 
-	var _Notification = __webpack_require__(254);
+	var _Notification = __webpack_require__(255);
 
 	var _Notification2 = _interopRequireDefault(_Notification);
 
-	var _Modal = __webpack_require__(252);
+	var _Modal = __webpack_require__(253);
 
 	var _Modal2 = _interopRequireDefault(_Modal);
 
@@ -7604,6 +7631,7 @@
 	        value: function componentDidMount() {
 	            var element = document.querySelector('[data-component="searcher-evaluation-template-creator"]');
 	            var id = Number(element.getAttribute('data-template-id'));
+
 	            if (id) {
 	                this.props.dispatch((0, _evaluationTemplateCreator.fetchTemplate)(id));
 	            } else {
@@ -7762,7 +7790,8 @@
 	                                        'button',
 	                                        { className: 'btn',
 	                                            onClick: function onClick() {
-	                                                return _this2.setState({ showAdd: !_this2.state.showAdd });
+	                                                _this2.setState({ showAdd: !_this2.state.showAdd });
+	                                                _this2.props.dispatch((0, _evaluationTemplateCreator.minimiseAllCriteria)());
 	                                            } },
 	                                        _react2.default.createElement('i', { className: 'fa fa-plus' }),
 	                                        'Add New Criteria'
@@ -7785,7 +7814,7 @@
 	                        { className: 'row' },
 	                        _react2.default.createElement(
 	                            'div',
-	                            { className: 'col-md-12 text-right' },
+	                            { className: 'col-md-12 text-right ' + (id !== null ? 'show' : 'hidden') },
 	                            _react2.default.createElement('hr', null),
 	                            _react2.default.createElement(
 	                                'div',
@@ -7863,7 +7892,7 @@
 	;
 
 /***/ },
-/* 251 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7906,7 +7935,7 @@
 
 	var _reactDropzone2 = _interopRequireDefault(_reactDropzone);
 
-	var _Document = __webpack_require__(247);
+	var _Document = __webpack_require__(248);
 
 	var _Document2 = _interopRequireDefault(_Document);
 
@@ -7988,7 +8017,6 @@
 	                scaleDefinitions = question.scaleDefinitions;
 
 	            var documentError = '';
-	            window.console.log('isCommentRequired', isCommentRequired);
 	            this.setState({
 	                title: title,
 	                isAllowUpload: isAllowUpload,
@@ -8032,9 +8060,7 @@
 	    }, {
 	        key: 'onTitleChange',
 	        value: function onTitleChange(title) {
-
 	            this.setState({ title: title });
-
 	            if (title.length) {
 	                this.clearAllIntervals();
 	                this.intervalId_update = setInterval(this.updateTitle, _constants.INPUT_SYNC_INTERVAL);
@@ -8553,7 +8579,7 @@
 	;
 
 /***/ },
-/* 252 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8717,7 +8743,7 @@
 	;
 
 /***/ },
-/* 253 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8751,7 +8777,6 @@
 	                    title = action.title,
 	                    onClose = action.onClose;
 
-	                window.console.log(onClose);
 	                var isOpen = true;
 	                return (0, _extends3.default)({}, state, { message: message, title: title, isOpen: isOpen, onClose: onClose });
 	            }
@@ -8782,7 +8807,7 @@
 	;
 
 /***/ },
-/* 254 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8917,7 +8942,7 @@
 	;
 
 /***/ },
-/* 255 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8930,7 +8955,7 @@
 
 	var _assign2 = _interopRequireDefault(_assign);
 
-	var _toConsumableArray2 = __webpack_require__(167);
+	var _toConsumableArray2 = __webpack_require__(168);
 
 	var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
 
@@ -8991,7 +9016,7 @@
 	;
 
 /***/ },
-/* 256 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9000,17 +9025,21 @@
 	    value: true
 	});
 
-	var _toConsumableArray2 = __webpack_require__(167);
+	var _toConsumableArray2 = __webpack_require__(168);
 
 	var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
 
-	var _keys = __webpack_require__(264);
+	var _keys = __webpack_require__(265);
 
 	var _keys2 = _interopRequireDefault(_keys);
 
 	var _assign = __webpack_require__(56);
 
 	var _assign2 = _interopRequireDefault(_assign);
+
+	var _values = __webpack_require__(167);
+
+	var _values2 = _interopRequireDefault(_values);
 
 	var _extends2 = __webpack_require__(82);
 
@@ -9053,39 +9082,93 @@
 	            }
 	        case _ActionTypes.QUESTION_MAXIMISE_CHANGE:
 	            {
+	                var id = action.id,
+	                    isMaximised = action.isMaximised;
 	                var questionsByIndex = state.questionsByIndex;
 
-	                var question = questionsByIndex[action.id];
-	                question = (0, _assign2.default)({}, question, { isMaximised: action.isMaximised });
-	                questionsByIndex[action.id] = question;
-	                return (0, _assign2.default)({}, state, { questionsByIndex: questionsByIndex });
+	                if (isMaximised) {
+	                    // if a question is maximised minimse others.
+	                    (0, _values2.default)(questionsByIndex).forEach(function (item) {
+	                        item.isMaximised = false;
+	                    });
+	                }
+	                var question = questionsByIndex[id];
+	                questionsByIndex[id] = (0, _extends3.default)({}, question, { isMaximised: isMaximised });
+	                return (0, _extends3.default)({}, state, { questionsByIndex: questionsByIndex });
 	            }
 	        case _ActionTypes.CRITERIA_MAXIMISE_CHANGE:
 	            {
-	                var criteriaByIndex = state.criteriaByIndex;
+	                var _id = action.id,
+	                    _isMaximised = action.isMaximised;
+	                var criteriaByIndex = state.criteriaByIndex,
+	                    _questionsByIndex = state.questionsByIndex;
 
-	                var criteria = criteriaByIndex[action.id];
-	                criteria = (0, _assign2.default)({}, criteria, { isMaximised: action.isMaximised });
-	                criteriaByIndex[action.id] = criteria;
-	                return (0, _assign2.default)({}, state, { criteriaByIndex: criteriaByIndex });
+	                if (_isMaximised) {
+	                    // if a criteria is maximised minimse others.
+	                    (0, _values2.default)(criteriaByIndex).forEach(function (item) {
+	                        var id = item.id;
+
+	                        var isMaximised = false;
+	                        var criteria = criteriaByIndex[id];
+	                        criteriaByIndex[id] = (0, _extends3.default)({}, criteria, { isMaximised: isMaximised });
+	                    });
+	                } else {
+	                    // if a criteria is minimised, minimise all its questions aswell.
+	                    (0, _values2.default)(_questionsByIndex).forEach(function (item) {
+	                        var isMaximised = false;
+	                        var id = item.id;
+
+	                        var question = _questionsByIndex[id];
+	                        _questionsByIndex[id] = (0, _extends3.default)({}, question, { isMaximised: isMaximised });
+	                    });
+	                }
+	                var criteria = criteriaByIndex[_id];
+	                criteriaByIndex[_id] = (0, _extends3.default)({}, criteria, { isMaximised: _isMaximised });
+	                return (0, _extends3.default)({}, state, { criteriaByIndex: criteriaByIndex, questionsByIndex: _questionsByIndex });
+	            }
+	        case _ActionTypes.MINIMISE_ALL_QUESTIONS:
+	            {
+	                var _questionsByIndex2 = state.questionsByIndex;
+
+	                (0, _values2.default)(_questionsByIndex2).forEach(function (item) {
+	                    var id = item.id;
+
+	                    var isMaximised = false;
+	                    var question = _questionsByIndex2[id];
+	                    _questionsByIndex2[id] = (0, _extends3.default)({}, question, { isMaximised: isMaximised });
+	                });
+	                return (0, _extends3.default)({}, state, { questionsByIndex: _questionsByIndex2 });
+	            }
+	        case _ActionTypes.MINIMISE_ALL_CRITERIA:
+	            {
+	                var _criteriaByIndex = state.criteriaByIndex;
+
+	                (0, _values2.default)(_criteriaByIndex).forEach(function (item) {
+	                    var id = item.id;
+
+	                    var isMaximised = false;
+	                    var criteria = _criteriaByIndex[id];
+	                    _criteriaByIndex[id] = (0, _extends3.default)({}, criteria, { isMaximised: isMaximised });
+	                });
+	                return (0, _extends3.default)({}, state, { criteriaByIndex: _criteriaByIndex });
 	            }
 	        case _ActionTypes.TEMPLATE_FETCHED:
 	            {
 	                var template = action.template;
-	                var id = template.id,
+	                var _id2 = template.id,
 	                    title = template.title,
-	                    _criteriaByIndex = template.criteriaByIndex,
+	                    _criteriaByIndex2 = template.criteriaByIndex,
 	                    allCriteriaIndexes = template.allCriteriaIndexes,
-	                    _questionsByIndex = template.questionsByIndex,
+	                    _questionsByIndex3 = template.questionsByIndex,
 	                    allQuestionIndexes = template.allQuestionIndexes,
 	                    documentsByIndex = template.documentsByIndex,
 	                    allDocumentIndexes = template.allDocumentIndexes;
 
-	                return (0, _assign2.default)({}, state, { id: id,
+	                return (0, _assign2.default)({}, state, { id: _id2,
 	                    title: title,
-	                    criteriaByIndex: _criteriaByIndex,
+	                    criteriaByIndex: _criteriaByIndex2,
 	                    allCriteriaIndexes: allCriteriaIndexes,
-	                    questionsByIndex: _questionsByIndex,
+	                    questionsByIndex: _questionsByIndex3,
 	                    allQuestionIndexes: allQuestionIndexes,
 	                    documentsByIndex: documentsByIndex,
 	                    allDocumentIndexes: allDocumentIndexes
@@ -9113,11 +9196,11 @@
 	            }
 	        case _ActionTypes.CRITERIA_UPDATE:
 	            {
-	                var _id = action.id,
+	                var _id3 = action.id,
 	                    _title = action.title,
 	                    weight = action.weight;
 
-	                var _criteriaByIndex2 = (0, _assign2.default)({}, state.criteriaByIndex);
+	                var _criteriaByIndex3 = (0, _assign2.default)({}, state.criteriaByIndex);
 	                for (var i in state.allQuestionIndexes) {
 	                    if (state.questionsByIndex[state.allQuestionIndexes[i]].isSaved) {
 	                        state.questionsByIndex[state.allQuestionIndexes[i]].isSaved = false;
@@ -9128,29 +9211,29 @@
 	                        state.criteriaByIndex[state.allCriteriaIndexes[_i]].isSaved = false;
 	                    }
 	                }
-	                _criteriaByIndex2[_id] = (0, _assign2.default)({}, _criteriaByIndex2[_id], { title: _title, weight: weight, isSaved: true });
+	                _criteriaByIndex3[_id3] = (0, _assign2.default)({}, _criteriaByIndex3[_id3], { title: _title, weight: weight, isSaved: true });
 
-	                return (0, _assign2.default)({}, state, { criteriaByIndex: _criteriaByIndex2 });
+	                return (0, _assign2.default)({}, state, { criteriaByIndex: _criteriaByIndex3 });
 	            }
 	        case _ActionTypes.CRITERIA_DELETE:
 	            {
 	                var _allCriteriaIndexes = state.allCriteriaIndexes.filter(function (id) {
 	                    return id !== action.id;
 	                });
-	                var _criteriaByIndex3 = (0, _assign2.default)({}, state.criteriaByIndex);
+	                var _criteriaByIndex4 = (0, _assign2.default)({}, state.criteriaByIndex);
 	                var _allQuestionIndexes = [].concat((0, _toConsumableArray3.default)(state.allQuestionIndexes));
-	                var _questionsByIndex2 = (0, _assign2.default)({}, state.questionsByIndex);
+	                var _questionsByIndex4 = (0, _assign2.default)({}, state.questionsByIndex);
 	                var questions = state.criteriaByIndex[action.id].questions;
 	                questions.forEach(function (questionId) {
-	                    delete _questionsByIndex2[questionId];
+	                    delete _questionsByIndex4[questionId];
 	                    _allQuestionIndexes = _allQuestionIndexes.slice(_allQuestionIndexes.indexOf(questionId), 1);
 	                });
-	                delete _criteriaByIndex3[action.id];
+	                delete _criteriaByIndex4[action.id];
 	                return (0, _assign2.default)({}, state, {
 	                    allCriteriaIndexes: _allCriteriaIndexes,
-	                    criteriaByIndex: _criteriaByIndex3,
+	                    criteriaByIndex: _criteriaByIndex4,
 	                    allQuestionIndexes: _allQuestionIndexes,
-	                    questionsByIndex: _questionsByIndex2
+	                    questionsByIndex: _questionsByIndex4
 	                });
 	            }
 	        case _ActionTypes.DOCUMENT_UPLOAD_SUCCESS:
@@ -9201,8 +9284,8 @@
 	            }
 	        case _ActionTypes.DOCUMENT_DELETE:
 	            {
-	                var _questionsByIndex3 = (0, _assign2.default)({}, state.questionsByIndex);
-	                var _question = _questionsByIndex3[action.questionId];
+	                var _questionsByIndex5 = (0, _assign2.default)({}, state.questionsByIndex);
+	                var _question = _questionsByIndex5[action.questionId];
 	                var _allDocumentIndexes = state.allDocumentIndexes.filter(function (id) {
 	                    return id !== action.id;
 	                });
@@ -9211,27 +9294,27 @@
 	                _question.documentIds = _question.documentIds.filter(function (id) {
 	                    return id !== action.id;
 	                });
-	                _questionsByIndex3[action.id] = _question;
-	                return (0, _assign2.default)({}, state, { allDocumentIndexes: _allDocumentIndexes, documentsByIndex: _documentsByIndex2, questionsByIndex: _questionsByIndex3 });
+	                _questionsByIndex5[action.id] = _question;
+	                return (0, _assign2.default)({}, state, { allDocumentIndexes: _allDocumentIndexes, documentsByIndex: _documentsByIndex2, questionsByIndex: _questionsByIndex5 });
 	            }
 	        case _ActionTypes.QUESTION_ADD:
 	            {
 	                var _question2 = action.question,
 	                    criteriaId = action.criteriaId;
-	                var _id2 = _question2.id;
+	                var _id4 = _question2.id;
 
-	                var _questionsByIndex4 = (0, _assign2.default)({}, state.questionsByIndex);
-	                var _criteriaByIndex4 = (0, _assign2.default)({}, state.criteriaByIndex);
-	                _questionsByIndex4[_id2] = _question2;
-	                var _allQuestionIndexes2 = [].concat((0, _toConsumableArray3.default)(state.allQuestionIndexes), [_id2]);
-	                var _questions = [].concat((0, _toConsumableArray3.default)(state.criteriaByIndex[criteriaId].questions), [_id2]);
-	                _criteriaByIndex4[action.criteriaId] = (0, _assign2.default)({}, _criteriaByIndex4[criteriaId], { questions: _questions });
-	                return (0, _assign2.default)({}, state, { criteriaByIndex: _criteriaByIndex4, allQuestionIndexes: _allQuestionIndexes2, questionsByIndex: _questionsByIndex4 });
+	                var _questionsByIndex6 = (0, _assign2.default)({}, state.questionsByIndex);
+	                var _criteriaByIndex5 = (0, _assign2.default)({}, state.criteriaByIndex);
+	                _questionsByIndex6[_id4] = _question2;
+	                var _allQuestionIndexes2 = [].concat((0, _toConsumableArray3.default)(state.allQuestionIndexes), [_id4]);
+	                var _questions = [].concat((0, _toConsumableArray3.default)(state.criteriaByIndex[criteriaId].questions), [_id4]);
+	                _criteriaByIndex5[action.criteriaId] = (0, _assign2.default)({}, _criteriaByIndex5[criteriaId], { questions: _questions });
+	                return (0, _assign2.default)({}, state, { criteriaByIndex: _criteriaByIndex5, allQuestionIndexes: _allQuestionIndexes2, questionsByIndex: _questionsByIndex6 });
 	            }
 	        case _ActionTypes.QUESTION_UPDATE:
 	            {
 	                var _question3 = (0, _assign2.default)({}, action.question, { isSaved: true });
-	                var _id3 = _question3.id;
+	                var _id5 = _question3.id;
 
 	                for (var _i2 in state.allQuestionIndexes) {
 	                    if (state.questionsByIndex[state.allQuestionIndexes[_i2]].isSaved) {
@@ -9243,9 +9326,9 @@
 	                        state.criteriaByIndex[state.allCriteriaIndexes[_i3]].isSaved = false;
 	                    }
 	                }
-	                var _questionsByIndex5 = (0, _assign2.default)({}, state.questionsByIndex);
-	                _questionsByIndex5[_id3] = _question3;
-	                return (0, _assign2.default)({}, state, { questionsByIndex: _questionsByIndex5 });
+	                var _questionsByIndex7 = (0, _assign2.default)({}, state.questionsByIndex);
+	                _questionsByIndex7[_id5] = _question3;
+	                return (0, _assign2.default)({}, state, { questionsByIndex: _questionsByIndex7 });
 	            }
 	        case _ActionTypes.QUESTION_DELETE:
 	            {
@@ -9255,19 +9338,19 @@
 	                var _allQuestionIndexes3 = state.allQuestionIndexes.filter(function (id) {
 	                    return id !== questionId;
 	                });
-	                var _questionsByIndex6 = (0, _assign2.default)({}, state.questionsByIndex);
-	                delete _questionsByIndex6[questionId];
-	                var _criteriaByIndex5 = (0, _assign2.default)({}, state.criteriaByIndex);
+	                var _questionsByIndex8 = (0, _assign2.default)({}, state.questionsByIndex);
+	                delete _questionsByIndex8[questionId];
+	                var _criteriaByIndex6 = (0, _assign2.default)({}, state.criteriaByIndex);
 	                var _questions2 = state.criteriaByIndex[_criteriaId].questions.filter(function (qnId) {
 	                    return qnId !== questionId;
 	                });
-	                _criteriaByIndex5[_criteriaId].questions = _questions2;
-	                _criteriaByIndex5[_criteriaId] = (0, _assign2.default)({}, _criteriaByIndex5[_criteriaId], { criteriaId: _criteriaByIndex5[_criteriaId] });
+	                _criteriaByIndex6[_criteriaId].questions = _questions2;
+	                _criteriaByIndex6[_criteriaId] = (0, _assign2.default)({}, _criteriaByIndex6[_criteriaId], { criteriaId: _criteriaByIndex6[_criteriaId] });
 
 	                return (0, _assign2.default)({}, state, {
-	                    criteriaByIndex: _criteriaByIndex5,
+	                    criteriaByIndex: _criteriaByIndex6,
 	                    allQuestionIndexes: _allQuestionIndexes3,
-	                    questionsByIndex: _questionsByIndex6
+	                    questionsByIndex: _questionsByIndex8
 	                });
 	            }
 	        case _ActionTypes.IS_BUSY:
@@ -9294,7 +9377,7 @@
 	;
 
 /***/ },
-/* 257 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9303,13 +9386,13 @@
 	    value: true
 	});
 
-	var _redux = __webpack_require__(229);
+	var _redux = __webpack_require__(230);
 
-	var _evaluationTemplateCreator = __webpack_require__(256);
+	var _evaluationTemplateCreator = __webpack_require__(257);
 
-	var _reducers = __webpack_require__(255);
+	var _reducers = __webpack_require__(256);
 
-	var _reducers2 = __webpack_require__(253);
+	var _reducers2 = __webpack_require__(254);
 
 	var _default = (0, _redux.combineReducers)({
 	    modal: _reducers2.modal, notification: _reducers.notification, evaluationTemplateCreator: _evaluationTemplateCreator.evaluationTemplateCreator
@@ -9329,7 +9412,7 @@
 	;
 
 /***/ },
-/* 258 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -9406,7 +9489,7 @@
 		};
 
 /***/ },
-/* 259 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {"use strict";
@@ -9440,46 +9523,40 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 260 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = { "default": __webpack_require__(271), __esModule: true };
 
 /***/ },
-/* 261 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = { "default": __webpack_require__(272), __esModule: true };
 
 /***/ },
-/* 262 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = { "default": __webpack_require__(274), __esModule: true };
 
 /***/ },
-/* 263 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = { "default": __webpack_require__(275), __esModule: true };
 
 /***/ },
-/* 264 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = { "default": __webpack_require__(277), __esModule: true };
 
 /***/ },
-/* 265 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(278), __esModule: true };
-
-/***/ },
 /* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(279), __esModule: true };
+	module.exports = { "default": __webpack_require__(278), __esModule: true };
 
 /***/ },
 /* 267 */
@@ -9559,7 +9636,7 @@
 /* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(180);
+	__webpack_require__(181);
 	__webpack_require__(304);
 	module.exports = __webpack_require__(13).Array.from;
 
@@ -9652,7 +9729,7 @@
 /* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(180);
+	__webpack_require__(181);
 	__webpack_require__(317);
 	module.exports = __webpack_require__(123).f('iterator');
 
@@ -9668,7 +9745,7 @@
 
 /***/ },
 /* 284 */
-[621, 42, 179, 302],
+[621, 42, 180, 302],
 /* 285 */
 [622, 110, 25],
 /* 286 */
@@ -9688,19 +9765,19 @@
 /* 293 */
 [637, 25],
 /* 294 */
-194,
+195,
 /* 295 */
 [638, 83, 71, 41, 37, 58],
 /* 296 */
-[639, 60, 116, 73, 75, 171, 58],
+[639, 60, 116, 73, 75, 172, 58],
 /* 297 */
 [642, 37, 57, 60, 40],
 /* 298 */
-[644, 42, 174],
+[644, 42, 175],
 /* 299 */
 [650, 60, 42, 73],
 /* 300 */
-[651, 71, 57, 111, 173],
+[651, 71, 57, 111, 174],
 /* 301 */
 [655, 120, 112],
 /* 302 */
@@ -9708,9 +9785,9 @@
 /* 303 */
 [664, 285, 25, 72, 13],
 /* 304 */
-[665, 111, 32, 75, 291, 289, 179, 286, 303, 293],
+[665, 111, 32, 75, 291, 289, 180, 286, 303, 293],
 /* 305 */
-[666, 283, 294, 72, 42, 172],
+[666, 283, 294, 72, 42, 173],
 /* 306 */
 [667, 32, 296],
 /* 307 */
@@ -9718,9 +9795,9 @@
 /* 308 */
 [669, 32, 40, 37],
 /* 309 */
-[670, 75, 175, 177],
+[670, 75, 176, 178],
 /* 310 */
-[671, 75, 60, 177],
+[671, 75, 60, 178],
 /* 311 */
 [672, 32, 300],
 /* 312 */
@@ -9730,7 +9807,7 @@
 
 /***/ },
 /* 313 */
-[674, 36, 41, 40, 32, 178, 295, 58, 119, 117, 83, 25, 123, 122, 287, 290, 57, 42, 121, 74, 115, 298, 173, 37, 60, 174, 73, 116, 114, 59],
+[674, 36, 41, 40, 32, 179, 295, 58, 119, 117, 83, 25, 123, 122, 287, 290, 57, 42, 121, 74, 115, 298, 174, 37, 60, 175, 73, 116, 114, 59],
 /* 314 */
 [675, 32, 299],
 /* 315 */
@@ -9875,7 +9952,7 @@
 	// 22.1.3.3 Array.prototype.copyWithin(target, start, end = this.length)
 	var $export = __webpack_require__(1);
 
-	$export($export.P, 'Array', { copyWithin: __webpack_require__(182) });
+	$export($export.P, 'Array', { copyWithin: __webpack_require__(183) });
 
 	__webpack_require__(38)('copyWithin');
 
@@ -9983,7 +10060,7 @@
 
 /***/ },
 /* 332 */
-[665, 23, 1, 10, 193, 132, 9, 126, 148, 90],
+[665, 23, 1, 10, 194, 132, 9, 126, 148, 90],
 /* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -10107,7 +10184,7 @@
 
 	'use strict';
 	var $export = __webpack_require__(1);
-	var $reduce = __webpack_require__(184);
+	var $reduce = __webpack_require__(185);
 
 	$export($export.P + $export.F * !__webpack_require__(24)([].reduceRight, true), 'Array', {
 	  // 22.1.3.19 / 15.4.4.22 Array.prototype.reduceRight(callbackfn [, initialValue])
@@ -10123,7 +10200,7 @@
 
 	'use strict';
 	var $export = __webpack_require__(1);
-	var $reduce = __webpack_require__(184);
+	var $reduce = __webpack_require__(185);
 
 	$export($export.P + $export.F * !__webpack_require__(24)([].reduce, true), 'Array', {
 	  // 22.1.3.18 / 15.4.4.21 Array.prototype.reduce(callbackfn [, initialValue])
@@ -10300,7 +10377,7 @@
 	// 19.2.3.2 / 15.3.4.5 Function.prototype.bind(thisArg, args...)
 	var $export = __webpack_require__(1);
 
-	$export($export.P, 'Function', { bind: __webpack_require__(185) });
+	$export($export.P, 'Function', { bind: __webpack_require__(186) });
 
 
 /***/ },
@@ -10350,7 +10427,7 @@
 
 	// 20.2.2.3 Math.acosh(x)
 	var $export = __webpack_require__(1);
-	var log1p = __webpack_require__(196);
+	var log1p = __webpack_require__(197);
 	var sqrt = Math.sqrt;
 	var $acosh = Math.acosh;
 
@@ -10462,7 +10539,7 @@
 	// 20.2.2.16 Math.fround(x)
 	var $export = __webpack_require__(1);
 
-	$export($export.S, 'Math', { fround: __webpack_require__(195) });
+	$export($export.S, 'Math', { fround: __webpack_require__(196) });
 
 
 /***/ },
@@ -10540,7 +10617,7 @@
 	// 20.2.2.20 Math.log1p(x)
 	var $export = __webpack_require__(1);
 
-	$export($export.S, 'Math', { log1p: __webpack_require__(196) });
+	$export($export.S, 'Math', { log1p: __webpack_require__(197) });
 
 
 /***/ },
@@ -10727,7 +10804,7 @@
 	// 20.1.2.3 Number.isInteger(number)
 	var $export = __webpack_require__(1);
 
-	$export($export.S, 'Number', { isInteger: __webpack_require__(192) });
+	$export($export.S, 'Number', { isInteger: __webpack_require__(193) });
 
 
 /***/ },
@@ -10751,7 +10828,7 @@
 
 	// 20.1.2.5 Number.isSafeInteger(number)
 	var $export = __webpack_require__(1);
-	var isInteger = __webpack_require__(192);
+	var isInteger = __webpack_require__(193);
 	var abs = Math.abs;
 
 	$export($export.S, 'Number', {
@@ -10786,7 +10863,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var $export = __webpack_require__(1);
-	var $parseFloat = __webpack_require__(204);
+	var $parseFloat = __webpack_require__(205);
 	// 20.1.2.12 Number.parseFloat(string)
 	$export($export.S + $export.F * (Number.parseFloat != $parseFloat), 'Number', { parseFloat: $parseFloat });
 
@@ -10796,7 +10873,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var $export = __webpack_require__(1);
-	var $parseInt = __webpack_require__(205);
+	var $parseInt = __webpack_require__(206);
 	// 20.1.2.13 Number.parseInt(string, radix)
 	$export($export.S + $export.F * (Number.parseInt != $parseInt), 'Number', { parseInt: $parseInt });
 
@@ -10808,7 +10885,7 @@
 	'use strict';
 	var $export = __webpack_require__(1);
 	var toInteger = __webpack_require__(30);
-	var aNumberValue = __webpack_require__(181);
+	var aNumberValue = __webpack_require__(182);
 	var repeat = __webpack_require__(143);
 	var $toFixed = 1.0.toFixed;
 	var floor = Math.floor;
@@ -10928,7 +11005,7 @@
 	'use strict';
 	var $export = __webpack_require__(1);
 	var $fails = __webpack_require__(4);
-	var aNumberValue = __webpack_require__(181);
+	var aNumberValue = __webpack_require__(182);
 	var $toPrecision = 1.0.toPrecision;
 
 	$export($export.P + $export.F * ($fails(function () {
@@ -10947,7 +11024,7 @@
 
 /***/ },
 /* 382 */
-[667, 1, 198],
+[667, 1, 199],
 /* 383 */
 [668, 1, 46],
 /* 384 */
@@ -10955,7 +11032,7 @@
 
 	var $export = __webpack_require__(1);
 	// 19.1.2.3 / 15.2.3.7 Object.defineProperties(O, Properties)
-	$export($export.S + $export.F * !__webpack_require__(7), 'Object', { defineProperties: __webpack_require__(199) });
+	$export($export.S + $export.F * !__webpack_require__(7), 'Object', { defineProperties: __webpack_require__(200) });
 
 
 /***/ },
@@ -10996,7 +11073,7 @@
 
 	// 19.1.2.7 Object.getOwnPropertyNames(O)
 	__webpack_require__(29)('getOwnPropertyNames', function () {
-	  return __webpack_require__(200).f;
+	  return __webpack_require__(201).f;
 	});
 
 
@@ -11108,7 +11185,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var $export = __webpack_require__(1);
-	var $parseFloat = __webpack_require__(204);
+	var $parseFloat = __webpack_require__(205);
 	// 18.2.4 parseFloat(string)
 	$export($export.G + $export.F * (parseFloat != $parseFloat), { parseFloat: $parseFloat });
 
@@ -11118,7 +11195,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var $export = __webpack_require__(1);
-	var $parseInt = __webpack_require__(205);
+	var $parseInt = __webpack_require__(206);
 	// 18.2.5 parseInt(string, radix)
 	$export($export.G + $export.F * (parseInt != $parseInt), { parseInt: $parseInt });
 
@@ -11141,8 +11218,8 @@
 	var task = __webpack_require__(145).set;
 	var microtask = __webpack_require__(137)();
 	var newPromiseCapabilityModule = __webpack_require__(138);
-	var perform = __webpack_require__(206);
-	var promiseResolve = __webpack_require__(207);
+	var perform = __webpack_require__(207);
+	var promiseResolve = __webpack_require__(208);
 	var PROMISE = 'Promise';
 	var TypeError = global.TypeError;
 	var process = global.process;
@@ -11442,7 +11519,7 @@
 	var anObject = __webpack_require__(2);
 	var isObject = __webpack_require__(5);
 	var fails = __webpack_require__(4);
-	var bind = __webpack_require__(185);
+	var bind = __webpack_require__(186);
 	var rConstruct = (__webpack_require__(3).Reflect || {}).construct;
 
 	// MS Edge supports only 2 arguments and argumentsList argument is optional
@@ -11659,7 +11736,7 @@
 	// 26.1.11 Reflect.ownKeys(target)
 	var $export = __webpack_require__(1);
 
-	$export($export.S, 'Reflect', { ownKeys: __webpack_require__(203) });
+	$export($export.S, 'Reflect', { ownKeys: __webpack_require__(204) });
 
 
 /***/ },
@@ -11923,7 +12000,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	__webpack_require__(212);
+	__webpack_require__(213);
 	var anObject = __webpack_require__(2);
 	var $flags = __webpack_require__(87);
 	var DESCRIPTORS = __webpack_require__(7);
@@ -12283,7 +12360,7 @@
 
 /***/ },
 /* 444 */
-[674, 3, 14, 7, 1, 16, 39, 4, 95, 62, 53, 6, 210, 147, 321, 88, 2, 21, 31, 49, 46, 200, 19, 8, 48, 47, 78, 92, 45, 15],
+[674, 3, 14, 7, 1, 16, 39, 4, 95, 62, 53, 6, 211, 147, 321, 88, 2, 21, 31, 49, 46, 201, 19, 8, 48, 47, 78, 92, 45, 15],
 /* 445 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -12449,7 +12526,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var weak = __webpack_require__(188);
+	var weak = __webpack_require__(189);
 	var validate = __webpack_require__(64);
 	var WEAK_SET = 'WeakSet';
 
@@ -12471,7 +12548,7 @@
 	'use strict';
 	// https://tc39.github.io/proposal-flatMap/#sec-Array.prototype.flatMap
 	var $export = __webpack_require__(1);
-	var flattenIntoArray = __webpack_require__(189);
+	var flattenIntoArray = __webpack_require__(190);
 	var toObject = __webpack_require__(10);
 	var toLength = __webpack_require__(9);
 	var aFunction = __webpack_require__(12);
@@ -12499,7 +12576,7 @@
 	'use strict';
 	// https://tc39.github.io/proposal-flatMap/#sec-Array.prototype.flatten
 	var $export = __webpack_require__(1);
-	var flattenIntoArray = __webpack_require__(189);
+	var flattenIntoArray = __webpack_require__(190);
 	var toObject = __webpack_require__(10);
 	var toLength = __webpack_require__(9);
 	var toInteger = __webpack_require__(30);
@@ -12603,7 +12680,7 @@
 	// https://github.com/DavidBruant/Map-Set.prototype.toJSON
 	var $export = __webpack_require__(1);
 
-	$export($export.P + $export.R, 'Map', { toJSON: __webpack_require__(187)('Map') });
+	$export($export.P + $export.R, 'Map', { toJSON: __webpack_require__(188)('Map') });
 
 
 /***/ },
@@ -12651,8 +12728,8 @@
 
 	// https://rwaldron.github.io/proposal-math-extensions/
 	var $export = __webpack_require__(1);
-	var scale = __webpack_require__(197);
-	var fround = __webpack_require__(195);
+	var scale = __webpack_require__(198);
+	var fround = __webpack_require__(196);
 
 	$export($export.S, 'Math', {
 	  fscale: function fscale(x, inLow, inHigh, outLow, outHigh) {
@@ -12749,7 +12826,7 @@
 	// https://rwaldron.github.io/proposal-math-extensions/
 	var $export = __webpack_require__(1);
 
-	$export($export.S, 'Math', { scale: __webpack_require__(197) });
+	$export($export.S, 'Math', { scale: __webpack_require__(198) });
 
 
 /***/ },
@@ -12829,7 +12906,7 @@
 
 	// https://github.com/tc39/proposal-object-values-entries
 	var $export = __webpack_require__(1);
-	var $entries = __webpack_require__(202)(true);
+	var $entries = __webpack_require__(203)(true);
 
 	$export($export.S, 'Object', {
 	  entries: function entries(it) {
@@ -12844,7 +12921,7 @@
 
 	// https://github.com/tc39/proposal-object-getownpropertydescriptors
 	var $export = __webpack_require__(1);
-	var ownKeys = __webpack_require__(203);
+	var ownKeys = __webpack_require__(204);
 	var toIObject = __webpack_require__(21);
 	var gOPD = __webpack_require__(19);
 	var createProperty = __webpack_require__(126);
@@ -12916,7 +12993,7 @@
 
 /***/ },
 /* 484 */
-[675, 1, 202],
+[675, 1, 203],
 /* 485 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -13131,7 +13208,7 @@
 	var core = __webpack_require__(27);
 	var global = __webpack_require__(3);
 	var speciesConstructor = __webpack_require__(96);
-	var promiseResolve = __webpack_require__(207);
+	var promiseResolve = __webpack_require__(208);
 
 	$export($export.P + $export.R, 'Promise', { 'finally': function (onFinally) {
 	  var C = speciesConstructor(this, core.Promise || global.Promise);
@@ -13155,7 +13232,7 @@
 	// https://github.com/tc39/proposal-promise-try
 	var $export = __webpack_require__(1);
 	var newPromiseCapability = __webpack_require__(138);
-	var perform = __webpack_require__(206);
+	var perform = __webpack_require__(207);
 
 	$export($export.S, 'Promise', { 'try': function (callbackfn) {
 	  var promiseCapability = newPromiseCapability.f(this);
@@ -13204,8 +13281,8 @@
 /* 490 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Set = __webpack_require__(213);
-	var from = __webpack_require__(183);
+	var Set = __webpack_require__(214);
+	var from = __webpack_require__(184);
 	var metadata = __webpack_require__(33);
 	var anObject = __webpack_require__(2);
 	var getPrototypeOf = __webpack_require__(20);
@@ -13358,7 +13435,7 @@
 	// https://github.com/DavidBruant/Map-Set.prototype.toJSON
 	var $export = __webpack_require__(1);
 
-	$export($export.P + $export.R, 'Set', { toJSON: __webpack_require__(187)('Set') });
+	$export($export.P + $export.R, 'Set', { toJSON: __webpack_require__(188)('Set') });
 
 
 /***/ },
@@ -13420,7 +13497,7 @@
 	'use strict';
 	// https://github.com/tc39/proposal-string-pad-start-end
 	var $export = __webpack_require__(1);
-	var $pad = __webpack_require__(208);
+	var $pad = __webpack_require__(209);
 
 	$export($export.P, 'String', {
 	  padEnd: function padEnd(maxLength /* , fillString = ' ' */) {
@@ -13436,7 +13513,7 @@
 	'use strict';
 	// https://github.com/tc39/proposal-string-pad-start-end
 	var $export = __webpack_require__(1);
-	var $pad = __webpack_require__(208);
+	var $pad = __webpack_require__(209);
 
 	$export($export.P, 'String', {
 	  padStart: function padStart(maxLength /* , fillString = ' ' */) {
@@ -13725,15 +13802,15 @@
 	__webpack_require__(149);
 	__webpack_require__(416);
 	__webpack_require__(421);
-	__webpack_require__(212);
+	__webpack_require__(213);
 	__webpack_require__(417);
 	__webpack_require__(418);
 	__webpack_require__(419);
 	__webpack_require__(420);
 	__webpack_require__(401);
-	__webpack_require__(211);
-	__webpack_require__(213);
+	__webpack_require__(212);
 	__webpack_require__(214);
+	__webpack_require__(215);
 	__webpack_require__(456);
 	__webpack_require__(445);
 	__webpack_require__(446);
@@ -14248,7 +14325,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseGetTag = __webpack_require__(106),
-	    isLength = __webpack_require__(225),
+	    isLength = __webpack_require__(226),
 	    isObjectLike = __webpack_require__(80);
 
 	/** `Object#toString` result references. */
@@ -14389,11 +14466,11 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Stack = __webpack_require__(520),
-	    assignMergeValue = __webpack_require__(218),
+	    assignMergeValue = __webpack_require__(219),
 	    baseFor = __webpack_require__(529),
 	    baseMergeDeep = __webpack_require__(536),
 	    isObject = __webpack_require__(54),
-	    keysIn = __webpack_require__(227);
+	    keysIn = __webpack_require__(228);
 
 	/**
 	 * The base implementation of `_.merge` without support for multiple sources.
@@ -14435,19 +14512,19 @@
 /* 536 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assignMergeValue = __webpack_require__(218),
+	var assignMergeValue = __webpack_require__(219),
 	    cloneBuffer = __webpack_require__(546),
 	    cloneTypedArray = __webpack_require__(547),
 	    copyArray = __webpack_require__(548),
 	    initCloneObject = __webpack_require__(563),
-	    isArguments = __webpack_require__(223),
+	    isArguments = __webpack_require__(224),
 	    isArray = __webpack_require__(103),
 	    isArrayLikeObject = __webpack_require__(596),
-	    isBuffer = __webpack_require__(224),
+	    isBuffer = __webpack_require__(225),
 	    isFunction = __webpack_require__(153),
 	    isObject = __webpack_require__(54),
 	    isPlainObject = __webpack_require__(613),
-	    isTypedArray = __webpack_require__(226),
+	    isTypedArray = __webpack_require__(227),
 	    toPlainObject = __webpack_require__(602);
 
 	/**
@@ -14554,7 +14631,7 @@
 /* 538 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var identity = __webpack_require__(222),
+	var identity = __webpack_require__(223),
 	    overRest = __webpack_require__(580),
 	    setToString = __webpack_require__(581);
 
@@ -14578,8 +14655,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var constant = __webpack_require__(594),
-	    defineProperty = __webpack_require__(219),
-	    identity = __webpack_require__(222);
+	    defineProperty = __webpack_require__(220),
+	    identity = __webpack_require__(223);
 
 	/**
 	 * The base implementation of `setToString` without support for hot loop shorting.
@@ -15000,7 +15077,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var castSlice = __webpack_require__(544),
-	    hasUnicode = __webpack_require__(220),
+	    hasUnicode = __webpack_require__(221),
 	    stringToArray = __webpack_require__(588),
 	    toString = __webpack_require__(105);
 
@@ -15349,7 +15426,7 @@
 
 	var eq = __webpack_require__(102),
 	    isArrayLike = __webpack_require__(104),
-	    isIndex = __webpack_require__(221),
+	    isIndex = __webpack_require__(222),
 	    isObject = __webpack_require__(54);
 
 	/**
@@ -15571,7 +15648,7 @@
 
 	var Hash = __webpack_require__(518),
 	    ListCache = __webpack_require__(98),
-	    Map = __webpack_require__(216);
+	    Map = __webpack_require__(217);
 
 	/**
 	 * Removes all key-value entries from the map.
@@ -15950,7 +16027,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var ListCache = __webpack_require__(98),
-	    Map = __webpack_require__(216),
+	    Map = __webpack_require__(217),
 	    MapCache = __webpack_require__(519);
 
 	/** Used as the size to enable large array optimizations. */
@@ -15990,7 +16067,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var asciiToArray = __webpack_require__(525),
-	    hasUnicode = __webpack_require__(220),
+	    hasUnicode = __webpack_require__(221),
 	    unicodeToArray = __webpack_require__(590);
 
 	/**
@@ -16415,7 +16492,7 @@
 /* 599 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var arrayLikeKeys = __webpack_require__(217),
+	var arrayLikeKeys = __webpack_require__(218),
 	    baseKeys = __webpack_require__(533),
 	    isArrayLike = __webpack_require__(104);
 
@@ -16528,7 +16605,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var copyObject = __webpack_require__(549),
-	    keysIn = __webpack_require__(227);
+	    keysIn = __webpack_require__(228);
 
 	/**
 	 * Converts `value` to a plain object flattening inherited enumerable string

@@ -24,16 +24,18 @@ import {
     CRITERIA_ADD,
     CRITERIA_DELETE,
     CRITERIA_UPDATE,
+    MINIMISE_ALL_CRITERIA,
     CRITERIA_MAXIMISE_CHANGE,
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_UPLOAD_FAILED,
     DOCUMENT_UPLOAD_IN_PROGRESS,
     DOCUMENTS_UPLOADING,
     DOCUMENT_DELETE,
+    MINIMISE_ALL_QUESTIONS,
     QUESTION_ADD,
     QUESTION_UPDATE,
     QUESTION_DELETE,
-    TEMPLATE_CREATOR_SET_UPDATE_ACTIVE_QUESTION
+    QUESTION_MAXIMISE_CHANGE
 } from '../constants/ActionTypes';
 
 import { MESSAGE_TYPE_ERROR } from '../notification/constants';
@@ -63,13 +65,21 @@ export function publishTemplate() {
         });
     };
 }
+export function minimiseAllQuestions() {
+    return { type:MINIMISE_ALL_QUESTIONS };
+}
+export function minimiseAllCriteria() {
+    return { type:MINIMISE_ALL_CRITERIA };
+}
+export function toggleMaximiseQuestion(id, isMaximised) {
+    return { type:QUESTION_MAXIMISE_CHANGE, id, isMaximised };
+}
 
 export function toggleMaximiseCriteria(id, isMaximised) {
     return { type:CRITERIA_MAXIMISE_CHANGE, id, isMaximised };
 }
 
 export function initialize() {
-
     return (dispatch) => {
         return axios.get('evaluation-question-types')
         .then((response) => {
@@ -178,7 +188,6 @@ export function updateCriteria(id, title, weight) {
 }
 
 export function addQuestionToCriteria(criteriaId, questionTitle, questionType) {
-
     return (dispatch, getState) => {
         const { evaluationTemplateCreator } =getState();
         const templateId = evaluationTemplateCreator.id;
@@ -520,10 +529,3 @@ function getPromiseForService(url, dispatch) {
         dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
     });
 }
-
-export const setUpdateActiveQuestion = (questionId) => {
-    return {
-        type: TEMPLATE_CREATOR_SET_UPDATE_ACTIVE_QUESTION,
-        questionId
-    };
-};

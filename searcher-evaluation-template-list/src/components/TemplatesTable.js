@@ -50,25 +50,25 @@ class TemplatesTable extends Component {
         instances;
         if (this.state.menuVisibleItemId===id) {
             return (
-            <div className="dropdown open"
+            <div className="db-function-dropdown click"
                 ref={(ul) => {
                     if (ul!==null) {
                         this.actionDropdown=ul;
                     }
                 }}>
-                <a className="btn btn-sm"
+                <a className="db-function"
                     onClick={this.toggleMenu.bind(this, id)}
                     href="javascript:">
                     More &nbsp;
-                    <i className="caret" ></i>
+                    <i className="fa fa-caret-down" ></i>
                 </a>
-                <ul className="dropdown-menu">
+                <ul className="db-function-menu">
                     <li>
-                        <a href={preview_url} >Preview</a>
+                        <a href={preview_url} ><i className="fa fa-eye"></i> Preview</a>
                     </li>
                     { !active&&(instances<1)?
                         <li>
-                            <a disabled ="true" href={edit_url} >Edit</a>
+                            <a disabled ="true" href={edit_url} ><i className="fa fa-edit"></i> Edit</a>
                         </li>
                         :
                         null
@@ -78,7 +78,7 @@ class TemplatesTable extends Component {
                         :
                         <li>
                             <a href="javascript:;"
-                            onClick={ ()  => this.onTemplateToggleActivation(id, !(active))}>{active?'Deactivate':'Activate'}
+                            onClick={ ()  => this.onTemplateToggleActivation(id, !(active))}><i className="fa fa-toggle-off"></i> {active?' Deactivate':'Activate'}
                             </a>
                         </li>
                     }
@@ -87,11 +87,11 @@ class TemplatesTable extends Component {
         } else {
             return (
                 <div className="dropdown">
-                    <a className="btn btn-sm"
+                    <a className="db-function"
                         onClick={this.toggleMenu.bind(this, id)}
                         href="javascript:">
                         More &nbsp;
-                        <i className="caret"></i>
+                        <i className="fa fa-caret-down"></i>
                     </a>
                 </div>
             );

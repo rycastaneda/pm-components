@@ -10,14 +10,16 @@ import {
     QUESTION_ADD,
     QUESTION_DELETE,
     QUESTION_UPDATE,
+    QUESTION_MAXIMISE_CHANGE,
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_UPLOAD_FAILED,
     DOCUMENT_UPLOAD_IN_PROGRESS,
     DOCUMENTS_UPLOADING,
     DOCUMENT_DELETE,
-    IS_BUSY,
-    TEMPLATE_CREATOR_SET_UPDATE_ACTIVE_QUESTION,
-    TEMPLATE_CREATOR_CLEAR_ACTIVE_QUESTIONS
+    MINIMISE_ALL_QUESTIONS,
+    MINIMISE_ALL_CRITERIA,
+    IS_BUSY
+
 } from '../constants/ActionTypes';
 
 import {
@@ -39,8 +41,7 @@ function getInitialData() {
         allQuestionIndexes:[],
         documentsByIndex:{},
         allDocumentIndexes:[],
-        questionTypes:[],
-        activeQuestions:[]
+        questionTypes:[]
     };
 }
 
@@ -51,13 +52,65 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
             return { ...state, questionTypes };
 
         }
-        case CRITERIA_MAXIMISE_CHANGE: {
-            let { criteriaByIndex } = state;
-            let criteria = criteriaByIndex[action.id];
-            criteria = Object.assign({}, criteria, { isMaximised:action.isMaximised });
-            criteriaByIndex[action.id] = criteria;
-            return Object.assign({}, state, { criteriaByIndex });
+        case QUESTION_MAXIMISE_CHANGE: {
+            let { id, isMaximised } = action;
+            let { questionsByIndex } = state;
+            if (isMaximised) {
+                // if a question is maximised minimse others.
+                Object.values(questionsByIndex).forEach((item) => {
+                    item.isMaximised = false;
+                });
+            }
+            let question = questionsByIndex[id];
+            questionsByIndex[id] = { ...question, isMaximised };
+            return { ...state, questionsByIndex };
         }
+        case CRITERIA_MAXIMISE_CHANGE: {
+            let { id, isMaximised } = action;
+            let { criteriaByIndex, questionsByIndex } = state;
+            if (isMaximised) {
+                // if a criteria is maximised minimse others.
+                Object.values(criteriaByIndex).forEach((item) => {
+                    let { id } = item;
+                    let isMaximised = false;
+                    let criteria = criteriaByIndex[id];
+                    criteriaByIndex[id] = { ...criteria, isMaximised };
+                });
+            } else {
+                // if a criteria is minimised, minimise all its questions aswell.
+                Object.values(questionsByIndex).forEach((item) => {
+                    let isMaximised = false;
+                    let { id } = item;
+                    let question = questionsByIndex[id];
+                    questionsByIndex[id] = { ...question, isMaximised };
+                });
+            }
+            let criteria = criteriaByIndex[id];
+            criteriaByIndex[id] = { ...criteria, isMaximised };
+            return { ...state, criteriaByIndex, questionsByIndex };
+        }
+        case MINIMISE_ALL_QUESTIONS :
+            {
+                let { questionsByIndex } = state;
+                Object.values(questionsByIndex).forEach((item) => {
+                    let { id } = item;
+                    let isMaximised = false;
+                    let question = questionsByIndex[id];
+                    questionsByIndex[id] = { ...question, isMaximised };
+                });
+                return { ...state, questionsByIndex };
+            }
+        case MINIMISE_ALL_CRITERIA:
+            {
+                let { criteriaByIndex } = state;
+                Object.values(criteriaByIndex).forEach((item) => {
+                    let { id } = item;
+                    let isMaximised = false;
+                    let criteria = criteriaByIndex[id];
+                    criteriaByIndex[id] = { ...criteria, isMaximised };
+                });
+                return { ...state, criteriaByIndex };
+            }
         case TEMPLATE_FETCHED:
             {
                 let { template } = action;
@@ -234,22 +287,6 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                     questionsByIndex
                 });
             }
-
-        case TEMPLATE_CREATOR_SET_UPDATE_ACTIVE_QUESTION:
-            // NOTE: We can also add items here if
-            // in future specs change and more than 1 question can be expanded/edited
-            return {
-                ...state,
-                activeQuestions: [action.questionId]
-            };
-
-        case TEMPLATE_CREATOR_CLEAR_ACTIVE_QUESTIONS:
-            return {
-                ...state,
-                activeQuestions: []
-            };
-
-
         case IS_BUSY:
             {
                 state.isBusy = action.status;

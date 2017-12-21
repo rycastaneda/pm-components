@@ -88,7 +88,7 @@ export function parseDataFromFetchTemplate(d) {
         criteria.id = crtieriaItem.id;
         criteria.title = includeCriteria.attributes.title;
         criteria.weight = includeCriteria.attributes.weight;
-
+        criteria.isMaximised =false;
         includeCriteria.relationships.questions.data.forEach((questionItem) => {
             let includedQuestion = included.filter((include) => {
                 if ((include.type==='evaluation-questions')&&(include.id===questionItem.id)) {
@@ -103,7 +103,7 @@ export function parseDataFromFetchTemplate(d) {
             question.isAllowScaleDefinitions = Boolean(attributes.enable_scale_definitions);
             question.isAllowUpload = Boolean(attributes.allow_documents);
             question.isCommentRequired = Boolean(attributes.mandatory_comments);
-            question.isMaximised =false;
+            question.isMaximised = false;
             question.documentIds=[];
             let includedDocuments =[];
             if (includedQuestion.relationships.documents) {

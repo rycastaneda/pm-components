@@ -1,7 +1,12 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Criteria from './Criteria';
-import { initialize, addTemplate, updateTemplate, fetchTemplate, publishTemplate } from '../actions/evaluationTemplateCreator';
+import { initialize,
+    addTemplate,
+    updateTemplate,
+    fetchTemplate,
+    publishTemplate,
+    minimiseAllCriteria } from '../actions/evaluationTemplateCreator';
 import Notification from '../notification/Notification';
 import Modal from '../modal/Modal';
 import { INPUT_SYNC_INTERVAL } from '../constants';
@@ -68,7 +73,7 @@ class EvaluationTemplateCreator extends Component {
         }
         return style;
     }
-    render() {        
+    render() {
         const { allCriteriaIndexes, id } = this.props;
         return (
         <div className="searcher-evaluation-template-creator">
@@ -127,7 +132,10 @@ class EvaluationTemplateCreator extends Component {
                                             <div className="col-md-12">
                                                 <div className="form-group new-criteria">
                                                     <button className="btn"
-                                                    onClick={() => this.setState({ showAdd: !this.state.showAdd })}>
+                                                    onClick={() => {
+                                                        this.setState({ showAdd: !this.state.showAdd });
+                                                        this.props.dispatch(minimiseAllCriteria());
+                                                    }}>
                                                     <i className="fa fa-plus"></i>Add New Criteria</button>
                                                 </div>
                                             </div>

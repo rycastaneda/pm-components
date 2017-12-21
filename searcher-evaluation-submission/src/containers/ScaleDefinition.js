@@ -30,6 +30,7 @@ class ScaleDefinition extends Component {
 }
 
 ScaleDefinition.propTypes = {
+    questionType : PropTypes.string.isRequired,
     enableScaleDefinitions:PropTypes.number.isRequired,
     questionId:PropTypes.string.isRequired,
     typeDefinitionId:PropTypes.string.isRequired,
@@ -54,6 +55,12 @@ function mapStateToProps(state, props) {
         if (scaleDefinitionObj) {
             score = scaleDefinitionObj.score;
             definition = scaleDefinitionObj.definition;
+        }
+    } else if (props.questionType==='3') {        
+        if (Number(value)) {
+            definition = 'Yes';
+        } else {
+            definition = 'No';
         }
     }
     let scaleDefinition =  { id, score, definition, value, title };

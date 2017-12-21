@@ -55,8 +55,7 @@ class AssignmentsTable extends Component {
         this.props.onAssignmentDelete(id);
         this.hideMenu();
     }
-    onMarkAsInProgressClick(id) {
-        window.console.log(id);
+    onMarkAsInProgressClick(id) {        
         this.props.onAssignmentMarkAsInProgress(id);
         this.hideMenu();
     }
@@ -65,37 +64,37 @@ class AssignmentsTable extends Component {
         let { id } = assignment;
         if (this.state.menuVisibleItemId===id) {
             return (
-            <div className="dropdown open" ref={(ul) => {
+            <div className="db-function-dropdown click" ref={(ul) => {
                 if (ul!==null) {
                     this.actionDropdown=ul;
                 }
             }}>
-                <a className="btn btn-sm"
+                <a className="db-function"
                     onClick={this.toggleMenu.bind(this, id)}
                     href="javascript:">
                     More &nbsp;
-                    <i className="caret" ></i>
+                    <i className="fa fa-caret-down" ></i>
                 </a>
-                <ul className="dropdown-menu">
-                    { !isInProgressStatus&&isDeletable? <li><a href="javascript:;" onClick ={() => this.onDeleteClick(id)} >Delete</a></li>:null }
-                    <li ><a href={complete_url} >Complete Evaluation</a></li>
-                    {isInProgressStatus?null:<li><a href="javascript:;" onClick={() => this.onMarkAsInProgressClick(id)} >Mark as in Progress</a></li>}
+                <ul className="db-function-menu">
+                    { !isInProgressStatus&&isDeletable? <li><a href="javascript:;" onClick ={() => this.onDeleteClick(id)} ><i className="fa fa-trash-o"></i> Delete</a></li>:null }
+                    <li ><a href={complete_url} ><i className="fa fa-check"></i> Complete Evaluation</a></li>
+                    {isInProgressStatus?null:<li><a href="javascript:;" onClick={() => this.onMarkAsInProgressClick(id)} ><i className="fa fa-clock-o"></i> Mark as in Progress</a></li>}
                     <li role="separator" className="divider"></li>
                     <li className="dropdown-header">Analysis</li>
                     <li role="separator" className="divider"></li>
-                    <li><a href="javascript:;">View Single</a></li>
-                    <li><a href="javascript:;">View All</a></li>
-                    <li><a href="javascript:;">View Comparison</a></li>
+                    <li><a href="javascript:;"><i className="fa fa-area-chart"></i> View Single</a></li>
+                    <li><a href="javascript:;"><i className="fa fa-pie-chart"></i> View All</a></li>
+                    <li><a href="javascript:;"><i className="fa fa-exchange"></i> View Comparison</a></li>
                 </ul>
         </div>);
         } else {
             return (
                 <div className="dropdown">
-                    <a className="btn btn-sm"
+                    <a className="db-function"
                         onClick={this.toggleMenu.bind(this, id)}
                         href="javascript:">
                         More &nbsp;
-                        <i className="caret" ></i>
+                        <i className="fa fa-caret-down" ></i>
                     </a>
                 </div>
             );

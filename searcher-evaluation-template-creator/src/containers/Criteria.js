@@ -2,15 +2,15 @@ import React, { PropTypes, Component } from 'react';
 
 import Question  from './Question';
 import { connect } from 'react-redux';
-import { addCriteria,
+import {
+    addCriteria,
     updateCriteria,
     deleteCriteria,
-    toggleMaximiseCriteria
-    } from '../actions/evaluationTemplateCreator';
+    toggleMaximiseCriteria,
+    minimiseAllQuestions } from '../actions/evaluationTemplateCreator';
 import { createCriteria, createQuestion } from '../utils/dataParserUtil';
 
 import { INPUT_SYNC_INTERVAL } from '../constants';
-import * as actionTypes from '../constants/ActionTypes';
 class Criteria extends Component {
     constructor(props) {
         super(props);
@@ -48,10 +48,9 @@ class Criteria extends Component {
     }
     updateCriteriaChange() {
         let { title, weight } = this.state;
-        if (title.length) {        
+        if (title.length) {
             this.props.dispatch(updateCriteria(this.props.criteriaId, title, weight));
         }
-
         clearInterval(this.intervalId);
     }
 
@@ -59,7 +58,6 @@ class Criteria extends Component {
         this.setState({ title, isTitleError:!title.length });
         clearInterval(this.intervalId);
         if (this.props.criteria.id&&title.length) {
-
             this.intervalId = setInterval(this.updateCriteriaChange, INPUT_SYNC_INTERVAL);
         }
     }
@@ -113,157 +111,156 @@ class Criteria extends Component {
     getQuestionIndex(index) {
         return index + 1;
     }
+    renderMaximised() {
+        return (
+            <div>
+                <fieldset className="criteria-container">
 
-    render() {
-        let { title, weight } = this.state;
-        const { dispatch } = this.props;
+                    <div className="row">
 
-        if (this.props.criteria.isMaximised) {
-            return (
-                <div>
-                    <fieldset className="criteria-container">
-
-                        <div className="row">
-
-                            <div className="col-md-4 col-sm-12">
-                                <div className="form-group">
-                                    <label className="control-label"><span className="required" aria-required="true">Criteria</span></label>
-                                    <input type="text" name="title" className={this.getTitleInputStyle()} defaultValue = {this.state.title} title="Criteria" placeholder="Criteria Title"
-                                    onChange={event => this.onTitleChange(event.target.value)} />
-                                    { this.state.isTitleError?<span className="error danger">Please add a Title</span>:null}
-                                </div>
+                        <div className="col-md-4 col-sm-12">
+                            <div className="form-group">
+                                <label className="control-label"><span className="required" aria-required="true">Criteria</span></label>
+                                <input type="text" name="title" className={this.getTitleInputStyle()} defaultValue = {this.state.title} title="Criteria" placeholder="Criteria Title"
+                                onChange={event => this.onTitleChange(event.target.value)} />
+                                { this.state.isTitleError?<span className="error danger">Please add a Title</span>:null}
                             </div>
+                        </div>
 
+                        <div className="col-md-2 col-sm-12">
+                            <div className="form-group">
+                                <label className="control-label"><span className="required" aria-required="true">Weighting
+                                <i className="fa fa-info-circle" data-tooltip="The total weighting across all criteria must equal 100%." aria-hidden="true"></i></span></label>
+                                <div className="input-group">
+                                  <input type="number" min="0" step="1"  name="weight" defaultValue = {this.state.weight} className={this.getWeightInputStyle()} title="Criteria Weight" placeholder="Value"
+                                  onChange={event => this.onWeightChange(event.target.value)} aria-describedby="weighting-addon"/>
+                                  <span className="input-group-addon" id="weighting-addon">%</span>
+                              </div>
+                              { this.state.isWeightError?<span className="error danger">Accepted values: 0 to 100</span>:null}
+                            </div>
+                        </div>
+
+                        { this.props.criteria.id===null && this.state.title?
                             <div className="col-md-2 col-sm-12">
-                                <div className="form-group">
-                                    <label className="control-label"><span className="required" aria-required="true">Weighting
-                                    <i className="fa fa-info-circle" data-tooltip="The total weighting across all criteria must equal 100%." aria-hidden="true"></i></span></label>
-                                    <div className="input-group">
-                                      <input type="number" min="0" step="1"  name="weight" defaultValue = {this.state.weight} className={this.getWeightInputStyle()} title="Criteria Weight" placeholder="Value"
-                                      onChange={event => this.onWeightChange(event.target.value)} aria-describedby="weighting-addon"/>
-                                      <span className="input-group-addon" id="weighting-addon">%</span>
-                                  </div>
-                                  { this.state.isWeightError?<span className="error danger">Accepted values: 0 to 100</span>:null}
-                                </div>
-                            </div>
-
-                            { this.props.criteria.id===null && this.state.title?
-                                <div className="col-md-2 col-sm-12">
-                                    <div className="form-group pull-right">
-                                        <div className="hidden-sm">
-                                            <br />
-                                            <br />
-                                        </div>
-                                        <button className="btn btn-sm" disabled={!this.state.title} onClick={this.onSave}><i className="fa fa-plus"></i>Add Criteria</button>
+                                <div className="form-group pull-right">
+                                    <div className="hidden-sm">
+                                        <br />
+                                        <br />
                                     </div>
-                                </div>
-                                :
-                                <div>
-                                    { (this.state.title || this.state.title!==this.props.criteria.title
-                                        || this.state.weight!==this.props.criteria.weight)?
-                                        <div className="col-md-6 col-sm-12">
-                                            <div className="form-group pull-right">
-                                                <div className="hidden-sm">
-                                                    <br />
-                                                    <br />
-                                                </div>
-                                                <button className="btn btn-sm"
-                                                    onClick={this.toggleMaximise}><i className="fa fa-angle-double-up"></i> Collapse Criteria
-                                                </button>
-                                            </div>
-                                        </div>
-                                    :null
-                                    }
-
-                                </div>
-                            }
-                            </div>
-                            {this.props.criteria.questions.length?
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <hr />
-                                </div>
-                            </div>
-                            :null}
-                        <div>
-
-                        {this.props.criteria.questions.length?
-                            <div>
-                                <div className="row">
-                                { this.props.criteria.questions.map((item, index) =>
-                                    <div className="row" key={item}>
-                                        <Question criteriaId={this.props.criteria.id} questionId={item} questionIndex={index+1} />
-                                    </div>
-                                ) }
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-12 new-question mar-btm">
-                                        <button className="btn btn-sm"
-                                            onClick={ () => {
-                                                this.setState({ showAdd: !this.state.showAdd });
-                                                dispatch({ type: actionTypes.TEMPLATE_CREATOR_CLEAR_ACTIVE_QUESTIONS });
-                                            }}>
-                                            <i className="fa fa-plus"></i>Add New Question
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="row">
-                                            {
-                                                this.state.showAdd?
-                                                    <Question criteriaId={this.props.criteria.id} question={this.newQuestion} questionIndex ={this.props.criteria.questions.length+1} />
-                                                    :null
-                                                }
-                                    </div>
+                                    <button className="btn btn-sm" disabled={!this.state.title} onClick={this.onSave}><i className="fa fa-plus"></i>Add Criteria</button>
                                 </div>
                             </div>
                             :
                             <div>
-                                {
-                                    this.props.criteria.id?
-                                    <div className="row">
-                                        <div className="row">
-                                            <Question criteriaId={this.props.criteria.id} question={this.newQuestion} questionIndex ={this.props.criteria.questions.length+1}  />
+                                { (this.state.title || this.state.title!==this.props.criteria.title
+                                    || this.state.weight!==this.props.criteria.weight)?
+                                    <div className="col-md-6 col-sm-12">
+                                        <div className="form-group pull-right">
+                                            <div className="hidden-sm">
+                                                <br />
+                                                <br />
+                                            </div>
+                                            <button className="btn btn-sm"
+                                                onClick={this.toggleMaximise}><i className="fa fa-angle-double-up"></i> Collapse Criteria
+                                            </button>
                                         </div>
                                     </div>
-                                    :null
+                                :null
                                 }
+
                             </div>
                         }
                         </div>
+                        {this.props.criteria.questions.length?
+                        <div className="row">
+                            <div className="col-md-12">
+                                <hr />
+                            </div>
+                        </div>
+                        :null}
+                    <div>
+
+                    {this.props.criteria.questions.length?
+                        <div>
+                            <div className="row">
+                            { this.props.criteria.questions.map((item, index) =>
+                                <div className="row" key={item}>
+                                    <Question criteriaId={this.props.criteria.id} questionId={item} questionIndex={index+1} />
+                                </div>
+                            ) }
+                            </div>
+                            <div className="row">
+                                <div className="col-md-12 new-question mar-btm">
+                                    <button className="btn btn-sm"
+                                        onClick={() => {
+                                            this.setState({ showAdd: !this.state.showAdd });
+                                            this.props.dispatch(minimiseAllQuestions());
+                                        }}>
+                                        <i className="fa fa-plus"></i>Add New Question
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="row">
+                                        {
+                                            this.state.showAdd?
+                                                <Question criteriaId={this.props.criteria.id} question={this.newQuestion} questionIndex ={this.props.criteria.questions.length+1} />
+                                                :null
+                                            }
+                                </div>
+                            </div>
+                        </div>
+                        :
+                        <div>
+                            {
+                                this.props.criteria.id?
+                                <div className="row">
+                                    <div className="row">
+                                        <Question criteriaId={this.props.criteria.id} question={this.newQuestion} questionIndex ={this.props.criteria.questions.length+1}  />
+                                    </div>
+                                </div>
+                                :null
+                            }
+                        </div>
+                    }
+                    </div>
+                </fieldset>
+            </div>
+        );
+    }
+    renderMinimised() {
+        let { title, weight } =this.state;
+        return (
+            <div className="row">
+                <div className="col-sm-12">
+                    <fieldset className="criteria-container collapsed">
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label className="control-label"><span className="required" aria-required="true" required>Criteria</span></label>
+                                <div>{title}</div>
+                            </div>
+                        </div>
+                        <div className="col-md-2 text-center">
+                            <div className="form-group">
+                                <label className="control-label"><span className="required" aria-required="true">Weighting</span></label>
+                                <div>{weight} %</div>
+                            </div>
+                        </div>
+                        <div className="col-md-4 text-right">
+                            <div className="form-group">
+                                <br />
+                            <button className="btn btn-sm"  onClick={this.toggleMaximise}><i className="fa fa-pencil"></i>Edit Criteria</button>
+                                &nbsp;
+                                <button className="btn btn-sm" onClick={this.onDelete}><i className ="fa fa-trash-o"></i>Delete Criteria</button>
+                            </div>
+                        </div>
                     </fieldset>
                 </div>
-            );
-        } else {
-            return (
-                <div className="row">
-                    <div className="col-sm-12">
-                        <fieldset className="criteria-container collapsed">
-                            <div className="col-md-6">
-                                <div className="form-group">
-                                    <label className="control-label"><span className="required" aria-required="true" required>Criteria</span></label>
-                                    <div>{title}</div>
-                                </div>
-                            </div>
-                            <div className="col-md-2 text-center">
-                                <div className="form-group">
-                                    <label className="control-label"><span className="required" aria-required="true">Weighting</span></label>
-                                    <div>{weight} %</div>
-                                </div>
-                            </div>
-                            <div className="col-md-4 text-right">
-                                <div className="form-group">
-                                    <br />
-                                <button className="btn btn-sm"  onClick={this.toggleMaximise}><i className="fa fa-pencil"></i>Edit Criteria</button>
-                                    &nbsp;
-                                    <button className="btn btn-sm" onClick={this.onDelete}><i className ="fa fa-trash-o"></i>Delete Criteria</button>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
-                </div>
-            );
-        }
+            </div>
+        );
+    }
+    render() {        
+        return this.props.criteria.isMaximised? this.renderMaximised(): this.renderMinimised();
     }
 }
 

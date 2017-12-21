@@ -12,8 +12,7 @@ export function modal(state = getInitialData(), action) {
         case MODAL_PROMPT_MESSAGE:
             {
 
-                let { message, title, onClose } = action;
-                window.console.log(onClose);
+                let { message, title, onClose } = action;                
                 const isOpen = true;
                 return { ...state, message, title, isOpen, onClose };
             }
