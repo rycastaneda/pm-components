@@ -22743,7 +22743,7 @@
 	            if (this.state.menuVisibleItemId === id) {
 	                return _react2.default.createElement(
 	                    'div',
-	                    { className: 'dropdown open',
+	                    { className: 'db-function-dropdown click',
 	                        ref: function ref(ul) {
 	                            if (ul !== null) {
 	                                _this2.actionDropdown = ul;
@@ -22751,22 +22751,23 @@
 	                        } },
 	                    _react2.default.createElement(
 	                        'a',
-	                        { className: 'btn btn-sm',
+	                        { className: 'db-function',
 	                            onClick: this.toggleMenu.bind(this, id),
 	                            href: 'javascript:' },
 	                        'More \xA0',
-	                        _react2.default.createElement('i', { className: 'caret' })
+	                        _react2.default.createElement('i', { className: 'fa fa-caret-down' })
 	                    ),
 	                    _react2.default.createElement(
 	                        'ul',
-	                        { className: 'dropdown-menu' },
+	                        { className: 'db-function-menu' },
 	                        _react2.default.createElement(
 	                            'li',
 	                            null,
 	                            _react2.default.createElement(
 	                                'a',
 	                                { href: preview_url },
-	                                'Preview'
+	                                _react2.default.createElement('i', { className: 'fa fa-eye' }),
+	                                ' Preview'
 	                            )
 	                        ),
 	                        !active && instances < 1 ? _react2.default.createElement(
@@ -22775,7 +22776,8 @@
 	                            _react2.default.createElement(
 	                                'a',
 	                                { disabled: 'true', href: edit_url },
-	                                'Edit'
+	                                _react2.default.createElement('i', { className: 'fa fa-edit' }),
+	                                ' Edit'
 	                            )
 	                        ) : null,
 	                        !active && instances < 1 ? null : _react2.default.createElement(
@@ -22787,7 +22789,9 @@
 	                                    onClick: function onClick() {
 	                                        return _this2.onTemplateToggleActivation(id, !active);
 	                                    } },
-	                                active ? 'Deactivate' : 'Activate'
+	                                _react2.default.createElement('i', { className: 'fa fa-toggle-off' }),
+	                                ' ',
+	                                active ? ' Deactivate' : 'Activate'
 	                            )
 	                        )
 	                    )
@@ -22798,11 +22802,11 @@
 	                    { className: 'dropdown' },
 	                    _react2.default.createElement(
 	                        'a',
-	                        { className: 'btn btn-sm',
+	                        { className: 'db-function',
 	                            onClick: this.toggleMenu.bind(this, id),
 	                            href: 'javascript:' },
 	                        'More \xA0',
-	                        _react2.default.createElement('i', { className: 'caret' })
+	                        _react2.default.createElement('i', { className: 'fa fa-caret-down' })
 	                    )
 	                );
 	            }
@@ -23619,6 +23623,7 @@
 	    // if template is defined parse it, else empty template list
 	    if (templates) {
 	        templates = templates.map(function (template) {
+	            window.console.log(template);
 	            var id = template.id,
 	                title = template.title,
 	                meta = template.meta,
