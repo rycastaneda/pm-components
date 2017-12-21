@@ -13,7 +13,7 @@ const INITIAL_DATA = {
     filterKeyword:'',
     filterStatus:STATUS_DEFAULT,
     filterDate:null,
-    isBusy:false,
+    isBusy:true,
     errorMessage:null,
     totalPages:1,
     currentPage:1,
@@ -24,7 +24,7 @@ export function evaluationTemplates(state = INITIAL_DATA, action) {
 
     switch (action.type) {
         case INITIALIZED: {
-            let { users, templates, currentPage, totalPages, isBusy } = action;
+            let { users, templates, currentPage, totalPages, isBusy=false } = action;
             let currentTemplateList = templates;
             return { ...state, users, currentTemplateList, currentPage, totalPages, isBusy };
         }

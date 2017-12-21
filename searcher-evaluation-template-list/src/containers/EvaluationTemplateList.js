@@ -67,6 +67,7 @@ class EvaluationTemplateList extends Component {
                     onSubmit={this.onFilterSubmit}
                 />
                 <TemplatesTable
+                    isBusy ={this.props.isBusy}
                     tableData= {currentTemplateList}
                     rowCountList= {MAXROWS_LIST}
                     currentPage= {currentPage}
