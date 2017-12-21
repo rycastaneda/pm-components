@@ -90,8 +90,7 @@ class Question extends Component {
             type,
             scaleDefinitions
         } = question;
-        const documentError ='';
-        window.console.log('isCommentRequired', isCommentRequired);
+        const documentError ='';        
         this.setState({
             title,
             isAllowUpload,

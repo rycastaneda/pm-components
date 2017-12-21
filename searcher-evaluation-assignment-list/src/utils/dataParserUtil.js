@@ -72,8 +72,6 @@ export function getDataForMarkInProgress(id) {
 }
 export function parseInitializeResponse({ userProfile, evaluationTemplates, evaluationTemplateAssignmentTypes, preferredSuppliers, staff, evaluationTemplateAssignmentStatuses, evaluationAssignments }) {
 
-
-
     let result = getDataFromAssignmentService(evaluationAssignments);
 
     userProfile = normalize(userProfile, { endpoint:'users' });
@@ -130,8 +128,6 @@ export function parseInitializeResponse({ userProfile, evaluationTemplates, eval
         let { id, title } = item;
         return { id, title  };
     });
-
-
     return { evaluationTemplates, staff, preferredSuppliers, evaluationTemplateAssignmentTypes, evaluationTemplateAssignmentStatuses, userProfile, ...result };
 }
 export function getDataFromAssignmentService(evaluationAssignments) {
@@ -164,10 +160,10 @@ export function parseAssignmentsFromData(evaluationAssignments) {
 
             createdBy = createdBy.id;
             createdAt = new Date(createdAt.date);
-            let assignedOn = createdAt.getDate()+'-'+createdAt.getMonth()+'-'+createdAt.getFullYear();
+            let assignedOn = createdAt.getDate()+'/'+createdAt.getMonth()+'/'+createdAt.getFullYear();
             let evaluationTemplate = { id:template.id, active:template.id, title:template.title };
             let assignedUser = assigneeUser.staff;
-            let userName = assignedUser.lastName+', '+assignedUser.firstName;
+            let userName = assignedUser.firstName+' '+assignedUser.lastName;
             assignedUser = { id:assignedUser.userId, userName };
             let linkedTo = { id:assignmentType.id, title:assignmentType.title };
             assignmentStatus = { id:assignmentStatus.id, title:assignmentStatus.title };

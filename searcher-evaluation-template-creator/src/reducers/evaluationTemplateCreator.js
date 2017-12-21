@@ -51,18 +51,24 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
 
         }
         case QUESTION_MAXIMISE_CHANGE: {
+            let { id, isMaximised } = action;
             let { questionsByIndex } = state;
-            let question = questionsByIndex[action.id];
-            question = Object.assign({}, question, { isMaximised:action.isMaximised });
-            questionsByIndex[action.id] = question;
-            return Object.assign({}, state, { questionsByIndex });
+            Object.values(questionsByIndex).forEach((item) => {
+                item.isMaximised = false;
+            });
+            let question = questionsByIndex[id];
+            questionsByIndex[id] = { ...question, isMaximised };
+            return { ...state, questionsByIndex };
         }
         case CRITERIA_MAXIMISE_CHANGE: {
+            let { id, isMaximised } = action;
             let { criteriaByIndex } = state;
-            let criteria = criteriaByIndex[action.id];
-            criteria = Object.assign({}, criteria, { isMaximised:action.isMaximised });
-            criteriaByIndex[action.id] = criteria;
-            return Object.assign({}, state, { criteriaByIndex });
+            Object.values(criteriaByIndex).forEach((item) => {
+                item.isMaximised = false;
+            });
+            let criteria = criteriaByIndex[id];
+            criteriaByIndex[id] = { ...criteria, isMaximised };
+            return { ...state, criteriaByIndex };
         }
         case TEMPLATE_FETCHED:
             {

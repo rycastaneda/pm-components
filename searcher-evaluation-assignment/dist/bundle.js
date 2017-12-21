@@ -133,13 +133,13 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(enhance, 'enhance', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/index.js');
+	    __REACT_HOT_LOADER__.register(enhance, 'enhance', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/index.js');
 
-	    __REACT_HOT_LOADER__.register(store, 'store', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/index.js');
+	    __REACT_HOT_LOADER__.register(store, 'store', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/index.js');
 
-	    __REACT_HOT_LOADER__.register(hostname, 'hostname', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/index.js');
+	    __REACT_HOT_LOADER__.register(hostname, 'hostname', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/index.js');
 
-	    __REACT_HOT_LOADER__.register(headers, 'headers', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/index.js');
+	    __REACT_HOT_LOADER__.register(headers, 'headers', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/index.js');
 	})();
 
 	;
@@ -1387,7 +1387,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.updateSelectedAssignees = exports.updateChangeSuppliers = exports.updateChangeEngagements = exports.updateChangeMatchedItems = exports.updateChangeMatchedSuppliers = exports.fetchMatchedSuppliers = exports.updateChangeEvaluationType = exports.evaluationTemplateUpdateChange = exports.createAssignment = undefined;
+	exports.updateSelectedAssigneeChairman = exports.updateSelectedAssignees = exports.updateChangeSuppliers = exports.updateChangeEngagements = exports.updateChangeMatchedItems = exports.updateChangeMatchedSuppliers = exports.fetchMatchedSuppliers = exports.updateChangeEvaluationType = exports.evaluationTemplateUpdateChange = exports.createAssignment = undefined;
 
 	var _defineProperty2 = __webpack_require__(106);
 
@@ -1414,6 +1414,7 @@
 	        var _getState$evaluationA = getState().evaluationAssignment,
 	            selectedTemplateId = _getState$evaluationA.selectedTemplateId,
 	            selectedAssignees = _getState$evaluationA.selectedAssignees,
+	            selectedAssigneeChairman = _getState$evaluationA.selectedAssigneeChairman,
 	            selectedAssignmentEntityInstanceId = _getState$evaluationA.selectedAssignmentEntityInstanceId,
 	            evaluationTypeSelected = _getState$evaluationA.evaluationTypeSelected;
 
@@ -1434,6 +1435,10 @@
 	                        'id': selectedTemplateId
 	                    }
 	                },
+	                'chairStaff': {
+	                    'type': 'staff',
+	                    'id': selectedAssigneeChairman.id
+	                },
 	                'assigneeUser': {
 	                    'data': selectedAssignees
 	                },
@@ -1446,15 +1451,15 @@
 	            }
 	        });
 
-	        console.log('data to be sent: ', data);
-
 	        _axios2.default.post('/evaluation-template-assignments', data).then(function (response) {
-	            console.log(response);
 	            dispatch({
-	                type: actionTypes.ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_SUCCESS
+	                type: actionTypes.ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_SUCCESS,
+	                response: response
 	            });
+	            // back to assignments list page
+	            window.location.href = '/searcher/evaluation_assignments/list';
 	        }).catch(function (error) {
-	            console.log(error);
+	            throw error;
 	        });
 	    };
 	};
@@ -1553,6 +1558,13 @@
 	        assignees: assignees
 	    };
 	};
+
+	var updateSelectedAssigneeChairman = exports.updateSelectedAssigneeChairman = function updateSelectedAssigneeChairman(assigneeChairman) {
+	    return {
+	        type: actionTypes.ASSIGNMENT_CREATION_ASSIGNEES_CHAIRMAN_CHANGE_UPDATE,
+	        assigneeChairman: assigneeChairman
+	    };
+	};
 	;
 
 	(function () {
@@ -1560,23 +1572,25 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(createAssignment, 'createAssignment', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/evaluationAssignmentsAction.js');
+	    __REACT_HOT_LOADER__.register(createAssignment, 'createAssignment', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/evaluationAssignmentsAction.js');
 
-	    __REACT_HOT_LOADER__.register(evaluationTemplateUpdateChange, 'evaluationTemplateUpdateChange', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/evaluationAssignmentsAction.js');
+	    __REACT_HOT_LOADER__.register(evaluationTemplateUpdateChange, 'evaluationTemplateUpdateChange', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/evaluationAssignmentsAction.js');
 
-	    __REACT_HOT_LOADER__.register(updateChangeEvaluationType, 'updateChangeEvaluationType', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/evaluationAssignmentsAction.js');
+	    __REACT_HOT_LOADER__.register(updateChangeEvaluationType, 'updateChangeEvaluationType', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/evaluationAssignmentsAction.js');
 
-	    __REACT_HOT_LOADER__.register(fetchMatchedSuppliers, 'fetchMatchedSuppliers', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/evaluationAssignmentsAction.js');
+	    __REACT_HOT_LOADER__.register(fetchMatchedSuppliers, 'fetchMatchedSuppliers', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/evaluationAssignmentsAction.js');
 
-	    __REACT_HOT_LOADER__.register(updateChangeMatchedSuppliers, 'updateChangeMatchedSuppliers', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/evaluationAssignmentsAction.js');
+	    __REACT_HOT_LOADER__.register(updateChangeMatchedSuppliers, 'updateChangeMatchedSuppliers', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/evaluationAssignmentsAction.js');
 
-	    __REACT_HOT_LOADER__.register(updateChangeMatchedItems, 'updateChangeMatchedItems', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/evaluationAssignmentsAction.js');
+	    __REACT_HOT_LOADER__.register(updateChangeMatchedItems, 'updateChangeMatchedItems', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/evaluationAssignmentsAction.js');
 
-	    __REACT_HOT_LOADER__.register(updateChangeEngagements, 'updateChangeEngagements', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/evaluationAssignmentsAction.js');
+	    __REACT_HOT_LOADER__.register(updateChangeEngagements, 'updateChangeEngagements', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/evaluationAssignmentsAction.js');
 
-	    __REACT_HOT_LOADER__.register(updateChangeSuppliers, 'updateChangeSuppliers', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/evaluationAssignmentsAction.js');
+	    __REACT_HOT_LOADER__.register(updateChangeSuppliers, 'updateChangeSuppliers', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/evaluationAssignmentsAction.js');
 
-	    __REACT_HOT_LOADER__.register(updateSelectedAssignees, 'updateSelectedAssignees', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/evaluationAssignmentsAction.js');
+	    __REACT_HOT_LOADER__.register(updateSelectedAssignees, 'updateSelectedAssignees', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/evaluationAssignmentsAction.js');
+
+	    __REACT_HOT_LOADER__.register(updateSelectedAssigneeChairman, 'updateSelectedAssigneeChairman', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/evaluationAssignmentsAction.js');
 	})();
 
 	;
@@ -4101,7 +4115,6 @@
 
 
 	    return _axios2.default.get(endpoint, options).then(function (response) {
-	        console.log('from middleware: normalise:', (0, _jsonApiNormalizer2.default)(response.data, { endpoint: endpoint }));
 	        return (0, _assign2.default)({}, (0, _jsonApiNormalizer2.default)(response.data, { endpoint: endpoint }));
 	    });
 	}
@@ -4154,17 +4167,17 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(API_DATA_REQUEST, 'API_DATA_REQUEST', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/middleware/api.js');
+	    __REACT_HOT_LOADER__.register(API_DATA_REQUEST, 'API_DATA_REQUEST', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/middleware/api.js');
 
-	    __REACT_HOT_LOADER__.register(API_DATA_SUCCESS, 'API_DATA_SUCCESS', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/middleware/api.js');
+	    __REACT_HOT_LOADER__.register(API_DATA_SUCCESS, 'API_DATA_SUCCESS', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/middleware/api.js');
 
-	    __REACT_HOT_LOADER__.register(API_DATA_FAILURE, 'API_DATA_FAILURE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/middleware/api.js');
+	    __REACT_HOT_LOADER__.register(API_DATA_FAILURE, 'API_DATA_FAILURE', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/middleware/api.js');
 
-	    __REACT_HOT_LOADER__.register(callApi, 'callApi', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/middleware/api.js');
+	    __REACT_HOT_LOADER__.register(callApi, 'callApi', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/middleware/api.js');
 
-	    __REACT_HOT_LOADER__.register(CALL_API, 'CALL_API', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/middleware/api.js');
+	    __REACT_HOT_LOADER__.register(CALL_API, 'CALL_API', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/middleware/api.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/middleware/api.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/middleware/api.js');
 	})();
 
 	;
@@ -5512,21 +5525,21 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(fetchEvaluationTemplates, 'fetchEvaluationTemplates', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/apiActions.js');
+	    __REACT_HOT_LOADER__.register(fetchEvaluationTemplates, 'fetchEvaluationTemplates', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/apiActions.js');
 
-	    __REACT_HOT_LOADER__.register(fetchAssigneesStaff, 'fetchAssigneesStaff', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/apiActions.js');
+	    __REACT_HOT_LOADER__.register(fetchAssigneesStaff, 'fetchAssigneesStaff', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/apiActions.js');
 
-	    __REACT_HOT_LOADER__.register(fetchEvaluationTypes, 'fetchEvaluationTypes', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/apiActions.js');
+	    __REACT_HOT_LOADER__.register(fetchEvaluationTypes, 'fetchEvaluationTypes', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/apiActions.js');
 
-	    __REACT_HOT_LOADER__.register(fetchEngagements, 'fetchEngagements', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/apiActions.js');
+	    __REACT_HOT_LOADER__.register(fetchEngagements, 'fetchEngagements', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/apiActions.js');
 
-	    __REACT_HOT_LOADER__.register(fetchPreferredSuppliers, 'fetchPreferredSuppliers', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/apiActions.js');
+	    __REACT_HOT_LOADER__.register(fetchPreferredSuppliers, 'fetchPreferredSuppliers', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/apiActions.js');
 
-	    __REACT_HOT_LOADER__.register(fetchRequestsForQuotations, 'fetchRequestsForQuotations', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/apiActions.js');
+	    __REACT_HOT_LOADER__.register(fetchRequestsForQuotations, 'fetchRequestsForQuotations', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/apiActions.js');
 
-	    __REACT_HOT_LOADER__.register(fetchRfqMatchedSuppliers, 'fetchRfqMatchedSuppliers', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/apiActions.js');
+	    __REACT_HOT_LOADER__.register(fetchRfqMatchedSuppliers, 'fetchRfqMatchedSuppliers', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/apiActions.js');
 
-	    __REACT_HOT_LOADER__.register(fetchMatchedItems, 'fetchMatchedItems', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/apiActions.js');
+	    __REACT_HOT_LOADER__.register(fetchMatchedItems, 'fetchMatchedItems', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/actions/apiActions.js');
 	})();
 
 	;
@@ -5541,6 +5554,7 @@
 	  value: true
 	});
 	var ASSIGNMENT_CREATION_ASSIGNEES_CHANGE_UPDATE = exports.ASSIGNMENT_CREATION_ASSIGNEES_CHANGE_UPDATE = 'ASSIGNMENT_CREATION_ASSIGNEES_CHANGE_UPDATE';
+	var ASSIGNMENT_CREATION_ASSIGNEES_CHAIRMAN_CHANGE_UPDATE = exports.ASSIGNMENT_CREATION_ASSIGNEES_CHAIRMAN_CHANGE_UPDATE = 'ASSIGNMENT_CREATION_ASSIGNEES_CHAIRMAN_CHANGE_UPDATE';
 	var ASSIGNMENT_CREATION_UPDATE_CHANGE_EVALUATION_TYPE = exports.ASSIGNMENT_CREATION_UPDATE_CHANGE_EVALUATION_TYPE = 'ASSIGNMENT_CREATION_UPDATE_CHANGE_EVALUATION_TYPE';
 	var ASSIGNMENT_CREATION_UPDATE_MATCHED_SUPPLIER_ID = exports.ASSIGNMENT_CREATION_UPDATE_MATCHED_SUPPLIER_ID = 'ASSIGNMENT_CREATION_UPDATE_MATCHED_SUPPLIER_ID';
 	var ASSIGNMENT_CREATION_UPDATE_CHANGE_RFQ = exports.ASSIGNMENT_CREATION_UPDATE_CHANGE_RFQ = 'ASSIGNMENT_CREATION_UPDATE_CHANGE_RFQ';
@@ -5556,23 +5570,25 @@
 	    return;
 	  }
 
-	  __REACT_HOT_LOADER__.register(ASSIGNMENT_CREATION_ASSIGNEES_CHANGE_UPDATE, 'ASSIGNMENT_CREATION_ASSIGNEES_CHANGE_UPDATE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/constants/ActionTypes.js');
+	  __REACT_HOT_LOADER__.register(ASSIGNMENT_CREATION_ASSIGNEES_CHANGE_UPDATE, 'ASSIGNMENT_CREATION_ASSIGNEES_CHANGE_UPDATE', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/constants/ActionTypes.js');
 
-	  __REACT_HOT_LOADER__.register(ASSIGNMENT_CREATION_UPDATE_CHANGE_EVALUATION_TYPE, 'ASSIGNMENT_CREATION_UPDATE_CHANGE_EVALUATION_TYPE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/constants/ActionTypes.js');
+	  __REACT_HOT_LOADER__.register(ASSIGNMENT_CREATION_ASSIGNEES_CHAIRMAN_CHANGE_UPDATE, 'ASSIGNMENT_CREATION_ASSIGNEES_CHAIRMAN_CHANGE_UPDATE', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/constants/ActionTypes.js');
 
-	  __REACT_HOT_LOADER__.register(ASSIGNMENT_CREATION_UPDATE_MATCHED_SUPPLIER_ID, 'ASSIGNMENT_CREATION_UPDATE_MATCHED_SUPPLIER_ID', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/constants/ActionTypes.js');
+	  __REACT_HOT_LOADER__.register(ASSIGNMENT_CREATION_UPDATE_CHANGE_EVALUATION_TYPE, 'ASSIGNMENT_CREATION_UPDATE_CHANGE_EVALUATION_TYPE', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/constants/ActionTypes.js');
 
-	  __REACT_HOT_LOADER__.register(ASSIGNMENT_CREATION_UPDATE_CHANGE_RFQ, 'ASSIGNMENT_CREATION_UPDATE_CHANGE_RFQ', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/constants/ActionTypes.js');
+	  __REACT_HOT_LOADER__.register(ASSIGNMENT_CREATION_UPDATE_MATCHED_SUPPLIER_ID, 'ASSIGNMENT_CREATION_UPDATE_MATCHED_SUPPLIER_ID', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/constants/ActionTypes.js');
 
-	  __REACT_HOT_LOADER__.register(ASSIGNMENT_CREATION_PREFERRED_SUPPLIERS_UPDATE_CHANGE, 'ASSIGNMENT_CREATION_PREFERRED_SUPPLIERS_UPDATE_CHANGE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/constants/ActionTypes.js');
+	  __REACT_HOT_LOADER__.register(ASSIGNMENT_CREATION_UPDATE_CHANGE_RFQ, 'ASSIGNMENT_CREATION_UPDATE_CHANGE_RFQ', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/constants/ActionTypes.js');
 
-	  __REACT_HOT_LOADER__.register(ASSIGNMENT_CREATION_EVALUATION_TEMPLATE_UPDATE_CHANGE, 'ASSIGNMENT_CREATION_EVALUATION_TEMPLATE_UPDATE_CHANGE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/constants/ActionTypes.js');
+	  __REACT_HOT_LOADER__.register(ASSIGNMENT_CREATION_PREFERRED_SUPPLIERS_UPDATE_CHANGE, 'ASSIGNMENT_CREATION_PREFERRED_SUPPLIERS_UPDATE_CHANGE', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/constants/ActionTypes.js');
 
-	  __REACT_HOT_LOADER__.register(ASSIGNMENT_CREATION_SET_ASSIGNMENT_ENTITY_INSTANCE_ID, 'ASSIGNMENT_CREATION_SET_ASSIGNMENT_ENTITY_INSTANCE_ID', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/constants/ActionTypes.js');
+	  __REACT_HOT_LOADER__.register(ASSIGNMENT_CREATION_EVALUATION_TEMPLATE_UPDATE_CHANGE, 'ASSIGNMENT_CREATION_EVALUATION_TEMPLATE_UPDATE_CHANGE', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/constants/ActionTypes.js');
 
-	  __REACT_HOT_LOADER__.register(ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_REQUEST_START, 'ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_REQUEST_START', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/constants/ActionTypes.js');
+	  __REACT_HOT_LOADER__.register(ASSIGNMENT_CREATION_SET_ASSIGNMENT_ENTITY_INSTANCE_ID, 'ASSIGNMENT_CREATION_SET_ASSIGNMENT_ENTITY_INSTANCE_ID', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/constants/ActionTypes.js');
 
-	  __REACT_HOT_LOADER__.register(ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_SUCCESS, 'ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_SUCCESS', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/constants/ActionTypes.js');
+	  __REACT_HOT_LOADER__.register(ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_REQUEST_START, 'ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_REQUEST_START', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/constants/ActionTypes.js');
+
+	  __REACT_HOT_LOADER__.register(ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_SUCCESS, 'ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_SUCCESS', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/constants/ActionTypes.js');
 	})();
 
 	;
@@ -8853,6 +8869,7 @@
 	                selectedTemplateId = _props.selectedTemplateId,
 	                evaluationAssignees = _props.evaluationAssignees,
 	                selectedAssignees = _props.selectedAssignees,
+	                selectedAssigneeChairman = _props.selectedAssigneeChairman,
 	                evaluationTypeSelected = _props.evaluationTypeSelected,
 	                rfqTypeSelectedId = _props.rfqTypeSelectedId,
 	                matchedSupplierId = _props.matchedSupplierId,
@@ -8994,6 +9011,30 @@
 	                            _react2.default.createElement(
 	                                'label',
 	                                { htmlFor: 'assignees' },
+	                                'Evaluation Assignment Chair'
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                null,
+	                                _react2.default.createElement(_reactSelect2.default, {
+	                                    className: 'pm-react-select',
+	                                    labelKey: 'fullName',
+	                                    closeOnSelect: true,
+	                                    onChange: actions.updateSelectedAssigneeChairman,
+	                                    options: evaluationAssignees,
+	                                    placeholder: 'Select Assignment Chair',
+	                                    removeSelected: true,
+	                                    value: selectedAssigneeChairman
+	                                })
+	                            )
+	                        ),
+	                        _react2.default.createElement('div', { className: 'col-sm-12' }),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-sm-4 form-group' },
+	                            _react2.default.createElement(
+	                                'label',
+	                                { htmlFor: 'assignees' },
 	                                'Evaluation Assignees'
 	                            ),
 	                            _react2.default.createElement(
@@ -9053,6 +9094,7 @@
 	    evaluationTemplates: _react.PropTypes.array.isRequired,
 	    evaluationAssignees: _react.PropTypes.array.isRequired,
 	    selectedAssignees: _react.PropTypes.array.isRequired,
+	    selectedAssigneeChairman: _react.PropTypes.object,
 	    selectedTemplateId: _react.PropTypes.string.isRequired,
 	    evaluationTypeSelected: _react.PropTypes.string.isRequired,
 	    rfqTypeSelectedId: _react.PropTypes.string.isRequired,
@@ -9076,6 +9118,7 @@
 	    var _state$evaluationAssi = state.evaluationAssignment,
 	        evaluationTypeSelected = _state$evaluationAssi.evaluationTypeSelected,
 	        selectedAssignees = _state$evaluationAssi.selectedAssignees,
+	        selectedAssigneeChairman = _state$evaluationAssi.selectedAssigneeChairman,
 	        isLoading = _state$evaluationAssi.isLoading,
 	        selectedTemplateId = _state$evaluationAssi.selectedTemplateId,
 	        selectedAssignmentEntityInstanceId = _state$evaluationAssi.selectedAssignmentEntityInstanceId,
@@ -9093,6 +9136,7 @@
 	        evaluationTypeSelected: evaluationTypeSelected,
 	        evaluationAssignees: evaluationAssignees,
 	        selectedAssignees: selectedAssignees,
+	        selectedAssigneeChairman: selectedAssigneeChairman,
 	        selectedAssignmentEntityInstanceId: selectedAssignmentEntityInstanceId,
 	        rfqTypeSelectedId: rfqTypeSelectedId,
 	        isLoading: isLoading
@@ -9109,13 +9153,13 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(EvaluationAssignment, 'EvaluationAssignment', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/EvaluationAssignment.js');
+	    __REACT_HOT_LOADER__.register(EvaluationAssignment, 'EvaluationAssignment', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/EvaluationAssignment.js');
 
-	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/EvaluationAssignment.js');
+	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/EvaluationAssignment.js');
 
-	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/EvaluationAssignment.js');
+	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/EvaluationAssignment.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/EvaluationAssignment.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/EvaluationAssignment.js');
 	})();
 
 	;
@@ -9238,13 +9282,13 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(EngagementsDropdown, 'EngagementsDropdown', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EngagementsDropdown.js');
+	    __REACT_HOT_LOADER__.register(EngagementsDropdown, 'EngagementsDropdown', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EngagementsDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EngagementsDropdown.js');
+	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EngagementsDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EngagementsDropdown.js');
+	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EngagementsDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EngagementsDropdown.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EngagementsDropdown.js');
 	})();
 
 	;
@@ -9329,11 +9373,11 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(EvaluationTemplatesDropdown, 'EvaluationTemplatesDropdown', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EvaluationTemplatesDropdown.js');
+	    __REACT_HOT_LOADER__.register(EvaluationTemplatesDropdown, 'EvaluationTemplatesDropdown', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EvaluationTemplatesDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EvaluationTemplatesDropdown.js');
+	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EvaluationTemplatesDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EvaluationTemplatesDropdown.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EvaluationTemplatesDropdown.js');
 	})();
 
 	;
@@ -9457,13 +9501,13 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(EvaluationTypeDropdown, 'EvaluationTypeDropdown', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EvaluationTypeDropdown.js');
+	    __REACT_HOT_LOADER__.register(EvaluationTypeDropdown, 'EvaluationTypeDropdown', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EvaluationTypeDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EvaluationTypeDropdown.js');
+	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EvaluationTypeDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EvaluationTypeDropdown.js');
+	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EvaluationTypeDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EvaluationTypeDropdown.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/EvaluationTypeDropdown.js');
 	})();
 
 	;
@@ -9540,9 +9584,18 @@
 	            'div',
 	            null,
 	            _react2.default.createElement(
-	                'span',
-	                null,
-	                'Loading...'
+	                'div',
+	                { className: 'input-group' },
+	                _react2.default.createElement(
+	                    'select',
+	                    { className: 'form-control', disabled: true },
+	                    _react2.default.createElement(
+	                        'option',
+	                        null,
+	                        'Loading RFQ Items...'
+	                    )
+	                ),
+	                _react2.default.createElement('span', { className: 'spinner-animation form-control-feedback' })
 	            )
 	        )
 	    );
@@ -9587,13 +9640,13 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(MatchedItemsDropdown, 'MatchedItemsDropdown', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/MatchedItemsDropdown.js');
+	    __REACT_HOT_LOADER__.register(MatchedItemsDropdown, 'MatchedItemsDropdown', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/MatchedItemsDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/MatchedItemsDropdown.js');
+	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/MatchedItemsDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/MatchedItemsDropdown.js');
+	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/MatchedItemsDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/MatchedItemsDropdown.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/MatchedItemsDropdown.js');
 	})();
 
 	;
@@ -9724,13 +9777,13 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(MatchedSuppliersDropdown, 'MatchedSuppliersDropdown', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/MatchedSuppliersDropdown.js');
+	    __REACT_HOT_LOADER__.register(MatchedSuppliersDropdown, 'MatchedSuppliersDropdown', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/MatchedSuppliersDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/MatchedSuppliersDropdown.js');
+	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/MatchedSuppliersDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/MatchedSuppliersDropdown.js');
+	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/MatchedSuppliersDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/MatchedSuppliersDropdown.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/MatchedSuppliersDropdown.js');
 	})();
 
 	;
@@ -9854,13 +9907,13 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(PreferredSuppliersDropdown, 'PreferredSuppliersDropdown', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/PreferredSuppliersDropdown.js');
+	    __REACT_HOT_LOADER__.register(PreferredSuppliersDropdown, 'PreferredSuppliersDropdown', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/PreferredSuppliersDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/PreferredSuppliersDropdown.js');
+	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/PreferredSuppliersDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/PreferredSuppliersDropdown.js');
+	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/PreferredSuppliersDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/PreferredSuppliersDropdown.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/PreferredSuppliersDropdown.js');
 	})();
 
 	;
@@ -9987,13 +10040,13 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(RfqListDropdown, 'RfqListDropdown', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/RfqListDropdown.js');
+	    __REACT_HOT_LOADER__.register(RfqListDropdown, 'RfqListDropdown', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/RfqListDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/RfqListDropdown.js');
+	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/RfqListDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/RfqListDropdown.js');
+	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/RfqListDropdown.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/RfqListDropdown.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/containers/components/RfqListDropdown.js');
 	})();
 
 	;
@@ -10032,10 +10085,9 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// import merge from 'lodash.merge';
-	// import dotProp from 'dot-prop-immutable';
 	var initialState = {
 	    selectedAssignees: [],
+	    selectedAssigneeChairman: null,
 	    selectedTemplateId: '',
 	    selectedAssignmentEntityInstanceId: '',
 	    evaluationTypeSelected: '',
@@ -10089,6 +10141,11 @@
 	                selectedAssignees: action.assignees
 	            });
 
+	        case actionTypes.ASSIGNMENT_CREATION_ASSIGNEES_CHAIRMAN_CHANGE_UPDATE:
+	            return (0, _extends3.default)({}, state, {
+	                selectedAssigneeChairman: action.assigneeChairman
+	            });
+
 	        case actionTypes.ASSIGNMENT_CREATION_SET_ASSIGNMENT_ENTITY_INSTANCE_ID:
 	            return (0, _extends3.default)({}, state, {
 	                selectedAssignmentEntityInstanceId: action.selectedAssignmentEntityInstanceId
@@ -10115,9 +10172,9 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(initialState, 'initialState', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/reducers/evaluationAssignmentsReducer.js');
+	    __REACT_HOT_LOADER__.register(initialState, 'initialState', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/reducers/evaluationAssignmentsReducer.js');
 
-	    __REACT_HOT_LOADER__.register(evaluationAssignment, 'evaluationAssignment', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/reducers/evaluationAssignmentsReducer.js');
+	    __REACT_HOT_LOADER__.register(evaluationAssignment, 'evaluationAssignment', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/reducers/evaluationAssignmentsReducer.js');
 	})();
 
 	;
@@ -10148,7 +10205,7 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/reducers/index.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/reducers/index.js');
 	})();
 
 	;
@@ -10185,7 +10242,7 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(concatLabelKey, "concatLabelKey", "/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/utils/concatLabelKey.js");
+	    __REACT_HOT_LOADER__.register(concatLabelKey, "concatLabelKey", "/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/utils/concatLabelKey.js");
 	})();
 
 	;
@@ -10224,7 +10281,7 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(selectFromStore, 'selectFromStore', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-assignment/src/utils/selectFromStore.js');
+	    __REACT_HOT_LOADER__.register(selectFromStore, 'selectFromStore', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-assignment/src/utils/selectFromStore.js');
 	})();
 
 	;

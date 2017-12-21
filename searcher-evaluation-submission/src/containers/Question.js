@@ -63,10 +63,12 @@ class Question extends Component {
         this.props.dispatch(setOptionValue(this.props.questionId, null, null));
     }
     getScaleDefinitionClass(enableScaleDefinitions, questionType) {
+
+        window.console.log(questionType);
         if (enableScaleDefinitions) {
             return 'defined-scale';
         } else {
-            if (questionType === 3) {
+            if (questionType === '3') {
                 return 'horizontal';
             } else {
                 return 'undefined-scale';
@@ -81,37 +83,45 @@ class Question extends Component {
             mandatoryComments,
             allowDocuments,
             questionAttachments,
-            questionType,
+            type,
             title,
             id } = question;
+        window.console.log(question);
         return (
             <div>
                 <div className="row">
                     <div className="col-md-8 col-sm-11">
-                        <h2 className= {`${index===0?'margin-top-0':'border-top'}`} >{id}. {title}</h2>
-                        <ol className={`questionnaire ${this.getScaleDefinitionClass(enableScaleDefinitions, questionType)}`}>
-                            { typeDefinitionIds.length>0&&typeDefinitionIds.map((definitionId, index) =>
-                                <li key={index}>
-                                    <ScaleDefinition
-                                        enableScaleDefinitions = {enableScaleDefinitions}
-                                        selectedDefinition = { selectedDefinition }
-                                        questionId = {id}
-                                        scaleDefinitionIds = {question.scaleDefinitions}
-                                        typeDefinitionId = {definitionId} >
-                                    </ScaleDefinition>
-                                </li>
-                            )}
-                        </ol>
+                        <h2 className= {`${index===0?'margin-top-0':'border-top'}`} >{index+1}. {title}</h2>
+                        { type==='4'?
+                            null:
+                            <ol className={`questionnaire ${this.getScaleDefinitionClass(enableScaleDefinitions, type)}`}>
+                                { typeDefinitionIds.length>0&&typeDefinitionIds.map((definitionId, index) =>
+                                    <li key={index}>
+                                        <ScaleDefinition                
+                                            questionType = {type}
+                                            enableScaleDefinitions = {enableScaleDefinitions}
+                                            selectedDefinition = { selectedDefinition }
+                                            questionId = {id}
+                                            scaleDefinitionIds = {question.scaleDefinitions}
+                                            typeDefinitionId = {definitionId} >
+                                        </ScaleDefinition>
+                                    </li>
+                                )}
+                            </ol>
+                        }
                     </div>
-                    <div className="col-md-8 col-sm-12">
-                        <div className="form-group">
-                            <button type="button"
-                                className="btn btn-sm btn-danger pmfilters__cancel"
-                                onClick={this.uncheckRadioButtons}>
-                                <i className="fa fa-undo"></i>Clear Rating
-                            </button>
+                    { type==='4'?
+                        null:
+                        <div className="col-md-8 col-sm-12">
+                            <div className="form-group">
+                                <button type="button"
+                                    className="btn btn-sm btn-danger pmfilters__cancel"
+                                    onClick={this.uncheckRadioButtons}>
+                                    <i className="fa fa-undo"></i>Clear Rating
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
 
                 { questionAttachments.length > 0 &&
@@ -182,6 +192,7 @@ function mapStateToProps(state, props) {
 
     let { questionId, index } = props;
     let { questionByIndex, questionTypeByIndex, uploadedDocumentByIndex } = state.evaluationSubmission;
+    window.console.log(questionTypeByIndex);
     let question = questionByIndex[questionId];
     let typeDefinitionIds = questionTypeByIndex[question.type].definitions;
     let uploadedDocuments = question.uploadedDocuments.map(item => uploadedDocumentByIndex[String(item)]);
