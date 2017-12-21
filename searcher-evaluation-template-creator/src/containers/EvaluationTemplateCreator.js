@@ -21,16 +21,19 @@ class EvaluationTemplateCreator extends Component {
     componentDidMount() {
         const element = document.querySelector('[data-component="searcher-evaluation-template-creator"]');
         const id = Number(element.getAttribute('data-template-id'));
+
         if (id) {
             this.props.dispatch(fetchTemplate(id));
         } else {
             this.props.dispatch(initialize());
         }
     }
+
     componentWillUnmount() {
         clearInterval(this.intervalId_update);
         clearInterval(this.intervalId_saveAnim);
     }
+
     componentWillReceiveProps(nextProps) {
         this.templateTitleField.value = nextProps.title;
         this.setState({ title:nextProps.title, showAdd:false, isSaved:true, isTitleError:false });
@@ -143,7 +146,7 @@ class EvaluationTemplateCreator extends Component {
                                 :null
                         }
                 <div className="row">
-                    <div className="col-md-12 text-right">
+                    <div className={`col-md-12 text-right ${id !== null ? 'show' : 'hidden'}`}>
                         <hr />
 
                         <div className="form-group">

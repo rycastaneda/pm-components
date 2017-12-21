@@ -73,7 +73,7 @@ export function toggleMaximiseCriteria(id, isMaximised) {
 }
 
 export function initialize() {
-    window.console.log('initialize');
+
     return (dispatch) => {
         return axios.get('evaluation-question-types')
         .then((response) => {
