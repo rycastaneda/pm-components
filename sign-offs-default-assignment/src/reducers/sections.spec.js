@@ -11,13 +11,14 @@ describe('Sections reducer', () => {
         expect(state).to.deep.equal({
             byId: {},
             allIds: [],
-            isLoading: true
+            isLoading: true,
+            allCollapsed: false
         });
     });
 
     it('should handle FETCH_SECTIONS', () => {
         state = sections(state, {
-            type: actions.FETCH_SECTIONS,
+            type: actions.FETCH_SECTIONS
         });
 
         expect(state).to.have.property('isLoading', true);
@@ -49,6 +50,23 @@ describe('Sections reducer', () => {
         });
 
         expect(state.byId[1]).to.have.property('isCollapsed', !isCollapsed);
+    });
+
+    it('should handle TOGGLE_ALL_SECTION_COLLAPSE', () => {
+        let allCollapsed = state.allCollapsed;
+
+        state = sections(state, {
+            type: actions.TOGGLE_ALL_SECTION_COLLAPSE
+        });
+
+        expect(state.allCollapsed).to.eql(!allCollapsed);
+
+        state.allIds.map(sectionId => {
+            expect(state.byId[sectionId]).to.have.property(
+                'isCollapsed',
+                !allCollapsed
+            );
+        });
     });
 
     it('should handle ASSIGN_STAFF', () => {

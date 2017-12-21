@@ -17,8 +17,8 @@ export function fetchSections(panelId) {
                     type: actions.RECEIVE_SECTIONS,
                     sections: response.data
                 });
-            })
-            .catch(() => dispatch({ type: actions.API_ERROR }));
+            });
+        // .catch(() => dispatch({ type: actions.API_ERROR }));
     };
 }
 
@@ -26,5 +26,11 @@ export function toggleSectionCollapse(sectionId) {
     return {
         type: actions.TOGGLE_SECTION_COLLAPSE,
         sectionId
+    };
+}
+
+export function toggleAllSectionCollapse() {
+    return {
+        type: actions.TOGGLE_ALL_SECTION_COLLAPSE
     };
 }

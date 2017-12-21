@@ -47,10 +47,12 @@ const setup = props => {
 };
 
 describe('Sections container: ', () => {
-    it('should render the list of sections', () => {
+    it('should render the list of sections and the expand all button', () => {
         const { component } = setup(componentProps);
 
         const sections = component.find(Section);
         expect(sections.length).to.eql(componentProps.sections.length);
+
+        expect(component.find('.expand-all')).to.have.length(1);
     });
 });

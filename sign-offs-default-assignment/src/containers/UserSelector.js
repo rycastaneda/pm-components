@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { difference } from 'lodash';
 import Select from 'react-select';
 import UserList from '../components/UserList';
-
+import { fetchStaff } from '../actions/staff';
 import { assignStaff, removeStaff } from '../actions/staff';
 
 class UserSelector extends Component {
@@ -84,6 +84,7 @@ class UserSelector extends Component {
                             valueKey={'id'}
                             onChange={this.onChange}
                             isLoading={isLoading}
+                            onFocus={() => dispatch(fetchStaff(sectionId))}
                         />
                     </div>
                 ) : (

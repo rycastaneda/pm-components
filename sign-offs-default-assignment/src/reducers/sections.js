@@ -3,7 +3,8 @@ import * as actions from '../constants/ActionTypes';
 const INITIAL_STATE = {
     byId: {},
     allIds: [],
-    isLoading: true
+    isLoading: true,
+    allCollapsed: false
 };
 
 export function sections(state = INITIAL_STATE, action) {
@@ -21,7 +22,17 @@ export function sections(state = INITIAL_STATE, action) {
             section = state.byId[action.sectionId];
             section.isCollapsed = !section.isCollapsed;
             return { ...state };
+        case actions.TOGGLE_ALL_SECTION_COLLAPSE:
+            state.allCollapsed = !state.allCollapsed;
+            state.allIds.map(sectionId => {
+                section = state.byId[sectionId];
+                section.isCollapsed = state.allCollapsed;
+            });
+            return { ...state };
         case actions.TOGGLE_SECTION_LOADING:
+            if (!action.sectionId) {
+                return { ...state };
+            }
             section = state.byId[action.sectionId];
             section.isLoading = !section.isLoading;
             return { ...state };

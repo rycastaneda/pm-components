@@ -1,8 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Section from '../components/Section';
-import { fetchSections, toggleSectionCollapse } from '../actions/section';
-import { fetchStaff } from '../actions/staff';
+import {
+    fetchSections,
+    toggleSectionCollapse,
+    toggleAllSectionCollapse
+} from '../actions/section';
 
 class Sections extends Component {
     constructor(props) {
@@ -19,8 +22,11 @@ class Sections extends Component {
     }
 
     toggleCollapse(sectionId) {
-        this.props.dispatch(toggleSectionCollapse(sectionId));
-        this.props.dispatch(fetchStaff(sectionId));
+        this.props.dispatch(
+            sectionId
+                ? toggleSectionCollapse(sectionId)
+                : toggleAllSectionCollapse()
+        );
     }
 
     render() {
@@ -30,7 +36,18 @@ class Sections extends Component {
             <div ref={ref => (this.domRef = ref)}>
                 {error ? (
                     <div className="bs-callout bs-callout-danger">{error}</div>
-                ) : null}
+                ) : (
+                    <div className="row">
+                        <div className="pull-right">
+                            <button
+                                className="btn db-function expand-all"
+                                onClick={() => this.toggleCollapse(false)}>
+                                Expand All
+                            </button>
+                        </div>
+                    </div>
+                )}
+
                 {sections.map(section => (
                     <Section
                         key={section.id}
