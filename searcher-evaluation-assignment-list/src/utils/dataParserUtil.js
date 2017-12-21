@@ -128,8 +128,6 @@ export function parseInitializeResponse({ userProfile, evaluationTemplates, eval
         let { id, title } = item;
         return { id, title  };
     });
-
-    window.console.log(result);
     return { evaluationTemplates, staff, preferredSuppliers, evaluationTemplateAssignmentTypes, evaluationTemplateAssignmentStatuses, userProfile, ...result };
 }
 export function getDataFromAssignmentService(evaluationAssignments) {

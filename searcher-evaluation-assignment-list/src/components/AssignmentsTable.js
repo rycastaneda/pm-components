@@ -55,8 +55,7 @@ class AssignmentsTable extends Component {
         this.props.onAssignmentDelete(id);
         this.hideMenu();
     }
-    onMarkAsInProgressClick(id) {
-        window.console.log(id);
+    onMarkAsInProgressClick(id) {        
         this.props.onAssignmentMarkAsInProgress(id);
         this.hideMenu();
     }
