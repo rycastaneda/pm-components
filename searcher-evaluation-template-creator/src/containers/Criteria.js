@@ -121,7 +121,12 @@ class Criteria extends Component {
                         <div className="col-md-4 col-sm-12">
                             <div className="form-group">
                                 <label className="control-label"><span className="required" aria-required="true">Criteria</span></label>
-                                <input type="text" name="title" className={this.getTitleInputStyle()} defaultValue = {this.state.title} title="Criteria" placeholder="Criteria Title"
+                                <input type="text" name="title"
+                                maxLength ="255"
+                                className={this.getTitleInputStyle()}
+                                defaultValue = {this.state.title}
+                                title="Criteria"
+                                placeholder="Criteria Title"
                                 onChange={event => this.onTitleChange(event.target.value)} />
                                 { this.state.isTitleError?<span className="error danger">Please add a Title</span>:null}
                             </div>
@@ -259,7 +264,7 @@ class Criteria extends Component {
             </div>
         );
     }
-    render() {        
+    render() {
         return this.props.criteria.isMaximised? this.renderMaximised(): this.renderMinimised();
     }
 }
