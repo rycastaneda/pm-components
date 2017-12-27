@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Criteria from './Criteria';
-import { initialize } from '../actions/evaluationSubmissionAction';
+import { initialize, submitAssignment } from '../actions/evaluationSubmissionAction';
 import Notification from '../notification/Notification';
 // import Button from '../components/Button';
 
@@ -10,6 +10,11 @@ class EvaluationSubmission extends Component {
     constructor(props) {
         super(props);
         this.element = null;
+        this.submitAssignment = this.submitAssignment.bind(this);
+    }
+
+    submitAssignment() {
+        this.props.dispatch(submitAssignment());
     }
 
     componentDidMount() {
@@ -17,6 +22,7 @@ class EvaluationSubmission extends Component {
         let assignmentId = rootElement.getAttribute('data-evaluation-assignment-id');
         this.props.dispatch(initialize(Number(assignmentId)));
     }
+
 
     render() {
         const { criteriaIds, title, assignmentStatus } = this.props;
@@ -43,7 +49,7 @@ class EvaluationSubmission extends Component {
                 </div>
                 <div className="row">
                     <div className="col-sm-12 pull-text-right">
-                        <button className="btn btn-md">Finish</button>
+                        <button onClick={this.submitAssignment} className="btn btn-md">Finish</button>
                     </div>
                 </div>
             </div>
