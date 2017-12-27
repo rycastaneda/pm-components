@@ -29,41 +29,49 @@ class Question extends Component {
         );
 
         return (
-            <div className="row">
-                <div className="mar-top-sm col-sm-1 text-right">{`${number}. `}</div>
-                <div className="mar-top-sm col-sm-9">
-                    <p className="question-title">{questionTitle}</p>
-                </div>
-                <div className="col-sm-1 scorebox">
-                    <span className="label label-lg label-plantminer">
-                        {totalScore}
-                    </span>
-                </div>
-                <div
-                    className="mar-top-sm col-sm-1 toggle-comments"
-                    onClick={this.toggleComments}>
-                    <i
-                        className={`fa pointer ${this.state.isShown
-                            ? 'fa-chevron-down'
-                            : 'fa-chevron-right'}`}
-                    />
-                </div>
+            <div className="questions">
+            <table className="questions" width="100%">
+                <tbody>
+                    <tr>
+                        <td width="80%"><p><span className="circle">{`${number} `}</span> {questionTitle}</p></td>
+                        <td width="10%">
+                            <span className="label label-lg label-plantminer">
+                                {totalScore}
+                            </span>
+                        </td>
+                        <td className="text-right" width="10%">
+                        <i
+                            className={`fa pointer toggle-comments ${this.state.isShown
+                                ? 'fa-chevron-up'
+                                : 'fa-chevron-down'}`}
+                            onClick={this.toggleComments}
+                        />
+                        </td>
+                    </tr>
+                    {this.state.isShown ? (
+                        <tr>
+                            <td colSpan="4">
+                            <table className="reports" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Staff</th>
+                                        <th>Comment</th>
+                                        <th className="text-right">Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>{listComponents}</tbody>
+                            </table>
+                            <hr />
+                        </td>
+                        </tr>
+                    ) : null}
 
-                {this.state.isShown ? (
-                    <div className="col-sm-12">
-                        <table className="table db-table">
-                            <thead>
-                                <tr>
-                                    <th>Staff</th>
-                                    <th>Comment</th>
-                                    <th className="td-center">Score</th>
-                                </tr>
-                            </thead>
-                            <tbody>{listComponents}</tbody>
-                        </table>
-                    </div>
-                ) : null}
-            </div>
+
+                </tbody>
+            </table>
+
+
+        </div>
         );
     }
 }
