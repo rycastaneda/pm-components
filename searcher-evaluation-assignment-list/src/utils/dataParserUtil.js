@@ -151,7 +151,7 @@ export function parseAssignmentsFromData(evaluationAssignments, userProfile) {
 
             createdBy = createdBy.id;
             createdAt = new Date(createdAt.date);
-            let assignedOn = createdAt.getDate()+'/'+createdAt.getMonth()+'/'+createdAt.getFullYear();
+            let assignedOn = createdAt.getDate()+'-'+createdAt.getMonth()+'-'+createdAt.getFullYear();
             let evaluationTemplate = { id:template.id, active:template.id, title:template.title };
             let assignedUser = assigneeUser.staff;
             let userName = assignedUser.firstName+' '+assignedUser.lastName;

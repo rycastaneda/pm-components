@@ -22946,7 +22946,7 @@
 	                                _react2.default.createElement(
 	                                    'td',
 	                                    { className: 'td-center nowrap' },
-	                                    (0, _moment2.default)(item.date).format('DD/MM/YYYY')
+	                                    (0, _moment2.default)(item.date).format('DD-MM-YYYY')
 	                                ),
 	                                _react2.default.createElement(
 	                                    'td',
