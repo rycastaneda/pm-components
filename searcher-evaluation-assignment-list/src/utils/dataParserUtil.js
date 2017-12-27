@@ -72,8 +72,6 @@ export function getDataForMarkInProgress(id) {
 }
 export function parseInitializeResponse({ userProfile, evaluationTemplates, evaluationTemplateAssignmentTypes, preferredSuppliers, staff, evaluationTemplateAssignmentStatuses, evaluationAssignments }) {
 
-
-
     userProfile = normalize(userProfile, { endpoint:'users' });
     userProfile = build(userProfile, 'users').map(item => {
         let { id, staff } = item;
@@ -84,13 +82,7 @@ export function parseInitializeResponse({ userProfile, evaluationTemplates, eval
         return { id, firstName, lastName, userId, pitRole:name };
     })[0];
     let result = getDataFromAssignmentService(evaluationAssignments, userProfile);
-    result.evaluationAssignments = result.evaluationAssignments.map((item) => {
-        // admin can delete all assignments
-        let isDeletable = Boolean(userProfile.pitRole==='admin');
-        // creator can delete his own assignments
-        isDeletable = isDeletable||(item.createdBy=== userProfile.userId);
-        return { ...item, isDeletable };
-    });
+
 
     evaluationTemplateAssignmentTypes = normalize(evaluationTemplateAssignmentTypes, { endpoint:'evaluation-template-assignment-types' });
     evaluationTemplateAssignmentTypes = build(evaluationTemplateAssignmentTypes, 'evaluationTemplateAssignmentTypes');
@@ -193,9 +185,12 @@ export function parseAssignmentsFromData(evaluationAssignments, userProfile) {
             if ((assignmentStatus.id!=='3')&&(String(userProfile.id) === String(assignedUser.id))) {
                 complete_url = EVALUATION_ASSIGNMENT_COMPLETION+id;
             }
+            // admin can delete any assignment
+            let hasDeleteRight =  Boolean(userProfile.pitRole === 'admin');
+            // creator can delete his own assignments
+            hasDeleteRight = hasDeleteRight||(item.createdBy === userProfile.userId);
 
-            let isDeletable = false;
-            return { id, assignedOn, createdBy, evaluationTemplate, isDeletable, assignedUser, linkedTo, assignmentStatus, supplier, complete_url };
+            return { id, assignedOn, createdBy, evaluationTemplate, hasDeleteRight, assignedUser, linkedTo, assignmentStatus, supplier, complete_url };
         });
     } else {
         evaluationAssignments = [];

@@ -64,8 +64,8 @@ class AssignmentsTable extends Component {
         this.props.onAssignmentMarkAsInProgress(id);
         this.hideMenu();
     }
-    renderMoreButton(assignment, complete_url, isDeletable, statusId) {
-        let isInProgressStatus = (statusId ==='2');
+    renderMoreButton(assignment, complete_url, hasDeleteRight, statusId) {
+        let isDeletable = hasDeleteRight&&(statusId==='1');
         let isComplete = (statusId === '3');
         let { id } = assignment;
         if (this.state.menuVisibleItemId === id) {
@@ -82,7 +82,7 @@ class AssignmentsTable extends Component {
                     <i className="fa fa-caret-down" ></i>
                 </a>
                 <ul className="db-function-menu">
-                    { !isInProgressStatus&&isDeletable?
+                    { isDeletable?
                         <li>
                             <a href="javascript:;"
                             onClick ={() => this.onDeleteClick(id)} >
@@ -178,7 +178,7 @@ class AssignmentsTable extends Component {
                            {this.renderStatus(item.assignmentStatus)}
                        </td>
                        <td data-heading="More" className="td-center  last">
-                           {this.renderMoreButton(item, item.complete_url, item.isDeletable, item.assignmentStatus.id)}
+                           {this.renderMoreButton(item, item.complete_url, item.hasDeleteRight, item.assignmentStatus.id)}
                        </td>
                    </tr>
                    )
@@ -220,7 +220,6 @@ class AssignmentsTable extends Component {
 AssignmentsTable.propTypes = {
     onAssignmentDelete:PropTypes.func.isRequired,
     onAssignmentMarkAsInProgress: PropTypes.func.isRequired,
-    isDeletable: PropTypes.bool.isRequired,
     tableData: PropTypes.array.isRequired,
     rowCountList: PropTypes.array.isRequired,
     rowCount: PropTypes.string.isRequired,
