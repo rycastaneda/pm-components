@@ -144,7 +144,7 @@ export function submitAssignment() {
     return (dispatch, getState) => {
         let { evaluationSubmission } = getState();
         let { assignmentId } = evaluationSubmission;
-        let endpoint = '/evaluation-template-assignments/'+assignmentId+'/finish';
+        let endpoint = '/evaluation-template-assignments/'+assignmentId+'/submit';
         let promise = axios.post(endpoint);
         promise.then(() => {
             dispatch({ type: ASSIGNMENT_SUBMITTED });
