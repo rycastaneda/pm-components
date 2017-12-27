@@ -109,7 +109,6 @@ export function parseInitializeResponse({ userProfile, evaluationTemplates, eval
     preferredSuppliers = normalize(preferredSuppliers, { endpoint:'preferred-suppliers' });
     preferredSuppliers = build(preferredSuppliers, 'preferredSuppliers');
     preferredSuppliers = preferredSuppliers.map((item) => {
-
         let { id, supplierEmail } = item;
         return { id, userName:supplierEmail };
     });
@@ -191,8 +190,7 @@ export function parseAssignmentsFromData(evaluationAssignments, userProfile) {
                     };
             }
             let complete_url = null;
-
-            if (String(userProfile.id) === String(assignedUser.id)) {
+            if ((assignmentStatus.id!=='3')&&(String(userProfile.id) === String(assignedUser.id))) {
                 complete_url = EVALUATION_ASSIGNMENT_COMPLETION+id;
             }
 
