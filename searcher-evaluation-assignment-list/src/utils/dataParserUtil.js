@@ -72,7 +72,7 @@ export function getDataForMarkInProgress(id) {
 }
 export function parseInitializeResponse({ userProfile, evaluationTemplates, evaluationTemplateAssignmentTypes, preferredSuppliers, staff, evaluationTemplateAssignmentStatuses, evaluationAssignments }) {
 
-    let result = getDataFromAssignmentService(evaluationAssignments);
+    let result = getDataFromAssignmentService(evaluationAssignments, userProfile);
 
     userProfile = normalize(userProfile, { endpoint:'users' });
     userProfile = build(userProfile, 'users').map(item => {
@@ -83,7 +83,7 @@ export function parseInitializeResponse({ userProfile, evaluationTemplates, eval
         let { name } =pitRoles[0];
         return { id, firstName, lastName, userId, pitRole:name };
     })[0];
-
+    window.console.log();
     result.evaluationAssignments = result.evaluationAssignments.map((item) => {
         // admin can delete all assignments
         let isDeletable = Boolean(userProfile.pitRole==='admin');
@@ -130,12 +130,11 @@ export function parseInitializeResponse({ userProfile, evaluationTemplates, eval
     });
     return { evaluationTemplates, staff, preferredSuppliers, evaluationTemplateAssignmentTypes, evaluationTemplateAssignmentStatuses, userProfile, ...result };
 }
-export function getDataFromAssignmentService(evaluationAssignments) {
+export function getDataFromAssignmentService(evaluationAssignments, userProfile) {
     let totalPages = Number(evaluationAssignments.meta.pagination.total_pages);
     let currentPage = Number(evaluationAssignments.meta.pagination.current_page);
-    evaluationAssignments = parseAssignmentsFromData(evaluationAssignments);
+    evaluationAssignments = parseAssignmentsFromData(evaluationAssignments, userProfile);
     return { evaluationAssignments, totalPages, currentPage };
-
 }
 
 export function parseAssignmentStatusFromData(data) {
@@ -143,7 +142,8 @@ export function parseAssignmentStatusFromData(data) {
     data = build(data, 'evaluationTemplateAssignmentStatuses');
     return (data[0]);
 }
-export function parseAssignmentsFromData(evaluationAssignments) {
+
+export function parseAssignmentsFromData(evaluationAssignments, userProfile) {
     evaluationAssignments = normalize(evaluationAssignments, { endpoint:'evaluation-template-assignments' });
     evaluationAssignments = build(evaluationAssignments, 'evaluationTemplateAssignments');
     if (evaluationAssignments) {
@@ -181,7 +181,11 @@ export function parseAssignmentsFromData(evaluationAssignments) {
                     supplier = assignmentEntityInstance.supplier;
                     supplier = { id: supplier.id, title:supplier.title };
             }
-            let complete_url = EVALUATION_ASSIGNMENT_COMPLETION+id;
+            let complete_url = null;
+            if (String(userProfile.id)=== String(assignedUser.id)) {
+                complete_url = EVALUATION_ASSIGNMENT_COMPLETION+id;
+            }
+
             let isDeletable =false;
             return { id, assignedOn, createdBy, evaluationTemplate, isDeletable, assignedUser, linkedTo, assignmentStatus, supplier, complete_url };
         });
