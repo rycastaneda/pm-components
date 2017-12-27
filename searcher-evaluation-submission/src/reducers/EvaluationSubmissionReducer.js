@@ -61,7 +61,6 @@ export function evaluationSubmission(state = INITIAL_EVALUATION_SUBMISSION_STATE
                 let { question } = action;
                 let { questionByIndex } = state;
                 questionByIndex[question.id] = question;
-
                 return { ...state, questionByIndex };
 
             }

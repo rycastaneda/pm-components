@@ -210,10 +210,11 @@ function updateQuestion(question, assignmentId, dispatch) {
         promise = axios.post(endpoint, parsedQuestionData);
     }
     promise.then(() => {
-        dispatch({ type: QUESTION_UPDATED });
+        dispatch({ type: QUESTION_UPDATED, question });
     }).catch((error) => {
         if (error.response) {
             let { errors } = error.response.data;
+
             if (typeof(errors)==='object') {
                 let message = errors.detail;
                 dispatch(promptError(message));
