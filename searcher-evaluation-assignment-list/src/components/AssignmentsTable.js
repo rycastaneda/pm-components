@@ -39,14 +39,19 @@ class AssignmentsTable extends Component {
         this.props.goToPage(selected+1);
     }
     renderStatus(status) {
+        let styleClass = 'bs-label';
         switch (status.id) {
             case '1':
-                return <span className="bs-label bs-label-danger">{status.title}</span>;
+                styleClass = ' bs-label-danger';
+                break;
             case '2':
-                return <span className="bs-label bs-label-warning">{status.title}</span>;
+                styleClass =' bs-label-warning';
+                break;
             case '3':
-                return <span className="bs-label bs-label-success">{status.title}</span>;
+                styleClass += '  bs-label-success';
+                break;
         }
+        return <span className={ styleClass }>{status.title}</span>;
     }
     hideMenu() {
         this.setState({ menuVisibleItemId:null });
@@ -59,8 +64,8 @@ class AssignmentsTable extends Component {
         this.props.onAssignmentMarkAsInProgress(id);
         this.hideMenu();
     }
-    renderMoreButton(assignment, complete_url, isDeletable, statusId) {
-        let isInProgressStatus = (statusId ==='2');
+    renderMoreButton(assignment, complete_url, hasDeleteRight, statusId) {
+        let isDeletable = hasDeleteRight&&(statusId==='1');
         let isComplete = (statusId === '3');
         let { id } = assignment;
         if (this.state.menuVisibleItemId === id) {
@@ -77,7 +82,7 @@ class AssignmentsTable extends Component {
                     <i className="fa fa-caret-down" ></i>
                 </a>
                 <ul className="db-function-menu">
-                    { !isInProgressStatus&&isDeletable?
+                    { isDeletable?
                         <li>
                             <a href="javascript:;"
                             onClick ={() => this.onDeleteClick(id)} >
@@ -86,11 +91,15 @@ class AssignmentsTable extends Component {
                         </li>
                         :null
                     }
-                    <li>
-                        <a href={complete_url}>
-                            <i className="fa fa-check"></i> Complete Evaluation
-                        </a>
-                    </li>
+                    {
+                        complete_url?
+                        <li>
+                            <a href={complete_url}>
+                                <i className="fa fa-check"></i> Complete Evaluation
+                            </a>
+                        </li>
+                        :null
+                    }
                     { isComplete?
                         <li>
                             <a href="javascript:;" onClick={() => this.onMarkAsInProgressClick(id)} >
@@ -134,7 +143,6 @@ class AssignmentsTable extends Component {
                     <th>Evaluation Template</th>
                     <th>Linked To</th>
                     <th>Assigned User</th>
-
                     <th>Supplier</th>
                     <th>Status</th>
                     <th>More</th>
@@ -170,7 +178,7 @@ class AssignmentsTable extends Component {
                            {this.renderStatus(item.assignmentStatus)}
                        </td>
                        <td data-heading="More" className="td-center  last">
-                           {this.renderMoreButton(item, item.complete_url, item.isDeletable, item.assignmentStatus.id)}
+                           {this.renderMoreButton(item, item.complete_url, item.hasDeleteRight, item.assignmentStatus.id)}
                        </td>
                    </tr>
                    )
@@ -212,7 +220,6 @@ class AssignmentsTable extends Component {
 AssignmentsTable.propTypes = {
     onAssignmentDelete:PropTypes.func.isRequired,
     onAssignmentMarkAsInProgress: PropTypes.func.isRequired,
-    isDeletable: PropTypes.bool.isRequired,
     tableData: PropTypes.array.isRequired,
     rowCountList: PropTypes.array.isRequired,
     rowCount: PropTypes.string.isRequired,

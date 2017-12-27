@@ -72,8 +72,6 @@ export function getDataForMarkInProgress(id) {
 }
 export function parseInitializeResponse({ userProfile, evaluationTemplates, evaluationTemplateAssignmentTypes, preferredSuppliers, staff, evaluationTemplateAssignmentStatuses, evaluationAssignments }) {
 
-    let result = getDataFromAssignmentService(evaluationAssignments);
-
     userProfile = normalize(userProfile, { endpoint:'users' });
     userProfile = build(userProfile, 'users').map(item => {
         let { id, staff } = item;
@@ -83,14 +81,8 @@ export function parseInitializeResponse({ userProfile, evaluationTemplates, eval
         let { name } =pitRoles[0];
         return { id, firstName, lastName, userId, pitRole:name };
     })[0];
+    let result = getDataFromAssignmentService(evaluationAssignments, userProfile);
 
-    result.evaluationAssignments = result.evaluationAssignments.map((item) => {
-        // admin can delete all assignments
-        let isDeletable = Boolean(userProfile.pitRole==='admin');
-        // creator can delete his own assignments
-        isDeletable = isDeletable||(item.createdBy=== userProfile.userId);
-        return { ...item, isDeletable };
-    });
 
     evaluationTemplateAssignmentTypes = normalize(evaluationTemplateAssignmentTypes, { endpoint:'evaluation-template-assignment-types' });
     evaluationTemplateAssignmentTypes = build(evaluationTemplateAssignmentTypes, 'evaluationTemplateAssignmentTypes');
@@ -109,7 +101,6 @@ export function parseInitializeResponse({ userProfile, evaluationTemplates, eval
     preferredSuppliers = normalize(preferredSuppliers, { endpoint:'preferred-suppliers' });
     preferredSuppliers = build(preferredSuppliers, 'preferredSuppliers');
     preferredSuppliers = preferredSuppliers.map((item) => {
-
         let { id, supplierEmail } = item;
         return { id, userName:supplierEmail };
     });
@@ -130,12 +121,11 @@ export function parseInitializeResponse({ userProfile, evaluationTemplates, eval
     });
     return { evaluationTemplates, staff, preferredSuppliers, evaluationTemplateAssignmentTypes, evaluationTemplateAssignmentStatuses, userProfile, ...result };
 }
-export function getDataFromAssignmentService(evaluationAssignments) {
+export function getDataFromAssignmentService(evaluationAssignments, userProfile) {
     let totalPages = Number(evaluationAssignments.meta.pagination.total_pages);
     let currentPage = Number(evaluationAssignments.meta.pagination.current_page);
-    evaluationAssignments = parseAssignmentsFromData(evaluationAssignments);
+    evaluationAssignments = parseAssignmentsFromData(evaluationAssignments, userProfile);
     return { evaluationAssignments, totalPages, currentPage };
-
 }
 
 export function parseAssignmentStatusFromData(data) {
@@ -143,7 +133,8 @@ export function parseAssignmentStatusFromData(data) {
     data = build(data, 'evaluationTemplateAssignmentStatuses');
     return (data[0]);
 }
-export function parseAssignmentsFromData(evaluationAssignments) {
+
+export function parseAssignmentsFromData(evaluationAssignments, userProfile) {
     evaluationAssignments = normalize(evaluationAssignments, { endpoint:'evaluation-template-assignments' });
     evaluationAssignments = build(evaluationAssignments, 'evaluationTemplateAssignments');
     if (evaluationAssignments) {
@@ -171,22 +162,38 @@ export function parseAssignmentsFromData(evaluationAssignments) {
             let supplier;
             switch (assignmentType.id) {
                 case '1':
-                    supplier = { id: assignmentEntityInstance.id, title:assignmentEntityInstance.title };
+                    supplier = {
+                        id: assignmentEntityInstance.id,
+                        title:assignmentEntityInstance.title
+                    };
                     break;
                 case '2':
                     supplier = assignmentEntityInstance.matchedSupplier[0];
-                    supplier = { id: supplier.id, title:supplier.title };
+                    supplier = {
+                        id: supplier.id,
+                        title:supplier.title
+                    };
                     break;
                 default:
                     supplier = assignmentEntityInstance.supplier;
-                    supplier = { id: supplier.id, title:supplier.title };
+                    supplier = {
+                        id: supplier.id,
+                        title:supplier.title
+                    };
             }
-            let complete_url = EVALUATION_ASSIGNMENT_COMPLETION+id;
-            let isDeletable =false;
-            return { id, assignedOn, createdBy, evaluationTemplate, isDeletable, assignedUser, linkedTo, assignmentStatus, supplier, complete_url };
+            let complete_url = null;
+            if ((assignmentStatus.id!=='3')&&(String(userProfile.id) === String(assignedUser.id))) {
+                complete_url = EVALUATION_ASSIGNMENT_COMPLETION+id;
+            }
+            // admin can delete any assignment
+            let hasDeleteRight =  Boolean(userProfile.pitRole === 'admin');
+            // creator can delete his own assignments
+            hasDeleteRight = hasDeleteRight||(item.createdBy === userProfile.userId);
+
+            return { id, assignedOn, createdBy, evaluationTemplate, hasDeleteRight, assignedUser, linkedTo, assignmentStatus, supplier, complete_url };
         });
     } else {
-        evaluationAssignments =[];
+        evaluationAssignments = [];
     }
     return evaluationAssignments;
 }

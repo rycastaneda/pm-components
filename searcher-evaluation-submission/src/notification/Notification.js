@@ -24,7 +24,7 @@ class Notification extends Component {
 
     render() {
         let { messages } = this.props;
-        let errorClass ='';
+        let errorClass ='success';
         let messagesCount = messages.length;
         if ((this.props.messages.length)&&(this.props.messages.find(item => item.messageType === MESSAGE_TYPE_ERROR))) {
             errorClass = 'error';

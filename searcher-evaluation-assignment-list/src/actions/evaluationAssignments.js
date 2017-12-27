@@ -93,7 +93,8 @@ export function onEvaluationTemplatesPageChange(currPage) {
         selectedAssignedTo,
         selectedSupplier,
         selectedAssignedOn,
-        preferred_supplier_id } = getState().evaluationAssignments;
+        preferred_supplier_id,
+        userProfile } = getState().evaluationAssignments;
         let queryParams = {
             maxRowLength,
             currentPage:currPage,
@@ -103,7 +104,7 @@ export function onEvaluationTemplatesPageChange(currPage) {
             selectedSupplier,
             selectedAssignedOn,
             preferred_supplier_id };
-        getPromiseForAssignmentService(getAssignmentServiceUrlFor (queryParams), queryParams, dispatch);
+        getPromiseForAssignmentService(getAssignmentServiceUrlFor (queryParams), queryParams, userProfile, dispatch);
     };
 }
 
@@ -114,7 +115,8 @@ export function onEvaluationTemplatesDisplayedLengthChange(perPage) {
         selectedAssignedTo,
         selectedSupplier,
         selectedAssignedOn,
-        selectedEntityInstanceId } = getState().evaluationAssignments;
+        selectedEntityInstanceId,
+        userProfile } = getState().evaluationAssignments;
         let queryParams = {
             maxRowLength:perPage,
             currentPage:1,
@@ -130,7 +132,7 @@ export function onEvaluationTemplatesDisplayedLengthChange(perPage) {
             perPage
         });
 
-        getPromiseForAssignmentService(getAssignmentServiceUrlFor(queryParams), queryParams, dispatch);
+        getPromiseForAssignmentService(getAssignmentServiceUrlFor(queryParams), queryParams, userProfile, dispatch);
     };
 }
 
@@ -144,7 +146,7 @@ export function onEvaluationAssignmentFilterChange({ selectedStatus,
 
     return (dispatch, getState) => {
         const state= getState().evaluationAssignments;
-        let { maxRowLength, currentPage } = state;
+        let { maxRowLength, currentPage, userProfile } = state;
         let queryParams = {
             maxRowLength,
             currentPage,
@@ -155,18 +157,17 @@ export function onEvaluationAssignmentFilterChange({ selectedStatus,
             selectedSupplier,
             selectedAssignedOn,
             selectedEntityInstanceId };
-        getPromiseForAssignmentService(getAssignmentServiceUrlFor(queryParams), queryParams, dispatch);
+        getPromiseForAssignmentService(getAssignmentServiceUrlFor(queryParams), queryParams, userProfile, dispatch);
     };
 }
 
-function getPromiseForAssignmentService(url, queryParams, dispatch) {
+function getPromiseForAssignmentService(url, queryParams, userProfile, dispatch) {
     return getPromiseForService(url, dispatch)
     .then((response) => {
         if (response) {
-            let result = getDataFromAssignmentService(response.data);
+            let result = getDataFromAssignmentService(response.data, userProfile);
             dispatch({ type:EVALUATION_ASSIGMENTS_FETCHED, ...result, ...queryParams });
         }
-
     });
 }
 

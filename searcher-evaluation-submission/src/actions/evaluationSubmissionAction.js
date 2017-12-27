@@ -9,18 +9,20 @@ import { UPDATE_TEMPLATE_ASSIGNMENT,
     DOCUMENT_DELETE,
     REQUEST_FAILED,
     QUESTION_UPDATED,
-    ASSIGNMENT_SUBMITTED,
     CRITERIA_UPDATED,
     IS_BUSY } from '../constants/ActionTypes';
-
-import { MESSAGE_TYPE_ERROR, MESSAGE_TYPE_SUCCESS } from '../constants';
+import { MESSAGE_TYPE_ERROR, MESSAGE_TYPE_SUCCESS } from '../notification/constants';
 import { showNotification } from '../notification/actions';
+import { showModal } from '../modal/actions';
+
+const EVALUATION_ASSIGNMENT_LIST_PAGE = '/searcher/evaluation_assignments/list';
 
 export function initialize(requestedAssignmentId) {
     return (dispatch) => {
         return axios.get('/evaluation-template-assignments/'+requestedAssignmentId+'?include=template.criteria.questions')
         .then((response) => {
-            let result =parseInitialize(response.data, requestedAssignmentId);
+            let result = parseInitialize(response.data, requestedAssignmentId);
+
             dispatch({ type:UPDATE_TEMPLATE_ASSIGNMENT, ...result });
         })
         .catch((error) => {
@@ -144,12 +146,15 @@ export function submitAssignment() {
     return (dispatch, getState) => {
         let { evaluationSubmission } = getState();
         let { assignmentId } = evaluationSubmission;
-        let endpoint = '/evaluation-template-assignments/'+assignmentId+'/finish';
+        let endpoint = '/evaluation-template-assignments/'+assignmentId+'/submit';
         let promise = axios.post(endpoint);
         promise.then(() => {
-            dispatch({ type: ASSIGNMENT_SUBMITTED });
-            let message = 'Assignment submitted successfully!';
-            dispatch(showNotification(MESSAGE_TYPE_SUCCESS, message));
+            let backButtonTitle = 'Back to Assignments';
+            let message =  'Assignment submitted successfully!';
+            let title = 'Assignment submission';
+            dispatch(showModal(title, message, backButtonTitle, () => {
+                window.location.href = EVALUATION_ASSIGNMENT_LIST_PAGE;
+            }));
         })
         .catch((error) => {
             if (error.response) {
@@ -210,10 +215,11 @@ function updateQuestion(question, assignmentId, dispatch) {
         promise = axios.post(endpoint, parsedQuestionData);
     }
     promise.then(() => {
-        dispatch({ type: QUESTION_UPDATED });
+        dispatch({ type: QUESTION_UPDATED, question });
     }).catch((error) => {
         if (error.response) {
             let { errors } = error.response.data;
+
             if (typeof(errors)==='object') {
                 let message = errors.detail;
                 dispatch(promptError(message));

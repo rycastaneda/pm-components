@@ -1,5 +1,4 @@
 import normalize from 'json-api-normalizer';
-
 export function parseDataForUpdateQuestion(question) {
 
     return {
@@ -28,6 +27,7 @@ export function parseDataForUpdateQuestion(question) {
     };
 
 }
+
 export function parseInitialize(data, assignmentId) {
     let result = { assignmentId };
     let { evaluationTemplateAssignments,
@@ -95,7 +95,6 @@ export function parseInitialize(data, assignmentId) {
                 selectedDefinition:null,
                 isAttempted:false
             };
-
         });
     }
 

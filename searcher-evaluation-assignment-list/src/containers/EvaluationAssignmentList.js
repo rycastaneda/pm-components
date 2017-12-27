@@ -70,8 +70,7 @@ class EvaluationAssignmentList extends Component {
                 />
                 <AssignmentsTable
                     isBusy = {this.props.isBusy}
-                    tableData = {this.props.evaluationAssignments}
-                    isDeletable = {true}
+                    tableData = {this.props.evaluationAssignments}                    
                     onAssignmentDelete = {this.onAssignmentDelete}
                     onAssignmentMarkAsInProgress = {this.onAssignmentMarkAsInProgress}
                     rowCountList = {MAXROWS_LIST}
