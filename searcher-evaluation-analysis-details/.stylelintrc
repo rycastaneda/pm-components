@@ -69,7 +69,7 @@
         "max-line-length": 120,
         "max-empty-lines": 1,
         "max-nesting-depth": [
-            3,
+            7,
             {
                 "ignore": [
                     "at-rules-without-declaration-blocks"
