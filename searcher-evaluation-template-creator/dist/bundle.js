@@ -4655,7 +4655,6 @@
 	                                    isAllowUpload: false,
 	                                    isCommentRequired: false,
 	                                    isAllowScaleDefinitions: false,
-	                                    isMaximised: true,
 	                                    type: 0,
 	                                    scaleDefinitions: [],
 	                                    documentIds: [],
@@ -7666,9 +7665,8 @@
 	        }
 	    }, {
 	        key: 'updateTitleText',
-	        value: function updateTitleText(value) {
-
-	            this.props.dispatch((0, _evaluationTemplateCreator.updateTemplate)(value, this.props.id));
+	        value: function updateTitleText() {
+	            this.props.dispatch((0, _evaluationTemplateCreator.updateTemplate)(this.state.title, this.props.id));
 	            clearInterval(this.intervalId_update);
 	        }
 	    }, {
@@ -7677,7 +7675,7 @@
 	            clearInterval(this.intervalId_update);
 	            this.setState({ title: event.target.value, isTitleError: !event.target.value.length });
 	            if (this.props.id && event.target.value) {
-	                this.intervalId_update = setInterval(this.updateTitleText(event.target.value), _constants.INPUT_SYNC_INTERVAL);
+	                this.intervalId_update = setInterval(this.updateTitleText, _constants.INPUT_SYNC_INTERVAL);
 	            }
 	        }
 	    }, {

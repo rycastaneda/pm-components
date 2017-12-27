@@ -51,19 +51,21 @@ class EvaluationTemplateCreator extends Component {
             this.props.dispatch(addTemplate(this.state.title));
         }
     }
-    updateTitleText(value) {
 
-        this.props.dispatch(updateTemplate(value, this.props.id));
+    updateTitleText() {
+        this.props.dispatch(updateTemplate(this.state.title, this.props.id));
         clearInterval(this.intervalId_update);
 
     }
+
     onTitleTextChange(event) {
         clearInterval(this.intervalId_update);
         this.setState({ title:event.target.value, isTitleError:!event.target.value.length  });
         if (this.props.id&&event.target.value) {
-            this.intervalId_update = setInterval(this.updateTitleText(event.target.value), INPUT_SYNC_INTERVAL);
+            this.intervalId_update = setInterval(this.updateTitleText, INPUT_SYNC_INTERVAL);
         }
     }
+
     getTitleInputStyle() {
         let style = 'form-control';
         if (this.state.isTitleError) {
@@ -73,6 +75,7 @@ class EvaluationTemplateCreator extends Component {
         }
         return style;
     }
+
     render() {
         const { allCriteriaIndexes, id } = this.props;
         return (
@@ -116,47 +119,46 @@ class EvaluationTemplateCreator extends Component {
                     </div>
                 </div>
 
-                        {
-                            allCriteriaIndexes.map((criteriaId, index) =>
-                            <div className="row" key = {index}>
-                                <Criteria
-                                    criteriaId = {criteriaId}/>
-                            </div>
-                            )
-                        }
-                        {
-                            (id!==null)?
-                                (allCriteriaIndexes.length)?
-                                    <div>
-                                        <div className="row">
-                                            <div className="col-md-12">
-                                                <div className="form-group new-criteria">
-                                                    <button className="btn"
-                                                    onClick={() => {
-                                                        this.setState({ showAdd: !this.state.showAdd });
-                                                        this.props.dispatch(minimiseAllCriteria());
-                                                    }}>
-                                                    <i className="fa fa-plus"></i>Add New Criteria</button>
-                                                </div>
-                                            </div>
+                {
+                    allCriteriaIndexes.map((criteriaId, index) =>
+                    <div className="row" key = {index}>
+                        <Criteria
+                            criteriaId = {criteriaId}/>
+                    </div>
+                    )
+                }
+                {
+                    (id!==null)?
+                        (allCriteriaIndexes.length)?
+                            <div>
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <div className="form-group new-criteria">
+                                            <button className="btn"
+                                            onClick={() => {
+                                                this.setState({ showAdd: !this.state.showAdd });
+                                                this.props.dispatch(minimiseAllCriteria());
+                                            }}>
+                                            <i className="fa fa-plus"></i>Add New Criteria</button>
                                         </div>
-                                            {
-                                                this.state.showAdd?
-                                                    <div className="row"><Criteria criteriaId={null}/></div>
-                                                    :null
-                                                }
+                                    </div>
+                                </div>
+                                    {
+                                        this.state.showAdd?
+                                            <div className="row"><Criteria criteriaId={null}/></div>
+                                            :null
+                                        }
 
-                                    </div>
-                                    :
-                                    <div className="row">
-                                        <Criteria criteriaId={null}/>
-                                    </div>
-                                :null
-                        }
+                            </div>
+                            :
+                            <div className="row">
+                                <Criteria criteriaId={null}/>
+                            </div>
+                        :null
+                }
                 <div className="row">
                     <div className={`col-md-12 text-right ${id !== null ? 'show' : 'hidden'}`}>
                         <hr />
-
                         <div className="form-group">
                             <ul className="list-inline">
                                 <li>

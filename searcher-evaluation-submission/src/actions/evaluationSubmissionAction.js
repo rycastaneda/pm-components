@@ -29,16 +29,10 @@ export function initialize(requestedAssignmentId) {
 
             if (error.response) {
                 let { errors } = error.response.data;
-                if (typeof(errors)==='object') {
-                    let message = errors.detail;
+                errors.forEach((er) => {
+                    let message = er.detail;
                     dispatch(promptError(message));
-                } else {
-                    errors.forEach((er) => {
-                        let message = er.detail;
-                        dispatch(promptError(message));
-                    });
-                }
-
+                });
             } else {
                 let { message } = error;
                 dispatch(promptError(message));
@@ -122,16 +116,10 @@ export function deleteDocument(questionId, documentId) {
 
             if (error.response) {
                 let { errors } = error.response.data;
-                if (typeof(errors)==='object') {
-                    let message = errors.detail;
+                errors.forEach((er) => {
+                    let message = er.detail;
                     dispatch(promptError(message));
-                } else {
-                    errors.forEach((er) => {
-                        let message = er.detail;
-                        dispatch(promptError(message));
-                    });
-                }
-
+                });
             } else {
                 let { message } = error;
                 dispatch(promptError(message));
@@ -159,15 +147,10 @@ export function submitAssignment() {
         .catch((error) => {
             if (error.response) {
                 let { errors } = error.response.data;
-                if (typeof(errors)==='object') {
-                    let message = errors.detail;
+                errors.forEach((er) => {
+                    let message = er.detail;
                     dispatch(promptError(message));
-                } else {
-                    errors.forEach((er) => {
-                        let message = er.detail;
-                        dispatch(promptError(message));
-                    });
-                }
+                });
 
             } else {
                 let { message } = error;
