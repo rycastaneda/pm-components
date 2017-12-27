@@ -64,7 +64,7 @@ class AssignmentsTable extends Component {
         this.props.onAssignmentMarkAsInProgress(id);
         this.hideMenu();
     }
-    renderMoreButton(assignment, complete_url, isDeletable, statusId) {        
+    renderMoreButton(assignment, complete_url, isDeletable, statusId) {
         let isInProgressStatus = (statusId ==='2');
         let isComplete = (statusId === '3');
         let { id } = assignment;
