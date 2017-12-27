@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Criteria from './Criteria';
 import { initialize, submitAssignment } from '../actions/evaluationSubmissionAction';
 import Notification from '../notification/Notification';
+import Modal from '../modal/Modal';
 // import Button from '../components/Button';
 
 class EvaluationSubmission extends Component {
@@ -29,6 +30,7 @@ class EvaluationSubmission extends Component {
         return (
             <div id="searcher-evaluation-submission" ref ={ element => this.htmlElement = element }>
                 <Notification />
+                <Modal />
                 <div className="row">
                     <div className="col-sm-6">
                         <h1>{title}</h1>
