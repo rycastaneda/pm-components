@@ -11,7 +11,7 @@ import Pagination from '../../components/Pagination/main';
 class SupplierInteractionsContainer extends Component {
     componentDidMount() {
         const { actions } = this.props;
-        actions.fetchSupplierInteractions('/preferred-suppliers/639/interactions');
+        actions.fetchSupplierInteractions('/preferred-suppliers/8/interactions');
     }
 
     render() {

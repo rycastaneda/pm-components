@@ -6,7 +6,8 @@ import { API_DATA_REQUEST, API_DATA_SUCCESS } from '../../middleware/api';
 const initialState = {
     interactions: [],
     isLoading: false,
-    maxRows: [10, 15, 30],
+    maxRowsList: ['10', '15', '30'],
+    maxRowsSelected: '15',
 };
 
 const reducer = (state = initialState, action) => {

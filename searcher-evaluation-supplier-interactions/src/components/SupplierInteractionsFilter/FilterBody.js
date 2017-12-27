@@ -64,6 +64,7 @@ const mapStateToProps = (state, ownProps) => {
         interactionStatuses,
         filterInteractionStatus,
     } = state.interactionsFilter;
+
     return {
         ...ownProps,
         toggleFilterShow,

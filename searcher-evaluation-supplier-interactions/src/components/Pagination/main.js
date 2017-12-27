@@ -11,12 +11,12 @@ class Pagintation extends Component {
             <div className="row">
                 <div className="col-sm-6 form-inline">
                     <select name="per_page" className="form-control">
-                        <option selected="selected">15</option>
+                        <option>15</option>
                         <option>30</option>
                         <option>60</option>
                         <option>90</option>
                         <option>120</option>
-                        <option value="174">Show All</option>
+                        <option>Show All</option>
                     </select>
                     <PaginationList className="pagination">
                         <li className="active">
