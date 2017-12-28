@@ -150,6 +150,7 @@ class EvaluationAssignment extends Component {
                                         labelKey="fullName"
                                         closeOnSelect={true}
                                         multi
+                                        backspaceToRemoveMessage={""}
                                         onChange={actions.updateSelectedAssignees}
                                         options={evaluationAssignees}
                                         placeholder="Select Assignees"
