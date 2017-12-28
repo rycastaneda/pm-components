@@ -22934,7 +22934,7 @@
 	                            _react2.default.createElement(
 	                                'td',
 	                                { colSpan: '10', className: 'text-center td-no-link' },
-	                                'Click \'Add Template\' to create an evaluation template'
+	                                'Click \'Create Template\' to create an evaluation template'
 	                            )
 	                        ) : this.props.tableData.map(function (item, index) {
 	                            return _react2.default.createElement(

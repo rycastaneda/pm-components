@@ -123,7 +123,7 @@ class TemplatesTable extends Component {
                 : (this.props.tableData.length===0)?
                     <tr>
                         <td colSpan="10" className="text-center td-no-link">
-                            Click 'Add Template' to create an evaluation template
+                            Click 'Create Template' to create an evaluation template
                         </td>
                     </tr>
                 : this.props.tableData.map((item, index) =>
