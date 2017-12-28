@@ -68,7 +68,7 @@ class TemplatesTable extends Component {
                     </li>
                     { !active&&(instances<1)?
                         <li>
-                            <a disabled ="true" href={edit_url} ><i className="fa fa-edit"></i> Edit</a>
+                            <a href={edit_url} ><i className="fa fa-edit"></i> Edit</a>
                         </li>
                         :
                         null
