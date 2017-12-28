@@ -22794,7 +22794,6 @@
 	        value: function renderMoreButton(id, edit_url, preview_url, active, instances) {
 	            var _this2 = this;
 
-	            window.console.log(active, instances);
 	            instances = Number(instances);
 	            instances;
 	            if (this.state.menuVisibleItemId === id) {
@@ -22832,7 +22831,7 @@
 	                            null,
 	                            _react2.default.createElement(
 	                                'a',
-	                                { disabled: 'true', href: edit_url },
+	                                { href: edit_url },
 	                                _react2.default.createElement('i', { className: 'fa fa-edit' }),
 	                                ' Edit'
 	                            )

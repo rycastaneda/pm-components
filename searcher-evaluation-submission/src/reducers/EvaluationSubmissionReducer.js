@@ -69,54 +69,48 @@ export function evaluationSubmission(state = INITIAL_EVALUATION_SUBMISSION_STATE
                 let { criteria } = action;
                 let { criteriaByIndex } = state;
                 criteriaByIndex[criteria.id] = criteria;
-
                 return { ...state, criteriaByIndex };
-
             }
         case DOCUMENT_UPLOAD_SUCCESS: {
 
             let { uploadedDocumentByIndex } = state;
             let document = uploadedDocumentByIndex[action.documentId];
-
-            uploadedDocumentByIndex[action.documentId] =Object.assign({}, document, {
-                status: UPLOAD_SUCCESS,
-                progress: 100,
-                referenceId:action.newDocumentId,
-                referenceUrl:action.url
-            });
-
+            let status = UPLOAD_SUCCESS;
+            let progress = 100;
+            let referenceId = action.newDocumentId;
+            let referenceUrl= action.url;
+            document = { ...document, status, progress, referenceId, referenceUrl };
+            uploadedDocumentByIndex[action.documentId] = document;
             return { ...state, uploadedDocumentByIndex };
         }
         case DOCUMENT_UPLOAD_FAILED: {
             let { uploadedDocumentByIndex } = state;
             let document = uploadedDocumentByIndex[action.documentId];
-            uploadedDocumentByIndex[action.documentId] = Object.assign({}, document, {
-                status: UPLOAD_FAILED,
-                progress: action.progress
-            });
+            let status = UPLOAD_FAILED;
+            let { progress } = action;
+            document = { ...document, status, progress };
+            uploadedDocumentByIndex[action.documentId] = document;
 
             return { ...state, uploadedDocumentByIndex };
         }
         case DOCUMENT_UPLOAD_IN_PROGRESS: {
             let { uploadedDocumentByIndex } = state;
             let document = uploadedDocumentByIndex[action.documentId];
-            uploadedDocumentByIndex[action.documentId] = Object.assign({}, document, {
-                status: UPLOAD_IN_PROGRESS,
-                progress: action.progress
-            });
-
+            let status = UPLOAD_IN_PROGRESS;
+            let { progress } = action;
+            document = { ...document, status, progress };
+            uploadedDocumentByIndex[action.documentId] = document;
             return { ...state, uploadedDocumentByIndex };
         }
         case DOCUMENTS_UPLOADING: {
             let { uploadedDocumentByIndex, questionByIndex } = state;
-
             action.documents.map((document) => {
                 questionByIndex[action.questionId].uploadedDocuments.push(document.id);
-                uploadedDocumentByIndex[document.id] =Object.assign({}, document, {
-                    status: UPLOAD_IN_PROGRESS,
-                    name: document.name,
-                    progress: 15
-                });
+                let status = UPLOAD_IN_PROGRESS;
+                let progress = 15;
+                let { name } = document;
+                document = { ...document, status, name, progress };
+                uploadedDocumentByIndex[document.id] = document;
             });
             return { ...state, uploadedDocumentByIndex };
         }
@@ -125,7 +119,6 @@ export function evaluationSubmission(state = INITIAL_EVALUATION_SUBMISSION_STATE
             let { documentId, questionId } = action;
             let question = questionByIndex[questionId];
             question.uploadedDocuments = question.uploadedDocuments.filter(id => id!== documentId);
-
             delete uploadedDocumentByIndex[String(documentId)];
             questionByIndex[questionId] = question;
             return Object.assign({}, state, { uploadedDocumentByIndex, questionByIndex });
