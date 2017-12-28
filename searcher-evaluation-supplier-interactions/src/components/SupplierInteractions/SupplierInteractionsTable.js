@@ -12,6 +12,7 @@ const SupplierInteractionsTable = ({ interactions, isLoading }) => (
                     <th>Interaction</th>
                     <th>Initiated by</th>
                     <th>Related to</th>
+                    <th>Type</th>
                     <th>Status</th>
                     <th>More</th>
                 </tr>

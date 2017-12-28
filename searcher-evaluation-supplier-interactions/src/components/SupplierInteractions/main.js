@@ -7,11 +7,12 @@ import * as actions from './actions';
 import SupplierInteractionsFilter from '../../components/SupplierInteractionsFilter/main';
 import SupplierInteractionsTable from './SupplierInteractionsTable';
 import Pagination from '../../components/Pagination/main';
+import { selectFromStore } from '../../utils/selectFromStore';
 
 class SupplierInteractionsContainer extends Component {
     componentDidMount() {
-        const { actions } = this.props;
-        actions.fetchSupplierInteractions('/preferred-suppliers/8/interactions');
+        const { apiActions } = this.props;
+        apiActions.fetchInteractions('8');
     }
 
     render() {
@@ -41,7 +42,10 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const { interactions, isLoading } = state.supplierInteractions;
+    const { isLoading } = state.supplierInteractions;
+    const { supplierId } = ownProps;
+    const interactions = selectFromStore(state.supplierInteractions, `/preferred-suppliers/${supplierId}/interactions`, 'interactions');
+    window.console.log('map state -> interactions: ', interactions);
     return {
         ...ownProps,
         interactions,

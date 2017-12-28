@@ -1,31 +1,8 @@
-import axios from 'axios';
 import * as actionTypes from './actionTypes';
 
-export const fetchSupplierInteractions = apiUrl => (dispatch) => {
-    dispatch({
-        type: actionTypes.SUPPLIER_INTERACTIONS_REQUEST_START,
-    });
-
-    console.log(apiUrl);
-
-    axios
-        .get(apiUrl)
-        .then((response) => {
-            // might normalise response here
-            console.log('response: ', response);
-            dispatch({
-                type: actionTypes.SUPPLIER_INTERACTIONS_REQUEST_SUCCESS,
-                interactions: response.data.interactions,
-            });
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-};
-
-export const testAction = (paramBool) => {
+export const onRowsPerPageUpdate = (rows) => {
     return {
-        type: actionTypes.SUPPLIER_INTERACTIONS_REQUEST_START,
-        paramBool,
+        type: actionTypes.SUPPLIER_INTERACTIONS_SHOW_ROWS_CHANGE_UPDATE,
+        rows,
     };
 };

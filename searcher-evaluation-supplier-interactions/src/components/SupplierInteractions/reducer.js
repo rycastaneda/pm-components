@@ -8,6 +8,7 @@ const initialState = {
     isLoading: false,
     maxRowsList: ['10', '15', '30'],
     maxRowsSelected: '15',
+    meta: {},
 };
 
 const reducer = (state = initialState, action) => {
@@ -22,17 +23,10 @@ const reducer = (state = initialState, action) => {
         case API_DATA_REQUEST:
             return merge(state, { meta: { [action.endpoint]: { loading: true } } });
 
-        case actions.SUPPLIER_INTERACTIONS_REQUEST_START:
+        case actions.SUPPLIER_INTERACTIONS_SHOW_ROWS_CHANGE_UPDATE:
             return {
                 ...state,
-                isLoading: true,
-            };
-
-        case actions.SUPPLIER_INTERACTIONS_REQUEST_SUCCESS:
-            return {
-                ...state,
-                interactions: action.interactions,
-                isLoading: false,
+                maxRowsSelected: action.rows,
             };
 
         default:

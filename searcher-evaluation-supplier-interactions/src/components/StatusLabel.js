@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const setStatusClass = (status) => {
-    if (status === 'active') {
+    if (status === 'Sent') {
         return 'bs-label-success';
     }
     return 'bs-label-danger';
 };
 
 const StatusLabel = ({ status }) => (
-    <span className={`bs-label ${setStatusClass(status)}`}>Invited</span>
+    <span className={`bs-label ${setStatusClass(status)}`}>{status}</span>
 );
 
 StatusLabel.propTypes = {
