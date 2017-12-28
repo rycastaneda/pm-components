@@ -11,7 +11,7 @@ const TableRow = ({ rowItem }) => (
             </span>
         </td>
         <td className="td-center nowrap">{`${rowItem.staffFirstName} ${rowItem.staffLastName}`}</td>
-        <td className="td-center nowrap">{rowItem.linkedToLabel}</td>
+        <td className="td-center nowrap">{rowItem.linkedToLabel ? rowItem.linkedToLabel : 'No relation'}</td>
         <td className="td-center nowrap">{rowItem.type}</td>
         <td className="td-center nowrap">
             <StatusLabel status={`${rowItem.status}`} />

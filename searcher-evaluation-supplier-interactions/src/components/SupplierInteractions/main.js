@@ -7,7 +7,7 @@ import * as actions from './actions';
 import SupplierInteractionsFilter from '../../components/SupplierInteractionsFilter/main';
 import SupplierInteractionsTable from './SupplierInteractionsTable';
 import Pagination from '../../components/Pagination/main';
-import { selectFromStore } from '../../utils/selectFromStore';
+import { selectFromStore, getLoadingForEndpoint } from '../../utils/reduxApiUtils';
 
 class SupplierInteractionsContainer extends Component {
     componentDidMount() {
@@ -16,11 +16,11 @@ class SupplierInteractionsContainer extends Component {
     }
 
     render() {
-        const { interactions, isLoading } = this.props;
+        const { interactions, loading } = this.props;
         return (
             <div className="searcher-evaluation-template-list">
                 <SupplierInteractionsFilter />
-                <SupplierInteractionsTable isLoading={isLoading} interactions={interactions} />
+                <SupplierInteractionsTable isLoading={loading} interactions={interactions} />
                 <Pagination />
             </div>
         );
@@ -31,7 +31,7 @@ SupplierInteractionsContainer.propTypes = {
     interactions: PropTypes.array.isRequired,
     apiActions: PropTypes.object,
     actions: PropTypes.object,
-    isLoading: PropTypes.bool.isRequired,
+    loading: PropTypes.bool.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -42,14 +42,14 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const { isLoading } = state.supplierInteractions;
     const { supplierId } = ownProps;
     const interactions = selectFromStore(state.supplierInteractions, `/preferred-suppliers/${supplierId}/interactions`, 'interactions');
-    window.console.log('map state -> interactions: ', interactions);
+    const loading = getLoadingForEndpoint(state.supplierInteractions, `/preferred-suppliers/${supplierId}/interactions`);
+
     return {
         ...ownProps,
         interactions,
-        isLoading,
+        loading,
     };
 };
 
