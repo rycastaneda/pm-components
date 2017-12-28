@@ -22444,6 +22444,8 @@
 	    }, {
 	        key: 'onSelectedDateChange',
 	        value: function onSelectedDateChange(date) {
+	            // set date to null when cleared
+	            date = date === '' ? null : date;
 	            this.setState({ selectedDate: date });
 	        }
 	    }, {

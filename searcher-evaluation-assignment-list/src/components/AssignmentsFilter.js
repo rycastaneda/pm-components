@@ -34,6 +34,8 @@ class EvaluationAssignmentsFilter extends Component {
         this.setState({ selectedLinkedTo: val });
     }
     onSelectedDateChange(date) {
+        // set date to null when cleared
+        date = (date ==='')?null:date;
         this.setState({ selectedAssignedOn: date });
     }
     onAssignedToChange(val) {

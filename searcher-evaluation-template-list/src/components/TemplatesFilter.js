@@ -38,6 +38,8 @@ class EvaluationTemplatesFilter extends Component {
     }
 
     onSelectedDateChange(date) {
+        // set date to null when cleared
+        date = (date ==='')?null:date;
         this.setState({ selectedDate: date });
     }
 
