@@ -1452,14 +1452,14 @@
 	                }
 	            }
 	        });
-	        window.console.log('data to be sent', data.relationships.chairStaff);
+
 	        _axios2.default.post('/evaluation-template-assignments', data).then(function (response) {
 	            dispatch({
 	                type: actionTypes.ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_SUCCESS,
 	                response: response
 	            });
 	            // back to assignments list page
-	            // window.location.href = '/searcher/evaluation_assignments/list';
+	            window.location.href = '/searcher/evaluation_assignments/list';
 	        }).catch(function (error) {
 	            throw error;
 	        });
