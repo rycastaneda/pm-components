@@ -22794,6 +22794,7 @@
 	        value: function renderMoreButton(id, edit_url, preview_url, active, instances) {
 	            var _this2 = this;
 
+	            window.console.log(active, instances);
 	            instances = Number(instances);
 	            instances;
 	            if (this.state.menuVisibleItemId === id) {
@@ -22836,7 +22837,7 @@
 	                                ' Edit'
 	                            )
 	                        ) : null,
-	                        !active && instances < 1 ? null : _react2.default.createElement(
+	                        !active ? null : _react2.default.createElement(
 	                            'li',
 	                            null,
 	                            _react2.default.createElement(
@@ -22846,8 +22847,7 @@
 	                                        return _this2.onTemplateToggleActivation(id, !active);
 	                                    } },
 	                                _react2.default.createElement('i', { className: 'fa fa-toggle-off' }),
-	                                ' ',
-	                                active ? ' Deactivate' : 'Activate'
+	                                'Deactivate'
 	                            )
 	                        )
 	                    )
@@ -23662,7 +23662,6 @@
 	    var maxRowLength = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
 	    var page = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : null;
 
-	    window.console.log(date, maxRowLength, page);
 	    var urlPostfix = 'meta=instances,completed';
 	    if (page) {
 	        urlPostfix += '&page=' + page;

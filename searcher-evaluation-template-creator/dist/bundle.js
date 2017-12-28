@@ -4656,6 +4656,7 @@
 	                                    isCommentRequired: false,
 	                                    isAllowScaleDefinitions: false,
 	                                    type: 0,
+	                                    isMaximised: true,
 	                                    scaleDefinitions: [],
 	                                    documentIds: [],
 	                                    isSaved: false,
@@ -7536,6 +7537,7 @@
 	    var criteriaByIndex = state.evaluationTemplateCreator.criteriaByIndex;
 
 	    var criteria = props.criteriaId ? criteriaByIndex[props.criteriaId] : (0, _dataParserUtil.createCriteria)();
+	    window.console.log(criteria);
 	    return { criteria: criteria };
 	}
 

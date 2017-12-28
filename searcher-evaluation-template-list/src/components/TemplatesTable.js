@@ -5,7 +5,6 @@ import Preloader from './PreloaderAnimation';
 
 class TemplatesTable extends Component {
 
-
     constructor(props) {
         super(props);
         this.actionDropdown= null;
@@ -74,12 +73,12 @@ class TemplatesTable extends Component {
                         :
                         null
                     }
-                    { !active&&(instances<1)?
+                    { !active?
                         null
                         :
                         <li>
                             <a href="javascript:;"
-                            onClick={ ()  => this.onTemplateToggleActivation(id, !(active))}><i className="fa fa-toggle-off"></i> {active?' Deactivate':'Activate'}
+                            onClick={ ()  => this.onTemplateToggleActivation(id, !(active))}><i className="fa fa-toggle-off"></i>Deactivate
                             </a>
                         </li>
                     }

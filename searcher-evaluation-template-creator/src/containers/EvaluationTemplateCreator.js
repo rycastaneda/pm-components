@@ -146,8 +146,8 @@ class EvaluationTemplateCreator extends Component {
                                     {
                                         this.state.showAdd?
                                             <div className="row"><Criteria criteriaId={null}/></div>
-                                            :null
-                                        }
+                                        :null
+                                    }
 
                             </div>
                             :
