@@ -156,7 +156,13 @@ class AssignmentsTable extends Component {
                     </td>
                 </tr>
                 :
-                    this.props.tableData.map(item =>
+                    this.props.tableData.length===0?
+                    <tr>
+                        <td colSpan="10" className="text-center td-no-link">
+                            Click 'Create Assignment' to create an evaluation assignment
+                        </td>
+                    </tr>
+                    :this.props.tableData.map(item =>
                        <tr key={item.id}>
                        <td className="nowrap">
                            {item.assignedOn}
@@ -196,7 +202,8 @@ class AssignmentsTable extends Component {
                     </select>
                     &nbsp;
                     {this.props.totalPages > 1?
-                    <ReactPaginate  previousLabel={"previous"}
+                    <ReactPaginate
+                              previousLabel={"previous"}
                               nextLabel={"next"}
                               breakLabel={<a href="">...</a>}
                               breakClassName={"break-me"}

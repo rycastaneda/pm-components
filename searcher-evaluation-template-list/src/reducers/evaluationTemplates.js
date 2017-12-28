@@ -30,10 +30,11 @@ export function evaluationTemplates(state = INITIAL_DATA, action) {
         }
         case EVALUATION_TEMPLATES_FETCHED:
             {
-                let { templates, currentPage, totalPages, maxRowLength } = action;
+                let { templates, currentPage, totalPages, maxRowLength, queryParams } = action;
+                let { filterKeyword, filterDate, filterStatus, filterUserId } = queryParams;
                 let currentTemplateList = templates;
                 let isBusy = false;
-                return { ...state, isBusy, currentTemplateList, currentPage, totalPages, maxRowLength };
+                return { ...state, isBusy, currentTemplateList, currentPage, totalPages, maxRowLength, filterKeyword, filterDate, filterStatus, filterUserId };
             }
         case EVALUATION_TEMPLATE_UPDATED:
             {

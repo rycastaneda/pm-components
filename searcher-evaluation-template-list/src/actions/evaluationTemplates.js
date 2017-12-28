@@ -65,23 +65,26 @@ export function onEvaluationTemplatesPageChange(currPage) {
 export function onEvaluationTemplatesDisplayedLengthChange(perPage) {
     return (dispatch, getState) => {
         const { filterKeyword, filterStatus, filterDate, filterUserId }= getState().evaluationTemplates;
-        getPromiseForTemplateService(getTemplateServiceUrlFor(filterKeyword, filterStatus, filterDate, filterUserId, perPage, 1), dispatch);
+        let queryParams = { filterKeyword, filterStatus, filterDate, filterUserId };
+        getPromiseForTemplateService(getTemplateServiceUrlFor(filterKeyword, filterStatus, filterDate, filterUserId, perPage, 1), queryParams, dispatch);
     };
 }
 
-export function onEvaluationTemplatesFilterChange(keyword, status, date, userId) {
+export function onEvaluationTemplatesFilterChange(filterKeyword, filterStatus, filterDate, filterUserId) {
     return (dispatch, getState) => {
         const { maxRowLength, startIndex }= getState().evaluationTemplates;
-        getPromiseForTemplateService(getTemplateServiceUrlFor(keyword, status, date, userId, maxRowLength, startIndex), dispatch);
+        let queryParams = { filterKeyword, filterStatus, filterDate, filterUserId };
+        getPromiseForTemplateService(getTemplateServiceUrlFor(filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength, startIndex), queryParams, dispatch);
     };
 }
 
-function getPromiseForTemplateService(url, dispatch) {
+function getPromiseForTemplateService(url, queryParams, dispatch) {
     return getPromiseForService(url, dispatch)
     .then((response) => {
         const { templates, totalPages, currentPage, maxRowLength }= getDataFromTemplateService(response.data);
         dispatch({
             type: EVALUATION_TEMPLATES_FETCHED,
+            queryParams,
             templates,
             totalPages,
             currentPage,

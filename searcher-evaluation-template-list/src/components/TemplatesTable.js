@@ -121,8 +121,13 @@ class TemplatesTable extends Component {
                         <Preloader />
                     </td>
                 </tr>
-                :
-                this.props.tableData.map((item, index) =>
+                : (this.props.tableData.length===0)?
+                    <tr>
+                        <td colSpan="10" className="text-center td-no-link">
+                            Click 'Add Template' to create an evaluation template
+                        </td>
+                    </tr>
+                : this.props.tableData.map((item, index) =>
                     <tr key={index}>
                     <td className="nowrap">{item.title}</td>
                     <td className="td-center nowrap">{item.instances}</td>
