@@ -6,9 +6,23 @@ const Loader = ({ block, icon = '' }) => {
     return (
         <div className={mainClass}>
             <div className={mainClass + '__backdrop'} />
-            <i
-                className={`${mainClass}__spinner${icon} fa fa-spin fa-spinner`}
-            />
+            <div className="loading-animation">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+            </div>
         </div>
     );
 };
