@@ -104,7 +104,10 @@ export function addTemplate(title) {
         return axios.post(TEMPLATE_SERVICE_URL, data)
         .then((response) => {
             const template = response.data.data;
-            dispatch({ type:TEMPLATE_CREATED, title: template.attributes.title, id:Number(template.id) });
+            dispatch({ type:TEMPLATE_CREATED,
+                    title: template.attributes.title,
+                    id:Number(template.id)
+                });
         })
         .catch((error) => {
             let { message } = error;
@@ -367,44 +370,66 @@ export function onScaleDefinitionChange(criteriaId, questionId, typeDefinitionId
         serviceUrl += '/questions/'+questionId;
         serviceUrl += '/scale-definitions';
         const data = parseDataForScaleDefinition(typeDefinitionId, scaleDefinitionId, text, score);
+        let question = { ...getState().evaluationTemplateCreator.questionsByIndex[questionId] };
+        let promise;
+        if (scaleDefinitionId === undefined) {
 
-        if (scaleDefinitionId===undefined) {
-
-            return axios.post(serviceUrl, data)
+            promise = axios.post(serviceUrl, data)
                 .then((response) => {
                     let responseScaleDef = normalize(response.data, { endpoint:'evaluation-question-scale-definitions' });
                     responseScaleDef = build(responseScaleDef, 'evaluationQuestionScaleDefinitions')[0];
-                    let question = Object.assign({}, getState().evaluationTemplateCreator.questionsByIndex[questionId]);
-                    const index = question.scaleDefinitions.findIndex((item) => {
-                        return (item.id === responseScaleDef.typeDefinition.id);
+                    question.scaleDefinitions = question.scaleDefinitions.map((item) => {
+                        if (item.id === responseScaleDef.typeDefinition.id) {
+                            let label = text;
+                            let definitionId = response.data.data.id;
+                            return { ...item, label, definitionId };
+                        } else {
+                            return item;
+                        }
                     });
-                    question.scaleDefinitions[index].definitionId = response.data.data.id;
-                    question.scaleDefinitions[index].label = text;
                     dispatch({ type:QUESTION_UPDATE, criteriaId, question });
-                })
-                .catch((error) => {
-                    const { message } = error;
-                    dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
                 });
+
         } else {
             serviceUrl +=('/'+scaleDefinitionId);
-            return axios.patch(serviceUrl, data)
-                .then((response) => {
-                    let responseScaleDef = normalize(response.data, { endpoint:'evaluation-question-scale-definitions' });
-                    responseScaleDef = build(responseScaleDef, 'evaluationQuestionScaleDefinitions')[0];
-                    let question = { ...getState().evaluationTemplateCreator.questionsByIndex[questionId] };
-                    const index = question.scaleDefinitions.findIndex((item) => {
-                        return (item.id === responseScaleDef.typeDefinition.id);
+            if (text) {
+                promise = axios.patch(serviceUrl, data)
+                    .then((response) => {
+                        let responseScaleDef = normalize(response.data, { endpoint:'evaluation-question-scale-definitions' });
+                        responseScaleDef = build(responseScaleDef, 'evaluationQuestionScaleDefinitions')[0];
+
+                        question.scaleDefinitions = question.scaleDefinitions.map((item) => {
+                            if (item.id === responseScaleDef.typeDefinition.id) {
+                                let label = text;
+                                return { ...item, label };
+                            } else {
+                                return item;
+                            }
+                        });
+                        dispatch({ type:QUESTION_UPDATE, criteriaId, question });
                     });
 
-                    question.scaleDefinitions[index].label = text;
-                    dispatch({ type:QUESTION_UPDATE, criteriaId, question });
-                })
-                .catch((error) => {
-                    const { message } = error;
-                    dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
-                });
+            } else {
+                promise = axios.delete(serviceUrl)
+                    .then(() => {
+                        question.scaleDefinitions = question.scaleDefinitions.map((item) => {
+                            if (item.definitionId === scaleDefinitionId) {
+                                let { id, title, value } = item;
+                                return { id, title, value };
+                            } else {
+                                return item;
+                            }
+                        });
+                        dispatch({ type:QUESTION_UPDATE, criteriaId, question });
+                    });
+            }
         }
+        promise.catch((error) => {
+            const { message } = error;
+            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+        });
+
+        return promise;
     };
 }
 
