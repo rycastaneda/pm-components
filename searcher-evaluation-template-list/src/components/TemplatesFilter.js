@@ -112,7 +112,7 @@ class EvaluationTemplatesFilter extends Component {
                     <div className="col-xs-4">
                         <div className="form-group">
                             <label>Created By</label>
-                            <div className="input-group">
+
                             <Select
                             name="form-field-name"
                             value={this.state.selectedUser}
@@ -122,7 +122,7 @@ class EvaluationTemplatesFilter extends Component {
                             backspaceToRemoveMessage={''}
                             onChange={item =>
                                 this.setState({ selectedUser: item })} />
-                            </div>
+                        
                        </div>
                     </div>
                     <div className="col-xs-12 pad-top align-right">

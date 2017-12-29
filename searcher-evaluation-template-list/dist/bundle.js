@@ -25047,6 +25047,7 @@
 	        _this.onNormalSubmit = _this.onNormalSubmit.bind(_this);
 	        _this.onAdvancedSubmit = _this.onAdvancedSubmit.bind(_this);
 	        _this.onToggleFilter = _this.onToggleFilter.bind(_this);
+	        _this.onCancelFilter = _this.onCancelFilter.bind(_this);
 	        return _this;
 	    }
 
@@ -25060,6 +25061,11 @@
 	                    this.onNormalSubmit();
 	                }
 	            }
+	        }
+	    }, {
+	        key: 'onCancelFilter',
+	        value: function onCancelFilter() {
+	            this.onNormalSubmit();
 	        }
 	    }, {
 	        key: 'onKeywordChange',
@@ -25235,20 +25241,16 @@
 	                                    null,
 	                                    'Created By'
 	                                ),
-	                                _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'input-group' },
-	                                    _react2.default.createElement(_reactSelect2.default, {
-	                                        name: 'form-field-name',
-	                                        value: this.state.selectedUser,
-	                                        options: this.props.users,
-	                                        noResultsText: 'No match found',
-	                                        placeholder: 'Any User',
-	                                        backspaceToRemoveMessage: '',
-	                                        onChange: function onChange(item) {
-	                                            return _this2.setState({ selectedUser: item });
-	                                        } })
-	                                )
+	                                _react2.default.createElement(_reactSelect2.default, {
+	                                    name: 'form-field-name',
+	                                    value: this.state.selectedUser,
+	                                    options: this.props.users,
+	                                    noResultsText: 'No match found',
+	                                    placeholder: 'Any User',
+	                                    backspaceToRemoveMessage: '',
+	                                    onChange: function onChange(item) {
+	                                        return _this2.setState({ selectedUser: item });
+	                                    } })
 	                            )
 	                        ),
 	                        _react2.default.createElement(
@@ -25262,7 +25264,7 @@
 	                                    null,
 	                                    _react2.default.createElement(
 	                                        'button',
-	                                        { type: 'button', className: 'btn btn-sm btn-danger', onClick: this.onToggleFilter },
+	                                        { type: 'button', className: 'btn btn-sm btn-danger', onClick: this.onCancelFilter },
 	                                        _react2.default.createElement('i', { className: 'fa fa-ban' }),
 	                                        'Cancel'
 	                                    )
@@ -26278,7 +26280,8 @@
 	            firstName = user.firstName,
 	            lastName = user.lastName;
 
-	        return { id: userId, firstName: firstName, lastName: lastName };
+	        var label = firstName + ' ' + lastName;
+	        return { id: userId, firstName: firstName, lastName: lastName, label: label };
 	    });
 	}
 
