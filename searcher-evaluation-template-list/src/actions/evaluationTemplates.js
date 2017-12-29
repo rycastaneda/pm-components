@@ -37,6 +37,7 @@ export function changeTemplateStatus(id, active) {
 
 export function initialize() {
     return (dispatch, getState) => {
+        dispatch(isBusy(true));
         const { filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength, currentPage }= getState().evaluationTemplates;
         axios.all([
             axios.get('staff'),
@@ -57,6 +58,7 @@ export function initialize() {
 
 export function onEvaluationTemplatesPageChange(currPage) {
     return (dispatch, getState) => {
+        dispatch(isBusy(true));
         const { filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength }= getState().evaluationTemplates;
         getPromiseForTemplateService(getTemplateServiceUrlFor(filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength, currPage), dispatch);
     };
@@ -64,6 +66,7 @@ export function onEvaluationTemplatesPageChange(currPage) {
 
 export function onEvaluationTemplatesDisplayedLengthChange(perPage) {
     return (dispatch, getState) => {
+        dispatch(isBusy(true));
         const { filterKeyword, filterStatus, filterDate, filterUserId }= getState().evaluationTemplates;
         let queryParams = { filterKeyword, filterStatus, filterDate, filterUserId };
         getPromiseForTemplateService(getTemplateServiceUrlFor(filterKeyword, filterStatus, filterDate, filterUserId, perPage, 1), queryParams, dispatch);
@@ -72,6 +75,7 @@ export function onEvaluationTemplatesDisplayedLengthChange(perPage) {
 
 export function onEvaluationTemplatesFilterChange(filterKeyword, filterStatus, filterDate, filterUserId) {
     return (dispatch, getState) => {
+        dispatch(isBusy(true));
         const { maxRowLength, startIndex }= getState().evaluationTemplates;
         let queryParams = { filterKeyword, filterStatus, filterDate, filterUserId };
         getPromiseForTemplateService(getTemplateServiceUrlFor(filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength, startIndex), queryParams, dispatch);

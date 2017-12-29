@@ -77,7 +77,7 @@
 
 	var _redux = __webpack_require__(230);
 
-	var _reactRedux = __webpack_require__(65);
+	var _reactRedux = __webpack_require__(64);
 
 	var _reduxThunk = __webpack_require__(612);
 
@@ -761,7 +761,7 @@
 	var global = __webpack_require__(36);
 	var core = __webpack_require__(13);
 	var ctx = __webpack_require__(111);
-	var hide = __webpack_require__(59);
+	var hide = __webpack_require__(58);
 	var PROTOTYPE = 'prototype';
 
 	var $export = function (type, name, source) {
@@ -915,7 +915,7 @@
 	  var createArrayIncludes = __webpack_require__(84);
 	  var speciesConstructor = __webpack_require__(96);
 	  var ArrayIterators = __webpack_require__(149);
-	  var Iterators = __webpack_require__(61);
+	  var Iterators = __webpack_require__(60);
 	  var $iterDetect = __webpack_require__(90);
 	  var setSpecies = __webpack_require__(51);
 	  var arrayFill = __webpack_require__(124);
@@ -1374,7 +1374,7 @@
 /* 36 */
 3,
 /* 37 */
-[641, 57, 171, 121, 40],
+[641, 56, 171, 121, 40],
 /* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1391,7 +1391,7 @@
 /* 39 */
 [638, 53, 5, 14, 8, 4],
 /* 40 */
-[625, 58],
+[625, 57],
 /* 41 */
 14,
 /* 42 */
@@ -1586,29 +1586,23 @@
 
 /***/ },
 /* 56 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(273), __esModule: true };
-
-/***/ },
-/* 57 */
 [620, 71],
-/* 58 */
+/* 57 */
 4,
-/* 59 */
+/* 58 */
 [628, 37, 74, 40],
-/* 60 */
+/* 59 */
 [648, 177, 113],
-/* 61 */
+/* 60 */
 /***/ function(module, exports) {
 
 	module.exports = {};
 
 
 /***/ },
-/* 62 */
+/* 61 */
 [652, 8, 14, 6],
-/* 63 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var $export = __webpack_require__(1);
@@ -1644,7 +1638,7 @@
 
 
 /***/ },
-/* 64 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var isObject = __webpack_require__(5);
@@ -1655,10 +1649,16 @@
 
 
 /***/ },
-/* 65 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = (__webpack_require__(11))(55);
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(273), __esModule: true };
 
 /***/ },
 /* 66 */
@@ -1776,7 +1776,7 @@
 /* 71 */
 5,
 /* 72 */
-61,
+60,
 /* 73 */
 /***/ function(module, exports) {
 
@@ -1838,7 +1838,7 @@
 
 	exports.__esModule = true;
 
-	var _assign = __webpack_require__(56);
+	var _assign = __webpack_require__(65);
 
 	var _assign2 = _interopRequireDefault(_assign);
 
@@ -1877,7 +1877,7 @@
 	var isObject = __webpack_require__(5);
 	var fails = __webpack_require__(4);
 	var $iterDetect = __webpack_require__(90);
-	var setToStringTag = __webpack_require__(62);
+	var setToStringTag = __webpack_require__(61);
 	var inheritIfRequired = __webpack_require__(131);
 
 	module.exports = function (NAME, wrapper, methods, common, IS_MAP, IS_WEAK) {
@@ -2515,10 +2515,6 @@
 	});
 	exports.EVALUATION_TEMPLATE_LIST_PAGE = undefined;
 
-	var _assign = __webpack_require__(56);
-
-	var _assign2 = _interopRequireDefault(_assign);
-
 	var _extends2 = __webpack_require__(82);
 
 	var _extends3 = _interopRequireDefault(_extends2);
@@ -2628,7 +2624,10 @@
 	        var data = (0, _dataParserUtil.parseDataForCreateTemplate)(title);
 	        return _axios2.default.post(TEMPLATE_SERVICE_URL, data).then(function (response) {
 	            var template = response.data.data;
-	            dispatch({ type: _ActionTypes.TEMPLATE_CREATED, title: template.attributes.title, id: Number(template.id) });
+	            dispatch({ type: _ActionTypes.TEMPLATE_CREATED,
+	                title: template.attributes.title,
+	                id: Number(template.id)
+	            });
 	        }).catch(function (error) {
 	            var message = error.message;
 
@@ -2896,42 +2895,65 @@
 	        serviceUrl += '/questions/' + questionId;
 	        serviceUrl += '/scale-definitions';
 	        var data = (0, _dataParserUtil.parseDataForScaleDefinition)(typeDefinitionId, scaleDefinitionId, text, score);
-
+	        var question = (0, _extends3.default)({}, getState().evaluationTemplateCreator.questionsByIndex[questionId]);
+	        var promise = void 0;
 	        if (scaleDefinitionId === undefined) {
 
-	            return _axios2.default.post(serviceUrl, data).then(function (response) {
+	            promise = _axios2.default.post(serviceUrl, data).then(function (response) {
 	                var responseScaleDef = (0, _jsonApiNormalizer2.default)(response.data, { endpoint: 'evaluation-question-scale-definitions' });
 	                responseScaleDef = (0, _reduxObject2.default)(responseScaleDef, 'evaluationQuestionScaleDefinitions')[0];
-	                var question = (0, _assign2.default)({}, getState().evaluationTemplateCreator.questionsByIndex[questionId]);
-	                var index = question.scaleDefinitions.findIndex(function (item) {
-	                    return item.id === responseScaleDef.typeDefinition.id;
+	                question.scaleDefinitions = question.scaleDefinitions.map(function (item) {
+	                    if (item.id === responseScaleDef.typeDefinition.id) {
+	                        var label = text;
+	                        var definitionId = response.data.data.id;
+	                        return (0, _extends3.default)({}, item, { label: label, definitionId: definitionId });
+	                    } else {
+	                        return item;
+	                    }
 	                });
-	                question.scaleDefinitions[index].definitionId = response.data.data.id;
-	                question.scaleDefinitions[index].label = text;
 	                dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question });
-	            }).catch(function (error) {
-	                var message = error.message;
-
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, message));
 	            });
 	        } else {
 	            serviceUrl += '/' + scaleDefinitionId;
-	            return _axios2.default.patch(serviceUrl, data).then(function (response) {
-	                var responseScaleDef = (0, _jsonApiNormalizer2.default)(response.data, { endpoint: 'evaluation-question-scale-definitions' });
-	                responseScaleDef = (0, _reduxObject2.default)(responseScaleDef, 'evaluationQuestionScaleDefinitions')[0];
-	                var question = (0, _extends3.default)({}, getState().evaluationTemplateCreator.questionsByIndex[questionId]);
-	                var index = question.scaleDefinitions.findIndex(function (item) {
-	                    return item.id === responseScaleDef.typeDefinition.id;
+	            if (text) {
+	                promise = _axios2.default.patch(serviceUrl, data).then(function (response) {
+	                    var responseScaleDef = (0, _jsonApiNormalizer2.default)(response.data, { endpoint: 'evaluation-question-scale-definitions' });
+	                    responseScaleDef = (0, _reduxObject2.default)(responseScaleDef, 'evaluationQuestionScaleDefinitions')[0];
+
+	                    question.scaleDefinitions = question.scaleDefinitions.map(function (item) {
+	                        if (item.id === responseScaleDef.typeDefinition.id) {
+	                            var label = text;
+	                            return (0, _extends3.default)({}, item, { label: label });
+	                        } else {
+	                            return item;
+	                        }
+	                    });
+	                    dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question });
 	                });
+	            } else {
+	                promise = _axios2.default.delete(serviceUrl).then(function () {
+	                    question.scaleDefinitions = question.scaleDefinitions.map(function (item) {
+	                        if (item.definitionId === scaleDefinitionId) {
+	                            var id = item.id,
+	                                title = item.title,
+	                                value = item.value;
 
-	                question.scaleDefinitions[index].label = text;
-	                dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question });
-	            }).catch(function (error) {
-	                var message = error.message;
-
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, message));
-	            });
+	                            return { id: id, title: title, value: value };
+	                        } else {
+	                            return item;
+	                        }
+	                    });
+	                    dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question });
+	                });
+	            }
 	        }
+	        promise.catch(function (error) {
+	            var message = error.message;
+
+	            dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, message));
+	        });
+
+	        return promise;
 	    };
 	}
 
@@ -3121,7 +3143,7 @@
 	    value: true
 	});
 
-	var _assign = __webpack_require__(56);
+	var _assign = __webpack_require__(65);
 
 	var _assign2 = _interopRequireDefault(_assign);
 
@@ -3517,7 +3539,7 @@
 
 /***/ },
 /* 115 */
-[640, 57, 297, 113, 118, 170, 288],
+[640, 56, 297, 113, 118, 170, 288],
 /* 116 */
 92,
 /* 117 */
@@ -3609,11 +3631,11 @@
 
 /***/ },
 /* 132 */
-[632, 61, 6],
+[632, 60, 6],
 /* 133 */
-[635, 46, 49, 62, 15, 6],
+[635, 46, 49, 61, 15, 6],
 /* 134 */
-[636, 45, 1, 16, 15, 14, 61, 133, 62, 20, 6],
+[636, 45, 1, 16, 15, 14, 60, 133, 61, 20, 6],
 /* 135 */
 /***/ function(module, exports) {
 
@@ -3893,7 +3915,7 @@
 	var gOPN = __webpack_require__(47).f;
 	var dP = __webpack_require__(8).f;
 	var arrayFill = __webpack_require__(124);
-	var setToStringTag = __webpack_require__(62);
+	var setToStringTag = __webpack_require__(61);
 	var ARRAY_BUFFER = 'ArrayBuffer';
 	var DATA_VIEW = 'DataView';
 	var PROTOTYPE = 'prototype';
@@ -4160,9 +4182,9 @@
 /* 147 */
 [661, 3, 27, 45, 211, 8],
 /* 148 */
-[664, 76, 6, 61, 27],
+[664, 76, 6, 60, 27],
 /* 149 */
-[666, 38, 195, 61, 21, 134],
+[666, 38, 195, 60, 21, 134],
 /* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -4876,11 +4898,11 @@
 /* 170 */
 [626, 71, 36],
 /* 171 */
-[630, 40, 58, 170],
+[630, 40, 57, 170],
 /* 172 */
 [631, 110],
 /* 173 */
-[636, 114, 32, 179, 59, 41, 72, 292, 117, 176, 25],
+[636, 114, 32, 179, 58, 41, 72, 292, 117, 176, 25],
 /* 174 */
 [643, 73, 74, 42, 121, 41, 171, 40],
 /* 175 */
@@ -4890,11 +4912,11 @@
 /* 177 */
 [647, 41, 42, 284, 118],
 /* 178 */
-[649, 32, 13, 58],
+[649, 32, 13, 57],
 /* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(59);
+	module.exports = __webpack_require__(58);
 
 
 /***/ },
@@ -5038,7 +5060,7 @@
 	var setSpecies = __webpack_require__(51);
 	var DESCRIPTORS = __webpack_require__(7);
 	var fastKey = __webpack_require__(39).fastKey;
-	var validate = __webpack_require__(64);
+	var validate = __webpack_require__(63);
 	var SIZE = DESCRIPTORS ? '_s' : 'size';
 
 	var getEntry = function (that, key) {
@@ -5200,7 +5222,7 @@
 	var forOf = __webpack_require__(44);
 	var createArrayMethod = __webpack_require__(26);
 	var $has = __webpack_require__(14);
-	var validate = __webpack_require__(64);
+	var validate = __webpack_require__(63);
 	var arrayFind = createArrayMethod(5);
 	var arrayFindIndex = createArrayMethod(6);
 	var id = 0;
@@ -5464,7 +5486,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var $parseFloat = __webpack_require__(3).parseFloat;
-	var $trim = __webpack_require__(63).trim;
+	var $trim = __webpack_require__(62).trim;
 
 	module.exports = 1 / $parseFloat(__webpack_require__(144) + '-0') !== -Infinity ? function parseFloat(str) {
 	  var string = $trim(String(str), 3);
@@ -5478,7 +5500,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var $parseInt = __webpack_require__(3).parseInt;
-	var $trim = __webpack_require__(63).trim;
+	var $trim = __webpack_require__(62).trim;
 	var ws = __webpack_require__(144);
 	var hex = /^[-+]?0[xX]/;
 
@@ -5565,7 +5587,7 @@
 
 	'use strict';
 	var strong = __webpack_require__(187);
-	var validate = __webpack_require__(64);
+	var validate = __webpack_require__(63);
 	var MAP = 'Map';
 
 	// 23.1 Map Objects
@@ -5601,7 +5623,7 @@
 
 	'use strict';
 	var strong = __webpack_require__(187);
-	var validate = __webpack_require__(64);
+	var validate = __webpack_require__(63);
 	var SET = 'Set';
 
 	// 23.2 Set Objects
@@ -5627,7 +5649,7 @@
 	var weak = __webpack_require__(189);
 	var isObject = __webpack_require__(5);
 	var fails = __webpack_require__(4);
-	var validate = __webpack_require__(64);
+	var validate = __webpack_require__(63);
 	var WEAK_MAP = 'WeakMap';
 	var getWeak = meta.getWeak;
 	var isExtensible = Object.isExtensible;
@@ -7099,7 +7121,7 @@
 
 	var _Question2 = _interopRequireDefault(_Question);
 
-	var _reactRedux = __webpack_require__(65);
+	var _reactRedux = __webpack_require__(64);
 
 	var _evaluationTemplateCreator = __webpack_require__(108);
 
@@ -7130,6 +7152,7 @@
 	        _this.updateCriteriaChange = _this.updateCriteriaChange.bind(_this);
 	        _this.toggleMaximise = _this.toggleMaximise.bind(_this);
 	        _this.onDelete = _this.onDelete.bind(_this);
+	        _this.onToggleNewQuestionClick = _this.onToggleNewQuestionClick.bind(_this);
 	        return _this;
 	    }
 
@@ -7153,6 +7176,12 @@
 	            // this.setStateWithQuestion(question, false);
 	        }
 	    }, {
+	        key: 'onToggleNewQuestionClick',
+	        value: function onToggleNewQuestionClick() {
+	            this.setState({ showAdd: !this.state.showAdd });
+	            this.props.dispatch((0, _evaluationTemplateCreator.minimiseAllQuestions)());
+	        }
+	    }, {
 	        key: 'onDelete',
 	        value: function onDelete() {
 	            this.props.dispatch((0, _evaluationTemplateCreator.deleteCriteria)(this.props.criteria.id));
@@ -7165,7 +7194,7 @@
 	                weight = _state.weight;
 
 	            if (title.length) {
-	                this.props.dispatch((0, _evaluationTemplateCreator.updateCriteria)(this.props.criteriaId, title, weight));
+	                this.props.dispatch((0, _evaluationTemplateCreator.updateCriteria)(this.props.criteria.id, title, weight));
 	            }
 	            clearInterval(this.intervalId);
 	        }
@@ -7263,7 +7292,9 @@
 	                                        'Criteria'
 	                                    )
 	                                ),
-	                                _react2.default.createElement('input', { type: 'text', name: 'title',
+	                                _react2.default.createElement('input', {
+	                                    type: 'text',
+	                                    name: 'title',
 	                                    maxLength: '255',
 	                                    className: this.getTitleInputStyle(),
 	                                    defaultValue: this.state.title,
@@ -7292,16 +7323,25 @@
 	                                        'span',
 	                                        { className: 'required', 'aria-required': 'true' },
 	                                        'Weighting',
-	                                        _react2.default.createElement('i', { className: 'fa fa-info-circle', 'data-tooltip': 'The total weighting across all criteria must equal 100%.', 'aria-hidden': 'true' })
+	                                        _react2.default.createElement('i', { className: 'fa fa-info-circle',
+	                                            'data-tooltip': 'The total weighting across all criteria must equal 100%.',
+	                                            'aria-hidden': 'true' })
 	                                    )
 	                                ),
 	                                _react2.default.createElement(
 	                                    'div',
 	                                    { className: 'input-group' },
-	                                    _react2.default.createElement('input', { type: 'number', min: '0', step: '1', name: 'weight', defaultValue: this.state.weight, className: this.getWeightInputStyle(), title: 'Criteria Weight', placeholder: 'Value',
+	                                    _react2.default.createElement('input', { type: 'number',
+	                                        min: '0', step: '1',
+	                                        name: 'weight',
+	                                        defaultValue: this.state.weight,
+	                                        className: this.getWeightInputStyle(),
+	                                        title: 'Criteria Weight',
+	                                        placeholder: 'Value',
 	                                        onChange: function onChange(event) {
 	                                            return _this2.onWeightChange(event.target.value);
-	                                        }, 'aria-describedby': 'weighting-addon' }),
+	                                        },
+	                                        'aria-describedby': 'weighting-addon' }),
 	                                    _react2.default.createElement(
 	                                        'span',
 	                                        { className: 'input-group-addon', id: 'weighting-addon' },
@@ -7311,7 +7351,7 @@
 	                                this.state.isWeightError ? _react2.default.createElement(
 	                                    'span',
 	                                    { className: 'error danger' },
-	                                    'Accepted values: 0 to 100'
+	                                    "Accepted values: 0 to 100"
 	                                ) : null
 	                            )
 	                        ),
@@ -7329,7 +7369,10 @@
 	                                ),
 	                                _react2.default.createElement(
 	                                    'button',
-	                                    { className: 'btn btn-sm', disabled: !this.state.title, onClick: this.onSave },
+	                                    {
+	                                        className: 'btn btn-sm',
+	                                        disabled: !this.state.title,
+	                                        onClick: this.onSave },
 	                                    _react2.default.createElement('i', { className: 'fa fa-plus' }),
 	                                    'Add Criteria'
 	                                )
@@ -7382,11 +7425,13 @@
 	                                    return _react2.default.createElement(
 	                                        'div',
 	                                        { className: 'row', key: item },
-	                                        _react2.default.createElement(_Question2.default, { criteriaId: _this2.props.criteria.id, questionId: item, questionIndex: index + 1 })
+	                                        _react2.default.createElement(_Question2.default, { criteriaId: _this2.props.criteria.id,
+	                                            questionId: item,
+	                                            questionIndex: index + 1 })
 	                                    );
 	                                })
 	                            ),
-	                            _react2.default.createElement(
+	                            !this.state.showAdd ? _react2.default.createElement(
 	                                'div',
 	                                { className: 'row' },
 	                                _react2.default.createElement(
@@ -7395,22 +7440,22 @@
 	                                    _react2.default.createElement(
 	                                        'button',
 	                                        { className: 'btn btn-sm',
-	                                            onClick: function onClick() {
-	                                                _this2.setState({ showAdd: !_this2.state.showAdd });
-	                                                _this2.props.dispatch((0, _evaluationTemplateCreator.minimiseAllQuestions)());
-	                                            } },
+	                                            onClick: this.onToggleNewQuestionClick },
 	                                        _react2.default.createElement('i', { className: 'fa fa-plus' }),
 	                                        'Add New Question'
 	                                    )
 	                                )
-	                            ),
+	                            ) : null,
 	                            _react2.default.createElement(
 	                                'div',
 	                                { className: 'row' },
 	                                _react2.default.createElement(
 	                                    'div',
 	                                    { className: 'row' },
-	                                    this.state.showAdd ? _react2.default.createElement(_Question2.default, { criteriaId: this.props.criteria.id, question: this.newQuestion, questionIndex: this.props.criteria.questions.length + 1 }) : null
+	                                    this.state.showAdd ? _react2.default.createElement(_Question2.default, { criteriaId: this.props.criteria.id,
+	                                        question: this.newQuestion,
+	                                        onNewQuestionClose: this.onToggleNewQuestionClick,
+	                                        questionIndex: this.props.criteria.questions.length + 1 }) : null
 	                                )
 	                            )
 	                        ) : _react2.default.createElement(
@@ -7422,7 +7467,28 @@
 	                                _react2.default.createElement(
 	                                    'div',
 	                                    { className: 'row' },
-	                                    _react2.default.createElement(_Question2.default, { criteriaId: this.props.criteria.id, question: this.newQuestion, questionIndex: this.props.criteria.questions.length + 1 })
+	                                    _react2.default.createElement(_Question2.default, { criteriaId: this.props.criteria.id,
+	                                        question: this.newQuestion,
+	                                        questionIndex: this.props.criteria.questions.length + 1 })
+	                                )
+	                            ) : null,
+	                            this.props.onNewCriteriaClose ? _react2.default.createElement(
+	                                'div',
+	                                { className: 'row' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'col-md-12' },
+	                                    _react2.default.createElement(
+	                                        'div',
+	                                        { className: 'form-group pull-right' },
+	                                        _react2.default.createElement(
+	                                            'button',
+	                                            { className: 'btn',
+	                                                onClick: this.props.onNewCriteriaClose },
+	                                            _react2.default.createElement('i', { className: 'fa fa-times' }),
+	                                            'Discard Criteria'
+	                                        )
+	                                    )
 	                                )
 	                            ) : null
 	                        )
@@ -7500,14 +7566,17 @@
 	                                _react2.default.createElement('br', null),
 	                                _react2.default.createElement(
 	                                    'button',
-	                                    { className: 'btn btn-sm', onClick: this.toggleMaximise },
+	                                    {
+	                                        className: 'btn btn-sm',
+	                                        onClick: this.toggleMaximise },
 	                                    _react2.default.createElement('i', { className: 'fa fa-pencil' }),
 	                                    'Edit Criteria'
 	                                ),
 	                                '\xA0',
 	                                _react2.default.createElement(
 	                                    'button',
-	                                    { className: 'btn btn-sm', onClick: this.onDelete },
+	                                    {
+	                                        className: 'btn btn-sm', onClick: this.onDelete },
 	                                    _react2.default.createElement('i', { className: 'fa fa-trash-o' }),
 	                                    'Delete Criteria'
 	                                )
@@ -7529,6 +7598,7 @@
 	Criteria.propTypes = {
 	    criteriaId: _react.PropTypes.string,
 	    dispatch: _react.PropTypes.func.isRequired,
+	    onNewCriteriaClose: _react.PropTypes.func,
 	    criteriaByIndex: _react.PropTypes.array,
 	    criteria: _react.PropTypes.object.isRequired
 	};
@@ -7537,7 +7607,7 @@
 	    var criteriaByIndex = state.evaluationTemplateCreator.criteriaByIndex;
 
 	    var criteria = props.criteriaId ? criteriaByIndex[props.criteriaId] : (0, _dataParserUtil.createCriteria)();
-	    window.console.log(criteria);
+
 	    return { criteria: criteria };
 	}
 
@@ -7594,7 +7664,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(65);
+	var _reactRedux = __webpack_require__(64);
 
 	var _Criteria = __webpack_require__(250);
 
@@ -7626,6 +7696,7 @@
 	        _this.onTitleTextChange = _this.onTitleTextChange.bind(_this);
 	        _this.updateTitleText = _this.updateTitleText.bind(_this);
 	        _this.getTitleInputStyle = _this.getTitleInputStyle.bind(_this);
+	        _this.onToggleNewCriteriaClick = _this.onToggleNewCriteriaClick.bind(_this);
 	        _this.state = { title: _this.props.title, showAdd: false, isTitleError: false, isSaved: false };
 	        _this.intervalId_update = null;
 	        _this.intervalId_saveAnim = null;
@@ -7679,6 +7750,12 @@
 	            if (this.props.id && event.target.value) {
 	                this.intervalId_update = setInterval(this.updateTitleText, _constants.INPUT_SYNC_INTERVAL);
 	            }
+	        }
+	    }, {
+	        key: 'onToggleNewCriteriaClick',
+	        value: function onToggleNewCriteriaClick() {
+	            this.setState({ showAdd: !this.state.showAdd });
+	            this.props.dispatch((0, _evaluationTemplateCreator.minimiseAllCriteria)());
 	        }
 	    }, {
 	        key: 'getTitleInputStyle',
@@ -7782,7 +7859,13 @@
 	                    id !== null ? allCriteriaIndexes.length ? _react2.default.createElement(
 	                        'div',
 	                        null,
-	                        _react2.default.createElement(
+	                        this.state.showAdd ? _react2.default.createElement(
+	                            'div',
+	                            { className: 'row' },
+	                            _react2.default.createElement(_Criteria2.default, {
+	                                criteriaId: null,
+	                                onNewCriteriaClose: this.onToggleNewCriteriaClick })
+	                        ) : _react2.default.createElement(
 	                            'div',
 	                            { className: 'row' },
 	                            _react2.default.createElement(
@@ -7794,21 +7877,13 @@
 	                                    _react2.default.createElement(
 	                                        'button',
 	                                        { className: 'btn',
-	                                            onClick: function onClick() {
-	                                                _this2.setState({ showAdd: !_this2.state.showAdd });
-	                                                _this2.props.dispatch((0, _evaluationTemplateCreator.minimiseAllCriteria)());
-	                                            } },
+	                                            onClick: this.onToggleNewCriteriaClick },
 	                                        _react2.default.createElement('i', { className: 'fa fa-plus' }),
 	                                        'Add New Criteria'
 	                                    )
 	                                )
 	                            )
-	                        ),
-	                        this.state.showAdd ? _react2.default.createElement(
-	                            'div',
-	                            { className: 'row' },
-	                            _react2.default.createElement(_Criteria2.default, { criteriaId: null })
-	                        ) : null
+	                        )
 	                    ) : _react2.default.createElement(
 	                        'div',
 	                        { className: 'row' },
@@ -7906,7 +7981,7 @@
 	    value: true
 	});
 
-	var _assign = __webpack_require__(56);
+	var _assign = __webpack_require__(65);
 
 	var _assign2 = _interopRequireDefault(_assign);
 
@@ -7934,7 +8009,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(65);
+	var _reactRedux = __webpack_require__(64);
 
 	var _reactDropzone = __webpack_require__(609);
 
@@ -8496,7 +8571,22 @@
 	                            )
 	                        )
 	                    ) : null,
-	                    this.renderFunctionButtons()
+	                    this.renderFunctionButtons(),
+	                    this.props.onNewQuestionClose ? _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-12 text-right' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'form-group' },
+	                            _react2.default.createElement(
+	                                'button',
+	                                { className: 'btn btn-sm',
+	                                    onClick: this.props.onNewQuestionClose },
+	                                _react2.default.createElement('i', { className: 'fa fa-times' }),
+	                                'Discard Question'
+	                            )
+	                        )
+	                    ) : null
 	                )
 	            );
 	        }
@@ -8546,6 +8636,7 @@
 	    questionIndex: _react.PropTypes.number,
 	    criteriaId: _react.PropTypes.string.isRequired,
 	    dispatch: _react.PropTypes.func.isRequired,
+	    onNewQuestionClose: _react.PropTypes.func,
 	    questionTypes: _react.PropTypes.array.isRequired
 	};
 
@@ -8617,7 +8708,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(65);
+	var _reactRedux = __webpack_require__(64);
 
 	var _actions = __webpack_require__(163);
 
@@ -8845,7 +8936,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(65);
+	var _reactRedux = __webpack_require__(64);
 
 	var _actions = __webpack_require__(165);
 
@@ -8956,7 +9047,7 @@
 	    value: true
 	});
 
-	var _assign = __webpack_require__(56);
+	var _assign = __webpack_require__(65);
 
 	var _assign2 = _interopRequireDefault(_assign);
 
@@ -9038,7 +9129,7 @@
 
 	var _keys2 = _interopRequireDefault(_keys);
 
-	var _assign = __webpack_require__(56);
+	var _assign = __webpack_require__(65);
 
 	var _assign2 = _interopRequireDefault(_assign);
 
@@ -9756,7 +9847,7 @@
 /* 286 */
 [623, 37, 74],
 /* 287 */
-[627, 60, 116, 73],
+[627, 59, 116, 73],
 /* 288 */
 [629, 36],
 /* 289 */
@@ -9764,25 +9855,25 @@
 /* 290 */
 [633, 110],
 /* 291 */
-[634, 57],
+[634, 56],
 /* 292 */
-[635, 115, 74, 117, 59, 25],
+[635, 115, 74, 117, 58, 25],
 /* 293 */
 [637, 25],
 /* 294 */
 195,
 /* 295 */
-[638, 83, 71, 41, 37, 58],
+[638, 83, 71, 41, 37, 57],
 /* 296 */
-[639, 60, 116, 73, 75, 172, 58],
+[639, 59, 116, 73, 75, 172, 57],
 /* 297 */
-[642, 37, 57, 60, 40],
+[642, 37, 56, 59, 40],
 /* 298 */
 [644, 42, 175],
 /* 299 */
-[650, 60, 42, 73],
+[650, 59, 42, 73],
 /* 300 */
-[651, 71, 57, 111, 174],
+[651, 71, 56, 111, 174],
 /* 301 */
 [655, 120, 112],
 /* 302 */
@@ -9802,7 +9893,7 @@
 /* 309 */
 [670, 75, 176, 178],
 /* 310 */
-[671, 75, 60, 178],
+[671, 75, 59, 178],
 /* 311 */
 [672, 32, 300],
 /* 312 */
@@ -9812,7 +9903,7 @@
 
 /***/ },
 /* 313 */
-[674, 36, 41, 40, 32, 179, 295, 58, 119, 117, 83, 25, 123, 122, 287, 290, 57, 42, 121, 74, 115, 298, 174, 37, 60, 175, 73, 116, 114, 59],
+[674, 36, 41, 40, 32, 179, 295, 57, 119, 117, 83, 25, 123, 122, 287, 290, 56, 42, 121, 74, 115, 298, 174, 37, 59, 175, 73, 116, 114, 58],
 /* 314 */
 [675, 32, 299],
 /* 315 */
@@ -9824,7 +9915,7 @@
 
 	__webpack_require__(305);
 	var global = __webpack_require__(36);
-	var hide = __webpack_require__(59);
+	var hide = __webpack_require__(58);
 	var Iterators = __webpack_require__(72);
 	var TO_STRING_TAG = __webpack_require__(25)('toStringTag');
 
@@ -10716,7 +10807,7 @@
 	var gOPN = __webpack_require__(47).f;
 	var gOPD = __webpack_require__(19).f;
 	var dP = __webpack_require__(8).f;
-	var $trim = __webpack_require__(63).trim;
+	var $trim = __webpack_require__(62).trim;
 	var NUMBER = 'Number';
 	var $Number = global[NUMBER];
 	var Base = $Number;
@@ -11425,7 +11516,7 @@
 	}
 
 	$export($export.G + $export.W + $export.F * !USE_NATIVE, { Promise: $Promise });
-	__webpack_require__(62)($Promise, PROMISE);
+	__webpack_require__(61)($Promise, PROMISE);
 	__webpack_require__(51)(PROMISE);
 	Wrapper = __webpack_require__(27)[PROMISE];
 
@@ -12356,7 +12447,7 @@
 
 	'use strict';
 	// 21.1.3.25 String.prototype.trim()
-	__webpack_require__(63)('trim', function ($trim) {
+	__webpack_require__(62)('trim', function ($trim) {
 	  return function trim() {
 	    return $trim(this, 3);
 	  };
@@ -12365,7 +12456,7 @@
 
 /***/ },
 /* 444 */
-[674, 3, 14, 7, 1, 16, 39, 4, 95, 62, 53, 6, 211, 147, 321, 88, 2, 21, 31, 49, 46, 201, 19, 8, 48, 47, 78, 92, 45, 15],
+[674, 3, 14, 7, 1, 16, 39, 4, 95, 61, 53, 6, 211, 147, 321, 88, 2, 21, 31, 49, 46, 201, 19, 8, 48, 47, 78, 92, 45, 15],
 /* 445 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -12532,7 +12623,7 @@
 
 	'use strict';
 	var weak = __webpack_require__(189);
-	var validate = __webpack_require__(64);
+	var validate = __webpack_require__(63);
 	var WEAK_SET = 'WeakSet';
 
 	// 23.4 WeakSet Objects
@@ -13533,7 +13624,7 @@
 
 	'use strict';
 	// https://github.com/sebmarkbage/ecmascript-string-left-right-trim
-	__webpack_require__(63)('trimLeft', function ($trim) {
+	__webpack_require__(62)('trimLeft', function ($trim) {
 	  return function trimLeft() {
 	    return $trim(this, 1);
 	  };
@@ -13546,7 +13637,7 @@
 
 	'use strict';
 	// https://github.com/sebmarkbage/ecmascript-string-left-right-trim
-	__webpack_require__(63)('trimRight', function ($trim) {
+	__webpack_require__(62)('trimRight', function ($trim) {
 	  return function trimRight() {
 	    return $trim(this, 2);
 	  };
@@ -13608,7 +13699,7 @@
 	var redefine = __webpack_require__(16);
 	var global = __webpack_require__(3);
 	var hide = __webpack_require__(15);
-	var Iterators = __webpack_require__(61);
+	var Iterators = __webpack_require__(60);
 	var wks = __webpack_require__(6);
 	var ITERATOR = wks('iterator');
 	var TO_STRING_TAG = wks('toStringTag');

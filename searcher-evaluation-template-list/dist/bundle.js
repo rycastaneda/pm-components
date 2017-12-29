@@ -22075,6 +22075,7 @@
 
 	function initialize() {
 	    return function (dispatch, getState) {
+	        dispatch(isBusy(true));
 	        var _getState$evaluationT = getState().evaluationTemplates,
 	            filterKeyword = _getState$evaluationT.filterKeyword,
 	            filterStatus = _getState$evaluationT.filterStatus,
@@ -22101,6 +22102,7 @@
 
 	function onEvaluationTemplatesPageChange(currPage) {
 	    return function (dispatch, getState) {
+	        dispatch(isBusy(true));
 	        var _getState$evaluationT2 = getState().evaluationTemplates,
 	            filterKeyword = _getState$evaluationT2.filterKeyword,
 	            filterStatus = _getState$evaluationT2.filterStatus,
@@ -22114,6 +22116,7 @@
 
 	function onEvaluationTemplatesDisplayedLengthChange(perPage) {
 	    return function (dispatch, getState) {
+	        dispatch(isBusy(true));
 	        var _getState$evaluationT3 = getState().evaluationTemplates,
 	            filterKeyword = _getState$evaluationT3.filterKeyword,
 	            filterStatus = _getState$evaluationT3.filterStatus,
@@ -22127,6 +22130,7 @@
 
 	function onEvaluationTemplatesFilterChange(filterKeyword, filterStatus, filterDate, filterUserId) {
 	    return function (dispatch, getState) {
+	        dispatch(isBusy(true));
 	        var _getState$evaluationT4 = getState().evaluationTemplates,
 	            maxRowLength = _getState$evaluationT4.maxRowLength,
 	            startIndex = _getState$evaluationT4.startIndex;
@@ -23508,12 +23512,11 @@
 	    switch (action.type) {
 	        case _ActionTypes.INITIALIZED:
 	            {
+	                var isBusy = false;
 	                var users = action.users,
 	                    templates = action.templates,
 	                    currentPage = action.currentPage,
-	                    totalPages = action.totalPages,
-	                    _action$isBusy = action.isBusy,
-	                    isBusy = _action$isBusy === undefined ? false : _action$isBusy;
+	                    totalPages = action.totalPages;
 
 	                var currentTemplateList = templates;
 	                return (0, _extends3.default)({}, state, { users: users, currentTemplateList: currentTemplateList, currentPage: currentPage, totalPages: totalPages, isBusy: isBusy });

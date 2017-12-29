@@ -18,6 +18,7 @@ class EvaluationTemplateCreator extends Component {
         this.onTitleTextChange = this.onTitleTextChange.bind(this);
         this.updateTitleText= this.updateTitleText.bind(this);
         this.getTitleInputStyle = this.getTitleInputStyle.bind(this);
+        this.onToggleNewCriteriaClick = this.onToggleNewCriteriaClick.bind(this);
         this.state = { title:this.props.title, showAdd:false, isTitleError:false, isSaved:false };
         this.intervalId_update = null;
         this.intervalId_saveAnim =null;
@@ -65,7 +66,10 @@ class EvaluationTemplateCreator extends Component {
             this.intervalId_update = setInterval(this.updateTitleText, INPUT_SYNC_INTERVAL);
         }
     }
-
+    onToggleNewCriteriaClick() {
+        this.setState({ showAdd: !this.state.showAdd });
+        this.props.dispatch(minimiseAllCriteria());
+    }
     getTitleInputStyle() {
         let style = 'form-control';
         if (this.state.isTitleError) {
@@ -121,9 +125,9 @@ class EvaluationTemplateCreator extends Component {
 
                 {
                     allCriteriaIndexes.map((criteriaId, index) =>
-                    <div className="row" key = {index}>
+                    <div className="row" key={index}>
                         <Criteria
-                            criteriaId = {criteriaId}/>
+                            criteriaId={criteriaId}/>
                     </div>
                     )
                 }
@@ -131,23 +135,23 @@ class EvaluationTemplateCreator extends Component {
                     (id!==null)?
                         (allCriteriaIndexes.length)?
                             <div>
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <div className="form-group new-criteria">
-                                            <button className="btn"
-                                            onClick={() => {
-                                                this.setState({ showAdd: !this.state.showAdd });
-                                                this.props.dispatch(minimiseAllCriteria());
-                                            }}>
-                                            <i className="fa fa-plus"></i>Add New Criteria</button>
+                                { this.state.showAdd?
+                                    <div className="row">
+                                        <Criteria
+                                        criteriaId={null}
+                                        onNewCriteriaClose={this.onToggleNewCriteriaClick}/>
+                                    </div>
+                                    :
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <div className="form-group new-criteria">
+                                                <button className="btn"
+                                                onClick={this.onToggleNewCriteriaClick}>
+                                                <i className="fa fa-plus"></i>Add New Criteria</button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                    {
-                                        this.state.showAdd?
-                                            <div className="row"><Criteria criteriaId={null}/></div>
-                                        :null
-                                    }
+                                }
 
                             </div>
                             :

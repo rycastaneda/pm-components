@@ -404,6 +404,18 @@ class Question extends Component {
                             : null
                     }
                     {this.renderFunctionButtons()}
+                    {
+                        this.props.onNewQuestionClose?
+                        <div className="col-md-12 text-right">
+                            <div className="form-group">
+                                <button className="btn btn-sm"
+                                onClick = {this.props.onNewQuestionClose}>
+                                <i className = "fa fa-times"></i>Discard Question
+                                </button>
+                            </div>
+                        </div>
+                        :null
+                    }
                 </fieldset>
             </div>);
     }
@@ -440,6 +452,7 @@ Question.propTypes = {
     questionIndex: PropTypes.number,
     criteriaId: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
+    onNewQuestionClose:PropTypes.func,
     questionTypes:PropTypes.array.isRequired
 };
 
