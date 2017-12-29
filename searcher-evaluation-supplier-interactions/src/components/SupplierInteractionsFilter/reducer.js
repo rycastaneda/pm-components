@@ -2,8 +2,8 @@ import * as actions from './actionsTypes';
 
 const initialState = {
     filterSearchKey: '',
-    interactionStatuses: ['viewed', 'in progress', 'sent', 'completed', 'declined', 'quoted'],
-    filterInteractionStatus: '',
+    interactionTypes: ['messages', 'evaluations', 'RFQs', 'Engagements'],
+    interactionTypeSelected: '',
     toggleFilterShow: false,
     isLoading: false,
 };
@@ -23,7 +23,7 @@ const reducer = (state = initialState, action) => {
 
             return {
                 ...state,
-                filterInteractionStatus: action.interactionStatus,
+                interactionTypeSelected: action.interactionTypeSelected,
             };
 
         case actions.SUPPLIER_INTERACTIONS_SUBMIT_NORMAL:

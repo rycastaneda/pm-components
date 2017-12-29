@@ -8,8 +8,8 @@ import PMDateTime from '../PMDateTime/main';
 
 const FilterBody = ({
     toggleFilterShow,
-    interactionStatuses,
-    filterInteractionStatus,
+    interactionTypes,
+    interactionTypeSelected,
     actions,
 }) => (
     <FilterMainContainer
@@ -19,15 +19,15 @@ const FilterBody = ({
         <div className="row">
             <div className="col-xs-6">
                 <div className="form-group">
-                    <label>Status</label>
+                    <label>Interaction Type</label>
                     <select
                         className="form-control form-control-sm text-capitalize"
                         onChange={event =>
                             actions.updateFilterStatusChange(event.target.value)
                         }
-                        value={filterInteractionStatus}
+                        value={interactionTypeSelected}
                     >
-                        {interactionStatuses.map(item => (
+                        {interactionTypes.map(item => (
                             <option id={item} key={item}>
                                 {item}
                             </option>
@@ -48,8 +48,8 @@ const FilterBody = ({
 FilterBody.propTypes = {
     actions: PropTypes.object,
     toggleFilterShow: PropTypes.bool.isRequired,
-    interactionStatuses: PropTypes.array.isRequired,
-    filterInteractionStatus: PropTypes.string.isRequired,
+    interactionTypes: PropTypes.array.isRequired,
+    interactionTypeSelected: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -61,15 +61,15 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state, ownProps) => {
     const {
         toggleFilterShow,
-        interactionStatuses,
-        filterInteractionStatus,
+        interactionTypes,
+        interactionTypeSelected,
     } = state.interactionsFilter;
 
     return {
         ...ownProps,
         toggleFilterShow,
-        interactionStatuses,
-        filterInteractionStatus,
+        interactionTypes,
+        interactionTypeSelected,
     };
 };
 

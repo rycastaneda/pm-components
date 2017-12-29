@@ -7,10 +7,10 @@ export const updateChangeSearchKey = (searchKey) => {
     };
 };
 
-export const updateFilterStatusChange = (interactionStatus) => {
+export const updateFilterStatusChange = (interactionTypeSelected) => {
     return {
         type: actionTypes.SUPPLIER_INTERACTIONS_FILTER_STATUS_CHANGE,
-        interactionStatus,
+        interactionTypeSelected,
     };
 };
 
