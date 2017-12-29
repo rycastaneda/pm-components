@@ -2,12 +2,12 @@ import normalize from 'json-api-normalizer';
 import  build  from 'redux-object';
 export const EVALUATION_TEMPLATE_SERVICE ='evaluation-templates';
 export const EVALUATION_ASSIGNMENT_SERVICE ='evaluation-template-assignments';
+export const EVALUATION_ASSIGNMENT_EXPORT_SERVICE ='evaluation-template-assignments/export?';
 export const EVALUATION_ASSIGNMENT_COMPLETION ='/searcher/evaluation_assignments/complete/';
 
 // const EDIT_PAGE ='/searcher/evaluation/edit_template/';
 // const PREVIEW_PAGE ='/searcher/evaluation/preview_template/';
-
-export function getAssignmentServiceUrlFor(queryParams) {
+export function getAssignmentServiceUrlFor(queryParams, isExport=false) {
 
     let urlPostfix = '';
     let { currentPage, maxRowLength, selectedStatus, selectedLinkedTo, selectedTemplate, selectedAssignedTo, selectedSupplier, selectedEntityInstanceId, selectedAssignedOn } =queryParams;
@@ -42,11 +42,16 @@ export function getAssignmentServiceUrlFor(queryParams) {
         selectedAssignedOn = assignedOn.getFullYear()+'-'+(assignedOn.getMonth()+1)+'-'+assignedOn.getDate();
         urlPostfix +='&filter[created_at]='+selectedAssignedOn;
     }
-
-    if (urlPostfix.length) {
-        return EVALUATION_ASSIGNMENT_SERVICE + urlPostfix;
+    let urlPrefix;
+    if (isExport) {
+        urlPrefix =EVALUATION_ASSIGNMENT_EXPORT_SERVICE;
+    } else {
+        urlPrefix =EVALUATION_ASSIGNMENT_SERVICE;
     }
-    return EVALUATION_ASSIGNMENT_SERVICE;
+    if (urlPostfix.length) {
+        return urlPrefix + urlPostfix;
+    }
+    return urlPrefix;
 }
 
 export function getDataForSave(id, active) {
@@ -95,7 +100,8 @@ export function parseInitializeResponse({ userProfile, evaluationTemplates, eval
     evaluationTemplates = build(evaluationTemplates, 'evaluationTemplates');
     evaluationTemplates = evaluationTemplates.map((item) => {
         let { id, title } = item;
-        return { id, title };
+        let label = title;
+        return { id, title, label };
     });
 
     preferredSuppliers = normalize(preferredSuppliers, { endpoint:'preferred-suppliers' });
@@ -110,7 +116,8 @@ export function parseInitializeResponse({ userProfile, evaluationTemplates, eval
 
     staff = staff.map((item) => {
         let { userId, firstName, lastName  } = item;
-        return { id:userId, firstName, lastName  };
+        let label =firstName+' '+lastName ;
+        return { id:userId, firstName, lastName, label };
     });
 
     evaluationTemplateAssignmentStatuses = normalize(evaluationTemplateAssignmentStatuses, { endpoint:'evaluation-template-assignment-statuses' });

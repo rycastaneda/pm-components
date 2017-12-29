@@ -202,24 +202,25 @@ class AssignmentsTable extends Component {
                     </select>
                     &nbsp;
                     {this.props.totalPages > 1?
-                    <ReactPaginate
-                              previousLabel={"previous"}
-                              nextLabel={"next"}
-                              breakLabel={<a href="">...</a>}
-                              breakClassName={"break-me"}
-                              pageCount={this.props.totalPages}
-                              forcePage= {this.props.currentPage-1}
-                              marginPagesDisplayed={2}
-                              pageRangeDisplayed={5}
-                              onPageChange={this.handlePageClick}
-                              containerClassName={"pagination"}
-                              subContainerClassName={"pages pagination"}
-                              activeClassName={"active"} />
-                    :null
-
-                }
-                    </div>
+                        <ReactPaginate
+                                  previousLabel={"previous"}
+                                  nextLabel={"next"}
+                                  breakLabel={<a href="">...</a>}
+                                  breakClassName={"break-me"}
+                                  pageCount={this.props.totalPages}
+                                  forcePage= {this.props.currentPage-1}
+                                  marginPagesDisplayed={2}
+                                  pageRangeDisplayed={5}
+                                  onPageChange={this.handlePageClick}
+                                  containerClassName={"pagination"}
+                                  subContainerClassName={"pages pagination"}
+                                  activeClassName={"active"} />
+                        :null
+                    }
+                    &nbsp;
+                    <button className="btn btn-sm pull-right" onClick={() => this.props.onExportButtonClick() }>Export as CSV</button>
                 </div>
+            </div>
         </div>);
     }
 }
@@ -233,6 +234,7 @@ AssignmentsTable.propTypes = {
     totalPages:PropTypes.number.isRequired,
     currentPage:PropTypes.number.isRequired,
     goToPage:PropTypes.func.isRequired,
+    onExportButtonClick: PropTypes.func.isRequired,
     rowCountChange: PropTypes.func.isRequired,
     isBusy: PropTypes.bool.isRequired
 };
