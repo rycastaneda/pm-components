@@ -21,7 +21,7 @@ const Header = ({ currentTab, changeTab }) => (
                         className={`font-sm ${currentTab === 'reports'
                             ? 'selected'
                             : ''}`}>
-                        Reports
+                        Report
                     </a>
                 </li>
             </ul>

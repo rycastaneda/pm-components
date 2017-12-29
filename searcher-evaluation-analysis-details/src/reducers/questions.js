@@ -52,14 +52,18 @@ function receiveQuestions(state, action) {
                             return responseA + responseB;
                         });
                 }
+                totalScore = totalScore ? totalScore / comments.length : 0;
+                totalScore = parseFloat(totalScore).toFixed(1);
 
                 byId[question.id] = {
                     id: question.id,
                     questionTitle: question.attributes.text,
-                    totalScore: totalScore ? totalScore / comments.length : 0,
+                    totalScore: totalScore,
                     scale: getScale(question),
                     commentIds: comments.map(comment => comment.id)
                 };
+
+
 
                 allIds.push(question.id);
             });
