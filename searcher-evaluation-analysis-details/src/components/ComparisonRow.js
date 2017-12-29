@@ -6,14 +6,17 @@ const ComparisonRow = ({ criteria, entity }) => {
         <tr>
             <td className="name text-center">{entity.name}</td>
             {criteria.map(criterion => {
+
                 totalScores += entity.scores[criterion.id];
+                entity.scores[criterion.id] = parseFloat(entity.scores[criterion.id]).toFixed(1);
+
                 return (
                     <td key={criterion.id} className="score td-center">
                         {entity.scores[criterion.id]}
                     </td>
                 );
             })}
-            <td className="td-center total">{totalScores}</td>
+            <td className="td-center total">{parseFloat(totalScores).toFixed(1)}</td>
         </tr>
     );
 };
