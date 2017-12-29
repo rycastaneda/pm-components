@@ -54,7 +54,7 @@ class Question extends Component {
                             <table className="reports" width="100%">
                                 <thead>
                                     <tr>
-                                        <th>Staff</th>
+                                        <th>Assignee</th>
                                         <th>Comment</th>
                                         <th className="text-right">Score</th>
                                     </tr>
