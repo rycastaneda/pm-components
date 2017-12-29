@@ -21,6 +21,7 @@ class EvaluationAssignmentsFilter extends Component {
         this.onAdvancedSubmit = this.onAdvancedSubmit.bind(this);
         this.onToggleFilter = this.onToggleFilter.bind(this);
         this.onKeyPress = this.onKeyPress.bind(this);
+        this.onCancelFilter = this.onCancelFilter.bind(this);
     }
 
     onTemplateChange(val) {
@@ -45,15 +46,25 @@ class EvaluationAssignmentsFilter extends Component {
             } else {
                 this.onNormalSubmit();
             }
-
         }
     }
 
     onSupplierChange(index) {
         this.setState({ selectedSupplier: index });
     }
+    onCancelFilter() {
+        this.state = {
+            isFilterShown: false,
+            selectedStatus: '',
+            selectedLinkedTo: '',
+            selectedTemplate: null,
+            selectedAssignedOn: null,
+            selectedAssignedTo:null,
+            selectedSupplier:''
+        };
+        this.onAdvancedSubmit();
+    }
     onAdvancedSubmit() {
-
         let selectedAssignedOn =
             this.state.selectedAssignedOn !== null
                 ? this.state.selectedAssignedOn.toDate()
@@ -210,7 +221,7 @@ class EvaluationAssignmentsFilter extends Component {
                                         <button
                                             type="button"
                                             className="btn btn-sm btn-danger"
-                                            onClick={this.onToggleFilter}>
+                                            onClick={this.onCancelFilter}>
                                             <i className="fa fa-ban" />Cancel
                                         </button>
                                     </li>

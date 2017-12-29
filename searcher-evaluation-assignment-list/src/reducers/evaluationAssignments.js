@@ -119,8 +119,7 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
         case EVALUATION_ASSIGNMENTS_LIST_UPDATE_CHANGE_ROWS_LENGTH:
             return {
                 ...state,
-                maxRowLength: action.perPage,
-                isBusy:false
+                maxRowLength: action.perPage
             };
 
         default:

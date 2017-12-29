@@ -43,7 +43,7 @@
 		"react-hot-loader": "3.0.0-beta.4",
 		"react-paginate": "^5.0.0",
 		"react-redux": "4.4.5",
-        "react-select": "^1.0.0-rc.5",
+		"react-select": "^1.0.0-rc.5",
 		"redux": "3.6.0",
 		"redux-object": "^0.5.4",
 		"redux-thunk": "2.1.0",

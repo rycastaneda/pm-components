@@ -43,7 +43,6 @@ export function onExportAsCSV() {
             selectedAssignedOn,
             preferred_supplier_id
         };
-        window.console.log(getAssignmentServiceUrlFor(queryParams, true));
         axios.get(getAssignmentServiceUrlFor(queryParams, true)).then((response) => {
             let encodedUri = encodeURI(response.data);
             var link = document.createElement('a');

@@ -156,38 +156,38 @@ class AssignmentsTable extends Component {
                     </td>
                 </tr>
                 :
-                    this.props.tableData.length===0?
-                    <tr>
-                        <td colSpan="10" className="text-center td-no-link">
-                            Click 'Create Assignment' to create an evaluation assignment
-                        </td>
-                    </tr>
-                    :this.props.tableData.map(item =>
-                       <tr key={item.id}>
-                       <td className="nowrap">
-                           {item.assignedOn}
-                       </td>
-                       <td className="nowrap">
-                           {item.evaluationTemplate.title}
-                       </td>
-                       <td className="nowrap">
-                        {item.linkedTo.title} #{item.supplier.id}
-                       </td>
-                       <td className="nowrap">
-                           {item.assignedUser.userName}
-                       </td>
+                this.props.tableData.length===0?
+                <tr>
+                    <td colSpan="10" className="text-center td-no-link">
+                        Click 'Create Assignment' to create an evaluation assignment
+                    </td>
+                </tr>
+                :this.props.tableData.map(item =>
+                   <tr key={item.id}>
+                   <td className="nowrap">
+                       {item.assignedOn}
+                   </td>
+                   <td className="nowrap">
+                       {item.evaluationTemplate.title}
+                   </td>
+                   <td className="nowrap">
+                    {item.linkedTo.title} #{item.supplier.id}
+                   </td>
+                   <td className="nowrap">
+                       {item.assignedUser.userName}
+                   </td>
 
-                       <td className="nowrap">
-                           {item.supplier.title}
-                       </td>
-                       <td className="text-center nowrap">
-                           {this.renderStatus(item.assignmentStatus)}
-                       </td>
-                       <td data-heading="More" className="td-center  last">
-                           {this.renderMoreButton(item, item.complete_url, item.hasDeleteRight, item.assignmentStatus.id)}
-                       </td>
-                   </tr>
-                   )
+                   <td className="nowrap">
+                       {item.supplier.title}
+                   </td>
+                   <td className="text-center nowrap">
+                       {this.renderStatus(item.assignmentStatus)}
+                   </td>
+                   <td data-heading="More" className="td-center  last">
+                       {this.renderMoreButton(item, item.complete_url, item.hasDeleteRight, item.assignmentStatus.id)}
+                   </td>
+               </tr>
+               )
 
             }
             </tbody>
