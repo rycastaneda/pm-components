@@ -17,7 +17,6 @@ class Question extends Component {
 
     onDownloadAttachment(file) {
         window.console.log(file);
-
     }
     onDeleteAttachment(documentId) {
         this.props.dispatch(deleteDocument(this.props.questionId, documentId));
@@ -55,7 +54,6 @@ class Question extends Component {
         this.props.dispatch(uploadDocuments(this.props.questionId, documents));
     }
     onCommentChange(comment) {
-
         this.props.dispatch(setComment(this.props.questionId, comment));
     }
     uncheckRadioButtons() {
@@ -84,6 +82,8 @@ class Question extends Component {
             type,
             title,
             id } = question;
+        mandatoryComments = Boolean(mandatoryComments);
+        allowDocuments = Boolean(allowDocuments);
         return (
             <div>
                 <div className="row">
@@ -153,7 +153,7 @@ class Question extends Component {
                         </div>
                     </div>
                 </div>
-                { Boolean(allowDocuments)&&
+                { allowDocuments&&
                     <div className="row">
                         <div className="col-md-8 col-sm-12">
                             <Dropzone className="dropzone"

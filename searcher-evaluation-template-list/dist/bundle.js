@@ -22120,21 +22120,23 @@
 	            filterDate = _getState$evaluationT3.filterDate,
 	            filterUserId = _getState$evaluationT3.filterUserId;
 
-	        getPromiseForTemplateService((0, _dataParserUtil.getTemplateServiceUrlFor)(filterKeyword, filterStatus, filterDate, filterUserId, perPage, 1), dispatch);
+	        var queryParams = { filterKeyword: filterKeyword, filterStatus: filterStatus, filterDate: filterDate, filterUserId: filterUserId };
+	        getPromiseForTemplateService((0, _dataParserUtil.getTemplateServiceUrlFor)(filterKeyword, filterStatus, filterDate, filterUserId, perPage, 1), queryParams, dispatch);
 	    };
 	}
 
-	function onEvaluationTemplatesFilterChange(keyword, status, date, userId) {
+	function onEvaluationTemplatesFilterChange(filterKeyword, filterStatus, filterDate, filterUserId) {
 	    return function (dispatch, getState) {
 	        var _getState$evaluationT4 = getState().evaluationTemplates,
 	            maxRowLength = _getState$evaluationT4.maxRowLength,
 	            startIndex = _getState$evaluationT4.startIndex;
 
-	        getPromiseForTemplateService((0, _dataParserUtil.getTemplateServiceUrlFor)(keyword, status, date, userId, maxRowLength, startIndex), dispatch);
+	        var queryParams = { filterKeyword: filterKeyword, filterStatus: filterStatus, filterDate: filterDate, filterUserId: filterUserId };
+	        getPromiseForTemplateService((0, _dataParserUtil.getTemplateServiceUrlFor)(filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength, startIndex), queryParams, dispatch);
 	    };
 	}
 
-	function getPromiseForTemplateService(url, dispatch) {
+	function getPromiseForTemplateService(url, queryParams, dispatch) {
 	    return getPromiseForService(url, dispatch).then(function (response) {
 	        var _getDataFromTemplateS = (0, _dataParserUtil.getDataFromTemplateService)(response.data),
 	            templates = _getDataFromTemplateS.templates,
@@ -22144,6 +22146,7 @@
 
 	        dispatch({
 	            type: _ActionTypes.EVALUATION_TEMPLATES_FETCHED,
+	            queryParams: queryParams,
 	            templates: templates,
 	            totalPages: totalPages,
 	            currentPage: currentPage,
@@ -22441,6 +22444,8 @@
 	    }, {
 	        key: 'onSelectedDateChange',
 	        value: function onSelectedDateChange(date) {
+	            // set date to null when cleared
+	            date = date === '' ? null : date;
 	            this.setState({ selectedDate: date });
 	        }
 	    }, {
@@ -22828,12 +22833,12 @@
 	                            null,
 	                            _react2.default.createElement(
 	                                'a',
-	                                { disabled: 'true', href: edit_url },
+	                                { href: edit_url },
 	                                _react2.default.createElement('i', { className: 'fa fa-edit' }),
 	                                ' Edit'
 	                            )
 	                        ) : null,
-	                        !active && instances < 1 ? null : _react2.default.createElement(
+	                        !active ? null : _react2.default.createElement(
 	                            'li',
 	                            null,
 	                            _react2.default.createElement(
@@ -22843,8 +22848,7 @@
 	                                        return _this2.onTemplateToggleActivation(id, !active);
 	                                    } },
 	                                _react2.default.createElement('i', { className: 'fa fa-toggle-off' }),
-	                                ' ',
-	                                active ? ' Deactivate' : 'Activate'
+	                                'Deactivate'
 	                            )
 	                        )
 	                    )
@@ -22923,6 +22927,14 @@
 	                                'td',
 	                                { colSpan: '7' },
 	                                _react2.default.createElement(_PreloaderAnimation2.default, null)
+	                            )
+	                        ) : this.props.tableData.length === 0 ? _react2.default.createElement(
+	                            'tr',
+	                            null,
+	                            _react2.default.createElement(
+	                                'td',
+	                                { colSpan: '10', className: 'text-center td-no-link' },
+	                                'Click \'Create Template\' to create an evaluation template'
 	                            )
 	                        ) : this.props.tableData.map(function (item, index) {
 	                            return _react2.default.createElement(
@@ -23511,11 +23523,16 @@
 	                var _templates = action.templates,
 	                    _currentPage = action.currentPage,
 	                    _totalPages = action.totalPages,
-	                    maxRowLength = action.maxRowLength;
+	                    maxRowLength = action.maxRowLength,
+	                    queryParams = action.queryParams;
+	                var filterKeyword = queryParams.filterKeyword,
+	                    filterDate = queryParams.filterDate,
+	                    filterStatus = queryParams.filterStatus,
+	                    filterUserId = queryParams.filterUserId;
 
 	                var _currentTemplateList = _templates;
 	                var _isBusy = false;
-	                return (0, _extends3.default)({}, state, { isBusy: _isBusy, currentTemplateList: _currentTemplateList, currentPage: _currentPage, totalPages: _totalPages, maxRowLength: maxRowLength });
+	                return (0, _extends3.default)({}, state, { isBusy: _isBusy, currentTemplateList: _currentTemplateList, currentPage: _currentPage, totalPages: _totalPages, maxRowLength: maxRowLength, filterKeyword: filterKeyword, filterDate: filterDate, filterStatus: filterStatus, filterUserId: filterUserId });
 	            }
 	        case _ActionTypes.EVALUATION_TEMPLATE_UPDATED:
 	            {
@@ -23645,7 +23662,6 @@
 	    var userId = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 	    var maxRowLength = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
 	    var page = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : null;
-
 
 	    var urlPostfix = 'meta=instances,completed';
 	    if (page) {

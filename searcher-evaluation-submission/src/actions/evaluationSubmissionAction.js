@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { parseInitialize, parseDataForUpdateQuestion } from '../utils/dataParser';
-
+import { COMMENT_MANDATORY, VALIDATION_COMMENT_MANDATORY } from '../constants';
 import { UPDATE_TEMPLATE_ASSIGNMENT,
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_UPLOAD_FAILED,
@@ -48,9 +48,9 @@ export function uploadDocuments(questionId, documents) {
 
         let { assignmentId } = evaluationSubmission;
         let question = evaluationSubmission.questionByIndex[questionId];
-        if (!question.isAttempted) {
-            let message = 'Please add a comment before proceeding.';
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+        if (Boolean(question.mandatoryComments)&&!question.comment.length) {
+            dispatch(promptError(COMMENT_MANDATORY));
+            return false;
         }
         dispatch({
             type: DOCUMENTS_UPLOADING,
@@ -133,7 +133,17 @@ export function deleteDocument(questionId, documentId) {
 export function submitAssignment() {
     return (dispatch, getState) => {
         let { evaluationSubmission } = getState();
-        let { assignmentId } = evaluationSubmission;
+        let { assignmentId, questionByIndex } = evaluationSubmission;
+        let commentCount =0;
+        Object.values(questionByIndex).forEach((item) => {
+            if (Boolean(item.mandatoryComments)&&!item.comment.length) {
+                commentCount++;
+            }
+        });
+        if (commentCount) {
+            dispatch(promptError(VALIDATION_COMMENT_MANDATORY));
+            return false;
+        }
         let endpoint = '/evaluation-template-assignments/'+assignmentId+'/submit';
         let promise = axios.post(endpoint);
         promise.then(() => {
@@ -151,7 +161,6 @@ export function submitAssignment() {
                     let message = er.detail;
                     dispatch(promptError(message));
                 });
-
             } else {
                 let { message } = error;
                 dispatch(promptError(message));
@@ -189,29 +198,29 @@ export function criteriaMaximised(criteriaId, isMaximised) {
 }
 function updateQuestion(question, assignmentId, dispatch) {
     let promise;
+
     let endpoint = '/evaluation-template-assignments/'+assignmentId;
     endpoint += '/question-responses';
-    let parsedQuestionData = parseDataForUpdateQuestion(question) ;
+
+    let parsedQuestionData = parseDataForUpdateQuestion(question);
     if (question.isAttempted) {
         promise = axios.patch(endpoint+'/'+question.responseId, parsedQuestionData);
     } else {
         promise = axios.post(endpoint, parsedQuestionData);
     }
-    promise.then(() => {
+    promise.then((response) => {
+        if (!question.isAttempted) {
+            question.isAttempted = true;
+            question.responseId =  response.data.data.id;
+        }
         dispatch({ type: QUESTION_UPDATED, question });
     }).catch((error) => {
         if (error.response) {
             let { errors } = error.response.data;
-
-            if (typeof(errors)==='object') {
-                let message = errors.detail;
+            errors.forEach((er) => {
+                let message = er.detail;
                 dispatch(promptError(message));
-            } else {
-                errors.forEach((er) => {
-                    let message = er.detail;
-                    dispatch(promptError(message));
-                });
-            }
+            });
         } else {
             let { message } = error;
             dispatch(promptError(message));

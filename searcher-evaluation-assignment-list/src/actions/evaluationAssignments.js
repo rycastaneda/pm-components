@@ -28,7 +28,7 @@ export function previewTemplate(id) {
 export function onEvaluationAssignmentDelete(id) {
     return (dispatch) => {
         axios.delete('evaluation-template-assignments/'+id).then(() => {
-            return { type: EVALUATION_ASSIGNMENT_DELETE, id };
+            dispatch({ type: EVALUATION_ASSIGNMENT_DELETE, id });
         })
         .catch((error) => {
             let { message } = error;

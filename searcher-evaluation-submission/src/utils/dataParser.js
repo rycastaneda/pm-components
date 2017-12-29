@@ -1,9 +1,7 @@
 import normalize from 'json-api-normalizer';
 export function parseDataForUpdateQuestion(question) {
-
-    return {
+    let result = {
         data:{
-            id:question.responseId,
             type:'evaluation-question-responses',
             attributes:{
                 response_value:Number(question.selectedDefinition),
@@ -25,7 +23,11 @@ export function parseDataForUpdateQuestion(question) {
             }
         }
     };
-
+    // id is not required if it is a question response creation.
+    if (question.responseId) {
+        result.data.id = question.responseId;
+    }
+    return result;
 }
 
 export function parseInitialize(data, assignmentId) {

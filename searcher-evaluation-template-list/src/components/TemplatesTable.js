@@ -5,7 +5,6 @@ import Preloader from './PreloaderAnimation';
 
 class TemplatesTable extends Component {
 
-
     constructor(props) {
         super(props);
         this.actionDropdown= null;
@@ -69,17 +68,17 @@ class TemplatesTable extends Component {
                     </li>
                     { !active&&(instances<1)?
                         <li>
-                            <a disabled ="true" href={edit_url} ><i className="fa fa-edit"></i> Edit</a>
+                            <a href={edit_url} ><i className="fa fa-edit"></i> Edit</a>
                         </li>
                         :
                         null
                     }
-                    { !active&&(instances<1)?
+                    { !active?
                         null
                         :
                         <li>
                             <a href="javascript:;"
-                            onClick={ ()  => this.onTemplateToggleActivation(id, !(active))}><i className="fa fa-toggle-off"></i> {active?' Deactivate':'Activate'}
+                            onClick={ ()  => this.onTemplateToggleActivation(id, !(active))}><i className="fa fa-toggle-off"></i>Deactivate
                             </a>
                         </li>
                     }
@@ -121,8 +120,13 @@ class TemplatesTable extends Component {
                         <Preloader />
                     </td>
                 </tr>
-                :
-                this.props.tableData.map((item, index) =>
+                : (this.props.tableData.length===0)?
+                    <tr>
+                        <td colSpan="10" className="text-center td-no-link">
+                            Click 'Create Template' to create an evaluation template
+                        </td>
+                    </tr>
+                : this.props.tableData.map((item, index) =>
                     <tr key={index}>
                     <td className="nowrap">{item.title}</td>
                     <td className="td-center nowrap">{item.instances}</td>

@@ -16,7 +16,6 @@ export function getUsers(userData) {
 }
 
 export function getTemplateServiceUrlFor(keyword=null, status =null, date=null, userId=null, maxRowLength=null, page=null) {
-
     let urlPostfix='meta=instances,completed';
     if (page) {
         urlPostfix +='&page='+page;

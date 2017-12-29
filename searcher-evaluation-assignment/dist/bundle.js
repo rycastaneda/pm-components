@@ -1436,8 +1436,10 @@
 	                    }
 	                },
 	                'chairStaff': {
-	                    'type': 'staff',
-	                    'id': selectedAssigneeChairman.id
+	                    'data': {
+	                        'type': 'staff',
+	                        'id': selectedAssigneeChairman.id
+	                    }
 	                },
 	                'assigneeUser': {
 	                    'data': selectedAssignees
@@ -9045,6 +9047,7 @@
 	                                    labelKey: 'fullName',
 	                                    closeOnSelect: true,
 	                                    multi: true,
+	                                    backspaceToRemoveMessage: "",
 	                                    onChange: actions.updateSelectedAssignees,
 	                                    options: evaluationAssignees,
 	                                    placeholder: 'Select Assignees',

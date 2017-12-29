@@ -182,9 +182,9 @@ class Criteria extends Component {
                                 <hr />
                             </div>
                         </div>
-                        :null}
+                        :null
+                    }
                     <div>
-
                     {this.props.criteria.questions.length?
                         <div>
                             <div className="row">
@@ -279,6 +279,7 @@ Criteria.propTypes = {
 function mapStateToProps(state, props) {
     const { criteriaByIndex } = state.evaluationTemplateCreator;
     let criteria = props.criteriaId ? criteriaByIndex[props.criteriaId]: createCriteria();
+    window.console.log(criteria);
     return { criteria };
 }
 export default connect(mapStateToProps)(Criteria);
