@@ -64,10 +64,12 @@ class AssignmentsTable extends Component {
         this.props.onAssignmentMarkAsInProgress(id);
         this.hideMenu();
     }
-    renderMoreButton(assignment, complete_url, hasDeleteRight, statusId) {
+    renderMoreButton(assignment) {
+        let { id, complete_url, view_single_url, view_all_url, view_compare_url, hasDeleteRight, assignmentStatus } = assignment;
+        let statusId = assignmentStatus.id;
         let isDeletable = hasDeleteRight&&(statusId==='1');
         let isComplete = (statusId === '3');
-        let { id } = assignment;
+
         if (this.state.menuVisibleItemId === id) {
             return (
             <div className="db-function-dropdown click" ref={(ul) => {
@@ -91,8 +93,7 @@ class AssignmentsTable extends Component {
                         </li>
                         :null
                     }
-                    {
-                        complete_url?
+                    { complete_url?
                         <li>
                             <a href={complete_url}>
                                 <i className="fa fa-check"></i> Complete Evaluation
@@ -111,12 +112,12 @@ class AssignmentsTable extends Component {
                     <li className="dropdown-header">Analysis</li>
                     <li role="separator" className="divider"></li>
                     <li>
-                        <a href="javascript:;">
+                        <a href={view_single_url}>
                             <i className="fa fa-area-chart"></i> View Single
                         </a>
                     </li>
-                    <li><a href="javascript:;"><i className="fa fa-pie-chart"></i> View All</a></li>
-                    <li><a href="javascript:;"><i className="fa fa-exchange"></i> View Comparison</a></li>
+                    <li><a href={view_all_url}><i className="fa fa-pie-chart"></i> View All</a></li>
+                    <li><a href={view_compare_url}><i className="fa fa-exchange"></i> View Comparison</a></li>
                 </ul>
         </div>);
         } else {
@@ -184,7 +185,7 @@ class AssignmentsTable extends Component {
                        {this.renderStatus(item.assignmentStatus)}
                    </td>
                    <td data-heading="More" className="td-center  last">
-                       {this.renderMoreButton(item, item.complete_url, item.hasDeleteRight, item.assignmentStatus.id)}
+                       {this.renderMoreButton(item)}
                    </td>
                </tr>
                )

@@ -4,6 +4,7 @@ export const EVALUATION_TEMPLATE_SERVICE ='evaluation-templates';
 export const EVALUATION_ASSIGNMENT_SERVICE ='evaluation-template-assignments';
 export const EVALUATION_ASSIGNMENT_EXPORT_SERVICE ='evaluation-template-assignments/export?';
 export const EVALUATION_ASSIGNMENT_COMPLETION ='/searcher/evaluation_assignments/complete/';
+export const EVALUATION_ASSIGNMENT_ANALYSE = '/searcher/evaluation_assignments/analyse/';
 
 // const EDIT_PAGE ='/searcher/evaluation/edit_template/';
 // const PREVIEW_PAGE ='/searcher/evaluation/preview_template/';
@@ -192,12 +193,16 @@ export function parseAssignmentsFromData(evaluationAssignments, userProfile) {
             if ((assignmentStatus.id!=='3')&&(String(userProfile.id) === String(assignedUser.id))) {
                 complete_url = EVALUATION_ASSIGNMENT_COMPLETION+id;
             }
+
+            let view_all_url = EVALUATION_ASSIGNMENT_ANALYSE+id+'#all';
+            let view_single_url = EVALUATION_ASSIGNMENT_ANALYSE+id+'#single';
+            let view_compare_url = EVALUATION_ASSIGNMENT_ANALYSE+id+'#compare';
             // admin can delete any assignment
             let hasDeleteRight =  Boolean(userProfile.pitRole === 'admin');
             // creator can delete his own assignments
             hasDeleteRight = hasDeleteRight||(item.createdBy === userProfile.userId);
 
-            return { id, assignedOn, createdBy, evaluationTemplate, hasDeleteRight, assignedUser, linkedTo, assignmentStatus, supplier, complete_url };
+            return { id, assignedOn, createdBy, evaluationTemplate, hasDeleteRight, assignedUser, linkedTo, assignmentStatus, supplier, complete_url, view_all_url, view_single_url, view_compare_url };
         });
     } else {
         evaluationAssignments = [];
