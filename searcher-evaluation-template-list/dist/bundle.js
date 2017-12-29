@@ -24737,7 +24737,8 @@
 	            filterUserId = _getState$evaluationT2.filterUserId,
 	            maxRowLength = _getState$evaluationT2.maxRowLength;
 
-	        getPromiseForTemplateService((0, _dataParserUtil.getTemplateServiceUrlFor)(filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength, currPage), dispatch);
+	        var queryParams = { filterKeyword: filterKeyword, filterStatus: filterStatus, filterDate: filterDate, filterUserId: filterUserId };
+	        getPromiseForTemplateService((0, _dataParserUtil.getTemplateServiceUrlFor)(filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength, currPage), queryParams, dispatch);
 	    };
 	}
 
@@ -25752,6 +25753,7 @@
 	        var _this = (0, _possibleConstructorReturn3.default)(this, (EvaluationTemplateList.__proto__ || (0, _getPrototypeOf2.default)(EvaluationTemplateList)).call(this, props));
 
 	        _this.onFilterSubmit = _this.onFilterSubmit.bind(_this);
+	        _this.paginateTo = _this.paginateTo.bind(_this);
 	        return _this;
 	    }
 
@@ -25773,7 +25775,6 @@
 	    }, {
 	        key: 'paginateTo',
 	        value: function paginateTo(page) {
-
 	            this.props.dispatch((0, _evaluationTemplates.onEvaluationTemplatesPageChange)(page));
 	        }
 	    }, {
@@ -25822,7 +25823,7 @@
 	                    onTemplateToggleActivation: this.onTemplateToggleActivateClick.bind(this),
 	                    onMaxRowLengthChange: this.tableRowLengthChanged.bind(this),
 	                    rowCountChange: this.tableRowLengthChanged.bind(this),
-	                    goToPage: this.paginateTo.bind(this)
+	                    goToPage: this.paginateTo
 	                })
 	            );
 	        }

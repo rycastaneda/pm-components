@@ -19,6 +19,7 @@ class EvaluationTemplateList extends Component {
     constructor(props) {
         super(props);
         this.onFilterSubmit = this.onFilterSubmit.bind(this);
+        this.paginateTo = this.paginateTo.bind(this);
     }
 
     componentDidMount() {
@@ -35,7 +36,6 @@ class EvaluationTemplateList extends Component {
         this.props.dispatch(onEvaluationTemplatesDisplayedLengthChange(val));
     }
     paginateTo(page) {
-
         this.props.dispatch(onEvaluationTemplatesPageChange(page));
     }
     onTemplatePreviewClick(id) {
@@ -82,7 +82,7 @@ class EvaluationTemplateList extends Component {
                     )}
                     onMaxRowLengthChange={this.tableRowLengthChanged.bind(this)}
                     rowCountChange={this.tableRowLengthChanged.bind(this)}
-                    goToPage={this.paginateTo.bind(this)}
+                    goToPage={this.paginateTo}
                 />
             </div>
         );
