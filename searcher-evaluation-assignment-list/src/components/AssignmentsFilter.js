@@ -122,7 +122,7 @@ class EvaluationAssignmentsFilter extends Component {
                                         this.onTemplateChange(
                                             event.target.value
                                         )}>
-                                        <option value={''} >None</option>
+                                        <option value={''} >{'Any Template'}</option>
                                         {   evaluationTemplateList.map(item =>
                                             <option key={item.id} value={item.id}>{item.title}</option>)
                                         }

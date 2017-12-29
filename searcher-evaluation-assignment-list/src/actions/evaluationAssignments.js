@@ -41,6 +41,7 @@ export function onEvaluationAssignmentDelete(id) {
 export function initialize() {
 
     return (dispatch) => {
+        dispatch(isBusy(true));
         axios.all([
             // should be replaced by user profile service
             axios.get('user?include=staff.pitRoles'),
@@ -88,6 +89,7 @@ export function onMarkInProgress(id) {
 }
 export function onEvaluationTemplatesPageChange(currPage) {
     return (dispatch, getState) => {
+        dispatch(isBusy(true));
         let { maxRowLength, selectedLinkedTo,
         selectedTemplate,
         selectedAssignedTo,
@@ -110,6 +112,7 @@ export function onEvaluationTemplatesPageChange(currPage) {
 
 export function onEvaluationTemplatesDisplayedLengthChange(perPage) {
     return (dispatch, getState) => {
+        dispatch(isBusy(true));
         let { selectedLinkedTo,
         selectedTemplate,
         selectedAssignedTo,
@@ -145,6 +148,7 @@ export function onEvaluationAssignmentFilterChange({ selectedStatus,
     selectedEntityInstanceId }) {
 
     return (dispatch, getState) => {
+        dispatch(isBusy(true));
         const state= getState().evaluationAssignments;
         let { maxRowLength, currentPage, userProfile } = state;
         let queryParams = {

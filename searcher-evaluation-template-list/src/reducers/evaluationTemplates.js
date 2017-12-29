@@ -24,7 +24,8 @@ export function evaluationTemplates(state = INITIAL_DATA, action) {
 
     switch (action.type) {
         case INITIALIZED: {
-            let { users, templates, currentPage, totalPages, isBusy=false } = action;
+            let isBusy = false;
+            let { users, templates, currentPage, totalPages } = action;
             let currentTemplateList = templates;
             return { ...state, users, currentTemplateList, currentPage, totalPages, isBusy };
         }

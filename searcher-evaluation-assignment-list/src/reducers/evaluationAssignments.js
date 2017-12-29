@@ -120,6 +120,7 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
             return {
                 ...state,
                 maxRowLength: action.perPage,
+                isBusy:false
             };
 
         default:
