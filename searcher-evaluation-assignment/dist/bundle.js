@@ -1421,7 +1421,15 @@
 	        dispatch({
 	            type: actionTypes.ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_REQUEST_START
 	        });
+	        // formatting assignee users to match up with service requirement
+	        var assigneeUserData = selectedAssignees.map(function (item) {
+	            var id = item.id;
 
+	            return {
+	                type: 'users',
+	                id: id
+	            };
+	        });
 	        var data = (0, _defineProperty3.default)({}, 'data', {
 	            'type': 'evaluation-template-assignments',
 	            'id': selectedTemplateId, // TO DO:
@@ -1442,7 +1450,7 @@
 	                    }
 	                },
 	                'assigneeUser': {
-	                    'data': selectedAssignees
+	                    'data': assigneeUserData
 	                },
 	                'assignmentType': {
 	                    'data': {
