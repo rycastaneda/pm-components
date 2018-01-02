@@ -24,7 +24,7 @@ class EvaluationAssignment extends Component {
     }
 
     render() {
-        const {
+        let {
             evaluationTemplates,
             selectedTemplateId,
             evaluationAssignees,
@@ -36,7 +36,7 @@ class EvaluationAssignment extends Component {
             selectedAssignmentEntityInstanceId,
             actions,
             } = this.props;
-
+        evaluationTemplates = evaluationTemplates.filter(item => item.active===1);        
         const columnWidth = classNames('form-group', {
             'col-sm-4':(rfqTypeSelectedId !== '' && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1')),
             'col-sm-6':(rfqTypeSelectedId === '')

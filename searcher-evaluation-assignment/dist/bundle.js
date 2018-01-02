@@ -8886,7 +8886,9 @@
 	                selectedAssignmentEntityInstanceId = _props.selectedAssignmentEntityInstanceId,
 	                actions = _props.actions;
 
-
+	            evaluationTemplates = evaluationTemplates.filter(function (item) {
+	                return item.active === 1;
+	            });
 	            var columnWidth = (0, _classnames2.default)('form-group', {
 	                'col-sm-4': rfqTypeSelectedId !== '' && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1'),
 	                'col-sm-6': rfqTypeSelectedId === ''

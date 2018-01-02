@@ -8342,7 +8342,6 @@
 	            var _this4 = this;
 
 	            var isDefsDisabled = this.state.type === '3' || this.state.type === '4';
-
 	            return _react2.default.createElement(
 	                'div',
 	                null,
@@ -8507,7 +8506,7 @@
 	                                            )
 	                                        )
 	                                    ),
-	                                    _react2.default.createElement(
+	                                    this.state.type === '4' ? null : _react2.default.createElement(
 	                                        'li',
 	                                        null,
 	                                        _react2.default.createElement(

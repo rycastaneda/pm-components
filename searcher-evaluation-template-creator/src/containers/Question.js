@@ -269,7 +269,6 @@ class Question extends Component {
 
     renderMaximised() {
         const isDefsDisabled = (this.state.type === '3' || this.state.type === '4');
-
         return (
             <div>
                 <h3>Question {this.props.questionIndex}</h3>
@@ -362,7 +361,9 @@ class Question extends Component {
                                                     </label>
                                                 </div>
                                             </li>
-                                            <li>
+                                            {this.state.type === '4'?
+                                            null
+                                            :<li>
                                                 <div className="checkbox">
                                                     <label>
                                                         <input type="checkbox"
@@ -372,7 +373,7 @@ class Question extends Component {
                                                         {QUESTION_OPTIONS[2].label}
                                                     </label>
                                                 </div>
-                                            </li>
+                                            </li>}
                                         </ul>
                                     </div>
                                 </div>
