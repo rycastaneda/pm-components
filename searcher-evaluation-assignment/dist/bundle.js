@@ -1423,11 +1423,11 @@
 	        });
 	        // formatting assignee users to match up with service requirement
 	        var assigneeUserData = selectedAssignees.map(function (item) {
-	            var id = item.id;
+	            var user_id = item.user_id;
 
 	            return {
 	                type: 'users',
-	                id: id
+	                user_id: user_id
 	            };
 	        });
 	        var data = (0, _defineProperty3.default)({}, 'data', {
