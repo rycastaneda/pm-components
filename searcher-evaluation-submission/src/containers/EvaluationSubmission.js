@@ -49,11 +49,13 @@ class EvaluationSubmission extends Component {
                     )}
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col-sm-12 pull-text-right">
-                        <button onClick={this.submitAssignment} className="btn btn-md"><i className="fa fa-send"></i> Complete Evaluation</button>
-                    </div>
-                </div>
+                {assignmentStatus.id !=='3'?
+                    <div className="row">
+                        <div className="col-sm-12 pull-text-right">
+                            <button onClick={this.submitAssignment} className="btn btn-md"><i className="fa fa-send"></i> Complete Evaluation</button>
+                        </div>
+                    </div>:null
+                }
             </div>
         );
     }
