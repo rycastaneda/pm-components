@@ -9,10 +9,10 @@ export const createAssignment = () => (dispatch, getState) => {
     });
     // formatting assignee users to match up with service requirement
     let assigneeUserData  = selectedAssignees.map((item) => {
-        let { id } = item;
+        let { user_id } = item;
         return {
             type: 'users',
-            id
+            user_id
         };
     });
     const data = {
