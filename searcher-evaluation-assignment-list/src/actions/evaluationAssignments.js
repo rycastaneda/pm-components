@@ -3,7 +3,7 @@ import {
     getDataFromAssignmentService,
     getAssignmentServiceUrlFor,
     parseInitializeResponse,
-    parseAssignmentStatusFromData
+    parseAssignmentFromAssignmentStatusData
 } from '../utils/dataParserUtil';
 import {
     REQUEST_FAILED,
@@ -110,11 +110,13 @@ export function initialize() {
     };
 }
 export function onMarkInProgress(id) {
-    return  (dispatch) => {
+    return  (dispatch, getState) => {
         axios.patch(EVALUATION_ASSIGNMENT_SERVICE+'/'+id, getDataForMarkInProgress(id))
         .then((response) => {
-            let assignmentStatus = parseAssignmentStatusFromData(response.data);
-            dispatch({ type: EVALUATION_STATUS_UPDATED, id, assignmentStatus });
+            let { userProfile, evaluationAssignments } = getState().evaluationAssignments;
+            let assignment  = evaluationAssignments.filter(item => item.id===id)[0];
+            assignment = parseAssignmentFromAssignmentStatusData(response.data, assignment, userProfile);
+            dispatch({ type: EVALUATION_STATUS_UPDATED, id, assignment });
         })
         .catch((error) => {
             let { message } = error;

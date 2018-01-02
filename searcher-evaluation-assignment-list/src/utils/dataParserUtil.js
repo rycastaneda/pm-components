@@ -136,10 +136,17 @@ export function getDataFromAssignmentService(evaluationAssignments, userProfile)
     return { evaluationAssignments, totalPages, currentPage };
 }
 
-export function parseAssignmentStatusFromData(data) {
+export function parseAssignmentFromAssignmentStatusData(data, assignment, userProfile) {
     data = normalize(data, { endpoint:'evaluation-template-assignments' });
     data = build(data, 'evaluationTemplateAssignmentStatuses');
-    return (data[0]);
+    assignment = { ...assignment };
+    let { assignmentStatus, assignedUser, id } = assignment;
+    assignmentStatus = data[0];
+    let complete_url = null;
+    if ((assignmentStatus.id!=='3')&&(String(userProfile.id) === String(assignedUser.id))) {
+        complete_url = EVALUATION_ASSIGNMENT_COMPLETION+id;
+    }
+    return { ...assignment, complete_url, assignmentStatus };
 }
 
 export function parseAssignmentsFromData(evaluationAssignments, userProfile) {

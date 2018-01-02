@@ -72,11 +72,12 @@ class AssignmentsTable extends Component {
 
         if (this.state.menuVisibleItemId === id) {
             return (
-            <div className="db-function-dropdown click" ref={(ul) => {
-                if (ul!==null) {
-                    this.actionDropdown=ul;
-                }
-            }}>
+            <div className="db-function-dropdown click"
+                ref={(ul) => {
+                    if (ul!==null) {
+                        this.actionDropdown=ul;
+                    }
+                }}>
                 <a className="db-function"
                     onClick={this.toggleMenu.bind(this, id)}
                     href="javascript:">
@@ -132,7 +133,6 @@ class AssignmentsTable extends Component {
                 </div>
             );
         }
-
     }
     render() {
         return (
@@ -184,12 +184,11 @@ class AssignmentsTable extends Component {
                    <td className="text-center nowrap">
                        {this.renderStatus(item.assignmentStatus)}
                    </td>
-                   <td data-heading="More" className="td-center  last">
+                   <td data-heading="More" className="td-center last">
                        {this.renderMoreButton(item)}
                    </td>
                </tr>
                )
-
             }
             </tbody>
             </table>
