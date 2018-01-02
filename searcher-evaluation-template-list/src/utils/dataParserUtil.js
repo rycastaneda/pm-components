@@ -11,7 +11,8 @@ export function getUsers(userData) {
 
     return userData.map((user) => {
         let { userId, firstName, lastName } = user;
-        return { id:userId, firstName, lastName } ;
+        let label = firstName +' '+lastName;
+        return { id:userId, firstName, lastName, label } ;
     });
 }
 

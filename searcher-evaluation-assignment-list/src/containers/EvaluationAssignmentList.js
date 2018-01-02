@@ -9,6 +9,7 @@ import {
     onEvaluationTemplatesPageChange,
     onEvaluationAssignmentDelete,
     onMarkInProgress,
+    onExportAsCSV,
     initialize
 } from '../actions/evaluationAssignments';
 import AssignmentsTable from '../components/AssignmentsTable';
@@ -20,6 +21,7 @@ class EvaluationAssignmentList extends Component {
         this.onFilterSubmit = this.onFilterSubmit.bind(this);
         this.onAssignmentDelete = this.onAssignmentDelete.bind(this);
         this.onAssignmentMarkAsInProgress = this.onAssignmentMarkAsInProgress.bind(this);
+        this.onExportButtonClick = this.onExportButtonClick.bind(this);
     }
 
     componentDidMount() {
@@ -28,7 +30,7 @@ class EvaluationAssignmentList extends Component {
         );
     }
 
-    onFilterSubmit(result) {
+    onFilterSubmit(result) {        
         this.props.dispatch(
             onEvaluationAssignmentFilterChange(result)
         );
@@ -54,7 +56,9 @@ class EvaluationAssignmentList extends Component {
             onEvaluationTemplatesPageChange(page)
         );
     }
-
+    onExportButtonClick() {
+        this.props.dispatch(onExportAsCSV());
+    }
     render() {
         return (
             <div className="searcher-evaluation-assignment-list">
@@ -69,8 +73,9 @@ class EvaluationAssignmentList extends Component {
                     onSubmit = {this.onFilterSubmit}
                 />
                 <AssignmentsTable
+                    onExportButtonClick = {this.onExportButtonClick}
                     isBusy = {this.props.isBusy}
-                    tableData = {this.props.evaluationAssignments}                    
+                    tableData = {this.props.evaluationAssignments}
                     onAssignmentDelete = {this.onAssignmentDelete}
                     onAssignmentMarkAsInProgress = {this.onAssignmentMarkAsInProgress}
                     rowCountList = {MAXROWS_LIST}

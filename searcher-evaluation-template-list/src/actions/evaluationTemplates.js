@@ -60,7 +60,8 @@ export function onEvaluationTemplatesPageChange(currPage) {
     return (dispatch, getState) => {
         dispatch(isBusy(true));
         const { filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength }= getState().evaluationTemplates;
-        getPromiseForTemplateService(getTemplateServiceUrlFor(filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength, currPage), dispatch);
+        let queryParams = { filterKeyword, filterStatus, filterDate, filterUserId };
+        getPromiseForTemplateService(getTemplateServiceUrlFor(filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength, currPage), queryParams, dispatch);
     };
 }
 

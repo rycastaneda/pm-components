@@ -64,10 +64,12 @@ class AssignmentsTable extends Component {
         this.props.onAssignmentMarkAsInProgress(id);
         this.hideMenu();
     }
-    renderMoreButton(assignment, complete_url, hasDeleteRight, statusId) {
+    renderMoreButton(assignment) {
+        let { id, complete_url, view_single_url, view_all_url, view_compare_url, hasDeleteRight, assignmentStatus } = assignment;
+        let statusId = assignmentStatus.id;
         let isDeletable = hasDeleteRight&&(statusId==='1');
         let isComplete = (statusId === '3');
-        let { id } = assignment;
+
         if (this.state.menuVisibleItemId === id) {
             return (
             <div className="db-function-dropdown click" ref={(ul) => {
@@ -91,8 +93,7 @@ class AssignmentsTable extends Component {
                         </li>
                         :null
                     }
-                    {
-                        complete_url?
+                    { complete_url?
                         <li>
                             <a href={complete_url}>
                                 <i className="fa fa-check"></i> Complete Evaluation
@@ -111,12 +112,12 @@ class AssignmentsTable extends Component {
                     <li className="dropdown-header">Analysis</li>
                     <li role="separator" className="divider"></li>
                     <li>
-                        <a href="javascript:;">
+                        <a href={view_single_url}>
                             <i className="fa fa-area-chart"></i> View Single
                         </a>
                     </li>
-                    <li><a href="javascript:;"><i className="fa fa-pie-chart"></i> View All</a></li>
-                    <li><a href="javascript:;"><i className="fa fa-exchange"></i> View Comparison</a></li>
+                    <li><a href={view_all_url}><i className="fa fa-pie-chart"></i> View All</a></li>
+                    <li><a href={view_compare_url}><i className="fa fa-exchange"></i> View Comparison</a></li>
                 </ul>
         </div>);
         } else {
@@ -156,38 +157,38 @@ class AssignmentsTable extends Component {
                     </td>
                 </tr>
                 :
-                    this.props.tableData.length===0?
-                    <tr>
-                        <td colSpan="10" className="text-center td-no-link">
-                            Click 'Create Assignment' to create an evaluation assignment
-                        </td>
-                    </tr>
-                    :this.props.tableData.map(item =>
-                       <tr key={item.id}>
-                       <td className="nowrap">
-                           {item.assignedOn}
-                       </td>
-                       <td className="nowrap">
-                           {item.evaluationTemplate.title}
-                       </td>
-                       <td className="nowrap">
-                        {item.linkedTo.title} #{item.supplier.id}
-                       </td>
-                       <td className="nowrap">
-                           {item.assignedUser.userName}
-                       </td>
+                this.props.tableData.length===0?
+                <tr>
+                    <td colSpan="10" className="text-center td-no-link">
+                        Click 'Create Assignment' to create an evaluation assignment
+                    </td>
+                </tr>
+                :this.props.tableData.map(item =>
+                   <tr key={item.id}>
+                   <td className="nowrap">
+                       {item.assignedOn}
+                   </td>
+                   <td className="nowrap">
+                       {item.evaluationTemplate.title}
+                   </td>
+                   <td className="nowrap">
+                    {item.linkedTo.title} #{item.supplier.id}
+                   </td>
+                   <td className="nowrap">
+                       {item.assignedUser.userName}
+                   </td>
 
-                       <td className="nowrap">
-                           {item.supplier.title}
-                       </td>
-                       <td className="text-center nowrap">
-                           {this.renderStatus(item.assignmentStatus)}
-                       </td>
-                       <td data-heading="More" className="td-center  last">
-                           {this.renderMoreButton(item, item.complete_url, item.hasDeleteRight, item.assignmentStatus.id)}
-                       </td>
-                   </tr>
-                   )
+                   <td className="nowrap">
+                       {item.supplier.title}
+                   </td>
+                   <td className="text-center nowrap">
+                       {this.renderStatus(item.assignmentStatus)}
+                   </td>
+                   <td data-heading="More" className="td-center  last">
+                       {this.renderMoreButton(item)}
+                   </td>
+               </tr>
+               )
 
             }
             </tbody>
@@ -202,24 +203,25 @@ class AssignmentsTable extends Component {
                     </select>
                     &nbsp;
                     {this.props.totalPages > 1?
-                    <ReactPaginate
-                              previousLabel={"previous"}
-                              nextLabel={"next"}
-                              breakLabel={<a href="">...</a>}
-                              breakClassName={"break-me"}
-                              pageCount={this.props.totalPages}
-                              forcePage= {this.props.currentPage-1}
-                              marginPagesDisplayed={2}
-                              pageRangeDisplayed={5}
-                              onPageChange={this.handlePageClick}
-                              containerClassName={"pagination"}
-                              subContainerClassName={"pages pagination"}
-                              activeClassName={"active"} />
-                    :null
-
-                }
-                    </div>
+                        <ReactPaginate
+                                  previousLabel={"previous"}
+                                  nextLabel={"next"}
+                                  breakLabel={<a href="">...</a>}
+                                  breakClassName={"break-me"}
+                                  pageCount={this.props.totalPages}
+                                  forcePage= {this.props.currentPage-1}
+                                  marginPagesDisplayed={2}
+                                  pageRangeDisplayed={5}
+                                  onPageChange={this.handlePageClick}
+                                  containerClassName={"pagination"}
+                                  subContainerClassName={"pages pagination"}
+                                  activeClassName={"active"} />
+                        :null
+                    }
+                    &nbsp;
+                    <button className="btn btn-sm pull-right" onClick={() => this.props.onExportButtonClick() }>Export as CSV</button>
                 </div>
+            </div>
         </div>);
     }
 }
@@ -233,6 +235,7 @@ AssignmentsTable.propTypes = {
     totalPages:PropTypes.number.isRequired,
     currentPage:PropTypes.number.isRequired,
     goToPage:PropTypes.func.isRequired,
+    onExportButtonClick: PropTypes.func.isRequired,
     rowCountChange: PropTypes.func.isRequired,
     isBusy: PropTypes.bool.isRequired
 };

@@ -25,6 +25,42 @@ import { showNotification } from '../notification/actions';
 export function previewTemplate(id) {
     id;
 }
+export function onExportAsCSV() {
+    return (dispatch, getState) => {
+        let {
+            selectedLinkedTo,
+            selectedTemplate,
+            selectedAssignedTo,
+            selectedSupplier,
+            selectedAssignedOn,
+            preferred_supplier_id,
+        } = getState().evaluationAssignments;
+        let queryParams = {
+            selectedLinkedTo,
+            selectedTemplate,
+            selectedAssignedTo,
+            selectedSupplier,
+            selectedAssignedOn,
+            preferred_supplier_id
+        };
+        axios.get(getAssignmentServiceUrlFor(queryParams, true)).then((response) => {
+            let encodedUri = encodeURI(response.data);
+            var link = document.createElement('a');
+            link.setAttribute('href', 'data:text/csv;charset=utf-8,'+encodedUri);
+            link.setAttribute('target', '_blank');
+            link.setAttribute('download', 'assignments.csv');
+            document.body.appendChild(link); // Required for FF
+            link.click();
+            document.body.removeChild(link);
+        })
+        .catch((error) => {
+            window.console.log(error.message);
+            let { message } = error;
+            dispatch({ type:REQUEST_FAILED });
+            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+        });
+    };
+}
 export function onEvaluationAssignmentDelete(id) {
     return (dispatch) => {
         axios.delete('evaluation-template-assignments/'+id).then(() => {
