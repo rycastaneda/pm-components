@@ -22,8 +22,11 @@ export function initialize(requestedAssignmentId) {
         return axios.get('/evaluation-template-assignments/'+requestedAssignmentId+'?include=template.criteria.questions')
         .then((response) => {
             let result = parseInitialize(response.data, requestedAssignmentId);
-
+            if (result.assignmentStatus.id==='3') {
+                dispatch(promptError('This assignment has already been submitted.'));
+            }
             dispatch({ type:UPDATE_TEMPLATE_ASSIGNMENT, ...result });
+
         })
         .catch((error) => {
 
