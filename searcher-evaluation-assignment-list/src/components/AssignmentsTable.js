@@ -134,7 +134,7 @@ class AssignmentsTable extends Component {
     render() {
         return (
         <div>
-            <table className="table db-table db-table-sort">
+            <table className="table db-table">
             <thead>
                 <tr>
                     <th>Date Assigned</th>

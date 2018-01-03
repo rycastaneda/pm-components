@@ -25537,7 +25537,7 @@
 	                null,
 	                _react2.default.createElement(
 	                    'table',
-	                    { className: 'table db-table db-table-sort' },
+	                    { className: 'table db-table' },
 	                    _react2.default.createElement(
 	                        'thead',
 	                        null,
