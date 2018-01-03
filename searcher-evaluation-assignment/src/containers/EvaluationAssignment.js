@@ -36,7 +36,7 @@ class EvaluationAssignment extends Component {
             selectedAssignmentEntityInstanceId,
             actions,
             } = this.props;
-        evaluationTemplates = evaluationTemplates.filter(item => item.active===1);        
+        evaluationTemplates = evaluationTemplates.filter(item => item.active===1);
         const columnWidth = classNames('form-group', {
             'col-sm-4':(rfqTypeSelectedId !== '' && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1')),
             'col-sm-6':(rfqTypeSelectedId === '')
@@ -172,7 +172,6 @@ class EvaluationAssignment extends Component {
 
     renderSaveButton() {
         const { selectedAssignmentEntityInstanceId, selectedAssignees, isLoading, actions } = this.props;
-
         if (selectedAssignmentEntityInstanceId === '' || selectedAssignees.length === 0) {
             return null;
         }

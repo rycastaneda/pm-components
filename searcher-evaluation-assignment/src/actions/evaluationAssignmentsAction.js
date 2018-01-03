@@ -8,11 +8,11 @@ export const createAssignment = () => (dispatch, getState) => {
         type: actionTypes.ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_REQUEST_START,
     });
     // formatting assignee users to match up with service requirement
-    let assigneeUserData  = selectedAssignees.map((item) => {
-        let { id } = item;
+    const assigneeUserData  = selectedAssignees.map((item) => {
+        const { userId } = item;
         return {
             type: 'users',
-            user_id: id
+            id: userId
         };
     });
     const data = {
