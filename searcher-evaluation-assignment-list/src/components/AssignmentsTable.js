@@ -66,7 +66,7 @@ class AssignmentsTable extends Component {
     }
     renderMoreButton(assignment) {
         let { id, complete_url, view_single_url, view_all_url, view_compare_url, isDeleteAllowed, isMarkInProgressAllowed } = assignment;
-    
+
         if (this.state.menuVisibleItemId === id) {
             return (
             <div className="db-function-dropdown click"
@@ -142,8 +142,8 @@ class AssignmentsTable extends Component {
                     <th>Linked To</th>
                     <th>Assigned User</th>
                     <th>Supplier</th>
-                    <th>Status</th>
-                    <th>More</th>
+                    <th className="td-center nowrap">Status</th>
+                    <th className="td-center nowrap">More</th>
                 </tr>
             </thead>
             <tbody>

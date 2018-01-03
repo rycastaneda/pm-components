@@ -106,11 +106,11 @@ class TemplatesTable extends Component {
             <thead>
             <tr>
                 <th>Template name</th>
-                <th>Instances</th>
-                <th>Completed</th>
-                <th>Creation Date</th>
-                <th>Status</th>
-                <th>More</th>
+                <th className="td-center nowrap">Instances</th>
+                <th className="td-center nowrap">Completed</th>
+                <th className="td-center nowrap">Creation Date</th>
+                <th className="td-center nowrap">Status</th>
+                <th className="td-center nowrap">More</th>
             </tr>
             </thead>
             <tbody>

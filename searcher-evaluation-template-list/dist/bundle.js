@@ -25551,27 +25551,27 @@
 	                            ),
 	                            _react2.default.createElement(
 	                                'th',
-	                                null,
+	                                { className: 'td-center nowrap' },
 	                                'Instances'
 	                            ),
 	                            _react2.default.createElement(
 	                                'th',
-	                                null,
+	                                { className: 'td-center nowrap' },
 	                                'Completed'
 	                            ),
 	                            _react2.default.createElement(
 	                                'th',
-	                                null,
+	                                { className: 'td-center nowrap' },
 	                                'Creation Date'
 	                            ),
 	                            _react2.default.createElement(
 	                                'th',
-	                                null,
+	                                { className: 'td-center nowrap' },
 	                                'Status'
 	                            ),
 	                            _react2.default.createElement(
 	                                'th',
-	                                null,
+	                                { className: 'td-center nowrap' },
 	                                'More'
 	                            )
 	                        )
