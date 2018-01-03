@@ -202,13 +202,10 @@ export function parseAssignmentsFromData(evaluationAssignments, userProfile) {
             }
 
             let complete_url = null;
-
-            let isAdmin = (userProfile.pitRole==='admin');
             // there should be no complete_url if already completed
-            // an admin can complete any assignment
-            // assigned user can complete an assignment
+            // only assigned user can complete an assignment
             if (assignmentStatus.id!=='3') {
-                if (isAdmin||(String(userProfile.id) === String(assignedUser.id))) {
+                if ((String(userProfile.id) === String(assignedUser.id))) {
                     complete_url = EVALUATION_ASSIGNMENT_COMPLETION+id;
                 }
             }
