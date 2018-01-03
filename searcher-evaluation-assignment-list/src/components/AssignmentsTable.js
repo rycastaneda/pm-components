@@ -48,7 +48,7 @@ class AssignmentsTable extends Component {
                 styleClass =' bs-label-warning';
                 break;
             case '3':
-                styleClass += '  bs-label-success';
+                styleClass += ' bs-label-success';
                 break;
         }
         return <span className={ styleClass }>{status.title}</span>;
