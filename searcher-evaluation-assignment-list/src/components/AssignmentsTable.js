@@ -65,11 +65,8 @@ class AssignmentsTable extends Component {
         this.hideMenu();
     }
     renderMoreButton(assignment) {
-        let { id, complete_url, view_single_url, view_all_url, view_compare_url, hasDeleteRight, assignmentStatus } = assignment;
-        let statusId = assignmentStatus.id;
-        let isDeletable = hasDeleteRight&&(statusId==='1');
-        let isComplete = (statusId === '3');
-
+        let { id, complete_url, view_single_url, view_all_url, view_compare_url, isDeleteAllowed, isMarkInProgressAllowed } = assignment;
+    
         if (this.state.menuVisibleItemId === id) {
             return (
             <div className="db-function-dropdown click"
@@ -85,7 +82,7 @@ class AssignmentsTable extends Component {
                     <i className="fa fa-caret-down" ></i>
                 </a>
                 <ul className="db-function-menu">
-                    { isDeletable?
+                    { isDeleteAllowed?
                         <li>
                             <a href="javascript:;"
                             onClick ={() => this.onDeleteClick(id)} >
@@ -102,7 +99,7 @@ class AssignmentsTable extends Component {
                         </li>
                         :null
                     }
-                    { isComplete?
+                    { isMarkInProgressAllowed?
                         <li>
                             <a href="javascript:;" onClick={() => this.onMarkAsInProgressClick(id)} >
                             <i className="fa fa-clock-o"></i> Mark as in Progress</a>

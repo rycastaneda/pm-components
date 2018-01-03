@@ -142,8 +142,7 @@ class Question extends Component {
                 {
                     question.type==='4'?
                     <div className="row">
-                        <div className="col-md-8 col-sm-12">
-                            <h2>Response <small>(required)</small></h2>
+                        <div className="col-md-8 col-sm-12">                            
                             <div className="form-group">
                                 <textarea name="reponse"
                                     defaultValue ={this.props.question.comment}
