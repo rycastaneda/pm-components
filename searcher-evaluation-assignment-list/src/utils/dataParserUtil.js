@@ -151,9 +151,11 @@ export function parseAssignmentFromAssignmentStatusData(data, assignment, userPr
 
 export function parseAssignmentsFromData(evaluationAssignments, userProfile) {
     evaluationAssignments = normalize(evaluationAssignments, { endpoint:'evaluation-template-assignments' });
-    evaluationAssignments = build(evaluationAssignments, 'evaluationTemplateAssignments');
+    // to keep the ordering from server.
+    let evaluationAssignmentIds = { ...evaluationAssignments }.meta['evaluation-template-assignments'].data.map(item => item.id);
     if (evaluationAssignments) {
-        evaluationAssignments = evaluationAssignments.map((item) => {
+        evaluationAssignments = evaluationAssignmentIds.map((item) => {
+            item =  build(evaluationAssignments, 'evaluationTemplateAssignments', item);
             let { id,
                 createdAt,
                 createdBy,
