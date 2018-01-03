@@ -1,11 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import  Select  from 'react-select';
 import * as actions from '../actions/evaluationAssignmentsAction';
 import * as apiCalls from '../actions/apiActions';
 import { selectFromStore } from '../utils/selectFromStore';
-import { concatLabelKey } from '../utils/concatLabelKey';
 import EvaluationTemplatesDropdown from './components/EvaluationTemplatesDropdown';
 import EvaluationTypeDropdown from './components/EvaluationTypeDropdown';
 import RfqListDropdown from './components/RfqListDropdown';
@@ -13,6 +11,10 @@ import MatchedSuppliersDropdown from './components/MatchedSuppliersDropdown';
 import MatchedItemsDropdown from './components/MatchedItemsDropdown';
 import EngagementsDropdown from './components/EngagementsDropdown';
 import PreferredSuppliersDropdown from './components/PreferredSuppliersDropdown';
+import EvaluationAssigneesSelect from './components/EvaluationAssigneesSelect';
+import EvaluationAssignmentChairSelect from './components/EvaluationAssignmentChairSelect';
+import ButtonSaveAssignment from './components/ButtonSaveAssignment';
+
 import classNames from 'classnames';
 
 class EvaluationAssignment extends Component {
@@ -21,22 +23,20 @@ class EvaluationAssignment extends Component {
         const { apiActions } = this.props;
         apiActions.fetchEvaluationTemplates();
         apiActions.fetchAssigneesStaff();
+        apiActions.fetchUser();
     }
 
     render() {
         let {
             evaluationTemplates,
             selectedTemplateId,
-            evaluationAssignees,
-            selectedAssignees,
-            selectedAssigneeChairman,
             evaluationTypeSelected,
             rfqTypeSelectedId,
             matchedSupplierId,
             selectedAssignmentEntityInstanceId,
-            actions,
             } = this.props;
         evaluationTemplates = evaluationTemplates.filter(item => item.active===1);        
+
         const columnWidth = classNames('form-group', {
             'col-sm-4':(rfqTypeSelectedId !== '' && (evaluationTypeSelected === '2' || evaluationTypeSelected === '1')),
             'col-sm-6':(rfqTypeSelectedId === '')
@@ -129,70 +129,28 @@ class EvaluationAssignment extends Component {
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="assignees">Evaluation Assignment Chair</label>
                                 <div>
-                                    <Select
-                                        className="pm-react-select"
-                                        labelKey="fullName"
-                                        closeOnSelect={true}
-                                        onChange={actions.updateSelectedAssigneeChairman}
-                                        options={evaluationAssignees}
-                                        placeholder="Select Assignment Chair"
-                                        removeSelected={true}
-                                        value={selectedAssigneeChairman}
-                                    />
+                                    <EvaluationAssignmentChairSelect />
                                 </div>
                             </div>
                             <div className="col-sm-12" />
                             <div className="col-sm-4 form-group">
                                 <label htmlFor="assignees">Evaluation Assignees</label>
                                 <div>
-                                    <Select
-                                        className="pm-react-select"
-                                        labelKey="fullName"
-                                        closeOnSelect={true}
-                                        multi
-                                        backspaceToRemoveMessage={""}
-                                        onChange={actions.updateSelectedAssignees}
-                                        options={evaluationAssignees}
-                                        placeholder="Select Assignees"
-                                        removeSelected={true}
-                                        value={selectedAssignees}
-                                    />
+                                    <EvaluationAssigneesSelect />
                                 </div>
                             </div>
                         </div>
                         : null
                     }
-
-                    {this.renderSaveButton()}
-
+                    <ButtonSaveAssignment />
                 </form>
             </div>
         );
     }
-
-    renderSaveButton() {
-        const { selectedAssignmentEntityInstanceId, selectedAssignees, isLoading, actions } = this.props;
-
-        if (selectedAssignmentEntityInstanceId === '' || selectedAssignees.length === 0) {
-            return null;
-        }
-
-        return (
-            <div className="row">
-                <div className="col-sm-4">
-                    <button title="Save" className="btn btn-md " type="button" onClick={actions.createAssignment}>{isLoading ? 'Saving...' : 'Save'}</button>
-                </div>
-            </div>
-        );
-    }
-
 }
 
 EvaluationAssignment.propTypes = {
     evaluationTemplates: PropTypes.array.isRequired,
-    evaluationAssignees: PropTypes.array.isRequired,
-    selectedAssignees:PropTypes.array.isRequired,
-    selectedAssigneeChairman:PropTypes.object,
     selectedTemplateId: PropTypes.string.isRequired,
     evaluationTypeSelected: PropTypes.string.isRequired,
     rfqTypeSelectedId: PropTypes.string.isRequired,
@@ -216,8 +174,6 @@ const mapStateToProps = (state, ownProps) => {
 
     const {
         evaluationTypeSelected,
-        selectedAssignees,
-        selectedAssigneeChairman,
         isLoading,
         selectedTemplateId,
         selectedAssignmentEntityInstanceId,
@@ -226,7 +182,6 @@ const mapStateToProps = (state, ownProps) => {
     } = state.evaluationAssignment;
 
     const evaluationTemplates = selectFromStore(state.evaluationAssignment, '/evaluation-templates', 'evaluationTemplates');
-    const evaluationAssignees = concatLabelKey(selectFromStore(state.evaluationAssignment, '/staff', 'staff'));
 
     return {
         ...ownProps,
@@ -234,9 +189,6 @@ const mapStateToProps = (state, ownProps) => {
         evaluationTemplates,
         matchedSupplierId,
         evaluationTypeSelected,
-        evaluationAssignees,
-        selectedAssignees,
-        selectedAssigneeChairman,
         selectedAssignmentEntityInstanceId,
         rfqTypeSelectedId,
         isLoading,

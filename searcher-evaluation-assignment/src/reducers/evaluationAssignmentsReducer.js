@@ -10,9 +10,9 @@ const initialState = {
     evaluationTypeSelected: '',
     rfqTypeSelectedId: '',
     matchedSupplierId: '',
+    currentUserRole: '',
     isLoading: false,
     meta: {},
-    data: {},
 };
 
 export function evaluationAssignment(state = initialState, action) {
@@ -89,6 +89,11 @@ export function evaluationAssignment(state = initialState, action) {
                 isLoading: false,
             };
 
+        case  actionTypes.ASSIGNMENT_CREATION_UPDATE_USER_PIT_ROLES:
+            return {
+                ...state,
+                currentUserRole: action.currentUserRole
+            };
 
         default:
             return state;
