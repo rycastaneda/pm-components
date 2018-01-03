@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { parseInitialize, parseDataForUpdateQuestion } from '../utils/dataParser';
-import { COMMENT_MANDATORY, VALIDATION_COMMENT_MANDATORY } from '../constants';
+import { COMMENT_MANDATORY,
+        VALIDATION_COMMENT_MANDATORY,
+        SUBMISSION_MESSAGE_TITLE,
+        SUBMISSION_MESSAGE_CONTENT,
+        ASSIGNMENT_BUTTON_LABEL,
+        VALIDATION_MESSAGE_ASSIGNMENT_SUBMITTED } from '../constants';
 import { UPDATE_TEMPLATE_ASSIGNMENT,
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_UPLOAD_FAILED,
@@ -23,7 +28,7 @@ export function initialize(requestedAssignmentId) {
         .then((response) => {
             let result = parseInitialize(response.data, requestedAssignmentId);
             if (result.assignmentStatus.id==='3') {
-                dispatch(promptError('This assignment has already been submitted.'));
+                dispatch(promptError(VALIDATION_MESSAGE_ASSIGNMENT_SUBMITTED));
             }
             dispatch({ type:UPDATE_TEMPLATE_ASSIGNMENT, ...result });
 
@@ -150,12 +155,11 @@ export function submitAssignment() {
         let endpoint = '/evaluation-template-assignments/'+assignmentId+'/submit';
         let promise = axios.post(endpoint);
         promise.then(() => {
-            let backButtonTitle = 'Back to Assignments';
-            let message =  'Assignment submitted successfully!';
-            let title = 'Assignment submission';
-            dispatch(showModal(title, message, backButtonTitle, () => {
-                window.location.href = EVALUATION_ASSIGNMENT_LIST_PAGE;
-            }));
+            dispatch(showModal(SUBMISSION_MESSAGE_TITLE,
+                 SUBMISSION_MESSAGE_CONTENT,
+                 ASSIGNMENT_BUTTON_LABEL, () => {
+                     window.location.href = EVALUATION_ASSIGNMENT_LIST_PAGE;
+                 }));
         })
         .catch((error) => {
             if (error.response) {

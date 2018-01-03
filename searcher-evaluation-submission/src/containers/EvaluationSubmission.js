@@ -31,30 +31,36 @@ class EvaluationSubmission extends Component {
             <div id="searcher-evaluation-submission" ref ={ element => this.htmlElement = element }>
                 <Notification />
                 <Modal />
-                <div className="row">
-                    <div className="col-sm-6">
-                        <h1>{title}</h1>
-                    </div>
-                    <div className="col-sm-6 text-right">
-                        <span className="bs-label bs-label-info">{assignmentStatus.title}</span>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-sm-12">
-                    { criteriaIds.map(
-                        (criteriaId, index) =>
-                        <div key={index}>
-                            <Criteria criteriaId = {criteriaId} />
+                {
+                    criteriaIds.length?
+                    <div>
+                        <div className="row">
+                            <div className="col-sm-6">
+                                <h1>{title}</h1>
+                            </div>
+                            <div className="col-sm-6 text-right">
+                                <span className="bs-label bs-label-info">{assignmentStatus.title}</span>
+                            </div>
                         </div>
-                    )}
-                    </div>
-                </div>
-                {assignmentStatus.id !=='3'?
-                    <div className="row">
-                        <div className="col-sm-12 text-right">
-                            <button onClick={this.submitAssignment} className="btn btn-md"><i className="fa fa-send"></i> Complete Evaluation</button>
+                        <div className="row">
+                            <div className="col-sm-12">
+                            { criteriaIds.map(
+                                (criteriaId, index) =>
+                                <div key={index}>
+                                    <Criteria criteriaId = {criteriaId} />
+                                </div>
+                            )}
+                            </div>
                         </div>
-                    </div>:null
+                        {assignmentStatus.id !=='3'?
+                            <div className="row">
+                                <div className="col-sm-12 text-right">
+                                    <button onClick={this.submitAssignment} className="btn btn-md"><i className="fa fa-send"></i> Complete Evaluation</button>
+                                </div>
+                            </div>:null
+                        }
+                    </div>
+                    :null
                 }
             </div>
         );
