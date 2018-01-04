@@ -33,7 +33,7 @@ class Criteria extends Component {
                                     { criteria.questions.map(
                                     (questionId, index) =>
                                         <div key={index}>
-                                            <Question index={index} criteriaId ={criteria.id} questionId = {questionId} questionIndex ={`${this.props.index+1}. ${index+1}`}/>
+                                            <Question index={index} criteriaId ={criteria.id} questionId = {questionId} questionIndex ={`${this.props.index+1}.${index+1}`}/>
                                         </div>
                                     )}
                                 </div>
