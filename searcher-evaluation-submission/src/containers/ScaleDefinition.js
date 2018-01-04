@@ -56,7 +56,7 @@ function mapStateToProps(state, props) {
             score = scaleDefinitionObj.score;
             definition = scaleDefinitionObj.definition;
         }
-    } else if (props.questionType==='3') {        
+    } else if (props.questionType==='3') {
         if (Number(value)) {
             definition = 'Yes';
         } else {
@@ -64,6 +64,10 @@ function mapStateToProps(state, props) {
         }
     }
     let scaleDefinition =  { id, score, definition, value, title };
+    if (props.questionType==='3') {
+        scaleDefinition.value = '';
+    }
+
     return { scaleDefinition, questionId  };
 }
 

@@ -30,7 +30,7 @@ class EvaluationAssignmentList extends Component {
         );
     }
 
-    onFilterSubmit(result) {        
+    onFilterSubmit(result) {
         this.props.dispatch(
             onEvaluationAssignmentFilterChange(result)
         );
@@ -119,7 +119,6 @@ function mapStateToProps(state) {
         maxRowLength,
         evaluationAssignments
     } = state.evaluationAssignments;
-
     return {
         isBusy,
         staff,
@@ -132,5 +131,6 @@ function mapStateToProps(state) {
         maxRowLength,
         evaluationAssignments
     };
+
 }
 export default connect(mapStateToProps)(EvaluationAssignmentList);

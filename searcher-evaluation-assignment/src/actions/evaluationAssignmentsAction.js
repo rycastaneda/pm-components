@@ -11,6 +11,7 @@ export const createAssignment = () => (dispatch, getState) => {
     });
 
     // formatting assignee users to match up with service requirement
+
     const assigneeUserData = currentUser.role === 'Standard User' ?
         { type: 'users', 'id': currentUser.userId }
         :

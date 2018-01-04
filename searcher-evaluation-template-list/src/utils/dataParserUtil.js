@@ -53,20 +53,20 @@ export function getDataFromTemplateService(data) {
     let totalPages = data.meta.pagination.total_pages;
     let currentPage = data.meta.pagination.current_page;
     let maxRowLength = data.meta.pagination.per_page;
-    let templates = build(normalize(data, { endpoint:'evaluation-templates' }), 'evaluationTemplates');
+    let templateData = normalize(data, { endpoint:'evaluation-templates' });
+    let templateIds = { ...templateData }.meta['evaluation-templates'].data.map(item => item.id);
+    let templates = [];
     // if template is defined parse it, else empty template list
-    if (templates) {
-        templates = templates.map((template) => {
+    if (templateIds.length) {
+        templates = templateIds.map((templateId) => {
+            let template = build(templateData, 'evaluationTemplates', templateId);
             const { id, title, meta, active } = template;
             const { date } = template.createdAt;
             let preview_url = PREVIEW_PAGE+id;
             let edit_url = EDIT_PAGE+id;
             return { id, title, date, completed:meta.completed, instances:meta.instances, active, preview_url, edit_url };
         });
-    } else {
-        templates =[];
     }
-
     return { templates, totalPages, currentPage, maxRowLength } ;
 }
 

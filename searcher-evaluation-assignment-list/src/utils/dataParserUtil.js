@@ -149,11 +149,14 @@ export function parseAssignmentFromAssignmentStatusData(data, assignment, userPr
     return { ...assignment, complete_url, assignmentStatus };
 }
 
-export function parseAssignmentsFromData(evaluationAssignments, userProfile) {
-    evaluationAssignments = normalize(evaluationAssignments, { endpoint:'evaluation-template-assignments' });
-    evaluationAssignments = build(evaluationAssignments, 'evaluationTemplateAssignments');
-    if (evaluationAssignments) {
-        evaluationAssignments = evaluationAssignments.map((item) => {
+export function parseAssignmentsFromData(evaluationAssignmentsData, userProfile) {
+    evaluationAssignmentsData = normalize(evaluationAssignmentsData, { endpoint:'evaluation-template-assignments' });
+    // to keep the ordering from server.
+    let evaluationAssignmentIds = { ...evaluationAssignmentsData }.meta['evaluation-template-assignments'].data.map(item => item.id);
+    let evaluationAssignments =[];
+    if (evaluationAssignmentIds.length) {
+        evaluationAssignments = evaluationAssignmentIds.map((evaluationAssignmentId) => {
+            let item =  build(evaluationAssignmentsData, 'evaluationTemplateAssignments', evaluationAssignmentId);
             let { id,
                 createdAt,
                 createdBy,
@@ -177,7 +180,11 @@ export function parseAssignmentsFromData(evaluationAssignments, userProfile) {
             assignedUser = { id:assignedUser.userId, userName };
             let linkedTo = { id:assignmentType.id, title:assignmentType.title };
             assignmentStatus = { id:assignmentStatus.id, title:assignmentStatus.title };
-
+            let isAdmin =  Boolean(userProfile.pitRole === 'admin');
+            // creator can delete his own assignments
+            let isDeleteAllowed = isAdmin||(item.createdBy === userProfile.userId);
+            isDeleteAllowed =isDeleteAllowed&&(assignmentStatus.id==='1');
+            let isMarkInProgressAllowed = isAdmin&&(assignmentStatus.id==='3');
             let supplier;
             switch (assignmentType.id) {
                 case '1':
@@ -200,23 +207,23 @@ export function parseAssignmentsFromData(evaluationAssignments, userProfile) {
                         title:supplier.title
                     };
             }
+
             let complete_url = null;
-            if ((assignmentStatus.id!=='3')&&(String(userProfile.id) === String(assignedUser.id))) {
-                complete_url = EVALUATION_ASSIGNMENT_COMPLETION+id;
+            // there should be no complete_url if already completed
+            // only assigned user can complete an assignment
+            if (assignmentStatus.id!=='3') {
+                if ((String(userProfile.id) === String(assignedUser.id))) {
+                    complete_url = EVALUATION_ASSIGNMENT_COMPLETION+id;
+                }
             }
 
             let view_all_url = EVALUATION_ASSIGNMENT_ANALYSE+id+'#all';
             let view_single_url = EVALUATION_ASSIGNMENT_ANALYSE+id+'#single';
             let view_compare_url = EVALUATION_ASSIGNMENT_ANALYSE+id+'#compare';
             // admin can delete any assignment
-            let hasDeleteRight =  Boolean(userProfile.pitRole === 'admin');
-            // creator can delete his own assignments
-            hasDeleteRight = hasDeleteRight||(item.createdBy === userProfile.userId);
 
-            return { id, assignedOn, createdBy, evaluationTemplate, hasDeleteRight, assignedUser, linkedTo, assignmentStatus, supplier, complete_url, view_all_url, view_single_url, view_compare_url };
+            return { id, assignedOn, createdBy, evaluationTemplate, assignedUser, linkedTo, assignmentStatus, supplier, complete_url, view_all_url, view_single_url, isDeleteAllowed, isMarkInProgressAllowed, view_compare_url };
         });
-    } else {
-        evaluationAssignments = [];
     }
     return evaluationAssignments;
 }

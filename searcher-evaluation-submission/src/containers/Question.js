@@ -139,20 +139,37 @@ class Question extends Component {
                 </div>
             }
 
-                <div className="row">
-                    <div className="col-md-8 col-sm-12">
-                        <h2>Comments { mandatoryComments === true && <small>(required)</small> }</h2>
-                        <div className="form-group">
-                            <textarea name="comments"
-                                defaultValue ={this.props.question.comment}
-                                className="form-control"
-                                rows="4" placeholder="Your comments"
-                                required={ mandatoryComments }
-                                onBlur={event => this.onCommentChange(event.target.value)}>
-                            </textarea>
+                {
+                    question.type==='4'?
+                    <div className="row">
+                        <div className="col-md-8 col-sm-12">                            
+                            <div className="form-group">
+                                <textarea name="reponse"
+                                    defaultValue ={this.props.question.comment}
+                                    className="form-control"
+                                    rows="4" placeholder="Your Response"
+                                    required={ true }
+                                    onBlur={event => this.onCommentChange(event.target.value)}>
+                                </textarea>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    :
+                    <div className="row">
+                        <div className="col-md-8 col-sm-12">
+                            <h2>Comments { mandatoryComments === true && <small>(required)</small> }</h2>
+                            <div className="form-group">
+                                <textarea name="comments"
+                                    defaultValue ={this.props.question.comment}
+                                    className="form-control"
+                                    rows="4" placeholder="Your comments"
+                                    required={ mandatoryComments }
+                                    onBlur={event => this.onCommentChange(event.target.value)}>
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+                }
                 { allowDocuments&&
                     <div className="row">
                         <div className="col-md-8 col-sm-12">
