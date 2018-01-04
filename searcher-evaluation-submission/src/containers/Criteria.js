@@ -12,7 +12,6 @@ class Criteria extends Component {
         if (criteria.isMaximised) {
             return (
                 <div className="row">
-
                     <div className="col-sm-12">
                         <div className="pmaccordion pmaccordion--impact">
                             <a href="javascript:;" className="pmaccordion__head" data-toggle="collapse" onClick={ () => {
@@ -20,7 +19,7 @@ class Criteria extends Component {
                             } }>
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <div className="pmaccordion__title font-rg">{criteria.title}</div>
+                                        <div className="pmaccordion__title font-rg">{this.props.index+1}. {criteria.title}</div>
                                     </div>
                                     <div className="col-md-6 text-right">
                                         <div className="weight">
@@ -34,7 +33,7 @@ class Criteria extends Component {
                                     { criteria.questions.map(
                                     (questionId, index) =>
                                         <div key={index}>
-                                            <Question index={index} criteriaId ={criteria.id} questionId = {questionId} />
+                                            <Question index={index} criteriaId ={criteria.id} questionId = {questionId} questionIndex ={`${this.props.index+1}. ${index+1}`}/>
                                         </div>
                                     )}
                                 </div>
@@ -54,7 +53,7 @@ class Criteria extends Component {
                             } }>
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <div className="pmaccordion__title font-rg">{criteria.title}</div>
+                                        <div className="pmaccordion__title font-rg">this.props.index+1}. {criteria.title}</div>
                                     </div>
                                     <div className="col-md-6 text-right">
                                         <div className="weight">
@@ -75,7 +74,8 @@ class Criteria extends Component {
 Criteria.propTypes = {
     criteria:PropTypes.object.isRequired,
     criteriaId:PropTypes.string.isRequired,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    index:PropTypes.number
 };
 
 function mapStateToProps(state, props) {

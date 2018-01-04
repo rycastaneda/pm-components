@@ -56,7 +56,9 @@ export function uploadDocuments(questionId, documents) {
 
         let { assignmentId } = evaluationSubmission;
         let question = evaluationSubmission.questionByIndex[questionId];
-        if (Boolean(question.mandatoryComments)&&!question.comment.length) {
+        // if comments are mandatory and if a defenition is selected then check if the user has entered a comment.
+        let { mandatoryComments, comment, selectedDefinition } = question;
+        if (Boolean(mandatoryComments)&&selectedDefinition!==null&&!comment.length) {
             dispatch(promptError(COMMENT_MANDATORY));
             return false;
         }
@@ -143,8 +145,10 @@ export function submitAssignment() {
         let { evaluationSubmission } = getState();
         let { assignmentId, questionByIndex } = evaluationSubmission;
         let commentCount =0;
-        Object.values(questionByIndex).forEach((item) => {
-            if (Boolean(item.mandatoryComments)&&!item.comment.length) {
+        Object.values(questionByIndex).forEach((question) => {
+            let { mandatoryComments, comment, selectedDefinition } = question;
+            // if comments are mandatory and if a defenition is selected then check if the user has entered a comment.
+            if (Boolean(mandatoryComments)&&selectedDefinition!==null&&!comment.length) {
                 commentCount++;
             }
         });

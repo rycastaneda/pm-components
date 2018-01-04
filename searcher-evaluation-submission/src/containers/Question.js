@@ -88,7 +88,7 @@ class Question extends Component {
             <div>
                 <div className="row">
                     <div className="col-md-8 col-sm-11">
-                        <h2 className= {`${index===0?'margin-top-0':'border-top'}`} >{index+1}. {title}</h2>
+                        <h2 className= {`${index===0?'margin-top-0':'border-top'}`} >{this.props.questionIndex}. {title}</h2>
                         { type==='4'?
                             null:
                             <ol className={`questionnaire ${this.getScaleDefinitionClass(enableScaleDefinitions, type)}`}>
@@ -142,7 +142,7 @@ class Question extends Component {
                 {
                     question.type==='4'?
                     <div className="row">
-                        <div className="col-md-8 col-sm-12">                            
+                        <div className="col-md-8 col-sm-12">
                             <div className="form-group">
                                 <textarea name="reponse"
                                     defaultValue ={this.props.question.comment}
@@ -198,6 +198,7 @@ Question.propTypes = {
     typeDefinitionIds: PropTypes.array.isRequired,
     uploadedDocuments:PropTypes.array,
     question:PropTypes.object.isRequired,
+    questionIndex:PropTypes.string,
     index: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired
 };

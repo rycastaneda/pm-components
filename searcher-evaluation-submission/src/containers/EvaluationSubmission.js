@@ -47,7 +47,7 @@ class EvaluationSubmission extends Component {
                             { criteriaIds.map(
                                 (criteriaId, index) =>
                                 <div key={index}>
-                                    <Criteria criteriaId = {criteriaId} />
+                                    <Criteria criteriaId = {criteriaId} index={index} />
                                 </div>
                             )}
                             </div>
