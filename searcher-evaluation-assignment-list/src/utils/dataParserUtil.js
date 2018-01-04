@@ -1,5 +1,6 @@
 import normalize from 'json-api-normalizer';
 import  build  from 'redux-object';
+import moment from 'moment';
 export const EVALUATION_TEMPLATE_SERVICE ='evaluation-templates';
 export const EVALUATION_ASSIGNMENT_SERVICE ='evaluation-template-assignments';
 export const EVALUATION_ASSIGNMENT_EXPORT_SERVICE ='evaluation-template-assignments/export?';
@@ -168,12 +169,7 @@ export function parseAssignmentsFromData(evaluationAssignmentsData, userProfile)
             } = item;
 
             createdBy = createdBy.id;
-            createdAt = new Date(createdAt.date);
-            createdAt.setDate(createdAt.getDate());
-            let assignedOn = ('0' + createdAt.getDate()).slice(-2) + '/'
-                         + ('0' + (createdAt.getMonth()+1)).slice(-2) + '/'
-                         + createdAt.getFullYear();
-
+            let assignedOn = moment(createdAt.date).format('DD/MM/YYYY');
             let evaluationTemplate = { id:template.id, active:template.id, title:template.title };
             let assignedUser = assigneeUser.staff;
             let userName = assignedUser.firstName+' '+assignedUser.lastName;
