@@ -7168,8 +7168,9 @@
 	    }, {
 	        key: 'toggleMaximise',
 	        value: function toggleMaximise() {
-	            clearInterval(this.intervalId_update);
-	            clearInterval(this.intervalId_saveAnim);
+	            if (this.intervalId) {
+	                this.updateCriteriaChange();
+	            }
 	            var criteria = this.props.criteria;
 
 	            this.props.dispatch((0, _evaluationTemplateCreator.toggleMaximiseCriteria)(criteria.id, !criteria.isMaximised));
@@ -7196,13 +7197,13 @@
 	            if (title.length) {
 	                this.props.dispatch((0, _evaluationTemplateCreator.updateCriteria)(this.props.criteria.id, title, weight));
 	            }
-	            clearInterval(this.intervalId);
+	            this.intervalId = clearInterval(this.intervalId);
 	        }
 	    }, {
 	        key: 'onTitleChange',
 	        value: function onTitleChange(title) {
 	            this.setState({ title: title, isTitleError: !title.length });
-	            clearInterval(this.intervalId);
+	            this.intervalId = clearInterval(this.intervalId);
 	            if (this.props.criteria.id && title.length) {
 	                this.intervalId = setInterval(this.updateCriteriaChange, _constants.INPUT_SYNC_INTERVAL);
 	            }
@@ -7222,7 +7223,7 @@
 	                isWeightError = true;
 	            }
 	            this.setState({ weight: weight, isWeightError: isWeightError });
-	            clearInterval(this.intervalId);
+	            this.intervalId = clearInterval(this.intervalId);
 	            if (this.props.criteria.id && !isWeightError) {
 	                this.intervalId = setInterval(this.updateCriteriaChange, _constants.INPUT_SYNC_INTERVAL);
 	            }

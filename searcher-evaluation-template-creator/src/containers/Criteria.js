@@ -38,8 +38,9 @@ class Criteria extends Component {
         });
     }
     toggleMaximise() {
-        clearInterval(this.intervalId_update);
-        clearInterval(this.intervalId_saveAnim);
+        if (this.intervalId) {
+            this.updateCriteriaChange();
+        }
         let { criteria } = this.props;
         this.props.dispatch(toggleMaximiseCriteria(criteria.id, !criteria.isMaximised));
         // this.setStateWithQuestion(question, false);
@@ -56,12 +57,12 @@ class Criteria extends Component {
         if (title.length) {
             this.props.dispatch(updateCriteria(this.props.criteria.id, title, weight));
         }
-        clearInterval(this.intervalId);
+        this.intervalId = clearInterval(this.intervalId);
     }
 
     onTitleChange(title) {
         this.setState({ title, isTitleError:!title.length });
-        clearInterval(this.intervalId);
+        this.intervalId = clearInterval(this.intervalId);
         if (this.props.criteria.id&&title.length) {
             this.intervalId = setInterval(this.updateCriteriaChange, INPUT_SYNC_INTERVAL);
         }
@@ -80,7 +81,7 @@ class Criteria extends Component {
             isWeightError = true;
         }
         this.setState({ weight, isWeightError  });
-        clearInterval(this.intervalId);
+        this.intervalId = clearInterval(this.intervalId);
         if (this.props.criteria.id&&!isWeightError) {
             this.intervalId = setInterval(this.updateCriteriaChange, INPUT_SYNC_INTERVAL);
         }
