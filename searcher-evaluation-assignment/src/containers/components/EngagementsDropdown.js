@@ -18,7 +18,7 @@ const EngagementsDropdown = ({ evaluationEngagements, isLoading, actions }) => (
                     <option key="-" value={null}>Select Engagement</option>
                     { evaluationEngagements.map(
                         (item, index) =>
-                            <option key={index} value={item.id}>{item.engagementText}</option>
+                            <option key={index} value={item.id}>#{item.id} &ndash; {item.supplier.title}</option>
                     )}
                 </select>
             </div>
@@ -46,6 +46,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state, ownProps) => {
     const  isLoading = state.evaluationAssignment.meta['/engagements'].loading;
     const evaluationEngagements = (state.evaluationAssignment.meta['/engagements'].data || []).map(object => build(state.evaluationAssignment, 'engagements', object.id));
+    window.console.log('engagements: ', evaluationEngagements);
     return {
         ...ownProps,
         isLoading,
