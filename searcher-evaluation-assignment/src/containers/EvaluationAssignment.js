@@ -127,17 +127,11 @@ class EvaluationAssignment extends Component {
                                 <hr />
                             </div>
                             <div className="col-sm-4 form-group">
-                                <label htmlFor="assignees">Evaluation Assignment Chair</label>
-                                <div>
-                                    <EvaluationAssignmentChairSelect />
-                                </div>
+                                <EvaluationAssignmentChairSelect />
                             </div>
                             <div className="col-sm-12" />
                             <div className="col-sm-4 form-group">
-                                <label htmlFor="assignees">Evaluation Assignees</label>
-                                <div>
-                                    <EvaluationAssigneesSelect />
-                                </div>
+                                <EvaluationAssigneesSelect />
                             </div>
                         </div>
                         : null

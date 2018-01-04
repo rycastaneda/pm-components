@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/evaluationAssignmentsAction';
 
-const ButtonSaveAssignment = ({ selectedAssignees, selectedAssignmentEntityInstanceId, currentUserRole, actions }) => (
+const ButtonSaveAssignment = ({ selectedAssignees, selectedAssignmentEntityInstanceId, currentUser, actions }) => (
     <div>
-        { (selectedAssignmentEntityInstanceId === '' || selectedAssignees.length === 0) && currentUserRole !== 'Standard User' ?
+        { (selectedAssignmentEntityInstanceId === '' || selectedAssignees.length === 0) && currentUser.role !== 'Standard User' ?
             <div className="row">
                 <div className="col-sm-4">
                     <button title="Save" disabled className="btn btn-md disabled" type="button">Save</button>
@@ -26,7 +26,7 @@ ButtonSaveAssignment.propTypes = {
     actions: PropTypes.object,
     selectedAssignmentEntityInstanceId: PropTypes.string.isRequired,
     selectedAssignees:PropTypes.array.isRequired,
-    currentUserRole:PropTypes.string.isRequired,
+    currentUser: PropTypes.object,
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -36,13 +36,13 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const { selectedAssignees, selectedAssignmentEntityInstanceId, currentUserRole } = state.evaluationAssignment;
+    const { selectedAssignees, selectedAssignmentEntityInstanceId, currentUser } = state.evaluationAssignment;
 
     return {
         ...ownProps,
         selectedAssignees,
         selectedAssignmentEntityInstanceId,
-        currentUserRole,
+        currentUser,
     };
 };
 

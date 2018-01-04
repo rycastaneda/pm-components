@@ -4,25 +4,29 @@ import * as apiActions from './apiActions';
 import { selectFromStore } from '../utils/selectFromStore';
 
 export const createAssignment = () => (dispatch, getState) => {
-    const { selectedTemplateId, selectedAssignees, selectedAssigneeChairman, selectedAssignmentEntityInstanceId, evaluationTypeSelected, currentUserRole } = getState().evaluationAssignment;
+    const { selectedTemplateId, selectedAssignees, selectedAssigneeChairman, selectedAssignmentEntityInstanceId, evaluationTypeSelected, currentUser } = getState().evaluationAssignment;
 
     dispatch({
         type: actionTypes.ASSIGNMENT_CREATION_EVALUATION_ASSIGNMENT_CREATE_REQUEST_START,
     });
 
     // formatting assignee users to match up with service requirement
-    const assigneeUserData = currentUserRole === 'Standard User' ?
-        { type: 'users',
-            user_id: selectFromStore(getState().evaluationAssignment, '/user', 'users')[0].id,
-        }
+    const assigneeUserData = currentUser.role === 'Standard User' ?
+        { type: 'users', 'id': currentUser.userId }
         :
         selectedAssignees.map((item) => {
-            const { user_id } = item;
+            const { userId } = item;
             return {
-                type: 'users',
-                user_id
+                'type': 'users',
+                'id': userId,
             };
         });
+
+    const chairStaffData = currentUser.role === 'Standard User' ?
+        null : {
+            'type': 'staff',
+            'id': selectedAssigneeChairman.id
+        };
 
     const data = {
         ['data']: {
@@ -39,10 +43,7 @@ export const createAssignment = () => (dispatch, getState) => {
                     }
                 },
                 'chairStaff': {
-                    'data' : {
-                        'type': 'staff',
-                        'id': selectedAssigneeChairman.id
-                    }
+                    'data' : chairStaffData
                 },
                 'assigneeUser' : {
                     'data' : assigneeUserData
@@ -56,8 +57,6 @@ export const createAssignment = () => (dispatch, getState) => {
             }
         }
     };
-
-    console.log('to be sent', data);
 
     axios.post('/evaluation-template-assignments', data)
         .then((response) => {
@@ -112,12 +111,18 @@ export const fetchMatchedSuppliers = rfqTypeId => (dispatch) => {
     dispatch(apiActions.fetchRfqMatchedSuppliers(rfqTypeId));
 };
 
-export const getCurrentUserPitRoles = (state) => {
+export const getCurrentUserFromStore = (state) => {
     const users = selectFromStore(state.evaluationAssignment, '/user', 'users');
-    window.console.log('test', users);
+    const currentUser = {
+        firstName: `${users[0].staff.firstName}`,
+        lastName: `${users[0].staff.lastName}`,
+        userId: `${users[0].staff.userId}`,
+        role: `${users[0].staff.pitRoles[0].title}`,
+    };
+
     return {
-        type: actionTypes.ASSIGNMENT_CREATION_UPDATE_USER_PIT_ROLES,
-        currentUserRole:'Standard User', //users[0].staff.pitRoles[0].title,
+        type: actionTypes.ASSIGNMENT_CREATION_SET_UPDATE_CURRENT_USER,
+        currentUser,
     };
 };
 
@@ -133,7 +138,7 @@ export const updateChangeMatchedSuppliers = matchedSupplierId => (dispatch, getS
             type: actionTypes.ASSIGNMENT_CREATION_SET_ASSIGNMENT_ENTITY_INSTANCE_ID,
             selectedAssignmentEntityInstanceId: matchedSupplierId,
         });
-        dispatch(getCurrentUserPitRoles(getState()));
+        dispatch(getCurrentUserFromStore(getState()));
         return;
     }
 
@@ -145,7 +150,7 @@ export const updateChangeMatchedItems = matchedItemId => (dispatch, getState) =>
         type: actionTypes.ASSIGNMENT_CREATION_SET_ASSIGNMENT_ENTITY_INSTANCE_ID,
         selectedAssignmentEntityInstanceId: matchedItemId,
     });
-    dispatch(getCurrentUserPitRoles(getState()));
+    dispatch(getCurrentUserFromStore(getState()));
 };
 
 export const updateChangeEngagements = engagementId => (dispatch, getState) => {
@@ -153,7 +158,7 @@ export const updateChangeEngagements = engagementId => (dispatch, getState) => {
         type: actionTypes.ASSIGNMENT_CREATION_SET_ASSIGNMENT_ENTITY_INSTANCE_ID,
         selectedAssignmentEntityInstanceId: engagementId,
     });
-    dispatch(getCurrentUserPitRoles(getState()));
+    dispatch(getCurrentUserFromStore(getState()));
 };
 
 export const updateChangeSuppliers = supplierId => (dispatch, getState) => {
@@ -161,7 +166,7 @@ export const updateChangeSuppliers = supplierId => (dispatch, getState) => {
         type: actionTypes.ASSIGNMENT_CREATION_SET_ASSIGNMENT_ENTITY_INSTANCE_ID,
         selectedAssignmentEntityInstanceId: supplierId,
     });
-    dispatch(getCurrentUserPitRoles(getState()));
+    dispatch(getCurrentUserFromStore(getState()));
 };
 
 export const updateSelectedAssignees = (assignees) => {

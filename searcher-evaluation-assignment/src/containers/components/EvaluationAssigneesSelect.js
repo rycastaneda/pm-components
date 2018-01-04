@@ -9,29 +9,33 @@ import { concatLabelKey } from '../../utils/concatLabelKey';
 
 import * as actions from '../../actions/evaluationAssignmentsAction';
 
-const EvaluationAssigneesSelect = ({ evaluationAssignees, actions, selectedAssignees, currentUserRole, userStaff }) => (
+const EvaluationAssigneesSelect = ({ evaluationAssignees, actions, selectedAssignees, currentUser }) => (
     <div>
-        { currentUserRole === 'Standard User' ?
+        { currentUser.role === 'Standard User' ?
             <div>
                 <select className="form-control" disabled>
-                    <option>{`${userStaff.firstName} ${userStaff.lastName}`}</option>
+                    <option>{`${currentUser.firstName} ${currentUser.lastName}`}</option>
                 </select>
             </div>
             :
-            <div className="input-group">
-                <Select
-                    className="pm-react-select"
-                    labelKey="fullName"
-                    closeOnSelect={true}
-                    multi
-                    backspaceToRemoveMessage={""}
-                    onChange={actions.updateSelectedAssignees}
-                    options={evaluationAssignees}
-                    placeholder="Select Assignees"
-                    removeSelected={true}
-                    value={selectedAssignees}
-                />
+            <div>
+                <label htmlFor="assignees">Evaluation Assignees</label>
+                <div className="input-group">
+                    <Select
+                        className="pm-react-select"
+                        labelKey="fullName"
+                        closeOnSelect={true}
+                        multi
+                        backspaceToRemoveMessage={""}
+                        onChange={actions.updateSelectedAssignees}
+                        options={evaluationAssignees}
+                        placeholder="Select Assignees"
+                        removeSelected={true}
+                        value={selectedAssignees}
+                    />
+                </div>
             </div>
+
         }
     </div>
 );
@@ -40,8 +44,7 @@ EvaluationAssigneesSelect.propTypes = {
     actions: PropTypes.object,
     evaluationAssignees: PropTypes.array.isRequired,
     selectedAssignees: PropTypes.array.isRequired,
-    currentUserRole: PropTypes.string.isRequired,
-    userStaff: PropTypes.object,
+    currentUser: PropTypes.object,
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -51,16 +54,14 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const { selectedAssignees, currentUserRole } = state.evaluationAssignment;
+    const { selectedAssignees, currentUser } = state.evaluationAssignment;
     const evaluationAssignees = concatLabelKey(selectFromStore(state.evaluationAssignment, '/staff', 'staff'));
-    const userStaff = selectFromStore(state.evaluationAssignment, '/user', 'users')[0].staff;
 
     return {
         ...ownProps,
         selectedAssignees,
         evaluationAssignees,
-        currentUserRole,
-        userStaff,
+        currentUser,
     };
 };
 
