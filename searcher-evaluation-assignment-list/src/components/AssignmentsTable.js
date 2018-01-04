@@ -39,16 +39,16 @@ class AssignmentsTable extends Component {
         this.props.goToPage(selected+1);
     }
     renderStatus(status) {
-        let styleClass = 'bs-label';
+        let styleClass = 'bs-label ';
         switch (status.id) {
             case '1':
-                styleClass = ' bs-label-danger';
+                styleClass += 'bs-label-danger';
                 break;
             case '2':
-                styleClass =' bs-label-warning';
+                styleClass += 'bs-label-warning';
                 break;
             case '3':
-                styleClass += ' bs-label-success';
+                styleClass += 'bs-label-success';
                 break;
         }
         return <span className={ styleClass }>{status.title}</span>;
