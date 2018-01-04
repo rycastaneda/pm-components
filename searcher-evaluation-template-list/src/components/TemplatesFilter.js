@@ -103,6 +103,8 @@ class EvaluationTemplatesFilter extends Component {
                             <div className="input-group">
                             <span className="input-group-addon"><i className="fa fa-calendar"></i></span>
                             <Datetime
+                                dateFormat="DD/MM/YYYY"
+                                    placeholder="Any Date"
                                 onSelectedDateChange={this.onSelectedDateChange}
                                 selectedDate={null}
                                 />
@@ -122,7 +124,7 @@ class EvaluationTemplatesFilter extends Component {
                             backspaceToRemoveMessage={''}
                             onChange={item =>
                                 this.setState({ selectedUser: item })} />
-                        
+
                        </div>
                     </div>
                     <div className="col-xs-12 pad-top align-right">

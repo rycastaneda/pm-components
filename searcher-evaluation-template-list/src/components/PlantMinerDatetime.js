@@ -26,8 +26,8 @@ class PlantMinerDatetime extends Component {
                 closeOnSelect={true}
                 onChange={this.props.onSelectedDateChange}
                 value={this.state.selectedDate}
-                dateFormat="DD-MM-YYYY"
-                inputProps={{ placeholder: 'dd-mm-yyyy' }}
+                dateFormat={this.props.dateFormat}
+                inputProps={{ placeholder: this.props.placeholder }}
             />
         );
     }
@@ -35,7 +35,9 @@ class PlantMinerDatetime extends Component {
 
 PlantMinerDatetime.propTypes = {
     onSelectedDateChange: PropTypes.func.isRequired,
-    selectedDate: PropTypes.object
+    selectedDate: PropTypes.object,
+    dateFormat:PropTypes.string.isRequired,
+    placeholder:PropTypes.string.isRequired
 };
 
 export default PlantMinerDatetime;

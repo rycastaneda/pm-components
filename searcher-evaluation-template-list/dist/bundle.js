@@ -24935,8 +24935,8 @@
 	                closeOnSelect: true,
 	                onChange: this.props.onSelectedDateChange,
 	                value: this.state.selectedDate,
-	                dateFormat: 'DD-MM-YYYY',
-	                inputProps: { placeholder: 'dd-mm-yyyy' }
+	                dateFormat: this.props.dateFormat,
+	                inputProps: { placeholder: this.props.placeholder }
 	            });
 	        }
 	    }]);
@@ -24945,7 +24945,9 @@
 
 	PlantMinerDatetime.propTypes = {
 	    onSelectedDateChange: _react.PropTypes.func.isRequired,
-	    selectedDate: _react.PropTypes.object
+	    selectedDate: _react.PropTypes.object,
+	    dateFormat: _react.PropTypes.string.isRequired,
+	    placeholder: _react.PropTypes.string.isRequired
 	};
 
 	var _default = PlantMinerDatetime;
@@ -25253,6 +25255,8 @@
 	                                        _react2.default.createElement('i', { className: 'fa fa-calendar' })
 	                                    ),
 	                                    _react2.default.createElement(_PlantMinerDatetime2.default, {
+	                                        dateFormat: 'DD/MM/YYYY',
+	                                        placeholder: 'Any Date',
 	                                        onSelectedDateChange: this.onSelectedDateChange,
 	                                        selectedDate: null
 	                                    })
@@ -25617,7 +25621,7 @@
 	                                _react2.default.createElement(
 	                                    'td',
 	                                    { className: 'td-center nowrap' },
-	                                    (0, _moment2.default)(item.date).format('DD-MM-YYYY')
+	                                    (0, _moment2.default)(item.date).format('DD/MM/YYYY')
 	                                ),
 	                                _react2.default.createElement(
 	                                    'td',

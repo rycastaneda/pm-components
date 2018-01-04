@@ -163,6 +163,7 @@ class EvaluationAssignmentsFilter extends Component {
                                     <div className="input-group">
                                         <span className="input-group-addon"><i className="fa fa-calendar"></i></span>
                                         <Datetime
+                                            dateFormat="DD/MM/YYYY"
                                             placeholder="Any Date"
                                             onSelectedDateChange={
                                                 this.onSelectedDateChange
