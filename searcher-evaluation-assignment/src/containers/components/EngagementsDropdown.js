@@ -46,7 +46,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state, ownProps) => {
     const  isLoading = state.evaluationAssignment.meta['/engagements'].loading;
     const evaluationEngagements = (state.evaluationAssignment.meta['/engagements'].data || []).map(object => build(state.evaluationAssignment, 'engagements', object.id));
-    
+
     return {
         ...ownProps,
         isLoading,
