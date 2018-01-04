@@ -11,7 +11,6 @@ export const createAssignment = () => (dispatch, getState) => {
     });
 
     // formatting assignee users to match up with service requirement
-
     const assigneeUserData = currentUser.role === 'Standard User' ?
         { type: 'users', 'id': currentUser.userId }
         :
@@ -23,7 +22,7 @@ export const createAssignment = () => (dispatch, getState) => {
             };
         });
 
-    const chairStaffData = currentUser.role === 'Standard User' ?
+    const chairStaffData = currentUser.role === 'Standard User' || selectedAssigneeChairman === null ?
         null : {
             'type': 'staff',
             'id': selectedAssigneeChairman.id
@@ -71,7 +70,6 @@ export const createAssignment = () => (dispatch, getState) => {
         .catch((error) => {
             throw error;
         });
-
 };
 
 export const evaluationTemplateUpdateChange = templateId => (dispatch) => {
