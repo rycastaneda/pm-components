@@ -74,7 +74,13 @@ class TemplatesTable extends Component {
                         null
                     }
                     { !active?
-                        null
+                         instances>1?
+                         <li>
+                             <a href="javascript:;"
+                             onClick={ ()  => this.onTemplateToggleActivation(id, !(active))}><i className="fa fa-toggle-off"></i>Activate
+                             </a>
+                         </li>
+                         :null
                         :
                         <li>
                             <a href="javascript:;"

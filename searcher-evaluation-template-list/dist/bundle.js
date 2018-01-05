@@ -25501,7 +25501,19 @@
 	                                ' Edit'
 	                            )
 	                        ) : null,
-	                        !active ? null : _react2.default.createElement(
+	                        !active ? instances > 1 ? _react2.default.createElement(
+	                            'li',
+	                            null,
+	                            _react2.default.createElement(
+	                                'a',
+	                                { href: 'javascript:;',
+	                                    onClick: function onClick() {
+	                                        return _this2.onTemplateToggleActivation(id, !active);
+	                                    } },
+	                                _react2.default.createElement('i', { className: 'fa fa-toggle-off' }),
+	                                'Activate'
+	                            )
+	                        ) : null : _react2.default.createElement(
 	                            'li',
 	                            null,
 	                            _react2.default.createElement(
