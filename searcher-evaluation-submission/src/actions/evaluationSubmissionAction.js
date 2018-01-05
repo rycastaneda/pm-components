@@ -55,6 +55,7 @@ export function uploadDocuments(questionId, documents) {
         let { evaluationSubmission } = getState();
 
         let { assignmentId } = evaluationSubmission;
+
         let question = evaluationSubmission.questionByIndex[questionId];
         // if comments are mandatory and if a defenition is selected then check if the user has entered a comment.
         let { mandatoryComments, comment, selectedDefinition } = question;
@@ -67,44 +68,52 @@ export function uploadDocuments(questionId, documents) {
             questionId,
             documents
         });
-        return axios.all(
-            documents.map((document) => {
-                let formData = new FormData();
-                formData.append('document', document);
-                formData.append('question_id', questionId);
-                formData.append('assignment_id', questionId);
-                let endpoint = '/evaluation-template-assignments/'+assignmentId;
-                endpoint +='/question-responses/'+question.responseId;
-                endpoint +='/documents';
-                let promise = axios.post(endpoint, formData, {
-                    onUploadProgress: function(progressEvent) {
-                        var percentCompleted = progressEvent.loaded / progressEvent.total;
-                        dispatch(incrementProgress(document.id, Math.ceil(percentCompleted * 100)));
-                    }
-                });
-                promise.then((response) => {
-                    dispatch({
-                        type: DOCUMENT_UPLOAD_SUCCESS,
-                        questionId,
-                        documentId: document.id,
-                        newDocumentId: Number(response.data.data.id),
-                        url: String(response.data.data.attributes.download_url)
-                    });
-                    return response;
-                }).catch((error) => {
-                    dispatch({
-                        type: DOCUMENT_UPLOAD_FAILED,
-                        documentId: document.id
-                    });
-                    return error;
-                });
-                return promise;
-            })
-        );
+        if (question.responseId === null) {
+            return updateQuestion(question, assignmentId, dispatch).then(() => {
+                question = evaluationSubmission.questionByIndex[questionId];
+                axios.all(buildUploadPromiseFromDocuments(question, documents, assignmentId, dispatch));
+            });
+        } else {
+            return axios.all(buildUploadPromiseFromDocuments(question, documents, assignmentId, dispatch));
+        }
 
     };
 }
-
+function buildUploadPromiseFromDocuments(question, documents, assignmentId, dispatch) {
+    return documents.map((document) => {
+        let questionId = question.id;
+        let formData = new FormData();
+        formData.append('document', document);
+        formData.append('question_id', questionId);
+        formData.append('assignment_id', assignmentId);
+        let endpoint = '/evaluation-template-assignments/'+assignmentId;
+        endpoint +='/question-responses/'+question.responseId;
+        endpoint +='/documents';
+        let promise = axios.post(endpoint, formData, {
+            onUploadProgress: function(progressEvent) {
+                var percentCompleted = progressEvent.loaded / progressEvent.total;
+                dispatch(incrementProgress(document.id, Math.ceil(percentCompleted * 100)));
+            }
+        });
+        promise.then((response) => {
+            dispatch({
+                type: DOCUMENT_UPLOAD_SUCCESS,
+                questionId,
+                documentId: document.id,
+                newDocumentId: Number(response.data.data.id),
+                url: String(response.data.data.attributes.download_url)
+            });
+            return response;
+        }).catch((error) => {
+            dispatch({
+                type: DOCUMENT_UPLOAD_FAILED,
+                documentId: document.id
+            });
+            return error;
+        });
+        return promise;
+    });
+}
 export function deleteDocument(questionId, documentId) {
     return (dispatch, getState) => {
         let { evaluationSubmission } = getState();
@@ -237,6 +246,7 @@ function updateQuestion(question, assignmentId, dispatch) {
             dispatch(promptError(message));
         }
     });
+    return promise;
 }
 export function promptError(message) {
     return showNotification(MESSAGE_TYPE_ERROR, message);

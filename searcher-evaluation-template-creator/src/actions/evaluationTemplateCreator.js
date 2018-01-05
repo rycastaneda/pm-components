@@ -56,11 +56,14 @@ export function publishTemplate() {
             }));
         })
         .catch((error) => {
-            // dispatch({ type:REQUEST_FAILED, message: error.message });
-            error.response.data.errors.forEach((e) => {
-                let { detail } = e;
-                dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
-            });
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
 
         });
     };
@@ -92,9 +95,8 @@ export function initialize() {
             }
 
         })
-        .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+        .catch(() => {
+            dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Unable to recieve data.'));
         });
     };
 }
@@ -110,8 +112,14 @@ export function addTemplate(title) {
                 });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -126,8 +134,14 @@ export function updateTemplate(title, templateId) {
             dispatch({ type:TEMPLATE_UPDATED, title });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -146,8 +160,14 @@ export function addCriteria(title, weight) {
             dispatch({ type:CRITERIA_ADD, criterion: createCriterionFromData(response.data) });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -165,8 +185,14 @@ export function deleteCriteria(id) {
             dispatch({ type:CRITERIA_DELETE, id });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Invalid operation'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -184,8 +210,14 @@ export function updateCriteria(id, title, weight) {
             dispatch({ type:CRITERIA_UPDATE, id, title, weight });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -205,8 +237,14 @@ export function addQuestionToCriteria(criteriaId, questionTitle, questionType) {
             dispatch({ type:QUESTION_ADD, criteriaId, question });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -230,8 +268,14 @@ export function onQuestionTypeChange(criteriaId, questionId, type) {
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -255,8 +299,14 @@ export function onQuestionTitleChange(criteriaId, questionId, title) {
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -282,8 +332,14 @@ export function onQuestionAllowUploadChange(criteriaId, questionId, isAllowUploa
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            const { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -308,8 +364,14 @@ export function  onAllowScaleDefinitionChange(criteriaId, questionId, isAllowSca
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            const { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -334,7 +396,13 @@ export function onQuestionAllowCommentsChange(criteriaId, questionId, isCommentR
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            const { message } = error;
+            let message;
+            if (Array.isArray(error.response.data.errors)) {
+                message = error.response.data.errors[0].detail;
+            } else {
+                message = error.response.data.errors.detail;
+            }
+
             dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
         });
     };
@@ -354,7 +422,13 @@ export function deleteQuestion(criteriaId, questionId) {
             dispatch({ type:QUESTION_DELETE, criteriaId, questionId });
         })
         .catch((error) => {
-            const { message } = error;
+            let message;
+            if (Array.isArray(error.response.data.errors)) {
+                message = error.response.data.errors[0].detail;
+            } else {
+                message = error.response.data.errors.detail;
+            }
+
             dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
         });
     };
@@ -425,10 +499,15 @@ export function onScaleDefinitionChange(criteriaId, questionId, typeDefinitionId
             }
         }
         promise.catch((error) => {
-            const { message } = error;
+            let message;
+            if (Array.isArray(error.response.data.errors)) {
+                message = error.response.data.errors[0].detail;
+            } else {
+                message = error.response.data.errors.detail;
+            }
+
             dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
         });
-
         return promise;
     };
 }
@@ -506,7 +585,13 @@ export function deleteDocument(criteriaId, questionId, id) {
             dispatch({ type:DOCUMENT_DELETE, questionId, id });
         })
         .catch((error) => {
-            const { message } = error;
+            let message;
+            if (Array.isArray(error.response.data.errors)) {
+                message = error.response.data.errors[0].detail;
+            } else {
+                message = error.response.data.errors.detail;
+            }
+
             dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
         });
     };
@@ -535,7 +620,13 @@ export function fetchTemplate(id) {
 
             })
             .catch((error) => {
-                const { message } = error;
+                let message;
+                if (Array.isArray(error.response.data.errors)) {
+                    message = error.response.data.errors[0].detail;
+                } else {
+                    message = error.response.data.errors.detail;
+                }
+
                 dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
             }),
             getPromiseForService(TEMPLATE_SERVICE_URL+'/'+id+'?include=criteria.questions', dispatch)
@@ -550,7 +641,15 @@ export function fetchTemplate(id) {
 function getPromiseForService(url, dispatch) {
     return axios.get(url)
     .catch((error) => {
-        const { message } = error;
+        let { message } = error;
+        if (!message) {
+            if (Array.isArray(error.response.data.errors)) {
+                message = error.response.data.errors[0].details;
+            } else {
+
+                message = error.response.data.errors.details;
+            }
+        }
         dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
     });
 }

@@ -147,7 +147,9 @@ export function parseAssignmentFromAssignmentStatusData(data, assignment, userPr
     if ((assignmentStatus.id!=='3')&&(String(userProfile.id) === String(assignedUser.id))) {
         complete_url = EVALUATION_ASSIGNMENT_COMPLETION+id;
     }
-    return { ...assignment, complete_url, assignmentStatus };
+    let isAdmin =  Boolean(userProfile.pitRole === 'admin');
+    let isMarkInProgressAllowed = isAdmin&&(assignmentStatus.id==='3');
+    return { ...assignment, complete_url, assignmentStatus, isMarkInProgressAllowed };
 }
 
 export function parseAssignmentsFromData(evaluationAssignmentsData, userProfile) {

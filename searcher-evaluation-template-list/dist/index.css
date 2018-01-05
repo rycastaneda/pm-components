@@ -1,35 +1,6 @@
 .evaluation_templates .pepp-content .db-content {
   padding-bottom: 160px; }
 
-.toast-container {
-  background: #3fcc8b;
-  color: #ffffff;
-  width: 100%;
-  min-width: 500px;
-  text-align: center;
-  padding: 10px;
-  position: fixed;
-  z-index: 100;
-  visibility: hidden;
-  transition: all ease-in-out 0.2s;
-  transform-style: preserve-3d;
-  transform: translate3d(0, 0, 0) rotateX(90deg);
-  transform-origin: 50% 0%;
-  margin: auto;
-  left: 0;
-  right: 0;
-  top: -10px; }
-  .toast-container.active {
-    visibility: visible;
-    height: auto;
-    transform: translate3d(0%, 0%, 0) rotateX(0deg);
-    transition: all ease-in-out 0.5s; }
-  .toast-container.success {
-    background: #3fcc8b; }
-  .toast-container.error {
-    background: #d9534f;
-    color: #ffffff; }
-
 .loading-animation {
   top: 0;
   bottom: 0;
@@ -93,5 +64,35 @@
     background: #e68020;
     height: 10%;
     margin-top: 25%; } }
+
+.toast-container {
+  background: #3fcc8b;
+  color: #ffffff;
+  width: 100%;
+  min-width: 500px;
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  z-index: 100;
+  font-size: 14px;
+  visibility: hidden;
+  transition: all ease-in-out 0.2s;
+  transform-style: preserve-3d;
+  transform: translate3d(0, 0, 0) rotateX(90deg);
+  transform-origin: 50% 0%;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: -10px; }
+  .toast-container.active {
+    visibility: visible;
+    height: auto;
+    transform: translate3d(0%, 0%, 0) rotateX(0deg);
+    transition: all ease-in-out 0.5s; }
+  .toast-container.success {
+    background: #3fcc8b; }
+  .toast-container.error {
+    background: #d9534f;
+    color: #ffffff; }
 
 /*# sourceMappingURL=index.css.map*/

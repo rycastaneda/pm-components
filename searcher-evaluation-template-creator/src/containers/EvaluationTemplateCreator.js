@@ -61,7 +61,8 @@ class EvaluationTemplateCreator extends Component {
 
     onTitleTextChange(event) {
         clearInterval(this.intervalId_update);
-        this.setState({ title:event.target.value, isTitleError:!event.target.value.length  });
+        let isTitleError = !event.target.value.length||event.target.value.match('(.|\s)*\S(.|\s)*');
+        this.setState({ title:event.target.value, isTitleError });
         if (this.props.id&&event.target.value) {
             this.intervalId_update = setInterval(this.updateTitleText, INPUT_SYNC_INTERVAL);
         }

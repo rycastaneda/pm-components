@@ -71,16 +71,27 @@ class Criteria extends Component {
     onWeightChange(weight) {
         let isWeightError = false;
         if (weight.length) {
-            if (Number(weight>100)) {
-                isWeightError =true;
-            }
-            if (Number(weight<0)) {
-                isWeightError =true;
+            if (typeof(weight) === 'number') {
+                if (Number(weight>100)) {
+                    isWeightError =true;
+                } else if (Number(weight<1)) {
+                    isWeightError =true;
+                } else
+                if (weight.indexOf('.')!==-1) {
+                    isWeightError = true;
+                }
+            } else {
+                isWeightError = true;
             }
         } else {
-            isWeightError = true;
+            weight = 0;
         }
-        this.setState({ weight, isWeightError  });
+        if (isWeightError) {
+            this.setState({ isWeightError  });
+        } else {
+            this.setState({ weight, isWeightError  });
+        }
+
         this.intervalId = clearInterval(this.intervalId);
         if (this.props.criteria.id&&!isWeightError) {
             this.intervalId = setInterval(this.updateCriteriaChange, INPUT_SYNC_INTERVAL);
@@ -154,8 +165,7 @@ class Criteria extends Component {
                                     </span>
                                 </label>
                                 <div className="input-group">
-                                  <input type="number"
-                                  min="0" step="1"
+                                  <input
                                   name="weight"
                                   defaultValue = {this.state.weight}
                                   className={this.getWeightInputStyle()}
@@ -166,7 +176,7 @@ class Criteria extends Component {
                                   <span className="input-group-addon" id="weighting-addon">%</span>
                                 </div>
                                 { this.state.isWeightError?
-                                  <span className="error danger">{"Accepted values: 0 to 100"}</span>
+                                  <span className="error danger">{"Accepted values: 0 to 100. Defaults to 0"}</span>
                                   :null
                                 }
                             </div>
@@ -189,7 +199,7 @@ class Criteria extends Component {
                             </div>
                             :
                             <div>
-                                { (this.state.title || this.state.title!==this.props.criteria.title
+                                { (this.props.criteria.id!==null)&&(this.state.title || this.state.title!==this.props.criteria.title
                                     || this.state.weight!==this.props.criteria.weight)?
                                         <div className="col-md-6 col-sm-12">
                                             <div className="form-group pull-right">
