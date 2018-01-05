@@ -53,7 +53,7 @@ class Criteria extends Component {
                             } }>
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <div className="pmaccordion__title font-rg">this.props.index+1}. {criteria.title}</div>
+                                        <div className="pmaccordion__title font-rg">{this.props.index+1}. {criteria.title}</div>
                                     </div>
                                     <div className="col-md-6 text-right">
                                         <div className="weight">
