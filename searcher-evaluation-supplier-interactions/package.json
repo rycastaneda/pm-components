@@ -19,7 +19,8 @@
 		"json-api-normalizer": "^0.4.6",
 		"prettier-eslint": "^8.3.1",
 		"redux-object": "^0.5.4",
-		"styled-components": "^2.2.4"
+		"styled-components": "^2.2.4",
+		"url-assembler": "^1.2.9"
 	},
 	"devDependencies": {
 		"axios": "^0.15.3",

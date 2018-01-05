@@ -20,8 +20,10 @@ const reducer = (state = initialState, action) => {
                 merge(action.response, { meta: { [action.endpoint]: { loading: false } } })
             );
 
+
         case API_DATA_REQUEST:
             return merge(state, { meta: { [action.endpoint]: { loading: true } } });
+
 
         case actions.SUPPLIER_INTERACTIONS_SHOW_ROWS_CHANGE_UPDATE:
             return {

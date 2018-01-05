@@ -8,3 +8,12 @@ export function fetchInteractions(preferredSupplier) {
         },
     };
 }
+
+export function applyPerPage(preferredSupplier) {
+    return {
+        [CALL_API]: {
+            endpoint:
+                `/preferred-suppliers/${preferredSupplier}/interactions`,
+        },
+    };
+}
