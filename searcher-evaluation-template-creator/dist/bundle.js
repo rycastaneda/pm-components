@@ -8049,6 +8049,7 @@
 
 
 	        _this.state = {
+	            isMaximiseEnabled: true,
 	            title: title,
 	            isAllowUpload: isAllowUpload,
 	            isCommentRequired: isCommentRequired,
@@ -8099,6 +8100,7 @@
 
 	            var documentError = '';
 	            this.setState({
+	                isQuestionTitleError: false,
 	                title: title,
 	                isAllowUpload: isAllowUpload,
 	                isCommentRequired: isCommentRequired,
@@ -8136,15 +8138,18 @@
 	            if (this.props.question.id !== null) {
 	                this.props.dispatch((0, _evaluationTemplateCreator.onQuestionTitleChange)(this.props.criteriaId, this.props.question.id, this.state.title));
 	            }
+	            this.setState({ isMaximiseEnabled: true });
 	            clearInterval(this.intervalId_update);
 	        }
 	    }, {
 	        key: 'onTitleChange',
 	        value: function onTitleChange(title) {
-	            this.setState({ title: title });
 	            if (title.length) {
 	                this.clearAllIntervals();
+	                this.setState({ title: title, isMaximiseEnabled: false, isQuestionTitleError: false });
 	                this.intervalId_update = setInterval(this.updateTitle, _constants.INPUT_SYNC_INTERVAL);
+	            } else {
+	                this.setState({ isQuestionTitleError: true });
 	            }
 	        }
 	    }, {
@@ -8184,6 +8189,7 @@
 	        key: 'updateScaleDefinition',
 	        value: function updateScaleDefinition(id, index, label, value, definitionId) {
 	            this.clearAllIntervals();
+	            this.setState({ isMaximiseEnabled: true });
 	            this.props.dispatch((0, _evaluationTemplateCreator.onScaleDefinitionChange)(this.props.criteriaId, this.props.question.id, id, label, value, definitionId));
 	        }
 	    }, {
@@ -8200,7 +8206,7 @@
 	                definitionId = _scaleDefinitions$ind.definitionId;
 
 
-	            this.setState({ scaleDefinitions: scaleDefinitions });
+	            this.setState({ scaleDefinitions: scaleDefinitions, isMaximiseEnabled: false });
 	            this.clearAllIntervals();
 	            this.intervalId_update = setInterval(function () {
 	                _this3.updateScaleDefinition(id, index, label, value, definitionId);
@@ -8269,6 +8275,15 @@
 	                style += ' saved';
 	            }
 	            return style;
+	        }
+	    }, {
+	        key: 'getClassIfError',
+	        value: function getClassIfError(val) {
+	            if (val) {
+	                return ' error';
+	            } else {
+	                return '';
+	            }
 	        }
 	    }, {
 	        key: 'renderMinimised',
@@ -8401,7 +8416,7 @@
 	                                    'Question Title'
 	                                )
 	                            ),
-	                            _react2.default.createElement('input', { className: 'form-control',
+	                            _react2.default.createElement('input', { className: 'form-control ' + this.getClassIfError(this.state.isQuestionTitleError),
 	                                defaultValue: this.state.title,
 	                                onChange: function onChange(event) {
 	                                    return _this4.onTitleChange(event.target.value);
@@ -8420,13 +8435,18 @@
 	                                _react2.default.createElement('br', null),
 	                                _react2.default.createElement('br', null)
 	                            ),
-	                            _react2.default.createElement(
+	                            this.state.isMaximiseEnabled ? _react2.default.createElement(
 	                                'button',
 	                                {
 	                                    className: 'btn btn-sm',
 	                                    onClick: this.toggleMaximise },
 	                                _react2.default.createElement('i', { className: 'fa fa-angle-double-up' }),
 	                                'Collapse Question'
+	                            ) : _react2.default.createElement(
+	                                'button',
+	                                { disabled: true,
+	                                    className: 'btn btn-sm' },
+	                                'Saving...'
 	                            )
 	                        ),
 	                        _react2.default.createElement(
