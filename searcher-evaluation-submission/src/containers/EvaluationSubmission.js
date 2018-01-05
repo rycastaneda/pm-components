@@ -19,6 +19,7 @@ class EvaluationSubmission extends Component {
     }
 
     componentDidMount() {
+        window.console.log(this.htmlElement);
         let rootElement = this.htmlElement.closest('[data-component=\'searcher-evaluation-submission\']');
         let assignmentId = rootElement.getAttribute('data-evaluation-assignment-id');
         this.props.dispatch(initialize(Number(assignmentId)));
@@ -28,7 +29,7 @@ class EvaluationSubmission extends Component {
     render() {
         const { criteriaIds, title, assignmentStatus } = this.props;
         return (
-            <div id="searcher-evaluation-submission" ref ={ element => this.htmlElement = element }>
+            <div id="searcher-evaluation-submission-container" ref ={ element => this.htmlElement = element }>
                 <Notification />
                 <Modal />
                 {
