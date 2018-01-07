@@ -8,7 +8,6 @@ class ScaleDefinition extends Component {
     }
 
     setOptionValue(questionId, scaleDefinitionId, value) {
-        window.console.log('ScaleDefinition>setOptionValue', questionId, scaleDefinitionId, value);
         this.props.dispatch(setOptionValue(questionId, scaleDefinitionId, value));
     }
 

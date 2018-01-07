@@ -1,23 +1,28 @@
 import normalize from 'json-api-normalizer';
 export function parseDataForUpdateQuestion(question) {
+    let response_value = null;
+    let { selectedDefinition, comment, id, type } = question;
+    if (selectedDefinition!==null) {
+        response_value =  Number(selectedDefinition);
+    }
     let result = {
         data:{
             type:'evaluation-question-responses',
             attributes:{
-                response_value:Number(question.selectedDefinition),
-                comment:question.comment
+                response_value,
+                comment
             },
             relationships:{
                 question:{
                     data:{
                         type:'evaluation-questions',
-                        id:Number(question.id)
+                        id:Number(id)
                     }
                 },
                 type: {
                     data:{
                         type:'evaluation-question-types',
-                        id:Number(question.type)
+                        id:Number(type)
                     }
                 }
             }

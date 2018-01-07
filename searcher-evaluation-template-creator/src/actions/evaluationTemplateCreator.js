@@ -134,8 +134,8 @@ export function updateTemplate(title, templateId) {
             dispatch({ type:TEMPLATE_UPDATED, title });
         })
         .catch((error) => {
-            if (error.status_code===422) {
-                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Invalid entry.'));
             } else {
                 error.response.data.errors.forEach((e) => {
                     let { detail } = e;

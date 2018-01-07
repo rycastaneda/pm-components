@@ -71,7 +71,7 @@ class Criteria extends Component {
     onWeightChange(weight) {
         let isWeightError = false;
         if (weight.length) {
-            if (typeof(weight) === 'number') {
+            if (!isNaN(weight)) {
                 if (Number(weight>100)) {
                     isWeightError =true;
                 } else if (Number(weight<1)) {

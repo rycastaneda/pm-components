@@ -2651,8 +2651,8 @@
 	        return _axios2.default.patch(serviceUrl, data).then(function () {
 	            dispatch({ type: _ActionTypes.TEMPLATE_UPDATED, title: title });
 	        }).catch(function (error) {
-	            if (error.status_code === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+	            if (error.response.status === 422) {
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Invalid entry.'));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -7280,7 +7280,7 @@
 	        value: function onWeightChange(weight) {
 	            var isWeightError = false;
 	            if (weight.length) {
-	                if (typeof weight === 'number') {
+	                if (!isNaN(weight)) {
 	                    if (Number(weight > 100)) {
 	                        isWeightError = true;
 	                    } else if (Number(weight < 1)) {
