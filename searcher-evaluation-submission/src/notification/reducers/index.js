@@ -16,14 +16,13 @@ export function notification(state = getInitialData(), action) {
     switch (action.type) {
         case NOTIFICATION_PROMPT_MESSAGE:
             {
-
                 let { message, messageType } = action;
                 switch (action.messageType) {
                     case MESSAGE_TYPE_ERROR:
-                        state.messages =[...state.messages, { messageClass:'error', message, messageType }];
+                        state.messages =[{ messageClass:'error', message, messageType }];
                         break;
                     case MESSAGE_TYPE_SUCCESS:
-                        state.messages =[...state.messages, { messageClass:'success', message, messageType }];
+                        state.messages =[{ messageClass:'success', message, messageType }];
                         break;
                 }
                 return Object.assign({}, state);

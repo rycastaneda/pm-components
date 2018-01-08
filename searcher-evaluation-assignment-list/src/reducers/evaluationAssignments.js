@@ -71,10 +71,10 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
             return { ...state, evaluationAssignments };
         }
         case EVALUATION_STATUS_UPDATED: {
-            let { id, assignmentStatus } = action;
+            let { id, assignment } = action;
             let evaluationAssignments = state.evaluationAssignments.map((item) => {
                 if (item.id===id) {
-                    item ={ ...item, assignmentStatus };
+                    return assignment;
                 }
                 return item;
             });
@@ -119,7 +119,7 @@ export function evaluationAssignments(state = INITIAL_DATA, action) {
         case EVALUATION_ASSIGNMENTS_LIST_UPDATE_CHANGE_ROWS_LENGTH:
             return {
                 ...state,
-                maxRowLength: action.perPage,
+                maxRowLength: action.perPage
             };
 
         default:

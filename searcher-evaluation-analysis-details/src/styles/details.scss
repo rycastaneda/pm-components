@@ -1,13 +1,15 @@
 // prettier-ignore
 .tab-pills {
     display: block;
-    background-color: #f6f6f6;
+    background-color: transparent;
     color: #333333;
 
     > li {
 
         > a {
             border-radius: 0;
+            color: #000000;
+            font-weight: bold;
         }
 
         > a:hover {
@@ -17,7 +19,7 @@
 
         > a.selected {
             display: block;
-            background-color: rgb(246, 246, 246);
+            background-color: transparent;
             color: rgb(51, 51, 51);
             border-bottom: 2px solid #e68020;
         }

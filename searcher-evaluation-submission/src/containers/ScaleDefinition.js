@@ -12,10 +12,13 @@ class ScaleDefinition extends Component {
     }
 
     render() {
-        let { scaleDefinition, questionId, selectedDefinition } = this.props;
+        let { scaleDefinition, questionId, selectedDefinition, questionType } = this.props;
         return (
             <div className="radio">
-                <span className="score">{scaleDefinition.value}</span>
+                { questionType==='3'?
+                    null:
+                    <span className="score">{scaleDefinition.value}</span>
+                }
                 <input type="radio"
                 name={`rating-group-${questionId}`}
                 checked={ scaleDefinition.value === selectedDefinition }
@@ -56,7 +59,7 @@ function mapStateToProps(state, props) {
             score = scaleDefinitionObj.score;
             definition = scaleDefinitionObj.definition;
         }
-    } else if (props.questionType==='3') {        
+    } else if (props.questionType==='3') {
         if (Number(value)) {
             definition = 'Yes';
         } else {
@@ -64,6 +67,8 @@ function mapStateToProps(state, props) {
         }
     }
     let scaleDefinition =  { id, score, definition, value, title };
+
+
     return { scaleDefinition, questionId  };
 }
 

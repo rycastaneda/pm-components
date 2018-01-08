@@ -1,18 +1,19 @@
 import React, { PropTypes, Component } from 'react';
 import Datetime  from './PlantMinerDatetime';
-
+import  Select  from 'react-select';
 
 class EvaluationTemplatesFilter extends Component {
 
     constructor(props) {
         super(props);
-        this.state={ isFilterShown:false, keywordSearch:'', selectedStatus:'', selectedDate:null, selectedUserId:'' };
+        this.state={ isFilterShown:false, keywordSearch:'', selectedStatus:'', selectedDate:null, selectedUser:null };
         this.onSelectedDateChange= this.onSelectedDateChange.bind(this);
         this.onKeyPress = this.onKeyPress.bind(this);
         this.onKeywordChange = this.onKeywordChange.bind(this);
         this.onNormalSubmit = this.onNormalSubmit.bind(this);
         this.onAdvancedSubmit = this.onAdvancedSubmit.bind(this);
         this.onToggleFilter = this.onToggleFilter.bind(this);
+        this.onCancelFilter = this.onCancelFilter.bind(this);
     }
 
     onKeyPress(event) {
@@ -26,6 +27,9 @@ class EvaluationTemplatesFilter extends Component {
         }
     }
 
+    onCancelFilter() {
+        this.onNormalSubmit();
+    }
     onKeywordChange(event) {
         this.setState({ keywordSearch: event.target.value });
     }
@@ -33,22 +37,27 @@ class EvaluationTemplatesFilter extends Component {
     onSelectedStatusChange(val) {
         this.setState({ selectedStatus: val });
     }
-    onSelectedUserChange(val) {
-        this.setState({ selectedUserId: val });
-    }
 
     onSelectedDateChange(date) {
+        // set date to null when cleared
+        date = (date ==='')?null:date;
         this.setState({ selectedDate: date });
     }
 
     onNormalSubmit() {
         let { keywordSearch } = this.state;
-        this.setState({ selectedStatus:'', selectedUserId:'', selectedDate:null, isFilterShown:false });
+        this.setState({ selectedStatus:'', selectedUser:null, selectedDate:null, isFilterShown:false });
         this.props.onSubmit(keywordSearch, null, null, null);
     }
 
     onAdvancedSubmit() {
-        let { keywordSearch, selectedStatus, selectedUserId, selectedDate } = this.state;
+        let { keywordSearch, selectedStatus, selectedUser, selectedDate } = this.state;
+        let selectedUserId;
+        if (selectedUser===null) {
+            selectedUserId = '';
+        } else {
+            selectedUserId = selectedUser.id;
+        }
         selectedStatus =(selectedStatus!=='active'&&selectedStatus!=='inactive')?null:selectedStatus;
         let date= selectedDate!==null&&selectedDate!==''? selectedDate.toDate():null;
         this.props.onSubmit(keywordSearch, selectedStatus, date, selectedUserId);
@@ -94,6 +103,8 @@ class EvaluationTemplatesFilter extends Component {
                             <div className="input-group">
                             <span className="input-group-addon"><i className="fa fa-calendar"></i></span>
                             <Datetime
+                                dateFormat="DD/MM/YYYY"
+                                    placeholder="Any Date"
                                 onSelectedDateChange={this.onSelectedDateChange}
                                 selectedDate={null}
                                 />
@@ -103,20 +114,23 @@ class EvaluationTemplatesFilter extends Component {
                     <div className="col-xs-4">
                         <div className="form-group">
                             <label>Created By</label>
-                            <div className="input-group">
-                                <select className="form-control form-control-sm" onChange={event => this.onSelectedUserChange(event.target.value)} value={this.state.selectedUserId}>
-                                    <option value="">{'Any User'}</option>
-                                    {
-                                        this.props.users.map((user, index) => <option key={index} value={user.id} >{ `${user.firstName} ${user.lastName}` }</option>)
-                                    }
-                                </select>
-                            </div>
+
+                            <Select
+                            name="form-field-name"
+                            value={this.state.selectedUser}
+                            options={this.props.users}
+                            noResultsText ={'No match found'}
+                            placeholder = {'Any User'}
+                            backspaceToRemoveMessage={''}
+                            onChange={item =>
+                                this.setState({ selectedUser: item })} />
+
                        </div>
                     </div>
                     <div className="col-xs-12 pad-top align-right">
                           <ul className="list-inline">
                             <li>
-                                <button type="button" className="btn btn-sm btn-danger" onClick={this.onToggleFilter}><i className="fa fa-ban"></i>Cancel</button>
+                                <button type="button" className="btn btn-sm btn-danger" onClick={this.onCancelFilter}><i className="fa fa-ban"></i>Cancel</button>
                             </li>
                             <li>
                                 <button type="submit" className="btn btn-sm btn-success" onClick={this.onAdvancedSubmit}><i className="fa fa-check"></i>Submit</button>

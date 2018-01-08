@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { parseInitialize, parseDataForUpdateQuestion } from '../utils/dataParser';
-
+import { COMMENT_MANDATORY,
+        VALIDATION_COMMENT_MANDATORY,
+        SUBMISSION_MESSAGE_TITLE,
+        SUBMISSION_MESSAGE_CONTENT,
+        ASSIGNMENT_BUTTON_LABEL,
+        VALIDATION_MESSAGE_ASSIGNMENT_SUBMITTED } from '../constants';
 import { UPDATE_TEMPLATE_ASSIGNMENT,
     DOCUMENT_UPLOAD_SUCCESS,
     DOCUMENT_UPLOAD_FAILED,
@@ -9,34 +14,33 @@ import { UPDATE_TEMPLATE_ASSIGNMENT,
     DOCUMENT_DELETE,
     REQUEST_FAILED,
     QUESTION_UPDATED,
-    ASSIGNMENT_SUBMITTED,
     CRITERIA_UPDATED,
     IS_BUSY } from '../constants/ActionTypes';
-
-import { MESSAGE_TYPE_ERROR, MESSAGE_TYPE_SUCCESS } from '../constants';
+import { MESSAGE_TYPE_ERROR, MESSAGE_TYPE_SUCCESS } from '../notification/constants';
 import { showNotification } from '../notification/actions';
+import { showModal } from '../modal/actions';
+
+const EVALUATION_ASSIGNMENT_LIST_PAGE = '/searcher/evaluation_assignments/list';
 
 export function initialize(requestedAssignmentId) {
     return (dispatch) => {
         return axios.get('/evaluation-template-assignments/'+requestedAssignmentId+'?include=template.criteria.questions')
         .then((response) => {
-            let result =parseInitialize(response.data, requestedAssignmentId);
+            let result = parseInitialize(response.data, requestedAssignmentId);
+            if (result.assignmentStatus.id==='3') {
+                dispatch(promptError(VALIDATION_MESSAGE_ASSIGNMENT_SUBMITTED));
+            }
             dispatch({ type:UPDATE_TEMPLATE_ASSIGNMENT, ...result });
+
         })
         .catch((error) => {
 
             if (error.response) {
                 let { errors } = error.response.data;
-                if (typeof(errors)==='object') {
-                    let message = errors.detail;
+                errors.forEach((er) => {
+                    let message = er.detail;
                     dispatch(promptError(message));
-                } else {
-                    errors.forEach((er) => {
-                        let message = er.detail;
-                        dispatch(promptError(message));
-                    });
-                }
-
+                });
             } else {
                 let { message } = error;
                 dispatch(promptError(message));
@@ -51,54 +55,65 @@ export function uploadDocuments(questionId, documents) {
         let { evaluationSubmission } = getState();
 
         let { assignmentId } = evaluationSubmission;
+
         let question = evaluationSubmission.questionByIndex[questionId];
-        if (!question.isAttempted) {
-            let message = 'Please add a comment before proceeding.';
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+        // if comments are mandatory and if a defenition is selected then check if the user has entered a comment.
+        let { mandatoryComments, comment, selectedDefinition } = question;
+        if (Boolean(mandatoryComments)&&selectedDefinition!==null&&!comment.length) {
+            dispatch(promptError(COMMENT_MANDATORY));
+            return false;
         }
         dispatch({
             type: DOCUMENTS_UPLOADING,
             questionId,
             documents
         });
-        return axios.all(
-            documents.map((document) => {
-                let formData = new FormData();
-                formData.append('document', document);
-                formData.append('question_id', questionId);
-                formData.append('assignment_id', questionId);
-                let endpoint = '/evaluation-template-assignments/'+assignmentId;
-                endpoint +='/question-responses/'+question.responseId;
-                endpoint +='/documents';
-                let promise = axios.post(endpoint, formData, {
-                    onUploadProgress: function(progressEvent) {
-                        var percentCompleted = progressEvent.loaded / progressEvent.total;
-                        dispatch(incrementProgress(document.id, Math.ceil(percentCompleted * 100)));
-                    }
-                });
-                promise.then((response) => {
-                    dispatch({
-                        type: DOCUMENT_UPLOAD_SUCCESS,
-                        questionId,
-                        documentId: document.id,
-                        newDocumentId: Number(response.data.data.id),
-                        url: String(response.data.data.attributes.download_url)
-                    });
-                    return response;
-                }).catch((error) => {
-                    dispatch({
-                        type: DOCUMENT_UPLOAD_FAILED,
-                        documentId: document.id
-                    });
-                    return error;
-                });
-                return promise;
-            })
-        );
+        if (question.responseId === null) {
+            return updateQuestion(question, assignmentId, dispatch).then(() => {
+                question = evaluationSubmission.questionByIndex[questionId];
+                axios.all(buildUploadPromiseFromDocuments(question, documents, assignmentId, dispatch));
+            });
+        } else {
+            return axios.all(buildUploadPromiseFromDocuments(question, documents, assignmentId, dispatch));
+        }
 
     };
 }
-
+function buildUploadPromiseFromDocuments(question, documents, assignmentId, dispatch) {
+    return documents.map((document) => {
+        let questionId = question.id;
+        let formData = new FormData();
+        formData.append('document', document);
+        formData.append('question_id', questionId);
+        formData.append('assignment_id', assignmentId);
+        let endpoint = '/evaluation-template-assignments/'+assignmentId;
+        endpoint +='/question-responses/'+question.responseId;
+        endpoint +='/documents';
+        let promise = axios.post(endpoint, formData, {
+            onUploadProgress: function(progressEvent) {
+                var percentCompleted = progressEvent.loaded / progressEvent.total;
+                dispatch(incrementProgress(document.id, Math.ceil(percentCompleted * 100)));
+            }
+        });
+        promise.then((response) => {
+            dispatch({
+                type: DOCUMENT_UPLOAD_SUCCESS,
+                questionId,
+                documentId: document.id,
+                newDocumentId: Number(response.data.data.id),
+                url: String(response.data.data.attributes.download_url)
+            });
+            return response;
+        }).catch((error) => {
+            dispatch({
+                type: DOCUMENT_UPLOAD_FAILED,
+                documentId: document.id
+            });
+            return error;
+        });
+        return promise;
+    });
+}
 export function deleteDocument(questionId, documentId) {
     return (dispatch, getState) => {
         let { evaluationSubmission } = getState();
@@ -120,16 +135,10 @@ export function deleteDocument(questionId, documentId) {
 
             if (error.response) {
                 let { errors } = error.response.data;
-                if (typeof(errors)==='object') {
-                    let message = errors.detail;
+                errors.forEach((er) => {
+                    let message = er.detail;
                     dispatch(promptError(message));
-                } else {
-                    errors.forEach((er) => {
-                        let message = er.detail;
-                        dispatch(promptError(message));
-                    });
-                }
-
+                });
             } else {
                 let { message } = error;
                 dispatch(promptError(message));
@@ -143,27 +152,35 @@ export function deleteDocument(questionId, documentId) {
 export function submitAssignment() {
     return (dispatch, getState) => {
         let { evaluationSubmission } = getState();
-        let { assignmentId } = evaluationSubmission;
+        let { assignmentId, questionByIndex } = evaluationSubmission;
+        let commentCount =0;
+        Object.values(questionByIndex).forEach((question) => {
+            let { mandatoryComments, comment, selectedDefinition } = question;
+            // if comments are mandatory and if a defenition is selected then check if the user has entered a comment.
+            if (Boolean(mandatoryComments)&&selectedDefinition!==null&&!comment.length) {
+                commentCount++;
+            }
+        });
+        if (commentCount) {
+            dispatch(promptError(VALIDATION_COMMENT_MANDATORY));
+            return false;
+        }
         let endpoint = '/evaluation-template-assignments/'+assignmentId+'/submit';
         let promise = axios.post(endpoint);
         promise.then(() => {
-            dispatch({ type: ASSIGNMENT_SUBMITTED });
-            let message = 'Assignment submitted successfully!';
-            dispatch(showNotification(MESSAGE_TYPE_SUCCESS, message));
+            dispatch(showModal(SUBMISSION_MESSAGE_TITLE,
+                 SUBMISSION_MESSAGE_CONTENT,
+                 ASSIGNMENT_BUTTON_LABEL, () => {
+                     window.location.href = EVALUATION_ASSIGNMENT_LIST_PAGE;
+                 }));
         })
         .catch((error) => {
             if (error.response) {
                 let { errors } = error.response.data;
-                if (typeof(errors)==='object') {
-                    let message = errors.detail;
+                errors.forEach((er) => {
+                    let message = er.detail;
                     dispatch(promptError(message));
-                } else {
-                    errors.forEach((er) => {
-                        let message = er.detail;
-                        dispatch(promptError(message));
-                    });
-                }
-
+                });
             } else {
                 let { message } = error;
                 dispatch(promptError(message));
@@ -201,34 +218,35 @@ export function criteriaMaximised(criteriaId, isMaximised) {
 }
 function updateQuestion(question, assignmentId, dispatch) {
     let promise;
+
     let endpoint = '/evaluation-template-assignments/'+assignmentId;
     endpoint += '/question-responses';
-    let parsedQuestionData = parseDataForUpdateQuestion(question) ;
+
+    let parsedQuestionData = parseDataForUpdateQuestion(question);
     if (question.isAttempted) {
         promise = axios.patch(endpoint+'/'+question.responseId, parsedQuestionData);
     } else {
         promise = axios.post(endpoint, parsedQuestionData);
     }
-    promise.then(() => {
+    promise.then((response) => {
+        if (!question.isAttempted) {
+            question.isAttempted = true;
+            question.responseId =  response.data.data.id;
+        }
         dispatch({ type: QUESTION_UPDATED, question });
     }).catch((error) => {
         if (error.response) {
             let { errors } = error.response.data;
-
-            if (typeof(errors)==='object') {
-                let message = errors.detail;
+            errors.forEach((er) => {
+                let message = er.detail;
                 dispatch(promptError(message));
-            } else {
-                errors.forEach((er) => {
-                    let message = er.detail;
-                    dispatch(promptError(message));
-                });
-            }
+            });
         } else {
             let { message } = error;
             dispatch(promptError(message));
         }
     });
+    return promise;
 }
 export function promptError(message) {
     return showNotification(MESSAGE_TYPE_ERROR, message);

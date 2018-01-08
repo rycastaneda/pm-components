@@ -56,11 +56,14 @@ export function publishTemplate() {
             }));
         })
         .catch((error) => {
-            // dispatch({ type:REQUEST_FAILED, message: error.message });
-            error.response.data.errors.forEach((e) => {
-                let { detail } = e;
-                dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
-            });
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
 
         });
     };
@@ -92,9 +95,8 @@ export function initialize() {
             }
 
         })
-        .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+        .catch(() => {
+            dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Unable to recieve data.'));
         });
     };
 }
@@ -104,11 +106,20 @@ export function addTemplate(title) {
         return axios.post(TEMPLATE_SERVICE_URL, data)
         .then((response) => {
             const template = response.data.data;
-            dispatch({ type:TEMPLATE_CREATED, title: template.attributes.title, id:Number(template.id) });
+            dispatch({ type:TEMPLATE_CREATED,
+                    title: template.attributes.title,
+                    id:Number(template.id)
+                });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -123,8 +134,14 @@ export function updateTemplate(title, templateId) {
             dispatch({ type:TEMPLATE_UPDATED, title });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Invalid entry.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -143,8 +160,14 @@ export function addCriteria(title, weight) {
             dispatch({ type:CRITERIA_ADD, criterion: createCriterionFromData(response.data) });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -162,8 +185,14 @@ export function deleteCriteria(id) {
             dispatch({ type:CRITERIA_DELETE, id });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Invalid operation'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -181,8 +210,14 @@ export function updateCriteria(id, title, weight) {
             dispatch({ type:CRITERIA_UPDATE, id, title, weight });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -202,8 +237,14 @@ export function addQuestionToCriteria(criteriaId, questionTitle, questionType) {
             dispatch({ type:QUESTION_ADD, criteriaId, question });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -227,8 +268,14 @@ export function onQuestionTypeChange(criteriaId, questionId, type) {
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -252,8 +299,14 @@ export function onQuestionTitleChange(criteriaId, questionId, title) {
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -279,8 +332,14 @@ export function onQuestionAllowUploadChange(criteriaId, questionId, isAllowUploa
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            const { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -305,8 +364,14 @@ export function  onAllowScaleDefinitionChange(criteriaId, questionId, isAllowSca
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            const { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
@@ -331,7 +396,13 @@ export function onQuestionAllowCommentsChange(criteriaId, questionId, isCommentR
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            const { message } = error;
+            let message;
+            if (Array.isArray(error.response.data.errors)) {
+                message = error.response.data.errors[0].detail;
+            } else {
+                message = error.response.data.errors.detail;
+            }
+
             dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
         });
     };
@@ -351,7 +422,13 @@ export function deleteQuestion(criteriaId, questionId) {
             dispatch({ type:QUESTION_DELETE, criteriaId, questionId });
         })
         .catch((error) => {
-            const { message } = error;
+            let message;
+            if (Array.isArray(error.response.data.errors)) {
+                message = error.response.data.errors[0].detail;
+            } else {
+                message = error.response.data.errors.detail;
+            }
+
             dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
         });
     };
@@ -367,44 +444,71 @@ export function onScaleDefinitionChange(criteriaId, questionId, typeDefinitionId
         serviceUrl += '/questions/'+questionId;
         serviceUrl += '/scale-definitions';
         const data = parseDataForScaleDefinition(typeDefinitionId, scaleDefinitionId, text, score);
+        let question = { ...getState().evaluationTemplateCreator.questionsByIndex[questionId] };
+        let promise;
+        if (scaleDefinitionId === undefined) {
 
-        if (scaleDefinitionId===undefined) {
-
-            return axios.post(serviceUrl, data)
+            promise = axios.post(serviceUrl, data)
                 .then((response) => {
                     let responseScaleDef = normalize(response.data, { endpoint:'evaluation-question-scale-definitions' });
                     responseScaleDef = build(responseScaleDef, 'evaluationQuestionScaleDefinitions')[0];
-                    let question = Object.assign({}, getState().evaluationTemplateCreator.questionsByIndex[questionId]);
-                    const index = question.scaleDefinitions.findIndex((item) => {
-                        return (item.id === responseScaleDef.typeDefinition.id);
+                    question.scaleDefinitions = question.scaleDefinitions.map((item) => {
+                        if (item.id === responseScaleDef.typeDefinition.id) {
+                            let label = text;
+                            let definitionId = response.data.data.id;
+                            return { ...item, label, definitionId };
+                        } else {
+                            return item;
+                        }
                     });
-                    question.scaleDefinitions[index].definitionId = response.data.data.id;
-                    question.scaleDefinitions[index].label = text;
                     dispatch({ type:QUESTION_UPDATE, criteriaId, question });
-                })
-                .catch((error) => {
-                    const { message } = error;
-                    dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
                 });
+
         } else {
             serviceUrl +=('/'+scaleDefinitionId);
-            return axios.patch(serviceUrl, data)
-                .then((response) => {
-                    let responseScaleDef = normalize(response.data, { endpoint:'evaluation-question-scale-definitions' });
-                    responseScaleDef = build(responseScaleDef, 'evaluationQuestionScaleDefinitions')[0];
-                    let question = { ...getState().evaluationTemplateCreator.questionsByIndex[questionId] };
-                    const index = question.scaleDefinitions.findIndex((item) => {
-                        return (item.id === responseScaleDef.typeDefinition.id);
+            if (text) {
+                promise = axios.patch(serviceUrl, data)
+                    .then((response) => {
+                        let responseScaleDef = normalize(response.data, { endpoint:'evaluation-question-scale-definitions' });
+                        responseScaleDef = build(responseScaleDef, 'evaluationQuestionScaleDefinitions')[0];
+
+                        question.scaleDefinitions = question.scaleDefinitions.map((item) => {
+                            if (item.id === responseScaleDef.typeDefinition.id) {
+                                let label = text;
+                                return { ...item, label };
+                            } else {
+                                return item;
+                            }
+                        });
+                        dispatch({ type:QUESTION_UPDATE, criteriaId, question });
                     });
 
-                    question.scaleDefinitions[index].label = text;
-                    dispatch({ type:QUESTION_UPDATE, criteriaId, question });
-                })
-                .catch((error) => {
-                    const { message } = error;
-                    dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
-                });
+            } else {
+                promise = axios.delete(serviceUrl)
+                    .then(() => {
+                        question.scaleDefinitions = question.scaleDefinitions.map((item) => {
+                            if (item.definitionId === scaleDefinitionId) {
+                                let { id, title, value } = item;
+                                return { id, title, value };
+                            } else {
+                                return item;
+                            }
+                        });
+                        dispatch({ type:QUESTION_UPDATE, criteriaId, question });
+                    });
+            }
         }
+        promise.catch((error) => {
+            let message;
+            if (Array.isArray(error.response.data.errors)) {
+                message = error.response.data.errors[0].detail;
+            } else {
+                message = error.response.data.errors.detail;
+            }
+
+            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+        });
+        return promise;
     };
 }
 
@@ -481,7 +585,13 @@ export function deleteDocument(criteriaId, questionId, id) {
             dispatch({ type:DOCUMENT_DELETE, questionId, id });
         })
         .catch((error) => {
-            const { message } = error;
+            let message;
+            if (Array.isArray(error.response.data.errors)) {
+                message = error.response.data.errors[0].detail;
+            } else {
+                message = error.response.data.errors.detail;
+            }
+
             dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
         });
     };
@@ -510,7 +620,13 @@ export function fetchTemplate(id) {
 
             })
             .catch((error) => {
-                const { message } = error;
+                let message;
+                if (Array.isArray(error.response.data.errors)) {
+                    message = error.response.data.errors[0].detail;
+                } else {
+                    message = error.response.data.errors.detail;
+                }
+
                 dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
             }),
             getPromiseForService(TEMPLATE_SERVICE_URL+'/'+id+'?include=criteria.questions', dispatch)
@@ -525,7 +641,15 @@ export function fetchTemplate(id) {
 function getPromiseForService(url, dispatch) {
     return axios.get(url)
     .catch((error) => {
-        const { message } = error;
+        let { message } = error;
+        if (!message) {
+            if (Array.isArray(error.response.data.errors)) {
+                message = error.response.data.errors[0].details;
+            } else {
+
+                message = error.response.data.errors.details;
+            }
+        }
         dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
     });
 }

@@ -63,3 +63,11 @@ export function fetchMatchedItems(rfqTypeId, matchedSupplierId) {
         },
     };
 }
+
+export function fetchUser() {
+    return {
+        [CALL_API]: {
+            endpoint: '/user?include=staff.pitRoles',
+        },
+    };
+}

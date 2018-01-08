@@ -1,14 +1,32 @@
 import React, { PropTypes } from 'react';
 
-const Loader = ({ block, icon = '' }) => {
+const Loader = ({ block }) => {
     const mainClass = (block && 'loader-block') || 'loader';
 
     return (
-        <div className={mainClass}>
-            <div className={mainClass + '__backdrop'} />
-            <i
-                className={`${mainClass}__spinner${icon} fa fa-spin fa-spinner`}
-            />
+        <div className="row">
+            <div className="col-sm-12">
+                <div className={mainClass}>
+                    <div className={mainClass + '__backdrop'} />
+                    <div className="loading-animation">
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

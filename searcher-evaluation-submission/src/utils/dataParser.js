@@ -1,33 +1,40 @@
 import normalize from 'json-api-normalizer';
-
 export function parseDataForUpdateQuestion(question) {
-
-    return {
+    let response_value = null;
+    let { selectedDefinition, comment, id, type } = question;
+    if (selectedDefinition!==null) {
+        response_value =  Number(selectedDefinition);
+    }
+    let result = {
         data:{
-            id:question.responseId,
             type:'evaluation-question-responses',
             attributes:{
-                response_value:Number(question.selectedDefinition),
-                comment:question.comment
+                response_value,
+                comment
             },
             relationships:{
                 question:{
                     data:{
                         type:'evaluation-questions',
-                        id:Number(question.id)
+                        id:Number(id)
                     }
                 },
                 type: {
                     data:{
                         type:'evaluation-question-types',
-                        id:Number(question.type)
+                        id:Number(type)
                     }
                 }
             }
         }
     };
-
+    // id is not required if it is a question response creation.
+    if (question.responseId) {
+        result.data.id = question.responseId;
+    }
+    return result;
 }
+
 export function parseInitialize(data, assignmentId) {
     let result = { assignmentId };
     let { evaluationTemplateAssignments,
@@ -95,7 +102,6 @@ export function parseInitialize(data, assignmentId) {
                 selectedDefinition:null,
                 isAttempted:false
             };
-
         });
     }
 

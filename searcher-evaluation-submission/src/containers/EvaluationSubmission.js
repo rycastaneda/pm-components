@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Criteria from './Criteria';
 import { initialize, submitAssignment } from '../actions/evaluationSubmissionAction';
 import Notification from '../notification/Notification';
+import Modal from '../modal/Modal';
 // import Button from '../components/Button';
 
 class EvaluationSubmission extends Component {
@@ -18,7 +19,7 @@ class EvaluationSubmission extends Component {
     }
 
     componentDidMount() {
-        let rootElement = this.htmlElement.closest('[data-component=\'searcher-evaluation-submission\']');
+        let rootElement = document.querySelector('[data-component="searcher-evaluation-submission"]');
         let assignmentId = rootElement.getAttribute('data-evaluation-assignment-id');
         this.props.dispatch(initialize(Number(assignmentId)));
     }
@@ -27,31 +28,40 @@ class EvaluationSubmission extends Component {
     render() {
         const { criteriaIds, title, assignmentStatus } = this.props;
         return (
-            <div id="searcher-evaluation-submission" ref ={ element => this.htmlElement = element }>
+            <div id="searcher-evaluation-submission-container">
                 <Notification />
-                <div className="row">
-                    <div className="col-sm-6">
-                        <h1>{title}</h1>
-                    </div>
-                    <div className="col-sm-6 text-right">
-                        <span className="bs-label bs-label-info">{assignmentStatus.title}</span>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-sm-12">
-                    { criteriaIds.map(
-                        (criteriaId, index) =>
-                        <div key={index}>
-                            <Criteria criteriaId = {criteriaId} />
+                <Modal />
+                {
+                    criteriaIds.length?
+                    <div>
+                        <div className="row">
+                            <div className="col-sm-6">
+                                <h1>{title}</h1>
+                            </div>
+                            <div className="col-sm-6 text-right">
+                                <span className="bs-label bs-label-info">{assignmentStatus.title}</span>
+                            </div>
                         </div>
-                    )}
+                        <div className="row">
+                            <div className="col-sm-12">
+                            { criteriaIds.map(
+                                (criteriaId, index) =>
+                                <div key={index}>
+                                    <Criteria criteriaId = {criteriaId} index={index} />
+                                </div>
+                            )}
+                            </div>
+                        </div>
+                        {assignmentStatus.id !=='3'?
+                            <div className="row">
+                                <div className="col-sm-12 text-right">
+                                    <button onClick={this.submitAssignment} className="btn btn-md"><i className="fa fa-send"></i> Complete Evaluation</button>
+                                </div>
+                            </div>:null
+                        }
                     </div>
-                </div>
-                <div className="row">
-                    <div className="col-sm-12 pull-text-right">
-                        <button onClick={this.submitAssignment} className="btn btn-md">Finish</button>
-                    </div>
-                </div>
+                    :null
+                }
             </div>
         );
     }

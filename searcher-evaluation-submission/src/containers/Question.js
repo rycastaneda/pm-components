@@ -17,7 +17,6 @@ class Question extends Component {
 
     onDownloadAttachment(file) {
         window.console.log(file);
-
     }
     onDeleteAttachment(documentId) {
         this.props.dispatch(deleteDocument(this.props.questionId, documentId));
@@ -55,7 +54,6 @@ class Question extends Component {
         this.props.dispatch(uploadDocuments(this.props.questionId, documents));
     }
     onCommentChange(comment) {
-
         this.props.dispatch(setComment(this.props.questionId, comment));
     }
     uncheckRadioButtons() {
@@ -84,11 +82,13 @@ class Question extends Component {
             type,
             title,
             id } = question;
+        mandatoryComments = Boolean(mandatoryComments);
+        allowDocuments = Boolean(allowDocuments);
         return (
             <div>
                 <div className="row">
                     <div className="col-md-8 col-sm-11">
-                        <h2 className= {`${index===0?'margin-top-0':'border-top'}`} >{index+1}. {title}</h2>
+                        <h2 className= {`${index===0?'margin-top-0':'border-top'}`} >{this.props.questionIndex}. {title}</h2>
                         { type==='4'?
                             null:
                             <ol className={`questionnaire ${this.getScaleDefinitionClass(enableScaleDefinitions, type)}`}>
@@ -139,21 +139,38 @@ class Question extends Component {
                 </div>
             }
 
-                <div className="row">
-                    <div className="col-md-8 col-sm-12">
-                        <h2>Comments { mandatoryComments === true && <small>(required)</small> }</h2>
-                        <div className="form-group">
-                            <textarea name="comments"
-                                defaultValue ={this.props.question.comment}
-                                className="form-control"
-                                rows="4" placeholder="Your comments"
-                                required={ mandatoryComments }
-                                onBlur={event => this.onCommentChange(event.target.value)}>
-                            </textarea>
+                {
+                    question.type==='4'?
+                    <div className="row">
+                        <div className="col-md-8 col-sm-12">
+                            <div className="form-group">
+                                <textarea name="reponse"
+                                    defaultValue ={this.props.question.comment}
+                                    className="form-control"
+                                    rows="4" placeholder="Your Response"
+                                    required={ true }
+                                    onBlur={event => this.onCommentChange(event.target.value)}>
+                                </textarea>
+                            </div>
                         </div>
                     </div>
-                </div>
-                { Boolean(allowDocuments)&&
+                    :
+                    <div className="row">
+                        <div className="col-md-8 col-sm-12">
+                            <h2>Comments { mandatoryComments === true && <small>(required)</small> }</h2>
+                            <div className="form-group">
+                                <textarea name="comments"
+                                    defaultValue ={this.props.question.comment}
+                                    className="form-control"
+                                    rows="4" placeholder="Your comments"
+                                    required={ mandatoryComments }
+                                    onBlur={event => this.onCommentChange(event.target.value)}>
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+                }
+                { allowDocuments&&
                     <div className="row">
                         <div className="col-md-8 col-sm-12">
                             <Dropzone className="dropzone"
@@ -181,6 +198,7 @@ Question.propTypes = {
     typeDefinitionIds: PropTypes.array.isRequired,
     uploadedDocuments:PropTypes.array,
     question:PropTypes.object.isRequired,
+    questionIndex:PropTypes.string,
     index: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired
 };
