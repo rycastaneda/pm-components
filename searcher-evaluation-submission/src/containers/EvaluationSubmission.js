@@ -24,9 +24,8 @@ class EvaluationSubmission extends Component {
         this.props.dispatch(initialize(Number(assignmentId)));
     }
 
-
     render() {
-        const { criteriaIds, title, assignmentStatus } = this.props;
+        const { criteriaIds,  assignmentStatus } = this.props;
         return (
             <div id="searcher-evaluation-submission-container">
                 <Notification />
@@ -35,10 +34,7 @@ class EvaluationSubmission extends Component {
                     criteriaIds.length?
                     <div>
                         <div className="row">
-                            <div className="col-sm-6">
-                                <h1>{title}</h1>
-                            </div>
-                            <div className="col-sm-6 text-right">
+                            <div className="col-sm-12 mar-btm-sm text-right">
                                 <span className="bs-label bs-label-info">{assignmentStatus.title}</span>
                             </div>
                         </div>
@@ -55,8 +51,14 @@ class EvaluationSubmission extends Component {
                         {assignmentStatus.id !=='3'?
                             <div className="row">
                                 <div className="col-sm-12 text-right">
-                                    <button onClick={this.submitAssignment} className="btn btn-md"><i className="fa fa-send"></i> Complete Evaluation</button>
+                                    {
+                                        this.props.isBusy?
+                                            <button disabled className="btn btn-md">Saving...</button>
+                                        :
+                                            <button onClick={this.submitAssignment} className="btn btn-md"><i className="fa fa-send"></i> Complete Evaluation</button>
+                                    }
                                 </div>
+
                             </div>:null
                         }
                     </div>
@@ -71,15 +73,17 @@ EvaluationSubmission.propTypes = {
     dispatch: PropTypes.func.isRequired,
     criteriaIds:PropTypes.array.isRequired,
     assignmentStatus:PropTypes.object,
-    title: PropTypes.string
+    title: PropTypes.string,
+    isBusy: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {
-    const { criteriaIds, title, assignmentStatus } = state.evaluationSubmission;
+    const { criteriaIds, title, assignmentStatus, isBusy } = state.evaluationSubmission;
     return {
         title,
         criteriaIds,
-        assignmentStatus
+        assignmentStatus,
+        isBusy
     };
 }
 

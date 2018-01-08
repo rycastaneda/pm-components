@@ -769,7 +769,6 @@
 	        });
 
 	        // formatting assignee users to match up with service requirement
-
 	        var assigneeUserData = currentUser.role === 'Standard User' ? { type: 'users', 'id': currentUser.userId } : selectedAssignees.map(function (item) {
 	            var userId = item.userId;
 
@@ -779,7 +778,7 @@
 	            };
 	        });
 
-	        var chairStaffData = currentUser.role === 'Standard User' ? null : {
+	        var chairStaffData = currentUser.role === 'Standard User' || selectedAssigneeChairman === null ? null : {
 	            'type': 'staff',
 	            'id': selectedAssigneeChairman.id
 	        };
@@ -9525,7 +9524,7 @@
 	    var evaluationEngagements = (state.evaluationAssignment.meta['/engagements'].data || []).map(function (object) {
 	        return (0, _reduxObject2.default)(state.evaluationAssignment, 'engagements', object.id);
 	    });
-	    window.console.log('engagements: ', evaluationEngagements);
+
 	    return (0, _extends3.default)({}, ownProps, {
 	        isLoading: isLoading,
 	        evaluationEngagements: evaluationEngagements

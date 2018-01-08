@@ -2542,6 +2542,7 @@
 	exports.deleteDocument = deleteDocument;
 	exports.incrementProgress = incrementProgress;
 	exports.fetchTemplate = fetchTemplate;
+	exports.isBusy = isBusy;
 
 	var _axios = __webpack_require__(155);
 
@@ -2569,8 +2570,10 @@
 
 	var TEMPLATE_SERVICE_URL = 'evaluation-templates';
 	var EVALUATION_TEMPLATE_LIST_PAGE = exports.EVALUATION_TEMPLATE_LIST_PAGE = '/searcher/evaluation_templates/list';
+
 	function publishTemplate() {
 	    return function (dispatch, getState) {
+
 	        var templateId = getState().evaluationTemplateCreator.id;
 	        return _axios2.default.post(TEMPLATE_SERVICE_URL + '/' + templateId + '/finalise', {}).then(function () {
 	            var title = 'Template Published';
@@ -2582,8 +2585,8 @@
 	            if (error.status_code === 422) {
 	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
 	            } else {
-	                error.response.data.errors.forEach(function (e) {
-	                    var detail = e.detail;
+	                error.response.data.errors.forEach(function (item) {
+	                    var detail = item.detail;
 
 	                    dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, detail));
 	                });
@@ -2607,6 +2610,7 @@
 
 	function initialize() {
 	    return function (dispatch) {
+	        dispatch(isBusy(true));
 	        return _axios2.default.get('evaluation-question-types').then(function (response) {
 	            var questionTypes = (0, _dataParserUtil.parseInitialData)(response.data);
 	            if (questionTypes.length) {
@@ -2622,6 +2626,7 @@
 	}
 	function addTemplate(title) {
 	    return function (dispatch) {
+	        dispatch(isBusy(true));
 	        var data = (0, _dataParserUtil.parseDataForCreateTemplate)(title);
 	        return _axios2.default.post(TEMPLATE_SERVICE_URL, data).then(function (response) {
 	            var template = response.data.data;
@@ -2630,8 +2635,9 @@
 	                id: Number(template.id)
 	            });
 	        }).catch(function (error) {
-	            if (error.status_code === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+	            isBusy(false);
+	            if (error.response.status === 422) {
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2644,6 +2650,7 @@
 	}
 
 	function updateTemplate(title, templateId) {
+
 	    return function (dispatch) {
 	        var data = (0, _dataParserUtil.parseDataForUpdateTemplate)(title, templateId);
 	        var serviceUrl = TEMPLATE_SERVICE_URL;
@@ -2652,7 +2659,7 @@
 	            dispatch({ type: _ActionTypes.TEMPLATE_UPDATED, title: title });
 	        }).catch(function (error) {
 	            if (error.response.status === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Invalid entry.'));
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2666,6 +2673,8 @@
 
 	function addCriteria(title, weight) {
 	    return function (dispatch, getState) {
+	        dispatch(isBusy(true));
+
 	        var _getState = getState(),
 	            evaluationTemplateCreator = _getState.evaluationTemplateCreator;
 
@@ -2678,8 +2687,9 @@
 	        return _axios2.default.post(serviceUrl, data).then(function (response) {
 	            dispatch({ type: _ActionTypes.CRITERIA_ADD, criterion: (0, _dataParserUtil.createCriterionFromData)(response.data) });
 	        }).catch(function (error) {
-	            if (error.status_code === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+	            dispatch(isBusy(false));
+	            if (error.response.status === 422) {
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2693,6 +2703,8 @@
 
 	function deleteCriteria(id) {
 	    return function (dispatch, getState) {
+	        dispatch(isBusy(true));
+
 	        var _getState2 = getState(),
 	            evaluationTemplateCreator = _getState2.evaluationTemplateCreator;
 
@@ -2704,8 +2716,9 @@
 	        return _axios2.default.delete(serviceUrl, data).then(function () {
 	            dispatch({ type: _ActionTypes.CRITERIA_DELETE, id: id });
 	        }).catch(function (error) {
-	            if (error.status_code === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Invalid operation'));
+	            dispatch(isBusy(false));
+	            if (error.response.status === 422) {
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2719,6 +2732,8 @@
 
 	function updateCriteria(id, title, weight) {
 	    return function (dispatch, getState) {
+	        dispatch(isBusy(true));
+
 	        var _getState3 = getState(),
 	            evaluationTemplateCreator = _getState3.evaluationTemplateCreator;
 
@@ -2730,8 +2745,9 @@
 	        return _axios2.default.patch(serviceUrl, data).then(function () {
 	            dispatch({ type: _ActionTypes.CRITERIA_UPDATE, id: id, title: title, weight: weight });
 	        }).catch(function (error) {
-	            if (error.status_code === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+	            dispatch(isBusy(false));
+	            if (error.response.status === 422) {
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2745,6 +2761,8 @@
 
 	function addQuestionToCriteria(criteriaId, questionTitle, questionType) {
 	    return function (dispatch, getState) {
+	        dispatch(isBusy(true));
+
 	        var _getState4 = getState(),
 	            evaluationTemplateCreator = _getState4.evaluationTemplateCreator;
 
@@ -2758,8 +2776,9 @@
 	            var question = (0, _dataParserUtil.parseDataFromCreateQuestion)(response.data);
 	            dispatch({ type: _ActionTypes.QUESTION_ADD, criteriaId: criteriaId, question: question });
 	        }).catch(function (error) {
-	            if (error.status_code === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+	            dispatch(isBusy(false));
+	            if (error.response.status === 422) {
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2773,6 +2792,8 @@
 
 	function onQuestionTypeChange(criteriaId, questionId, type) {
 	    return function (dispatch, getState) {
+	        dispatch(isBusy(true));
+
 	        var _getState5 = getState(),
 	            evaluationTemplateCreator = _getState5.evaluationTemplateCreator;
 
@@ -2780,7 +2801,6 @@
 	        var question = evaluationTemplateCreator.questionsByIndex[questionId];
 	        question = (0, _extends3.default)({}, question, { type: type });
 	        var data = (0, _dataParserUtil.parseDataForUpdateQuestion)(question);
-
 	        var serviceUrl = TEMPLATE_SERVICE_URL;
 	        serviceUrl += '/' + templateId;
 	        serviceUrl += '/criteria/' + criteriaId;
@@ -2790,8 +2810,9 @@
 	            var question = (0, _dataParserUtil.parseDataFromCreateQuestion)(response.data);
 	            dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question });
 	        }).catch(function (error) {
-	            if (error.status_code === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+	            dispatch(isBusy(false));
+	            if (error.response.status === 422) {
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2804,6 +2825,8 @@
 	}
 	function onQuestionTitleChange(criteriaId, questionId, title) {
 	    return function (dispatch, getState) {
+	        dispatch(isBusy(true));
+
 	        var _getState6 = getState(),
 	            evaluationTemplateCreator = _getState6.evaluationTemplateCreator;
 
@@ -2821,8 +2844,9 @@
 	        return _axios2.default.patch(serviceUrl, data).then(function () {
 	            dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question });
 	        }).catch(function (error) {
-	            if (error.status_code === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+	            dispatch(isBusy(false));
+	            if (error.response.status === 422) {
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2836,6 +2860,8 @@
 
 	function onQuestionAllowUploadChange(criteriaId, questionId, isAllowUpload) {
 	    return function (dispatch, getState) {
+	        dispatch(isBusy(true));
+
 	        var _getState7 = getState(),
 	            evaluationTemplateCreator = _getState7.evaluationTemplateCreator;
 
@@ -2854,8 +2880,9 @@
 	        return _axios2.default.patch(serviceUrl, data).then(function () {
 	            dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question });
 	        }).catch(function (error) {
-	            if (error.status_code === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+	            dispatch(isBusy(false));
+	            if (error.response.status === 422) {
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2869,6 +2896,8 @@
 
 	function onAllowScaleDefinitionChange(criteriaId, questionId, isAllowScaleDefinitions) {
 	    return function (dispatch, getState) {
+	        dispatch(isBusy(true));
+
 	        var _getState8 = getState(),
 	            evaluationTemplateCreator = _getState8.evaluationTemplateCreator;
 
@@ -2887,8 +2916,9 @@
 	        return _axios2.default.patch(serviceUrl, data).then(function () {
 	            dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question });
 	        }).catch(function (error) {
-	            if (error.status_code === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+	            dispatch(isBusy(false));
+	            if (error.response.status === 422) {
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2902,6 +2932,8 @@
 
 	function onQuestionAllowCommentsChange(criteriaId, questionId, isCommentRequired) {
 	    return function (dispatch, getState) {
+	        dispatch(isBusy(true));
+
 	        var _getState9 = getState(),
 	            evaluationTemplateCreator = _getState9.evaluationTemplateCreator;
 
@@ -2926,7 +2958,7 @@
 	            } else {
 	                message = error.response.data.errors.detail;
 	            }
-
+	            dispatch(isBusy(true));
 	            dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, message));
 	        });
 	    };
@@ -2934,8 +2966,8 @@
 
 	function deleteQuestion(criteriaId, questionId) {
 	    return function (dispatch, getState) {
+	        dispatch(isBusy(true));
 	        var templateId = getState().evaluationTemplateCreator.id;
-
 	        var serviceUrl = TEMPLATE_SERVICE_URL;
 	        serviceUrl += '/' + templateId;
 	        serviceUrl += '/criteria/' + criteriaId;
@@ -2945,6 +2977,7 @@
 	            dispatch({ type: _ActionTypes.QUESTION_DELETE, criteriaId: criteriaId, questionId: questionId });
 	        }).catch(function (error) {
 	            var message = void 0;
+	            dispatch(isBusy(false));
 	            if (Array.isArray(error.response.data.errors)) {
 	                message = error.response.data.errors[0].detail;
 	            } else {
@@ -2958,7 +2991,7 @@
 
 	function onScaleDefinitionChange(criteriaId, questionId, typeDefinitionId, text, score, scaleDefinitionId) {
 	    return function (dispatch, getState) {
-
+	        dispatch(isBusy(true));
 	        var templateId = getState().evaluationTemplateCreator.id;
 	        var serviceUrl = TEMPLATE_SERVICE_URL;
 	        serviceUrl += '/' + templateId;
@@ -3025,7 +3058,7 @@
 	            } else {
 	                message = error.response.data.errors.detail;
 	            }
-
+	            dispatch(isBusy(false));
 	            dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, message));
 	        });
 	        return promise;
@@ -3034,9 +3067,7 @@
 
 	function addDocumentsForQuestion(criteriaId, questionId, documents) {
 	    return function (dispatch, getState) {
-
 	        var templateId = getState().evaluationTemplateCreator.id;
-
 	        dispatch({
 	            type: _ActionTypes.DOCUMENTS_UPLOADING,
 	            questionId: questionId,
@@ -3125,7 +3156,9 @@
 
 	function fetchTemplate(id) {
 	    return function (dispatch) {
+	        dispatch(isBusy(true));
 	        _axios2.default.all([_axios2.default.get('evaluation-question-types').then(function (response) {
+	            dispatch(isBusy(false));
 	            var questionTypes = (0, _dataParserUtil.parseInitialData)(response.data);
 	            if (questionTypes.length) {
 	                dispatch({ type: _ActionTypes.INITIALIZED, questionTypes: questionTypes });
@@ -3134,6 +3167,7 @@
 	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, message));
 	            }
 	        }).catch(function (error) {
+	            dispatch(isBusy(false));
 	            var message = void 0;
 	            if (Array.isArray(error.response.data.errors)) {
 	                message = error.response.data.errors[0].detail;
@@ -3163,6 +3197,13 @@
 	        }
 	        dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, message));
 	    });
+	}
+
+	function isBusy(status) {
+	    return {
+	        type: _ActionTypes.IS_BUSY,
+	        status: status
+	    };
 	}
 	;
 
@@ -3222,6 +3263,8 @@
 	    __REACT_HOT_LOADER__.register(fetchTemplate, 'fetchTemplate', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/actions/evaluationTemplateCreator.js');
 
 	    __REACT_HOT_LOADER__.register(getPromiseForService, 'getPromiseForService', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/actions/evaluationTemplateCreator.js');
+
+	    __REACT_HOT_LOADER__.register(isBusy, 'isBusy', '/Users/ajithjoseph/Sites/plantminer-components/searcher-evaluation-template-creator/src/actions/evaluationTemplateCreator.js');
 	})();
 
 	;
@@ -7977,7 +8020,19 @@
 	                            _react2.default.createElement(
 	                                'div',
 	                                { className: 'form-group' },
-	                                _react2.default.createElement(
+	                                this.props.isBusy ? _react2.default.createElement(
+	                                    'ul',
+	                                    { className: 'list-inline' },
+	                                    _react2.default.createElement(
+	                                        'li',
+	                                        null,
+	                                        _react2.default.createElement(
+	                                            'a',
+	                                            { className: 'btn btn-md', disabled: true },
+	                                            'Saving'
+	                                        )
+	                                    )
+	                                ) : _react2.default.createElement(
 	                                    'ul',
 	                                    { className: 'list-inline' },
 	                                    _react2.default.createElement(
@@ -8018,16 +8073,18 @@
 	    allCriteriaIndexes: _react.PropTypes.array,
 	    title: _react.PropTypes.string.isRequired,
 	    dispatch: _react.PropTypes.func.isRequired,
-	    id: _react.PropTypes.number
+	    id: _react.PropTypes.number,
+	    isBusy: _react.PropTypes.bool.isRequired
 	};
 
 	function mapStateToProps(state) {
 	    var _state$evaluationTemp = state.evaluationTemplateCreator,
 	        allCriteriaIndexes = _state$evaluationTemp.allCriteriaIndexes,
 	        title = _state$evaluationTemp.title,
-	        id = _state$evaluationTemp.id;
+	        id = _state$evaluationTemp.id,
+	        isBusy = _state$evaluationTemp.isBusy;
 
-	    return { allCriteriaIndexes: allCriteriaIndexes, title: title, id: id };
+	    return { allCriteriaIndexes: allCriteriaIndexes, title: title, id: id, isBusy: isBusy };
 	}
 
 	var _default = (0, _reactRedux.connect)(mapStateToProps)(EvaluationTemplateCreator);
@@ -9219,13 +9276,13 @@
 
 	var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
 
-	var _keys = __webpack_require__(264);
-
-	var _keys2 = _interopRequireDefault(_keys);
-
 	var _assign = __webpack_require__(65);
 
 	var _assign2 = _interopRequireDefault(_assign);
+
+	var _keys = __webpack_require__(264);
+
+	var _keys2 = _interopRequireDefault(_keys);
 
 	var _values = __webpack_require__(167);
 
@@ -9266,9 +9323,10 @@
 	    switch (action.type) {
 	        case _ActionTypes.INITIALIZED:
 	            {
+	                var isBusy = false;
 	                var questionTypes = action.questionTypes;
 
-	                return (0, _extends3.default)({}, state, { questionTypes: questionTypes });
+	                return (0, _extends3.default)({}, state, { questionTypes: questionTypes, isBusy: isBusy });
 	            }
 	        case _ActionTypes.QUESTION_MAXIMISE_CHANGE:
 	            {
@@ -9344,6 +9402,7 @@
 	            }
 	        case _ActionTypes.TEMPLATE_FETCHED:
 	            {
+	                var _isBusy = false;
 	                var template = action.template;
 	                var _id2 = template.id,
 	                    title = template.title,
@@ -9354,89 +9413,106 @@
 	                    documentsByIndex = template.documentsByIndex,
 	                    allDocumentIndexes = template.allDocumentIndexes;
 
-	                return (0, _assign2.default)({}, state, { id: _id2,
+	                return (0, _extends3.default)({}, state, { id: _id2,
 	                    title: title,
 	                    criteriaByIndex: _criteriaByIndex2,
 	                    allCriteriaIndexes: allCriteriaIndexes,
 	                    questionsByIndex: _questionsByIndex3,
 	                    allQuestionIndexes: allQuestionIndexes,
 	                    documentsByIndex: documentsByIndex,
-	                    allDocumentIndexes: allDocumentIndexes
-	                });
+	                    allDocumentIndexes: allDocumentIndexes,
+	                    isBusy: _isBusy });
 	            }
 	        case _ActionTypes.TEMPLATE_CREATED:
 	            {
-	                return (0, _assign2.default)({}, state, { title: action.title, id: action.id });
+	                var _isBusy2 = false;
+	                var _title = action.title,
+	                    _id3 = action.id;
+
+	                return (0, _extends3.default)({}, state, { title: _title, id: _id3, isBusy: _isBusy2 });
 	            }
 	        case _ActionTypes.TEMPLATE_UPDATED:
 	            {
-	                return (0, _assign2.default)({}, state, { title: action.title });
+	                var _isBusy3 = false;
+	                var _title2 = action.title;
+
+	                return (0, _extends3.default)({}, state, { title: _title2, isBusy: _isBusy3 });
 	            }
 	        case _ActionTypes.CRITERIA_ADD:
 	            {
+	                var _isBusy4 = false;
 	                var criterion = action.criterion;
-	                (0, _keys2.default)(state.criteriaByIndex).forEach(function (key) {
-	                    if (state.criteriaByIndex[key].isMaximised) {
-	                        state.criteriaByIndex[key] = (0, _assign2.default)({}, state.criteriaByIndex[key], { isMaximised: false });
+	                var _criteriaByIndex3 = state.criteriaByIndex,
+	                    _allCriteriaIndexes = state.allCriteriaIndexes;
+
+	                (0, _keys2.default)(_criteriaByIndex3).forEach(function (key) {
+	                    if (_criteriaByIndex3[key].isMaximised) {
+	                        _criteriaByIndex3[key] = (0, _assign2.default)({}, _criteriaByIndex3[key], { isMaximised: false });
 	                    }
 	                });
-	                state.criteriaByIndex[criterion.id] = criterion;
-	                state.allCriteriaIndexes = state.allCriteriaIndexes.concat(criterion.id);
-	                return (0, _assign2.default)({}, state);
+	                _criteriaByIndex3[criterion.id] = criterion;
+	                _allCriteriaIndexes = _allCriteriaIndexes.concat(criterion.id);
+	                return (0, _extends3.default)({}, state, { allCriteriaIndexes: _allCriteriaIndexes, criteriaByIndex: _criteriaByIndex3, isBusy: _isBusy4 });
 	            }
 	        case _ActionTypes.CRITERIA_UPDATE:
 	            {
-	                var _id3 = action.id,
-	                    _title = action.title,
+	                var _isBusy5 = false;
+	                var _id4 = action.id,
+	                    _title3 = action.title,
 	                    weight = action.weight;
+	                var _allCriteriaIndexes2 = state.allCriteriaIndexes,
+	                    _criteriaByIndex4 = state.criteriaByIndex,
+	                    _allQuestionIndexes = state.allQuestionIndexes,
+	                    _questionsByIndex4 = state.questionsByIndex;
 
-	                var _criteriaByIndex3 = (0, _assign2.default)({}, state.criteriaByIndex);
-	                for (var i in state.allQuestionIndexes) {
-	                    if (state.questionsByIndex[state.allQuestionIndexes[i]].isSaved) {
-	                        state.questionsByIndex[state.allQuestionIndexes[i]].isSaved = false;
+	                _criteriaByIndex4 = (0, _extends3.default)({}, _criteriaByIndex4);
+	                for (var i in _allQuestionIndexes) {
+	                    if (_questionsByIndex4[_allQuestionIndexes[i]].isSaved) {
+	                        _questionsByIndex4[_allQuestionIndexes[i]].isSaved = false;
 	                    }
 	                }
-	                for (var _i in state.allCriteriaIndexes) {
-	                    if (state.criteriaByIndex[state.allCriteriaIndexes[_i]].isSaved) {
-	                        state.criteriaByIndex[state.allCriteriaIndexes[_i]].isSaved = false;
+	                for (var _i in _allCriteriaIndexes2) {
+	                    if (_criteriaByIndex4[_allCriteriaIndexes2[_i]].isSaved) {
+	                        _criteriaByIndex4[_allCriteriaIndexes2[_i]].isSaved = false;
 	                    }
 	                }
-	                _criteriaByIndex3[_id3] = (0, _assign2.default)({}, _criteriaByIndex3[_id3], { title: _title, weight: weight, isSaved: true });
+	                _criteriaByIndex4[_id4] = (0, _assign2.default)({}, _criteriaByIndex4[_id4], { title: _title3, weight: weight, isSaved: true });
 
-	                return (0, _assign2.default)({}, state, { criteriaByIndex: _criteriaByIndex3 });
+	                return (0, _extends3.default)({}, state, { isBusy: _isBusy5, criteriaByIndex: _criteriaByIndex4 });
 	            }
 	        case _ActionTypes.CRITERIA_DELETE:
 	            {
-	                var _allCriteriaIndexes = state.allCriteriaIndexes.filter(function (id) {
+	                var _isBusy6 = false;
+	                var _id5 = action.id;
+
+	                var _allCriteriaIndexes3 = state.allCriteriaIndexes.filter(function (id) {
 	                    return id !== action.id;
 	                });
-	                var _criteriaByIndex4 = (0, _assign2.default)({}, state.criteriaByIndex);
-	                var _allQuestionIndexes = [].concat((0, _toConsumableArray3.default)(state.allQuestionIndexes));
-	                var _questionsByIndex4 = (0, _assign2.default)({}, state.questionsByIndex);
+	                var _criteriaByIndex5 = (0, _assign2.default)({}, state.criteriaByIndex);
+	                var _allQuestionIndexes2 = [].concat((0, _toConsumableArray3.default)(state.allQuestionIndexes));
+	                var _questionsByIndex5 = (0, _assign2.default)({}, state.questionsByIndex);
 	                var questions = state.criteriaByIndex[action.id].questions;
 	                questions.forEach(function (questionId) {
-	                    delete _questionsByIndex4[questionId];
-	                    _allQuestionIndexes = _allQuestionIndexes.slice(_allQuestionIndexes.indexOf(questionId), 1);
+	                    delete _questionsByIndex5[questionId];
+	                    _allQuestionIndexes2 = _allQuestionIndexes2.slice(_allQuestionIndexes2.indexOf(questionId), 1);
 	                });
-	                delete _criteriaByIndex4[action.id];
-	                return (0, _assign2.default)({}, state, {
-	                    allCriteriaIndexes: _allCriteriaIndexes,
-	                    criteriaByIndex: _criteriaByIndex4,
-	                    allQuestionIndexes: _allQuestionIndexes,
-	                    questionsByIndex: _questionsByIndex4
-	                });
+	                delete _criteriaByIndex5[_id5];
+	                return (0, _extends3.default)({}, state, { allCriteriaIndexes: _allCriteriaIndexes3, criteriaByIndex: _criteriaByIndex5, allQuestionIndexes: _allQuestionIndexes2, questionsByIndex: _questionsByIndex5, isBusy: _isBusy6 });
 	            }
 	        case _ActionTypes.DOCUMENT_UPLOAD_SUCCESS:
 	            {
-	                var document = (0, _assign2.default)({}, state.documentsByIndex[action.documentId]);
+	                var documentId = action.documentId,
+	                    newDocumentId = action.newDocumentId,
+	                    url = action.url;
 	                var _documentsByIndex = state.documentsByIndex;
 
+	                var document = (0, _extends3.default)({}, _documentsByIndex[documentId]);
 
-	                _documentsByIndex[action.documentId] = (0, _assign2.default)({}, document, {
+	                _documentsByIndex[documentId] = (0, _assign2.default)({}, document, {
 	                    status: _constants.UPLOAD_SUCCESS,
 	                    progress: 100,
-	                    referenceId: action.newDocumentId,
-	                    referenceUrl: action.url
+	                    referenceId: newDocumentId,
+	                    referenceUrl: url
 	                });
 
 	                return (0, _assign2.default)({}, state);
@@ -9474,8 +9550,8 @@
 	            }
 	        case _ActionTypes.DOCUMENT_DELETE:
 	            {
-	                var _questionsByIndex5 = (0, _assign2.default)({}, state.questionsByIndex);
-	                var _question = _questionsByIndex5[action.questionId];
+	                var _questionsByIndex6 = (0, _assign2.default)({}, state.questionsByIndex);
+	                var _question = _questionsByIndex6[action.questionId];
 	                var _allDocumentIndexes = state.allDocumentIndexes.filter(function (id) {
 	                    return id !== action.id;
 	                });
@@ -9484,27 +9560,30 @@
 	                _question.documentIds = _question.documentIds.filter(function (id) {
 	                    return id !== action.id;
 	                });
-	                _questionsByIndex5[action.id] = _question;
-	                return (0, _assign2.default)({}, state, { allDocumentIndexes: _allDocumentIndexes, documentsByIndex: _documentsByIndex2, questionsByIndex: _questionsByIndex5 });
+	                _questionsByIndex6[action.id] = _question;
+	                return (0, _assign2.default)({}, state, { allDocumentIndexes: _allDocumentIndexes, documentsByIndex: _documentsByIndex2, questionsByIndex: _questionsByIndex6 });
 	            }
 	        case _ActionTypes.QUESTION_ADD:
 	            {
+	                var _isBusy7 = false;
 	                var _question2 = action.question,
 	                    criteriaId = action.criteriaId;
-	                var _id4 = _question2.id;
+	                var _id6 = _question2.id;
 
-	                var _questionsByIndex6 = (0, _assign2.default)({}, state.questionsByIndex);
-	                var _criteriaByIndex5 = (0, _assign2.default)({}, state.criteriaByIndex);
-	                _questionsByIndex6[_id4] = _question2;
-	                var _allQuestionIndexes2 = [].concat((0, _toConsumableArray3.default)(state.allQuestionIndexes), [_id4]);
-	                var _questions = [].concat((0, _toConsumableArray3.default)(state.criteriaByIndex[criteriaId].questions), [_id4]);
-	                _criteriaByIndex5[action.criteriaId] = (0, _assign2.default)({}, _criteriaByIndex5[criteriaId], { questions: _questions });
-	                return (0, _assign2.default)({}, state, { criteriaByIndex: _criteriaByIndex5, allQuestionIndexes: _allQuestionIndexes2, questionsByIndex: _questionsByIndex6 });
+	                var _questionsByIndex7 = (0, _assign2.default)({}, state.questionsByIndex);
+	                var _criteriaByIndex6 = (0, _assign2.default)({}, state.criteriaByIndex);
+	                _questionsByIndex7[_id6] = _question2;
+	                var _allQuestionIndexes3 = [].concat((0, _toConsumableArray3.default)(state.allQuestionIndexes), [_id6]);
+	                var _questions = [].concat((0, _toConsumableArray3.default)(state.criteriaByIndex[criteriaId].questions), [_id6]);
+	                _criteriaByIndex6[action.criteriaId] = (0, _assign2.default)({}, _criteriaByIndex6[criteriaId], { questions: _questions });
+	                return (0, _extends3.default)({}, state, { criteriaByIndex: _criteriaByIndex6, allQuestionIndexes: _allQuestionIndexes3, questionsByIndex: _questionsByIndex7, isBusy: _isBusy7 });
 	            }
 	        case _ActionTypes.QUESTION_UPDATE:
 	            {
+	                var _isBusy8 = action.isBusy;
+
 	                var _question3 = (0, _assign2.default)({}, action.question, { isSaved: true });
-	                var _id5 = _question3.id;
+	                var _id7 = _question3.id;
 
 	                for (var _i2 in state.allQuestionIndexes) {
 	                    if (state.questionsByIndex[state.allQuestionIndexes[_i2]].isSaved) {
@@ -9516,37 +9595,40 @@
 	                        state.criteriaByIndex[state.allCriteriaIndexes[_i3]].isSaved = false;
 	                    }
 	                }
-	                var _questionsByIndex7 = (0, _assign2.default)({}, state.questionsByIndex);
-	                _questionsByIndex7[_id5] = _question3;
-	                return (0, _assign2.default)({}, state, { questionsByIndex: _questionsByIndex7 });
+	                var _questionsByIndex8 = (0, _assign2.default)({}, state.questionsByIndex);
+	                _questionsByIndex8[_id7] = _question3;
+	                return (0, _extends3.default)({}, state, { questionsByIndex: _questionsByIndex8, isBusy: _isBusy8 });
 	            }
 	        case _ActionTypes.QUESTION_DELETE:
 	            {
+	                var _isBusy9 = false;
 	                var _criteriaId = action.criteriaId,
 	                    questionId = action.questionId;
 
-	                var _allQuestionIndexes3 = state.allQuestionIndexes.filter(function (id) {
+	                var _allQuestionIndexes4 = state.allQuestionIndexes.filter(function (id) {
 	                    return id !== questionId;
 	                });
-	                var _questionsByIndex8 = (0, _assign2.default)({}, state.questionsByIndex);
-	                delete _questionsByIndex8[questionId];
-	                var _criteriaByIndex6 = (0, _assign2.default)({}, state.criteriaByIndex);
+	                var _questionsByIndex9 = (0, _assign2.default)({}, state.questionsByIndex);
+	                delete _questionsByIndex9[questionId];
+	                var _criteriaByIndex7 = (0, _assign2.default)({}, state.criteriaByIndex);
 	                var _questions2 = state.criteriaByIndex[_criteriaId].questions.filter(function (qnId) {
 	                    return qnId !== questionId;
 	                });
-	                _criteriaByIndex6[_criteriaId].questions = _questions2;
-	                _criteriaByIndex6[_criteriaId] = (0, _assign2.default)({}, _criteriaByIndex6[_criteriaId], { criteriaId: _criteriaByIndex6[_criteriaId] });
+	                _criteriaByIndex7[_criteriaId].questions = _questions2;
+	                _criteriaByIndex7[_criteriaId] = (0, _assign2.default)({}, _criteriaByIndex7[_criteriaId], { criteriaId: _criteriaByIndex7[_criteriaId] });
 
-	                return (0, _assign2.default)({}, state, {
-	                    criteriaByIndex: _criteriaByIndex6,
-	                    allQuestionIndexes: _allQuestionIndexes3,
-	                    questionsByIndex: _questionsByIndex8
-	                });
+	                return (0, _extends3.default)({}, state, {
+	                    criteriaByIndex: _criteriaByIndex7,
+	                    allQuestionIndexes: _allQuestionIndexes4,
+	                    questionsByIndex: _questionsByIndex9,
+	                    isBusy: _isBusy9 });
 	            }
 	        case _ActionTypes.IS_BUSY:
 	            {
-	                state.isBusy = action.status;
-	                return (0, _assign2.default)({}, state);
+	                var status = action.status;
+
+	                var _isBusy10 = status;
+	                return (0, _extends3.default)({}, state, { isBusy: _isBusy10 });
 	            }
 	        default:
 	            return state;
