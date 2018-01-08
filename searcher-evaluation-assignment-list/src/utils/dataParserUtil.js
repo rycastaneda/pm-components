@@ -93,41 +93,62 @@ export function parseInitializeResponse({ userProfile, evaluationTemplates, eval
 
     evaluationTemplateAssignmentTypes = normalize(evaluationTemplateAssignmentTypes, { endpoint:'evaluation-template-assignment-types' });
     evaluationTemplateAssignmentTypes = build(evaluationTemplateAssignmentTypes, 'evaluationTemplateAssignmentTypes');
-    evaluationTemplateAssignmentTypes = evaluationTemplateAssignmentTypes.map((item) => {
-        let { id, title } = item;
-        return { id, title };
-    });
+    if (evaluationTemplateAssignmentTypes) {
+        evaluationTemplateAssignmentTypes = evaluationTemplateAssignmentTypes.map((item) => {
+            let { id, title } = item;
+            return { id, title };
+        });
 
+    } else {
+        evaluationTemplateAssignmentTypes =[];
+    }
     evaluationTemplates = normalize(evaluationTemplates, { endpoint:'evaluation-templates' });
     evaluationTemplates = build(evaluationTemplates, 'evaluationTemplates');
-    evaluationTemplates = evaluationTemplates.map((item) => {
-        let { id, title } = item;
-        let label = title;
-        return { id, title, label };
-    });
+    if (evaluationTemplates) {
+        evaluationTemplates = evaluationTemplates.map((item) => {
+            let { id, title } = item;
+            let label = title;
+            return { id, title, label };
+        });
+    } else {
+        evaluationTemplates = [];
+    }
 
     preferredSuppliers = normalize(preferredSuppliers, { endpoint:'preferred-suppliers' });
     preferredSuppliers = build(preferredSuppliers, 'preferredSuppliers');
-    preferredSuppliers = preferredSuppliers.map((item) => {
-        let { id, supplierEmail } = item;
-        return { id, userName:supplierEmail };
-    });
+    if (preferredSuppliers) {
+        preferredSuppliers = preferredSuppliers.map((item) => {
+            let { id, supplierEmail } = item;
+            return { id, userName:supplierEmail };
+        });
+    } else {
+        preferredSuppliers =[];
+    }
+
 
     staff = normalize(staff, { endpoint:'staff' });
     staff = build(staff, 'staff');
 
-    staff = staff.map((item) => {
-        let { userId, firstName, lastName  } = item;
-        let label =firstName+' '+lastName ;
-        return { id:userId, firstName, lastName, label };
-    });
+    if (staff) {
+        staff = staff.map((item) => {
+            let { userId, firstName, lastName  } = item;
+            let label =firstName+' '+lastName ;
+            return { id:userId, firstName, lastName, label };
+        });
 
+    } else {
+        staff = [];
+    }
     evaluationTemplateAssignmentStatuses = normalize(evaluationTemplateAssignmentStatuses, { endpoint:'evaluation-template-assignment-statuses' });
     evaluationTemplateAssignmentStatuses = build(evaluationTemplateAssignmentStatuses, 'evaluationTemplateAssignmentStatuses');
-    evaluationTemplateAssignmentStatuses = evaluationTemplateAssignmentStatuses.map((item) => {
-        let { id, title } = item;
-        return { id, title  };
-    });
+    if (evaluationTemplateAssignmentStatuses) {
+        evaluationTemplateAssignmentStatuses = evaluationTemplateAssignmentStatuses.map((item) => {
+            let { id, title } = item;
+            return { id, title  };
+        });
+    } else {
+        evaluationTemplateAssignmentStatuses = [];
+    }
     return { evaluationTemplates, staff, preferredSuppliers, evaluationTemplateAssignmentTypes, evaluationTemplateAssignmentStatuses, userProfile, ...result };
 }
 export function getDataFromAssignmentService(evaluationAssignments, userProfile) {

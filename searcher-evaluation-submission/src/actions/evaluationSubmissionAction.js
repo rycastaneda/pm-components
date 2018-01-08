@@ -163,6 +163,7 @@ export function submitAssignment() {
             }
         });
         if (commentCount) {
+            dispatch(isBusy(false));
             dispatch(promptError(VALIDATION_COMMENT_MANDATORY));
             return false;
         }
