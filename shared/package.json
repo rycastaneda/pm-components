@@ -1,22 +1,22 @@
 {
-  "name": "shared",
-  "version": "0.1.0",
-  "description": "Shared modules",
-  "engines": {
-    "node": ">=4",
-    "npm": ">=3.0.0"
-  },
-  "scripts": {
-    "build-vendor": "npm i && webpack --config vendor-config/webpack.vendor.config.js"
-  },
-  "devDependencies": {
-    "react": "15.3.2",
-    "react-autosuggest": "6.0.4",
-    "react-dom": "15.3.2",
-    "react-hot-loader": "3.0.0-beta.4",
-    "react-redux": "4.4.5",
-    "redux": "3.6.0",
-    "redux-thunk": "2.1.0",
-    "webpack": "1.13.2"
-  }
+	"name": "shared",
+	"version": "0.1.0",
+	"description": "Shared modules",
+	"scripts": {
+		"build-vendor": "npm i && webpack --config vendor-config/webpack.vendor.config.js"
+	},
+	"devDependencies": {
+		"react": "15.3.2",
+		"react-autosuggest": "6.0.4",
+		"react-dom": "15.3.2",
+		"react-hot-loader": "3.0.0-beta.4",
+		"react-redux": "4.4.5",
+		"redux": "3.6.0",
+		"redux-thunk": "2.1.0",
+		"webpack": "1.13.2"
+	},
+	"engines": {
+		"node": ">=4",
+		"npm": ">=3.0.0"
+	}
 }
