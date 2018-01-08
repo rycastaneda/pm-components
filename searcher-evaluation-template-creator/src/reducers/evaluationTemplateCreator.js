@@ -48,8 +48,8 @@ function getInitialData() {
 export function evaluationTemplateCreator(state = getInitialData(), action) {
     switch (action.type) {
         case INITIALIZED: {
-            let { questionTypes } = action;
-            return { ...state, questionTypes };
+            let { questionTypes, isBusy } = action;
+            return { ...state, questionTypes, isBusy };
 
         }
         case QUESTION_MAXIMISE_CHANGE: {
@@ -113,8 +113,8 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
             }
         case TEMPLATE_FETCHED:
             {
-                let { template } = action;
-                let { id,
+                const { template, isBusy } = action;
+                const { id,
                     title,
                     criteriaByIndex,
                     allCriteriaIndexes,
@@ -122,56 +122,62 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                     allQuestionIndexes,
                     documentsByIndex,
                     allDocumentIndexes } = template;
-                return Object.assign({}, state,  { id,
+                return { ...state, id,
                     title,
                     criteriaByIndex,
                     allCriteriaIndexes,
                     questionsByIndex,
                     allQuestionIndexes,
                     documentsByIndex,
-                    allDocumentIndexes
-                     });
+                    allDocumentIndexes,
+                    isBusy };
             }
         case TEMPLATE_CREATED:
             {
-                return Object.assign({}, state, { title:action.title, id: action.id });
+                const { title, id, isBusy } = action;
+                return { ...state, title, id, isBusy };
             }
         case TEMPLATE_UPDATED:
             {
-                return Object.assign({}, state, { title: action.title });
+                const { title, isBusy } = action;
+                return { ...state, title, isBusy };
+
             }
         case CRITERIA_ADD:
             {
-                const criterion = action.criterion;
-                Object.keys(state.criteriaByIndex).forEach((key) => {
-                    if (state.criteriaByIndex[key].isMaximised) {
-                        state.criteriaByIndex[key] = Object.assign({}, state.criteriaByIndex[key], { isMaximised: false });
+                const { criterion, isBusy } = action;
+                let  { criteriaByIndex, allCriteriaIndexes } = state;
+                Object.keys(criteriaByIndex).forEach((key) => {
+                    if (criteriaByIndex[key].isMaximised) {
+                        criteriaByIndex[key] = Object.assign({}, criteriaByIndex[key], { isMaximised: false });
                     }
                 });
-                state.criteriaByIndex[criterion.id] = criterion;
-                state.allCriteriaIndexes = state.allCriteriaIndexes.concat(criterion.id);
-                return Object.assign({}, state);
+                criteriaByIndex[criterion.id] = criterion;
+                allCriteriaIndexes = allCriteriaIndexes.concat(criterion.id);
+                return { ...state, allCriteriaIndexes, criteriaByIndex, isBusy };
             }
         case CRITERIA_UPDATE:
             {
-                let { id, title, weight } = action;
-                let criteriaByIndex = Object.assign({}, state.criteriaByIndex);
-                for (let i in state.allQuestionIndexes) {
-                    if (state.questionsByIndex[state.allQuestionIndexes[i]].isSaved) {
-                        state.questionsByIndex[state.allQuestionIndexes[i]].isSaved = false;
+                const { id, title, weight, isBusy } = action;
+                let { allCriteriaIndexes, criteriaByIndex, allQuestionIndexes, questionsByIndex } = state;
+                criteriaByIndex = { ...criteriaByIndex };
+                for (let i in allQuestionIndexes) {
+                    if (questionsByIndex[allQuestionIndexes[i]].isSaved) {
+                        questionsByIndex[allQuestionIndexes[i]].isSaved = false;
                     }
                 }
-                for (let i in state.allCriteriaIndexes) {
-                    if (state.criteriaByIndex[state.allCriteriaIndexes[i]].isSaved) {
-                        state.criteriaByIndex[state.allCriteriaIndexes[i]].isSaved = false;
+                for (let i in allCriteriaIndexes) {
+                    if (criteriaByIndex[allCriteriaIndexes[i]].isSaved) {
+                        criteriaByIndex[allCriteriaIndexes[i]].isSaved = false;
                     }
                 }
                 criteriaByIndex[id] = Object.assign({}, criteriaByIndex[id], { title, weight, isSaved:true });
 
-                return Object.assign({}, state, { criteriaByIndex });
+                return { ...state, isBusy, criteriaByIndex };
             }
         case CRITERIA_DELETE:
             {
+                let { isBusy, id } =action;
                 let allCriteriaIndexes = state.allCriteriaIndexes.filter(id => id!==action.id);
                 let criteriaByIndex = Object.assign({}, state.criteriaByIndex);
                 let allQuestionIndexes = [...state.allQuestionIndexes];
@@ -181,23 +187,19 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                     delete questionsByIndex[questionId];
                     allQuestionIndexes = allQuestionIndexes.slice(allQuestionIndexes.indexOf(questionId), 1);
                 });
-                delete criteriaByIndex[action.id];
-                return Object.assign({}, state, {
-                    allCriteriaIndexes,
-                    criteriaByIndex,
-                    allQuestionIndexes,
-                    questionsByIndex
-                });
+                delete criteriaByIndex[id];
+                return { ... state, allCriteriaIndexes, criteriaByIndex, allQuestionIndexes, questionsByIndex, isBusy };
             }
         case DOCUMENT_UPLOAD_SUCCESS: {
-            let document = Object.assign({}, state.documentsByIndex[action.documentId]);
-            let { documentsByIndex } = state;
+            const { documentId, newDocumentId, url } =action;
+            let { documentsByIndex } =state;
+            let document = { ...documentsByIndex[documentId] };
 
-            documentsByIndex[action.documentId] =Object.assign({}, document, {
+            documentsByIndex[documentId] = Object.assign({}, document, {
                 status: UPLOAD_SUCCESS,
                 progress: 100,
-                referenceId:action.newDocumentId,
-                referenceUrl:action.url
+                referenceId:newDocumentId,
+                referenceUrl:url
             });
 
             return Object.assign({}, state);
@@ -242,7 +244,7 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
         }
         case QUESTION_ADD:
             {
-                let { question, criteriaId } = action;
+                let { question, criteriaId, isBusy } = action;
                 let { id } = question;
                 let questionsByIndex = Object.assign({}, state.questionsByIndex);
                 let criteriaByIndex = Object.assign({}, state.criteriaByIndex);
@@ -250,10 +252,11 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                 let allQuestionIndexes = [...state.allQuestionIndexes, id];
                 let questions = [...state.criteriaByIndex[criteriaId].questions, id];
                 criteriaByIndex[action.criteriaId] = Object.assign({}, criteriaByIndex[criteriaId], { questions });
-                return Object.assign({}, state, { criteriaByIndex, allQuestionIndexes, questionsByIndex });
+                return { ...state,  criteriaByIndex, allQuestionIndexes, questionsByIndex, isBusy };
             }
         case QUESTION_UPDATE:
             {
+                const { isBusy } = action;
                 let question = Object.assign({}, action.question, { isSaved:true });
                 let { id } = question;
                 for (let i in state.allQuestionIndexes) {
@@ -268,11 +271,11 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                 }
                 let questionsByIndex = Object.assign({}, state.questionsByIndex);
                 questionsByIndex[id] = question;
-                return Object.assign({}, state, { questionsByIndex });
+                return { ...state, questionsByIndex, isBusy };
             }
         case QUESTION_DELETE:
             {
-                let { criteriaId, questionId } =  action;
+                let { criteriaId, questionId, isBusy } =  action;
                 let allQuestionIndexes = state.allQuestionIndexes.filter(id => id!==questionId);
                 let questionsByIndex = Object.assign({}, state.questionsByIndex);
                 delete questionsByIndex[questionId];
@@ -281,11 +284,11 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
                 criteriaByIndex[criteriaId].questions = questions;
                 criteriaByIndex[criteriaId] = Object.assign({}, criteriaByIndex[criteriaId], { criteriaId:criteriaByIndex[criteriaId] });
 
-                return Object.assign({}, state, {
+                return { ...state,
                     criteriaByIndex,
                     allQuestionIndexes,
-                    questionsByIndex
-                });
+                    questionsByIndex,
+                    isBusy };
             }
         case IS_BUSY:
             {

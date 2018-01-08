@@ -165,14 +165,22 @@ class EvaluationTemplateCreator extends Component {
                     <div className={`col-md-12 text-right ${id !== null ? 'show' : 'hidden'}`}>
                         <hr />
                         <div className="form-group">
-                            <ul className="list-inline">
-                                <li>
-                                    <a className="btn btn-md" href="/searcher/evaluation_templates/list"><i className="fa fa-save"></i>Save and Continue Later</a>
-                                </li>
-                                <li>
-                                    <button className="btn btn-md save-template " type="button" onClick={() => this.props.dispatch(publishTemplate())}><i className="fa fa-send"></i>Publish Template</button>
-                                </li>
-                            </ul>
+                            { this.props.isBusy?
+                                    <ul className="list-inline">
+                                        <li>
+                                            <a className="btn btn-md" disabled>Saving</a>
+                                        </li>
+                                    </ul>
+                                :
+                                <ul className="list-inline">
+                                    <li>
+                                        <a className="btn btn-md" href="/searcher/evaluation_templates/list"><i className="fa fa-save"></i>Save and Continue Later</a>
+                                    </li>
+                                    <li>
+                                        <button className="btn btn-md save-template " type="button" onClick={() => this.props.dispatch(publishTemplate())}><i className="fa fa-send"></i>Publish Template</button>
+                                    </li>
+                                </ul>
+                            }
                         </div>
                     </div>
                 </div>
@@ -188,11 +196,12 @@ EvaluationTemplateCreator.propTypes = {
     allCriteriaIndexes: PropTypes.array,
     title: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
-    id: PropTypes.number
+    id: PropTypes.number,
+    isBusy: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {
-    const { allCriteriaIndexes, title, id } = state.evaluationTemplateCreator;
-    return { allCriteriaIndexes, title, id };
+    const { allCriteriaIndexes, title, id, isBusy } = state.evaluationTemplateCreator;
+    return { allCriteriaIndexes, title, id, isBusy };
 }
 export default connect(mapStateToProps)(EvaluationTemplateCreator);
