@@ -2652,14 +2652,12 @@
 	function updateTemplate(title, templateId) {
 
 	    return function (dispatch) {
-	        dispatch(isBusy(true));
 	        var data = (0, _dataParserUtil.parseDataForUpdateTemplate)(title, templateId);
 	        var serviceUrl = TEMPLATE_SERVICE_URL;
 	        serviceUrl += '/' + templateId;
 	        return _axios2.default.patch(serviceUrl, data).then(function () {
 	            dispatch({ type: _ActionTypes.TEMPLATE_UPDATED, title: title });
 	        }).catch(function (error) {
-	            dispatch(isBusy(false));
 	            if (error.response.status === 422) {
 	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
@@ -7846,6 +7844,7 @@
 	    }, {
 	        key: 'componentWillReceiveProps',
 	        value: function componentWillReceiveProps(nextProps) {
+	            this.templateTitleField.value = nextProps.title;
 	            this.setState({ title: nextProps.title, showAdd: false, isSaved: true, isTitleError: false });
 	        }
 	    }, {
@@ -7936,6 +7935,9 @@
 	                                            { className: 'col-md-8 col-sm-12' },
 	                                            _react2.default.createElement('input', { type: 'text',
 	                                                name: 'title',
+	                                                ref: function ref(input) {
+	                                                    _this2.templateTitleField = input;
+	                                                },
 	                                                className: this.getTitleInputStyle(),
 	                                                defaultValue: this.state.title,
 	                                                title: 'Template Title',

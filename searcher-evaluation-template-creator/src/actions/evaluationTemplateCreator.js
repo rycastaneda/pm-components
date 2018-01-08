@@ -133,7 +133,6 @@ export function addTemplate(title) {
 export function updateTemplate(title, templateId) {
 
     return (dispatch) => {
-        dispatch(isBusy(true));
         const data = parseDataForUpdateTemplate(title, templateId);
         let serviceUrl = TEMPLATE_SERVICE_URL;
         serviceUrl += '/'+templateId;
@@ -142,7 +141,6 @@ export function updateTemplate(title, templateId) {
             dispatch({ type:TEMPLATE_UPDATED, title });
         })
         .catch((error) => {
-            dispatch(isBusy(false));
             if (error.response.status===422) {
                 dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
             } else {
