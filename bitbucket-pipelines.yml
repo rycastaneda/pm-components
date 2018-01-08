@@ -8,6 +8,8 @@ pipelines:
   branches:
     master:
       - step:
+          caches:
+            - npm
           script:
             # Build boilerplate
             - cd boilerplate && npm install && cd -
@@ -16,3 +18,7 @@ pipelines:
             # Build category-selector
             - cd category-selector && npm install && cd -
             - cd category-selector && npm run build && cd -
+
+definitions:
+  caches:
+    npm: ~/.npm
