@@ -18,7 +18,7 @@ import {
     UPLOAD_FAILED
 } from '../constants';
 
-const INITIAL_EVALUATION_SUBMISSION_STATE = { criteriaByIndex:{}, criteriaIds:[], assignmentStatus:{ id:null, title:'' } };
+const INITIAL_EVALUATION_SUBMISSION_STATE = { criteriaByIndex:{}, criteriaIds:[], assignmentStatus:{ id:null, title:'' }, isBusy:false };
 
 export function evaluationSubmission(state = INITIAL_EVALUATION_SUBMISSION_STATE, action) {
     switch (action.type) {
