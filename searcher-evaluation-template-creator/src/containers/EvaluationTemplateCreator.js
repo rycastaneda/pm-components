@@ -41,7 +41,6 @@ class EvaluationTemplateCreator extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.templateTitleField.value = nextProps.title;
         this.setState({ title:nextProps.title, showAdd:false, isSaved:true, isTitleError:false });
     }
 
@@ -98,10 +97,7 @@ class EvaluationTemplateCreator extends Component {
                                 <div className="row">
                                     <div className="col-md-8 col-sm-12">
                                         <input type="text"
-                                            name="title"
-                                            ref = {(input) => {
-                                                this.templateTitleField = input;
-                                            } }
+                                            name="title"                                
                                             className={this.getTitleInputStyle()}
                                             defaultValue = {this.state.title}
                                             title="Template Title"
