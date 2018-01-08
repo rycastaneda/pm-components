@@ -2570,24 +2570,23 @@
 
 	var TEMPLATE_SERVICE_URL = 'evaluation-templates';
 	var EVALUATION_TEMPLATE_LIST_PAGE = exports.EVALUATION_TEMPLATE_LIST_PAGE = '/searcher/evaluation_templates/list';
+
 	function publishTemplate() {
 	    return function (dispatch, getState) {
-	        dispatch(isBusy(true));
+
 	        var templateId = getState().evaluationTemplateCreator.id;
 	        return _axios2.default.post(TEMPLATE_SERVICE_URL + '/' + templateId + '/finalise', {}).then(function () {
-	            dispatch(isBusy(false));
 	            var title = 'Template Published';
 	            var comment = 'Your Template has been successfully published.';
 	            dispatch((0, _actions2.showModal)(title, comment, function () {
 	                window.location.href = EVALUATION_TEMPLATE_LIST_PAGE;
 	            }));
 	        }).catch(function (error) {
-	            dispatch(isBusy(false));
 	            if (error.status_code === 422) {
 	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
 	            } else {
-	                error.response.data.errors.forEach(function (e) {
-	                    var detail = e.detail;
+	                error.response.data.errors.forEach(function (item) {
+	                    var detail = item.detail;
 
 	                    dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, detail));
 	                });
@@ -2611,6 +2610,7 @@
 
 	function initialize() {
 	    return function (dispatch) {
+	        dispatch(isBusy(true));
 	        return _axios2.default.get('evaluation-question-types').then(function (response) {
 	            var questionTypes = (0, _dataParserUtil.parseInitialData)(response.data);
 	            if (questionTypes.length) {
@@ -2630,16 +2630,14 @@
 	        var data = (0, _dataParserUtil.parseDataForCreateTemplate)(title);
 	        return _axios2.default.post(TEMPLATE_SERVICE_URL, data).then(function (response) {
 	            var template = response.data.data;
-	            var isBusy = false;
 	            dispatch({ type: _ActionTypes.TEMPLATE_CREATED,
 	                title: template.attributes.title,
-	                id: Number(template.id),
-	                isBusy: isBusy
+	                id: Number(template.id)
 	            });
 	        }).catch(function (error) {
 	            isBusy(false);
-	            if (error.status_code === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+	            if (error.response.status === 422) {
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2659,12 +2657,11 @@
 	        var serviceUrl = TEMPLATE_SERVICE_URL;
 	        serviceUrl += '/' + templateId;
 	        return _axios2.default.patch(serviceUrl, data).then(function () {
-	            var isBusy = false;
-	            dispatch({ type: _ActionTypes.TEMPLATE_UPDATED, title: title, isBusy: isBusy });
+	            dispatch({ type: _ActionTypes.TEMPLATE_UPDATED, title: title });
 	        }).catch(function (error) {
 	            dispatch(isBusy(false));
 	            if (error.response.status === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Invalid entry.'));
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2690,12 +2687,11 @@
 	        serviceUrl += '/criteria';
 
 	        return _axios2.default.post(serviceUrl, data).then(function (response) {
-	            var isBusy = false;
-	            dispatch({ type: _ActionTypes.CRITERIA_ADD, criterion: (0, _dataParserUtil.createCriterionFromData)(response.data), isBusy: isBusy });
+	            dispatch({ type: _ActionTypes.CRITERIA_ADD, criterion: (0, _dataParserUtil.createCriterionFromData)(response.data) });
 	        }).catch(function (error) {
 	            dispatch(isBusy(false));
-	            if (error.status_code === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+	            if (error.response.status === 422) {
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2720,12 +2716,11 @@
 	        serviceUrl += '/' + templateId;
 	        serviceUrl += '/criteria/' + id;
 	        return _axios2.default.delete(serviceUrl, data).then(function () {
-	            var isBusy = false;
-	            dispatch({ type: _ActionTypes.CRITERIA_DELETE, id: id, isBusy: isBusy });
+	            dispatch({ type: _ActionTypes.CRITERIA_DELETE, id: id });
 	        }).catch(function (error) {
 	            dispatch(isBusy(false));
-	            if (error.status_code === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Invalid operation'));
+	            if (error.response.status === 422) {
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2750,12 +2745,11 @@
 	        serviceUrl += '/' + templateId;
 	        serviceUrl += '/criteria/' + id;
 	        return _axios2.default.patch(serviceUrl, data).then(function () {
-	            var isBusy = false;
-	            dispatch({ type: _ActionTypes.CRITERIA_UPDATE, id: id, title: title, weight: weight, isBusy: isBusy });
+	            dispatch({ type: _ActionTypes.CRITERIA_UPDATE, id: id, title: title, weight: weight });
 	        }).catch(function (error) {
 	            dispatch(isBusy(false));
-	            if (error.status_code === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+	            if (error.response.status === 422) {
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2782,12 +2776,11 @@
 	        serviceUrl += '/questions';
 	        return _axios2.default.post(serviceUrl, data).then(function (response) {
 	            var question = (0, _dataParserUtil.parseDataFromCreateQuestion)(response.data);
-	            var isBusy = false;
-	            dispatch({ type: _ActionTypes.QUESTION_ADD, criteriaId: criteriaId, question: question, isBusy: isBusy });
+	            dispatch({ type: _ActionTypes.QUESTION_ADD, criteriaId: criteriaId, question: question });
 	        }).catch(function (error) {
 	            dispatch(isBusy(false));
-	            if (error.status_code === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+	            if (error.response.status === 422) {
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2816,13 +2809,12 @@
 	        serviceUrl += '/questions/' + questionId;
 
 	        return _axios2.default.patch(serviceUrl, data).then(function (response) {
-	            var isBusy = false;
 	            var question = (0, _dataParserUtil.parseDataFromCreateQuestion)(response.data);
-	            dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question, isBusy: isBusy });
+	            dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question });
 	        }).catch(function (error) {
 	            dispatch(isBusy(false));
-	            if (error.status_code === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+	            if (error.response.status === 422) {
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2852,12 +2844,11 @@
 	        serviceUrl += '/questions/' + questionId;
 
 	        return _axios2.default.patch(serviceUrl, data).then(function () {
-	            var isBusy = false;
-	            dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question, isBusy: isBusy });
+	            dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question });
 	        }).catch(function (error) {
 	            dispatch(isBusy(false));
-	            if (error.status_code === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+	            if (error.response.status === 422) {
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2889,12 +2880,11 @@
 	        serviceUrl += '/questions/' + questionId;
 
 	        return _axios2.default.patch(serviceUrl, data).then(function () {
-	            var isBusy = false;
-	            dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question, isBusy: isBusy });
+	            dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question });
 	        }).catch(function (error) {
 	            dispatch(isBusy(false));
-	            if (error.status_code === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+	            if (error.response.status === 422) {
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2926,12 +2916,11 @@
 	        serviceUrl += '/questions/' + questionId;
 
 	        return _axios2.default.patch(serviceUrl, data).then(function () {
-	            var isBusy = false;
-	            dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question, isBusy: isBusy });
+	            dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question });
 	        }).catch(function (error) {
 	            dispatch(isBusy(false));
-	            if (error.status_code === 422) {
-	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+	            if (error.response.status === 422) {
+	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, error.response.statusText));
 	            } else {
 	                error.response.data.errors.forEach(function (e) {
 	                    var detail = e.detail;
@@ -2963,8 +2952,7 @@
 	        var data = (0, _dataParserUtil.parseDataForUpdateQuestion)(question);
 
 	        return _axios2.default.patch(serviceUrl, data).then(function () {
-	            var isBusy = false;
-	            dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question, isBusy: isBusy });
+	            dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question });
 	        }).catch(function (error) {
 	            var message = void 0;
 	            if (Array.isArray(error.response.data.errors)) {
@@ -2988,8 +2976,7 @@
 	        serviceUrl += '/questions/' + questionId;
 
 	        return _axios2.default.delete(serviceUrl).then(function () {
-	            var isBusy = false;
-	            dispatch({ type: _ActionTypes.QUESTION_DELETE, criteriaId: criteriaId, questionId: questionId, isBusy: isBusy });
+	            dispatch({ type: _ActionTypes.QUESTION_DELETE, criteriaId: criteriaId, questionId: questionId });
 	        }).catch(function (error) {
 	            var message = void 0;
 	            dispatch(isBusy(false));
@@ -3030,8 +3017,7 @@
 	                        return item;
 	                    }
 	                });
-	                var isBusy = false;
-	                dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question, isBusy: isBusy });
+	                dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question });
 	            });
 	        } else {
 	            serviceUrl += '/' + scaleDefinitionId;
@@ -3048,8 +3034,7 @@
 	                            return item;
 	                        }
 	                    });
-	                    var isBusy = false;
-	                    dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question, isBusy: isBusy });
+	                    dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question });
 	                });
 	            } else {
 	                promise = _axios2.default.delete(serviceUrl).then(function () {
@@ -3064,8 +3049,7 @@
 	                            return item;
 	                        }
 	                    });
-	                    var isBusy = false;
-	                    dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question, isBusy: isBusy });
+	                    dispatch({ type: _ActionTypes.QUESTION_UPDATE, criteriaId: criteriaId, question: question });
 	                });
 	            }
 	        }
@@ -3176,12 +3160,11 @@
 	    return function (dispatch) {
 	        dispatch(isBusy(true));
 	        _axios2.default.all([_axios2.default.get('evaluation-question-types').then(function (response) {
+	            dispatch(isBusy(false));
 	            var questionTypes = (0, _dataParserUtil.parseInitialData)(response.data);
 	            if (questionTypes.length) {
-	                var _isBusy = false;
-	                dispatch({ type: _ActionTypes.INITIALIZED, questionTypes: questionTypes, isBusy: _isBusy });
+	                dispatch({ type: _ActionTypes.INITIALIZED, questionTypes: questionTypes });
 	            } else {
-	                dispatch(isBusy(false));
 	                var message = 'Unable to proceed. Initial data returned by the service is empty';
 	                dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, message));
 	            }
@@ -3197,8 +3180,7 @@
 	            dispatch((0, _actions.showNotification)(_constants.MESSAGE_TYPE_ERROR, message));
 	        }), getPromiseForService(TEMPLATE_SERVICE_URL + '/' + id + '?include=criteria.questions', dispatch).then(function (response) {
 	            var template = (0, _dataParserUtil.parseDataFromFetchTemplate)(response.data);
-	            var isBusy = false;
-	            dispatch({ type: _ActionTypes.TEMPLATE_FETCHED, template: template, isBusy: isBusy });
+	            dispatch({ type: _ActionTypes.TEMPLATE_FETCHED, template: template });
 	        })]);
 	    };
 	}
@@ -9343,8 +9325,8 @@
 	    switch (action.type) {
 	        case _ActionTypes.INITIALIZED:
 	            {
-	                var questionTypes = action.questionTypes,
-	                    isBusy = action.isBusy;
+	                var isBusy = false;
+	                var questionTypes = action.questionTypes;
 
 	                return (0, _extends3.default)({}, state, { questionTypes: questionTypes, isBusy: isBusy });
 	            }
@@ -9422,8 +9404,8 @@
 	            }
 	        case _ActionTypes.TEMPLATE_FETCHED:
 	            {
-	                var template = action.template,
-	                    _isBusy = action.isBusy;
+	                var _isBusy = false;
+	                var template = action.template;
 	                var _id2 = template.id,
 	                    title = template.title,
 	                    _criteriaByIndex2 = template.criteriaByIndex,
@@ -9445,23 +9427,23 @@
 	            }
 	        case _ActionTypes.TEMPLATE_CREATED:
 	            {
+	                var _isBusy2 = false;
 	                var _title = action.title,
-	                    _id3 = action.id,
-	                    _isBusy2 = action.isBusy;
+	                    _id3 = action.id;
 
 	                return (0, _extends3.default)({}, state, { title: _title, id: _id3, isBusy: _isBusy2 });
 	            }
 	        case _ActionTypes.TEMPLATE_UPDATED:
 	            {
-	                var _title2 = action.title,
-	                    _isBusy3 = action.isBusy;
+	                var _isBusy3 = false;
+	                var _title2 = action.title;
 
 	                return (0, _extends3.default)({}, state, { title: _title2, isBusy: _isBusy3 });
 	            }
 	        case _ActionTypes.CRITERIA_ADD:
 	            {
-	                var criterion = action.criterion,
-	                    _isBusy4 = action.isBusy;
+	                var _isBusy4 = false;
+	                var criterion = action.criterion;
 	                var _criteriaByIndex3 = state.criteriaByIndex,
 	                    _allCriteriaIndexes = state.allCriteriaIndexes;
 
@@ -9476,10 +9458,10 @@
 	            }
 	        case _ActionTypes.CRITERIA_UPDATE:
 	            {
+	                var _isBusy5 = false;
 	                var _id4 = action.id,
 	                    _title3 = action.title,
-	                    weight = action.weight,
-	                    _isBusy5 = action.isBusy;
+	                    weight = action.weight;
 	                var _allCriteriaIndexes2 = state.allCriteriaIndexes,
 	                    _criteriaByIndex4 = state.criteriaByIndex,
 	                    _allQuestionIndexes = state.allQuestionIndexes,
@@ -9502,8 +9484,8 @@
 	            }
 	        case _ActionTypes.CRITERIA_DELETE:
 	            {
-	                var _isBusy6 = action.isBusy,
-	                    _id5 = action.id;
+	                var _isBusy6 = false;
+	                var _id5 = action.id;
 
 	                var _allCriteriaIndexes3 = state.allCriteriaIndexes.filter(function (id) {
 	                    return id !== action.id;
@@ -9585,9 +9567,9 @@
 	            }
 	        case _ActionTypes.QUESTION_ADD:
 	            {
+	                var _isBusy7 = false;
 	                var _question2 = action.question,
-	                    criteriaId = action.criteriaId,
-	                    _isBusy7 = action.isBusy;
+	                    criteriaId = action.criteriaId;
 	                var _id6 = _question2.id;
 
 	                var _questionsByIndex7 = (0, _assign2.default)({}, state.questionsByIndex);
@@ -9621,9 +9603,9 @@
 	            }
 	        case _ActionTypes.QUESTION_DELETE:
 	            {
+	                var _isBusy9 = false;
 	                var _criteriaId = action.criteriaId,
-	                    questionId = action.questionId,
-	                    _isBusy9 = action.isBusy;
+	                    questionId = action.questionId;
 
 	                var _allQuestionIndexes4 = state.allQuestionIndexes.filter(function (id) {
 	                    return id !== questionId;
@@ -9645,8 +9627,10 @@
 	            }
 	        case _ActionTypes.IS_BUSY:
 	            {
-	                state.isBusy = action.status;
-	                return (0, _assign2.default)({}, state);
+	                var status = action.status;
+
+	                var _isBusy10 = status;
+	                return (0, _extends3.default)({}, state, { isBusy: _isBusy10 });
 	            }
 	        default:
 	            return state;

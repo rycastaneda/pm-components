@@ -45,13 +45,13 @@ import { showModal } from '../modal/actions';
 
 const TEMPLATE_SERVICE_URL = 'evaluation-templates';
 export const EVALUATION_TEMPLATE_LIST_PAGE ='/searcher/evaluation_templates/list';
+
 export function publishTemplate() {
     return (dispatch, getState) => {
-        dispatch(isBusy(true));
+
         const templateId = getState().evaluationTemplateCreator.id;
         return axios.post(TEMPLATE_SERVICE_URL+'/'+templateId+'/finalise', {})
         .then(() => {
-            dispatch(isBusy(false));
             const title = 'Template Published';
             const comment = 'Your Template has been successfully published.';
             dispatch(showModal(title, comment, () => {
@@ -59,12 +59,11 @@ export function publishTemplate() {
             }));
         })
         .catch((error) => {
-            dispatch(isBusy(false));
             if (error.status_code===422) {
                 dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
             } else {
-                error.response.data.errors.forEach((e) => {
-                    let { detail } = e;
+                error.response.data.errors.forEach((item) => {
+                    let { detail } = item;
                     dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
                 });
             }
@@ -88,6 +87,7 @@ export function toggleMaximiseCriteria(id, isMaximised) {
 
 export function initialize() {
     return (dispatch) => {
+        dispatch(isBusy(true));
         return axios.get('evaluation-question-types')
         .then((response) => {
             let questionTypes = parseInitialData(response.data);
@@ -111,17 +111,15 @@ export function addTemplate(title) {
         return axios.post(TEMPLATE_SERVICE_URL, data)
         .then((response) => {
             const template = response.data.data;
-            const isBusy = false;
             dispatch({ type:TEMPLATE_CREATED,
                     title: template.attributes.title,
-                    id:Number(template.id),
-                    isBusy
+                    id:Number(template.id)
                 });
         })
         .catch((error) => {
             isBusy(false);
-            if (error.status_code===422) {
-                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
             } else {
                 error.response.data.errors.forEach((e) => {
                     let { detail } = e;
@@ -141,13 +139,12 @@ export function updateTemplate(title, templateId) {
         serviceUrl += '/'+templateId;
         return axios.patch(serviceUrl, data)
         .then(() => {
-            const isBusy = false;
-            dispatch({ type:TEMPLATE_UPDATED, title, isBusy });
+            dispatch({ type:TEMPLATE_UPDATED, title });
         })
         .catch((error) => {
             dispatch(isBusy(false));
             if (error.response.status===422) {
-                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Invalid entry.'));
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
             } else {
                 error.response.data.errors.forEach((e) => {
                     let { detail } = e;
@@ -170,13 +167,12 @@ export function addCriteria(title, weight) {
 
         return axios.post(serviceUrl, data)
         .then((response) => {
-            const isBusy = false;
-            dispatch({ type:CRITERIA_ADD, criterion: createCriterionFromData(response.data), isBusy });
+            dispatch({ type:CRITERIA_ADD, criterion: createCriterionFromData(response.data) });
         })
         .catch((error) => {
             dispatch(isBusy(false));
-            if (error.status_code===422) {
-                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
             } else {
                 error.response.data.errors.forEach((e) => {
                     let { detail } = e;
@@ -198,13 +194,12 @@ export function deleteCriteria(id) {
         serviceUrl += '/criteria/'+id;
         return axios.delete(serviceUrl, data)
         .then(() => {
-            const isBusy =false;
-            dispatch({ type:CRITERIA_DELETE, id, isBusy });
+            dispatch({ type:CRITERIA_DELETE, id });
         })
         .catch((error) => {
             dispatch(isBusy(false));
-            if (error.status_code===422) {
-                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Invalid operation'));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
             } else {
                 error.response.data.errors.forEach((e) => {
                     let { detail } = e;
@@ -226,13 +221,12 @@ export function updateCriteria(id, title, weight) {
         serviceUrl += '/criteria/'+id;
         return axios.patch(serviceUrl, data)
         .then(() => {
-            const isBusy = false;
-            dispatch({ type:CRITERIA_UPDATE, id, title, weight, isBusy });
+            dispatch({ type:CRITERIA_UPDATE, id, title, weight });
         })
         .catch((error) => {
             dispatch(isBusy(false));
-            if (error.status_code===422) {
-                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
             } else {
                 error.response.data.errors.forEach((e) => {
                     let { detail } = e;
@@ -256,13 +250,12 @@ export function addQuestionToCriteria(criteriaId, questionTitle, questionType) {
         return axios.post(serviceUrl, data)
         .then((response) => {
             const question = parseDataFromCreateQuestion(response.data);
-            const isBusy = false;
-            dispatch({ type:QUESTION_ADD, criteriaId, question, isBusy });
+            dispatch({ type:QUESTION_ADD, criteriaId, question });
         })
         .catch((error) => {
             dispatch(isBusy(false));
-            if (error.status_code===422) {
-                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
             } else {
                 error.response.data.errors.forEach((e) => {
                     let { detail } = e;
@@ -288,14 +281,13 @@ export function onQuestionTypeChange(criteriaId, questionId, type) {
 
         return axios.patch(serviceUrl, data)
         .then((response) => {
-            const isBusy = false;
             const question = parseDataFromCreateQuestion(response.data) ;
-            dispatch({ type:QUESTION_UPDATE, criteriaId, question, isBusy });
+            dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
             dispatch(isBusy(false));
-            if (error.status_code===422) {
-                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
             } else {
                 error.response.data.errors.forEach((e) => {
                     let { detail } = e;
@@ -322,13 +314,12 @@ export function onQuestionTitleChange(criteriaId, questionId, title) {
 
         return axios.patch(serviceUrl, data)
         .then(() => {
-            const isBusy = false;
-            dispatch({ type:QUESTION_UPDATE, criteriaId, question, isBusy });
+            dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
             dispatch(isBusy(false));
-            if (error.status_code === 422) {
-                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
             } else {
                 error.response.data.errors.forEach((e) => {
                     let { detail } = e;
@@ -357,13 +348,12 @@ export function onQuestionAllowUploadChange(criteriaId, questionId, isAllowUploa
 
         return axios.patch(serviceUrl, data)
         .then(() => {
-            const isBusy = false;
-            dispatch({ type:QUESTION_UPDATE, criteriaId, question, isBusy });
+            dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
             dispatch(isBusy(false));
-            if (error.status_code===422) {
-                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
             } else {
                 error.response.data.errors.forEach((e) => {
                     let { detail } = e;
@@ -392,13 +382,12 @@ export function  onAllowScaleDefinitionChange(criteriaId, questionId, isAllowSca
 
         return axios.patch(serviceUrl, data)
         .then(() => {
-            const isBusy =false;
-            dispatch({ type:QUESTION_UPDATE, criteriaId, question, isBusy });
+            dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
             dispatch(isBusy(false));
-            if (error.status_code===422) {
-                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
             } else {
                 error.response.data.errors.forEach((e) => {
                     let { detail } = e;
@@ -427,8 +416,7 @@ export function onQuestionAllowCommentsChange(criteriaId, questionId, isCommentR
 
         return axios.patch(serviceUrl, data)
         .then(() => {
-            const isBusy =false;
-            dispatch({ type:QUESTION_UPDATE, criteriaId, question, isBusy });
+            dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
             let message;
@@ -454,8 +442,7 @@ export function deleteQuestion(criteriaId, questionId) {
 
         return axios.delete(serviceUrl)
         .then(() => {
-            const isBusy =false;
-            dispatch({ type:QUESTION_DELETE, criteriaId, questionId, isBusy });
+            dispatch({ type:QUESTION_DELETE, criteriaId, questionId });
         })
         .catch((error) => {
             let message;
@@ -498,8 +485,7 @@ export function onScaleDefinitionChange(criteriaId, questionId, typeDefinitionId
                             return item;
                         }
                     });
-                    const isBusy =false;
-                    dispatch({ type:QUESTION_UPDATE, criteriaId, question, isBusy });
+                    dispatch({ type:QUESTION_UPDATE, criteriaId, question });
                 });
 
         } else {
@@ -518,8 +504,7 @@ export function onScaleDefinitionChange(criteriaId, questionId, typeDefinitionId
                                 return item;
                             }
                         });
-                        const isBusy =false;
-                        dispatch({ type:QUESTION_UPDATE, criteriaId, question, isBusy });
+                        dispatch({ type:QUESTION_UPDATE, criteriaId, question });
                     });
 
             } else {
@@ -533,8 +518,7 @@ export function onScaleDefinitionChange(criteriaId, questionId, typeDefinitionId
                                 return item;
                             }
                         });
-                        const isBusy =false;
-                        dispatch({ type:QUESTION_UPDATE, criteriaId, question, isBusy });
+                        dispatch({ type:QUESTION_UPDATE, criteriaId, question });
                     });
             }
         }
@@ -649,12 +633,11 @@ export function fetchTemplate(id) {
         axios.all([
             axios.get('evaluation-question-types')
             .then((response) => {
+                dispatch(isBusy(false));
                 let questionTypes = parseInitialData(response.data);
                 if (questionTypes.length) {
-                    const isBusy =false;
-                    dispatch({ type:INITIALIZED, questionTypes, isBusy });
+                    dispatch({ type:INITIALIZED, questionTypes });
                 } else {
-                    dispatch(isBusy(false));
                     const message = 'Unable to proceed. Initial data returned by the service is empty';
                     dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
                 }
@@ -674,8 +657,7 @@ export function fetchTemplate(id) {
             getPromiseForService(TEMPLATE_SERVICE_URL+'/'+id+'?include=criteria.questions', dispatch)
             .then((response) => {
                 const template = parseDataFromFetchTemplate(response.data);
-                const isBusy =false;
-                dispatch ({ type: TEMPLATE_FETCHED, template, isBusy });
+                dispatch ({ type: TEMPLATE_FETCHED, template });
             })
         ]);
     };

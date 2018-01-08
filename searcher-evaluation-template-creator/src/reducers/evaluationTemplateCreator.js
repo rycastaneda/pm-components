@@ -48,12 +48,13 @@ function getInitialData() {
 export function evaluationTemplateCreator(state = getInitialData(), action) {
     switch (action.type) {
         case INITIALIZED: {
-            let { questionTypes, isBusy } = action;
+            const isBusy = false;
+            const { questionTypes } = action;
             return { ...state, questionTypes, isBusy };
 
         }
         case QUESTION_MAXIMISE_CHANGE: {
-            let { id, isMaximised } = action;
+            const { id, isMaximised } = action;
             let { questionsByIndex } = state;
             if (isMaximised) {
                 // if a question is maximised minimse others.
@@ -113,7 +114,8 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
             }
         case TEMPLATE_FETCHED:
             {
-                const { template, isBusy } = action;
+                const isBusy = false;
+                const { template } = action;
                 const { id,
                     title,
                     criteriaByIndex,
@@ -134,18 +136,21 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
             }
         case TEMPLATE_CREATED:
             {
-                const { title, id, isBusy } = action;
+                const isBusy = false;
+                const { title, id } = action;
                 return { ...state, title, id, isBusy };
             }
         case TEMPLATE_UPDATED:
             {
-                const { title, isBusy } = action;
+                const isBusy = false;
+                const { title } = action;
                 return { ...state, title, isBusy };
 
             }
         case CRITERIA_ADD:
             {
-                const { criterion, isBusy } = action;
+                const isBusy = false;
+                const { criterion } = action;
                 let  { criteriaByIndex, allCriteriaIndexes } = state;
                 Object.keys(criteriaByIndex).forEach((key) => {
                     if (criteriaByIndex[key].isMaximised) {
@@ -158,7 +163,8 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
             }
         case CRITERIA_UPDATE:
             {
-                const { id, title, weight, isBusy } = action;
+                const isBusy = false;
+                const { id, title, weight } = action;
                 let { allCriteriaIndexes, criteriaByIndex, allQuestionIndexes, questionsByIndex } = state;
                 criteriaByIndex = { ...criteriaByIndex };
                 for (let i in allQuestionIndexes) {
@@ -177,7 +183,8 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
             }
         case CRITERIA_DELETE:
             {
-                let { isBusy, id } =action;
+                const isBusy = false;
+                let { id } =action;
                 let allCriteriaIndexes = state.allCriteriaIndexes.filter(id => id!==action.id);
                 let criteriaByIndex = Object.assign({}, state.criteriaByIndex);
                 let allQuestionIndexes = [...state.allQuestionIndexes];
@@ -244,7 +251,8 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
         }
         case QUESTION_ADD:
             {
-                let { question, criteriaId, isBusy } = action;
+                const isBusy = false;
+                const { question, criteriaId } = action;
                 let { id } = question;
                 let questionsByIndex = Object.assign({}, state.questionsByIndex);
                 let criteriaByIndex = Object.assign({}, state.criteriaByIndex);
@@ -275,7 +283,8 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
             }
         case QUESTION_DELETE:
             {
-                let { criteriaId, questionId, isBusy } =  action;
+                const isBusy = false;
+                const { criteriaId, questionId } =  action;
                 let allQuestionIndexes = state.allQuestionIndexes.filter(id => id!==questionId);
                 let questionsByIndex = Object.assign({}, state.questionsByIndex);
                 delete questionsByIndex[questionId];
@@ -292,8 +301,9 @@ export function evaluationTemplateCreator(state = getInitialData(), action) {
             }
         case IS_BUSY:
             {
-                state.isBusy = action.status;
-                return Object.assign({}, state);
+                const { status } = action;
+                const isBusy = status;
+                return { ...state, isBusy };
             }
         default:
             return state;

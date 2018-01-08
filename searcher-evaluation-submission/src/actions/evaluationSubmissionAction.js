@@ -24,8 +24,10 @@ const EVALUATION_ASSIGNMENT_LIST_PAGE = '/searcher/evaluation_assignments/list';
 
 export function initialize(requestedAssignmentId) {
     return (dispatch) => {
+        dispatch(isBusy(true));
         return axios.get('/evaluation-template-assignments/'+requestedAssignmentId+'?include=template.criteria.questions')
         .then((response) => {
+            dispatch(isBusy(false));
             let result = parseInitialize(response.data, requestedAssignmentId);
             if (result.assignmentStatus.id==='3') {
                 dispatch(promptError(VALIDATION_MESSAGE_ASSIGNMENT_SUBMITTED));
@@ -34,7 +36,7 @@ export function initialize(requestedAssignmentId) {
 
         })
         .catch((error) => {
-
+            dispatch(isBusy(false));
             if (error.response) {
                 let { errors } = error.response.data;
                 errors.forEach((er) => {
@@ -45,7 +47,6 @@ export function initialize(requestedAssignmentId) {
                 let { message } = error;
                 dispatch(promptError(message));
             }
-
             dispatch({ type:REQUEST_FAILED });
         });
     };
@@ -143,7 +144,6 @@ export function deleteDocument(questionId, documentId) {
                 let { message } = error;
                 dispatch(promptError(message));
             }
-
             dispatch({ type:REQUEST_FAILED });
         });
     };
@@ -151,6 +151,7 @@ export function deleteDocument(questionId, documentId) {
 }
 export function submitAssignment() {
     return (dispatch, getState) => {
+        dispatch(isBusy(true));
         let { evaluationSubmission } = getState();
         let { assignmentId, questionByIndex } = evaluationSubmission;
         let commentCount =0;
@@ -168,6 +169,7 @@ export function submitAssignment() {
         let endpoint = '/evaluation-template-assignments/'+assignmentId+'/submit';
         let promise = axios.post(endpoint);
         promise.then(() => {
+            dispatch(isBusy(false));
             dispatch(showModal(SUBMISSION_MESSAGE_TITLE,
                  SUBMISSION_MESSAGE_CONTENT,
                  ASSIGNMENT_BUTTON_LABEL, () => {
@@ -175,6 +177,7 @@ export function submitAssignment() {
                  }));
         })
         .catch((error) => {
+            dispatch(isBusy(false));
             if (error.response) {
                 let { errors } = error.response.data;
                 errors.forEach((er) => {
@@ -190,6 +193,7 @@ export function submitAssignment() {
 }
 export function setOptionValue(questionId, scaleDefinitionId, value) {
     return (dispatch, getState) => {
+        dispatch(isBusy(true));
         let { evaluationSubmission } = getState();
         let question = { ...evaluationSubmission.questionByIndex[questionId] };
         let { assignmentId } = evaluationSubmission;
@@ -199,6 +203,7 @@ export function setOptionValue(questionId, scaleDefinitionId, value) {
 }
 export function setComment(questionId, comment) {
     return (dispatch, getState) => {
+        dispatch(isBusy(true));
         let { evaluationSubmission } = getState();
         let question = { ...evaluationSubmission.questionByIndex[questionId] };
         let { assignmentId } = evaluationSubmission;
@@ -208,7 +213,6 @@ export function setComment(questionId, comment) {
     };
 }
 export function criteriaMaximised(criteriaId, isMaximised) {
-
     return (dispatch, getState) => {
         let { evaluationSubmission } = getState();
         let criteria = { ...evaluationSubmission.criteriaByIndex[criteriaId] };
@@ -221,7 +225,7 @@ function updateQuestion(question, assignmentId, dispatch) {
 
     let endpoint = '/evaluation-template-assignments/'+assignmentId;
     endpoint += '/question-responses';
-
+    dispatch(isBusy(true));
     let parsedQuestionData = parseDataForUpdateQuestion(question);
     if (question.isAttempted) {
         promise = axios.patch(endpoint+'/'+question.responseId, parsedQuestionData);
@@ -235,6 +239,7 @@ function updateQuestion(question, assignmentId, dispatch) {
         }
         dispatch({ type: QUESTION_UPDATED, question });
     }).catch((error) => {
+        dispatch(isBusy(false));
         if (error.response) {
             let { errors } = error.response.data;
             errors.forEach((er) => {

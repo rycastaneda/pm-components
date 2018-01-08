@@ -8,7 +8,8 @@ import {
     DOCUMENT_UPLOAD_IN_PROGRESS,
     DOCUMENTS_UPLOADING,
     DOCUMENT_DELETE,
-    IS_BUSY
+    IS_BUSY,
+    REQUEST_FAILED
 } from '../constants/ActionTypes';
 
 import {
@@ -24,7 +25,8 @@ export function evaluationSubmission(state = INITIAL_EVALUATION_SUBMISSION_STATE
 
         case UPDATE_TEMPLATE_ASSIGNMENT:
             {
-                let {
+                const isBusy =false;
+                const {
                     id,
                     title,
                     criteriaIds,
@@ -39,8 +41,9 @@ export function evaluationSubmission(state = INITIAL_EVALUATION_SUBMISSION_STATE
 
                 } = action;
 
-                let newState = Object.assign({}, state, {
+                return  { ...state,
                     id,
+                    isBusy,
                     title,
                     criteriaIds,
                     assignmentId,
@@ -51,25 +54,26 @@ export function evaluationSubmission(state = INITIAL_EVALUATION_SUBMISSION_STATE
                     scaleDefinitionByIndex,
                     uploadedDocumentByIndex,
                     questionTypeDefinitionsByIndex
-                });
+                };
 
-                return newState;
             }
 
         case QUESTION_UPDATED:
             {
-                let { question } = action;
+                const isBusy =false;
+                const { question } = action;
                 let { questionByIndex } = state;
                 questionByIndex[question.id] = question;
-                return { ...state, questionByIndex };
+                return { ...state, questionByIndex, isBusy };
 
             }
         case CRITERIA_UPDATED:
             {
-                let { criteria } = action;
+                const isBusy = false;
+                const { criteria } = action;
                 let { criteriaByIndex } = state;
                 criteriaByIndex[criteria.id] = criteria;
-                return { ...state, criteriaByIndex };
+                return { ...state, criteriaByIndex, isBusy };
             }
         case DOCUMENT_UPLOAD_SUCCESS: {
 
@@ -124,9 +128,13 @@ export function evaluationSubmission(state = INITIAL_EVALUATION_SUBMISSION_STATE
             return Object.assign({}, state, { uploadedDocumentByIndex, questionByIndex });
         }
         case ASSIGNMENT_SUBMITTED: {
-            return { ...state };
+            const isBusy = false;
+            return { ...state, isBusy };
         }
-
+        case REQUEST_FAILED: {
+            const isBusy = false;
+            return { ...state, isBusy };
+        }
         case IS_BUSY:
             {
                 state.isBusy = action.status;
