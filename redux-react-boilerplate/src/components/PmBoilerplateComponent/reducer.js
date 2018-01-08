@@ -1,6 +1,7 @@
 import * as actions from './actionTypes';
 import merge from 'deepmerge';
 import { API_DATA_REQUEST, API_DATA_SUCCESS } from '../../middleware/api';
+// import merge from 'lodash/merge';
 
 const initialState = {
     meta: {},
@@ -9,15 +10,32 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-
         case API_DATA_SUCCESS:
             return merge(
                 state,
-                merge(action.response, { meta: { [action.endpoint]: { loading: false } } })
+                merge(action.response, {
+                    meta: { [action.endpoint]: { loading: false } },
+                })
             );
 
         case API_DATA_REQUEST:
-            return merge(state, { meta: { [action.endpoint]: { loading: true } } });
+            return merge(state, {
+                meta: { [action.endpoint]: { loading: true } },
+            });
+
+        // case API_DATA_SUCCESS:
+        //     return merge(
+        //         {},
+        //         state,
+        //         merge({}, action.response, {
+        //             meta: { [action.endpoint]: { loading: false } },
+        //         })
+        //     );
+        //
+        // case API_DATA_REQUEST:
+        //     return merge({}, state, {
+        //         meta: { [action.endpoint]: { loading: true } },
+        //     });
 
         case actions.PM_BOILERPLATE_CHANGE_UPDATE_ACTION_NAME:
             return {

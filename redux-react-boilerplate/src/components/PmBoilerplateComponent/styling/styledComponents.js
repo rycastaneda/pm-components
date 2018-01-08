@@ -8,9 +8,10 @@ const bounce = keyframes`
 
 export const HintWrap = styled.div`
     display: ${props => props.showDogeBox ? 'block' : 'none'};
-    position: relative;
+    position: absolute;
+    right: 10%;
     width: 220px;
-    margin: 0 auto;
+    margin: 51px auto;
     animation: ${bounce} 1s infinite;
 `;
 
@@ -38,10 +39,15 @@ export const HintTriangle = styled.div`
 export const DogeContainer = styled.div`
     width: 100px;
     position: absolute;
-    top: 50px;
+    top: 80px;
     left: 80px;
+    background-color: #5cb85c;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 100%;
     > img {
         width: 100%;
+        margin-top: -10px;
     }
 `;
 

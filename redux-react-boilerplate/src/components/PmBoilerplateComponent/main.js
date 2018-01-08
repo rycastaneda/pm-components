@@ -6,13 +6,20 @@ import { selectFromStore, getLoadingForEndpoint } from '../../utils/reduxApiUtil
 import * as apiActions from '../../actions/apiActions';
 import * as actions from './actions';
 import PmButton from '../../common/components/PmButton/main';
-import BouncyBox from './HintBox';
+import BouncyBox from './components/BouncyBox';
+import Authors from './components/Authors';
 
 class PmBoilerplateComponent extends Component {
+    componentDidMount() {
+        const { apiActions } = this.props;
+        apiActions.fetchDataFromEndpointAuthors();
+    }
+
     render() {
-        const { actions, toggleHintBox } = this.props;
+        const { actions, toggleHintBox, listOfType } = this.props;
         return (
             <div>
+                <Authors authors={listOfType} />
                 <BouncyBox showDogeBox={toggleHintBox} />
                 <PmButton toggle={toggleHintBox} onclick={actions.boilerplateClickAction}><span>Such Click!</span></PmButton>
             </div>
@@ -25,6 +32,7 @@ PmBoilerplateComponent.propTypes = {
     actions: PropTypes.object,
     loading: PropTypes.bool.isRequired,
     toggleHintBox: PropTypes.bool.isRequired,
+    listOfType: PropTypes.array,
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -36,12 +44,12 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state, ownProps) => {
     /**
-     * For Demo Purposes - The way how to retrieve data from Store;
+     * For Demo Purposes - The way how to retrieve data from the Store like no worries;
     **/
-    const listOfType = selectFromStore(state.pmBoilerplate, '/endpoint', 'type');
-    const loading = getLoadingForEndpoint(state.pmBoilerplate, '/endpoint');
-
+    const listOfType = selectFromStore(state.pmBoilerplate, 'http://localhost:8080/v1/authors', 'authors');
+    const loading = getLoadingForEndpoint(state.pmBoilerplate, 'http://localhost:8080/v1/authors');
     const { toggleHintBox } = state.pmBoilerplate;
+    console.log('from store with love', listOfType);
 
     return {
         ...ownProps,
