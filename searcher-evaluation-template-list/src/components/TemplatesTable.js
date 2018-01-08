@@ -46,8 +46,7 @@ class TemplatesTable extends Component {
         this.setState({ menuVisibleItemId:null });
     }
     renderMoreButton(id, edit_url, preview_url, active, instances) {
-        instances = Number(instances);
-        instances;
+        instances = Number(instances);        
         if (this.state.menuVisibleItemId===id) {
             return (
             <div className="db-function-dropdown click"
@@ -66,7 +65,7 @@ class TemplatesTable extends Component {
                     <li>
                         <a href={preview_url} ><i className="fa fa-eye"></i> Preview</a>
                     </li>
-                    { !active&&(instances<1)?
+                    { !active&&(instances===0)?
                         <li>
                             <a href={edit_url} ><i className="fa fa-edit"></i> Edit</a>
                         </li>
@@ -74,7 +73,7 @@ class TemplatesTable extends Component {
                         null
                     }
                     { !active?
-                         instances>1?
+                         instances>0?
                          <li>
                              <a href="javascript:;"
                              onClick={ ()  => this.onTemplateToggleActivation(id, !(active))}><i className="fa fa-toggle-off"></i>Activate

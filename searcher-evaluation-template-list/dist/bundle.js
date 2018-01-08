@@ -25434,7 +25434,6 @@
 	            var _this2 = this;
 
 	            instances = Number(instances);
-	            instances;
 	            if (this.state.menuVisibleItemId === id) {
 	                return _react2.default.createElement(
 	                    'div',
@@ -25465,7 +25464,7 @@
 	                                ' Preview'
 	                            )
 	                        ),
-	                        !active && instances < 1 ? _react2.default.createElement(
+	                        !active && instances === 0 ? _react2.default.createElement(
 	                            'li',
 	                            null,
 	                            _react2.default.createElement(
@@ -25475,7 +25474,7 @@
 	                                ' Edit'
 	                            )
 	                        ) : null,
-	                        !active ? instances > 1 ? _react2.default.createElement(
+	                        !active ? instances > 0 ? _react2.default.createElement(
 	                            'li',
 	                            null,
 	                            _react2.default.createElement(
