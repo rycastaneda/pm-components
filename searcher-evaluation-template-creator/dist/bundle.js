@@ -7428,7 +7428,7 @@
 	                                this.state.isWeightError ? _react2.default.createElement(
 	                                    'span',
 	                                    { className: 'error danger' },
-	                                    "Accepted values: 0 to 100. Defaults to 0"
+	                                    "Accepted values: 1 to 100."
 	                                ) : null
 	                            )
 	                        ),

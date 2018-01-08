@@ -176,7 +176,7 @@ class Criteria extends Component {
                                   <span className="input-group-addon" id="weighting-addon">%</span>
                                 </div>
                                 { this.state.isWeightError?
-                                  <span className="error danger">{"Accepted values: 0 to 100. Defaults to 0"}</span>
+                                  <span className="error danger">{"Accepted values: 1 to 100."}</span>
                                   :null
                                 }
                             </div>
