@@ -1,13 +1,13 @@
 import { CALL_API } from '../middleware/api';
 import { baseUrl } from '../utils/reduxApiUtils';
 
-export const fetchInteractions = preferredSupplier => (dispatch, getState) => {
-    const { maxRowsSelected } = getState().supplierInteractions;
+export const fetchInteractions = preferredSupplier => (dispatch) => {
+    // const { maxRowsSelected } = getState().supplierInteractions;
     const endpoint = baseUrl
         .segment('/preferred-suppliers/:supplier')
         .segment('/interactions')
         .param('supplier', preferredSupplier)
-        .param('per_page', maxRowsSelected)
+        .param('per_page', 1)
         .toString();
 
     dispatch({

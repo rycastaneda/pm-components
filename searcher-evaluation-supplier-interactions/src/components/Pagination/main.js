@@ -5,18 +5,24 @@ import { bindActionCreators } from 'redux';
 import * as actions from './actions';
 import { PaginationList } from './styling/styledComponents';
 
-class Pagintation extends Component {
+class Pagination extends Component {
+    componentDidMount() {
+        const { actions, supplierId } = this.props;
+        actions.paginationInit(supplierId);
+    }
     render() {
+        const { maxRowsList } = this.props;
         return (
             <div className="row">
                 <div className="col-sm-6 form-inline">
                     <select name="per_page" className="form-control">
-                        <option>15</option>
-                        <option>30</option>
-                        <option>60</option>
-                        <option>90</option>
-                        <option>120</option>
-                        <option>Show All</option>
+                        {maxRowsList.map((item) => {
+                            return (
+                                <option key={item} value="item">
+                                    {item}
+                                </option>
+                            );
+                        })}
                     </select>
                     <PaginationList className="pagination">
                         <li className="active">
@@ -49,8 +55,10 @@ class Pagintation extends Component {
     }
 }
 
-Pagintation.propTypes = {
+Pagination.propTypes = {
     actions: PropTypes.object,
+    maxRowsList: PropTypes.array.isRequired,
+    supplierId: PropTypes.string,
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -60,9 +68,14 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
+    const { maxRowsList, pages, links } = state.pagination;
+
     return {
         ...ownProps,
+        maxRowsList,
+        pages,
+        links,
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Pagintation);
+export default connect(mapStateToProps, mapDispatchToProps)(Pagination);

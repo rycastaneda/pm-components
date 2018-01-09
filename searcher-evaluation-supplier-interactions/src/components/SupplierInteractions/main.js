@@ -7,21 +7,34 @@ import * as actions from './actions';
 import SupplierInteractionsFilter from '../../components/SupplierInteractionsFilter/main';
 import SupplierInteractionsTable from './SupplierInteractionsTable';
 import Pagination from '../../components/Pagination/main';
-import { selectFromStore, getLoadingForEndpoint } from '../../utils/reduxApiUtils';
+import {
+    selectFromStore,
+    getLoadingForEndpoint,
+} from '../../utils/reduxApiUtils';
 
 class SupplierInteractionsContainer extends Component {
     componentDidMount() {
         const { apiActions } = this.props;
-        apiActions.applyPerPage('8');
+        apiActions.fetchInteractions(8);
     }
 
     render() {
-        const { interactions, loading } = this.props;
+        const { interactions, loading, supplierId } = this.props;
+
         return (
             <div className="searcher-evaluation-template-list">
                 <SupplierInteractionsFilter />
-                <SupplierInteractionsTable isLoading={loading} interactions={interactions} />
-                <Pagination />
+                {loading ? (
+                    <h3>Loading..</h3>
+                ) : (
+                    <div>
+                        <SupplierInteractionsTable
+                            isLoading={loading}
+                            interactions={interactions}
+                        />
+                        <Pagination supplierId={supplierId} />
+                    </div>
+                )}
             </div>
         );
     }
@@ -32,6 +45,7 @@ SupplierInteractionsContainer.propTypes = {
     apiActions: PropTypes.object,
     actions: PropTypes.object,
     loading: PropTypes.bool.isRequired,
+    supplierId: PropTypes.string,
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -43,14 +57,22 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state, ownProps) => {
     const { supplierId } = ownProps;
-    const { maxRowsSelected } = state.supplierInteractions;
-    const interactions = selectFromStore(state.supplierInteractions, `/preferred-suppliers/${supplierId}/interactions`, 'interactions');
-    const loading = getLoadingForEndpoint(state.supplierInteractions, `/preferred-suppliers/${supplierId}/interactions?per_page=${maxRowsSelected}`);
+    const { maxRowsSelected } = state.pagination;
+    const interactions = selectFromStore(
+        state.supplierInteractions,
+        `/preferred-suppliers/${supplierId}/interactions`,
+        'interactions'
+    );
+    const loading = getLoadingForEndpoint(
+        state.supplierInteractions,
+        `/preferred-suppliers/${supplierId}/interactions?per_page=${maxRowsSelected}`
+    );
 
     return {
         ...ownProps,
         interactions,
         loading,
+        supplierId,
     };
 };
 
