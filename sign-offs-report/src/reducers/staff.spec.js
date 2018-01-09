@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { staff } from './staff';
-import * as actions from '../constants/ActionTypes';
+import * as actions from '../constants';
 import mockStaff from '../mocks/staff.json';
 
 describe('Staff reducer', () => {

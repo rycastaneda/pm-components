@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { comments } from './comments';
-import * as actions from '../constants/ActionTypes';
+import * as actions from '../constants';
 import mockComments from '../mocks/comments.json';
 
 describe('Comments reducer', () => {

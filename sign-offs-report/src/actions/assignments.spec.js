@@ -1,7 +1,7 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import * as actions from './assignments';
-import * as types from '../constants/ActionTypes';
+import * as types from '../constants';
 import { expect } from 'chai'; // You can use any testing library
 import axios from 'axios';
 import { ui } from '../reducers/ui';

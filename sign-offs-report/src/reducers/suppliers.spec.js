@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { suppliers } from './suppliers';
-import * as actions from '../constants/ActionTypes';
+import * as actions from '../constants';
 import reports from '../mocks/reports.json';
 
 describe('Suppliers reducer', () => {

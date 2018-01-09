@@ -1,4 +1,4 @@
-import * as actions from '../constants/ActionTypes';
+import * as actions from '../constants';
 
 const INITIAL_STATE = {
     byId: {},

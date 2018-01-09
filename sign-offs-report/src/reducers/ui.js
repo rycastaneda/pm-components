@@ -1,9 +1,9 @@
-import * as actions from '../constants/ActionTypes';
+import * as actions from '../constants';
 
 const INITIAL_STATE = {
     error: null,
-    orderByField: 'status',
-    orderByDirection: 'desc',
+    orderByField: actions.DEFAULT_ORDER_FIELD,
+    orderByDirection: actions.DEFAULT_ORDER_DIRECTION,
     keyword: '',
     filters: {
         assignee: '',

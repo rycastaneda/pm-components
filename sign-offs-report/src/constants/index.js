@@ -38,3 +38,6 @@ export const options = [
         label: 'Declined'
     }
 ];
+
+export const DEFAULT_ORDER_FIELD = 'status';
+export const DEFAULT_ORDER_DIRECTION = 'status';

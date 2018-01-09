@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { assignments } from './assignments';
-import * as actions from '../constants/ActionTypes';
+import * as actions from '../constants';
 import reports from '../mocks/reports.json';
 describe('Assignments reducer', () => {
     let state = {};

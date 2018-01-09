@@ -1,4 +1,4 @@
-import * as actions from '../constants/ActionTypes';
+import * as actions from '../constants';
 import axios from 'axios';
 import { format } from 'date-fns';
 
