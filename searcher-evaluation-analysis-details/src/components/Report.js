@@ -1,11 +1,12 @@
 import React, { PropTypes } from 'react';
 import { Line } from 'react-chartjs-2';
-import randomColor from 'randomcolor';
+import { COLORS } from '../constants/Colors';
 
 const Report = ({ questions }) => {
     let labels = [],
         datasets = [],
         staffComments = {};
+
     questions.map((question, index) => {
         if (question.comments.length) {
             labels.push({
@@ -23,17 +24,13 @@ const Report = ({ questions }) => {
         });
     });
 
-    datasets = Object.keys(staffComments).map(staff => {
-        let color = randomColor({
-            luminosity: 'dark',
-            format: 'rgba',
-            alpha: 0.7
-        });
+    datasets = Object.keys(staffComments).map((staff, index) => {
+
         return {
             label: staff,
             fill: false,
-            backgroundColor: color,
-            borderColor: color,
+            backgroundColor: COLORS[index],
+            borderColor: COLORS[index],
             data: staffComments[staff]
         };
     });

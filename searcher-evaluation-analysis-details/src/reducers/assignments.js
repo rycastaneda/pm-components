@@ -36,6 +36,7 @@ function receiveAssignments(state, action) {
         byId[assignment.id] = {
             ...assignment.attributes,
             entityId: assignment.relationships.assignmentEntityInstance.data.id,
+            entityType: assignment.relationships.assignmentEntityInstance.data.type,
             responseIds: assignment.relationships.questionResponses.data.map(
                 response => response.id
             ),

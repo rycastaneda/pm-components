@@ -79,7 +79,7 @@ class Question extends Component {
 Question.propTypes = {
     number: PropTypes.number.isRequired,
     questionTitle: PropTypes.string.isRequired,
-    totalScore: PropTypes.number,
+    totalScore: PropTypes.string,
     comments: PropTypes.array
 };
 
