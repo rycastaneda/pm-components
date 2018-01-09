@@ -15,8 +15,7 @@ describe('Entity reducer', () => {
     it('should handle default state', () => {
         state = entity(undefined, {});
         expect(state).to.deep.equal({
-            byId: {},
-            allIds: []
+            byType: {}
         });
     });
 
@@ -26,7 +25,6 @@ describe('Entity reducer', () => {
             evaluation: mockEvaluation
         });
 
-        expect(state.allIds).to.deep.equal([ent.id]);
-        expect(state.byId[ent.id]).to.have.property('type', ent.type);
+        expect(state.byType[ent.type]).to.have.property(ent.id);
     });
 });

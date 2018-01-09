@@ -14,6 +14,7 @@ class Notification extends Component {
         clearInterval(this.toasterTimerId);
     }
     componentWillReceiveProps(nextProps) {
+        clearInterval(this.toasterTimerId);
         if (nextProps.messages.length) {
             this.toasterTimerId = setInterval(() => {
                 this.props.dispatch(clearNotifications());

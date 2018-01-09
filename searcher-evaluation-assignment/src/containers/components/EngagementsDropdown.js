@@ -2,12 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import build from 'redux-object';
+import { selectFromStore } from '../../utils/selectFromStore';
 import * as actions from '../../actions/evaluationAssignmentsAction';
 
 const EngagementsDropdown = ({ evaluationEngagements, isLoading, actions }) => (
     <div>
-
         { !isLoading ?
             <div>
                 <select name="evaluationLink"
@@ -18,7 +17,7 @@ const EngagementsDropdown = ({ evaluationEngagements, isLoading, actions }) => (
                     <option key="-" value={null}>Select Engagement</option>
                     { evaluationEngagements.map(
                         (item, index) =>
-                            <option key={index} value={item.id}>{item.engagementText}</option>
+                            <option key={index} value={item.id}>#{item.id} &ndash; {item.supplier.title}</option>
                     )}
                 </select>
             </div>
@@ -44,8 +43,9 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const  isLoading = state.evaluationAssignment.meta['/engagements'].loading;
-    const evaluationEngagements = (state.evaluationAssignment.meta['/engagements'].data || []).map(object => build(state.evaluationAssignment, 'engagements', object.id));
+    const isLoading = state.evaluationAssignment.meta['/engagements'].loading;
+    const evaluationEngagements = selectFromStore(state.evaluationAssignment, '/engagements', 'engagements');
+
     return {
         ...ownProps,
         isLoading,

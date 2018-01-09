@@ -35,7 +35,8 @@ import {
     QUESTION_ADD,
     QUESTION_UPDATE,
     QUESTION_DELETE,
-    QUESTION_MAXIMISE_CHANGE
+    QUESTION_MAXIMISE_CHANGE,
+    IS_BUSY
 } from '../constants/ActionTypes';
 
 import { MESSAGE_TYPE_ERROR } from '../notification/constants';
@@ -44,8 +45,10 @@ import { showModal } from '../modal/actions';
 
 const TEMPLATE_SERVICE_URL = 'evaluation-templates';
 export const EVALUATION_TEMPLATE_LIST_PAGE ='/searcher/evaluation_templates/list';
+
 export function publishTemplate() {
     return (dispatch, getState) => {
+
         const templateId = getState().evaluationTemplateCreator.id;
         return axios.post(TEMPLATE_SERVICE_URL+'/'+templateId+'/finalise', {})
         .then(() => {
@@ -56,11 +59,14 @@ export function publishTemplate() {
             }));
         })
         .catch((error) => {
-            // dispatch({ type:REQUEST_FAILED, message: error.message });
-            error.response.data.errors.forEach((e) => {
-                let { detail } = e;
-                dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
-            });
+            if (error.status_code===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Data entered is invalid.'));
+            } else {
+                error.response.data.errors.forEach((item) => {
+                    let { detail } = item;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
 
         });
     };
@@ -81,6 +87,7 @@ export function toggleMaximiseCriteria(id, isMaximised) {
 
 export function initialize() {
     return (dispatch) => {
+        dispatch(isBusy(true));
         return axios.get('evaluation-question-types')
         .then((response) => {
             let questionTypes = parseInitialData(response.data);
@@ -92,28 +99,39 @@ export function initialize() {
             }
 
         })
-        .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+        .catch(() => {
+            dispatch(showNotification(MESSAGE_TYPE_ERROR, 'Unable to recieve data.'));
         });
     };
 }
 export function addTemplate(title) {
     return (dispatch) => {
+        dispatch(isBusy(true));
         const data = parseDataForCreateTemplate(title);
         return axios.post(TEMPLATE_SERVICE_URL, data)
         .then((response) => {
             const template = response.data.data;
-            dispatch({ type:TEMPLATE_CREATED, title: template.attributes.title, id:Number(template.id) });
+            dispatch({ type:TEMPLATE_CREATED,
+                    title: template.attributes.title,
+                    id:Number(template.id)
+                });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            isBusy(false);
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
 
 export function updateTemplate(title, templateId) {
+
     return (dispatch) => {
         const data = parseDataForUpdateTemplate(title, templateId);
         let serviceUrl = TEMPLATE_SERVICE_URL;
@@ -123,14 +141,21 @@ export function updateTemplate(title, templateId) {
             dispatch({ type:TEMPLATE_UPDATED, title });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
 
 export function addCriteria(title, weight) {
     return (dispatch, getState) => {
+        dispatch(isBusy(true));
         const { evaluationTemplateCreator } =getState();
         const templateId = evaluationTemplateCreator.id;
         const data = parseDataForCreateCriteria(title, weight);
@@ -143,14 +168,22 @@ export function addCriteria(title, weight) {
             dispatch({ type:CRITERIA_ADD, criterion: createCriterionFromData(response.data) });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            dispatch(isBusy(false));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
 
 export function deleteCriteria(id) {
     return (dispatch, getState) => {
+        dispatch(isBusy(true));
         const { evaluationTemplateCreator } =getState();
         const templateId = evaluationTemplateCreator.id;
         const data = parseDataForDeleteCriteria(id);
@@ -162,14 +195,22 @@ export function deleteCriteria(id) {
             dispatch({ type:CRITERIA_DELETE, id });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            dispatch(isBusy(false));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
 
 export function updateCriteria(id, title, weight) {
     return (dispatch, getState) => {
+        dispatch(isBusy(true));
         const { evaluationTemplateCreator } =getState();
         const templateId = evaluationTemplateCreator.id;
         const data = parseDataForUpdateCriteria(id, title, weight);
@@ -181,14 +222,22 @@ export function updateCriteria(id, title, weight) {
             dispatch({ type:CRITERIA_UPDATE, id, title, weight });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            dispatch(isBusy(false));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
 
 export function addQuestionToCriteria(criteriaId, questionTitle, questionType) {
     return (dispatch, getState) => {
+        dispatch(isBusy(true));
         const { evaluationTemplateCreator } =getState();
         const templateId = evaluationTemplateCreator.id;
         const data = parseDataForCreateQuestion(questionTitle, questionType);
@@ -198,24 +247,31 @@ export function addQuestionToCriteria(criteriaId, questionTitle, questionType) {
         serviceUrl += '/questions';
         return axios.post(serviceUrl, data)
         .then((response) => {
-            const question = parseDataFromCreateQuestion(response.data) ;
+            const question = parseDataFromCreateQuestion(response.data);
             dispatch({ type:QUESTION_ADD, criteriaId, question });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            dispatch(isBusy(false));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
 
 export function onQuestionTypeChange(criteriaId, questionId, type) {
     return (dispatch, getState) => {
+        dispatch(isBusy(true));
         const { evaluationTemplateCreator } =getState();
         const templateId = evaluationTemplateCreator.id;
         let question = evaluationTemplateCreator.questionsByIndex[questionId];
         question = { ...question, type };
         let data = parseDataForUpdateQuestion(question);
-
         let serviceUrl = TEMPLATE_SERVICE_URL;
         serviceUrl += '/'+templateId;
         serviceUrl += '/criteria/'+criteriaId;
@@ -227,14 +283,21 @@ export function onQuestionTypeChange(criteriaId, questionId, type) {
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            dispatch(isBusy(false));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
 export function onQuestionTitleChange(criteriaId, questionId, title) {
     return (dispatch, getState) => {
-
+        dispatch(isBusy(true));
         const { evaluationTemplateCreator } =getState();
         const templateId = evaluationTemplateCreator.id;
 
@@ -252,15 +315,22 @@ export function onQuestionTitleChange(criteriaId, questionId, title) {
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            let { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            dispatch(isBusy(false));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
 
 export function onQuestionAllowUploadChange(criteriaId, questionId, isAllowUpload) {
     return (dispatch, getState) => {
-
+        dispatch(isBusy(true));
         const { evaluationTemplateCreator } =getState();
         const templateId = evaluationTemplateCreator.id;
 
@@ -279,14 +349,22 @@ export function onQuestionAllowUploadChange(criteriaId, questionId, isAllowUploa
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            const { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            dispatch(isBusy(false));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
 
 export function  onAllowScaleDefinitionChange(criteriaId, questionId, isAllowScaleDefinitions) {
     return (dispatch, getState) => {
+        dispatch(isBusy(true));
         const { evaluationTemplateCreator } =getState();
         const templateId = evaluationTemplateCreator.id;
 
@@ -305,14 +383,22 @@ export function  onAllowScaleDefinitionChange(criteriaId, questionId, isAllowSca
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            const { message } = error;
-            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+            dispatch(isBusy(false));
+            if (error.response.status===422) {
+                dispatch(showNotification(MESSAGE_TYPE_ERROR, error.response.statusText));
+            } else {
+                error.response.data.errors.forEach((e) => {
+                    let { detail } = e;
+                    dispatch(showNotification(MESSAGE_TYPE_ERROR, detail));
+                });
+            }
         });
     };
 }
 
 export function onQuestionAllowCommentsChange(criteriaId, questionId, isCommentRequired) {
     return (dispatch, getState) => {
+        dispatch(isBusy(true));
         const { evaluationTemplateCreator } =getState();
         const templateId = evaluationTemplateCreator.id;
 
@@ -331,7 +417,13 @@ export function onQuestionAllowCommentsChange(criteriaId, questionId, isCommentR
             dispatch({ type:QUESTION_UPDATE, criteriaId, question });
         })
         .catch((error) => {
-            const { message } = error;
+            let message;
+            if (Array.isArray(error.response.data.errors)) {
+                message = error.response.data.errors[0].detail;
+            } else {
+                message = error.response.data.errors.detail;
+            }
+            dispatch(isBusy(true));
             dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
         });
     };
@@ -339,8 +431,8 @@ export function onQuestionAllowCommentsChange(criteriaId, questionId, isCommentR
 
 export function deleteQuestion(criteriaId, questionId) {
     return (dispatch, getState) => {
+        dispatch(isBusy(true));
         const templateId = getState().evaluationTemplateCreator.id;
-
         let serviceUrl = TEMPLATE_SERVICE_URL;
         serviceUrl += '/'+templateId;
         serviceUrl += '/criteria/'+criteriaId;
@@ -351,7 +443,14 @@ export function deleteQuestion(criteriaId, questionId) {
             dispatch({ type:QUESTION_DELETE, criteriaId, questionId });
         })
         .catch((error) => {
-            const { message } = error;
+            let message;
+            dispatch(isBusy(false));
+            if (Array.isArray(error.response.data.errors)) {
+                message = error.response.data.errors[0].detail;
+            } else {
+                message = error.response.data.errors.detail;
+            }
+
             dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
         });
     };
@@ -359,7 +458,7 @@ export function deleteQuestion(criteriaId, questionId) {
 
 export function onScaleDefinitionChange(criteriaId, questionId, typeDefinitionId, text, score, scaleDefinitionId) {
     return (dispatch, getState) => {
-
+        dispatch(isBusy(true));
         const templateId = getState().evaluationTemplateCreator.id;
         let serviceUrl = TEMPLATE_SERVICE_URL;
         serviceUrl += '/'+templateId;
@@ -367,52 +466,77 @@ export function onScaleDefinitionChange(criteriaId, questionId, typeDefinitionId
         serviceUrl += '/questions/'+questionId;
         serviceUrl += '/scale-definitions';
         const data = parseDataForScaleDefinition(typeDefinitionId, scaleDefinitionId, text, score);
+        let question = { ...getState().evaluationTemplateCreator.questionsByIndex[questionId] };
+        let promise;
+        if (scaleDefinitionId === undefined) {
 
-        if (scaleDefinitionId===undefined) {
-
-            return axios.post(serviceUrl, data)
+            promise = axios.post(serviceUrl, data)
                 .then((response) => {
                     let responseScaleDef = normalize(response.data, { endpoint:'evaluation-question-scale-definitions' });
                     responseScaleDef = build(responseScaleDef, 'evaluationQuestionScaleDefinitions')[0];
-                    let question = Object.assign({}, getState().evaluationTemplateCreator.questionsByIndex[questionId]);
-                    const index = question.scaleDefinitions.findIndex((item) => {
-                        return (item.id === responseScaleDef.typeDefinition.id);
+                    question.scaleDefinitions = question.scaleDefinitions.map((item) => {
+                        if (item.id === responseScaleDef.typeDefinition.id) {
+                            let label = text;
+                            let definitionId = response.data.data.id;
+                            return { ...item, label, definitionId };
+                        } else {
+                            return item;
+                        }
                     });
-                    question.scaleDefinitions[index].definitionId = response.data.data.id;
-                    question.scaleDefinitions[index].label = text;
                     dispatch({ type:QUESTION_UPDATE, criteriaId, question });
-                })
-                .catch((error) => {
-                    const { message } = error;
-                    dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
                 });
+
         } else {
             serviceUrl +=('/'+scaleDefinitionId);
-            return axios.patch(serviceUrl, data)
-                .then((response) => {
-                    let responseScaleDef = normalize(response.data, { endpoint:'evaluation-question-scale-definitions' });
-                    responseScaleDef = build(responseScaleDef, 'evaluationQuestionScaleDefinitions')[0];
-                    let question = { ...getState().evaluationTemplateCreator.questionsByIndex[questionId] };
-                    const index = question.scaleDefinitions.findIndex((item) => {
-                        return (item.id === responseScaleDef.typeDefinition.id);
+            if (text) {
+                promise = axios.patch(serviceUrl, data)
+                    .then((response) => {
+                        let responseScaleDef = normalize(response.data, { endpoint:'evaluation-question-scale-definitions' });
+                        responseScaleDef = build(responseScaleDef, 'evaluationQuestionScaleDefinitions')[0];
+
+                        question.scaleDefinitions = question.scaleDefinitions.map((item) => {
+                            if (item.id === responseScaleDef.typeDefinition.id) {
+                                let label = text;
+                                return { ...item, label };
+                            } else {
+                                return item;
+                            }
+                        });
+                        dispatch({ type:QUESTION_UPDATE, criteriaId, question });
                     });
 
-                    question.scaleDefinitions[index].label = text;
-                    dispatch({ type:QUESTION_UPDATE, criteriaId, question });
-                })
-                .catch((error) => {
-                    const { message } = error;
-                    dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
-                });
+            } else {
+                promise = axios.delete(serviceUrl)
+                    .then(() => {
+                        question.scaleDefinitions = question.scaleDefinitions.map((item) => {
+                            if (item.definitionId === scaleDefinitionId) {
+                                let { id, title, value } = item;
+                                return { id, title, value };
+                            } else {
+                                return item;
+                            }
+                        });
+                        dispatch({ type:QUESTION_UPDATE, criteriaId, question });
+                    });
+            }
         }
+        promise.catch((error) => {
+            let message;
+            if (Array.isArray(error.response.data.errors)) {
+                message = error.response.data.errors[0].detail;
+            } else {
+                message = error.response.data.errors.detail;
+            }
+            dispatch(isBusy(false));
+            dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
+        });
+        return promise;
     };
 }
 
 export function addDocumentsForQuestion(criteriaId, questionId, documents) {
     return (dispatch, getState) => {
-
         const templateId = getState().evaluationTemplateCreator.id;
-
         dispatch({
             type: DOCUMENTS_UPLOADING,
             questionId,
@@ -481,7 +605,13 @@ export function deleteDocument(criteriaId, questionId, id) {
             dispatch({ type:DOCUMENT_DELETE, questionId, id });
         })
         .catch((error) => {
-            const { message } = error;
+            let message;
+            if (Array.isArray(error.response.data.errors)) {
+                message = error.response.data.errors[0].detail;
+            } else {
+                message = error.response.data.errors.detail;
+            }
+
             dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
         });
     };
@@ -497,9 +627,11 @@ export function incrementProgress(documentId, progress) {
 
 export function fetchTemplate(id) {
     return (dispatch) => {
+        dispatch(isBusy(true));
         axios.all([
             axios.get('evaluation-question-types')
             .then((response) => {
+                dispatch(isBusy(false));
                 let questionTypes = parseInitialData(response.data);
                 if (questionTypes.length) {
                     dispatch({ type:INITIALIZED, questionTypes });
@@ -510,7 +642,14 @@ export function fetchTemplate(id) {
 
             })
             .catch((error) => {
-                const { message } = error;
+                dispatch(isBusy(false));
+                let message;
+                if (Array.isArray(error.response.data.errors)) {
+                    message = error.response.data.errors[0].detail;
+                } else {
+                    message = error.response.data.errors.detail;
+                }
+
                 dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
             }),
             getPromiseForService(TEMPLATE_SERVICE_URL+'/'+id+'?include=criteria.questions', dispatch)
@@ -525,7 +664,22 @@ export function fetchTemplate(id) {
 function getPromiseForService(url, dispatch) {
     return axios.get(url)
     .catch((error) => {
-        const { message } = error;
+        let { message } = error;
+        if (!message) {
+            if (Array.isArray(error.response.data.errors)) {
+                message = error.response.data.errors[0].details;
+            } else {
+
+                message = error.response.data.errors.details;
+            }
+        }
         dispatch(showNotification(MESSAGE_TYPE_ERROR, message));
     });
+}
+
+export function isBusy(status) {
+    return {
+        type: IS_BUSY,
+        status
+    };
 }

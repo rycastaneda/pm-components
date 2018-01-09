@@ -12,7 +12,7 @@ const initialState = {
     matchedSupplierId: '',
     isLoading: false,
     meta: {},
-    data: {},
+    currentUser: {},
 };
 
 export function evaluationAssignment(state = initialState, action) {
@@ -89,6 +89,11 @@ export function evaluationAssignment(state = initialState, action) {
                 isLoading: false,
             };
 
+        case  actionTypes.ASSIGNMENT_CREATION_SET_UPDATE_CURRENT_USER:
+            return {
+                ...state,
+                currentUser: action.currentUser
+            };
 
         default:
             return state;

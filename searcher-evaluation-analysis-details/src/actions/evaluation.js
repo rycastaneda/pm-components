@@ -35,6 +35,11 @@ export function fetchEvaluation(assignmentId, currentView) {
                     type: actions.RECEIVE_EVALUATION,
                     evaluation: response.data
                 });
+            })
+            .catch(() => {
+                return dispatch({
+                    type: actions.REQUEST_ERROR
+                });
             });
     };
 }

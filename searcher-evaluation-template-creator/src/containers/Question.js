@@ -46,6 +46,7 @@ class Question extends Component {
         } = this.props.question;
 
         this.state = {
+            isMaximiseEnabled:true,
             title,
             isAllowUpload,
             isCommentRequired,
@@ -91,6 +92,7 @@ class Question extends Component {
         } = question;
         const documentError ='';
         this.setState({
+            isQuestionTitleError:false,
             title,
             isAllowUpload,
             isCommentRequired,
@@ -124,14 +126,17 @@ class Question extends Component {
         if (this.props.question.id!==null) {
             this.props.dispatch(onQuestionTitleChange(this.props.criteriaId, this.props.question.id, this.state.title));
         }
+        this.setState({ isMaximiseEnabled:true });
         clearInterval(this.intervalId_update);
     }
 
     onTitleChange(title) {
-        this.setState({ title });
         if (title.length) {
             this.clearAllIntervals();
+            this.setState({ title, isMaximiseEnabled:false, isQuestionTitleError:false });
             this.intervalId_update = setInterval(this.updateTitle, INPUT_SYNC_INTERVAL);
+        } else {
+            this.setState({ isQuestionTitleError:true });
         }
     }
 
@@ -164,6 +169,7 @@ class Question extends Component {
 
     updateScaleDefinition(id, index, label, value, definitionId) {
         this.clearAllIntervals();
+        this.setState({ isMaximiseEnabled:true });
         this.props.dispatch(onScaleDefinitionChange(this.props.criteriaId, this.props.question.id, id,  label, value, definitionId));
     }
 
@@ -173,7 +179,7 @@ class Question extends Component {
 
         let { value, definitionId } = scaleDefinitions[index];
 
-        this.setState({ scaleDefinitions });
+        this.setState({ scaleDefinitions, isMaximiseEnabled:false });
         this.clearAllIntervals();
         this.intervalId_update = setInterval(() => {
             this.updateScaleDefinition(id, index, label, value, definitionId);
@@ -233,7 +239,13 @@ class Question extends Component {
         }
         return style;
     }
-
+    getClassIfError(val) {
+        if (val) {
+            return ' error';
+        } else {
+            return '';
+        }
+    }
     renderMinimised() {
         return (
             <div className="row">
@@ -269,7 +281,6 @@ class Question extends Component {
 
     renderMaximised() {
         const isDefsDisabled = (this.state.type === '3' || this.state.type === '4');
-
         return (
             <div>
                 <h3>Question {this.props.questionIndex}</h3>
@@ -294,7 +305,7 @@ class Question extends Component {
                                 <span className="required" aria-required="true">Question Title
                                 </span>
                             </label>
-                            <input className="form-control"
+                            <input className={`form-control ${this.getClassIfError(this.state.isQuestionTitleError)}`}
                                    defaultValue={this.state.title}
                                    onChange={ event => this.onTitleChange(event.target.value)} />
                         </div>
@@ -307,12 +318,18 @@ class Question extends Component {
                                     <div className="hidden-sm">
                                         <br /><br />
                                     </div>
-                                    <button
+                                    { this.state.isMaximiseEnabled?
+                                        <button
                                         className="btn btn-sm"
                                         onClick = {this.toggleMaximise} >
-                                        <i className="fa fa-angle-double-up"></i>
-                                        Collapse Question
-                                    </button>
+                                            <i className="fa fa-angle-double-up"></i>
+                                            Collapse Question
+                                        </button>:
+                                        <button disabled
+                                        className="btn btn-sm">
+                                            Saving...
+                                        </button>
+                                    }
                                 </div>
                                 <div className="col-md-12">
                                     <div className="form-group">
@@ -362,7 +379,9 @@ class Question extends Component {
                                                     </label>
                                                 </div>
                                             </li>
-                                            <li>
+                                            {this.state.type === '4'?
+                                            null
+                                            :<li>
                                                 <div className="checkbox">
                                                     <label>
                                                         <input type="checkbox"
@@ -372,7 +391,7 @@ class Question extends Component {
                                                         {QUESTION_OPTIONS[2].label}
                                                     </label>
                                                 </div>
-                                            </li>
+                                            </li>}
                                         </ul>
                                     </div>
                                 </div>
@@ -404,6 +423,18 @@ class Question extends Component {
                             : null
                     }
                     {this.renderFunctionButtons()}
+                    {
+                        this.props.onNewQuestionClose?
+                        <div className="col-md-12 text-right">
+                            <div className="form-group">
+                                <button className="btn btn-sm"
+                                onClick = {this.props.onNewQuestionClose}>
+                                <i className = "fa fa-times"></i>Discard Question
+                                </button>
+                            </div>
+                        </div>
+                        :null
+                    }
                 </fieldset>
             </div>);
     }
@@ -440,6 +471,7 @@ Question.propTypes = {
     questionIndex: PropTypes.number,
     criteriaId: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
+    onNewQuestionClose:PropTypes.func,
     questionTypes:PropTypes.array.isRequired
 };
 

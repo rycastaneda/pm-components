@@ -18,6 +18,7 @@ class EvaluationTemplateCreator extends Component {
         this.onTitleTextChange = this.onTitleTextChange.bind(this);
         this.updateTitleText= this.updateTitleText.bind(this);
         this.getTitleInputStyle = this.getTitleInputStyle.bind(this);
+        this.onToggleNewCriteriaClick = this.onToggleNewCriteriaClick.bind(this);
         this.state = { title:this.props.title, showAdd:false, isTitleError:false, isSaved:false };
         this.intervalId_update = null;
         this.intervalId_saveAnim =null;
@@ -51,18 +52,24 @@ class EvaluationTemplateCreator extends Component {
             this.props.dispatch(addTemplate(this.state.title));
         }
     }
-    updateTitleText(value) {
 
-        this.props.dispatch(updateTemplate(value, this.props.id));
+    updateTitleText() {
+        this.props.dispatch(updateTemplate(this.state.title, this.props.id));
         clearInterval(this.intervalId_update);
 
     }
+
     onTitleTextChange(event) {
         clearInterval(this.intervalId_update);
-        this.setState({ title:event.target.value, isTitleError:!event.target.value.length  });
+        let isTitleError = !event.target.value.length||event.target.value.match('(.|\s)*\S(.|\s)*');
+        this.setState({ title:event.target.value, isTitleError });
         if (this.props.id&&event.target.value) {
-            this.intervalId_update = setInterval(this.updateTitleText(event.target.value), INPUT_SYNC_INTERVAL);
+            this.intervalId_update = setInterval(this.updateTitleText, INPUT_SYNC_INTERVAL);
         }
+    }
+    onToggleNewCriteriaClick() {
+        this.setState({ showAdd: !this.state.showAdd });
+        this.props.dispatch(minimiseAllCriteria());
     }
     getTitleInputStyle() {
         let style = 'form-control';
@@ -73,6 +80,7 @@ class EvaluationTemplateCreator extends Component {
         }
         return style;
     }
+
     render() {
         const { allCriteriaIndexes, id } = this.props;
         return (
@@ -116,56 +124,63 @@ class EvaluationTemplateCreator extends Component {
                     </div>
                 </div>
 
-                        {
-                            allCriteriaIndexes.map((criteriaId, index) =>
-                            <div className="row" key = {index}>
-                                <Criteria
-                                    criteriaId = {criteriaId}/>
-                            </div>
-                            )
-                        }
-                        {
-                            (id!==null)?
-                                (allCriteriaIndexes.length)?
-                                    <div>
-                                        <div className="row">
-                                            <div className="col-md-12">
-                                                <div className="form-group new-criteria">
-                                                    <button className="btn"
-                                                    onClick={() => {
-                                                        this.setState({ showAdd: !this.state.showAdd });
-                                                        this.props.dispatch(minimiseAllCriteria());
-                                                    }}>
-                                                    <i className="fa fa-plus"></i>Add New Criteria</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                            {
-                                                this.state.showAdd?
-                                                    <div className="row"><Criteria criteriaId={null}/></div>
-                                                    :null
-                                                }
-
+                {
+                    allCriteriaIndexes.map((criteriaId, index) =>
+                    <div className="row" key={index}>
+                        <Criteria
+                            criteriaId={criteriaId}/>
+                    </div>
+                    )
+                }
+                {
+                    (id!==null)?
+                        (allCriteriaIndexes.length)?
+                            <div>
+                                { this.state.showAdd?
+                                    <div className="row">
+                                        <Criteria
+                                        criteriaId={null}
+                                        onNewCriteriaClose={this.onToggleNewCriteriaClick}/>
                                     </div>
                                     :
                                     <div className="row">
-                                        <Criteria criteriaId={null}/>
+                                        <div className="col-md-12">
+                                            <div className="form-group new-criteria">
+                                                <button className="btn"
+                                                onClick={this.onToggleNewCriteriaClick}>
+                                                <i className="fa fa-plus"></i>Add New Criteria</button>
+                                            </div>
+                                        </div>
                                     </div>
-                                :null
-                        }
+                                }
+
+                            </div>
+                            :
+                            <div className="row">
+                                <Criteria criteriaId={null}/>
+                            </div>
+                        :null
+                }
                 <div className="row">
                     <div className={`col-md-12 text-right ${id !== null ? 'show' : 'hidden'}`}>
                         <hr />
-
                         <div className="form-group">
-                            <ul className="list-inline">
-                                <li>
-                                    <a className="btn btn-md" href="/searcher/evaluation_templates/list"><i className="fa fa-save"></i>Save and Continue Later</a>
-                                </li>
-                                <li>
-                                    <button className="btn btn-md save-template " type="button" onClick={() => this.props.dispatch(publishTemplate())}><i className="fa fa-send"></i>Publish Template</button>
-                                </li>
-                            </ul>
+                            { this.props.isBusy?
+                                    <ul className="list-inline">
+                                        <li>
+                                            <a className="btn btn-md" disabled>Saving</a>
+                                        </li>
+                                    </ul>
+                                :
+                                <ul className="list-inline">
+                                    <li>
+                                        <a className="btn btn-md" href="/searcher/evaluation_templates/list"><i className="fa fa-save"></i>Save and Continue Later</a>
+                                    </li>
+                                    <li>
+                                        <button className="btn btn-md save-template " type="button" onClick={() => this.props.dispatch(publishTemplate())}><i className="fa fa-send"></i>Publish Template</button>
+                                    </li>
+                                </ul>
+                            }
                         </div>
                     </div>
                 </div>
@@ -181,11 +196,12 @@ EvaluationTemplateCreator.propTypes = {
     allCriteriaIndexes: PropTypes.array,
     title: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
-    id: PropTypes.number
+    id: PropTypes.number,
+    isBusy: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {
-    const { allCriteriaIndexes, title, id } = state.evaluationTemplateCreator;
-    return { allCriteriaIndexes, title, id };
+    const { allCriteriaIndexes, title, id, isBusy } = state.evaluationTemplateCreator;
+    return { allCriteriaIndexes, title, id, isBusy };
 }
 export default connect(mapStateToProps)(EvaluationTemplateCreator);

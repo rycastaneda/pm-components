@@ -7,7 +7,7 @@ export class ComparisonTable extends Component {
         const { criteria, entities } = this.props;
 
         return (
-            <table className="table db-table db-table-sort">
+            <table className="table db-table">
                 <thead>
                     <tr>
                         <th>User</th>
@@ -83,9 +83,11 @@ function mapStateToProps(state) {
             }
         });
 
+        let entity = rawEntity.byType[assignment.entityType][assignment.entityId];
+
         entities.push({
-            id: assignment.entityId,
-            name: rawEntity.byId[assignment.entityId].title,
+            id: assignmentId,
+            name: entity.title,
             scores
         });
     });

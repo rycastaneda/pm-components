@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import Datetime from './PlantMinerDatetime';
-
+import  Select  from 'react-select';
 class EvaluationAssignmentsFilter extends Component {
     constructor(props) {
         super(props);
@@ -8,20 +8,20 @@ class EvaluationAssignmentsFilter extends Component {
             isFilterShown: false,
             selectedStatus: '',
             selectedLinkedTo: '',
-            selectedTemplate: '',
+            selectedTemplate: null,
             selectedAssignedOn: null,
-            selectedAssignedTo:'',
+            selectedAssignedTo:null,
             selectedSupplier:''
         };
         this.onSelectedDateChange = this.onSelectedDateChange.bind(this);
         this.onSupplierChange = this.onSupplierChange.bind(this);
         this.onLinkedToChange = this.onLinkedToChange.bind(this);
         this.onStatusChange = this.onStatusChange.bind(this);
-        this.onAssignedToChange = this.onAssignedToChange.bind(this);
         this.onTemplateChange = this.onTemplateChange.bind(this);
         this.onAdvancedSubmit = this.onAdvancedSubmit.bind(this);
         this.onToggleFilter = this.onToggleFilter.bind(this);
         this.onKeyPress = this.onKeyPress.bind(this);
+        this.onCancelFilter = this.onCancelFilter.bind(this);
     }
 
     onTemplateChange(val) {
@@ -34,11 +34,9 @@ class EvaluationAssignmentsFilter extends Component {
         this.setState({ selectedLinkedTo: val });
     }
     onSelectedDateChange(date) {
+        // set date to null when cleared
+        date = (date ==='')?null:date;
         this.setState({ selectedAssignedOn: date });
-    }
-    onAssignedToChange(val) {
-
-        this.setState({ selectedAssignedTo: val });
     }
 
     onKeyPress(event) {
@@ -48,15 +46,25 @@ class EvaluationAssignmentsFilter extends Component {
             } else {
                 this.onNormalSubmit();
             }
-
         }
     }
 
     onSupplierChange(index) {
         this.setState({ selectedSupplier: index });
     }
+    onCancelFilter() {
+        this.state = {
+            isFilterShown: false,
+            selectedStatus: '',
+            selectedLinkedTo: '',
+            selectedTemplate: null,
+            selectedAssignedOn: null,
+            selectedAssignedTo:null,
+            selectedSupplier:''
+        };
+        this.onAdvancedSubmit();
+    }
     onAdvancedSubmit() {
-
         let selectedAssignedOn =
             this.state.selectedAssignedOn !== null
                 ? this.state.selectedAssignedOn.toDate()
@@ -72,6 +80,16 @@ class EvaluationAssignmentsFilter extends Component {
         if (selectedSupplier!=='') {
             selectedEntityInstanceId = this.props.supplierList[selectedSupplier].userName;
             selectedSupplier = this.props.supplierList[selectedSupplier].id;
+        }
+        if (selectedAssignedTo===null) {
+            selectedAssignedTo ='';
+        } else {
+            selectedAssignedTo =selectedAssignedTo.id;
+        }
+        if (selectedTemplate===null) {
+            selectedTemplate ='';
+        } else {
+            selectedTemplate =selectedTemplate.id;
         }
         this.props.onSubmit(
             { selectedStatus,
@@ -92,20 +110,19 @@ class EvaluationAssignmentsFilter extends Component {
         let { evaluationTemplateList, assignedToList, assignmentStatusesList } = this.props;
         return (
             <div>
-
-                    <div className="row mar-btm">
-                        <div className="col-xs-12 col-md-12 align-right">
-                            <button
-                                className="btn pmfilters-toggle"
-                                onClick={this.onToggleFilter}>
-                                <i className="fa fa-sort-amount-desc" />
-                                <span>
-                                    {this.state.isFilterShown
-                                        ? 'Hide Filters'
-                                        : 'Show Filters'}
-                                </span>
-                            </button>
-                        </div>
+                <div className="row mar-btm">
+                    <div className="col-xs-12 col-md-12 align-right">
+                        <button
+                            className="btn pmfilters-toggle"
+                            onClick={this.onToggleFilter}>
+                            <i className="fa fa-sort-amount-desc" />
+                            <span>
+                                {this.state.isFilterShown
+                                    ? 'Hide Filters'
+                                    : 'Show Filters'}
+                            </span>
+                        </button>
+                    </div>
                 </div>
                 {this.state.isFilterShown ? (
                     <div className="panel panel-default pad-all">
@@ -114,33 +131,30 @@ class EvaluationAssignmentsFilter extends Component {
                             <div className="col-xs-6">
                                 <div className="form-group">
                                     <label>Template</label>
-                                    <select className = "form-control form-control-sm"
+
+                                    <Select
+                                    name="form-field-name"
                                     value={this.state.selectedTemplate}
-                                    onChange={event =>
-                                        this.onTemplateChange(
-                                            event.target.value
-                                        )}>
-                                        <option value={''} >None</option>
-                                        {   evaluationTemplateList.map(item =>
-                                            <option key={item.id} value={item.id}>{item.title}</option>)
-                                        }
-                                    </select>
+                                    options={evaluationTemplateList}
+                                    noResultsText ={'No match found'}
+                                    placeholder = {'Select a template'}
+                                    backspaceToRemoveMessage={''}
+                                    onChange={item =>
+                                        this.setState({ selectedTemplate: item })} />
                                 </div>
                             </div>
                             <div className="col-xs-6">
                                 <div className="form-group">
                                     <label>Assigned To</label>
-                                    <select className = "form-control form-control-sm"
-                                        value={this.state.selectedAssignedTo}
-                                        onChange={event =>
-                                            this.onAssignedToChange(
-                                                event.target.value
-                                            )}>
-                                        <option value={''} >Any Assignee</option>
-                                        {   assignedToList.map(item =>
-                                            <option key={item.id} value={item.id}>{item.firstName} {item.lastName}</option>)
-                                        }
-                                    </select>
+                                    <Select
+                                    name="form-field-name"
+                                    value={this.state.selectedAssignedTo}
+                                    options={assignedToList}
+                                    noResultsText ={'No match found'}
+                                    placeholder = {'Select a user'}
+                                    backspaceToRemoveMessage={''}
+                                    onChange={item =>
+                                        this.setState({ selectedAssignedTo: item })} />
                                 </div>
                             </div>
                             <div className="col-xs-6">
@@ -149,6 +163,7 @@ class EvaluationAssignmentsFilter extends Component {
                                     <div className="input-group">
                                         <span className="input-group-addon"><i className="fa fa-calendar"></i></span>
                                         <Datetime
+                                            dateFormat="DD/MM/YYYY"
                                             placeholder="Any Date"
                                             onSelectedDateChange={
                                                 this.onSelectedDateChange
@@ -207,7 +222,7 @@ class EvaluationAssignmentsFilter extends Component {
                                         <button
                                             type="button"
                                             className="btn btn-sm btn-danger"
-                                            onClick={this.onToggleFilter}>
+                                            onClick={this.onCancelFilter}>
                                             <i className="fa fa-ban" />Cancel
                                         </button>
                                     </li>

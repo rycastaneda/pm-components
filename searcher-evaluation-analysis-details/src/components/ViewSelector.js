@@ -5,7 +5,7 @@ const ViewSelector = ({ view, changeView }) => {
         view === currentView ? 'btn-default' : 'btn-reverse';
 
     return (
-        <div className="btn-group" role="group" aria-label="Basic example">
+        <div className="btn-group" role="group" aria-label="Reports Selector">
             <button
                 id="single"
                 type="button"

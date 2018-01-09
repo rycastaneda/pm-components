@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import build from 'redux-object';
+import { selectFromStore } from '../../utils/selectFromStore';
 import * as actions from '../../actions/evaluationAssignmentsAction';
 
 const PreferredSuppliersDropdown = ({ evaluationSuppliers, isLoading, actions }) => (
@@ -45,7 +45,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state, ownProps) => {
     const  isLoading = state.evaluationAssignment.meta['/preferred-suppliers'].loading;
-    const evaluationSuppliers = (state.evaluationAssignment.meta['/preferred-suppliers'].data || []).map(object => build(state.evaluationAssignment, 'preferredSuppliers', object.id));
+    const evaluationSuppliers = selectFromStore(state.evaluationAssignment, '/preferred-suppliers', 'preferredSuppliers');
 
     return {
         ...ownProps,

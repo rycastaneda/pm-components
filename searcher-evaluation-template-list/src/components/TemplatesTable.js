@@ -5,7 +5,6 @@ import Preloader from './PreloaderAnimation';
 
 class TemplatesTable extends Component {
 
-
     constructor(props) {
         super(props);
         this.actionDropdown= null;
@@ -47,8 +46,7 @@ class TemplatesTable extends Component {
         this.setState({ menuVisibleItemId:null });
     }
     renderMoreButton(id, edit_url, preview_url, active, instances) {
-        instances = Number(instances);
-        instances;
+        instances = Number(instances);        
         if (this.state.menuVisibleItemId===id) {
             return (
             <div className="db-function-dropdown click"
@@ -67,19 +65,25 @@ class TemplatesTable extends Component {
                     <li>
                         <a href={preview_url} ><i className="fa fa-eye"></i> Preview</a>
                     </li>
-                    { !active&&(instances<1)?
+                    { !active&&(instances===0)?
                         <li>
-                            <a disabled ="true" href={edit_url} ><i className="fa fa-edit"></i> Edit</a>
+                            <a href={edit_url} ><i className="fa fa-edit"></i> Edit</a>
                         </li>
                         :
                         null
                     }
-                    { !active&&(instances<1)?
-                        null
+                    { !active?
+                         instances>0?
+                         <li>
+                             <a href="javascript:;"
+                             onClick={ ()  => this.onTemplateToggleActivation(id, !(active))}><i className="fa fa-toggle-off"></i>Activate
+                             </a>
+                         </li>
+                         :null
                         :
                         <li>
                             <a href="javascript:;"
-                            onClick={ ()  => this.onTemplateToggleActivation(id, !(active))}><i className="fa fa-toggle-off"></i> {active?' Deactivate':'Activate'}
+                            onClick={ ()  => this.onTemplateToggleActivation(id, !(active))}><i className="fa fa-toggle-off"></i>Deactivate
                             </a>
                         </li>
                     }
@@ -103,15 +107,15 @@ class TemplatesTable extends Component {
     render() {
         return (
         <div>
-            <table className="table db-table db-table-sort">
+            <table className="table db-table">
             <thead>
             <tr>
                 <th>Template name</th>
-                <th>Instances</th>
-                <th>Completed</th>
-                <th>Creation Date</th>
-                <th>Status</th>
-                <th>More</th>
+                <th className="td-center nowrap">Instances</th>
+                <th className="td-center nowrap">Completed</th>
+                <th className="td-center nowrap">Creation Date</th>
+                <th className="td-center nowrap">Status</th>
+                <th className="td-center nowrap">More</th>
             </tr>
             </thead>
             <tbody>
@@ -121,8 +125,13 @@ class TemplatesTable extends Component {
                         <Preloader />
                     </td>
                 </tr>
-                :
-                this.props.tableData.map((item, index) =>
+                : (this.props.tableData.length===0)?
+                    <tr>
+                        <td colSpan="10" className="text-center td-no-link">
+                            Click 'Create Template' to create an evaluation template
+                        </td>
+                    </tr>
+                : this.props.tableData.map((item, index) =>
                     <tr key={index}>
                     <td className="nowrap">{item.title}</td>
                     <td className="td-center nowrap">{item.instances}</td>

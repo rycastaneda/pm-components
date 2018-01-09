@@ -8,7 +8,8 @@ import {
     DOCUMENT_UPLOAD_IN_PROGRESS,
     DOCUMENTS_UPLOADING,
     DOCUMENT_DELETE,
-    IS_BUSY
+    IS_BUSY,
+    REQUEST_FAILED
 } from '../constants/ActionTypes';
 
 import {
@@ -17,14 +18,15 @@ import {
     UPLOAD_FAILED
 } from '../constants';
 
-const INITIAL_EVALUATION_SUBMISSION_STATE = { criteriaByIndex:{}, criteriaIds:[], assignmentStatus:{ id:null, title:'' } };
+const INITIAL_EVALUATION_SUBMISSION_STATE = { criteriaByIndex:{}, criteriaIds:[], assignmentStatus:{ id:null, title:'' }, isBusy:false };
 
 export function evaluationSubmission(state = INITIAL_EVALUATION_SUBMISSION_STATE, action) {
     switch (action.type) {
 
         case UPDATE_TEMPLATE_ASSIGNMENT:
             {
-                let {
+                const isBusy =false;
+                const {
                     id,
                     title,
                     criteriaIds,
@@ -39,8 +41,9 @@ export function evaluationSubmission(state = INITIAL_EVALUATION_SUBMISSION_STATE
 
                 } = action;
 
-                let newState = Object.assign({}, state, {
+                return  { ...state,
                     id,
+                    isBusy,
                     title,
                     criteriaIds,
                     assignmentId,
@@ -51,72 +54,67 @@ export function evaluationSubmission(state = INITIAL_EVALUATION_SUBMISSION_STATE
                     scaleDefinitionByIndex,
                     uploadedDocumentByIndex,
                     questionTypeDefinitionsByIndex
-                });
+                };
 
-                return newState;
             }
 
         case QUESTION_UPDATED:
             {
-                let { question } = action;
+                const isBusy =false;
+                const { question } = action;
                 let { questionByIndex } = state;
                 questionByIndex[question.id] = question;
-                return { ...state, questionByIndex };
+                return { ...state, questionByIndex, isBusy };
 
             }
         case CRITERIA_UPDATED:
             {
-                let { criteria } = action;
+                const isBusy = false;
+                const { criteria } = action;
                 let { criteriaByIndex } = state;
                 criteriaByIndex[criteria.id] = criteria;
-
-                return { ...state, criteriaByIndex };
-
+                return { ...state, criteriaByIndex, isBusy };
             }
         case DOCUMENT_UPLOAD_SUCCESS: {
 
             let { uploadedDocumentByIndex } = state;
             let document = uploadedDocumentByIndex[action.documentId];
-
-            uploadedDocumentByIndex[action.documentId] =Object.assign({}, document, {
-                status: UPLOAD_SUCCESS,
-                progress: 100,
-                referenceId:action.newDocumentId,
-                referenceUrl:action.url
-            });
-
+            let status = UPLOAD_SUCCESS;
+            let progress = 100;
+            let referenceId = action.newDocumentId;
+            let referenceUrl= action.url;
+            document = { ...document, status, progress, referenceId, referenceUrl };
+            uploadedDocumentByIndex[action.documentId] = document;
             return { ...state, uploadedDocumentByIndex };
         }
         case DOCUMENT_UPLOAD_FAILED: {
             let { uploadedDocumentByIndex } = state;
             let document = uploadedDocumentByIndex[action.documentId];
-            uploadedDocumentByIndex[action.documentId] = Object.assign({}, document, {
-                status: UPLOAD_FAILED,
-                progress: action.progress
-            });
+            let status = UPLOAD_FAILED;
+            let { progress } = action;
+            document = { ...document, status, progress };
+            uploadedDocumentByIndex[action.documentId] = document;
 
             return { ...state, uploadedDocumentByIndex };
         }
         case DOCUMENT_UPLOAD_IN_PROGRESS: {
             let { uploadedDocumentByIndex } = state;
             let document = uploadedDocumentByIndex[action.documentId];
-            uploadedDocumentByIndex[action.documentId] = Object.assign({}, document, {
-                status: UPLOAD_IN_PROGRESS,
-                progress: action.progress
-            });
-
+            let status = UPLOAD_IN_PROGRESS;
+            let { progress } = action;
+            document = { ...document, status, progress };
+            uploadedDocumentByIndex[action.documentId] = document;
             return { ...state, uploadedDocumentByIndex };
         }
         case DOCUMENTS_UPLOADING: {
             let { uploadedDocumentByIndex, questionByIndex } = state;
-
             action.documents.map((document) => {
                 questionByIndex[action.questionId].uploadedDocuments.push(document.id);
-                uploadedDocumentByIndex[document.id] =Object.assign({}, document, {
-                    status: UPLOAD_IN_PROGRESS,
-                    name: document.name,
-                    progress: 15
-                });
+                let status = UPLOAD_IN_PROGRESS;
+                let progress = 15;
+                let { name } = document;
+                document = { ...document, status, name, progress };
+                uploadedDocumentByIndex[document.id] = document;
             });
             return { ...state, uploadedDocumentByIndex };
         }
@@ -125,15 +123,18 @@ export function evaluationSubmission(state = INITIAL_EVALUATION_SUBMISSION_STATE
             let { documentId, questionId } = action;
             let question = questionByIndex[questionId];
             question.uploadedDocuments = question.uploadedDocuments.filter(id => id!== documentId);
-
             delete uploadedDocumentByIndex[String(documentId)];
             questionByIndex[questionId] = question;
             return Object.assign({}, state, { uploadedDocumentByIndex, questionByIndex });
         }
         case ASSIGNMENT_SUBMITTED: {
-            return { ...state };
+            const isBusy = false;
+            return { ...state, isBusy };
         }
-
+        case REQUEST_FAILED: {
+            const isBusy = false;
+            return { ...state, isBusy };
+        }
         case IS_BUSY:
             {
                 state.isBusy = action.status;

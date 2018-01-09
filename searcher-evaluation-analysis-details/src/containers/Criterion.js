@@ -50,21 +50,23 @@ export class Criterion extends Component {
                     className={`toggle-section pmaccordion__head ${isOpen
                         ? ''
                         : 'collapsed'}`}>
-                    <div className="row-title">
-                        <span className="pull-left pmaccordion__title">
-                            {title}
-                        </span>
-                        <span className="pull-right status-icon">
-                            Weighting: %
-                            <span className="weight">{weight}</span>
-                        </span>
-                        <div className="clearfix" />
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="pmaccordion__title font-rg">{title}</div>
+                        </div>
+                        <div className="col-md-6 text-right">
+                            <div className="weight">
+                                Weighting: <strong>{weight}%</strong>
+                            </div>
+                        </div>
                     </div>
                 </a>
+
                 <div
-                    className={`collapse mar-btm mar-top pad-hor ${isOpen
+                    className={`collapse ${isOpen
                         ? 'in'
                         : ''}`}>
+                        <div className="pmaccordion__body">
                     {currentView === 'all' ? (
                         <Header
                             currentView={currentView}
@@ -77,6 +79,7 @@ export class Criterion extends Component {
                     ) : (
                         <Report questions={questions} />
                     )}
+                </div>
                 </div>
             </div>
         );
