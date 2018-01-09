@@ -7,7 +7,7 @@ export class ComparisonTable extends Component {
         const { criteria, entities } = this.props;
 
         return (
-            <table className="table db-table db-table-sort">
+            <table className="table db-table">
                 <thead>
                     <tr>
                         <th>User</th>
