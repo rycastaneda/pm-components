@@ -12,7 +12,7 @@ import { selectFromStore, getLoadingForEndpoint } from '../../utils/reduxApiUtil
 class SupplierInteractionsContainer extends Component {
     componentDidMount() {
         const { apiActions } = this.props;
-        apiActions.fetchInteractions('8');
+        apiActions.applyPerPage('8');
     }
 
     render() {
@@ -43,8 +43,9 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state, ownProps) => {
     const { supplierId } = ownProps;
+    const { maxRowsSelected } = state.supplierInteractions;
     const interactions = selectFromStore(state.supplierInteractions, `/preferred-suppliers/${supplierId}/interactions`, 'interactions');
-    const loading = getLoadingForEndpoint(state.supplierInteractions, `/preferred-suppliers/${supplierId}/interactions`);
+    const loading = getLoadingForEndpoint(state.supplierInteractions, `/preferred-suppliers/${supplierId}/interactions?per_page=${maxRowsSelected}`);
 
     return {
         ...ownProps,

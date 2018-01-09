@@ -1,4 +1,6 @@
 import build from 'redux-object';
+import api from '../../../shared/api.config';
+import UrlAssembler from 'url-assembler';
 
 export const selectFromStore = (state, metaEndpoint, type) => {
 
@@ -19,3 +21,5 @@ export const getLoadingForEndpoint = (state, metaEndpoint) => {
 
     return state.meta[metaEndpoint].loading;
 };
+
+export const baseUrl = UrlAssembler(api.configureHostname());
