@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import build from 'redux-object';
+import { selectFromStore } from '../../utils/selectFromStore';
 import * as actions from '../../actions/evaluationAssignmentsAction';
 
 const MatchedItemsDropdown = ({ matchedItems, isLoading, actions }) => (
@@ -48,10 +48,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state, ownProps) => {
     const { rfqTypeSelectedId, matchedSupplierId } = state.evaluationAssignment;
-
     const  isLoading = state.evaluationAssignment.meta[`/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers/${matchedSupplierId}/matched-items`].loading;
-    const matchedItems = (state.evaluationAssignment.meta[`/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers/${matchedSupplierId}/matched-items`].data || []).map(object => build(state.evaluationAssignment, 'matchedItems', object.id));
-
+    const matchedItems = selectFromStore(state.evaluationAssignment, `/request-for-quotations/${rfqTypeSelectedId}/matched-suppliers/${matchedSupplierId}/matched-items`, 'matchedItems');
 
     return {
         ...ownProps,
