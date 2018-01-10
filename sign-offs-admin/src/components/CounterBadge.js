@@ -43,7 +43,9 @@ class CounterBadge extends Component {
             }
         };
 
-        return (
+        return !count ? (
+            <span />
+        ) : (
             <span
                 className={`mar-r-sm counter-badge ${this.state.isHovered
                     ? 'in'
