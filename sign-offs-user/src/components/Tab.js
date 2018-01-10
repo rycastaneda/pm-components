@@ -31,7 +31,7 @@ const Tab = ({
                 let loader = <Loader icon="-small" />;
                 let content = comment.isEditing ? (
                     <NewComment
-                        comment={comment.comment}
+                        comment={comment.text}
                         getNewCommentRef={input => (comment.ref = input)}
                         cancelNewComment={toggleCommentEdit(comment)}
                         submitComment={submitComment(comment)}
