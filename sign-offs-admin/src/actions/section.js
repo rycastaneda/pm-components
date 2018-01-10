@@ -19,7 +19,7 @@ export function fetchSections(
         // TODO: api endpoint
         return axios
             .get(
-                `/compliance/assignments/${preferredSupplierId}?include=assignments,comments`
+                `/compliance/assignments/${supplierUserId}/${preferredSupplierId}?include=assignments,comments`
             )
             .then(response => {
                 return dispatch({
