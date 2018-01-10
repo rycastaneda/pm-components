@@ -27,7 +27,7 @@ const Comment = ({
                         ? 'col-lg-12 col-sm-12'
                         : 'col-lg-11 col-sm-11'}`}>
                     <p className="pad-btm-sm">{text}</p>
-                    <strong className="staff">{`— ${staff} ${format(
+                    <strong className="staff">{`— ${staff} on ${format(
                         date,
                         'MMMM D, YYYY HH:mm a'
                     )}`}</strong>

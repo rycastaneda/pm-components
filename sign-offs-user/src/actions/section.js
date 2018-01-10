@@ -20,7 +20,7 @@ export function fetchSections(
 
         return axios
             .get(
-                `/compliance/assignments/${preferredSupplierId}?include=assignments,comments`
+                `/compliance/assignments/${supplierUserId}/${preferredSupplierId}?include=assignments,comments`
             )
             .then(response => {
                 return dispatch({
