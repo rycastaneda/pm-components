@@ -22,10 +22,10 @@ describe('Row component: ', () => {
         status: 'Pending',
         lastUpdated: '' + new Date(),
         comments: [],
+        preferredSupplierId: 1,
         toggleCommentsModal
     };
     const { component } = setup(props);
-
 
     it('should be able to render the Row with props', () => {
         expect(component.find('td')).to.have.length(7);
@@ -36,5 +36,3 @@ describe('Row component: ', () => {
         expect(toggleCommentsModal.called).to.be.true;
     });
 });
-
-
