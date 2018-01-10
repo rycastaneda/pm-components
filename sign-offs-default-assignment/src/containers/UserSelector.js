@@ -74,6 +74,7 @@ class UserSelector extends Component {
                 {!assignedUsers.length || this.state.isAssigning ? (
                     <div className="staff-selector">
                         <Select
+                            backspaceToRemoveMessage=""
                             placeholder="Please select staff"
                             multi={true}
                             optionRenderer={this.optionRender}
