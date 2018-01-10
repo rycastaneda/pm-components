@@ -77,7 +77,7 @@ class Filters extends Component {
                     {this.state.showFilters ? (
                         <div className="col-xs-12 col-sm-12 col-md-12 mar-top-sm">
                             <form onSubmit={this.changeFilters}>
-                                <div className="form-group">
+                                <div className="form-group status-selector">
                                     <label>Status</label>
                                     <StatusDropdown
                                         selectedStatus={
@@ -86,7 +86,7 @@ class Filters extends Component {
                                         onStatusChange={this.onStatusChange}
                                     />
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group staff-dropdown">
                                     <label>Assigned To</label>
                                     <StaffDropdown
                                         staff={staff.data}
