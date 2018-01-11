@@ -1,0 +1,47 @@
+# http://editorconfig.org
+# This file if for unifying the coding style for different editors and IDEs.
+
+root = true
+
+[*]
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{py,php,ini,xml}]
+indent_style = tab
+indent_size = 4
+
+[application/**/**/views/**.php]
+indent_style = space
+indent_size = 4
+
+[application/views/**.php]
+indent_style = space
+indent_size = 4
+
+[*.{json,babelrc,sh,js}]
+indent_style = space
+indent_size = 4
+
+[*.{html}]
+indent_style = space
+indent_size = 4
+
+[*.md]
+trim_trailing_whitespace = false
+indent_style = space
+indent_size = 4
+
+[*.yml]
+indent_style = space
+indent_size = 2
+
+[bitbucket-pipelines.yml]
+indent_style = space
+indent_size = 2
+
+[build.xml]
+indent_style = tab
+indent_size = 2

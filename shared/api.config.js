@@ -36,14 +36,14 @@ function configureHeaders() {
  * @returns {{Authorization: string, Accept: string}}
  */
 function getLocalHeaders() {
-    var api_url = window.api_url || 'https://api.pm.local.dev';
+    var api_url = window.api_url || 'https://pit-460-api.pmstg.com';
     var tokenRequest = new Request(api_url + '/authenticate', {
         method: 'POST',
         headers: {
             'Accept': 'application/vnd.pm.v1+json',
             'Content-Type': 'application/vnd.pm.v1+json'
         },
-        body: '{"email":"sara1@plantminer.com.au", "password": "password"}'
+        body: '{"email":"troy.redden@bundaberg.qld.gov.au", "password": "password"}'
     });
 
     fetch(tokenRequest)
@@ -67,7 +67,7 @@ function configureHostname() {
         return window.api_url;
     }
 
-    return 'https://api.pm.local.dev';
+    return 'https://pit-460-api.pmstg.com';
 }
 
 module.exports =  {

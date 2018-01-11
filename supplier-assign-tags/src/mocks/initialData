@@ -1,0 +1,4 @@
+{
+    availableTags: [{id:1, label:"a",value:"a"}, {id:1, label:"a",value:"b"}],
+    selectedTags: [{id:1, label:"a",iconClass:"fav-arrow"}, {id:1, label:"a",iconClass:"fav-arrow"}]
+}

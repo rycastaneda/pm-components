@@ -1,0 +1,34 @@
+// prettier-ignore
+.tab-pills {
+    display: block;
+    background-color: transparent;
+    color: #333333;
+
+    > li {
+
+        > a {
+            border-radius: 0;
+            color: #000000;
+            font-weight: bold;
+        }
+
+        > a:hover {
+            background-color: transparent;
+            color: #e68020;
+        }
+
+        > a.selected {
+            display: block;
+            background-color: transparent;
+            color: rgb(51, 51, 51);
+            border-bottom: 2px solid #e68020;
+        }
+    }
+}
+// prettier-ignore
+.scorebox {
+
+    span {
+        font-size: 20px;
+    }
+}

@@ -1,0 +1,9 @@
+export const UPLOAD_SUCCESS = 'success';
+export const UPLOAD_FAILED = 'failed';
+export const UPLOAD_IN_PROGRESS = 'uploading';
+export const COMMENT_MANDATORY = 'Please add a comment before proceeding.';
+export const VALIDATION_COMMENT_MANDATORY = 'Please add comments for all mandatory fields before proceeding.';
+export const SUBMISSION_MESSAGE_TITLE = 'Evaluation Submission';
+export const SUBMISSION_MESSAGE_CONTENT = 'Evaluation submitted successfully';
+export const ASSIGNMENT_BUTTON_LABEL = 'Back to Evaluation Assignments';
+export const VALIDATION_MESSAGE_ASSIGNMENT_SUBMITTED = 'This assignment has already been submitted.';
