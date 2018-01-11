@@ -4,7 +4,7 @@ const ComparisonRow = ({ criteria, entity }) => {
     let totalScores = 0;
     return (
         <tr>
-            <td className="name text-center">{entity.name}</td>
+            <td className="name ">{entity.name}</td>
             {criteria.map(criterion => {
 
                 totalScores += entity.scores[criterion.id];

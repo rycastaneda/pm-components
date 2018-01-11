@@ -32,7 +32,7 @@ class Question extends Component {
             <div className="questions">
                 <table className="questions" width="100%">
                     <tbody>
-                        <tr>
+                        <tr onClick={this.toggleComments} className="pointer">
                             <td width="80%">
                                 <p>
                                     <span className="circle">{`${number} `}</span>
