@@ -11,7 +11,7 @@ export class ComparisonTable extends Component {
                     <tr>
                         <th>User</th>
                         {criteria.map(criterion => (
-                            <th
+                            <th className="text-center"
                                 key={
                                     criterion.id
                                 }>{`${criterion.title} (${criterion.weight})`}</th>

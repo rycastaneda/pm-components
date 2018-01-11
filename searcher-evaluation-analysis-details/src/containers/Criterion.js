@@ -57,8 +57,8 @@ export class Criterion extends Component {
                             </div>
                         </div>
                         <div className="col-md-6 text-right">
-                            Weighting:
-                            <strong className="weight">{weight}%</strong>
+
+                            <span className="weight">Weighting: <strong>{weight}%</strong></span>
                         </div>
                     </div>
                 </a>
