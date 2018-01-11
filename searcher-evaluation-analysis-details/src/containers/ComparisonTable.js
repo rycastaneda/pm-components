@@ -5,16 +5,18 @@ import ComparisonRow from '../components/ComparisonRow';
 export class ComparisonTable extends Component {
     render() {
         const { criteria, entities } = this.props;
-
         return (
             <table className="table db-table">
                 <thead>
                     <tr>
                         <th>User</th>
                         {criteria.map(criterion => (
-                            <th key={criterion.id}>{criterion.title}</th>
+                            <th
+                                key={
+                                    criterion.id
+                                }>{`${criterion.title} (${criterion.weight})`}</th>
                         ))}
-                        <th>Total</th>
+                        <th>Total (100)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -72,7 +74,7 @@ function mapStateToProps(state) {
 
             return response;
         });
-
+        console.log('counters', counters); // eslint-disable-line quotes, no-console
         // get totals
         Object.keys(scores).map(criteriaId => {
             if (counters[criteriaId].score) {
@@ -83,7 +85,8 @@ function mapStateToProps(state) {
             }
         });
 
-        let entity = rawEntity.byType[assignment.entityType][assignment.entityId];
+        let entity =
+            rawEntity.byType[assignment.entityType][assignment.entityId];
 
         entities.push({
             id: assignmentId,

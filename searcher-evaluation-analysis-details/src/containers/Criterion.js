@@ -52,34 +52,32 @@ export class Criterion extends Component {
                         : 'collapsed'}`}>
                     <div className="row">
                         <div className="col-md-6">
-                            <div className="pmaccordion__title font-rg">{title}</div>
+                            <div className="pmaccordion__title font-rg">
+                                {title}
+                            </div>
                         </div>
                         <div className="col-md-6 text-right">
-                            <div className="weight">
-                                Weighting: <strong>{weight}%</strong>
-                            </div>
+                            Weighting:
+                            <strong className="weight">{weight}%</strong>
                         </div>
                     </div>
                 </a>
 
-                <div
-                    className={`collapse ${isOpen
-                        ? 'in'
-                        : ''}`}>
-                        <div className="pmaccordion__body">
-                    {currentView === 'all' ? (
-                        <Header
-                            currentView={currentView}
-                            currentTab={currentTab}
-                            changeTab={this.changeTab}
-                        />
-                    ) : null}
-                    {currentTab === 'responses' ? (
-                        questionComponents
-                    ) : (
-                        <Report questions={questions} />
-                    )}
-                </div>
+                <div className={`collapse ${isOpen ? 'in' : ''}`}>
+                    <div className="pmaccordion__body">
+                        {currentView === 'all' ? (
+                            <Header
+                                currentView={currentView}
+                                currentTab={currentTab}
+                                changeTab={this.changeTab}
+                            />
+                        ) : null}
+                        {currentTab === 'responses' ? (
+                            questionComponents
+                        ) : (
+                            <Report questions={questions} />
+                        )}
+                    </div>
                 </div>
             </div>
         );
