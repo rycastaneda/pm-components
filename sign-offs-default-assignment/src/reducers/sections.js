@@ -46,6 +46,7 @@ export function sections(state = INITIAL_STATE, action) {
 
 function receiveSections(state, action) {
     const byId = {};
+    const allIds = [];
 
     let assignmentIdToUserId = {}; // quick mapping of all assignmentId to userId
 
@@ -82,10 +83,10 @@ function receiveSections(state, action) {
             ...section.attributes
         };
 
+        allIds.push(section.id);
+
         return section;
     });
-
-    const allIds = Object.keys(byId);
 
     return {
         ...state,

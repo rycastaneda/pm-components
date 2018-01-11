@@ -148,6 +148,7 @@ export function sections(state = INITIAL_STATE, action) {
 
 function receiveSections(state, action) {
     const byId = {};
+    const allIds = [];
 
     let assignmentIdToStaff = {};
     if (action.sections.included) {
@@ -190,10 +191,10 @@ function receiveSections(state, action) {
             ...section.attributes
         };
 
+        allIds.push(section.id);
+
         return section;
     });
-
-    const allIds = Object.keys(byId);
 
     return {
         ...state,

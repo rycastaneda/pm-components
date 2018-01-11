@@ -86,6 +86,7 @@ const Table = ({
                 supplier.assignments.map(row => {
                     rows.push(
                         <Row
+                            preferredSupplierId={supplier.preferred_supplier_id}
                             key={row.id}
                             {...row}
                             toggleCommentsModal={toggleCommentsModal}

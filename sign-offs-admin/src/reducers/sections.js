@@ -66,6 +66,7 @@ export function sections(state = INITIAL_STATE, action) {
 
 function receiveSections(state, action) {
     const byId = {};
+    const allIds = [];
 
     action.sections.data.map(section => {
         let commentIds = [];
@@ -101,10 +102,10 @@ function receiveSections(state, action) {
             ...section.attributes
         };
 
+        allIds.push(section.id);
+
         return section;
     });
-
-    const allIds = Object.keys(byId);
 
     return {
         ...state,
