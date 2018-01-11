@@ -1,24 +1,32 @@
 import * as actionTypes from './actionsTypes';
+import { initSupplierInteractions } from '../../actions/apiActions';
 
-export const paginationInit = supplierId => (dispatch, getState) => {
-
-    const links =
-        Object.keys(getState().supplierInteractions.meta).length > 0
-            ? getState().supplierInteractions.meta[
-                  `/preferred-suppliers/${supplierId}/interactions`
-              ].links
-            : {};
-
+export const paginationInit = () => (dispatch, getState) => {
+    const { urlParams, endpoint } = getState().supplierInteractions;
+    console.log(Object.keys(getState().supplierInteractions.meta).length);
     const pages =
         Object.keys(getState().supplierInteractions.meta).length > 0
-            ? getState().supplierInteractions.meta[
-                  `/preferred-suppliers/${supplierId}/interactions`
-              ].meta.pagination
+            ? getState().supplierInteractions.meta[endpoint][urlParams].meta.pagination
             : {};
 
     dispatch({
         type: actionTypes.SUPPLIER_INTERACTIONS_INIT_PAGES,
-        links,
         pages,
     });
+};
+
+export const onPageUpdateChange = page => (dispatch) => {
+    dispatch({
+        type: actionTypes.SUPPLIER_INTERACTIONS_ON_PAGE_UPDATE_CHANGE,
+        pageSelected: page.selected + 1,
+    });
+    dispatch(initSupplierInteractions());
+};
+
+export const onRowsPerPageUpdate = evt => (dispatch) => {
+    dispatch({
+        type: actionTypes.SUPPLIER_INTERACTIONS_SHOW_ROWS_CHANGE_UPDATE,
+        rows: evt.target.value,
+    });
+    dispatch(initSupplierInteractions());
 };

@@ -7,34 +7,32 @@ import * as actions from './actions';
 import SupplierInteractionsFilter from '../../components/SupplierInteractionsFilter/main';
 import SupplierInteractionsTable from './SupplierInteractionsTable';
 import Pagination from '../../components/Pagination/main';
-import {
-    selectFromStore,
-    getLoadingForEndpoint,
-} from '../../utils/reduxApiUtils';
+import { selectFromStore } from '../../utils/reduxApiUtils';
 
 class SupplierInteractionsContainer extends Component {
-    componentDidMount() {
-        const { apiActions } = this.props;
-        apiActions.fetchInteractions(8);
+    componentWillMount() {
+        const { apiActions, actions } = this.props;
+        actions.setUpdateCurrentSupplier('8');
+        apiActions.initSupplierInteractions();
     }
 
     render() {
-        const { interactions, loading, supplierId } = this.props;
+        const { interactions, isLoading, currentSupplierId } = this.props;
+
+        if (isLoading) {
+            return <h3>Loading..</h3>;
+        }
 
         return (
             <div className="searcher-evaluation-template-list">
                 <SupplierInteractionsFilter />
-                {loading ? (
-                    <h3>Loading..</h3>
-                ) : (
-                    <div>
-                        <SupplierInteractionsTable
-                            isLoading={loading}
-                            interactions={interactions}
-                        />
-                        <Pagination supplierId={supplierId} />
-                    </div>
-                )}
+                <div>
+                    <SupplierInteractionsTable
+                        isLoading={isLoading}
+                        interactions={interactions}
+                    />
+                    <Pagination supplierId={currentSupplierId} />
+                </div>
             </div>
         );
     }
@@ -44,8 +42,8 @@ SupplierInteractionsContainer.propTypes = {
     interactions: PropTypes.array.isRequired,
     apiActions: PropTypes.object,
     actions: PropTypes.object,
-    loading: PropTypes.bool.isRequired,
-    supplierId: PropTypes.string,
+    isLoading: PropTypes.bool.isRequired,
+    currentSupplierId: PropTypes.string,
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -56,23 +54,22 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const { supplierId } = ownProps;
-    const { maxRowsSelected } = state.pagination;
+    const { currentSupplierId, isLoading, urlParams, endpoint } = state.supplierInteractions;
+
     const interactions = selectFromStore(
         state.supplierInteractions,
-        `/preferred-suppliers/${supplierId}/interactions`,
+        endpoint,
+        urlParams,
         'interactions'
     );
-    const loading = getLoadingForEndpoint(
-        state.supplierInteractions,
-        `/preferred-suppliers/${supplierId}/interactions?per_page=${maxRowsSelected}`
-    );
+
+    console.log('select from store', interactions);
 
     return {
         ...ownProps,
         interactions,
-        loading,
-        supplierId,
+        isLoading,
+        currentSupplierId,
     };
 };
 

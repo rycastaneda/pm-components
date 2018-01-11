@@ -2,9 +2,9 @@ import * as actions from './actionsTypes';
 
 const initialState = {
     pages: {},
-    links: {},
-    maxRowsList: ['10', '15', '30'],
+    maxRowsList: ['1', '2', '3'],
     maxRowsSelected: '1',
+    pageSelected: '1',
 };
 
 const reducer = (state = initialState, action) => {
@@ -13,13 +13,18 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 pages: action.pages,
-                links: action.links,
             };
 
         case actions.SUPPLIER_INTERACTIONS_SHOW_ROWS_CHANGE_UPDATE:
             return {
                 ...state,
                 maxRowsSelected: action.rows,
+            };
+
+        case actions.SUPPLIER_INTERACTIONS_ON_PAGE_UPDATE_CHANGE:
+            return {
+                ...state,
+                pageSelected: action.pageSelected,
             };
 
         default:
