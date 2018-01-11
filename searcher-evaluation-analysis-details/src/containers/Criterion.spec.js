@@ -78,7 +78,9 @@ describe('Criterion container: ', () => {
         expect(component.find('.pmaccordion__title').text()).to.eql(
             componentProps.title
         );
-        expect(+component.find('.weight').text()).to.eql(componentProps.weight);
+        expect(component.find('.weight').text()).to.eql(
+            `${componentProps.weight}%`
+        );
         expect(component.find('.in')).to.have.length(0);
         expect(component.find('.toggle-section').hasClass('collapsed')).to.be
             .true;
@@ -92,7 +94,10 @@ describe('Criterion container: ', () => {
     });
 
     it('should not render Header if current view in single mode', () => {
-        const { component } = setup({ ...componentProps, currentView: 'single' });
+        const { component } = setup({
+            ...componentProps,
+            currentView: 'single'
+        });
 
         const header = component.find(Header);
         expect(header).to.have.length(0);

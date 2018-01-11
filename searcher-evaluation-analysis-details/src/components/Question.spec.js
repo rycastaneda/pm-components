@@ -31,7 +31,9 @@ describe('Question component: ', () => {
         expect(component.find('.question-title').text()).to.eql(
             props.questionTitle
         );
-        expect(+component.find('.scorebox').text()).to.eql(props.totalScore);
+        expect(+component.find('.label-plantminer').text()).to.eql(
+            props.totalScore
+        );
         expect(component.find('.fa-chevron-right'));
         expect(component.find(Comment)).to.have.length(0);
     });

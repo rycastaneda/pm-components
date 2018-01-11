@@ -50,13 +50,15 @@ describe('ComparisonRow component: ', () => {
         cells.forEach(cell => {
             const criteriaId = props.criteria[counter].id;
             const score = props.entity.scores[criteriaId];
-            expect(+cell.text()).to.eql(score);
+            expect(cell.text()).to.eql(score);
             counter++;
         });
     });
 
     it('should be able to render total scores', () => {
-        const totalScores = Object.values(props.entity.scores).reduce((a, b) => a + b);
+        const totalScores = Object.values(props.entity.scores).reduce(
+            (a, b) => +a + +b
+        );
 
         expect(+component.find('td.total').text()).to.eql(totalScores);
     });
