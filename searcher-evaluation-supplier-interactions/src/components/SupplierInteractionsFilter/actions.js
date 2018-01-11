@@ -1,4 +1,5 @@
 import * as actionTypes from './actionsTypes';
+import { initSupplierInteractions } from '../../actions/apiActions';
 
 export const updateChangeSearchKey = (searchKey) => {
     return {
@@ -7,11 +8,12 @@ export const updateChangeSearchKey = (searchKey) => {
     };
 };
 
-export const updateFilterStatusChange = (interactionTypeSelected) => {
-    return {
+export const updateFilterInteractionTypeChange = interactionTypeSelected => (dispatch) => {
+    dispatch({
         type: actionTypes.SUPPLIER_INTERACTIONS_FILTER_STATUS_CHANGE,
         interactionTypeSelected,
-    };
+    });
+    dispatch(initSupplierInteractions());
 };
 
 export const submitFilterNormal = () => {

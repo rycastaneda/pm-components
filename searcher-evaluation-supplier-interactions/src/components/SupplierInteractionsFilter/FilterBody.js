@@ -23,12 +23,12 @@ const FilterBody = ({
                     <select
                         className="form-control form-control-sm text-capitalize"
                         onChange={event =>
-                            actions.updateFilterStatusChange(event.target.value)
+                            actions.updateFilterInteractionTypeChange(event.target.value)
                         }
                         value={interactionTypeSelected}
                     >
                         {interactionTypes.map(item => (
-                            <option id={item} key={item}>
+                            <option id={item} key={item} value={item}>
                                 {item}
                             </option>
                         ))}
