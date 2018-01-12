@@ -51,9 +51,8 @@ export class Criterion extends Component {
                         ? ''
                         : 'collapsed'}`}>
                     <div className="row">
-                        <div className="col-md-3" />
-                        <div className="col-md-6">
-                            <div className="pmaccordion__title font-rg text-center">
+                        <div className="col-md-9">
+                            <div className="pmaccordion__title font-rg">
                                 {title}
                             </div>
                         </div>

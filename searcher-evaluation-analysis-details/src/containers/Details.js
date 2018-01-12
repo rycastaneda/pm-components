@@ -1,6 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchEvaluation, changeView } from '../actions/evaluation';
+import {
+    fetchEvaluation,
+    changeView,
+    toggleCriterionCollapse
+} from '../actions/evaluation';
 
 import Criterion from './Criterion';
 import Loader from '../components/Loader';
@@ -11,6 +15,7 @@ export class Details extends Component {
     constructor(props) {
         super(props);
         this.changeView = this.changeView.bind(this);
+        this.toggleCriterionCollapse = this.toggleCriterionCollapse.bind(this);
     }
 
     componentDidMount() {
@@ -28,6 +33,10 @@ export class Details extends Component {
         this.props.dispatch(fetchEvaluation(null, event.target.id));
     }
 
+    toggleCriterionCollapse() {
+        this.props.dispatch(toggleCriterionCollapse(null));
+    }
+
     render() {
         const { criteria, currentView, isLoading, error } = this.props;
         const criteriaComponents = criteria.map(criterion => {
@@ -40,6 +49,13 @@ export class Details extends Component {
                 ) : (
                     <div>
                         <div className="row">
+                            <div className="pull-left">
+                                <button
+                                    className="db-function mar-top-sm"
+                                    onClick={this.toggleCriterionCollapse}>
+                                    Expand All
+                                </button>
+                            </div>
                             <div className="pull-right">
                                 <ViewSelector
                                     view={currentView}
