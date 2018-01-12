@@ -192,7 +192,8 @@ export function parseAssignmentsFromData(evaluationAssignmentsData, userProfile)
             } = item;
 
             createdBy = createdBy.id;
-            let assignedOn = moment(createdAt.date).format('DD/MM/YYYY');
+
+            let assignedOn = moment.utc(createdAt.date).local().format('DD/MM/YYYY');
             let evaluationTemplate = { id:template.id, active:template.id, title:template.title };
             let assignedUser = assigneeUser.staff;
             let userName = assignedUser.firstName+' '+assignedUser.lastName;
