@@ -14,7 +14,9 @@ class SupplierInteractionsContainer extends Component {
         const { apiActions, actions } = this.props;
         // TO DO: Get Id straight into the props from window
         const rootElement = document.querySelector('[data-component="searcher-evaluation-supplier-interactions"]');
-        const supplierId = rootElement.getAttribute('data-supplier-id');
+        const supplierId = rootElement.dataset.preferredSupplierId;
+        console.log('getting element :',  supplierId);
+
         actions.setUpdateCurrentSupplier(supplierId);
         apiActions.initSupplierInteractions();
     }
