@@ -32,7 +32,7 @@ axios.defaults.headers.common = headers;
 
 ReactDOM.render(
     <Provider store={store}>
-        <SupplierInteractionsContainer supplierId="8" />
+        <SupplierInteractionsContainer />
     </Provider>,
     document.querySelector(
         '[data-component="searcher-evaluation-supplier-interactions"]'

@@ -31,7 +31,7 @@ class Pagination extends Component {
                         nextLabel={'next'}
                         breakLabel={<a href="">...</a>}
                         breakClassName={'break-me'}
-                        pageCount={pages.total - (pages.per_page === 1 ? 0 : pages.per_page)}
+                        pageCount={pages.total - (pages.per_page === 10 ? 0 : pages.per_page)}
                         forcePage={pages.current_page-1}
                         marginPagesDisplayed={1}
                         pageRangeDisplayed={5}

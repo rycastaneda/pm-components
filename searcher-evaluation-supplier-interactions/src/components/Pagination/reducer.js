@@ -2,8 +2,8 @@ import * as actions from './actionsTypes';
 
 const initialState = {
     pages: {},
-    maxRowsList: ['1', '2', '3'],
-    maxRowsSelected: '1',
+    maxRowsList: ['10', '15', '30'],
+    maxRowsSelected: '10',
     pageSelected: '1',
 };
 

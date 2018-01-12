@@ -12,7 +12,10 @@ import { selectFromStore } from '../../utils/reduxApiUtils';
 class SupplierInteractionsContainer extends Component {
     componentWillMount() {
         const { apiActions, actions } = this.props;
-        actions.setUpdateCurrentSupplier('8');
+        // TO DO: Get Id straight into the props from window
+        const rootElement = document.querySelector('[data-component="searcher-evaluation-supplier-interactions"]');
+        const supplierId = rootElement.getAttribute('data-supplier-id');
+        actions.setUpdateCurrentSupplier(supplierId);
         apiActions.initSupplierInteractions();
     }
 
