@@ -6,7 +6,6 @@ import * as actions from './actions';
 import ReactPaginate from 'react-paginate';
 
 class Pagination extends Component {
-
     render() {
         const { maxRowsList, pages, actions } = this.props;
         return (
@@ -26,22 +25,33 @@ class Pagination extends Component {
                             );
                         })}
                     </select>
-                    <ReactPaginate
-                        previousLabel={'previous'}
-                        nextLabel={'next'}
-                        breakLabel={<a href="">...</a>}
-                        breakClassName={'break-me'}
-                        pageCount={pages.total - (pages.per_page === 10 ? 0 : pages.per_page)}
-                        forcePage={pages.current_page-1}
-                        marginPagesDisplayed={1}
-                        pageRangeDisplayed={5}
-                        onPageChange={actions.onPageUpdateChange}
-                        containerClassName={'pagination'}
-                        subContainerClassName={'pages pagination'}
-                        activeClassName={'active'}
-                    />
+                    {this.renderPagination()}
                 </div>
             </div>
+        );
+    }
+
+    renderPagination() {
+        const { pages, actions } = this.props;
+        if (pages.total < pages.per_page) {
+            return null;
+        }
+
+        return (
+            <ReactPaginate
+                previousLabel={'previous'}
+                nextLabel={'next'}
+                breakLabel={<a href="">...</a>}
+                breakClassName={'break-me'}
+                pageCount={pages.total_pages}
+                forcePage={pages.current_page - 1}
+                marginPagesDisplayed={1}
+                pageRangeDisplayed={5}
+                onPageChange={actions.onPageUpdateChange}
+                containerClassName={'pagination'}
+                subContainerClassName={'pages pagination'}
+                activeClassName={'active'}
+            />
         );
     }
 }
