@@ -53,7 +53,6 @@ function receiveQuestions(state, action) {
                         });
                 }
                 totalScore = totalScore ? totalScore / comments.length : 0;
-                totalScore = parseFloat(totalScore).toFixed(1);
 
                 byId[question.id] = {
                     id: question.id,
@@ -62,8 +61,6 @@ function receiveQuestions(state, action) {
                     scale: getScale(question),
                     commentIds: comments.map(comment => comment.id)
                 };
-
-
 
                 allIds.push(question.id);
             });

@@ -79,7 +79,7 @@ describe('Criterion container: ', () => {
             componentProps.title
         );
         expect(component.find('.weight').text()).to.eql(
-            `${componentProps.weight}%`
+            `Weighting: ${componentProps.weight}%`
         );
         expect(component.find('.in')).to.have.length(0);
         expect(component.find('.toggle-section').hasClass('collapsed')).to.be

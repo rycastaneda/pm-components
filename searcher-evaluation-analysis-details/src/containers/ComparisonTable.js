@@ -11,7 +11,8 @@ export class ComparisonTable extends Component {
                     <tr>
                         <th>User</th>
                         {criteria.map(criterion => (
-                            <th className="text-center"
+                            <th
+                                className="text-left"
                                 key={
                                     criterion.id
                                 }>{`${criterion.title} (${criterion.weight})`}</th>
@@ -23,7 +24,7 @@ export class ComparisonTable extends Component {
                     {entities.map(entity => {
                         return (
                             <ComparisonRow
-                                key={entity.id}
+                                key={`${entity.title}-${entity.id}`}
                                 criteria={criteria}
                                 entity={{ ...entity }}
                             />
@@ -40,6 +41,19 @@ ComparisonTable.propTypes = {
     entities: PropTypes.array
 };
 
+function getTotals(tally) {
+    let totals = {};
+
+    Object.keys(tally).map(criteriaId => {
+        totals[criteriaId] =
+            tally[criteriaId].score /
+            tally[criteriaId].scale *
+            tally[criteriaId].weight;
+    });
+
+    return totals;
+}
+
 function mapStateToProps(state) {
     const {
         assignments: rawAssignments,
@@ -50,50 +64,54 @@ function mapStateToProps(state) {
     } = state;
 
     const entities = [];
+    const entityTally = {};
 
     rawAssignments.allIds.map(assignmentId => {
         let assignment = rawAssignments.byId[assignmentId];
-        let scores = {},
-            counters = {};
-
-        rawCriteria.allIds.map(criteriaId => {
-            scores[criteriaId] = 0;
-            counters[criteriaId] = {
-                score: 0,
-                scale: 0
+        let uid = `${assignment.entityType}-${assignment.entityId}`;
+        if (!entityTally[uid]) {
+            entityTally[uid] = {
+                id: assignment.entityId,
+                type: assignment.entityType,
+                tally: {}
             };
-        });
+            rawCriteria.allIds.map(criteriaId => {
+                let criteria = rawCriteria.byId[criteriaId];
+                entityTally[uid].tally[criteriaId] = {
+                    score: 0,
+                    scale: 0,
+                    weight: criteria.weight
+                };
+            });
+        }
+    });
+    rawCriteria.allIds.map(criteriaId => {
+        let criteria = rawCriteria.byId[criteriaId];
 
-        // tally up the scores on responses
-        assignment.responseIds.map(responseId => {
-            let response = rawComments.byId[responseId];
-
-            response.scale = rawQuestions.byId[response.questionId].scale;
-            counters[response.criteriaId].score += response.score;
-            counters[response.criteriaId].scale += response.scale;
-
-            return response;
-        });
-        console.log('counters', counters); // eslint-disable-line quotes, no-console
-        // get totals
-        Object.keys(scores).map(criteriaId => {
-            if (counters[criteriaId].score) {
-                scores[criteriaId] =
-                    counters[criteriaId].score /
-                    counters[criteriaId].scale *
-                    rawCriteria.byId[criteriaId].weight;
-            }
-        });
-
-        let entity =
-            rawEntity.byType[assignment.entityType][assignment.entityId];
-
-        entities.push({
-            id: assignmentId,
-            name: entity.title,
-            scores
+        criteria.questionIds.map(questionId => {
+            let question = rawQuestions.byId[questionId];
+            question.commentIds.map(commentId => {
+                let comment = rawComments.byId[commentId];
+                let assignment = rawAssignments.byId[comment.assignmentId];
+                let uid = `${assignment.entityType}-${assignment.entityId}`;
+                entityTally[uid].tally[criteriaId].score += comment.score;
+                entityTally[uid].tally[criteriaId].scale += question.scale;
+            });
         });
     });
+
+    Object.keys(entityTally).map(entityKey => {
+        let entity = entityTally[entityKey];
+        entities.push({
+            id: entity.id,
+            title: rawEntity.byType[entity.type][entity.id].title,
+            score: getTotals(entityTally[entityKey].tally)
+        });
+    });
+
+    console.log('entities', entities); // eslint-disable-line quotes, no-console
+
+    console.log('entityTally', entityTally); // eslint-disable-line quotes, no-console
 
     return {
         entities

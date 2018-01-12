@@ -28,7 +28,7 @@ export function fetchEvaluation(assignmentId, currentView) {
             .get(
                 `/evaluation-template-assignments/${assignment}?include=${includes.join(
                     ','
-                )}`
+                )}${currentView === 'all' ? '&filter[same_entity]=1' : ''}`
             )
             .then(response => {
                 return dispatch({

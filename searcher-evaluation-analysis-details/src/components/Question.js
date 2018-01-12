@@ -17,7 +17,13 @@ class Question extends Component {
     }
 
     render() {
-        const { number, questionTitle, totalScore, comments } = this.props;
+        const {
+            number,
+            questionTitle,
+            totalScore,
+            scale,
+            comments
+        } = this.props;
         const listComponents = comments.length ? (
             comments.map(comment => <Comment key={comment.id} {...comment} />)
         ) : (
@@ -42,9 +48,13 @@ class Question extends Component {
                                 </p>
                             </td>
                             <td width="10%">
-                                <span className="label label-lg label-plantminer">
-                                    {totalScore}
-                                </span>
+                                {scale !== 1 ? (
+                                    <span className="label label-lg label-plantminer">
+                                        {totalScore
+                                            ? totalScore.toFixed(1)
+                                            : ' - '}
+                                    </span>
+                                ) : null}
                             </td>
                             <td className="text-right" width="10%">
                                 <i
@@ -85,7 +95,8 @@ class Question extends Component {
 Question.propTypes = {
     number: PropTypes.number.isRequired,
     questionTitle: PropTypes.string.isRequired,
-    totalScore: PropTypes.string,
+    totalScore: PropTypes.number,
+    scale: PropTypes.number,
     comments: PropTypes.array
 };
 
