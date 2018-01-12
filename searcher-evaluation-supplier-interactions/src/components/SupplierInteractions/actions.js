@@ -9,7 +9,7 @@ export const setUpdateCurrentSupplier = (supplierId) => {
 
 export const onClickViewInteraction = (interActionType, id) => {
     const orgUrl = document.location.href;
-    // console.log('url', orgUrl);
+
     switch (interActionType) {
         case 'Message':
             return (document.location.href = `${orgUrl}searcher/messages`);

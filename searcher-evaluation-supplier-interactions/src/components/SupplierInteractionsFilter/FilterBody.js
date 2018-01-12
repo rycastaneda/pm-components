@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from './actions';
+import * as datePickerActions from '../PMDateTime/actions';
+
 import { FilterMainContainer } from './styling/styledComponents';
 import PMDateTime from '../PMDateTime/main';
 
@@ -11,6 +13,9 @@ const FilterBody = ({
     interactionTypes,
     interactionTypeSelected,
     actions,
+    datePickerActions,
+    dateTimeStart,
+    dateTimeEnd,
 }) => (
     <FilterMainContainer
         className="panel panel-default pad-all"
@@ -23,7 +28,9 @@ const FilterBody = ({
                     <select
                         className="form-control form-control-sm text-capitalize"
                         onChange={event =>
-                            actions.updateFilterInteractionTypeChange(event.target.value)
+                            actions.updateFilterInteractionTypeChange(
+                                event.target.value
+                            )
                         }
                         value={interactionTypeSelected}
                     >
@@ -37,8 +44,12 @@ const FilterBody = ({
             </div>
             <div className="col-xs-6">
                 <div className="form-group">
-                    <label>Date Created</label>
-                    <PMDateTime />
+                    <label>Start Date</label>
+                    <PMDateTime dateTime={dateTimeStart} onDateChange={datePickerActions.updateFilterStartDateChange} />
+                </div>
+                <div className="form-group">
+                    <label>Start Date</label>
+                    <PMDateTime dateTime={dateTimeEnd} onDateChange={datePickerActions.updateFilterEndDateChange} />
                 </div>
             </div>
         </div>
@@ -47,14 +58,18 @@ const FilterBody = ({
 
 FilterBody.propTypes = {
     actions: PropTypes.object,
+    datePickerActions: PropTypes.object,
     toggleFilterShow: PropTypes.bool.isRequired,
     interactionTypes: PropTypes.array.isRequired,
     interactionTypeSelected: PropTypes.string.isRequired,
+    dateTimeStart: PropTypes.string.isRequired,
+    dateTimeEnd: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(actions, dispatch),
+        datePickerActions: bindActionCreators(datePickerActions, dispatch),
     };
 };
 
@@ -65,11 +80,15 @@ const mapStateToProps = (state, ownProps) => {
         interactionTypeSelected,
     } = state.interactionsFilter;
 
+    const { dateTimeStart, dateTimeEnd } = state.pmDateTime;
+
     return {
         ...ownProps,
         toggleFilterShow,
         interactionTypes,
         interactionTypeSelected,
+        dateTimeStart,
+        dateTimeEnd,
     };
 };
 
