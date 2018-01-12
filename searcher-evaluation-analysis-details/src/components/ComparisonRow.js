@@ -2,21 +2,25 @@ import React, { PropTypes } from 'react';
 
 const ComparisonRow = ({ criteria, entity }) => {
     let totalScores = 0;
+    console.log('entity', entity); // eslint-disable-line quotes, no-console
     return (
         <tr>
-            <td className="name ">{entity.name}</td>
+            <td className="name text-left">{entity.title}</td>
             {criteria.map(criterion => {
-
-                totalScores += entity.scores[criterion.id];
-                entity.scores[criterion.id] = parseFloat(entity.scores[criterion.id]).toFixed(1);
+                totalScores += entity.score[criterion.id];
+                entity.score[criterion.id] = parseFloat(
+                    entity.score[criterion.id]
+                ).toFixed(1);
 
                 return (
-                    <td key={criterion.id} className="score td-center">
-                        {entity.scores[criterion.id]}
+                    <td key={criterion.id} className="score text-left">
+                        {entity.score[criterion.id]}
                     </td>
                 );
             })}
-            <td className="td-center total">{parseFloat(totalScores).toFixed(1)}</td>
+            <td className=" text-left total">
+                {parseFloat(totalScores).toFixed(1)}
+            </td>
         </tr>
     );
 };
