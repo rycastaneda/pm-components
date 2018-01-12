@@ -42,6 +42,17 @@ export class Details extends Component {
         const criteriaComponents = criteria.map(criterion => {
             return <Criterion key={criterion.id} {...criterion} />;
         });
+
+        const expandAll = (
+            <div className="pull-left">
+                <button
+                    className="db-function mar-top-sm"
+                    onClick={this.toggleCriterionCollapse}>
+                    Expand All
+                </button>
+            </div>
+        );
+
         return (
             <div ref={ref => (this.domRef = ref)}>
                 {error ? (
@@ -49,13 +60,7 @@ export class Details extends Component {
                 ) : (
                     <div>
                         <div className="row">
-                            <div className="pull-left">
-                                <button
-                                    className="db-function mar-top-sm"
-                                    onClick={this.toggleCriterionCollapse}>
-                                    Expand All
-                                </button>
-                            </div>
+                            {currentView !== 'compare' ? expandAll : null}
                             <div className="pull-right">
                                 <ViewSelector
                                     view={currentView}
