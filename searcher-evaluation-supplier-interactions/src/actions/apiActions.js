@@ -19,7 +19,7 @@ export const initSupplierInteractions = () => (dispatch, getState) => {
         interactionTypeSelected !== 'Any'
             ? request
                 .query('page', pageSelected)
-                .query('filter[type]', interactionTypeSelected)
+                .query('filter[type]', interactionTypeSelected.toLowerCase())
                 .toString()
             : request.query({ page: pageSelected }).toString();
 
