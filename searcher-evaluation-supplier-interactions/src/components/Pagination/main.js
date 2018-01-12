@@ -3,52 +3,43 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from './actions';
-import { PaginationList } from './styling/styledComponents';
+import ReactPaginate from 'react-paginate';
 
 class Pagination extends Component {
-    componentDidMount() {
-        const { actions, supplierId } = this.props;
-        actions.paginationInit(supplierId);
-    }
+
     render() {
-        const { maxRowsList } = this.props;
+        const { maxRowsList, pages, actions } = this.props;
         return (
             <div className="row">
                 <div className="col-sm-6 form-inline">
-                    <select name="per_page" className="form-control">
+                    <select
+                        value={pages.per_page}
+                        onChange={actions.onRowsPerPageUpdate}
+                        name="per_page"
+                        className="form-control"
+                    >
                         {maxRowsList.map((item) => {
                             return (
-                                <option key={item} value="item">
+                                <option key={item} value={item}>
                                     {item}
                                 </option>
                             );
                         })}
                     </select>
-                    <PaginationList className="pagination">
-                        <li className="active">
-                            <a>1</a>
-                        </li>
-                        <li className="pagination-first">
-                            <a href="#" data-ci-pagination-page="2">
-                                2
-                            </a>
-                        </li>
-                        <li className="pagination-first">
-                            <a href="#" data-ci-pagination-page="3">
-                                3
-                            </a>
-                        </li>
-                        <li className="pagination-next">
-                            <a href="#" data-ci-pagination-page="2" rel="next">
-                                Next
-                            </a>
-                        </li>
-                        <li className="pagination-last">
-                            <a href="#" data-ci-pagination-page="12">
-                                »»
-                            </a>
-                        </li>
-                    </PaginationList>
+                    <ReactPaginate
+                        previousLabel={'previous'}
+                        nextLabel={'next'}
+                        breakLabel={<a href="">...</a>}
+                        breakClassName={'break-me'}
+                        pageCount={pages.total - (pages.per_page === 10 ? 0 : pages.per_page)}
+                        forcePage={pages.current_page-1}
+                        marginPagesDisplayed={1}
+                        pageRangeDisplayed={5}
+                        onPageChange={actions.onPageUpdateChange}
+                        containerClassName={'pagination'}
+                        subContainerClassName={'pages pagination'}
+                        activeClassName={'active'}
+                    />
                 </div>
             </div>
         );
@@ -59,6 +50,7 @@ Pagination.propTypes = {
     actions: PropTypes.object,
     maxRowsList: PropTypes.array.isRequired,
     supplierId: PropTypes.string,
+    pages: PropTypes.object.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -68,13 +60,12 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const { maxRowsList, pages, links } = state.pagination;
+    const { maxRowsList, pages } = state.pagination;
 
     return {
         ...ownProps,
         maxRowsList,
         pages,
-        links,
     };
 };
 

@@ -2,8 +2,8 @@ import * as actions from './actionsTypes';
 
 const initialState = {
     filterSearchKey: '',
-    interactionTypes: ['messages', 'evaluations', 'RFQs', 'Engagements'],
-    interactionTypeSelected: '',
+    interactionTypes: ['Any', 'Message', 'Evaluation', 'Rfq', 'Engagement'],
+    interactionTypeSelected: 'Any',
     toggleFilterShow: false,
     isLoading: false,
 };

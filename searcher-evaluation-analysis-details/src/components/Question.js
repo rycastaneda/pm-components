@@ -30,48 +30,54 @@ class Question extends Component {
 
         return (
             <div className="questions">
-            <table className="questions" width="100%">
-                <tbody>
-                    <tr>
-                        <td width="80%"><p><span className="circle">{`${number} `}</span> {questionTitle}</p></td>
-                        <td width="10%">
-                            <span className="label label-lg label-plantminer">
-                                {totalScore}
-                            </span>
-                        </td>
-                        <td className="text-right" width="10%">
-                        <i
-                            className={`fa pointer toggle-comments ${this.state.isShown
-                                ? 'fa-chevron-up'
-                                : 'fa-chevron-down'}`}
-                            onClick={this.toggleComments}
-                        />
-                        </td>
-                    </tr>
-                    {this.state.isShown ? (
-                        <tr>
-                            <td colSpan="4">
-                            <table className="reports" width="100%">
-                                <thead>
-                                    <tr>
-                                        <th>Assignee</th>
-                                        <th>Comment</th>
-                                        <th className="text-right">Score</th>
-                                    </tr>
-                                </thead>
-                                <tbody>{listComponents}</tbody>
-                            </table>
-                            <hr />
-                        </td>
+                <table className="questions" width="100%">
+                    <tbody>
+                        <tr onClick={this.toggleComments} className="pointer">
+                            <td width="80%">
+                                <p>
+                                    <span className="circle">{`${number} `}</span>
+                                    <span className="question-title">
+                                        {questionTitle}
+                                    </span>
+                                </p>
+                            </td>
+                            <td width="10%">
+                                <span className="label label-lg label-plantminer">
+                                    {totalScore}
+                                </span>
+                            </td>
+                            <td className="text-right" width="10%">
+                                <i
+                                    className={`fa pointer toggle-comments ${this
+                                        .state.isShown
+                                        ? 'fa-chevron-up'
+                                        : 'fa-chevron-down'}`}
+                                    onClick={this.toggleComments}
+                                />
+                            </td>
                         </tr>
-                    ) : null}
-
-
-                </tbody>
-            </table>
-
-
-        </div>
+                        {this.state.isShown ? (
+                            <tr>
+                                <td colSpan="4">
+                                    <table className="reports" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Assignee</th>
+                                                <th>Comment</th>
+                                                <th className="text-right">
+                                                    Score
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>{listComponents}</tbody>
+                                    </table>
+                                    <hr />
+                                </td>
+                            </tr>
+                        ) : null}
+                    </tbody>
+                </table>
+            </div>
         );
     }
 }

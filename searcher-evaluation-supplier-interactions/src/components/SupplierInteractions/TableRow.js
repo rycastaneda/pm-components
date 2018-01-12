@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import StatusLabel from '../StatusLabel';
 import moment from 'moment';
+import ViewInteractionButton from './ViewInteractionButton';
+
 const TableRow = ({ rowItem }) => (
     <tr>
         <td className="td-center nowrap">{moment(rowItem.date.date).format('DD/MM/YYYY')}</td>
@@ -17,9 +19,7 @@ const TableRow = ({ rowItem }) => (
             <StatusLabel status={`${rowItem.status}`} />
         </td>
         <td data-heading="More" className="td-center last">
-            <button type="button" className="btn">
-                View
-            </button>
+            <ViewInteractionButton type={rowItem.type} id={rowItem.id} />
         </td>
     </tr>
 );

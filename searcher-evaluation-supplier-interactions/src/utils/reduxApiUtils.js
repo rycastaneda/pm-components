@@ -1,14 +1,15 @@
 import build from 'redux-object';
 import UrlAssembler from 'url-assembler';
 
-export const selectFromStore = (state, metaEndpoint, type) => {
+
+export const selectFromStore = (state, metaEndpoint, urlParams, type) => {
 
     if (typeof state === 'undefined' || !state.meta[metaEndpoint]) {
         return [];
     }
 
     return (
-        (state.meta[metaEndpoint].data || [])
+        (state.meta[metaEndpoint][urlParams].data || [])
             .map(object => build(state, type, object.id))
     );
 };

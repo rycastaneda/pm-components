@@ -7,22 +7,22 @@ import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
 import SupplierInteractionsContainer from './components/SupplierInteractions/main';
 import api from '../../shared/api.config';
-import apiMiddleWare from './middleware/api';
+// import apiMiddleWare from './middleware/api';
 import './styles/index.scss';
 !window._babelPolyfill && require('babel-polyfill'); // prevent polyfill from importing twice
 import axios from 'axios';
 
 // Add redux dev tools unless we have a production build
-const enhance = process.env.NODE_ENV !== 'production' && window.devToolsExtension ? compose(
-    applyMiddleware(thunkMiddleware, apiMiddleWare),
-    window.devToolsExtension && window.devToolsExtension()
-) : applyMiddleware(thunkMiddleware, apiMiddleWare);
+const enhance =
+    process.env.NODE_ENV !== 'production' && window.devToolsExtension
+        ? compose(
+              applyMiddleware(thunkMiddleware),
+              window.devToolsExtension && window.devToolsExtension()
+          )
+        : applyMiddleware(thunkMiddleware);
 
 // Configure store with thunk middleware to allow async requests
-const store = createStore(
-    rootReducer,
-    enhance
-);
+const store = createStore(rootReducer, enhance);
 
 const hostname = api.configureHostname();
 const headers = api.configureHeaders();
@@ -32,7 +32,9 @@ axios.defaults.headers.common = headers;
 
 ReactDOM.render(
     <Provider store={store}>
-        <SupplierInteractionsContainer supplierId="8" />
+        <SupplierInteractionsContainer />
     </Provider>,
-    document.querySelector('[data-component="searcher-evaluation-supplier-interactions"]')
+    document.querySelector(
+        '[data-component="searcher-evaluation-supplier-interactions"]'
+    )
 );
