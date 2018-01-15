@@ -22,7 +22,7 @@ export function ui(state = INITIAL_STATE, action) {
             };
             state.assignmentId = action.assignmentId;
             state.currentView = action.currentView;
-            state.canViewAll = !!action.canViewAll;
+            state.canViewAll = action.canViewAll;
             return { ...state };
         case actions.RECEIVE_EVALUATION:
             state.isLoading = {

@@ -23,8 +23,7 @@ export class Details extends Component {
         const assignmentId = parent.getAttribute(
             'data-evaluation-assignment-id'
         );
-        const canViewAll = parent.getAttribute('data-view-all');
-        console.log('canViewAll', canViewAll); // eslint-disable-line quotes, no-console
+        const canViewAll = parent.getAttribute('data-view-all') === '1';
         const currentView = location.hash.substr(1);
         this.props.dispatch(
             fetchEvaluation(assignmentId, currentView, canViewAll)
