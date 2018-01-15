@@ -38,17 +38,23 @@ export class Details extends Component {
     }
 
     render() {
-        const { criteria, currentView, isLoading, error } = this.props;
+        const {
+            criteria,
+            currentView,
+            isLoading,
+            error,
+            expandAll
+        } = this.props;
         const criteriaComponents = criteria.map(criterion => {
             return <Criterion key={criterion.id} {...criterion} />;
         });
 
-        const expandAll = (
+        const expandToggle = (
             <div className="pull-left">
                 <button
                     className="db-function mar-top-sm"
                     onClick={this.toggleCriterionCollapse}>
-                    Expand All
+                    {expandAll ? 'Collapse All' : 'Expand All'}
                 </button>
             </div>
         );
@@ -60,7 +66,7 @@ export class Details extends Component {
                 ) : (
                     <div>
                         <div className="row">
-                            {currentView !== 'compare' ? expandAll : null}
+                            {currentView !== 'compare' ? expandToggle : null}
                             <div className="pull-right">
                                 <ViewSelector
                                     view={currentView}
@@ -89,6 +95,7 @@ Details.propTypes = {
     criteria: PropTypes.array.isRequired,
     currentView: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    expandAll: PropTypes.bool.isRequired,
     error: PropTypes.string
 };
 
@@ -107,6 +114,7 @@ function mapStateToProps(state) {
     let isLoading = ui.isLoading.who === 'evaluation' && !ui.isLoading.done;
     let currentView = ui.currentView;
     let error = ui.error;
+    let expandAll = rawCriterion.expandAll;
 
     const getComments = commentId => {
         let comment = rawComments.byId[commentId];
@@ -133,7 +141,8 @@ function mapStateToProps(state) {
             criteria,
             currentView,
             isLoading,
-            error
+            error,
+            expandAll
         };
     }
 
@@ -146,7 +155,7 @@ function mapStateToProps(state) {
 
     criteria = criteriaIds.map(getCriteria);
 
-    return { criteria, currentView, isLoading, error };
+    return { criteria, currentView, isLoading, error, expandAll };
 }
 
 export default connect(mapStateToProps)(Details); // adds dispatch prop

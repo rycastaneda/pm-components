@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import Comment from './Comment';
+import Score from './Score';
 
 class Question extends Component {
     constructor(props) {
@@ -24,8 +25,11 @@ class Question extends Component {
             scale,
             comments
         } = this.props;
+
         const listComponents = comments.length ? (
-            comments.map(comment => <Comment key={comment.id} {...comment} />)
+            comments.map(comment => (
+                <Comment key={comment.id} {...comment} scale={scale} />
+            ))
         ) : (
             <tr>
                 <td className="td-center" colSpan="3">
@@ -48,12 +52,8 @@ class Question extends Component {
                                 </p>
                             </td>
                             <td width="10%">
-                                {scale !== 1 ? (
-                                    <span className="label label-lg label-plantminer">
-                                        {totalScore
-                                            ? totalScore.toFixed(1)
-                                            : ' - '}
-                                    </span>
+                                {scale !== 1 && totalScore ? (
+                                    <Score score={totalScore} scale={scale} />
                                 ) : null}
                             </td>
                             <td className="text-right" width="10%">
@@ -75,7 +75,9 @@ class Question extends Component {
                                                 <th>Assignee</th>
                                                 <th>Comment</th>
                                                 <th className="text-right">
-                                                    Score
+                                                    {scale !== 1
+                                                        ? 'Score'
+                                                        : 'Answer'}
                                                 </th>
                                             </tr>
                                         </thead>

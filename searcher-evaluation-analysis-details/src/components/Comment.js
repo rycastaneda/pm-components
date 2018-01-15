@@ -1,15 +1,14 @@
 import React, { PropTypes } from 'react';
+import Score from './Score';
 
-const Comment = ({ staff, comment, score }) => (
+const Comment = ({ staff, comment, score, scale }) => (
     <tr>
         <td className="staff">
             <strong>{staff}</strong>
         </td>
         <td className="comment">{comment}</td>
         <td className="scorebox text-right">
-            <span className="label label-lg label-plantminer">
-                {score ? score.toFixed(1) : ' - '}
-            </span>
+            <Score score={score} scale={scale} />
         </td>
     </tr>
 );
@@ -17,7 +16,8 @@ const Comment = ({ staff, comment, score }) => (
 Comment.propTypes = {
     staff: PropTypes.string.isRequired,
     comment: PropTypes.string.isRequired,
-    score: PropTypes.number.isRequired
+    score: PropTypes.number.isRequired,
+    scale: PropTypes.number.isRequired
 };
 
 export default Comment;

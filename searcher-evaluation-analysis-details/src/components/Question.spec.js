@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import Question from './Question';
 import Comment from './Comment';
+import Score from './Score';
 
 const setup = props => {
     const component = shallow(<Question {...props} />);
@@ -11,7 +12,6 @@ const setup = props => {
 };
 
 describe('Question component: ', () => {
-    let component;
     const props = {
         questionTitle: 'Test Question',
         totalScore: 5,
@@ -38,23 +38,22 @@ describe('Question component: ', () => {
         expect(component.find('.question-title').text()).to.eql(
             props.questionTitle
         );
-        expect(+component.find('.label-plantminer').text()).to.eql(
-            props.totalScore
-        );
+        expect(component.find(Score)).to.have.length(1);
         expect(component.find('.fa-chevron-right'));
         expect(component.find(Comment)).to.have.length(0);
     });
 
-    it('should render the Question without score if scale is 1', () => {
+    it('should render the Question without score', () => {
         const { component } = setup({
             ...props,
-            scale: 1
+            scale: 1,
+            totalScore: null
         });
 
         expect(component.find('.question-title').text()).to.eql(
             props.questionTitle
         );
-        expect(component.find('.label-plantminer')).to.have.length(0);
+        expect(component.find(Score)).to.have.length(0);
         expect(component.find('.fa-chevron-right'));
         expect(component.find(Comment)).to.have.length(0);
     });
