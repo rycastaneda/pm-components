@@ -242,7 +242,7 @@ export function parseAssignmentsFromData(evaluationAssignmentsData, userProfile)
             let view_compare_url = EVALUATION_ASSIGNMENT_ANALYSE+id+'#compare';
             // admin can delete any assignment
 
-            return { id, assignedOn, createdBy, evaluationTemplate, assignedUser, linkedTo, assignmentStatus, supplier, complete_url, view_all_url, view_single_url, isDeleteAllowed, isMarkInProgressAllowed, view_compare_url };
+            return { id, assignedOn, createdBy, evaluationTemplate, assignedUser, linkedTo, assignmentStatus, supplier, complete_url, view_all_url, view_single_url, isAdmin, isDeleteAllowed, isMarkInProgressAllowed, view_compare_url };
         });
     }
     return evaluationAssignments;
