@@ -65,7 +65,7 @@ class AssignmentsTable extends Component {
         this.hideMenu();
     }
     renderMoreButton(assignment) {
-        let { id, complete_url, view_single_url, view_all_url, view_compare_url, isAdmin, isDeleteAllowed, isMarkInProgressAllowed } = assignment;
+        let { id, complete_url, view_single_url, view_all_url, view_compare_url, isAdmin, isViewAll, isDeleteAllowed, isMarkInProgressAllowed } = assignment;
 
         if (this.state.menuVisibleItemId === id) {
             return (
@@ -114,7 +114,7 @@ class AssignmentsTable extends Component {
                             <i className="fa fa-area-chart"></i> View Single
                         </a>
                     </li>
-                    { isAdmin ?
+                    { isAdmin || isViewAll ?
                         <li><a href={view_all_url}><i className="fa fa-pie-chart"></i> View All</a></li>
                         : null
                     }
