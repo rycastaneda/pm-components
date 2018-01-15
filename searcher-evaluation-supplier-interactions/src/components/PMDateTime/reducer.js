@@ -1,17 +1,24 @@
 import * as actions from './actionsTypes';
 
 const initialState = {
-    dateTime: Date(Date.now()).toLocaleString()
+    dateTimeStart: Date(Date.now()).toLocaleString(),
+    dateTimeEnd: Date(Date.now()).toLocaleString(),
 };
 
 const reducer = (state = initialState, action) => {
 
     switch (action.type) {
 
-        case actions.SUPPLIER_INTERACTIONS_FILTER_DATE_CHANGE:
+        case actions.SUPPLIER_INTERACTIONS_FILTER_DATE_START_CHANGE:
             return {
                 ...state,
-                dateTime: action.dateTime,
+                dateTimeStart: action.dateTimeStart,
+            };
+
+        case actions.SUPPLIER_INTERACTIONS_FILTER_DATE_END_CHANGE:
+            return {
+                ...state,
+                dateTimeEnd: action.dateTimeEnd,
             };
 
         default:
