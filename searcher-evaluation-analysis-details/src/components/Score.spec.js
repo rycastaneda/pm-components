@@ -13,7 +13,8 @@ describe('Score component: ', () => {
     const props = {
         score: 1,
         scale: 1,
-        showDecimals: false
+        showDecimals: false,
+        hasComments: true
     };
 
     it('should render the Score YES or NO if scale is 1', () => {
@@ -55,5 +56,15 @@ describe('Score component: ', () => {
         });
 
         expect(component.text()).to.eql('N/A');
+    });
+
+    it('should render the Score with Dash on not rated comments', () => {
+        const { component } = setup({
+            ...props,
+            scale: 5,
+            hasComments: false
+        });
+
+        expect(component.text()).to.eql('-');
     });
 });

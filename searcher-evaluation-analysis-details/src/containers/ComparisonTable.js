@@ -109,10 +109,6 @@ function mapStateToProps(state) {
         });
     });
 
-    console.log('entities', entities); // eslint-disable-line quotes, no-console
-
-    console.log('entityTally', entityTally); // eslint-disable-line quotes, no-console
-
     return {
         entities
     };

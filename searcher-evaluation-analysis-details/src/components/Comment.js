@@ -8,7 +8,12 @@ const Comment = ({ staff, comment, score, scale }) => (
         </td>
         <td className="comment">{comment}</td>
         <td className="scorebox text-right">
-            <Score score={score} scale={scale} showDecimals={false} />
+            <Score
+                score={score}
+                scale={scale}
+                showDecimals={false}
+                hasComments={false}
+            />
         </td>
     </tr>
 );

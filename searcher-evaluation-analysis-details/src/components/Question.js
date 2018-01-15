@@ -57,6 +57,7 @@ class Question extends Component {
                                         score={totalScore}
                                         scale={scale}
                                         showDecimals={true}
+                                        hasComments={!!comments.length}
                                     />
                                 ) : null}
                             </td>

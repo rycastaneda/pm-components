@@ -1,17 +1,7 @@
 import React, { PropTypes } from 'react';
 
-const Score = ({ score, scale, showDecimals }) => {
+const Score = ({ score, scale, showDecimals, hasComments }) => {
     let scoreLabel;
-
-    if (scale === 1) {
-        scoreLabel = score ? 'Yes' : 'No';
-    } else {
-        if (!score) {
-            scoreLabel = 0;
-        } else {
-            scoreLabel = showDecimals ? score.toFixed(1) : score;
-        }
-    }
 
     switch (scale) {
         case 1:
@@ -19,6 +9,11 @@ const Score = ({ score, scale, showDecimals }) => {
             break;
         case 5:
         case 10:
+            if (!hasComments) {
+                scoreLabel = '-';
+                break;
+            }
+
             if (!score) {
                 scoreLabel = 0;
                 break;
@@ -31,7 +26,10 @@ const Score = ({ score, scale, showDecimals }) => {
     }
 
     return (
-        <span className="label total label-lg label-plantminer">
+        <span
+            className={`label total label-lg label-plantminer ${scale === 0
+                ? 'not-available'
+                : ''}`}>
             {scoreLabel}
         </span>
     );
@@ -40,7 +38,8 @@ const Score = ({ score, scale, showDecimals }) => {
 Score.propTypes = {
     score: PropTypes.number,
     scale: PropTypes.number,
-    showDecimals: PropTypes.bool
+    showDecimals: PropTypes.bool,
+    hasComments: PropTypes.bool
 };
 
 export default Score;
