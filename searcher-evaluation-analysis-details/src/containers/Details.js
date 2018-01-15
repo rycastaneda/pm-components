@@ -73,6 +73,7 @@ export class Details extends Component {
                                     changeView={this.changeView}
                                 />
                             </div>
+                            <div className="clearfix" />
                         </div>
                         <div className="row mar-top-sm criteria-list">
                             {isLoading ? (
