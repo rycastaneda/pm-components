@@ -52,7 +52,7 @@ class Question extends Component {
                                 </p>
                             </td>
                             <td width="10%">
-                                {scale !== 1 && totalScore ? (
+                                {scale !== 1 ? (
                                     <Score
                                         score={totalScore}
                                         scale={scale}

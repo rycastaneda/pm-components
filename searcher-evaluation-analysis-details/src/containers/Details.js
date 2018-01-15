@@ -52,7 +52,7 @@ export class Details extends Component {
         const expandToggle = (
             <div className="pull-left">
                 <button
-                    className="db-function mar-top-sm"
+                    className="btn db-function mar-top-sm"
                     onClick={this.toggleCriterionCollapse}>
                     {expandAll ? 'Collapse All' : 'Expand All'}
                 </button>

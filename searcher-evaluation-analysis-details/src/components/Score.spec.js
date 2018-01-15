@@ -45,4 +45,15 @@ describe('Score component: ', () => {
 
         expect(component.text()).to.eql(score.toFixed(1));
     });
+
+    it('should render the Score with N/A on free text types', () => {
+        let score = 0;
+        const { component } = setup({
+            ...props,
+            scale: 0,
+            score
+        });
+
+        expect(component.text()).to.eql('N/A');
+    });
 });
