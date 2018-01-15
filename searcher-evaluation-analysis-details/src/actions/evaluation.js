@@ -1,14 +1,17 @@
 import * as actions from '../constants/ActionTypes';
 import axios from 'axios';
 
-export function fetchEvaluation(assignmentId, currentView) {
+export function fetchEvaluation(assignmentId, view, viewAll) {
     return (dispatch, getState) => {
         let assignment = assignmentId || getState().ui.assignmentId;
+        let currentView = view || getState().ui.currentView;
+        let canViewAll = viewAll || getState().ui.canViewAll;
 
         dispatch({
             type: actions.FETCH_EVALUATION,
             assignmentId: assignment,
-            currentView
+            currentView,
+            canViewAll
         });
 
         let includes = [

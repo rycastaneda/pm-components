@@ -23,9 +23,12 @@ export class Details extends Component {
         const assignmentId = parent.getAttribute(
             'data-evaluation-assignment-id'
         );
-        const currentView = parent.getAttribute('data-view');
-
-        this.props.dispatch(fetchEvaluation(assignmentId, currentView));
+        const canViewAll = parent.getAttribute('data-view-all');
+        console.log('canViewAll', canViewAll); // eslint-disable-line quotes, no-console
+        const currentView = location.hash.substr(1);
+        this.props.dispatch(
+            fetchEvaluation(assignmentId, currentView, canViewAll)
+        );
     }
 
     changeView(event) {
@@ -43,7 +46,8 @@ export class Details extends Component {
             currentView,
             isLoading,
             error,
-            expandAll
+            expandAll,
+            canViewAll
         } = this.props;
         const criteriaComponents = criteria.map(criterion => {
             return <Criterion key={criterion.id} {...criterion} />;
@@ -71,6 +75,7 @@ export class Details extends Component {
                                 <ViewSelector
                                     view={currentView}
                                     changeView={this.changeView}
+                                    canViewAll={canViewAll}
                                 />
                             </div>
                             <div className="clearfix" />
@@ -97,6 +102,7 @@ Details.propTypes = {
     currentView: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     expandAll: PropTypes.bool.isRequired,
+    canViewAll: PropTypes.bool.isRequired,
     error: PropTypes.string
 };
 
@@ -115,6 +121,7 @@ function mapStateToProps(state) {
     let isLoading = ui.isLoading.who === 'evaluation' && !ui.isLoading.done;
     let currentView = ui.currentView;
     let error = ui.error;
+    let canViewAll = ui.canViewAll;
     let expandAll = rawCriterion.expandAll;
 
     const getComments = commentId => {
@@ -143,7 +150,8 @@ function mapStateToProps(state) {
             currentView,
             isLoading,
             error,
-            expandAll
+            expandAll,
+            canViewAll
         };
     }
 
@@ -156,7 +164,7 @@ function mapStateToProps(state) {
 
     criteria = criteriaIds.map(getCriteria);
 
-    return { criteria, currentView, isLoading, error, expandAll };
+    return { criteria, currentView, isLoading, error, expandAll, canViewAll };
 }
 
 export default connect(mapStateToProps)(Details); // adds dispatch prop
