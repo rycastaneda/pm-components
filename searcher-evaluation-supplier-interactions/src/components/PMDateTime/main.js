@@ -14,7 +14,7 @@ class PMDateTime extends Component {
                         <i className="fa fa-calendar" />
                     </span>
                     <Datetime
-                        className="po-date  "
+                        className="po-date"
                         timeFormat={false}
                         closeOnSelect={true}
                         onChange={onDateChange}

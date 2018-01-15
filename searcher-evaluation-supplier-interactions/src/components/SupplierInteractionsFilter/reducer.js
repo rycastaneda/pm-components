@@ -3,7 +3,9 @@ import * as actions from './actionsTypes';
 const initialState = {
     filterSearchKey: '',
     interactionTypes: ['Any', 'Message', 'Evaluation', 'Rfq', 'Engagement'],
+    staffInitiators: ['Any', 'Test staff 1', 'Test staff 2', 'Test staff 3'],
     interactionTypeSelected: 'Any',
+    initiatedBySelected: 'Any',
     toggleFilterShow: false,
     isLoading: false,
 };
@@ -19,12 +21,20 @@ const reducer = (state = initialState, action) => {
                 filterSearchKey: action.searchKey,
             };
 
-        case actions.SUPPLIER_INTERACTIONS_FILTER_STATUS_CHANGE:
+        case actions.SUPPLIER_INTERACTIONS_FILTER_INTERACTION_TYPE:
 
             return {
                 ...state,
                 interactionTypeSelected: action.interactionTypeSelected,
             };
+
+        case actions.SUPPLIER_INTERACTIONS_FILTER_INITIATED_BY_CHANGE:
+
+            return {
+                ...state,
+                initiatedBySelected: action.initiatedBySelected,
+            };
+
 
         case actions.SUPPLIER_INTERACTIONS_SUBMIT_NORMAL:
 
