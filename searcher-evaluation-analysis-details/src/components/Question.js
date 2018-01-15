@@ -53,7 +53,11 @@ class Question extends Component {
                             </td>
                             <td width="10%">
                                 {scale !== 1 && totalScore ? (
-                                    <Score score={totalScore} scale={scale} />
+                                    <Score
+                                        score={totalScore}
+                                        scale={scale}
+                                        showDecimals={true}
+                                    />
                                 ) : null}
                             </td>
                             <td className="text-right" width="10%">

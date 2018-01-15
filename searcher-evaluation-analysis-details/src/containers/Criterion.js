@@ -51,12 +51,12 @@ export class Criterion extends Component {
                         ? ''
                         : 'collapsed'}`}>
                     <div className="row">
-                        <div className="col-md-9">
+                        <div className="col-sm-9 col-md-9">
                             <div className="pmaccordion__title font-rg">
                                 {title}
                             </div>
                         </div>
-                        <div className="col-md-3 text-right">
+                        <div className="col-sm-3 col-md-3 text-right">
                             <span className="weight">
                                 Weighting: <strong>{weight}%</strong>
                             </span>

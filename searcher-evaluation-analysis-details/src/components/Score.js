@@ -1,12 +1,16 @@
 import React, { PropTypes } from 'react';
 
-const Score = ({ score, scale }) => {
+const Score = ({ score, scale, showDecimals }) => {
     let scoreLabel;
 
     if (scale === 1) {
-        scoreLabel = score ? 'YES' : 'NO';
+        scoreLabel = score ? 'Yes' : 'No';
     } else {
-        scoreLabel = score === 0 ? 0 : score.toFixed(1);
+        if (!score) {
+            scoreLabel = 0;
+        } else {
+            scoreLabel = showDecimals ? score.toFixed(1) : score;
+        }
     }
 
     return (
@@ -18,7 +22,8 @@ const Score = ({ score, scale }) => {
 
 Score.propTypes = {
     score: PropTypes.number,
-    scale: PropTypes.number
+    scale: PropTypes.number,
+    showDecimals: PropTypes.bool
 };
 
 export default Score;
