@@ -1,5 +1,4 @@
 import * as actionTypes from './actionsTypes';
-import { initSupplierInteractions } from '../../actions/apiActions';
 
 export const updateChangeSearchKey = (searchKey) => {
     return {
@@ -13,7 +12,6 @@ export const updateFilterInteractionTypeChange = interactionTypeSelected => (dis
         type: actionTypes.SUPPLIER_INTERACTIONS_FILTER_INTERACTION_TYPE,
         interactionTypeSelected,
     });
-    dispatch(initSupplierInteractions());
 };
 
 export const updateFilterInitiatedByChange = initiatedBySelected => (dispatch) => {

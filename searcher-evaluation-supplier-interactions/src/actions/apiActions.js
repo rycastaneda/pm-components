@@ -8,6 +8,7 @@ export const initSupplierInteractions = () => (dispatch, getState) => {
     const { maxRowsSelected, pageSelected } = getState().pagination;
     const { currentSupplierId } = getState().supplierInteractions;
     const { interactionTypeSelected } = getState().interactionsFilter;
+    const { dateTimeStart, dateTimeEnd, isDateRangeValid } = getState().pmDateTime;
 
     const request = baseUrl
         .segment('/preferred-suppliers/:supplier')
@@ -15,14 +16,29 @@ export const initSupplierInteractions = () => (dispatch, getState) => {
         .param('supplier', currentSupplierId)
         .param('per_page', maxRowsSelected);
 
-    const apiEndpoint =
-        interactionTypeSelected !== 'Any'
-            ? request
-                .query('page', pageSelected)
-                .query('filter[type]', interactionTypeSelected.toLowerCase())
-                .toString()
-            : request.query({ page: pageSelected }).toString();
+    let apiEndpoint;
 
+    if (interactionTypeSelected !== 'Any' && isDateRangeValid) {
+        apiEndpoint = request
+            .query('page', pageSelected)
+            .query('filter[type]', interactionTypeSelected.toLowerCase())
+            .query('filter[start_date]', dateTimeStart)
+            .query('filter[end_date]', dateTimeEnd)
+            .toString();
+    } else if (interactionTypeSelected !== 'Any') {
+        apiEndpoint = request
+            .query('page', pageSelected)
+            .query('filter[type]', interactionTypeSelected.toLowerCase())
+            .toString();
+    } else if (isDateRangeValid) {
+        apiEndpoint = request
+            .query('page', pageSelected)
+            .query('filter[start_date]', dateTimeStart)
+            .query('filter[end_date]', dateTimeEnd)
+            .toString();
+    } else {
+        apiEndpoint = request.query({ page: pageSelected }).toString();
+    }
     console.log('endpoin: -> ', apiEndpoint);
 
     dispatch({

@@ -9,12 +9,11 @@ const SupplierInteractionsTable = ({ interactions, isLoading }) => (
             <thead>
                 <tr>
                     <th>Date</th>
-                    <th>Interaction</th>
+                    <th>Interaction Type</th>
+                    <th>ID</th>
                     <th>Initiated by</th>
                     <th>Related to</th>
-                    <th>Type</th>
                     <th>Status</th>
-                    <th>More</th>
                 </tr>
             </thead>
 

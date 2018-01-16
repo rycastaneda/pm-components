@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from './actions';
-import * as datePickerActions from '../PMDateTime/actions';
+import * as apiActions from '../../actions/apiActions';
 
 import { FilterMainContainer } from './styling/styledComponents';
-import PMDateTime from '../PMDateTime/main';
+import PMDateRange from '../PMDateRange/main';
 import FilterInteractionType from './FilterInteractionType';
 import FilterInitiatedBy from './FilterInitiatedBy';
 
@@ -15,9 +15,7 @@ const FilterBody = ({
     interactionTypes,
     interactionTypeSelected,
     actions,
-    datePickerActions,
-    dateTimeStart,
-    dateTimeEnd,
+    apiActions,
     staffInitiators,
     initiatedBySelected,
 }) => (
@@ -41,24 +39,10 @@ const FilterBody = ({
                 />
             </div>
             <div className="col-xs-6">
-                <div className="form-group">
-                    <label>Start Date</label>
-                    <PMDateTime
-                        dateTime={dateTimeStart}
-                        onDateChange={
-                            datePickerActions.updateFilterStartDateChange
-                        }
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Start Date</label>
-                    <PMDateTime
-                        dateTime={dateTimeEnd}
-                        onDateChange={
-                            datePickerActions.updateFilterEndDateChange
-                        }
-                    />
-                </div>
+                <PMDateRange />
+            </div>
+            <div className="col-xs-6">
+                <button className="btn" type="button" onClick={apiActions.initSupplierInteractions}>Apply Filters</button>
             </div>
         </div>
     </FilterMainContainer>
@@ -66,20 +50,18 @@ const FilterBody = ({
 
 FilterBody.propTypes = {
     actions: PropTypes.object,
-    datePickerActions: PropTypes.object,
+    apiActions: PropTypes.object,
     toggleFilterShow: PropTypes.bool.isRequired,
     interactionTypes: PropTypes.array.isRequired,
     interactionTypeSelected: PropTypes.string.isRequired,
     staffInitiators: PropTypes.array.isRequired,
     initiatedBySelected: PropTypes.string.isRequired,
-    dateTimeStart: PropTypes.string.isRequired,
-    dateTimeEnd: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(actions, dispatch),
-        datePickerActions: bindActionCreators(datePickerActions, dispatch),
+        apiActions: bindActionCreators(apiActions, dispatch),
     };
 };
 
@@ -92,15 +74,11 @@ const mapStateToProps = (state, ownProps) => {
         initiatedBySelected,
     } = state.interactionsFilter;
 
-    const { dateTimeStart, dateTimeEnd } = state.pmDateTime;
-
     return {
         ...ownProps,
         toggleFilterShow,
         interactionTypes,
         interactionTypeSelected,
-        dateTimeStart,
-        dateTimeEnd,
         staffInitiators,
         initiatedBySelected,
     };
