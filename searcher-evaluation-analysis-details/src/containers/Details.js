@@ -113,6 +113,7 @@ function mapStateToProps(state) {
         questions: rawQuestions,
         staff: rawStaff,
         comments: rawComments,
+        uploads: rawUploads,
         ui
     } = state;
 
@@ -127,6 +128,9 @@ function mapStateToProps(state) {
         let comment = rawComments.byId[commentId];
         let staff = rawStaff.byId[comment.staffId];
         comment.staff = staff.name;
+        comment.uploads = comment.documentIds.map(
+            documentId => rawUploads.byId[documentId]
+        );
         return comment;
     };
 

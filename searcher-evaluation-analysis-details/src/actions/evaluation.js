@@ -20,10 +20,20 @@ export function fetchEvaluation(assignmentId, view, viewAll) {
             'questionResponses.question'
         ];
 
-        if (currentView !== 'single') {
+        if (currentView === 'single') {
             includes.push(
                 'relatedAssignments.questionResponses',
-                'relatedAssignments.assigneeUser.staff'
+                'relatedAssignments.assigneeUser.staff',
+                'questionResponses.documents'
+            );
+        }
+
+        if (currentView === 'compare') {
+            includes.push(
+                'relatedAssignments.questionResponses',
+                'relatedAssignments.assigneeUser.staff',
+                'relatedAssignment.questionResponses.documents',
+                'questionResponses.documents'
             );
         }
 

@@ -31,11 +31,13 @@ class Question extends Component {
                 <Comment key={comment.id} {...comment} scale={scale} />
             ))
         ) : (
-            <tr>
-                <td className="td-center" colSpan="3">
-                    No comments yet
-                </td>
-            </tr>
+            <tbody>
+                <tr>
+                    <td className="td-center" colSpan="3">
+                        No comments yet
+                    </td>
+                </tr>
+            </tbody>
         );
 
         const iconClass = `fa mar-left-25 pointer toggle-comments ${this.state
@@ -87,7 +89,7 @@ class Question extends Component {
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody>{listComponents}</tbody>
+                                        {listComponents}
                                     </table>
                                     <hr />
                                 </td>
