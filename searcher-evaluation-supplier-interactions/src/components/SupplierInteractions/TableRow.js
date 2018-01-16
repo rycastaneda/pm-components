@@ -4,7 +4,7 @@ import StatusLabel from '../StatusLabel';
 import moment from 'moment';
 
 const renderRelatedTo = (rowItem) => {
-    if (rowItem.type !== 'Evaluation' || rowItem.type !== 'Engagement') {
+    if (rowItem.type !== 'Evaluation' && rowItem.type !== 'Engagement') {
         return null;
     }
     return (
