@@ -8,7 +8,6 @@ import * as apiActions from '../../actions/apiActions';
 import { FilterMainContainer } from './styling/styledComponents';
 import PMDateRange from '../PMDateRange/main';
 import FilterInteractionType from './FilterInteractionType';
-import FilterInitiatedBy from './FilterInitiatedBy';
 
 const FilterBody = ({
     toggleFilterShow,
@@ -16,8 +15,6 @@ const FilterBody = ({
     interactionTypeSelected,
     actions,
     apiActions,
-    staffInitiators,
-    initiatedBySelected,
 }) => (
     <FilterMainContainer
         className="panel panel-default pad-all"
@@ -31,11 +28,6 @@ const FilterBody = ({
                     interactionTypeOnChange={
                         actions.updateFilterInteractionTypeChange
                     }
-                />
-                <FilterInitiatedBy
-                    staffInitiators={staffInitiators}
-                    initiatedBySelected={initiatedBySelected}
-                    initiatedByOnChange={actions.updateFilterInitiatedByChange}
                 />
             </div>
             <div className="col-xs-6">
@@ -54,8 +46,6 @@ FilterBody.propTypes = {
     toggleFilterShow: PropTypes.bool.isRequired,
     interactionTypes: PropTypes.array.isRequired,
     interactionTypeSelected: PropTypes.string.isRequired,
-    staffInitiators: PropTypes.array.isRequired,
-    initiatedBySelected: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -69,9 +59,7 @@ const mapStateToProps = (state, ownProps) => {
     const {
         toggleFilterShow,
         interactionTypes,
-        staffInitiators,
         interactionTypeSelected,
-        initiatedBySelected,
     } = state.interactionsFilter;
 
     return {
@@ -79,8 +67,6 @@ const mapStateToProps = (state, ownProps) => {
         toggleFilterShow,
         interactionTypes,
         interactionTypeSelected,
-        staffInitiators,
-        initiatedBySelected,
     };
 };
 

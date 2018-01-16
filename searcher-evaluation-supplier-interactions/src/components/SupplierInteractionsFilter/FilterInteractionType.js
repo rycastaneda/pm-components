@@ -7,7 +7,7 @@ const FilterInteractionType = ({
     interactionTypeOnChange,
 }) => (
     <div className="form-group">
-        <label>Initiated By</label>
+        <label>Interaction Type</label>
         <select
             className="form-control form-control-sm text-capitalize"
             onChange={event =>
