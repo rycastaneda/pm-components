@@ -42,7 +42,13 @@ export class Assignments extends Component {
     }
 
     clearFilters() {
-        this.props.dispatch(fetchAssignments(this.defaultFilters));
+        console.log('this.defaultFilters', this.defaultFilters); // eslint-disable-line quotes, no-console
+        this.props.dispatch(
+            fetchAssignments({
+                ...this.defaultFilters,
+                filters: { assignee: '', status: [] }
+            })
+        );
     }
 
     changeFilters(filters) {

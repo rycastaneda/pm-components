@@ -55,7 +55,11 @@ class Filters extends Component {
     }
 
     clearFilters() {
-        this.setState({ ...this.initialState, showFilters: true });
+        this.setState({
+            ...this.initialState,
+            selectedStatus: [],
+            showFilters: true
+        });
         this.props.clearFilters();
     }
 
