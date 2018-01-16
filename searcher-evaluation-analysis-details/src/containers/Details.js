@@ -23,9 +23,11 @@ export class Details extends Component {
         const assignmentId = parent.getAttribute(
             'data-evaluation-assignment-id'
         );
-        const currentView = parent.getAttribute('data-view');
-
-        this.props.dispatch(fetchEvaluation(assignmentId, currentView));
+        const canViewAll = parent.getAttribute('data-view-all') === '1';
+        const currentView = location.hash.substr(1);
+        this.props.dispatch(
+            fetchEvaluation(assignmentId, currentView, canViewAll)
+        );
     }
 
     changeView(event) {
@@ -38,17 +40,24 @@ export class Details extends Component {
     }
 
     render() {
-        const { criteria, currentView, isLoading, error } = this.props;
+        const {
+            criteria,
+            currentView,
+            isLoading,
+            error,
+            expandAll,
+            canViewAll
+        } = this.props;
         const criteriaComponents = criteria.map(criterion => {
             return <Criterion key={criterion.id} {...criterion} />;
         });
 
-        const expandAll = (
+        const expandToggle = (
             <div className="pull-left">
                 <button
-                    className="db-function mar-top-sm"
+                    className="btn db-function mar-top-sm"
                     onClick={this.toggleCriterionCollapse}>
-                    Expand All
+                    {expandAll ? 'Collapse All' : 'Expand All'}
                 </button>
             </div>
         );
@@ -60,13 +69,15 @@ export class Details extends Component {
                 ) : (
                     <div>
                         <div className="row">
-                            {currentView !== 'compare' ? expandAll : null}
+                            {currentView !== 'compare' ? expandToggle : null}
                             <div className="pull-right">
                                 <ViewSelector
                                     view={currentView}
                                     changeView={this.changeView}
+                                    canViewAll={canViewAll}
                                 />
                             </div>
+                            <div className="clearfix" />
                         </div>
                         <div className="row mar-top-sm criteria-list">
                             {isLoading ? (
@@ -89,6 +100,8 @@ Details.propTypes = {
     criteria: PropTypes.array.isRequired,
     currentView: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    expandAll: PropTypes.bool.isRequired,
+    canViewAll: PropTypes.bool.isRequired,
     error: PropTypes.string
 };
 
@@ -100,6 +113,7 @@ function mapStateToProps(state) {
         questions: rawQuestions,
         staff: rawStaff,
         comments: rawComments,
+        uploads: rawUploads,
         ui
     } = state;
 
@@ -107,11 +121,16 @@ function mapStateToProps(state) {
     let isLoading = ui.isLoading.who === 'evaluation' && !ui.isLoading.done;
     let currentView = ui.currentView;
     let error = ui.error;
+    let canViewAll = ui.canViewAll;
+    let expandAll = rawCriterion.expandAll;
 
     const getComments = commentId => {
         let comment = rawComments.byId[commentId];
         let staff = rawStaff.byId[comment.staffId];
         comment.staff = staff.name;
+        comment.uploads = comment.documentIds.map(
+            documentId => rawUploads.byId[documentId]
+        );
         return comment;
     };
 
@@ -133,7 +152,9 @@ function mapStateToProps(state) {
             criteria,
             currentView,
             isLoading,
-            error
+            error,
+            expandAll,
+            canViewAll
         };
     }
 
@@ -146,7 +167,7 @@ function mapStateToProps(state) {
 
     criteria = criteriaIds.map(getCriteria);
 
-    return { criteria, currentView, isLoading, error };
+    return { criteria, currentView, isLoading, error, expandAll, canViewAll };
 }
 
 export default connect(mapStateToProps)(Details); // adds dispatch prop

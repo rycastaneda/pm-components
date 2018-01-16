@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 
 const ComparisonRow = ({ criteria, entity }) => {
     let totalScores = 0;
-    console.log('entity', entity); // eslint-disable-line quotes, no-console
     return (
         <tr>
             <td className="name text-left">{entity.title}</td>

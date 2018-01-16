@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import Comment from './Comment';
+import Score from './Score';
 
 class Question extends Component {
     constructor(props) {
@@ -24,22 +25,32 @@ class Question extends Component {
             scale,
             comments
         } = this.props;
+
         const listComponents = comments.length ? (
-            comments.map(comment => <Comment key={comment.id} {...comment} />)
+            comments.map(comment => (
+                <Comment key={comment.id} {...comment} scale={scale} />
+            ))
         ) : (
-            <tr>
-                <td className="td-center" colSpan="3">
-                    No comments yet
-                </td>
-            </tr>
+            <tbody>
+                <tr>
+                    <td className="td-center" colSpan="3">
+                        No comments yet
+                    </td>
+                </tr>
+            </tbody>
         );
+
+        const iconClass = `fa mar-left-25 pointer toggle-comments ${this.state
+            .isShown
+            ? 'fa-chevron-up'
+            : 'fa-chevron-down'}`;
 
         return (
             <div className="questions">
                 <table className="questions" width="100%">
                     <tbody>
                         <tr onClick={this.toggleComments} className="pointer">
-                            <td width="80%">
+                            <td width="75%">
                                 <p>
                                     <span className="circle">{`${number} `}</span>
                                     <span className="question-title">
@@ -47,21 +58,18 @@ class Question extends Component {
                                     </span>
                                 </p>
                             </td>
-                            <td width="10%">
+                            <td className="text-right" width="25%">
                                 {scale !== 1 ? (
-                                    <span className="label label-lg label-plantminer">
-                                        {totalScore
-                                            ? totalScore.toFixed(1)
-                                            : ' - '}
-                                    </span>
+                                    <Score
+                                        score={totalScore}
+                                        scale={scale}
+                                        showDecimals={true}
+                                        hasComments={!!comments.length}
+                                    />
                                 ) : null}
-                            </td>
-                            <td className="text-right" width="10%">
+
                                 <i
-                                    className={`fa pointer toggle-comments ${this
-                                        .state.isShown
-                                        ? 'fa-chevron-up'
-                                        : 'fa-chevron-down'}`}
+                                    className={iconClass}
                                     onClick={this.toggleComments}
                                 />
                             </td>
@@ -75,11 +83,13 @@ class Question extends Component {
                                                 <th>Assignee</th>
                                                 <th>Comment</th>
                                                 <th className="text-right">
-                                                    Score
+                                                    {scale !== 1
+                                                        ? 'Score'
+                                                        : 'Answer'}
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody>{listComponents}</tbody>
+                                        {listComponents}
                                     </table>
                                     <hr />
                                 </td>

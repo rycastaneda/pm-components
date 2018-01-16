@@ -201,6 +201,7 @@ export function parseAssignmentsFromData(evaluationAssignmentsData, userProfile)
             let linkedTo = { id:assignmentType.id, title:assignmentType.title };
             assignmentStatus = { id:assignmentStatus.id, title:assignmentStatus.title };
             let isAdmin =  Boolean(userProfile.pitRole === 'admin');
+            let isViewAll = Boolean(userProfile.pitRole === 'view_all');
             // creator can delete his own assignments
             let isDeleteAllowed = isAdmin||(item.createdBy === userProfile.userId);
             isDeleteAllowed =isDeleteAllowed&&(assignmentStatus.id==='1');
@@ -242,7 +243,7 @@ export function parseAssignmentsFromData(evaluationAssignmentsData, userProfile)
             let view_compare_url = EVALUATION_ASSIGNMENT_ANALYSE+id+'#compare';
             // admin can delete any assignment
 
-            return { id, assignedOn, createdBy, evaluationTemplate, assignedUser, linkedTo, assignmentStatus, supplier, complete_url, view_all_url, view_single_url, isDeleteAllowed, isMarkInProgressAllowed, view_compare_url };
+            return { id, assignedOn, createdBy, evaluationTemplate, assignedUser, linkedTo, assignmentStatus, supplier, complete_url, view_all_url, view_single_url, isAdmin, isViewAll, isDeleteAllowed, isMarkInProgressAllowed, view_compare_url };
         });
     }
     return evaluationAssignments;

@@ -66,6 +66,9 @@ function receiveComment(state, action) {
                 staffId: commentIdtoStaffId[comment.id],
                 questionId: comment.relationships.question.data.id,
                 assignmentId: commentIdtoAssignmentId[comment.id],
+                documentIds: comment.relationships.documents.data.map(
+                    upload => upload.id
+                ),
                 criteriaId:
                     questionIdtoCriteriaId[
                         comment.relationships.question.data.id

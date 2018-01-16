@@ -16,6 +16,7 @@ describe('UI reducer', () => {
             },
             assignmentId: '',
             currentView: 'single',
+            canViewAll: false,
             error: ''
         });
     });
@@ -23,7 +24,9 @@ describe('UI reducer', () => {
     it('should handle FETCH_EVALUATION', () => {
         state = ui(state, {
             type: actions.FETCH_EVALUATION,
-            assignmentId
+            assignmentId,
+            currentView: 'all',
+            canViewAll: true
         });
 
         expect(state.isLoading).to.deep.equal({
@@ -31,6 +34,8 @@ describe('UI reducer', () => {
             id: null,
             done: false
         });
+        expect(state.currentView).to.eql('all');
+        expect(state.canViewAll).to.eql(true);
         expect(state.assignmentId).to.eql(assignmentId);
     });
 
