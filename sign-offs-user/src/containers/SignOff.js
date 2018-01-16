@@ -1,12 +1,15 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Section from './Section';
-import { fetchSections } from '../actions/section';
+import { fetchSections, toggleAllSectionsCollapse } from '../actions/section';
 import Loader from '../components/Loader';
 
 class SignOff extends Component {
     constructor(props) {
         super(props);
+        this.toggleAllSectionsCollapse = this.toggleAllSectionsCollapse.bind(
+            this
+        );
     }
 
     componentDidMount() {
@@ -29,15 +32,38 @@ class SignOff extends Component {
         );
     }
 
+    toggleAllSectionsCollapse() {
+        this.props.dispatch(toggleAllSectionsCollapse());
+    }
+
     render() {
-        const { sections, isLoading } = this.props;
+        const { sections, isLoading, expandAll } = this.props;
         const sectionComponents = sections.map(section => {
             return <Section key={section.id} {...section} />;
         });
 
         return (
             <div ref={ref => (this.domRef = ref)}>
-                {isLoading ? <Loader /> : sectionComponents}
+                {isLoading ? (
+                    <Loader />
+                ) : (
+                    <div>
+                        <div className="panel panel-default pad-all">
+                            <div className="row text-right">
+                                <div className="col-md-12">
+                                    <a
+                                        onClick={this.toggleAllSectionsCollapse}
+                                        className="btn btn-sm selection-toggle expand">
+                                        {!expandAll
+                                            ? 'Expand All'
+                                            : 'Collapse All'}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {sectionComponents}
+                    </div>
+                )}
             </div>
         );
     }
@@ -62,12 +88,14 @@ function mapStateToProps(state) {
     } = state;
 
     let sections = [];
+    let { expandAll } = ui;
 
     if (!rawSections.allIds.length) {
         return {
             sections,
             isLoading: rawSections.isLoading,
             sectionModalId: null,
+            expandAll,
             error: ui.error
         };
     }
@@ -119,6 +147,7 @@ function mapStateToProps(state) {
         sections,
         isLoading: rawSections.isLoading,
         sectionModalId: +ui.sectionModalId,
+        expandAll,
         error: ui.error
     };
 }

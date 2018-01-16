@@ -13,7 +13,8 @@ describe('UI reducer', () => {
             error: null,
             preferredSupplierId: null,
             supplierUserId: null,
-            panelId: null
+            panelId: null,
+            expandAll: false
         });
     });
 
@@ -44,5 +45,14 @@ describe('UI reducer', () => {
             'error',
             'Something went wrong. Please try again later'
         );
+    });
+
+    it('should handle TOGGLE_ALL_SECTION_COLLAPSE by toggling expandAll', () => {
+        state = ui(state, {
+            type: actions.TOGGLE_ALL_SECTION_COLLAPSE,
+            expandAll: true
+        });
+
+        expect(state).to.have.property('expandAll', true);
     });
 });

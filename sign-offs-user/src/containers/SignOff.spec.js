@@ -10,7 +10,7 @@ import { Provider } from 'react-redux';
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-const setup = (props) => {
+const setup = props => {
     const component = shallow(
         <Provider store={mockStore()}>
             <SignOff {...props} />
@@ -24,18 +24,23 @@ const dispatch = sinon.spy();
 
 describe('SignOff container: ', () => {
     it('should render the container with props and onChange function', () => {
-        const { component } = setup({ 
-            sections: [{
-                id: 1,
-                name: 'Company Size'
-            }, {
-                id: 2,
-                name: 'Company Location'
-            }, {
-                id: 3,
-                name: 'Health & Safety'
-            }], 
+        const { component } = setup({
+            sections: [
+                {
+                    id: 1,
+                    name: 'Company Size'
+                },
+                {
+                    id: 2,
+                    name: 'Company Location'
+                },
+                {
+                    id: 3,
+                    name: 'Health & Safety'
+                }
+            ],
             dispatch,
+            expandAll: true,
             isLoading: true
         });
 

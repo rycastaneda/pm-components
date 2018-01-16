@@ -5,9 +5,9 @@ import {
     FETCH_SECTIONS,
     RECEIVE_SECTIONS,
     TOGGLE_SECTION_COLLAPSE,
+    TOGGLE_ALL_SECTION_COLLAPSE,
     TOGGLE_SECTION_LOADING,
-    SWITCH_SECTION_TAB,
-    TOGGLE_MANAGE_SECTION_MODAL
+    SWITCH_SECTION_TAB
 } from '../constants';
 import { expect } from 'chai'; // You can use any testing library
 import axios from 'axios';
@@ -35,6 +35,19 @@ describe('Section actions', function() {
         expect(actions.toggleSectionCollapse(sectionId)).to.eql({
             type: TOGGLE_SECTION_COLLAPSE,
             sectionId
+        });
+    });
+
+    it('should call TOGGLE_ALL_SECTION_COLLAPSE', () => {
+        const store = mockStore({
+            ui: { expandAll: false }
+        });
+
+        store.dispatch(actions.toggleAllSectionCollapse());
+
+        expect(store.getActions().pop()).to.eql({
+            type: TOGGLE_ALL_SECTION_COLLAPSE,
+            expandAll: true
         });
     });
 

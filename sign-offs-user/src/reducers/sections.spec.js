@@ -54,6 +54,17 @@ describe('Sections reducer', () => {
         expect(state.byId[1]).to.have.property('isCollapsed', !isCollapsed);
     });
 
+    it('should handle TOGGLE_ALL_SECTION_COLLAPSE', () => {
+        state = sections(state, {
+            type: actions.TOGGLE_ALL_SECTION_COLLAPSE,
+            expandAll: true
+        });
+
+        state.allIds.map(sectionId => {
+            expect(state.byId[sectionId].isCollapsed).to.eql(true);
+        });
+    });
+
     it('should handle SWITCH_SECTION_TAB', () => {
         state = sections(state, {
             type: actions.SWITCH_SECTION_TAB,

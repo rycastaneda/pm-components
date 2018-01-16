@@ -17,6 +17,8 @@ export function sections(state = INITIAL_STATE, action) {
             };
         case actions.RECEIVE_SECTIONS:
             return receiveSections(state, action);
+        case actions.TOGGLE_ALL_SECTION_COLLAPSE:
+            return toggleAllSections(state, action);
         case actions.TOGGLE_SECTION_COLLAPSE:
             section = state.byId[action.sectionId];
 
@@ -201,5 +203,15 @@ function receiveSections(state, action) {
         byId,
         allIds,
         isLoading: false
+    };
+}
+
+function toggleAllSections(state, action) {
+    state.allIds.map(sectionId => {
+        state.byId[sectionId].isCollapsed = action.expandAll;
+    });
+
+    return {
+        ...state
     };
 }

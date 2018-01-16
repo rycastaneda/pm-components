@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 const Question = ({ question, answer }) => (
     <div className="request-detail pad-btm font-rg">
         <p className="title pad-btm-sm">{question}</p>
-        {answer}
+        <span>{answer}</span>
     </div>
 );
 

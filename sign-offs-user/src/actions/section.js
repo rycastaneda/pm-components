@@ -45,6 +45,17 @@ export function toggleSectionCollapse(sectionId) {
     };
 }
 
+export function toggleAllSectionsCollapse() {
+    return (dispatch, getState) => {
+        let { expandAll } = getState().ui;
+
+        dispatch({
+            type: actions.TOGGLE_ALL_SECTION_COLLAPSE,
+            expandAll: !expandAll
+        });
+    };
+}
+
 export function toggleSectionLoading(sectionId) {
     return {
         type: actions.TOGGLE_SECTION_LOADING,

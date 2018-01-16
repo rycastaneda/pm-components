@@ -6,7 +6,8 @@ const INITIAL_STATE = {
     error: null,
     preferredSupplierId: null,
     supplierUserId: null,
-    panelId: null
+    panelId: null,
+    expandAll: false
 };
 
 export function ui(state = INITIAL_STATE, action) {
@@ -19,6 +20,11 @@ export function ui(state = INITIAL_STATE, action) {
                 preferredSupplierId: action.preferredSupplierId,
                 supplierUserId: action.supplierUserId,
                 panelId: action.panelId
+            };
+        case actions.TOGGLE_ALL_SECTION_COLLAPSE:
+            return {
+                ...state,
+                expandAll: action.expandAll
             };
         case actions.API_ERROR:
             return {
