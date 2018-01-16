@@ -12,7 +12,8 @@ describe('UI reducer', () => {
             currentStaffId: 0,
             sectionModalId: null,
             preferredSupplierId: null,
-            supplierUserId: null
+            supplierUserId: null,
+            expandAll: false
         });
     });
 
@@ -29,6 +30,15 @@ describe('UI reducer', () => {
         expect(state).to.have.property('currentStaffId', 31);
         expect(state).to.have.property('preferredSupplierId', 57);
         expect(state).to.have.property('supplierUserId', 7803);
+    });
+
+    it('should handle TOGGLE_ALL_SECTION_COLLAPSE', function() {
+        state = ui(state, {
+            type: actions.TOGGLE_ALL_SECTION_COLLAPSE,
+            expandAll: true
+        });
+
+        expect(state).to.have.property('expandAll', true);
     });
 
     it('should handle TOGGLE_MANAGE_SECTION_MODAL by setting the sectionId on edit', function() {

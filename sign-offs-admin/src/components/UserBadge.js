@@ -2,14 +2,14 @@ import React, { PropTypes } from 'react';
 
 const UserBadge = ({ name, status }) => {
     const badges = {
-        rejected: 'badge-bg-danger',
+        declined: 'badge-bg-danger',
         approved: 'badge-success',
         pending: 'badge-info',
         'in progress': 'badge-warning'
     };
 
     const icons = {
-        rejected: 'fa-times-circle',
+        declined: 'fa-times-circle',
         approved: 'fa-check-circle',
         pending: 'fa-exclamation-circle',
         'in progress': 'fa-gears'

@@ -3,16 +3,16 @@ import CounterBadge from './CounterBadge';
 const Counters = ({ counters }) => (
     <div>
         <CounterBadge status="approved" count={counters.approved} />
-        <CounterBadge status="rejected" count={counters.rejected} />
+        <CounterBadge status="declined" count={counters.declined} />
         <CounterBadge status="in progress" count={counters.inprogress} />
         <CounterBadge status="pending" count={counters.pending} />
     </div>
 );
 
 Counters.propTypes = {
-    counters: PropTypes.shape({ 
-        pending: PropTypes.number.isRequired, 
-        rejected: PropTypes.number.isRequired,
+    counters: PropTypes.shape({
+        pending: PropTypes.number.isRequired,
+        declined: PropTypes.number.isRequired,
         approved: PropTypes.number.isRequired,
         inprogress: PropTypes.number.isRequired
     })

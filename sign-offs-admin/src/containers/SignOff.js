@@ -1,13 +1,16 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Section from './Section';
-import { fetchSections } from '../actions/section';
+import { fetchSections, toggleAllSectionsCollapse } from '../actions/section';
 import ManageSectionModal from './ManageSectionModal';
 import Loader from '../components/Loader';
 
 class SignOff extends Component {
     constructor(props) {
         super(props);
+        this.toggleAllSectionsCollapse = this.toggleAllSectionsCollapse.bind(
+            this
+        );
     }
 
     componentDidMount() {
@@ -29,15 +32,38 @@ class SignOff extends Component {
         );
     }
 
+    toggleAllSectionsCollapse() {
+        this.props.dispatch(toggleAllSectionsCollapse());
+    }
+
     render() {
-        const { sections, isLoading, sectionModalId } = this.props;
+        const { sections, isLoading, sectionModalId, expandAll } = this.props;
         const sectionComponents = sections.map(section => {
             return <Section key={section.id} {...section} />;
         });
 
         return (
             <div ref={ref => (this.domRef = ref)}>
-                {isLoading ? <Loader /> : sectionComponents}
+                {isLoading ? (
+                    <Loader />
+                ) : (
+                    <div>
+                        <div className="panel panel-default pad-all">
+                            <div className="row text-right">
+                                <div className="col-md-12">
+                                    <a
+                                        onClick={this.toggleAllSectionsCollapse}
+                                        className="btn btn-sm selection-toggle expand">
+                                        {!expandAll
+                                            ? 'Expand All'
+                                            : 'Collapse All'}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {sectionComponents}
+                    </div>
+                )}
                 <ManageSectionModal sectionId={sectionModalId} />
             </div>
         );
@@ -48,7 +74,8 @@ SignOff.propTypes = {
     dispatch: PropTypes.func.isRequired,
     sections: PropTypes.array.isRequired,
     sectionModalId: PropTypes.number,
-    isLoading: PropTypes.bool.isRequired
+    isLoading: PropTypes.bool.isRequired,
+    expandAll: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {
@@ -62,12 +89,14 @@ function mapStateToProps(state) {
     } = state;
 
     let sections = [];
+    let { expandAll } = ui;
 
     if (!rawSections.allIds.length) {
         return {
             sections,
             isLoading: rawSections.isLoading,
-            sectionModalId: null
+            sectionModalId: null,
+            expandAll
         };
     }
 
@@ -116,7 +145,8 @@ function mapStateToProps(state) {
     return {
         sections,
         isLoading: rawSections.isLoading,
-        sectionModalId: +ui.sectionModalId
+        sectionModalId: +ui.sectionModalId,
+        expandAll
     };
 }
 

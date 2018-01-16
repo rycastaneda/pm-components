@@ -11,7 +11,7 @@ const setup = props => {
 
 describe('CounterBadge component: ', () => {
     const badges = {
-        rejected: {
+        declined: {
             class: 'badge-bg-danger',
             text: 'Declined'
         },

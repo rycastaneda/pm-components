@@ -115,7 +115,7 @@ class Section extends Component {
 
         const counters = {
             approved: 0,
-            rejected: 0,
+            declined: 0,
             inprogress: 0,
             pending: 0
         };

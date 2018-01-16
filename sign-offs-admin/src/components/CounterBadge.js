@@ -25,7 +25,7 @@ class CounterBadge extends Component {
         const { count, status } = this.props;
 
         const badges = {
-            rejected: {
+            declined: {
                 class: 'badge-bg-danger',
                 text: 'Declined'
             },

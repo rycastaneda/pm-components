@@ -5,7 +5,8 @@ const INITIAL_STATE = {
     currentStaffId: 0,
     sectionModalId: null,
     preferredSupplierId: null,
-    supplierUserId: null
+    supplierUserId: null,
+    expandAll: false
 };
 
 export function ui(state = INITIAL_STATE, action) {
@@ -17,6 +18,11 @@ export function ui(state = INITIAL_STATE, action) {
                 currentStaffId: +action.currentStaffId,
                 preferredSupplierId: action.preferredSupplierId,
                 supplierUserId: action.supplierUserId
+            };
+        case actions.TOGGLE_ALL_SECTION_COLLAPSE:
+            return {
+                ...state,
+                expandAll: action.expandAll
             };
         case actions.TOGGLE_MANAGE_SECTION_MODAL:
             return {
