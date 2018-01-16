@@ -17,14 +17,14 @@ export function fetchEvaluation(assignmentId, view, viewAll) {
         let includes = [
             'template.criteria.questions',
             'assigneeUser.staff',
-            'questionResponses.question'
+            'questionResponses.question',
+            'questionResponses.documents'
         ];
 
-        if (currentView === 'single') {
+        if (currentView === 'all') {
             includes.push(
                 'relatedAssignments.questionResponses',
-                'relatedAssignments.assigneeUser.staff',
-                'questionResponses.documents'
+                'relatedAssignments.assigneeUser.staff'
             );
         }
 
@@ -32,8 +32,7 @@ export function fetchEvaluation(assignmentId, view, viewAll) {
             includes.push(
                 'relatedAssignments.questionResponses',
                 'relatedAssignments.assigneeUser.staff',
-                'relatedAssignment.questionResponses.documents',
-                'questionResponses.documents'
+                'relatedAssignment.questionResponses.documents'
             );
         }
 

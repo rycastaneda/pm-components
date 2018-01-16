@@ -3,7 +3,6 @@ import React, { Component, PropTypes } from 'react';
 export class Upload extends Component {
     render() {
         const { title, url } = this.props;
-        console.log('this.props', this.props); // eslint-disable-line quotes, no-console
         return (
             <li className="list-group-item">
                 <a className="pull-right download-icon" href={url}>

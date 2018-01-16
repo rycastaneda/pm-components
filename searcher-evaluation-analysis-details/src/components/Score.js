@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 
 const Score = ({ score, scale, showDecimals, hasComments }) => {
     let scoreLabel;
-    console.log('score, scale, hasComments', score, scale, hasComments); // eslint-disable-line quotes, no-console
     switch (scale) {
         case 1:
             scoreLabel = score ? 'Yes' : 'No';
