@@ -12,7 +12,7 @@ export const Statuses = {
         2: 'In Progress',
         3: 'Submitted',
     },
-    Engagements: {
+    Engagement: {
         1: 'Pending',
         2: 'Cancelled',
         3: 'Rejected',
@@ -36,7 +36,7 @@ export const StatusesColors = {
         2: 'bs-label-warning',
         3: 'bs-label-success',
     },
-    Engagements: {
+    Engagement: {
         1: 'bs-label-warning',
         2: 'bs-label-danger',
         3: 'bs-label-danger',
