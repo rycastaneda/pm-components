@@ -1,0 +1,80 @@
+.pmaccordion {
+
+    .weight {
+        color: rgba(0, 0, 0, 0.7);
+        font-size: 14px;
+        background: #ffffff;
+        border: 1px solid #eaeaea;
+        padding: 5px 10px;
+        display: inline-block;
+        min-width: 130px;
+        text-align: center;
+    }
+
+    table.questions {
+
+        padding: 10px;
+
+        tr {
+
+            td {
+                padding: 10px;
+
+                .label-plantminer {
+                    font-size: 18px;
+                    font-weight: 300;
+                    border-radius: 0;
+                    padding: 5px 10px;
+                    width: 50px;
+                    margin-bottom: 0;
+                }
+
+                p {
+                    font-size: 13px;
+                    font-weight: bold;
+
+                    span.circle {
+                        display: inline-block;
+                        margin-right: 10px;
+                        border-radius: 50%;
+                        width: 30px;
+                        height: 30px;
+                        padding: 5px 10px;
+                        text-align: center;
+                        line-height: 1.5;
+                        background: #28a1c5;
+                        color: #ffffff;
+                    }
+                }
+            }
+        }
+    }
+
+    table.reports {
+        font-size: 13px;
+        margin: 0 20px 30px 0;
+
+        thead tr th {
+            font-weight: 600;
+            padding: 10px;
+        }
+
+        tbody {
+
+            tr {
+                border: 1px solid rgba(0, 0, 0, 0.2);
+                background: #ffffff;
+
+                td {
+                    padding: 5px 10px;
+
+                    .label-plantminer {
+                        background: #e0e0e0;
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+
+    }
+}

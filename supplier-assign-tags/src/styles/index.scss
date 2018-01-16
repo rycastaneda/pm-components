@@ -1,0 +1,69 @@
+.manage-tags{
+
+    ul.supplier-tag-listing {
+        list-style: none;
+        font-size: 13px;
+
+        li {
+            border-bottom: 1px solid #eaeaea;
+            padding: 10px 5px;
+
+            .fa {
+                display: block;
+                margin-top: 10px;
+            }
+
+            h5 {
+                margin-bottom: 5px;
+            }
+        }
+    }
+
+    .comment-btn{
+        margin-left: 10px;
+    }
+
+    .content{
+        display: inline-block;
+        margin: 1px;
+        padding: 3px;
+
+        &:hover{
+            margin-bottom: 0;
+            border-bottom: 1px solid;
+            cursor: pointer;
+        }
+
+        &.selected{
+            margin-bottom: 0;
+            border-bottom: 1px solid;
+        }
+    }
+
+    .Select-value{
+        position: relative;
+        display: inline-block;
+        margin: 5px;
+        padding: 5px 10px 5px 5px;
+        border: 1px solid;
+        border-radius: 2px;
+        font-size: 0.9em;
+        line-height: 1.4;
+        vertical-align: top;
+    }
+
+    .Select-clear-zone {
+        display: none;
+    }
+
+    .Select-value-label {
+        padding: 2px 5px;
+        cursor: default;
+    }
+
+    .Select-value-icon{
+        padding: 1px 5px 3px;
+        border-right: 1px solid;
+        cursor: pointer;
+    }
+}
