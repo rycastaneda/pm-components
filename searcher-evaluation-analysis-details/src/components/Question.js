@@ -38,12 +38,17 @@ class Question extends Component {
             </tr>
         );
 
+        const iconClass = `fa mar-left-25 pointer toggle-comments ${this.state
+            .isShown
+            ? 'fa-chevron-up'
+            : 'fa-chevron-down'}`;
+
         return (
             <div className="questions">
                 <table className="questions" width="100%">
                     <tbody>
                         <tr onClick={this.toggleComments} className="pointer">
-                            <td width="80%">
+                            <td width="75%">
                                 <p>
                                     <span className="circle">{`${number} `}</span>
                                     <span className="question-title">
@@ -51,7 +56,7 @@ class Question extends Component {
                                     </span>
                                 </p>
                             </td>
-                            <td width="10%">
+                            <td className="text-right" width="25%">
                                 {scale !== 1 ? (
                                     <Score
                                         score={totalScore}
@@ -60,13 +65,9 @@ class Question extends Component {
                                         hasComments={!!comments.length}
                                     />
                                 ) : null}
-                            </td>
-                            <td className="text-right" width="10%">
+
                                 <i
-                                    className={`fa pointer toggle-comments ${this
-                                        .state.isShown
-                                        ? 'fa-chevron-up'
-                                        : 'fa-chevron-down'}`}
+                                    className={iconClass}
                                     onClick={this.toggleComments}
                                 />
                             </td>

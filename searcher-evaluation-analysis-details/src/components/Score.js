@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 const Score = ({ score, scale, showDecimals, hasComments }) => {
     let scoreLabel;
-
+    console.log('score, scale, hasComments', score, scale, hasComments); // eslint-disable-line quotes, no-console
     switch (scale) {
         case 1:
             scoreLabel = score ? 'Yes' : 'No';
@@ -10,26 +10,25 @@ const Score = ({ score, scale, showDecimals, hasComments }) => {
         case 5:
         case 10:
             if (!hasComments) {
+                // score has not been rated
                 scoreLabel = '-';
                 break;
             }
 
             if (!score) {
+                // show flat 0
                 scoreLabel = 0;
                 break;
             }
             scoreLabel = showDecimals ? score.toFixed(1) : score;
             break;
-        case 0:
+        case 0: // free type question show N/A
             scoreLabel = 'N/A';
             break;
     }
 
     return (
-        <span
-            className={`label total label-lg label-plantminer ${scale === 0
-                ? 'not-available'
-                : ''}`}>
+        <span className={`label total label-lg label-plantminer`}>
             {scoreLabel}
         </span>
     );

@@ -12,7 +12,7 @@ const Comment = ({ staff, comment, score, scale }) => (
                 score={score}
                 scale={scale}
                 showDecimals={false}
-                hasComments={false}
+                hasComments={true}
             />
         </td>
     </tr>
