@@ -14,6 +14,7 @@
 	},
 	"dependencies": {
 		"babel-eslint": "^8.0.2",
+		"babel-polyfill": "^6.26.0",
 		"deepmerge": "^2.0.1",
 		"eslint-plugin-import": "^2.8.0",
 		"json-api-normalizer": "^0.4.6",
@@ -31,7 +32,6 @@
 		"babel-loader": "6.2.5",
 		"babel-plugin-transform-object-rest-spread": "^6.26.0",
 		"babel-plugin-transform-runtime": "6.15.0",
-		"babel-polyfill": "^6.20.0",
 		"babel-preset-es2015": "6.14.0",
 		"babel-preset-react": "6.11.1",
 		"chai": "3.5.0",
