@@ -1,9 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import UrlAssembler from 'url-assembler';
-import { InteractionStyledIdLink } from './styling/styledComponents';
 
-const assembleIdLinkUrl = (id, type) => {
+export const assembleIdLinkUrl = (id, type) => {
     const rfqUrl = UrlAssembler().template(
         '/searcher/quotes/quote_details/:quote'
     );
@@ -29,15 +26,3 @@ const assembleIdLinkUrl = (id, type) => {
             return messagesUrl.toString();
     }
 };
-
-const InteractionIdLink = ({ rowItem }) => (
-    <InteractionStyledIdLink href={assembleIdLinkUrl(rowItem.id, rowItem.type)}>
-        {rowItem.id}
-    </InteractionStyledIdLink>
-);
-
-InteractionIdLink.propTypes = {
-    rowItem: PropTypes.object.isRequired,
-};
-
-export default InteractionIdLink;
