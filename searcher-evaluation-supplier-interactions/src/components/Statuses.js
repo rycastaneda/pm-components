@@ -32,7 +32,7 @@ export const StatusesColors = {
         4: 'bs-label-warning',
     },
     Evaluation: {
-        1: 'bs-label-warning',
+        1: 'bs-label-danger',
         2: 'bs-label-warning',
         3: 'bs-label-success',
     },

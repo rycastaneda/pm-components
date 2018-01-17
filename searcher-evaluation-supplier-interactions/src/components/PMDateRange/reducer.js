@@ -6,7 +6,6 @@ const initialState = {
     dateTimeStart: null, // moment(Date.now()).format('MM/DD/YYYY'),
     dateTimeEnd: null,   // moment(Date.now()).format('MM/DD/YYYY'),
     focusedInput: reactDatesConstants.START_DATE,
-    isLockeEndDate: true,
     isDateRangeValid: false,
 };
 
@@ -18,7 +17,6 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 dateTimeStart: action.dateTimeStart,
-                isLockeEndDate: false,
             };
 
         case actions.SUPPLIER_INTERACTIONS_FILTER_DATE_END_CHANGE:

@@ -51,7 +51,6 @@ export const updateFilterEndDateChange = filterDate => (dispatch) => {
         return false;
     }
 
-    // hit the server with request here
     dispatch({
         type: actionTypes.SUPPLIER_INTERACTIONS_FILTER_DATE_END_CHANGE,
         dateTimeEnd: moment(filterDate).format('YYYY-MM-DD'),

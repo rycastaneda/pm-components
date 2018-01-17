@@ -12,7 +12,6 @@ class PMDateRange extends Component {
             dateTimeStart,
             dateTimeEnd,
             actions,
-            isLockeEndDate,
         } = this.props;
         return (
             <div>
@@ -37,7 +36,6 @@ class PMDateRange extends Component {
                         value={dateTimeEnd}
                         inputProps={{
                             placeholder: 'YYYY-MM-DD',
-                            disabled: isLockeEndDate,
                         }}
                     />
                 </div>
@@ -56,7 +54,6 @@ PMDateRange.propTypes = {
         PropTypes.string,
     ]),
     actions: PropTypes.object,
-    isLockeEndDate: PropTypes.bool.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -66,13 +63,11 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const { dateTimeStart, dateTimeEnd, isLockeEndDate } = state.pmDateTime;
-
+    const { dateTimeStart, dateTimeEnd } = state.pmDateTime;
     return {
         ...ownProps,
         dateTimeStart,
         dateTimeEnd,
-        isLockeEndDate,
     };
 };
 
