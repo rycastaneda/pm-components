@@ -211,21 +211,19 @@ export function parseAssignmentsFromData(evaluationAssignmentsData, userProfile)
                 case '1':
                     supplier = {
                         id: assignmentEntityInstance.id,
-                        title:assignmentEntityInstance.title
+                        title: assignmentEntityInstance.title
                     };
                     break;
                 case '2':
-                    supplier = assignmentEntityInstance.matchedSupplier[0];
                     supplier = {
-                        id: supplier.id,
-                        title:supplier.title
+                        id: assignmentEntityInstance.matchedSupplier.id,
+                        title: assignmentEntityInstance.matchedSupplier.title
                     };
                     break;
                 default:
-                    supplier = assignmentEntityInstance.supplier;
                     supplier = {
-                        id: supplier.id,
-                        title:supplier.title
+                        id: assignmentEntityInstance.supplier.id,
+                        title: assignmentEntityInstance.supplier.title
                     };
             }
 
