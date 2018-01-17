@@ -5,4 +5,10 @@ export const FilterMainContainer = styled.div`
 	
 `;
 
+export const FilterApplyButton = styled.button`
+    margin-right: 1rem;
+`;
 
+export const FilterClearButton = styled.button`
+    margin-right: 1rem;
+`;

@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as actions from './actions';
 import * as apiActions from '../../actions/apiActions';
 
-import { FilterMainContainer } from './styling/styledComponents';
+import { FilterMainContainer, FilterApplyButton, FilterClearButton } from './styling/styledComponents';
 import PMDateRange from '../PMDateRange/main';
 import FilterInteractionType from './FilterInteractionType';
 
@@ -34,7 +34,8 @@ const FilterBody = ({
                 <PMDateRange />
             </div>
             <div className="col-xs-6">
-                <button className="btn" type="button" onClick={apiActions.initSupplierInteractions}>Apply Filters</button>
+                <FilterApplyButton className="btn btn-success" onClick={apiActions.initSupplierInteractions}>Apply Filters</FilterApplyButton>
+                <FilterClearButton className="btn" onClick={actions.resetFilters}>Clear Filters</FilterClearButton>
             </div>
         </div>
     </FilterMainContainer>

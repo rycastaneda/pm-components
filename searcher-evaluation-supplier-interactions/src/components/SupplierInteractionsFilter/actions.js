@@ -1,4 +1,6 @@
 import * as actionTypes from './actionsTypes';
+import * as PMDateRangeActiontypes from '../PMDateRange/actionsTypes';
+import { initSupplierInteractions } from '../../actions/apiActions';
 
 export const updateChangeSearchKey = (searchKey) => {
     return {
@@ -7,14 +9,18 @@ export const updateChangeSearchKey = (searchKey) => {
     };
 };
 
-export const updateFilterInteractionTypeChange = interactionTypeSelected => (dispatch) => {
+export const updateFilterInteractionTypeChange = interactionTypeSelected => (
+    dispatch
+) => {
     dispatch({
         type: actionTypes.SUPPLIER_INTERACTIONS_FILTER_INTERACTION_TYPE,
         interactionTypeSelected,
     });
 };
 
-export const updateFilterInitiatedByChange = initiatedBySelected => (dispatch) => {
+export const updateFilterInitiatedByChange = initiatedBySelected => (
+    dispatch
+) => {
     dispatch({
         type: actionTypes.SUPPLIER_INTERACTIONS_FILTER_INITIATED_BY_CHANGE,
         initiatedBySelected,
@@ -37,4 +43,23 @@ export const toggleFilter = () => {
     return {
         type: actionTypes.SUPPLIER_INTERACTIONS_SHOW_FILTER_TOGGLE,
     };
+};
+
+export const resetFilters = () => (dispatch) => {
+    dispatch({
+        type:
+            PMDateRangeActiontypes.SUPPLIER_INTERACTIONS_FILTER_DATE_START_CHANGE,
+        dateTimeStart: null,
+    });
+    dispatch({
+        type:
+            PMDateRangeActiontypes.SUPPLIER_INTERACTIONS_FILTER_DATE_END_CHANGE,
+        dateTimeEnd: null,
+    });
+    dispatch({
+        type: actionTypes.SUPPLIER_INTERACTIONS_FILTER_INTERACTION_TYPE,
+        interactionTypeSelected: 'Any',
+    });
+    // reload the page with no filters
+    dispatch(initSupplierInteractions());
 };

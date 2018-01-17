@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import StatusLabel from '../StatusLabel';
 import moment from 'moment';
+import InteractionIdLink from './InteractionIdLink';
 
 const renderRelatedTo = (rowItem) => {
     if (rowItem.type !== 'Evaluation' && rowItem.type !== 'Engagement') {
@@ -17,12 +18,10 @@ const renderRelatedTo = (rowItem) => {
 const TableRow = ({ rowItem }) => (
     <tr>
         <td className="td-center nowrap">{moment(rowItem.date.date).format('DD/MM/YYYY')}</td>
+        <td className="td-center nowrap">{rowItem.type}</td>
         <td className="td-center nowrap">
-            <span data-tooltip={`${rowItem.title}`}>
-                {rowItem.type}
-            </span>
+            <InteractionIdLink rowItem={rowItem} />
         </td>
-        <td className="td-center nowrap">{rowItem.id}</td>
         <td className="td-center nowrap">{`${rowItem.staffFirstName} ${rowItem.staffLastName}`}</td>
         <td className="td-center nowrap">
             { renderRelatedTo(rowItem) }

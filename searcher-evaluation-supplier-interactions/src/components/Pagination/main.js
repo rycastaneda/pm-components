@@ -33,7 +33,7 @@ class Pagination extends Component {
 
     renderPagination() {
         const { pages, actions } = this.props;
-        if (pages.total < pages.per_page) {
+        if (pages.total_pages < 1) {
             return null;
         }
 
@@ -45,7 +45,7 @@ class Pagination extends Component {
                 breakClassName={'break-me'}
                 pageCount={pages.total_pages}
                 forcePage={pages.current_page - 1}
-                marginPagesDisplayed={1}
+                marginPagesDisplayed={2}
                 pageRangeDisplayed={5}
                 onPageChange={actions.onPageUpdateChange}
                 containerClassName={'pagination'}
