@@ -24388,7 +24388,28 @@
 	                            );
 	                        })
 	                    ),
-	                    this.renderPagination()
+	                    pages.total_pages < 1 ? _react2.default.createElement(
+	                        'span',
+	                        null,
+	                        '\xA0'
+	                    ) : _react2.default.createElement(_reactPaginate2.default, {
+	                        previousLabel: 'previous',
+	                        nextLabel: 'next',
+	                        breakLabel: _react2.default.createElement(
+	                            'a',
+	                            { href: '' },
+	                            '...'
+	                        ),
+	                        breakClassName: 'break-me',
+	                        pageCount: pages.total_pages,
+	                        forcePage: pages.current_page - 1,
+	                        marginPagesDisplayed: 2,
+	                        pageRangeDisplayed: 5,
+	                        onPageChange: actions.onPageUpdateChange,
+	                        containerClassName: 'pagination',
+	                        subContainerClassName: 'pages pagination',
+	                        activeClassName: 'active'
+	                    })
 	                )
 	            );
 	        }

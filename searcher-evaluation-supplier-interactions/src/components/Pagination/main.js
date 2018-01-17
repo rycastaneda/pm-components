@@ -25,7 +25,24 @@ class Pagination extends Component {
                             );
                         })}
                     </select>
-                    {this.renderPagination()}
+                    {pages.total_pages < 1 ? (
+                        <span>&nbsp;</span>
+                    ) : (
+                        <ReactPaginate
+                            previousLabel={'previous'}
+                            nextLabel={'next'}
+                            breakLabel={<a href="">...</a>}
+                            breakClassName={'break-me'}
+                            pageCount={pages.total_pages}
+                            forcePage={pages.current_page - 1}
+                            marginPagesDisplayed={2}
+                            pageRangeDisplayed={5}
+                            onPageChange={actions.onPageUpdateChange}
+                            containerClassName={'pagination'}
+                            subContainerClassName={'pages pagination'}
+                            activeClassName={'active'}
+                        />
+                    )}
                 </div>
             </div>
         );
