@@ -22803,7 +22803,7 @@
 	                pages = _props.pages,
 	                actions = _props.actions;
 
-	            console.log('pagination...');
+	            console.log('pagination1..');
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'row' },

@@ -19,11 +19,13 @@ module.exports =  {
         host: HOST
     },
     devtool: 'eval',
-    entry: [
-        'babel-polyfill',
-        `webpack-dev-server/client?http://${HOST}:${PORT}`,
-        `webpack/hot/dev-server`,
-        './src/index.js'],
+    entry: {
+        app: [
+            'babel-polyfill',
+            `webpack-dev-server/client?http://${HOST}:${PORT}`,
+            `webpack/hot/dev-server`,
+            './src/index.js']
+    },
     output: {
         path: `${__dirname}/dist`,
         filename: 'bundle.js'

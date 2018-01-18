@@ -9,7 +9,7 @@ class Pagination extends Component {
 
     render() {
         const { maxRowsList, pages, actions } = this.props;
-        console.log('pagination...');
+        console.log('pagination1..');
         return (
             <div className="row">
                 <div className="col-sm-6 form-inline">
