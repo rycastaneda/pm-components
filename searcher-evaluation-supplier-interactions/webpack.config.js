@@ -6,7 +6,6 @@ require('babel-polyfill');
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || '5049';
 
-
 module.exports =  {
     context: __dirname,
     devServer: {
