@@ -77,27 +77,38 @@ function mapStateToProps(state) {
             };
             rawCriteria.allIds.map(criteriaId => {
                 let criteria = rawCriteria.byId[criteriaId];
+                let questions = criteria.questionIds.map(questionId => {
+                    return rawQuestions.byId[questionId];
+                });
+
+                let isTextOnly = questions.every(
+                    question => question.scale === 0
+                );
+                // if questions are text only, give them full weight else calculate
                 entityTally[uid].tally[criteriaId] = {
-                    score: 0,
-                    scale: 0,
+                    score: +isTextOnly,
+                    scale: +isTextOnly,
                     weight: criteria.weight
                 };
             });
         }
     });
+
     rawCriteria.allIds.map(criteriaId => {
         let criteria = rawCriteria.byId[criteriaId];
 
-        criteria.questionIds.map(questionId => {
-            let question = rawQuestions.byId[questionId];
-            question.commentIds.map(commentId => {
-                let comment = rawComments.byId[commentId];
-                let assignment = rawAssignments.byId[comment.assignmentId];
-                let uid = `${assignment.entityType}-${assignment.entityId}`;
-                entityTally[uid].tally[criteriaId].score += comment.score;
-                entityTally[uid].tally[criteriaId].scale += question.scale;
+        criteria.questionIds
+            .map(questionId => rawQuestions.byId[questionId])
+            .filter(question => question.scale !== 0)
+            .map(question => {
+                question.commentIds.map(commentId => {
+                    let comment = rawComments.byId[commentId];
+                    let assignment = rawAssignments.byId[comment.assignmentId];
+                    let uid = `${assignment.entityType}-${assignment.entityId}`;
+                    entityTally[uid].tally[criteriaId].score += comment.score;
+                    entityTally[uid].tally[criteriaId].scale += question.scale;
+                });
             });
-        });
     });
 
     Object.keys(entityTally).map(entityKey => {
