@@ -48,11 +48,11 @@
 
 	var _react = __webpack_require__(3);
 
-	var React = _interopRequireWildcard(_react);
+	var _react2 = _interopRequireDefault(_react);
 
 	var _reactDom = __webpack_require__(262);
 
-	var ReactDOM = _interopRequireWildcard(_reactDom);
+	var _reactDom2 = _interopRequireDefault(_reactDom);
 
 	var _redux = __webpack_require__(16);
 
@@ -82,8 +82,6 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
 	!window._babelPolyfill && __webpack_require__(516); // prevent polyfill from importing twice
 
 	// import apiMiddleWare from './middleware/api';
@@ -101,10 +99,10 @@
 	_axios2.default.defaults.baseURL = hostname;
 	_axios2.default.defaults.headers.common = headers;
 
-	ReactDOM.render(React.createElement(
+	_reactDom2.default.render(_react2.default.createElement(
 	    _reactRedux.Provider,
 	    { store: store },
-	    React.createElement(_main2.default, null)
+	    _react2.default.createElement(_main2.default, null)
 	), document.querySelector('[data-component="searcher-evaluation-supplier-interactions"]'));
 	;
 
@@ -22826,28 +22824,7 @@
 	                            );
 	                        })
 	                    ),
-	                    pages.total_pages < 1 ? _react2.default.createElement(
-	                        'span',
-	                        null,
-	                        '\xA0'
-	                    ) : _react2.default.createElement(_reactPaginate2.default, {
-	                        previousLabel: 'previous',
-	                        nextLabel: 'next',
-	                        breakLabel: _react2.default.createElement(
-	                            'a',
-	                            { href: '' },
-	                            '...'
-	                        ),
-	                        breakClassName: 'break-me',
-	                        pageCount: pages.total_pages,
-	                        forcePage: pages.current_page - 1,
-	                        marginPagesDisplayed: 2,
-	                        pageRangeDisplayed: 5,
-	                        onPageChange: actions.onPageUpdateChange,
-	                        containerClassName: 'pagination',
-	                        subContainerClassName: 'pages pagination',
-	                        activeClassName: 'active'
-	                    })
+	                    this.renderPagination()
 	                )
 	            );
 	        }
