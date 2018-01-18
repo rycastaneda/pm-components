@@ -47,7 +47,7 @@ function getTotals(tally) {
     Object.keys(tally).map(criteriaId => {
         totals[criteriaId] =
             tally[criteriaId].score /
-            tally[criteriaId].scale *
+            (tally[criteriaId].scale || 1) *
             tally[criteriaId].weight;
     });
 
