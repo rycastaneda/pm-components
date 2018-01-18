@@ -113,13 +113,13 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(enhance, 'enhance', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/index.js');
+	    __REACT_HOT_LOADER__.register(enhance, 'enhance', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/index.js');
 
-	    __REACT_HOT_LOADER__.register(store, 'store', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/index.js');
+	    __REACT_HOT_LOADER__.register(store, 'store', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/index.js');
 
-	    __REACT_HOT_LOADER__.register(hostname, 'hostname', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/index.js');
+	    __REACT_HOT_LOADER__.register(hostname, 'hostname', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/index.js');
 
-	    __REACT_HOT_LOADER__.register(headers, 'headers', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/index.js');
+	    __REACT_HOT_LOADER__.register(headers, 'headers', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/index.js');
 	})();
 
 	;
@@ -5761,7 +5761,6 @@
 	        } else {
 	            apiEndpoint = request.query({ page: pageSelected }).toString();
 	        }
-	        console.log('endpoin: -> ', apiEndpoint);
 
 	        dispatch({
 	            type: actionTypes.SUPPLIER_INTERACTIONS_REQUEST_START
@@ -5772,8 +5771,6 @@
 	                endpoint: apiEndpoint,
 	                filterEndpoint: false
 	            }));
-
-	            console.log('normalised response', normalisedResponse);
 
 	            dispatch({
 	                type: actionTypes.SUPPLIER_INTERACTIONS_REQUEST_SUCCESS,
@@ -5807,7 +5804,7 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(initSupplierInteractions, 'initSupplierInteractions', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/actions/apiActions.js');
+	    __REACT_HOT_LOADER__.register(initSupplierInteractions, 'initSupplierInteractions', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/actions/apiActions.js');
 	})();
 
 	;
@@ -7184,17 +7181,17 @@
 	    return;
 	  }
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_FILTER_DATE_START_CHANGE, 'SUPPLIER_INTERACTIONS_FILTER_DATE_START_CHANGE', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/actionsTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_FILTER_DATE_START_CHANGE, 'SUPPLIER_INTERACTIONS_FILTER_DATE_START_CHANGE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/actionsTypes.js');
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_FILTER_DATE_END_CHANGE, 'SUPPLIER_INTERACTIONS_FILTER_DATE_END_CHANGE', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/actionsTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_FILTER_DATE_END_CHANGE, 'SUPPLIER_INTERACTIONS_FILTER_DATE_END_CHANGE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/actionsTypes.js');
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_FILTER_DATE_RANGE_CHANGE, 'SUPPLIER_INTERACTIONS_FILTER_DATE_RANGE_CHANGE', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/actionsTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_FILTER_DATE_RANGE_CHANGE, 'SUPPLIER_INTERACTIONS_FILTER_DATE_RANGE_CHANGE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/actionsTypes.js');
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_DATE_RANGE_ON_FOCUS_CHANGE, 'SUPPLIER_INTERACTIONS_DATE_RANGE_ON_FOCUS_CHANGE', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/actionsTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_DATE_RANGE_ON_FOCUS_CHANGE, 'SUPPLIER_INTERACTIONS_DATE_RANGE_ON_FOCUS_CHANGE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/actionsTypes.js');
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_DATE_RANGE_VALID_SUCCESS, 'SUPPLIER_INTERACTIONS_DATE_RANGE_VALID_SUCCESS', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/actionsTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_DATE_RANGE_VALID_SUCCESS, 'SUPPLIER_INTERACTIONS_DATE_RANGE_VALID_SUCCESS', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/actionsTypes.js');
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_DATE_RANGE_VALID_FAIL, 'SUPPLIER_INTERACTIONS_DATE_RANGE_VALID_FAIL', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/actionsTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_DATE_RANGE_VALID_FAIL, 'SUPPLIER_INTERACTIONS_DATE_RANGE_VALID_FAIL', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/actionsTypes.js');
 	})();
 
 	;
@@ -7221,17 +7218,17 @@
 	    return;
 	  }
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_REQUEST_START, 'SUPPLIER_INTERACTIONS_REQUEST_START', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/actionTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_REQUEST_START, 'SUPPLIER_INTERACTIONS_REQUEST_START', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/actionTypes.js');
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_REQUEST_SUCCESS, 'SUPPLIER_INTERACTIONS_REQUEST_SUCCESS', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/actionTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_REQUEST_SUCCESS, 'SUPPLIER_INTERACTIONS_REQUEST_SUCCESS', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/actionTypes.js');
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_SET_UPDATE_CURRENT_SUPPLIER, 'SUPPLIER_INTERACTIONS_SET_UPDATE_CURRENT_SUPPLIER', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/actionTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_SET_UPDATE_CURRENT_SUPPLIER, 'SUPPLIER_INTERACTIONS_SET_UPDATE_CURRENT_SUPPLIER', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/actionTypes.js');
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_SET_UPDATE_CURRENT_CURRENT_URL_PARAMS, 'SUPPLIER_INTERACTIONS_SET_UPDATE_CURRENT_CURRENT_URL_PARAMS', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/actionTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_SET_UPDATE_CURRENT_CURRENT_URL_PARAMS, 'SUPPLIER_INTERACTIONS_SET_UPDATE_CURRENT_CURRENT_URL_PARAMS', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/actionTypes.js');
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_SET_UPDATE_ENDPOINT, 'SUPPLIER_INTERACTIONS_SET_UPDATE_ENDPOINT', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/actionTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_SET_UPDATE_ENDPOINT, 'SUPPLIER_INTERACTIONS_SET_UPDATE_ENDPOINT', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/actionTypes.js');
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_REQUEST_DONE, 'SUPPLIER_INTERACTIONS_REQUEST_DONE', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/actionTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_REQUEST_DONE, 'SUPPLIER_INTERACTIONS_REQUEST_DONE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/actionTypes.js');
 	})();
 
 	;
@@ -7327,19 +7324,19 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(updateChangeSearchKey, 'updateChangeSearchKey', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actions.js');
+	    __REACT_HOT_LOADER__.register(updateChangeSearchKey, 'updateChangeSearchKey', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actions.js');
 
-	    __REACT_HOT_LOADER__.register(updateFilterInteractionTypeChange, 'updateFilterInteractionTypeChange', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actions.js');
+	    __REACT_HOT_LOADER__.register(updateFilterInteractionTypeChange, 'updateFilterInteractionTypeChange', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actions.js');
 
-	    __REACT_HOT_LOADER__.register(updateFilterInitiatedByChange, 'updateFilterInitiatedByChange', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actions.js');
+	    __REACT_HOT_LOADER__.register(updateFilterInitiatedByChange, 'updateFilterInitiatedByChange', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actions.js');
 
-	    __REACT_HOT_LOADER__.register(submitFilterNormal, 'submitFilterNormal', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actions.js');
+	    __REACT_HOT_LOADER__.register(submitFilterNormal, 'submitFilterNormal', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actions.js');
 
-	    __REACT_HOT_LOADER__.register(submitFilterAdvanced, 'submitFilterAdvanced', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actions.js');
+	    __REACT_HOT_LOADER__.register(submitFilterAdvanced, 'submitFilterAdvanced', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actions.js');
 
-	    __REACT_HOT_LOADER__.register(toggleFilter, 'toggleFilter', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actions.js');
+	    __REACT_HOT_LOADER__.register(toggleFilter, 'toggleFilter', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actions.js');
 
-	    __REACT_HOT_LOADER__.register(resetFilters, 'resetFilters', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actions.js');
+	    __REACT_HOT_LOADER__.register(resetFilters, 'resetFilters', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actions.js');
 	})();
 
 	;
@@ -8199,7 +8196,6 @@
 	            urlParams = _getState$supplierInt.urlParams,
 	            endpoint = _getState$supplierInt.endpoint;
 
-	        console.log((0, _keys2.default)(getState().supplierInteractions.meta).length);
 	        var pages = (0, _keys2.default)(getState().supplierInteractions.meta).length > 0 ? getState().supplierInteractions.meta[endpoint][urlParams].meta.pagination : {};
 
 	        dispatch({
@@ -8235,11 +8231,11 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(paginationInit, 'paginationInit', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/actions.js');
+	    __REACT_HOT_LOADER__.register(paginationInit, 'paginationInit', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/actions.js');
 
-	    __REACT_HOT_LOADER__.register(onPageUpdateChange, 'onPageUpdateChange', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/actions.js');
+	    __REACT_HOT_LOADER__.register(onPageUpdateChange, 'onPageUpdateChange', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/actions.js');
 
-	    __REACT_HOT_LOADER__.register(onRowsPerPageUpdate, 'onRowsPerPageUpdate', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/actions.js');
+	    __REACT_HOT_LOADER__.register(onRowsPerPageUpdate, 'onRowsPerPageUpdate', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/actions.js');
 	})();
 
 	;
@@ -8263,11 +8259,11 @@
 	    return;
 	  }
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_INIT_PAGES, 'SUPPLIER_INTERACTIONS_INIT_PAGES', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/actionsTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_INIT_PAGES, 'SUPPLIER_INTERACTIONS_INIT_PAGES', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/actionsTypes.js');
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_SHOW_ROWS_CHANGE_UPDATE, 'SUPPLIER_INTERACTIONS_SHOW_ROWS_CHANGE_UPDATE', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/actionsTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_SHOW_ROWS_CHANGE_UPDATE, 'SUPPLIER_INTERACTIONS_SHOW_ROWS_CHANGE_UPDATE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/actionsTypes.js');
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_ON_PAGE_UPDATE_CHANGE, 'SUPPLIER_INTERACTIONS_ON_PAGE_UPDATE_CHANGE', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/actionsTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_ON_PAGE_UPDATE_CHANGE, 'SUPPLIER_INTERACTIONS_ON_PAGE_UPDATE_CHANGE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/actionsTypes.js');
 	})();
 
 	;
@@ -8308,9 +8304,9 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(setUpdateCurrentSupplier, 'setUpdateCurrentSupplier', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/actions.js');
+	    __REACT_HOT_LOADER__.register(setUpdateCurrentSupplier, 'setUpdateCurrentSupplier', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/actions.js');
 
-	    __REACT_HOT_LOADER__.register(onClickViewInteraction, 'onClickViewInteraction', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/actions.js');
+	    __REACT_HOT_LOADER__.register(onClickViewInteraction, 'onClickViewInteraction', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/actions.js');
 	})();
 
 	;
@@ -8339,21 +8335,21 @@
 	    return;
 	  }
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_FILTER_SEARCH_UPDATE, 'SUPPLIER_INTERACTIONS_FILTER_SEARCH_UPDATE', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actionsTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_FILTER_SEARCH_UPDATE, 'SUPPLIER_INTERACTIONS_FILTER_SEARCH_UPDATE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actionsTypes.js');
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_FILTER_INTERACTION_TYPE, 'SUPPLIER_INTERACTIONS_FILTER_INTERACTION_TYPE', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actionsTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_FILTER_INTERACTION_TYPE, 'SUPPLIER_INTERACTIONS_FILTER_INTERACTION_TYPE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actionsTypes.js');
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_FILTER_INITIATED_BY_CHANGE, 'SUPPLIER_INTERACTIONS_FILTER_INITIATED_BY_CHANGE', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actionsTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_FILTER_INITIATED_BY_CHANGE, 'SUPPLIER_INTERACTIONS_FILTER_INITIATED_BY_CHANGE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actionsTypes.js');
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_SUBMIT_NORMAL, 'SUPPLIER_INTERACTIONS_SUBMIT_NORMAL', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actionsTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_SUBMIT_NORMAL, 'SUPPLIER_INTERACTIONS_SUBMIT_NORMAL', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actionsTypes.js');
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_SUBMIT_ADVANCED, 'SUPPLIER_INTERACTIONS_SUBMIT_ADVANCED', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actionsTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_SUBMIT_ADVANCED, 'SUPPLIER_INTERACTIONS_SUBMIT_ADVANCED', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actionsTypes.js');
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_SUBMIT_SUCCESS, 'SUPPLIER_INTERACTIONS_SUBMIT_SUCCESS', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actionsTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_SUBMIT_SUCCESS, 'SUPPLIER_INTERACTIONS_SUBMIT_SUCCESS', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actionsTypes.js');
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_RESET_FILTERS, 'SUPPLIER_INTERACTIONS_RESET_FILTERS', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actionsTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_RESET_FILTERS, 'SUPPLIER_INTERACTIONS_RESET_FILTERS', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actionsTypes.js');
 
-	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_SHOW_FILTER_TOGGLE, 'SUPPLIER_INTERACTIONS_SHOW_FILTER_TOGGLE', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actionsTypes.js');
+	  __REACT_HOT_LOADER__.register(SUPPLIER_INTERACTIONS_SHOW_FILTER_TOGGLE, 'SUPPLIER_INTERACTIONS_SHOW_FILTER_TOGGLE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/actionsTypes.js');
 	})();
 
 	;
@@ -8407,11 +8403,11 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(selectFromStore, 'selectFromStore', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/utils/reduxApiUtils.js');
+	    __REACT_HOT_LOADER__.register(selectFromStore, 'selectFromStore', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/utils/reduxApiUtils.js');
 
-	    __REACT_HOT_LOADER__.register(getLoadingForEndpoint, 'getLoadingForEndpoint', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/utils/reduxApiUtils.js');
+	    __REACT_HOT_LOADER__.register(getLoadingForEndpoint, 'getLoadingForEndpoint', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/utils/reduxApiUtils.js');
 
-	    __REACT_HOT_LOADER__.register(baseUrl, 'baseUrl', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/utils/reduxApiUtils.js');
+	    __REACT_HOT_LOADER__.register(baseUrl, 'baseUrl', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/utils/reduxApiUtils.js');
 	})();
 
 	;
@@ -22373,11 +22369,11 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(validateDateRange, 'validateDateRange', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/actions.js');
+	    __REACT_HOT_LOADER__.register(validateDateRange, 'validateDateRange', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/actions.js');
 
-	    __REACT_HOT_LOADER__.register(updateFilterStartDateChange, 'updateFilterStartDateChange', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/actions.js');
+	    __REACT_HOT_LOADER__.register(updateFilterStartDateChange, 'updateFilterStartDateChange', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/actions.js');
 
-	    __REACT_HOT_LOADER__.register(updateFilterEndDateChange, 'updateFilterEndDateChange', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/actions.js');
+	    __REACT_HOT_LOADER__.register(updateFilterEndDateChange, 'updateFilterEndDateChange', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/actions.js');
 	})();
 
 	;
@@ -22435,47 +22431,47 @@
 	    return;
 	  }
 
-	  __REACT_HOT_LOADER__.register(DISPLAY_FORMAT, 'DISPLAY_FORMAT', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(DISPLAY_FORMAT, 'DISPLAY_FORMAT', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(ISO_FORMAT, 'ISO_FORMAT', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(ISO_FORMAT, 'ISO_FORMAT', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(ISO_MONTH_FORMAT, 'ISO_MONTH_FORMAT', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(ISO_MONTH_FORMAT, 'ISO_MONTH_FORMAT', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(START_DATE, 'START_DATE', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(START_DATE, 'START_DATE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(END_DATE, 'END_DATE', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(END_DATE, 'END_DATE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(HORIZONTAL_ORIENTATION, 'HORIZONTAL_ORIENTATION', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(HORIZONTAL_ORIENTATION, 'HORIZONTAL_ORIENTATION', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(VERTICAL_ORIENTATION, 'VERTICAL_ORIENTATION', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(VERTICAL_ORIENTATION, 'VERTICAL_ORIENTATION', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(VERTICAL_SCROLLABLE, 'VERTICAL_SCROLLABLE', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(VERTICAL_SCROLLABLE, 'VERTICAL_SCROLLABLE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(ICON_BEFORE_POSITION, 'ICON_BEFORE_POSITION', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(ICON_BEFORE_POSITION, 'ICON_BEFORE_POSITION', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(ICON_AFTER_POSITION, 'ICON_AFTER_POSITION', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(ICON_AFTER_POSITION, 'ICON_AFTER_POSITION', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(ANCHOR_LEFT, 'ANCHOR_LEFT', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(ANCHOR_LEFT, 'ANCHOR_LEFT', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(ANCHOR_RIGHT, 'ANCHOR_RIGHT', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(ANCHOR_RIGHT, 'ANCHOR_RIGHT', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(OPEN_DOWN, 'OPEN_DOWN', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(OPEN_DOWN, 'OPEN_DOWN', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(OPEN_UP, 'OPEN_UP', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(OPEN_UP, 'OPEN_UP', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(DAY_SIZE, 'DAY_SIZE', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(DAY_SIZE, 'DAY_SIZE', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(BLOCKED_MODIFIER, 'BLOCKED_MODIFIER', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(BLOCKED_MODIFIER, 'BLOCKED_MODIFIER', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(WEEKDAYS, 'WEEKDAYS', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(WEEKDAYS, 'WEEKDAYS', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(FANG_WIDTH_PX, 'FANG_WIDTH_PX', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(FANG_WIDTH_PX, 'FANG_WIDTH_PX', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(FANG_HEIGHT_PX, 'FANG_HEIGHT_PX', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(FANG_HEIGHT_PX, 'FANG_HEIGHT_PX', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(DEFAULT_VERTICAL_SPACING, 'DEFAULT_VERTICAL_SPACING', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(DEFAULT_VERTICAL_SPACING, 'DEFAULT_VERTICAL_SPACING', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 
-	  __REACT_HOT_LOADER__.register(MODIFIER_KEY_NAMES, 'MODIFIER_KEY_NAMES', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
+	  __REACT_HOT_LOADER__.register(MODIFIER_KEY_NAMES, 'MODIFIER_KEY_NAMES', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/const.js');
 	})();
 
 	;
@@ -22636,13 +22632,13 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(PMDateRange, 'PMDateRange', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/main.js');
+	    __REACT_HOT_LOADER__.register(PMDateRange, 'PMDateRange', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/main.js');
 
-	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/main.js');
+	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/main.js');
 
-	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/main.js');
+	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/main.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/main.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/main.js');
 	})();
 
 	;
@@ -22724,11 +22720,11 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(initialState, 'initialState', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/reducer.js');
+	    __REACT_HOT_LOADER__.register(initialState, 'initialState', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/reducer.js');
 
-	    __REACT_HOT_LOADER__.register(reducer, 'reducer', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/reducer.js');
+	    __REACT_HOT_LOADER__.register(reducer, 'reducer', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/reducer.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/reducer.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/PMDateRange/reducer.js');
 	})();
 
 	;
@@ -22923,13 +22919,13 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(Pagination, 'Pagination', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/main.js');
+	    __REACT_HOT_LOADER__.register(Pagination, 'Pagination', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/main.js');
 
-	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/main.js');
+	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/main.js');
 
-	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/main.js');
+	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/main.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/main.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/main.js');
 	})();
 
 	;
@@ -22997,11 +22993,11 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(initialState, 'initialState', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/reducer.js');
+	    __REACT_HOT_LOADER__.register(initialState, 'initialState', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/reducer.js');
 
-	    __REACT_HOT_LOADER__.register(reducer, 'reducer', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/reducer.js');
+	    __REACT_HOT_LOADER__.register(reducer, 'reducer', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/reducer.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/reducer.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Pagination/reducer.js');
 	})();
 
 	;
@@ -23049,9 +23045,9 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(Spinner, 'Spinner', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Spinner/main.js');
+	    __REACT_HOT_LOADER__.register(Spinner, 'Spinner', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Spinner/main.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Spinner/main.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Spinner/main.js');
 	})();
 
 	;
@@ -23105,7 +23101,7 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(brandColors, 'brandColors', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Spinner/styling/colors.js');
+	    __REACT_HOT_LOADER__.register(brandColors, 'brandColors', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Spinner/styling/colors.js');
 	})();
 
 	;
@@ -23143,7 +23139,7 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(SpinnerDefault, 'SpinnerDefault', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Spinner/styling/styledComponents.js');
+	    __REACT_HOT_LOADER__.register(SpinnerDefault, 'SpinnerDefault', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Spinner/styling/styledComponents.js');
 	})();
 
 	;
@@ -23194,9 +23190,9 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(StatusLabel, 'StatusLabel', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/StatusLabel.js');
+	    __REACT_HOT_LOADER__.register(StatusLabel, 'StatusLabel', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/StatusLabel.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/StatusLabel.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/StatusLabel.js');
 	})();
 
 	;
@@ -23265,9 +23261,9 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(Statuses, 'Statuses', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Statuses.js');
+	    __REACT_HOT_LOADER__.register(Statuses, 'Statuses', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Statuses.js');
 
-	    __REACT_HOT_LOADER__.register(StatusesColors, 'StatusesColors', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Statuses.js');
+	    __REACT_HOT_LOADER__.register(StatusesColors, 'StatusesColors', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/Statuses.js');
 	})();
 
 	;
@@ -23380,9 +23376,9 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(SupplierInteractionsTable, 'SupplierInteractionsTable', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/SupplierInteractionsTable.js');
+	    __REACT_HOT_LOADER__.register(SupplierInteractionsTable, 'SupplierInteractionsTable', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/SupplierInteractionsTable.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/SupplierInteractionsTable.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/SupplierInteractionsTable.js');
 	})();
 
 	;
@@ -23486,11 +23482,11 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(renderRelatedTo, 'renderRelatedTo', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/TableRow.js');
+	    __REACT_HOT_LOADER__.register(renderRelatedTo, 'renderRelatedTo', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/TableRow.js');
 
-	    __REACT_HOT_LOADER__.register(TableRow, 'TableRow', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/TableRow.js');
+	    __REACT_HOT_LOADER__.register(TableRow, 'TableRow', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/TableRow.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/TableRow.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/TableRow.js');
 	})();
 
 	;
@@ -23585,7 +23581,6 @@
 
 	            var rootElement = document.querySelector('[data-component="searcher-evaluation-supplier-interactions"]');
 	            var supplierId = rootElement.dataset.preferredSupplierId;
-	            console.log('getting element :', supplierId);
 
 	            actions.setUpdateCurrentSupplier(supplierId);
 	            apiActions.initSupplierInteractions();
@@ -23651,8 +23646,6 @@
 
 	    var interactions = (0, _reduxApiUtils.selectFromStore)(state.supplierInteractions, endpoint, urlParams, 'interactions');
 
-	    console.log('select from store', interactions);
-
 	    return (0, _extends3.default)({}, ownProps, {
 	        interactions: interactions,
 	        isLoading: isLoading,
@@ -23670,13 +23663,13 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(SupplierInteractionsContainer, 'SupplierInteractionsContainer', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/main.js');
+	    __REACT_HOT_LOADER__.register(SupplierInteractionsContainer, 'SupplierInteractionsContainer', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/main.js');
 
-	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/main.js');
+	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/main.js');
 
-	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/main.js');
+	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/main.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/main.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/main.js');
 	})();
 
 	;
@@ -23764,11 +23757,11 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(initialState, 'initialState', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/reducer.js');
+	    __REACT_HOT_LOADER__.register(initialState, 'initialState', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/reducer.js');
 
-	    __REACT_HOT_LOADER__.register(reducer, 'reducer', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/reducer.js');
+	    __REACT_HOT_LOADER__.register(reducer, 'reducer', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/reducer.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/reducer.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractions/reducer.js');
 	})();
 
 	;
@@ -23907,13 +23900,13 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(FilterBody, 'FilterBody', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterBody.js');
+	    __REACT_HOT_LOADER__.register(FilterBody, 'FilterBody', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterBody.js');
 
-	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterBody.js');
+	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterBody.js');
 
-	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterBody.js');
+	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterBody.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterBody.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterBody.js');
 	})();
 
 	;
@@ -23963,9 +23956,9 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(FilterHead, 'FilterHead', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterHead.js');
+	    __REACT_HOT_LOADER__.register(FilterHead, 'FilterHead', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterHead.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterHead.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterHead.js');
 	})();
 
 	;
@@ -24037,9 +24030,9 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(FilterInteractionType, 'FilterInteractionType', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterInteractionType.js');
+	    __REACT_HOT_LOADER__.register(FilterInteractionType, 'FilterInteractionType', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterInteractionType.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterInteractionType.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterInteractionType.js');
 	})();
 
 	;
@@ -24126,13 +24119,13 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(FilterToggleButton, 'FilterToggleButton', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterToggleButton.js');
+	    __REACT_HOT_LOADER__.register(FilterToggleButton, 'FilterToggleButton', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterToggleButton.js');
 
-	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterToggleButton.js');
+	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterToggleButton.js');
 
-	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterToggleButton.js');
+	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterToggleButton.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterToggleButton.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/FilterToggleButton.js');
 	})();
 
 	;
@@ -24245,13 +24238,13 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(SupplierInteractionsFilter, 'SupplierInteractionsFilter', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/main.js');
+	    __REACT_HOT_LOADER__.register(SupplierInteractionsFilter, 'SupplierInteractionsFilter', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/main.js');
 
-	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/main.js');
+	    __REACT_HOT_LOADER__.register(mapDispatchToProps, 'mapDispatchToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/main.js');
 
-	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/main.js');
+	    __REACT_HOT_LOADER__.register(mapStateToProps, 'mapStateToProps', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/main.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/main.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/main.js');
 	})();
 
 	;
@@ -24352,11 +24345,11 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(initialState, 'initialState', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/reducer.js');
+	    __REACT_HOT_LOADER__.register(initialState, 'initialState', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/reducer.js');
 
-	    __REACT_HOT_LOADER__.register(reducer, 'reducer', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/reducer.js');
+	    __REACT_HOT_LOADER__.register(reducer, 'reducer', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/reducer.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/reducer.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/reducer.js');
 	})();
 
 	;
@@ -24399,11 +24392,11 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(FilterMainContainer, 'FilterMainContainer', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/styling/styledComponents.js');
+	    __REACT_HOT_LOADER__.register(FilterMainContainer, 'FilterMainContainer', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/styling/styledComponents.js');
 
-	    __REACT_HOT_LOADER__.register(FilterApplyButton, 'FilterApplyButton', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/styling/styledComponents.js');
+	    __REACT_HOT_LOADER__.register(FilterApplyButton, 'FilterApplyButton', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/styling/styledComponents.js');
 
-	    __REACT_HOT_LOADER__.register(FilterClearButton, 'FilterClearButton', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/styling/styledComponents.js');
+	    __REACT_HOT_LOADER__.register(FilterClearButton, 'FilterClearButton', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/components/SupplierInteractionsFilter/styling/styledComponents.js');
 	})();
 
 	;
@@ -24454,9 +24447,9 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(ComponentReducer, 'ComponentReducer', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/reducers/index.js');
+	    __REACT_HOT_LOADER__.register(ComponentReducer, 'ComponentReducer', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/reducers/index.js');
 
-	    __REACT_HOT_LOADER__.register(_default, 'default', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/reducers/index.js');
+	    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/reducers/index.js');
 	})();
 
 	;
@@ -24505,7 +24498,7 @@
 	        return;
 	    }
 
-	    __REACT_HOT_LOADER__.register(assembleIdLinkUrl, 'assembleIdLinkUrl', '/var/www/plantminer-components/searcher-evaluation-supplier-interactions/src/utils/interactionLink.js');
+	    __REACT_HOT_LOADER__.register(assembleIdLinkUrl, 'assembleIdLinkUrl', '/Users/stan.zaichenko/Sites/plantminer-components/searcher-evaluation-supplier-interactions/src/utils/interactionLink.js');
 	})();
 
 	;
