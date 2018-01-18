@@ -12,7 +12,8 @@
 		"lint": "eslint src",
 		"test": "mocha tests.config.js src/**/*.spec.js"
 	},
-	"dependencies": {
+	"dependencies": {},
+	"devDependencies": {
 		"babel-eslint": "^8.0.2",
 		"deepmerge": "^2.0.1",
 		"eslint-plugin-import": "^2.8.0",
@@ -23,9 +24,7 @@
 		"redux": "3.6.0",
 		"redux-object": "^0.5.4",
 		"styled-components": "^2.2.4",
-		"url-assembler": "^1.2.9"
-	},
-	"devDependencies": {
+		"url-assembler": "^1.2.9",
 		"axios": "^0.15.3",
 		"babel-core": "6.14.0",
 		"babel-polyfill": "^6.26.0",
