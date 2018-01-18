@@ -38,7 +38,6 @@ function receiveAssignments(state, action) {
                 include.id === responseId &&
                 include.type === 'evaluation-question-responses'
         );
-
         return response.relationships.question.data.id;
     }
 
