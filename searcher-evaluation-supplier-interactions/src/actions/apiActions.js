@@ -39,7 +39,6 @@ export const initSupplierInteractions = () => (dispatch, getState) => {
     } else {
         apiEndpoint = request.query({ page: pageSelected }).toString();
     }
-    console.log('endpoin: -> ', apiEndpoint);
 
     dispatch({
         type: actionTypes.SUPPLIER_INTERACTIONS_REQUEST_START,
@@ -55,8 +54,6 @@ export const initSupplierInteractions = () => (dispatch, getState) => {
                     filterEndpoint: false,
                 })
             );
-
-            console.log('normalised response', normalisedResponse);
 
             dispatch({
                 type: actionTypes.SUPPLIER_INTERACTIONS_REQUEST_SUCCESS,

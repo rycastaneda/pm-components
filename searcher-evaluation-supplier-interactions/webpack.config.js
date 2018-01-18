@@ -1,11 +1,10 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
-require('babel-polyfill');
+
 
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || '5049';
-
 
 module.exports =  {
     context: __dirname,
@@ -21,7 +20,6 @@ module.exports =  {
     },
     devtool: 'eval',
     entry: [
-        'babel-polyfill',
         `webpack-dev-server/client?http://${HOST}:${PORT}`,
         `webpack/hot/dev-server`,
         './src/index.js'],
