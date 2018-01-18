@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
@@ -29,7 +29,7 @@ const headers = api.configureHeaders();
 axios.defaults.baseURL = hostname;
 axios.defaults.headers.common = headers;
 
-ReactDOM.render(
+render(
     <Provider store={store}>
         <SupplierInteractionsContainer />
     </Provider>,

@@ -52,8 +52,6 @@
 
 	var _reactDom = __webpack_require__(262);
 
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
 	var _redux = __webpack_require__(16);
 
 	var _reactRedux = __webpack_require__(22);
@@ -99,7 +97,7 @@
 	_axios2.default.defaults.baseURL = hostname;
 	_axios2.default.defaults.headers.common = headers;
 
-	_reactDom2.default.render(_react2.default.createElement(
+	(0, _reactDom.render)(_react2.default.createElement(
 	    _reactRedux.Provider,
 	    { store: store },
 	    _react2.default.createElement(_main2.default, null)
@@ -23557,9 +23555,9 @@
 	                actions = _props.actions;
 	            // TO DO: Get Id straight into the props from window
 
-	            var rootElement = document.querySelector('[data-component="searcher-evaluation-supplier-interactions"]');
+	            var rootElement = document.getElementById('searcher-evaluation-supplier-interactions');
 	            var supplierId = rootElement.dataset.preferredSupplierId;
-
+	            console.log('get parent..');
 	            actions.setUpdateCurrentSupplier(supplierId);
 	            apiActions.initSupplierInteractions();
 	        }
