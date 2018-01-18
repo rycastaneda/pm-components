@@ -6,8 +6,10 @@ import * as actions from './actions';
 import ReactPaginate from 'react-paginate';
 
 class Pagination extends Component {
+
     render() {
         const { maxRowsList, pages, actions } = this.props;
+        
         return (
             <div className="row">
                 <div className="col-sm-6 form-inline">
