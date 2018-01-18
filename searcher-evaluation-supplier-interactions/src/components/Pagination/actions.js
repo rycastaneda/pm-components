@@ -3,7 +3,6 @@ import { initSupplierInteractions } from '../../actions/apiActions';
 
 export const paginationInit = () => (dispatch, getState) => {
     const { urlParams, endpoint } = getState().supplierInteractions;
-    console.log(Object.keys(getState().supplierInteractions.meta).length);
     const pages =
         Object.keys(getState().supplierInteractions.meta).length > 0
             ? getState().supplierInteractions.meta[endpoint][urlParams].meta.pagination

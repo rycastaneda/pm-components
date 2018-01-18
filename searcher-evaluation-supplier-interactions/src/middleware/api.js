@@ -7,7 +7,6 @@ export const API_DATA_FAILURE = 'API_DATA_FAILURE';
 
 function callApi(endpoint, options = {}) {
     return axios.get(endpoint, options).then((response) => {
-        window.console.log('raw response: ', response);
         return Object.assign({}, normalize(response.data, { endpoint, filterEndpoint: false }));
     });
 }

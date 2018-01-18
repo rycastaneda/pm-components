@@ -15,7 +15,6 @@ class SupplierInteractionsContainer extends Component {
         // TO DO: Get Id straight into the props from window
         const rootElement = document.querySelector('[data-component="searcher-evaluation-supplier-interactions"]');
         const supplierId = rootElement.dataset.preferredSupplierId;
-        console.log('getting element :',  supplierId);
 
         actions.setUpdateCurrentSupplier(supplierId);
         apiActions.initSupplierInteractions();
@@ -67,8 +66,6 @@ const mapStateToProps = (state, ownProps) => {
         urlParams,
         'interactions'
     );
-
-    console.log('select from store', interactions);
 
     return {
         ...ownProps,
