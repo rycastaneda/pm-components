@@ -56,7 +56,7 @@
 
 	var _reactRedux = __webpack_require__(22);
 
-	var _reduxThunk = __webpack_require__(517);
+	var _reduxThunk = __webpack_require__(516);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
@@ -80,12 +80,9 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	!window._babelPolyfill && __webpack_require__(516); // prevent polyfill from importing twice
+	// Add redux dev tools unless we have a production build
 
 	// import apiMiddleWare from './middleware/api';
-
-
-	// Add redux dev tools unless we have a production build
 	var enhance =  false ? (0, _redux.compose)((0, _redux.applyMiddleware)(_reduxThunk2.default), window.devToolsExtension && window.devToolsExtension()) : (0, _redux.applyMiddleware)(_reduxThunk2.default);
 
 	// Configure store with thunk middleware to allow async requests
@@ -4700,7 +4697,7 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = (__webpack_require__(23))(327);
+	module.exports = (__webpack_require__(28))(327);
 
 /***/ },
 /* 4 */
@@ -5036,7 +5033,7 @@
 
 	var global = __webpack_require__(11);
 	var core = __webpack_require__(5);
-	var ctx = __webpack_require__(24);
+	var ctx = __webpack_require__(23);
 	var hide = __webpack_require__(15);
 	var PROTOTYPE = 'prototype';
 
@@ -5418,7 +5415,7 @@
 /* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = (__webpack_require__(23))(358);
+	module.exports = (__webpack_require__(28))(358);
 
 /***/ },
 /* 17 */
@@ -5495,22 +5492,16 @@
 /* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = (__webpack_require__(23))(372);
+	module.exports = (__webpack_require__(28))(372);
 
 /***/ },
 /* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = (__webpack_require__(23))(381);
+	module.exports = (__webpack_require__(28))(381);
 
 /***/ },
 /* 23 */
-/***/ function(module, exports) {
-
-	module.exports = vendor_lib;
-
-/***/ },
-/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// optional / simple context binding
@@ -5536,7 +5527,7 @@
 
 
 /***/ },
-/* 25 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// to indexed object, toObject with fallback for non-array-like ES3 strings
@@ -5548,7 +5539,7 @@
 
 
 /***/ },
-/* 26 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5582,7 +5573,7 @@
 
 
 /***/ },
-/* 27 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var freeGlobal = __webpack_require__(122);
@@ -5597,7 +5588,7 @@
 
 
 /***/ },
-/* 28 */
+/* 27 */
 /***/ function(module, exports) {
 
 	/**
@@ -5630,6 +5621,12 @@
 
 	module.exports = isObjectLike;
 
+
+/***/ },
+/* 28 */
+/***/ function(module, exports) {
+
+	module.exports = vendor_lib;
 
 /***/ },
 /* 29 */
@@ -5921,7 +5918,7 @@
 /* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ctx = __webpack_require__(24);
+	var ctx = __webpack_require__(23);
 	var call = __webpack_require__(338);
 	var isArrayIter = __webpack_require__(337);
 	var anObject = __webpack_require__(17);
@@ -7677,7 +7674,7 @@
 /* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var root = __webpack_require__(27);
+	var root = __webpack_require__(26);
 
 	/** Built-in value references. */
 	var Symbol = root.Symbol;
@@ -8583,7 +8580,7 @@
 
 	var pIE = __webpack_require__(42);
 	var createDesc = __webpack_require__(43);
-	var toIObject = __webpack_require__(25);
+	var toIObject = __webpack_require__(24);
 	var toPrimitive = __webpack_require__(73);
 	var has = __webpack_require__(19);
 	var IE8_DOM_DEFINE = __webpack_require__(103);
@@ -8636,7 +8633,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var has = __webpack_require__(19);
-	var toIObject = __webpack_require__(25);
+	var toIObject = __webpack_require__(24);
 	var arrayIndexOf = __webpack_require__(328)(false);
 	var IE_PROTO = __webpack_require__(69)('IE_PROTO');
 
@@ -8787,7 +8784,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var getNative = __webpack_require__(80),
-	    root = __webpack_require__(27);
+	    root = __webpack_require__(26);
 
 	/* Built-in method references that are verified to be native. */
 	var Map = getNative(root, 'Map');
@@ -9029,7 +9026,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseIsArguments = __webpack_require__(386),
-	    isObjectLike = __webpack_require__(28);
+	    isObjectLike = __webpack_require__(27);
 
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -9070,7 +9067,7 @@
 /* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(27),
+	/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(26),
 	    stubFalse = __webpack_require__(459);
 
 	/** Detect free variable `exports`. */
@@ -21449,7 +21446,7 @@
 /* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = (__webpack_require__(23))(410);
+	module.exports = (__webpack_require__(28))(410);
 
 /***/ },
 /* 263 */
@@ -24797,7 +24794,7 @@
 
 	// false -> Array#indexOf
 	// true  -> Array#includes
-	var toIObject = __webpack_require__(25);
+	var toIObject = __webpack_require__(24);
 	var toLength = __webpack_require__(72);
 	var toAbsoluteIndex = __webpack_require__(347);
 	module.exports = function (IS_INCLUDES) {
@@ -24831,7 +24828,7 @@
 	// 4 -> Array#every
 	// 5 -> Array#find
 	// 6 -> Array#findIndex
-	var ctx = __webpack_require__(24);
+	var ctx = __webpack_require__(23);
 	var IObject = __webpack_require__(64);
 	var toObject = __webpack_require__(31);
 	var toLength = __webpack_require__(72);
@@ -24912,7 +24909,7 @@
 	var dP = __webpack_require__(13).f;
 	var create = __webpack_require__(41);
 	var redefineAll = __webpack_require__(111);
-	var ctx = __webpack_require__(24);
+	var ctx = __webpack_require__(23);
 	var anInstance = __webpack_require__(100);
 	var forOf = __webpack_require__(39);
 	var $iterDefine = __webpack_require__(65);
@@ -25259,7 +25256,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	// fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
-	var toIObject = __webpack_require__(25);
+	var toIObject = __webpack_require__(24);
 	var gOPN = __webpack_require__(108).f;
 	var toString = {}.toString;
 
@@ -25287,7 +25284,7 @@
 	// https://tc39.github.io/proposal-setmap-offrom/
 	var $export = __webpack_require__(7);
 	var aFunction = __webpack_require__(99);
-	var ctx = __webpack_require__(24);
+	var ctx = __webpack_require__(23);
 	var forOf = __webpack_require__(39);
 
 	module.exports = function (COLLECTION) {
@@ -25347,7 +25344,7 @@
 	  set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
 	    function (test, buggy, set) {
 	      try {
-	        set = __webpack_require__(24)(Function.call, __webpack_require__(107).f(Object.prototype, '__proto__').set, 2);
+	        set = __webpack_require__(23)(Function.call, __webpack_require__(107).f(Object.prototype, '__proto__').set, 2);
 	        set(test, []);
 	        buggy = !(test instanceof Array);
 	      } catch (e) { buggy = true; }
@@ -25440,7 +25437,7 @@
 	var addToUnscopables = __webpack_require__(326);
 	var step = __webpack_require__(105);
 	var Iterators = __webpack_require__(29);
-	var toIObject = __webpack_require__(25);
+	var toIObject = __webpack_require__(24);
 
 	// 22.1.3.4 Array.prototype.entries()
 	// 22.1.3.13 Array.prototype.keys()
@@ -25606,7 +25603,7 @@
 	var isArray = __webpack_require__(104);
 	var anObject = __webpack_require__(17);
 	var isObject = __webpack_require__(12);
-	var toIObject = __webpack_require__(25);
+	var toIObject = __webpack_require__(24);
 	var toPrimitive = __webpack_require__(73);
 	var createDesc = __webpack_require__(43);
 	var _create = __webpack_require__(41);
@@ -27103,7 +27100,7 @@
 /* 377 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var root = __webpack_require__(27);
+	var root = __webpack_require__(26);
 
 	/** Built-in value references. */
 	var Uint8Array = root.Uint8Array;
@@ -27333,7 +27330,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseGetTag = __webpack_require__(32),
-	    isObjectLike = __webpack_require__(28);
+	    isObjectLike = __webpack_require__(27);
 
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]';
@@ -27411,7 +27408,7 @@
 
 	var baseGetTag = __webpack_require__(32),
 	    isLength = __webpack_require__(130),
-	    isObjectLike = __webpack_require__(28);
+	    isObjectLike = __webpack_require__(27);
 
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]',
@@ -27939,7 +27936,7 @@
 /* 402 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(27);
+	/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(26);
 
 	/** Detect free variable `exports`. */
 	var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
@@ -28075,7 +28072,7 @@
 /* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var root = __webpack_require__(27);
+	var root = __webpack_require__(26);
 
 	/** Used to detect overreaching core-js shims. */
 	var coreJsData = root['__core-js_shared__'];
@@ -29556,7 +29553,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var isArrayLike = __webpack_require__(52),
-	    isObjectLike = __webpack_require__(28);
+	    isObjectLike = __webpack_require__(27);
 
 	/**
 	 * This method is like `_.isArrayLike` except that it also checks if `value`
@@ -29624,7 +29621,7 @@
 
 	var baseGetTag = __webpack_require__(32),
 	    getPrototype = __webpack_require__(123),
-	    isObjectLike = __webpack_require__(28);
+	    isObjectLike = __webpack_require__(27);
 
 	/** `Object#toString` result references. */
 	var objectTag = '[object Object]';
@@ -29691,7 +29688,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseGetTag = __webpack_require__(32),
-	    isObjectLike = __webpack_require__(28);
+	    isObjectLike = __webpack_require__(27);
 
 	/** `Object#toString` result references. */
 	var symbolTag = '[object Symbol]';
@@ -31047,7 +31044,7 @@
 
 	var assign = __webpack_require__(253),
 		PropTypes = __webpack_require__(2),
-		createClass = __webpack_require__(26),
+		createClass = __webpack_require__(25),
 		moment = __webpack_require__(1),
 		React = __webpack_require__(3),
 		CalendarContainer = __webpack_require__(473)
@@ -31506,7 +31503,7 @@
 	'use strict';
 
 	var React = __webpack_require__(3),
-		createClass = __webpack_require__(26),
+		createClass = __webpack_require__(25),
 		DaysView = __webpack_require__(474),
 		MonthsView = __webpack_require__(475),
 		YearsView = __webpack_require__(477),
@@ -31536,7 +31533,7 @@
 	'use strict';
 
 	var React = __webpack_require__(3),
-		createClass = __webpack_require__(26),
+		createClass = __webpack_require__(25),
 		moment = __webpack_require__(1),
 		onClickOutside = __webpack_require__(54).default
 		;
@@ -31686,7 +31683,7 @@
 	'use strict';
 
 	var React = __webpack_require__(3),
-		createClass = __webpack_require__(26),
+		createClass = __webpack_require__(25),
 		onClickOutside = __webpack_require__(54).default
 		;
 
@@ -31799,7 +31796,7 @@
 	'use strict';
 
 	var React = __webpack_require__(3),
-		createClass = __webpack_require__(26),
+		createClass = __webpack_require__(25),
 		assign = __webpack_require__(253),
 		onClickOutside = __webpack_require__(54).default
 		;
@@ -32040,7 +32037,7 @@
 	'use strict';
 
 	var React = __webpack_require__(3),
-		createClass = __webpack_require__(26),
+		createClass = __webpack_require__(25),
 		onClickOutside = __webpack_require__(54).default
 		;
 
@@ -37442,13 +37439,7 @@
 /* 516 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = (__webpack_require__(23))(1);
-
-/***/ },
-/* 517 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = (__webpack_require__(23))(543);
+	module.exports = (__webpack_require__(28))(543);
 
 /***/ }
 /******/ ]);

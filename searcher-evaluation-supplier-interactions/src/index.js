@@ -8,7 +8,6 @@ import SupplierInteractionsContainer from './components/SupplierInteractions/mai
 import api from '../../shared/api.config';
 // import apiMiddleWare from './middleware/api';
 import './styles/index.scss';
-!window._babelPolyfill && require('babel-polyfill'); // prevent polyfill from importing twice
 import axios from 'axios';
 
 // Add redux dev tools unless we have a production build
