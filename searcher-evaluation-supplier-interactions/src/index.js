@@ -6,7 +6,7 @@ import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers/index';
 import SupplierInteractionsContainer from './components/SupplierInteractions/main';
 import api from '../../shared/api.config';
-// import apiMiddleWare from './middleware/api';
+!window._babelPolyfill && require('babel-polyfill'); // prevent polyfill from importing twice
 import './styles/index.scss';
 import axios from 'axios';
 
