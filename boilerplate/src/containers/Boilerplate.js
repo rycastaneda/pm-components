@@ -1,10 +1,14 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { updateState, resetState, incrementCounter, decrementCounter } from '../actions/boilerplate';
+import {
+    updateState,
+    resetState,
+    incrementCounter,
+    decrementCounter
+} from '../actions/boilerplate';
 import Button from '../components/Button';
 
 class Boilerplate extends Component {
-
     constructor(props) {
         super(props);
         // We do this because of ES6 class properties do not automatically bind to the React class instance
@@ -35,14 +39,15 @@ class Boilerplate extends Component {
 
         return (
             <div>
-                <h1>Here it comes...
+                <h1>
+                    Here it comes...
                     {boilerplate.buttonIsClicked ? 'Clicked' : ''}
                 </h1>
-                <Button title="Click" onClick={this.handleOnClick}/>
-                <Button title="Reset state" onClick={this.resetState}/>
+                <Button title="Click" onClick={this.handleOnClick} />
+                <Button title="Reset state" onClick={this.resetState} />
                 <h1>Counter...{boilerplate.counter}</h1>
-                <Button title="Increment Counter" onClick={this.increment}/>
-                <Button title="Decrement Counter" onClick={this.decrement}/>
+                <Button title="Increment Counter" onClick={this.increment} />
+                <Button title="Decrement Counter" onClick={this.decrement} />
             </div>
         );
     }
@@ -61,4 +66,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(Boilerplate);  // adds dispatch prop
+export default connect(mapStateToProps)(Boilerplate); // adds dispatch prop

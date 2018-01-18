@@ -11,7 +11,8 @@ export function boilerplate(state = INITIAL_BOILERPLATE_STATE, action) {
     switch (action.type) {
         case IS_CLICKED:
             return Object.assign({}, state, {
-                buttonIsClicked: true
+                buttonIsClicked: true,
+                counter: 0
             });
         case INITIAL_STATE:
             return Object.assign({}, state, INITIAL_BOILERPLATE_STATE);
