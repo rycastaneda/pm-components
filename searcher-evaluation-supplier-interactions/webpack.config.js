@@ -1,10 +1,10 @@
-require('babel-polyfill');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 const HOST = process.env.HOST || 'localhost';
-const PORT = process.env.PORT || '5049';
+const PORT = process.env.PORT || '5049 ';
+
 
 module.exports =  {
     context: __dirname,
@@ -19,13 +19,10 @@ module.exports =  {
         host: HOST
     },
     devtool: 'eval',
-    entry: {
-        app: [
-            'babel-polyfill',
-            `webpack-dev-server/client?http://${HOST}:${PORT}`,
-            `webpack/hot/dev-server`,
-            './src/index.js']
-    },
+    entry: [
+        `webpack-dev-server/client?http://${HOST}:${PORT}`,
+        `webpack/hot/dev-server`,
+        './src/index.js'],
     output: {
         path: `${__dirname}/dist`,
         filename: 'bundle.js'
@@ -38,7 +35,7 @@ module.exports =  {
             {
                 test: /\.js$/,
                 exclude: /(node_modules|dist)/,
-                loaders: ['babel', 'eslint'],
+                loaders: ['babel', 'eslint']
             },
             {
                 test: /\.json$/,
@@ -47,10 +44,6 @@ module.exports =  {
             {
                 test: /\.scss$/,
                 loaders: ['style', 'css', 'sass']
-            },
-            {
-                test: /\.css$/,
-                loaders: ['style-loader', 'css-loader']
             }
         ]
     },
