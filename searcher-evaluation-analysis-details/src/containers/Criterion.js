@@ -113,9 +113,13 @@ Criterion.propTypes = {
 function mapStateToProps(state) {
     const { staff: rawStaff } = state;
 
-    let suppliers = rawStaff.allIds.map(
-        supplierId => rawStaff.byId[supplierId]
-    );
+    let suppliers = [];
+
+    if (state.ui.currentView === 'all') {
+        suppliers = rawStaff.allIds.map(
+            supplierId => rawStaff.byId[supplierId]
+        );
+    }
 
     return { currentView: state.ui.currentView, suppliers };
 }

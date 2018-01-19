@@ -23,7 +23,6 @@ class Question extends Component {
             questionTitle,
             totalScore,
             scale,
-            staffAssigneeId,
             staffAssignee,
             comments,
             suppliers
@@ -45,14 +44,19 @@ class Question extends Component {
         };
 
         const getComments = () => {
-            let staffIds = [staffAssigneeId];
+            // let includesStaffAssigneeId = false;
+            let staffIds = [];
             let components = comments.map(comment => {
-                staffIds.push(comment.staffId);
+                staffIds.push(+comment.staffId);
                 return <Comment key={comment.id} {...comment} scale={scale} />;
             });
 
+            // if (!includesStaffAssigneeId && !staffIds.includes(staffAssignee)) {
+            //     // add dummy comment for staff assignee
+            //     components.push(placeholder(comments.length, staffAssignee));
+            // }
             suppliers.map(supplier => {
-                if (!staffIds.includes(supplier.id)) {
+                if (!staffIds.includes(+supplier.id)) {
                     components.push(
                         placeholder(number + '-' + supplier.id, supplier.name)
                     );
