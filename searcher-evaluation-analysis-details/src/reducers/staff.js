@@ -28,10 +28,16 @@ function receiveStaff(state, action) {
                 include => include.type === 'evaluation-template-assignments'
             );
             return [data, ...relatedAssignments].some(assignment => {
-                return assignment.relationships.chairStaff.data.id === staffId;
+                return (
+                    assignment.relationships.chairStaff &&
+                    assignment.relationships.chairStaff.data.id === staffId
+                );
             });
         } else {
-            return data.relationships.chairStaff.data.id === staffId;
+            return (
+                data.relationships.chairStaff &&
+                data.relationships.chairStaff.data.id === staffId
+            );
         }
     };
 
