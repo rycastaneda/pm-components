@@ -46,10 +46,19 @@ export class Details extends Component {
             isLoading,
             error,
             expandAll,
-            canViewAll
+            canViewAll,
+            staffAssignee,
+            staffAssigneeId
         } = this.props;
         const criteriaComponents = criteria.map(criterion => {
-            return <Criterion key={criterion.id} {...criterion} />;
+            return (
+                <Criterion
+                    key={criterion.id}
+                    {...criterion}
+                    staffAssignee={staffAssignee}
+                    staffAssigneeId={staffAssigneeId}
+                />
+            );
         });
 
         const expandToggle = (
@@ -99,6 +108,8 @@ Details.propTypes = {
     dispatch: PropTypes.func.isRequired,
     criteria: PropTypes.array.isRequired,
     currentView: PropTypes.string.isRequired,
+    staffAssignee: PropTypes.string.isRequired,
+    staffAssigneeId: PropTypes.number.isRequired,
     isLoading: PropTypes.bool.isRequired,
     expandAll: PropTypes.bool.isRequired,
     canViewAll: PropTypes.bool.isRequired,
@@ -123,6 +134,21 @@ function mapStateToProps(state) {
     let error = ui.error;
     let canViewAll = ui.canViewAll;
     let expandAll = rawCriterion.expandAll;
+    let staffAssignee = '';
+    let staffAssigneeId = 0;
+
+    if (isLoading) {
+        return {
+            criteria,
+            currentView,
+            isLoading,
+            error,
+            expandAll,
+            canViewAll,
+            staffAssignee,
+            staffAssigneeId
+        };
+    }
 
     const getComments = commentId => {
         let comment = rawComments.byId[commentId];
@@ -147,27 +173,27 @@ function mapStateToProps(state) {
         return criteria;
     };
 
-    if (isLoading) {
-        return {
-            criteria,
-            currentView,
-            isLoading,
-            error,
-            expandAll,
-            canViewAll
-        };
-    }
-
     let criteriaIds = rawCriterion.allIds;
     if (ui.currentView !== 'compare') {
         let evaluationId = rawAssignments.byId[ui.assignmentId].templateId;
-
-        criteriaIds = rawEvaluation.byId[evaluationId].criteriaIds;
+        let evaluation = rawEvaluation.byId[evaluationId];
+        criteriaIds = evaluation.criteriaIds;
+        staffAssignee = rawStaff.byId[evaluation.staffAssigneeId].name;
+        staffAssigneeId = +evaluation.staffAssigneeId;
     }
 
     criteria = criteriaIds.map(getCriteria);
 
-    return { criteria, currentView, isLoading, error, expandAll, canViewAll };
+    return {
+        criteria,
+        currentView,
+        isLoading,
+        error,
+        expandAll,
+        canViewAll,
+        staffAssignee,
+        staffAssigneeId
+    };
 }
 
 export default connect(mapStateToProps)(Details); // adds dispatch prop

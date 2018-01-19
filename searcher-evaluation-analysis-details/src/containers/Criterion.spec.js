@@ -68,6 +68,8 @@ const componentProps = {
             scores: [25, 30, 35, 40]
         }
     ],
+    staffAssignee: 'Troy Redden',
+    staffAssigneeId: 1,
     dispatch: () => {}
 };
 
