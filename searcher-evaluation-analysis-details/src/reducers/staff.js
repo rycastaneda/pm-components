@@ -27,7 +27,9 @@ function receiveStaff(state, action) {
                         .last_name}`
                 };
 
-                allIds.push(staff.id);
+                if (!allIds.includes(staff.id)) {
+                    allIds.push(staff.id);
+                }
             });
     }
 

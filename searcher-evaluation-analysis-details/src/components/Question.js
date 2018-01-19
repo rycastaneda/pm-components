@@ -25,40 +25,45 @@ class Question extends Component {
             scale,
             staffAssigneeId,
             staffAssignee,
-            comments
+            comments,
+            suppliers
         } = this.props;
 
-        const placeholder = (
-            <tbody key={staffAssigneeId}>
-                <tr>
-                    <td>
-                        <strong>{staffAssignee}</strong>
-                    </td>
-                    <td className="td-center" colSpan="2">
-                        No response recorded
-                    </td>
-                </tr>
-            </tbody>
-        );
+        const placeholder = (key, staffAssignee) => {
+            return (
+                <tbody key={key}>
+                    <tr>
+                        <td>
+                            <strong>{staffAssignee}</strong>
+                        </td>
+                        <td className="td-center" colSpan="2">
+                            No response recorded
+                        </td>
+                    </tr>
+                </tbody>
+            );
+        };
 
         const getComments = () => {
-            let includesStaffAssigneeId = false;
+            let staffIds = [staffAssigneeId];
             let components = comments.map(comment => {
-                includesStaffAssigneeId = +comment.staffId === staffAssigneeId;
-                return (
-                    <Comment key={comment.staffId} {...comment} scale={scale} />
-                );
+                staffIds.push(comment.staffId);
+                return <Comment key={comment.id} {...comment} scale={scale} />;
             });
 
-            if (!includesStaffAssigneeId) {
-                // add dummy comment for staff assignee
-                components.push(placeholder);
-            }
-
+            suppliers.map(supplier => {
+                if (!staffIds.includes(supplier.id)) {
+                    components.push(
+                        placeholder(number + '-' + supplier.id, supplier.name)
+                    );
+                }
+            });
             return components;
         };
 
-        const listComponents = comments.length ? getComments() : placeholder;
+        const listComponents = comments.length
+            ? getComments()
+            : placeholder(comments.length, staffAssignee);
 
         const iconClass = `fa mar-left-25 pointer toggle-comments ${this.state
             .isShown
@@ -129,7 +134,8 @@ Question.propTypes = {
     staffAssigneeId: PropTypes.number.isRequired,
     totalScore: PropTypes.number,
     scale: PropTypes.number,
-    comments: PropTypes.array
+    comments: PropTypes.array,
+    suppliers: PropTypes.array
 };
 
 export default Question;

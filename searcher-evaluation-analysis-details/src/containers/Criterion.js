@@ -34,7 +34,8 @@ export class Criterion extends Component {
             currentTab,
             currentView,
             staffAssigneeId,
-            staffAssignee
+            staffAssignee,
+            suppliers
         } = this.props;
 
         const questionComponents = questions.length ? (
@@ -43,6 +44,7 @@ export class Criterion extends Component {
                     key={question.id}
                     number={index + 1}
                     {...question}
+                    suppliers={suppliers}
                     staffAssignee={staffAssignee}
                     staffAssigneeId={staffAssigneeId}
                 />
@@ -100,6 +102,7 @@ Criterion.propTypes = {
     isOpen: PropTypes.bool,
     currentView: PropTypes.string,
     currentTab: PropTypes.string,
+    suppliers: PropTypes.array,
     questions: PropTypes.array,
     reports: PropTypes.array,
     staffAssignee: PropTypes.string,
@@ -108,7 +111,13 @@ Criterion.propTypes = {
 };
 
 function mapStateToProps(state) {
-    return { currentView: state.ui.currentView };
+    const { staff: rawStaff } = state;
+
+    let suppliers = rawStaff.allIds.map(
+        supplierId => rawStaff.byId[supplierId]
+    );
+
+    return { currentView: state.ui.currentView, suppliers };
 }
 
 export default connect(mapStateToProps)(Criterion); // adds dispatch prop
