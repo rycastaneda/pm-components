@@ -51,10 +51,6 @@ class Question extends Component {
                 return <Comment key={comment.id} {...comment} scale={scale} />;
             });
 
-            // if (!includesStaffAssigneeId && !staffIds.includes(staffAssignee)) {
-            //     // add dummy comment for staff assignee
-            //     components.push(placeholder(comments.length, staffAssignee));
-            // }
             suppliers.map(supplier => {
                 if (!staffIds.includes(+supplier.id)) {
                     components.push(
@@ -62,12 +58,14 @@ class Question extends Component {
                     );
                 }
             });
+
+            if (!components.length) {
+                return placeholder(comments.length, staffAssignee);
+            }
             return components;
         };
 
-        const listComponents = comments.length
-            ? getComments()
-            : placeholder(comments.length, staffAssignee);
+        const listComponents = getComments();
 
         const iconClass = `fa mar-left-25 pointer toggle-comments ${this.state
             .isShown
