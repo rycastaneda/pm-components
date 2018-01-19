@@ -6,3 +6,7 @@ export const InteractionStyledIdLink = styled.a`
     font-weight: 400;
     font-color: ${brandColors.$brandprimary};
 `;
+
+export const InteractionItemRow = styled.tr`
+    cursor: pointer;  
+`;

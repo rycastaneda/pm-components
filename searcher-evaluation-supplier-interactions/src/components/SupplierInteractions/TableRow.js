@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import StatusLabel from '../StatusLabel';
 import moment from 'moment';
 import * as actions from './actions';
+import { InteractionItemRow } from './styling/styledComponents';
 
 const renderRelatedTo = (rowItem) => {
     if (rowItem.type !== 'Evaluation' && rowItem.type !== 'Engagement') {
@@ -16,7 +17,7 @@ const renderRelatedTo = (rowItem) => {
 };
 
 const TableRow = ({ rowItem }) => (
-    <tr onClick={() => {actions.onClickViewInteraction(rowItem);}}>
+    <InteractionItemRow onClick={() => {actions.onClickViewInteraction(rowItem);}}>
         <td className="td-center nowrap">{moment(rowItem.date.date).format('DD/MM/YYYY')}</td>
         <td className="td-center nowrap">{rowItem.type}</td>
         <td className="td-center nowrap">{rowItem.id}</td>
@@ -27,7 +28,7 @@ const TableRow = ({ rowItem }) => (
         <td className="td-center nowrap">
             <StatusLabel type={rowItem.type} status={rowItem.status} />
         </td>
-    </tr>
+    </InteractionItemRow>
 );
 
 

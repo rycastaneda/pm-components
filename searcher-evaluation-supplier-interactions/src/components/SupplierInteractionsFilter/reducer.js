@@ -2,7 +2,7 @@ import * as actions from './actionsTypes';
 
 const initialState = {
     filterSearchKey: '',
-    interactionTypes: ['Any', 'Message', 'Evaluation', 'Rfq', 'Engagement'],
+    interactionTypes: ['Any', 'Engagement', 'Evaluation', 'Message', 'RFQ'],
     staffInitiators: ['Any', 'Test staff 1', 'Test staff 2', 'Test staff 3'],
     interactionTypeSelected: 'Any',
     initiatedBySelected: 'Any',
