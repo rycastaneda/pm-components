@@ -1,3 +1,7 @@
 .evaluation_templates .pepp-content .db-content {
     padding-bottom: 160px;
+
+    td:first-of-type {
+        word-break: break-all;
+    }
 }

@@ -46,7 +46,7 @@ class TemplatesTable extends Component {
         this.setState({ menuVisibleItemId:null });
     }
     renderMoreButton(id, edit_url, preview_url, active, instances) {
-        instances = Number(instances);        
+        instances = Number(instances);
         if (this.state.menuVisibleItemId===id) {
             return (
             <div className="db-function-dropdown click"
@@ -133,7 +133,7 @@ class TemplatesTable extends Component {
                     </tr>
                 : this.props.tableData.map((item, index) =>
                     <tr key={index}>
-                    <td className="nowrap">{item.title}</td>
+                    <td className="">{item.title}</td>
                     <td className="td-center nowrap">{item.instances}</td>
                     <td className="td-center nowrap">{item.completed}</td>
                     <td className="td-center nowrap">{moment(item.date).format('DD/MM/YYYY')}</td>
