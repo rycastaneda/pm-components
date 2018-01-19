@@ -22641,7 +22641,7 @@
 	                        onChange: actions.updateFilterEndDateChange,
 	                        value: endDate,
 	                        inputProps: {
-	                            placeholder: 'YYYY-MM-DD'
+	                            placeholder: 'DD-MM-YYYY'
 	                        }
 	                    })
 	                )
