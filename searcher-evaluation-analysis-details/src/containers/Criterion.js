@@ -116,9 +116,9 @@ function mapStateToProps(state) {
     let suppliers = [];
 
     if (state.ui.currentView === 'all') {
-        suppliers = rawStaff.allIds.map(
-            supplierId => rawStaff.byId[supplierId]
-        );
+        suppliers = rawStaff.allIds
+            .filter(supplierId => !rawStaff.byId[supplierId].isChair)
+            .map(supplierId => rawStaff.byId[supplierId]);
     }
 
     return { currentView: state.ui.currentView, suppliers };
