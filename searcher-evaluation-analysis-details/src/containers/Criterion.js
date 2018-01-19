@@ -32,12 +32,20 @@ export class Criterion extends Component {
             questions,
             isOpen,
             currentTab,
-            currentView
+            currentView,
+            staffAssigneeId,
+            staffAssignee
         } = this.props;
 
         const questionComponents = questions.length ? (
             questions.map((question, index) => (
-                <Question key={question.id} number={index + 1} {...question} />
+                <Question
+                    key={question.id}
+                    number={index + 1}
+                    {...question}
+                    staffAssignee={staffAssignee}
+                    staffAssigneeId={staffAssigneeId}
+                />
             ))
         ) : (
             <div className="mar-top-sm text-center">No Responses yet.</div>
@@ -94,6 +102,8 @@ Criterion.propTypes = {
     currentTab: PropTypes.string,
     questions: PropTypes.array,
     reports: PropTypes.array,
+    staffAssignee: PropTypes.string,
+    staffAssigneeId: PropTypes.number.isRequired,
     dispatch: PropTypes.func
 };
 

@@ -23,22 +23,42 @@ class Question extends Component {
             questionTitle,
             totalScore,
             scale,
+            staffAssigneeId,
+            staffAssignee,
             comments
         } = this.props;
 
-        const listComponents = comments.length ? (
-            comments.map(comment => (
-                <Comment key={comment.id} {...comment} scale={scale} />
-            ))
-        ) : (
-            <tbody>
+        const placeholder = (
+            <tbody key={staffAssigneeId}>
                 <tr>
-                    <td className="td-center" colSpan="3">
-                        No comments yet
+                    <td>
+                        <strong>{staffAssignee}</strong>
+                    </td>
+                    <td className="td-center" colSpan="2">
+                        No response recorded
                     </td>
                 </tr>
             </tbody>
         );
+
+        const getComments = () => {
+            let includesStaffAssigneeId = false;
+            let components = comments.map(comment => {
+                includesStaffAssigneeId = +comment.staffId === staffAssigneeId;
+                return (
+                    <Comment key={comment.staffId} {...comment} scale={scale} />
+                );
+            });
+
+            if (!includesStaffAssigneeId) {
+                // add dummy comment for staff assignee
+                components.push(placeholder);
+            }
+
+            return components;
+        };
+
+        const listComponents = comments.length ? getComments() : placeholder;
 
         const iconClass = `fa mar-left-25 pointer toggle-comments ${this.state
             .isShown
@@ -105,6 +125,8 @@ class Question extends Component {
 Question.propTypes = {
     number: PropTypes.number.isRequired,
     questionTitle: PropTypes.string.isRequired,
+    staffAssignee: PropTypes.string.isRequired,
+    staffAssigneeId: PropTypes.number.isRequired,
     totalScore: PropTypes.number,
     scale: PropTypes.number,
     comments: PropTypes.array
