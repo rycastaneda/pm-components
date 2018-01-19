@@ -22566,6 +22566,10 @@
 
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 
+	var _moment = __webpack_require__(1);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
 	var _reactMomentProptypes = __webpack_require__(481);
 
 	var _reactMomentProptypes2 = _interopRequireDefault(_reactMomentProptypes);
@@ -22598,8 +22602,8 @@
 	        key: 'render',
 	        value: function render() {
 	            var _props = this.props,
-	                dateTimeStart = _props.dateTimeStart,
-	                dateTimeEnd = _props.dateTimeEnd,
+	                startDate = _props.startDate,
+	                endDate = _props.endDate,
 	                actions = _props.actions;
 
 	            return _react2.default.createElement(
@@ -22618,8 +22622,8 @@
 	                        timeFormat: false,
 	                        closeOnSelect: true,
 	                        onChange: actions.updateFilterStartDateChange,
-	                        value: dateTimeStart,
-	                        inputProps: { placeholder: 'YYYY-MM-DD' }
+	                        value: startDate,
+	                        inputProps: { placeholder: 'DD-MM-YYYY' }
 	                    })
 	                ),
 	                _react2.default.createElement(
@@ -22635,7 +22639,7 @@
 	                        timeFormat: false,
 	                        closeOnSelect: true,
 	                        onChange: actions.updateFilterEndDateChange,
-	                        value: dateTimeEnd,
+	                        value: endDate,
 	                        inputProps: {
 	                            placeholder: 'YYYY-MM-DD'
 	                        }
@@ -22648,8 +22652,8 @@
 	}(_react.Component);
 
 	PMDateRange.propTypes = {
-	    dateTimeStart: _propTypes2.default.oneOfType([_reactMomentProptypes2.default.momentObj, _propTypes2.default.string]),
-	    dateTimeEnd: _propTypes2.default.oneOfType([_reactMomentProptypes2.default.momentObj, _propTypes2.default.string]),
+	    startDate: _propTypes2.default.oneOfType([_reactMomentProptypes2.default.momentObj, _propTypes2.default.string]),
+	    endDate: _propTypes2.default.oneOfType([_reactMomentProptypes2.default.momentObj, _propTypes2.default.string]),
 	    actions: _propTypes2.default.object
 	};
 
@@ -22664,9 +22668,12 @@
 	        dateTimeStart = _state$pmDateTime.dateTimeStart,
 	        dateTimeEnd = _state$pmDateTime.dateTimeEnd;
 
+	    var startDate = dateTimeStart === null ? null : (0, _moment2.default)(dateTimeStart).format('DD-MM-YYYY');
+	    var endDate = dateTimeEnd === null ? null : (0, _moment2.default)(dateTimeEnd).format('DD-MM-YYYY');
+
 	    return (0, _extends3.default)({}, ownProps, {
-	        dateTimeStart: dateTimeStart,
-	        dateTimeEnd: dateTimeEnd
+	        startDate: startDate,
+	        endDate: endDate
 	    });
 	};
 
@@ -22851,13 +22858,13 @@
 	                pages = _props.pages,
 	                actions = _props.actions;
 
-	            console.log('pagination1..');
+
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'row' },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'col-sm-6 form-inline' },
+	                    { className: 'col-xs-12 form-inline' },
 	                    _react2.default.createElement(
 	                        'select',
 	                        {

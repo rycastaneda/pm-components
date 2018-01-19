@@ -9,10 +9,10 @@ class Pagination extends Component {
 
     render() {
         const { maxRowsList, pages, actions } = this.props;
-        console.log('pagination1..');
+
         return (
             <div className="row">
-                <div className="col-sm-6 form-inline">
+                <div className="col-xs-12 form-inline">
                     <select
                         value={pages.per_page}
                         onChange={actions.onRowsPerPageUpdate}
