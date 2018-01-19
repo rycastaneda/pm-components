@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import momentPropTypes from 'react-moment-proptypes';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -9,8 +10,8 @@ import Datetime from 'react-datetime';
 class PMDateRange extends Component {
     render() {
         const {
-            dateTimeStart,
-            dateTimeEnd,
+            startDate,
+            endDate,
             actions,
         } = this.props;
         return (
@@ -22,8 +23,8 @@ class PMDateRange extends Component {
                         timeFormat={false}
                         closeOnSelect={true}
                         onChange={actions.updateFilterStartDateChange}
-                        value={dateTimeStart}
-                        inputProps={{ placeholder: 'YYYY-MM-DD' }}
+                        value={startDate}
+                        inputProps={{ placeholder: 'DD-MM-YYYY' }}
                     />
                 </div>
                 <div className="form-group">
@@ -33,7 +34,7 @@ class PMDateRange extends Component {
                         timeFormat={false}
                         closeOnSelect={true}
                         onChange={actions.updateFilterEndDateChange}
-                        value={dateTimeEnd}
+                        value={endDate}
                         inputProps={{
                             placeholder: 'YYYY-MM-DD',
                         }}
@@ -45,11 +46,11 @@ class PMDateRange extends Component {
 }
 
 PMDateRange.propTypes = {
-    dateTimeStart: PropTypes.oneOfType([
+    startDate: PropTypes.oneOfType([
         momentPropTypes.momentObj,
         PropTypes.string,
     ]),
-    dateTimeEnd: PropTypes.oneOfType([
+    endDate: PropTypes.oneOfType([
         momentPropTypes.momentObj,
         PropTypes.string,
     ]),
@@ -64,10 +65,13 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state, ownProps) => {
     const { dateTimeStart, dateTimeEnd } = state.pmDateTime;
+    const startDate =  dateTimeStart === null ? null : moment(dateTimeStart).format('DD-MM-YYYY');
+    const endDate =  dateTimeEnd === null ? null : moment(dateTimeEnd).format('DD-MM-YYYY');
+
     return {
         ...ownProps,
-        dateTimeStart,
-        dateTimeEnd,
+        startDate,
+        endDate,
     };
 };
 
