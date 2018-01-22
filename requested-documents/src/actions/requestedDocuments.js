@@ -21,35 +21,36 @@ export function getDocuments() {
         return axios.get(`/searcher-compliance-doc-types`)
             .then((response) => {
                 let complianceDocs = response.data.data;
+                if (itemId) {
+                    axios.get(`/searcher-quote-requests/${quoteId}/requested-items/${itemId}?include=quoteRequestedDocuments`)
+                        .then((response) => {
+                            let complianceDocsSearcher = response.data.included;
 
-                axios.get(`/searcher-quote-requests/${quoteId}/requested-items/${itemId}?include=quoteRequestedDocuments`)
-                    .then((response) => {
-                        let complianceDocsSearcher = response.data.included;
+                            let complianceDocsSearcherIds = complianceDocsSearcher ? complianceDocsSearcher.map(function(complianceDoc) {
+                                return complianceDoc.attributes.compliance_document_type_id;
+                            }) : [];
 
-                        let complianceDocsSearcherIds = complianceDocsSearcher ? complianceDocsSearcher.map(function(complianceDoc) {
-                            return complianceDoc.attributes.compliance_document_type_id;
-                        }) : [];
+                            complianceDocs = complianceDocs.map(function(complianceDoc) {
+                                if (complianceDocsSearcherIds.indexOf(parseInt(complianceDoc.id)) !== -1) {
+                                    complianceDoc.attributes.default_displayed = 1;
+                                    complianceDoc.attributes.checked = true;
+                                }
+                                return complianceDoc;
+                            });
 
-                        complianceDocs = complianceDocs.map(function(complianceDoc) {
-                            if (complianceDocsSearcherIds.indexOf(parseInt(complianceDoc.id)) !== -1) {
-                                complianceDoc.attributes.default_displayed = 1;
-                                complianceDoc.attributes.checked = true;
-                            }
-                            return complianceDoc;
+                            let docs = complianceDocs.filter(function(doc) {
+                                return (doc.attributes.default_displayed === 1);
+                            });
+
+                            let suggestedDocs = complianceDocs.filter(function(doc) {
+                                return (doc.attributes.default_displayed === 0);
+                            });
+
+                            dispatch(receiveSuggestionsDocuments(suggestedDocs));
+
+                            return dispatch(receiveDocuments(docs));
                         });
-
-                        let docs = complianceDocs.filter(function(doc) {
-                            return (doc.attributes.default_displayed === 1);
-                        });
-
-                        let suggestedDocs = complianceDocs.filter(function(doc) {
-                            return (doc.attributes.default_displayed === 0);
-                        });
-
-                        dispatch(receiveSuggestionsDocuments(suggestedDocs));
-
-                        return dispatch(receiveDocuments(docs));
-                    });
+                }
             });
     };
 }
