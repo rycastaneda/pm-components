@@ -65,14 +65,23 @@ class AssignmentsTable extends Component {
         this.hideMenu();
     }
     renderMoreButton(assignment) {
-        let { id, complete_url, view_single_url, view_all_url, view_compare_url, isDeleteAllowed, isMarkInProgressAllowed } = assignment;
+        let {
+            id,
+            complete_url,
+            view_single_url,
+            view_all_url,
+            view_compare_url,
+            isDeleteAllowed,
+            isMarkInProgressAllowed,
+            assignmentStatus
+        } = assignment;
 
         if (this.state.menuVisibleItemId === id) {
             return (
             <div className="db-function-dropdown click"
                 ref={(ul) => {
                     if (ul!==null) {
-                        this.actionDropdown=ul;
+                        this.actionDropdown = ul;
                     }
                 }}>
                 <a className="db-function"
@@ -107,7 +116,10 @@ class AssignmentsTable extends Component {
                         :null
                     }
                     <li role="separator" className="divider"></li>
-                    <li className="dropdown-header">Analysis</li>
+                    {assignmentStatus.id === '3' ?
+                        <li className="dropdown-header">Analysis</li>
+                        : null
+                    }
                     <li role="separator" className="divider"></li>
                     <li>
                         <a href={view_single_url}>
