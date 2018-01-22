@@ -6,7 +6,6 @@
 
 const vendorPlugins = require('./vendorPlugins.js');
 const webpack = require('webpack');
-require('babel-polyfill');
 
 module.exports = {
     entry: {

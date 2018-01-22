@@ -4,7 +4,6 @@
 // When adding component here, please add it to shared/package.json as well
 
 module.exports = [
-    'babel-polyfill',
     'react',
     'react-autosuggest',
     'react-dom',
