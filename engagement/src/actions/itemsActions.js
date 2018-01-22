@@ -65,7 +65,7 @@ function checkAllSuggestions(items, included, value) {
                     }
                 }));
                 // Get details of supplier from included
-                supplier = getSupplier(included, detailsMatchedItems[detailsMatchedItems.length-1].relationships.matchedSupplier.data[0].id);
+                supplier = getSupplier(included, detailsMatchedItems[detailsMatchedItems.length-1].relationships.matchedSupplier.data.id);
                 supplierTitle = supplier ? supplier.attributes.title : '';
 
                 shouldReturnAll = detailsMatchedItems.filter((details) => {
@@ -105,12 +105,12 @@ function getSuggestions(state, value) {
                 }
             }));
             // @todo: Remove this injection of supplier from here // Get details of supplier from included
-            matchedItemsDetails[matchedItemsDetails.length-1].supplier = getSupplier(included, matchedItemsDetails[matchedItemsDetails.length-1].relationships.matchedSupplier.data[0].id);
+            matchedItemsDetails[matchedItemsDetails.length-1].supplier = getSupplier(included, matchedItemsDetails[matchedItemsDetails.length-1].relationships.matchedSupplier.data.id);
         }
 
         // filter matchedItemsDetails and supplier with the given value
         matchedItems = matchedItemsDetails.filter((details) => {
-            let supplier = getSupplier(included, details.relationships.matchedSupplier.data[0].id);
+            let supplier = getSupplier(included, details.relationships.matchedSupplier.data.id);
             let supplierTitle = supplier ? supplier.attributes.title : '';
             return shouldReturnAll ? true : regex.test(details.attributes.title + ' - ' + supplierTitle);
         });
