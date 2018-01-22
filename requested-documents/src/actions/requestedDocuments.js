@@ -21,7 +21,8 @@ export function getDocuments() {
         return axios.get(`/searcher-compliance-doc-types`)
             .then((response) => {
                 let complianceDocs = response.data.data;
-                if (itemId) {
+                console.log("itemId", itemId); // eslint-disable-line quotes, no-console
+                if (+itemId) {
                     axios.get(`/searcher-quote-requests/${quoteId}/requested-items/${itemId}?include=quoteRequestedDocuments`)
                         .then((response) => {
                             let complianceDocsSearcher = response.data.included;
