@@ -28,9 +28,6 @@ export function loadEngagements(quoteId) {
             dispatch(loadEngagementsSuccess(response.data));
             dispatch(updateTotals());
             dispatch(requestCompleted());
-        }).catch((error) => {
-            dispatch(requestCompleted());
-            dispatch(requestError(error));
         });
     };
 }
@@ -40,7 +37,7 @@ function getSupplier(included, matchedItemId) {
         return i.id === matchedItemId;
     }).reduce(
         (a, b) => b.relationships.matchedSupplier.data, {}
-    ).reduce((a, b) => b, {});
+    );
 
     let supplierDetails = included.filter(i =>
         i.type === 'supplier' && i.id === supplier.id
