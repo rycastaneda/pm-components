@@ -32,12 +32,26 @@ function receiveAssignments(state, action) {
         getAssignment(data);
     }
 
+    function getQuestionId(responseId) {
+        let response = action.evaluation.included.find(
+            include =>
+                include.id === responseId &&
+                include.type === 'evaluation-question-responses'
+        );
+        return response.relationships.question.data.id;
+    }
+
     function getAssignment(assignment) {
         byId[assignment.id] = {
             ...assignment.attributes,
             entityId: assignment.relationships.assignmentEntityInstance.data.id,
+            entityType:
+                assignment.relationships.assignmentEntityInstance.data.type,
             responseIds: assignment.relationships.questionResponses.data.map(
                 response => response.id
+            ),
+            questionIds: assignment.relationships.questionResponses.data.map(
+                response => getQuestionId(response.id)
             ),
             templateId: assignment.relationships.template.data.id
         };

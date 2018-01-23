@@ -59,10 +59,12 @@ describe('ComparisonTable container: ', () => {
         let counter = 1;
         expect(headers.at(0).text()).to.eql('User');
         componentProps.criteria.map(criteria => {
-            expect(headers.at(counter).text()).to.eql(criteria.title);
+            expect(headers.at(counter).text()).to.eql(
+                `${criteria.title} (${criteria.weight})`
+            );
             counter++;
         });
-        expect(headers.at(counter).text()).to.eql('Total');
+        expect(headers.at(counter).text()).to.eql('Total (100)');
     });
 
     it('should render Component Rows', () => {
