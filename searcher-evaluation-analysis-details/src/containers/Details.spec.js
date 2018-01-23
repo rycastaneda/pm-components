@@ -77,6 +77,10 @@ describe('Details container: ', () => {
         criteria: [criterion, { ...criterion, id: 2 }],
         currentView: 'single',
         isLoading: true,
+        staffAssignee: 'Troy Redden',
+        staffAssigneeId: 1,
+        expandAll: false,
+        canViewAll: true,
         error: ''
     };
 

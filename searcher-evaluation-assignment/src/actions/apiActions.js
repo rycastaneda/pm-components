@@ -11,7 +11,7 @@ export function fetchEvaluationTemplates() {
 export function fetchAssigneesStaff() {
     return {
         [CALL_API]: {
-            endpoint: '/staff',
+            endpoint: '/staff?filter[pitRoles]=1,2,3,4&filter[is_deleted]=0',
         },
     };
 }
@@ -43,7 +43,7 @@ export function fetchPreferredSuppliers() {
 export function fetchRequestsForQuotations() {
     return {
         [CALL_API]: {
-            endpoint: '/request-for-quotations',
+            endpoint: '/request-for-quotations?filter[sent]=1&filter[archived]=0',
         },
     };
 }

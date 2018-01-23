@@ -8,7 +8,8 @@ const INITIAL_STATE = {
     },
     error: '',
     assignmentId: '',
-    currentView: 'single'
+    currentView: 'single',
+    canViewAll: false
 };
 
 export function ui(state = INITIAL_STATE, action) {
@@ -20,6 +21,8 @@ export function ui(state = INITIAL_STATE, action) {
                 done: false
             };
             state.assignmentId = action.assignmentId;
+            state.currentView = action.currentView;
+            state.canViewAll = action.canViewAll;
             return { ...state };
         case actions.RECEIVE_EVALUATION:
             state.isLoading = {

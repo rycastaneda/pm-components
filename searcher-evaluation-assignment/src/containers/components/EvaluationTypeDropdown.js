@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import build from 'redux-object';
+import { selectFromStore } from '../../utils/selectFromStore';
 import * as actions from '../../actions/evaluationAssignmentsAction';
 
 const EvaluationTypeDropdown = ({ evaluationTypes, actions, isLoading }) => (
@@ -42,9 +42,8 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const  isLoading = state.evaluationAssignment.meta['/evaluation-template-assignment-types'].loading;
-    const  evaluationTypes = (state.evaluationAssignment.meta['/evaluation-template-assignment-types'].data || []).map(object => build(state.evaluationAssignment, 'evaluationTemplateAssignmentTypes', object.id));
-
+    const isLoading = state.evaluationAssignment.meta['/evaluation-template-assignment-types'].loading;
+    const evaluationTypes = selectFromStore(state.evaluationAssignment, '/evaluation-template-assignment-types', 'evaluationTemplateAssignmentTypes');
     return {
         ...ownProps,
         evaluationTypes,

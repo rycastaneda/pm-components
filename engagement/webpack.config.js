@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 const HOST = process.env.HOST || 'localhost';
-const PORT = process.env.PORT || '5151';
+const PORT = process.env.PORT || '5049';
 
 
 module.exports =  {
