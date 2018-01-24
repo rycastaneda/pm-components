@@ -43,7 +43,7 @@ describe('Section actions', function() {
             ui: { expandAll: false }
         });
 
-        store.dispatch(actions.toggleAllSectionCollapse());
+        store.dispatch(actions.toggleAllSectionsCollapse());
 
         expect(store.getActions().pop()).to.eql({
             type: TOGGLE_ALL_SECTION_COLLAPSE,

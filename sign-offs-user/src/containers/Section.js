@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Tab from '../components/Tab';
 import NewComment from '../components/NewComment';
 import Loader from '../components/Loader';
+import StatusBadge from '../components/StatusBadge';
 
 import { toggleSectionCollapse, switchSectionTab } from '../actions/section';
 
@@ -82,6 +83,15 @@ class Section extends Component {
         }
     }
 
+    componentDidMount() {
+        const { id, isCollapsed, dispatch } = this.props;
+
+        if (isCollapsed) {
+            // if section is collapsed already, load questions
+            dispatch(fetchQuestions(id));
+        }
+    }
+
     render() {
         const {
             id,
@@ -99,12 +109,6 @@ class Section extends Component {
         const { isReadOnly, currentStaffId } = this.props.ui;
         const response = responses.length ? responses.pop() : null;
         const statusId = response ? response.statusId : null;
-        const icon = {
-            2: 'fa-check-circle bs-callout-success',
-            3: 'fa-times-circle bs-callout-danger',
-            1: 'fa-gears bs-callout-warning',
-            0: 'fa-exclamation-circle bs-callout-warning'
-        };
 
         let newCommentForm = null;
 
@@ -123,8 +127,9 @@ class Section extends Component {
                 </button>
             );
         }
+
         return (
-            <div className="pmaccordion pmaccordion--impact">
+            <div className="pmaccordion pmaccordion--impact section-pmaccordion">
                 <a
                     onClick={this.toggleSectionCollapse}
                     className={`toggle-section pmaccordion__head ${isCollapsed ||
@@ -133,9 +138,7 @@ class Section extends Component {
                         <span className="pull-left pmaccordion__title">
                             {title}
                         </span>
-                        <span className="pull-right status-icon">
-                            <i className={`fa ${icon[statusId] || ''}`} />
-                        </span>
+                        {statusId ? <StatusBadge statusId={statusId} /> : null}
                         <div className="clearfix" />
                     </div>
                 </a>

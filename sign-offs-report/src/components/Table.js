@@ -100,7 +100,7 @@ const Table = ({
     };
 
     return (
-        <table className="table db-table db-table-sort db-table-link db-table-sort-nojs">
+        <table className="table db-table db-table-sort db-table-sort-nojs">
             <thead>
                 <tr>
                     {headers.map(header => (

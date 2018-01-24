@@ -164,10 +164,9 @@ function receiveSections(state, action) {
             });
     }
 
-    action.sections.data.map(section => {
+    action.sections.data.map((section, index) => {
         let commentIds = [];
         let responseIds = [];
-
         if (section.relationships) {
             commentIds = section.relationships.comments.data.map(
                 comment => comment.id
@@ -177,13 +176,15 @@ function receiveSections(state, action) {
                 section.relationships.assignments &&
                 section.relationships.assignments.data
             ) {
-                responseIds.push(section.relationships.assignments.data.id);
+                responseIds = section.relationships.assignments.data.map(
+                    assignment => assignment.id
+                );
             }
         }
 
         byId[section.id] = {
             id: section.id,
-            isCollapsed: false,
+            isCollapsed: index === 0,
             isAddingNewComment: false,
             isLoading: false,
             isShown: false,

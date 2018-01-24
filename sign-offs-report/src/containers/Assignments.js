@@ -142,14 +142,16 @@ export class Assignments extends Component {
                     toggleSupplierRow={this.toggleSupplierRow}
                 />
 
-                <PaginatePerPage
-                    pageCount={totalPage}
-                    onPageChange={this.changePage}
-                    onPerPageChange={event => {
-                        this.changePage(null, +event.target.value);
-                    }}
-                    perPage={perPage}
-                />
+                {assignments.length ? (
+                    <PaginatePerPage
+                        pageCount={totalPage}
+                        onPageChange={this.changePage}
+                        onPerPageChange={event => {
+                            this.changePage(null, +event.target.value);
+                        }}
+                        perPage={perPage}
+                    />
+                ) : null}
                 <CommentModal
                     assignment={currentAssignment}
                     toggleCommentModal={this.toggleCommentsModal}

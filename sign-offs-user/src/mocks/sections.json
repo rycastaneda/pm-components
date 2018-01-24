@@ -479,11 +479,12 @@
       },
       "relationships": {
         "assignments": {
-          "data": 
+          "data": [
             {
               "type": "sign-off",
               "id": "2"
             }
+          ]
         },
         "defaultUsers": {
           "data": [
@@ -506,11 +507,12 @@
       },
       "relationships": {
         "assignments": {
-          "data": 
+          "data": [
             {
               "type": "sign-off",
               "id": "1"
             }
+          ]
         },
         "defaultUsers": {
           "data": []

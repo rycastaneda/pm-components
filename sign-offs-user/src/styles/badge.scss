@@ -1,0 +1,38 @@
+.status-badge {
+    display: inline-block;
+    overflow: hidden;
+    width: auto;
+    height: auto;
+    padding: 0;
+    border-radius: 10px;
+
+    &.in {
+        width: auto;
+    }
+
+    &__text {
+        position: relative;
+        left: 120px;
+        z-index: 3;
+        display: none;
+        transition: 0.15s linear;
+
+        &.in {
+            left: 20px;
+            display: inline;
+            padding-right: 25px;
+        }
+    }
+
+    &__icon {
+        position: relative;
+        z-index: 5;
+        width: auto;
+        background-color: #fdf5e9;
+    }
+}
+
+.section-pmaccordion {
+    background-color: #fafafa;
+}
+

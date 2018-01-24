@@ -29,7 +29,7 @@ describe('Sections reducer', () => {
             sections: mockSections
         });
         expect(state).to.have.property('isLoading', false);
-        expect(state.byId[1]).to.have.property('isCollapsed', false);
+        expect(state.byId[1]).to.have.property('isCollapsed', true);
         expect(state.byId[1]).to.have.property('isAddingNewComment', false);
         expect(state.byId[1]).to.have.property('isLoading', false);
         expect(state.byId[1]).to.have.property('currentTab', 'questions');

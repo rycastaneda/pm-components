@@ -33,13 +33,14 @@ class Sections extends Component {
         const { sections, error } = this.props;
 
         return (
-            <div ref={ref => (this.domRef = ref)}>
+            <div ref={ref => (this.domRef = ref)} className="default-assignment-container">
                 {error ? (
                     <div className="bs-callout bs-callout-danger">{error}</div>
                 ) : (
                     <div className="row">
                         <div className="pull-right">
                             <button
+                                type="button"
                                 className="btn db-function expand-all"
                                 onClick={() => this.toggleCollapse(false)}>
                                 Expand All

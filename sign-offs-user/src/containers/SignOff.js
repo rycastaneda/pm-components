@@ -74,6 +74,7 @@ SignOff.propTypes = {
     sections: PropTypes.array.isRequired,
     sectionModalId: PropTypes.number,
     isLoading: PropTypes.bool.isRequired,
+    expandAll: PropTypes.bool.isRequired,
     error: PropTypes.string
 };
 

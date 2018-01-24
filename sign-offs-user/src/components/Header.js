@@ -10,7 +10,7 @@ const Header = ({
     isReadOnly
 }) => (
     <div className="mar-top mar-btm row">
-        <div className="col-lg-10">
+        <div className="col-lg-9">
             <ul className="list-inline pad-top-sm mar-top-sm">
                 <TabHeader
                     text="Questions"
@@ -25,7 +25,7 @@ const Header = ({
             </ul>
         </div>
         {isReadOnly || statusId === null ? null : (
-            <div className="col-lg-2">
+            <div className="col-lg-3">
                 <Status
                     statusId={statusId}
                     toggleSectionStatus={toggleSectionStatus}

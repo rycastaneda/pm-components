@@ -1,2 +1,2 @@
-
+.status-badge{display:inline-block;overflow:hidden;width:auto;height:auto;padding:0;border-radius:10px}.status-badge.in{width:auto}.status-badge__text{position:relative;left:120px;z-index:3;display:none;transition:.15s linear}.status-badge__text.in{left:20px;display:inline;padding-right:25px}.status-badge__icon{position:relative;z-index:5;width:auto;background-color:#fdf5e9}.section-pmaccordion{background-color:#fafafa}
 /*# sourceMappingURL=index.css.map*/

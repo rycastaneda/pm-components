@@ -2,8 +2,8 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 
-const HOST = process.env.HOST || 'org.okfelix.local.dev';
-const PORT = process.env.PORT || '5050';
+const HOST = process.env.HOST || 'local-org-okfelix.pmstg.com';
+const PORT = process.env.PORT || '5049';
 
 module.exports = {
     context: __dirname,
