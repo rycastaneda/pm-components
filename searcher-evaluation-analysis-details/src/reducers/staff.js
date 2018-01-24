@@ -17,6 +17,30 @@ export function staff(state = INITIAL_STATE, action) {
 function receiveStaff(state, action) {
     const { byId, allIds } = state;
 
+    const { data, included } = action.evaluation;
+
+    const isChair = staffId => {
+        if (
+            data.relationships.relatedAssignments &&
+            data.relationships.relatedAssignments.data.length
+        ) {
+            let relatedAssignments = included.filter(
+                include => include.type === 'evaluation-template-assignments'
+            );
+            return [data, ...relatedAssignments].some(assignment => {
+                return (
+                    assignment.relationships.chairStaff &&
+                    assignment.relationships.chairStaff.data.id === staffId
+                );
+            });
+        } else {
+            return (
+                data.relationships.chairStaff &&
+                data.relationships.chairStaff.data.id === staffId
+            );
+        }
+    };
+
     if (action.evaluation.included) {
         action.evaluation.included
             .filter(included => included.type === 'staff')
@@ -24,10 +48,13 @@ function receiveStaff(state, action) {
                 byId[staff.id] = {
                     id: staff.id,
                     name: `${staff.attributes.first_name} ${staff.attributes
-                        .last_name}`
+                        .last_name}`,
+                    isChair: isChair(staff.id)
                 };
 
-                allIds.push(staff.id);
+                if (!allIds.includes(staff.id)) {
+                    allIds.push(staff.id);
+                }
             });
     }
 
