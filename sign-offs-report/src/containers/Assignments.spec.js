@@ -9,9 +9,7 @@ import PaginatePerPage from '../components/PaginatePerPage';
 import CommentModal from './CommentModal';
 
 const setup = props => {
-    const component = shallow(
-        <Assignments {...props} />
-    );
+    const component = shallow(<Assignments {...props} />);
 
     return { component };
 };
@@ -32,7 +30,7 @@ const componentProps = {
         totalPage: 10
     },
     isLoading: false,
-    assignments: [],
+    assignments: [{}],
     staff: {},
     currentAssignment: {}
 };
@@ -44,32 +42,55 @@ describe('Assignment container: ', () => {
         const filters = component.find(Filters);
         expect(filters).to.have.length(1);
         const props = filters.props();
-        expect(props).to.have.property('keyword', componentProps.parameters.keyword);
-        expect(props).to.have.property('selectedStaff', +componentProps.parameters.filters.assignee);
-        expect(props).to.have.property('status', componentProps.parameters.filters.status);
+        expect(props).to.have.property(
+            'keyword',
+            componentProps.parameters.keyword
+        );
+        expect(props).to.have.property(
+            'selectedStaff',
+            +componentProps.parameters.filters.assignee
+        );
+        expect(props).to.have.property(
+            'status',
+            componentProps.parameters.filters.status
+        );
     });
 
     it('should render Table with props', () => {
         const table = component.find(Table);
         expect(table).to.have.length(1);
         const props = table.props();
-        expect(props).to.have.property('orderByField', componentProps.parameters.orderByField);
-        expect(props).to.have.property('orderByDirection', componentProps.parameters.orderByDirection);
+        expect(props).to.have.property(
+            'orderByField',
+            componentProps.parameters.orderByField
+        );
+        expect(props).to.have.property(
+            'orderByDirection',
+            componentProps.parameters.orderByDirection
+        );
     });
 
     it('should render PaginatePerPage with props', () => {
         const paginate = component.find(PaginatePerPage);
         expect(paginate).to.have.length(1);
         const props = paginate.props();
-        expect(props).to.have.property('pageCount', componentProps.parameters.totalPage);
-        expect(props).to.have.property('perPage', componentProps.parameters.perPage);
+        expect(props).to.have.property(
+            'pageCount',
+            componentProps.parameters.totalPage
+        );
+        expect(props).to.have.property(
+            'perPage',
+            componentProps.parameters.perPage
+        );
     });
 
     it('should render CommentModal with props', () => {
         const commentModal = component.find(CommentModal);
         expect(commentModal).to.have.length(1);
         const props = commentModal.props();
-        expect(props).to.have.property('assignment', componentProps.currentAssignment);
+        expect(props).to.have.property(
+            'assignment',
+            componentProps.currentAssignment
+        );
     });
-
 });

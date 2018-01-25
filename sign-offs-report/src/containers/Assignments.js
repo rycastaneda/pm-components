@@ -28,21 +28,27 @@ export class Assignments extends Component {
 
     componentDidMount() {
         const { parameters, dispatch, staff } = this.props;
+        const parent = this.domRef.parentNode; // eslint-disable-line
+        this.canViewAll = parent.getAttribute('data-view-all') === '1';
         this.defaultFilters = parameters;
         this.fetchAssignments();
-        if (!staff.data.length) {
+        if (!staff.data.length && this.canViewAll) {
             dispatch(fetchStaff());
         }
     }
 
-    fetchAssignments(forDownload) {
+    fetchAssignments(canViewAll, forDownload) {
         const { parameters, dispatch } = this.props;
 
-        dispatch(fetchAssignments(parameters, forDownload));
+        dispatch(
+            fetchAssignments(
+                { ...parameters, canViewAll: this.canViewAll },
+                forDownload
+            )
+        );
     }
 
     clearFilters() {
-        console.log('this.defaultFilters', this.defaultFilters); // eslint-disable-line quotes, no-console
         this.props.dispatch(
             fetchAssignments({
                 ...this.defaultFilters,
@@ -115,18 +121,20 @@ export class Assignments extends Component {
             orderByField,
             orderByDirection,
             totalPage,
+            canViewAll,
             perPage
         } = this.props.parameters;
 
         const { assignments, staff, isLoading, currentAssignment } = this.props;
 
         return (
-            <div>
+            <div ref={ref => (this.domRef = ref)}>
                 <Filters
                     keyword={keyword}
                     selectedStaff={+filters.assignee}
                     status={filters.status}
                     staff={staff}
+                    canViewAll={canViewAll}
                     downloadAssignments={this.fetchAssignments}
                     quickSearch={this.quickSearch}
                     changeFilters={this.changeFilters}
@@ -172,7 +180,8 @@ Assignments.propTypes = {
         filters: PropTypes.object,
         page: PropTypes.number,
         perPage: PropTypes.number,
-        totalPage: PropTypes.number
+        totalPage: PropTypes.number,
+        canViewAll: PropTypes.bool.isRequired
     }),
     isLoading: PropTypes.bool.isRequired,
     assignments: PropTypes.array,

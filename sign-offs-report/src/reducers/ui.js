@@ -12,7 +12,8 @@ const INITIAL_STATE = {
     page: 1,
     perPage: 30,
     totalPage: 1,
-    currentAssignment: ''
+    currentAssignment: '',
+    canViewAll: true
 };
 
 export function ui(state = INITIAL_STATE, action) {
@@ -44,7 +45,8 @@ function fetchAssignments(state, action) {
         keyword,
         filters,
         page,
-        perPage
+        perPage,
+        canViewAll
     } = action;
 
     return {
@@ -55,6 +57,7 @@ function fetchAssignments(state, action) {
         filters,
         page,
         perPage,
+        canViewAll,
         currentAssignment: ''
     };
 }

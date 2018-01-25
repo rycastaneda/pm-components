@@ -22,6 +22,7 @@ describe('Filters component: ', () => {
     const props = {
         keyword: 'test',
         selectedStaff: 0,
+        canViewAll: true,
         status: [0, 1],
         staff: {
             data: [],
@@ -82,6 +83,4 @@ describe('Filters component: ', () => {
         clear.simulate('click');
         expect(clearFilters.called).to.be.true;
     });
-
-
 });

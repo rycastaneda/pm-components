@@ -64,7 +64,7 @@ class Filters extends Component {
     }
 
     render() {
-        const { keyword, staff, downloadAssignments } = this.props;
+        const { keyword, staff, canViewAll, downloadAssignments } = this.props;
 
         return (
             <div className="panel panel-default pad-all">
@@ -92,19 +92,23 @@ class Filters extends Component {
                                 </div>
                                 <div className="form-group staff-dropdown">
                                     <label>Assigned To</label>
-                                    <StaffDropdown
-                                        staff={staff.data}
-                                        isLoading={staff.isLoading}
-                                        selectedStaff={this.state.selectedStaff}
-                                        onStaffChange={this.onStaffChange}
-                                    />
+                                    {canViewAll ? (
+                                        <StaffDropdown
+                                            staff={staff.data}
+                                            isLoading={staff.isLoading}
+                                            selectedStaff={
+                                                this.state.selectedStaff
+                                            }
+                                            onStaffChange={this.onStaffChange}
+                                        />
+                                    ) : null}
                                 </div>
-                                <a className="btn" onClick={this.clearFilters}>
-                                    Clear Filters
-                                </a>
                                 <button className="btn mar-l-sm" type="submit">
                                     Apply Filters
                                 </button>
+                                <a className="btn" onClick={this.clearFilters}>
+                                    Clear Filters
+                                </a>
                             </form>
                         </div>
                     ) : null}
@@ -119,6 +123,7 @@ Filters.propTypes = {
     selectedStaff: PropTypes.number,
     status: PropTypes.array,
     staff: PropTypes.object,
+    canViewAll: PropTypes.bool.isRequired,
     quickSearch: PropTypes.func.isRequired,
     changeFilters: PropTypes.func.isRequired,
     clearFilters: PropTypes.func.isRequired,

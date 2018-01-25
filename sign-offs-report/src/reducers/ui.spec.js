@@ -20,7 +20,8 @@ describe('UI reducer', () => {
             page: 1,
             perPage: 30,
             totalPage: 1,
-            currentAssignment: ''
+            currentAssignment: '',
+            canViewAll: true
         });
     });
 
@@ -38,7 +39,8 @@ describe('UI reducer', () => {
             orderByDirection: 'asc',
             filters,
             page: 1,
-            perPage: 30
+            perPage: 30,
+            canViewAll: true
         });
 
         expect(state).to.have.property('keyword', 'New Supplier');
@@ -47,6 +49,7 @@ describe('UI reducer', () => {
         expect(state).to.have.property('page', 1);
         expect(state).to.have.property('perPage', 30);
         expect(state).to.have.property('currentAssignment', '');
+        expect(state).to.have.property('canViewAll', true);
         expect(state.filters).to.deep.eql(filters);
     });
 
