@@ -2,6 +2,9 @@
 	"name": "EvaluationSuplierInteractions",
 	"version": "0.1.0",
 	"description": "Supplier interactions activity evaluation",
+	"license": "ISC",
+	"homepage": "http://www.plantminer.com.au",
+	"author": "PlantMiner <tech@plantminer.com.au> (http://www.plantminer.com.au)",
 	"repository": {
 		"type": "git",
 		"repo": "git@bitbucket.org:minergroup/plantminer-components.git"
