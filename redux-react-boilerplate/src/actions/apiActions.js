@@ -1,18 +1,18 @@
 import { CALL_API } from '../middleware/api';
 
-export function fetchDataFromEndpointAuthors() {
+export function fetchCriteria(id) {
     return {
         [CALL_API]: {
             endpoint:
-                'http://localhost:8080/v1/authors',
+                `/evaluation-templates/${id}?include=criteria.questions`,
         },
     };
 }
-export function fetchDataFromEndpointBooks() {
+export function fetchDataFromPitEndpointTemplates() {
     return {
         [CALL_API]: {
             endpoint:
-                'http://localhost:8080/v1/authors?include=books',
+                `/evaluation-templates`,
         },
     };
 }

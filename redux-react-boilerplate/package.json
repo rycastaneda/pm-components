@@ -13,14 +13,10 @@
 		"test": "mocha tests.config.js src/**/*.spec.js"
 	},
 	"dependencies": {
-		"babel-eslint": "^8.0.2",
-		"deepmerge": "^2.0.1",
-		"eslint-plugin-import": "^2.8.0",
 		"json-api-normalizer": "^0.4.6",
 		"prettier-eslint": "^8.3.1",
 		"redux-object": "^0.5.4",
-		"styled-components": "^2.2.4",
-		"svg-inline-loader": "^0.8.0"
+		"styled-components": "^2.2.4"
 	},
 	"devDependencies": {
 		"axios": "^0.15.3",

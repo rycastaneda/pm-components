@@ -4,7 +4,6 @@ export const Button = styled.button`
     background: ${props => props.toggle ? 'palevioletred' : 'white'};
     color: ${props => props.toggle ? 'white' : 'palevioletred'};
     padding: 1em 2em;
-    position: absolute;
     font-size: 1em;
     margin: 1em;
     border: 2px solid palevioletred;
