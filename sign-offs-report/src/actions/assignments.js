@@ -40,12 +40,20 @@ export function fetchAssignments(parameters, forDownload) {
             );
         }
 
-        return axios.get(endpoint).then(response => {
-            return dispatch({
-                type: actions.RECEIVE_ASSIGNMENTS,
-                assignments: response.data
+        return axios
+            .get(endpoint)
+            .then(response => {
+                return dispatch({
+                    type: actions.RECEIVE_ASSIGNMENTS,
+                    assignments: response.data
+                });
+            })
+            .catch(response => {
+                dispatch({
+                    type: actions.API_ERROR,
+                    error: response.response.data.message
+                });
             });
-        });
     };
 }
 

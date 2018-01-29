@@ -43,9 +43,11 @@ class Filters extends Component {
     }
 
     onStaffChange(newStaff) {
-        this.setState({
-            selectedStaff: newStaff.value
-        });
+        if (newStaff) {
+            this.setState({
+                selectedStaff: newStaff.value
+            });
+        }
     }
 
     toggleFilters() {
@@ -103,7 +105,7 @@ class Filters extends Component {
                                         />
                                     ) : null}
                                 </div>
-                                <button className="btn mar-l-sm" type="submit">
+                                <button className="btn mar-r-sm" type="submit">
                                     Apply Filters
                                 </button>
                                 <a className="btn" onClick={this.clearFilters}>

@@ -29,7 +29,9 @@ export function ui(state = INITIAL_STATE, action) {
         case actions.API_ERROR:
             return {
                 ...state,
-                error: action.error
+                error:
+                    action.error ||
+                    'Something went wrong. Please try again later'
             };
     }
 

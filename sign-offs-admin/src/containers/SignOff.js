@@ -129,7 +129,7 @@ function mapStateToProps(state) {
 
         if (rawQuestions.bySectionId[sectionId]) {
             questions = rawQuestions.bySectionId[sectionId].map(questionId => {
-                return rawQuestions.byId[questionId];
+                rawQuestions.byId[questionId];
             });
         }
 

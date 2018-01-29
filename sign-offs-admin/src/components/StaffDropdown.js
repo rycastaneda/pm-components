@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Select from 'react-select';
 
-const StaffDropdown = ({ staffs, addStaffResponse, fetchStaff, isLoading }) => {
+const StaffDropdown = ({ staffs, addStaffResponse, isLoading }) => {
     const renderer = option => {
         return (
             <p className="col-header">
@@ -12,7 +12,7 @@ const StaffDropdown = ({ staffs, addStaffResponse, fetchStaff, isLoading }) => {
 
     return (
         <div className="row">
-            <div className="col-sm-11">
+            <div className="col-sm-12">
                 <Select
                     isLoading={isLoading}
                     placeholder="Add staff to the section"
@@ -23,12 +23,6 @@ const StaffDropdown = ({ staffs, addStaffResponse, fetchStaff, isLoading }) => {
                     searchable={true}
                 />
             </div>
-            <div className="col-sm-1">
-                <i
-                    className="fa fa-refresh pointer mar-top-10"
-                    onClick={() => fetchStaff(true)}
-                />
-            </div>
         </div>
     );
 };
@@ -36,7 +30,6 @@ const StaffDropdown = ({ staffs, addStaffResponse, fetchStaff, isLoading }) => {
 StaffDropdown.propTypes = {
     staffs: PropTypes.array.isRequired,
     addStaffResponse: PropTypes.func.isRequired,
-    fetchStaff: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired
 };
 

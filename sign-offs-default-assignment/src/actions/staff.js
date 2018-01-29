@@ -53,7 +53,12 @@ export function assignStaff(sectionId, staffId, callback) {
                 });
                 callback && callback(); // execute callback if provided; will call setState in react component
             })
-            .catch(() => dispatch({ type: actions.API_ERROR }));
+            .catch(response => {
+                dispatch({
+                    type: actions.API_ERROR,
+                    error: response.response.data.message
+                });
+            });
     };
 }
 
@@ -77,6 +82,11 @@ export function removeStaff(sectionId, staffId, callback) {
                 });
                 callback && callback(); // execute callback if provided; will call setState in react component
             })
-            .catch(() => dispatch({ type: actions.API_ERROR }));
+            .catch(response => {
+                dispatch({
+                    type: actions.API_ERROR,
+                    error: response.response.data.message
+                });
+            });
     };
 }

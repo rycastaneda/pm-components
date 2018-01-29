@@ -19,6 +19,8 @@ const Comment = ({
         </div>
     );
 
+    const staffInfo = `— ${staff} on ${format(date, 'MMMM D, YYYY HH:mm a')}`;
+
     return (
         <div className="pad-btm font-rg">
             <div className="row">
@@ -27,10 +29,7 @@ const Comment = ({
                         ? 'col-lg-12 col-sm-12'
                         : 'col-lg-11 col-sm-11'}`}>
                     <p className="pad-btm-sm">{text}</p>
-                    <strong className="staff">{`— ${staff} on ${format(
-                        date,
-                        'MMMM D, YYYY HH:mm a'
-                    )}`}</strong>
+                    <strong className="staff">{staffInfo}</strong>
                 </div>
                 <div className={`${isReadOnly ? '' : 'col-lg-1 col-sm-1'}`}>
                     {isReadOnly ? null : actions}

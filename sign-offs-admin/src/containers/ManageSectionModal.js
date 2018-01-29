@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { toggleManageSectionModal } from '../actions/section';
 
 import {
-    fetchStaff,
     deleteStaffResponse,
     addStaffResponse,
     changeStaffResponse
@@ -113,8 +112,6 @@ class ManageSectionModal extends Component {
                                         <StaffDropdown
                                             isLoading={isLoading}
                                             staffs={unassignedStaffs}
-                                            fetchStaff={refresh =>
-                                                dispatch(fetchStaff(refresh))}
                                             addStaffResponse={staff =>
                                                 dispatch(
                                                     addStaffResponse(

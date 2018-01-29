@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import ReactPaginate from 'react-paginate';
+import * as pagination from '../constants/pagination';
 
 const PaginatePerPage = ({
     pageCount,
@@ -9,25 +10,26 @@ const PaginatePerPage = ({
 }) => {
     return (
         <div>
-            <div className="pull-left">
-                <ReactPaginate
-                    onPageChange={onPageChange}
-                    pageCount={pageCount}
-                    pageRangeDisplayed={5}
-                    marginPagesDisplayed={5}
-                    containerClassName="pagination"
-                />
-            </div>
-            <div className="pull-left">
+            <div className="pull-left mar-r-sm">
                 <select
                     className="form-control"
                     value={perPage}
                     onChange={onPerPageChange}>
-                    <option value="15">15</option>
-                    <option value="30">30</option>
-                    <option value="45">45</option>
-                    <option value="60">60</option>
+                    {pagination.PER_PAGE.map(pageNumber => (
+                        <option key={pageNumber} value={pageNumber}>
+                            {pageNumber}
+                        </option>
+                    ))}
                 </select>
+            </div>
+            <div className="pull-left">
+                <ReactPaginate
+                    onPageChange={onPageChange}
+                    pageCount={pageCount}
+                    pageRangeDisplayed={pagination.PAGE_RANGE_DISPLAYED}
+                    marginPagesDisplayed={pagination.MARGIN_PAGES_DISPLAYED}
+                    containerClassName="pagination"
+                />
             </div>
             <div className="clearfix" />
         </div>

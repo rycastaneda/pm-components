@@ -27,6 +27,12 @@ export function fetchSections(
                     type: actions.RECEIVE_SECTIONS,
                     sections: response.data
                 });
+            })
+            .catch(response => {
+                dispatch({
+                    type: actions.API_ERROR,
+                    error: response.response.data.message
+                });
             });
     };
 }

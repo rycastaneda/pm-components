@@ -37,14 +37,14 @@ class SignOff extends Component {
     }
 
     render() {
-        const { sections, isLoading, expandAll } = this.props;
+        const { sections, isLoading, expandAll, error } = this.props;
         const sectionComponents = sections.map(section => {
             return <Section key={section.id} {...section} />;
         });
 
         return (
             <div ref={ref => (this.domRef = ref)}>
-                {isLoading ? (
+                {isLoading && !error ? (
                     <Loader />
                 ) : (
                     <div>
@@ -64,6 +64,10 @@ class SignOff extends Component {
                         {sectionComponents}
                     </div>
                 )}
+
+                {error ? (
+                    <div className="bs-callout bs-callout-danger">{error}</div>
+                ) : null}
             </div>
         );
     }

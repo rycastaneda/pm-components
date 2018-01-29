@@ -30,7 +30,3 @@ export const TOGGLE_STAFF_LOADING = 'TOGGLE_STAFF_LOADING';
 // questions
 export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS';
 
-// STATUS
-export const IN_PROGRESS = 1;
-export const APPROVED = 2;
-export const DECLINED = 3;

@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { format } from 'date-fns';
+import format from 'date-fns/format';
 
 const Row = ({
     id,
@@ -34,7 +34,7 @@ const Row = ({
             <td className="td-center comments">
                 {comments ? (
                     <i
-                        className="fa fa-comments"
+                        className="fa fa-comments col-brand pointer"
                         id={id}
                         onClick={toggleCommentsModal}
                     />

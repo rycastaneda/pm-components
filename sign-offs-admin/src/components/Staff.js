@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import Select from 'react-select';
-import { IN_PROGRESS, APPROVED, DECLINED } from '../constants';
+import { IN_PROGRESS, APPROVED, DECLINED } from '../constants/status';
 import { includes } from 'lodash';
 
 const Staff = ({

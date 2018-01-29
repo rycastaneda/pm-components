@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { options } from '../constants';
+import { options } from '../constants/filters';
 import Select from 'react-select';
 
 const StatusDropdown = ({ selectedStatus, onStatusChange }) => {

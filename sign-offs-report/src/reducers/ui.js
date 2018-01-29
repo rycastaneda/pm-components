@@ -1,9 +1,10 @@
 import * as actions from '../constants';
+import * as filters from '../constants/filters';
 
 const INITIAL_STATE = {
     error: null,
-    orderByField: actions.DEFAULT_ORDER_FIELD,
-    orderByDirection: actions.DEFAULT_ORDER_DIRECTION,
+    orderByField: filters.DEFAULT_ORDER_FIELD,
+    orderByDirection: filters.DEFAULT_ORDER_DIRECTION,
     keyword: '',
     filters: {
         assignee: '',
