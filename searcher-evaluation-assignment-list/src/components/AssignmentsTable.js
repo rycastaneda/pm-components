@@ -77,6 +77,12 @@ class AssignmentsTable extends Component {
         } = assignment;
 
         if (this.state.menuVisibleItemId === id) {
+            const analysis = assignmentStatus.id === '3' ? [<li className="dropdown-header">Analysis</li>,
+                <li role="separator" className="divider"></li>,
+                <li><a href={view_single_url}><i className="fa fa-area-chart"></i> View Single</a></li>,
+                <li><a href={view_all_url}><i className="fa fa-pie-chart"></i> View All</a></li>,
+                <li><a href={view_compare_url}><i className="fa fa-exchange"></i> View Comparison</a></li>] : null;
+
             return (
             <div className="db-function-dropdown click"
                 ref={(ul) => {
@@ -115,19 +121,7 @@ class AssignmentsTable extends Component {
                         </li>
                         :null
                     }
-                    <li role="separator" className="divider"></li>
-                    {assignmentStatus.id === '3' ?
-                        <li className="dropdown-header">Analysis</li>
-                        : null
-                    }
-                    <li role="separator" className="divider"></li>
-                    <li>
-                        <a href={view_single_url}>
-                            <i className="fa fa-area-chart"></i> View Single
-                        </a>
-                    </li>
-                    <li><a href={view_all_url}><i className="fa fa-pie-chart"></i> View All</a></li>
-                    <li><a href={view_compare_url}><i className="fa fa-exchange"></i> View Comparison</a></li>
+                    {analysis}
                 </ul>
         </div>);
         } else {
