@@ -1,0 +1,111 @@
+/* This styles file should only have @imports and NEVER include styles here directly */
+.pm-react-select {
+  font-size: 14px;
+  text-align: left; }
+  .pm-react-select.Select.is-focused:not(.is-open) > .Select-control {
+    border: 1px solid #dddddd;
+    box-shadow: none; }
+  .pm-react-select .Select-control {
+    text-align: left;
+    padding-left: 2px; }
+  .pm-react-select .Select-placeholder {
+    color: #333333;
+    font-size: 14px; }
+  .pm-react-select.Select--single > .Select-control .Select-value {
+    line-height: 1.5; }
+  .pm-react-select.Select--multi .Select-input {
+    margin-left: 80px;
+    font-size: 14px; }
+  .pm-react-select.Select--multi .Select-value {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 12px;
+    border-radius: 3px;
+    position: relative;
+    width: 130px;
+    padding: 2px 5px;
+    display: inline-block;
+    margin: 5px 5px 0 0;
+    z-index: 100; }
+    .pm-react-select.Select--multi .Select-value .Select-value-icon {
+      right: 5px;
+      position: absolute;
+      color: #e68020;
+      font-size: 12px;
+      cursor: pointer;
+      border-right: 0; }
+      .pm-react-select.Select--multi .Select-value .Select-value-icon:hover {
+        color: #000000;
+        background: transparent; }
+  .pm-react-select .Select-menu-outer {
+    z-index: 1000; }
+  .pm-react-select #react-select-2--backspace-remove-message {
+    display: none; }
+  .pm-react-select .Select-input > input {
+    padding: 0;
+    line-height: 1.5;
+    font-size: 14px; }
+
+@keyframes spinner-animation {
+  0% {
+    transform-origin: 100% 100%;
+    transform: rotate(0deg); }
+  100% {
+    transform-origin: 100% 100%;
+    transform: rotate(360deg); } }
+
+.spinner-animation {
+  width: 24px;
+  height: 24px;
+  margin: 5px 15px 0 0; }
+  .spinner-animation:before {
+    position: absolute;
+    display: block;
+    content: '';
+    z-index: 12;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: transparent; }
+  .spinner-animation:after {
+    position: absolute;
+    display: block;
+    content: '';
+    z-index: 11;
+    width: 12px;
+    height: 12px;
+    border-radius: 200px 0 0;
+    background: #e68020;
+    animation: spinner-animation 0.5s linear infinite; }
+  .spinner-animation.form-control-feedback {
+    top: 0; }
+
+#searcher-evaluation-assignment-container .bs-callout {
+  margin: 20px 0 30px 0;
+  padding: 15px 30px 15px 15px;
+  line-height: 20px;
+  -webkit-font-smoothing: antialiased;
+  color: rgba(0, 0, 0, 0.4);
+  border: 1px solid;
+  border-left: 4px solid;
+  border-color: rgba(0, 0, 0, 0.4);
+  position: relative; }
+  #searcher-evaluation-assignment-container .bs-callout.bs-callout-warning {
+    border-color: #f7ab41; }
+
+#searcher-evaluation-assignment-container .hidden {
+  display: none; }
+
+#searcher-evaluation-assignment-container .visible {
+  display: block; }
+
+#searcher-evaluation-assignment-container.db-form-section {
+  padding: 40px; }
+
+#searcher-evaluation-assignment-container .input-group {
+  width: 100%; }
+
+/*# sourceMappingURL=index.css.map*/
