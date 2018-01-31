@@ -77,7 +77,8 @@ class AssignmentsTable extends Component {
         } = assignment;
 
         if (this.state.menuVisibleItemId === id) {
-            const analysis = assignmentStatus.id === '3' ? [<li className="dropdown-header">Analysis</li>,
+            const analysis = (assignmentStatus.id === '2' || assignmentStatus.id === '3') ?
+                [<li className="dropdown-header">Analysis</li>,
                 <li role="separator" className="divider"></li>,
                 <li><a href={view_single_url}><i className="fa fa-area-chart"></i> View Single</a></li>,
                 <li><a href={view_all_url}><i className="fa fa-pie-chart"></i> View All</a></li>,
