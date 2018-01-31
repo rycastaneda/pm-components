@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 
+// const HOST = process.env.HOST || 'local-org-okfelix.pmstg.com';
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || '5049';
 
