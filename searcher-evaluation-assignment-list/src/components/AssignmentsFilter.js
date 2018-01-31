@@ -1,6 +1,8 @@
 import React, { PropTypes, Component } from 'react';
-import Datetime from './PlantMinerDatetime';
+// import Datetime from './PlantMinerDatetime';
 import  Select  from 'react-select';
+import PMDateRange from './PMDateRange/main';
+
 class EvaluationAssignmentsFilter extends Component {
     constructor(props) {
         super(props);
@@ -160,20 +162,9 @@ class EvaluationAssignmentsFilter extends Component {
                             <div className="col-xs-6">
                                 <div>
                                     <label>Date Assigned</label>
-                                    <div className="input-group">
-                                        <span className="input-group-addon"><i className="fa fa-calendar"></i></span>
-                                        <Datetime
-                                            dateFormat="DD/MM/YYYY"
-                                            placeholder="Any Date"
-                                            onSelectedDateChange={
-                                                this.onSelectedDateChange
-                                            }
-                                            selectedDate={null}
-                                        />
-                                    </div>
+                                    <PMDateRange />
                                 </div>
                             </div>
-
                             <div className="col-xs-6">
                                 <div className="form-group">
                                     <label>Linked to</label>
