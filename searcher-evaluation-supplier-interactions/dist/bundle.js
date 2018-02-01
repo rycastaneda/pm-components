@@ -25577,7 +25577,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var rootElement = document.getElementById('searcher-evaluation-supplier-interactions');
-	var interactionTypes = JSON.parse(rootElement.dataset.interactionTypes);
+	var interactionTypes = rootElement.dataset.interactionTypes.split(',');
 
 	var initialState = {
 	    filterSearchKey: '',
