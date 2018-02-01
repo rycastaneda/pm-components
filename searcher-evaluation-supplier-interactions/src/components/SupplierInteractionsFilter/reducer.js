@@ -2,7 +2,7 @@ import * as actions from './actionsTypes';
 
 
 const rootElement = document.getElementById('searcher-evaluation-supplier-interactions');
-const interactionTypes = JSON.parse(rootElement.dataset.interactionTypes);
+const interactionTypes = rootElement.dataset.interactionTypes.split(',');
 
 const initialState = {
     filterSearchKey: '',
