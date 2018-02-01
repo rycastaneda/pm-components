@@ -64,8 +64,8 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const { dateTimeStart, dateTimeEnd } = state.pmDateTime;
-    const startDate =  dateTimeStart === null ? null : moment(dateTimeStart).format('DD-MM-YYYY');
+    const { dateTimeStart, dateTimeEnd } = state.pmDateRange;
+    const startDate =  dateTimeStart === null ? null : dateTimeStart;
     const endDate =  dateTimeEnd === null ? null : moment(dateTimeEnd).format('DD-MM-YYYY');
 
     return {

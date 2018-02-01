@@ -25,7 +25,6 @@ const reducer = (state = initialState, action) => {
                 dateTimeEnd: action.dateTimeEnd,
             };
 
-
         case actions.SUPPLIER_INTERACTIONS_DATE_RANGE_VALID_SUCCESS:
             return {
                 ...state,
@@ -35,6 +34,14 @@ const reducer = (state = initialState, action) => {
         case actions.SUPPLIER_INTERACTIONS_DATE_RANGE_VALID_FAIL:
             return {
                 ...state,
+                isDateRangeValid: false,
+            };
+
+        case actions.SUPPLIER_INTERACTIONS_DATE_RANGE_RESET:
+            return {
+                ...state,
+                dateTimeStart: null,
+                dateTimeEnd: null,
                 isDateRangeValid: false,
             };
 

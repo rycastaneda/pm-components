@@ -1,6 +1,8 @@
 import React, { PropTypes, Component } from 'react';
-// import Datetime from './PlantMinerDatetime';
+import { connect } from 'react-redux';
+// import { bindActionCreators } from 'redux';
 import  Select  from 'react-select';
+import * as PMDateRangeActions from './PMDateRange/actions';
 import PMDateRange from './PMDateRange/main';
 
 class EvaluationAssignmentsFilter extends Component {
@@ -11,11 +13,9 @@ class EvaluationAssignmentsFilter extends Component {
             selectedStatus: '',
             selectedLinkedTo: '',
             selectedTemplate: null,
-            selectedAssignedOn: null,
             selectedAssignedTo:null,
             selectedSupplier:''
         };
-        this.onSelectedDateChange = this.onSelectedDateChange.bind(this);
         this.onSupplierChange = this.onSupplierChange.bind(this);
         this.onLinkedToChange = this.onLinkedToChange.bind(this);
         this.onStatusChange = this.onStatusChange.bind(this);
@@ -29,16 +29,13 @@ class EvaluationAssignmentsFilter extends Component {
     onTemplateChange(val) {
         this.setState({ selectedTemplate: val });
     }
+
     onStatusChange(val) {
         this.setState({ selectedStatus: val });
     }
+
     onLinkedToChange(val) {
         this.setState({ selectedLinkedTo: val });
-    }
-    onSelectedDateChange(date) {
-        // set date to null when cleared
-        date = (date ==='')?null:date;
-        this.setState({ selectedAssignedOn: date });
     }
 
     onKeyPress(event) {
@@ -60,17 +57,14 @@ class EvaluationAssignmentsFilter extends Component {
             selectedStatus: '',
             selectedLinkedTo: '',
             selectedTemplate: null,
-            selectedAssignedOn: null,
             selectedAssignedTo:null,
             selectedSupplier:''
         };
+        this.props.dispatch(PMDateRangeActions.resetDateRange());
         this.onAdvancedSubmit();
     }
     onAdvancedSubmit() {
-        let selectedAssignedOn =
-            this.state.selectedAssignedOn !== null
-                ? this.state.selectedAssignedOn.toDate()
-                : null;
+
         let { selectedStatus,
                 selectedLinkedTo,
                 selectedTemplate,
@@ -100,7 +94,7 @@ class EvaluationAssignmentsFilter extends Component {
             selectedAssignedTo,
             selectedSupplier,
             selectedEntityInstanceId,
-            selectedAssignedOn }
+            }
         );
 
     }
@@ -161,7 +155,6 @@ class EvaluationAssignmentsFilter extends Component {
                             </div>
                             <div className="col-xs-6">
                                 <div>
-                                    <label>Date Assigned</label>
                                     <PMDateRange />
                                 </div>
                             </div>
@@ -242,7 +235,17 @@ EvaluationAssignmentsFilter.propTypes = {
     assignedToList: PropTypes.array,
     supplierList: PropTypes.array,
     assignmentTypeList: PropTypes.array,
-    onSubmit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    dispatch: PropTypes.func,
 };
 
-export default EvaluationAssignmentsFilter;
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        ...ownProps,
+    };
+};
+
+export default connect(mapStateToProps)(
+    EvaluationAssignmentsFilter
+);

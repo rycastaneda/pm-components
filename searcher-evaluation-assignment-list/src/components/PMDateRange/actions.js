@@ -2,7 +2,7 @@ import * as actionTypes from './actionsTypes';
 import moment from 'moment';
 
 export const validateDateRange = () => (dispatch, getState) => {
-    const { dateTimeEnd, dateTimeStart } = getState().pmDateTime;
+    const { dateTimeEnd, dateTimeStart } = getState().pmDateRange;
 
     if (dateTimeEnd !== null && dateTimeStart !== null) {
         dispatch({
@@ -59,3 +59,8 @@ export const updateFilterEndDateChange = filterDate => (dispatch) => {
     dispatch(validateDateRange());
 };
 
+export const resetDateRange = () => {
+    return {
+        type: actionTypes.SUPPLIER_INTERACTIONS_DATE_RANGE_RESET
+    };
+};
