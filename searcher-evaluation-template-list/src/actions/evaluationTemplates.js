@@ -39,11 +39,13 @@ export function initialize() {
     return (dispatch, getState) => {
         dispatch(isBusy(true));
         const { filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength, currentPage }= getState().evaluationTemplates;
+        const { dateTimeStart, dateTimeEnd, isDateRangeValid } = getState().pmDateRange;
         axios.all([
             axios.get('staff'),
-            axios.get(getTemplateServiceUrlFor(filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength, currentPage))
+            axios.get(getTemplateServiceUrlFor(filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength, currentPage, isDateRangeValid, dateTimeEnd, dateTimeStart))
         ])
         .then((responses) => {
+            window.console.log('response');
             const responseData = getDataFromTemplateService(responses[1].data);
             const users = getUsers(responses[0].data);
             let { templates, totalPages, currentPage } = responseData;
@@ -78,8 +80,23 @@ export function onEvaluationTemplatesFilterChange(filterKeyword, filterStatus, f
     return (dispatch, getState) => {
         dispatch(isBusy(true));
         const { maxRowLength, startIndex }= getState().evaluationTemplates;
+        const { dateTimeStart, dateTimeEnd, isDateRangeValid } = getState().pmDateRange;
         let queryParams = { filterKeyword, filterStatus, filterDate, filterUserId };
-        getPromiseForTemplateService(getTemplateServiceUrlFor(filterKeyword, filterStatus, filterDate, filterUserId, maxRowLength, startIndex), queryParams, dispatch);
+
+        getPromiseForTemplateService(
+            getTemplateServiceUrlFor(
+                filterKeyword,
+                filterStatus,
+                filterUserId,
+                maxRowLength,
+                startIndex,
+                dateTimeEnd,
+                isDateRangeValid,
+                dateTimeStart
+            ),
+            queryParams,
+            dispatch
+        );
     };
 }
 

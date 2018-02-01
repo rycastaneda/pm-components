@@ -1,6 +1,8 @@
 import React, { PropTypes, Component } from 'react';
-import Datetime  from './PlantMinerDatetime';
+import { connect } from 'react-redux';
 import  Select  from 'react-select';
+import * as pmDateRangeActions from './PMDateRange/actions';
+import PMDateRange from './PMDateRange/main';
 
 class EvaluationTemplatesFilter extends Component {
 
@@ -29,7 +31,9 @@ class EvaluationTemplatesFilter extends Component {
 
     onCancelFilter() {
         this.onNormalSubmit();
+        this.props.dispatch(pmDateRangeActions.resetDateRange());
     }
+
     onKeywordChange(event) {
         this.setState({ keywordSearch: event.target.value });
     }
@@ -99,16 +103,7 @@ class EvaluationTemplatesFilter extends Component {
                     </div>
                     <div className="col-xs-4">
                         <div className="form-group">
-                            <label>Created At</label>
-                            <div className="input-group">
-                            <span className="input-group-addon"><i className="fa fa-calendar"></i></span>
-                            <Datetime
-                                dateFormat="DD/MM/YYYY"
-                                    placeholder="Any Date"
-                                onSelectedDateChange={this.onSelectedDateChange}
-                                selectedDate={null}
-                                />
-                            </div>
+                            <PMDateRange />
                        </div>
                     </div>
                     <div className="col-xs-4">
@@ -147,7 +142,14 @@ class EvaluationTemplatesFilter extends Component {
 EvaluationTemplatesFilter.propTypes = {
     templateStatusesList: PropTypes.array,
     users: PropTypes.array,
-    onSubmit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    dispatch: PropTypes.func,
 };
 
-export default EvaluationTemplatesFilter;
+const mapStateToProps = (state, ownProps) => {
+    return {
+        ...ownProps,
+    };
+};
+
+export default connect(mapStateToProps)(EvaluationTemplatesFilter);
