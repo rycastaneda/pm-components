@@ -28,7 +28,6 @@ function receiveAssignments(state, action) {
             supplier.assignmentIds.push(report.id);
             return;
         }
-
         byId[report.attributes.preferred_supplier_id] = {
             id: report.attributes.preferred_supplier_id,
             supplierTitle: report.attributes.supplier,

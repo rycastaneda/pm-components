@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react';
 import Header from './Header';
-import RowHeader from './RowHeader';
-import Row from './Row';
+import SupplierRow from './SupplierRow';
+import AssignmentRow from './AssignmentRow';
 import Loader from './Loader';
+import { TABLE_HEADERS, ROW_HEADERS } from '../constants/tables';
 
 const Table = ({
     data,
@@ -13,53 +14,22 @@ const Table = ({
     toggleSupplierRow,
     isLoading
 }) => {
+    const goToSupplierDetails = preferredSupplierId => {
+        return (window.location.href =
+            '/searcher/preferred_suppliers/details/' + preferredSupplierId);
+    };
+
     const direction = field => {
         return field === orderByField ? orderByDirection : null;
     };
-
-    const headers = [
-        {
-            text: 'Supplier',
-            field: 'supplier',
-            sortable: true
-        },
-        {
-            text: 'Panel',
-            field: 'panel',
-            sortable: false
-        },
-        {
-            text: 'Section',
-            field: 'section',
-            sortable: false
-        },
-        {
-            text: 'Assigned To',
-            field: 'assignee',
-            sortable: false
-        },
-        {
-            text: 'Status',
-            field: 'status',
-            sortable: false
-        },
-        {
-            text: 'Last Updated',
-            field: 'lastUpdated',
-            sortable: false
-        },
-        {
-            text: 'Comments',
-            field: 'comments',
-            sortable: false
-        }
-    ];
 
     const tableData = () => {
         if (!data || !data.length) {
             return (
                 <tr>
-                    <td colSpan="7" className="td-center">
+                    <td
+                        colSpan={TABLE_HEADERS.length + 1}
+                        className="td-center">
                         {isLoading ? (
                             <Loader icon=" fa-2x" />
                         ) : (
@@ -72,7 +42,8 @@ const Table = ({
 
         return data.map(supplier => {
             let rows = [
-                <RowHeader
+                <SupplierRow
+                    goToSupplierDetails={() => goToSupplierDetails(supplier.id)}
                     toggleSupplierRow={toggleSupplierRow}
                     id={supplier.id}
                     key={supplier.supplierId}
@@ -82,17 +53,39 @@ const Table = ({
                 />
             ];
 
+            let assignments = [];
             if (supplier.isOpen) {
-                supplier.assignments.map(row => {
-                    rows.push(
-                        <Row
-                            preferredSupplierId={supplier.preferred_supplier_id}
-                            key={row.id}
-                            {...row}
-                            toggleCommentsModal={toggleCommentsModal}
-                        />
-                    );
-                });
+                assignments = supplier.assignments.map(row => (
+                    <AssignmentRow
+                        key={row.id}
+                        {...row}
+                        toggleCommentsModal={toggleCommentsModal}
+                    />
+                ));
+
+                rows.push(
+                    <tr>
+                        <td colSpan="5" className="td-center">
+                            <table className="table db-table db-table-sort db-table-sort-nojs">
+                                <thead>
+                                    <tr>
+                                        {ROW_HEADERS.map(header => (
+                                            <Header
+                                                key={header.field}
+                                                onClick={changeOrderBy}
+                                                direction={direction(
+                                                    header.field
+                                                )}
+                                                {...header}
+                                            />
+                                        ))}
+                                    </tr>
+                                </thead>
+                                <tbody>{assignments}</tbody>
+                            </table>
+                        </td>
+                    </tr>
+                );
             }
 
             return rows;
@@ -103,7 +96,8 @@ const Table = ({
         <table className="table db-table db-table-sort db-table-sort-nojs">
             <thead>
                 <tr>
-                    {headers.map(header => (
+                    <th />
+                    {TABLE_HEADERS.map(header => (
                         <Header
                             key={header.field}
                             onClick={changeOrderBy}

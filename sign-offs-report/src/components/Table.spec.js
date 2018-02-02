@@ -4,8 +4,8 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import Table from './Table';
 import Header from './Header';
-import RowHeader from './RowHeader';
-import Row from './Row';
+import SupplierRow from './SupplierRow';
+import AssignmentRow from './AssignmentRow';
 import Loader from './Loader';
 
 const setup = props => {
@@ -131,15 +131,15 @@ describe('Table component: ', () => {
     let { component } = setup(props);
 
     it('should render the headers', () => {
-        expect(component.find(Header)).to.have.length(7);
+        expect(component.find(Header)).to.have.length(4);
     });
 
-    it('should render the rowHeaders with no rows first', () => {
-        expect(component.find(RowHeader)).to.have.length(props.data.length);
-        expect(component.find(Row)).to.have.length(0);
+    it('should render the SupplierRows with no rows first', () => {
+        expect(component.find(SupplierRow)).to.have.length(props.data.length);
+        expect(component.find(AssignmentRow)).to.have.length(0);
     });
 
-    it('should render the rows', () => {
+    it('should render the AssignmentRows', () => {
         let data = props.data;
         data[0].isOpen = true;
         let { component } = setup({
@@ -147,7 +147,7 @@ describe('Table component: ', () => {
             data
         });
 
-        expect(component.find(Row)).to.have.length(
+        expect(component.find(AssignmentRow)).to.have.length(
             props.data[0].assignments.length
         );
     });

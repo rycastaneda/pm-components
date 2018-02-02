@@ -9,7 +9,9 @@ const Header = ({ text, field, direction, onClick, sortable }) => {
 
     return (
         <th
-            className={`td-center ${directionClass}`}
+            className={`td-center ${sortable
+                ? 'pointer'
+                : ''} ${directionClass}`}
             onClick={sortable ? onClick : () => {}}
             id={field}>
             {text}

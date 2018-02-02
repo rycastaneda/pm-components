@@ -1,6 +1,8 @@
 import { expect } from 'chai';
 import { ui } from './ui';
 import * as actions from '../constants';
+import * as filters from '../constants/filters';
+
 import reports from '../mocks/reports.json';
 
 describe('UI reducer', () => {
@@ -10,8 +12,8 @@ describe('UI reducer', () => {
         state = ui(undefined, {});
         expect(state).to.deep.equal({
             error: null,
-            orderByField: actions.DEFAULT_ORDER_FIELD,
-            orderByDirection: actions.DEFAULT_ORDER_DIRECTION,
+            orderByField: filters.DEFAULT_ORDER_FIELD,
+            orderByDirection: filters.DEFAULT_ORDER_DIRECTION,
             keyword: '',
             filters: {
                 assignee: '',

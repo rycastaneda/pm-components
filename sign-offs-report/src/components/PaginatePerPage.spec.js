@@ -27,6 +27,6 @@ describe('PaginatePerPage component: ', () => {
         expect(paginate).to.have.length(1);
         expect(paginate.props().pageCount).to.eql(props.pageCount);
         expect(component.find('select').props().value).to.eql(props.perPage);
-        expect(component.find('option')).to.have.length(4);
+        expect(component.find('option')).to.have.length(3);
     });
 });
