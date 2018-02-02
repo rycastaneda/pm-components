@@ -70,18 +70,24 @@ class AssignmentsTable extends Component {
             complete_url,
             view_single_url,
             view_all_url,
+            isAdmin,
+            isViewAll,
             view_compare_url,
             isDeleteAllowed,
             isMarkInProgressAllowed,
-            assignmentStatus
+            assignmentStatus,
         } = assignment;
 
         if (this.state.menuVisibleItemId === id) {
+
+            const viewAll = isAdmin || isViewAll ?
+                <li><a href={view_all_url}><i className="fa fa-pie-chart"></i> View All</a></li>
+                : null;
             const analysis = (assignmentStatus.id === '2' || assignmentStatus.id === '3') ?
                 [<li className="dropdown-header">Analysis</li>,
                 <li role="separator" className="divider"></li>,
                 <li><a href={view_single_url}><i className="fa fa-area-chart"></i> View Single</a></li>,
-                <li><a href={view_all_url}><i className="fa fa-pie-chart"></i> View All</a></li>,
+                    viewAll,
                 <li><a href={view_compare_url}><i className="fa fa-exchange"></i> View Comparison</a></li>] : null;
 
             return (
