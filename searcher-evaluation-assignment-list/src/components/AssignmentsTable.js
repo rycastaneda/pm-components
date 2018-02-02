@@ -84,11 +84,13 @@ class AssignmentsTable extends Component {
                 <li><a href={view_all_url}><i className="fa fa-pie-chart"></i> View All</a></li>
                 : null;
             const analysis = (assignmentStatus.id === '2' || assignmentStatus.id === '3') ?
-                [<li className="dropdown-header">Analysis</li>,
+            [
+                <li className="dropdown-header">Analysis</li>,
                 <li role="separator" className="divider"></li>,
                 <li><a href={view_single_url}><i className="fa fa-area-chart"></i> View Single</a></li>,
-                    viewAll,
-                <li><a href={view_compare_url}><i className="fa fa-exchange"></i> View Comparison</a></li>] : null;
+                viewAll,
+                <li><a href={view_compare_url}><i className="fa fa-exchange"></i> View Comparison</a></li>
+            ] : null;
 
             return (
             <div className="db-function-dropdown click"
