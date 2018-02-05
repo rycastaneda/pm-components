@@ -13,31 +13,31 @@ const reducer = (state = initialState, action) => {
 
     switch (action.type) {
 
-        case actions.SUPPLIER_INTERACTIONS_FILTER_DATE_START_CHANGE:
+        case actions.EVALUATION_TEMPLATES_FILTER_DATE_START_CHANGE:
             return {
                 ...state,
                 dateTimeStart: action.dateTimeStart,
             };
 
-        case actions.SUPPLIER_INTERACTIONS_FILTER_DATE_END_CHANGE:
+        case actions.EVALUATION_TEMPLATES_FILTER_DATE_END_CHANGE:
             return {
                 ...state,
                 dateTimeEnd: action.dateTimeEnd,
             };
 
-        case actions.SUPPLIER_INTERACTIONS_DATE_RANGE_VALID_SUCCESS:
+        case actions.EVALUATION_TEMPLATES_DATE_RANGE_VALID_SUCCESS:
             return {
                 ...state,
                 isDateRangeValid: true,
             };
 
-        case actions.SUPPLIER_INTERACTIONS_DATE_RANGE_VALID_FAIL:
+        case actions.EVALUATION_TEMPLATES_DATE_RANGE_VALID_FAIL:
             return {
                 ...state,
                 isDateRangeValid: false,
             };
 
-        case actions.SUPPLIER_INTERACTIONS_DATE_RANGE_RESET:
+        case actions.EVALUATION_TEMPLATES_DATE_RANGE_RESET:
             return {
                 ...state,
                 dateTimeStart: null,
