@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 
-// const HOST = process.env.HOST || 'local-org-okfelix.pmstg.com';
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || '5049';
 
@@ -36,7 +35,7 @@ module.exports =  {
             {
                 test: /\.js$/,
                 exclude: /(node_modules|dist)/,
-                loaders: ['babel', 'eslint']
+                loaders: ['babel', 'eslint'],
             },
             {
                 test: /\.json$/,
@@ -48,20 +47,26 @@ module.exports =  {
             }
         ]
     },
+    // Entry point for node-sass files
     sassLoader: {
-        includePaths: ['src/index']
+        includePaths: ['src/styles/index']
     },
     plugins: [
+        // Enable stylelint plugin to lint scss files
+        // By default, the build WILL fail if there are any errors
         new StyleLintPlugin({
             syntax: 'scss'
         }),
+        // Define node environment to be 'develop'
         new webpack.DefinePlugin({
             'process.env': {
                 'NODE_ENV': JSON.stringify('develop')
             }
         }),
         new webpack.NoErrorsPlugin(),
+        // Enable hot module reload
         new webpack.HotModuleReplacementPlugin(),
+        // Generates a base html
         new HtmlWebpackPlugin({
             template: './index.html'
         })
