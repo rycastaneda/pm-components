@@ -25442,8 +25442,8 @@
 	    }, {
 	        key: 'onCancelFilter',
 	        value: function onCancelFilter() {
-	            this.onNormalSubmit();
 	            this.props.dispatch(pmDateRangeActions.resetDateRange());
+	            this.onNormalSubmit();
 	        }
 	    }, {
 	        key: 'onKeywordChange',
@@ -25580,11 +25580,7 @@
 	                                        );
 	                                    })
 	                                )
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'col-xs-4' },
+	                            ),
 	                            _react2.default.createElement(
 	                                'div',
 	                                { className: 'form-group' },
