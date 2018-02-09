@@ -71,7 +71,7 @@ describe('Staff actions', function() {
     });
 
     it('should call TOGGLE_STAFF_LOADING -> DELETED_STAFF_RESPONSE', function() {
-        const store = mockStore();
+        const store = mockStore(state);
 
         return store
             .dispatch(

@@ -19,7 +19,11 @@ const Tab = ({
             questions.map((question, index) => {
                 return (
                     <div key={index}>
-                        <Question {...question} />
+                        <Question
+                            question={question.question}
+                            answer={question.answer}
+                            type={question.attributes.type}
+                        />
                     </div>
                 );
             })

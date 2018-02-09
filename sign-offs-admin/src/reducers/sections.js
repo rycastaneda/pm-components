@@ -74,6 +74,7 @@ function receiveSections(state, action) {
         let commentIds = [];
         let responseIds = [];
         let defaultUserIds = [];
+        let questionIds = [];
         if (section.relationships) {
             commentIds = section.relationships.comments
                 ? section.relationships.comments.data.map(comment => comment.id)
@@ -83,16 +84,21 @@ function receiveSections(state, action) {
                       signOff => signOff.id
                   )
                 : [];
-            defaultUserIds = section.relationships.defaultUsers
-                ? section.relationships.defaultUsers.data.map(user => user.id)
+            defaultUserIds = section.relationships.defaultAssignments
+                ? section.relationships.defaultAssignments.data.map(
+                      user => user.id
+                  )
                 : [];
+            questionIds = section.relationships.fields.data.map(
+                question => question.id
+            );
         }
 
         byId[section.id] = {
             id: section.id,
-            status: section.relationships['staff-response']
-                ? section.relationships['staff-response'].attributes.status
-                : null,
+            // status: section.relationships['staff-response']
+            //     ? section.relationships['staff-response'].attributes.status
+            //     : null,
             isCollapsed: false,
             isAddingNewComment: false,
             isLoading: false,
@@ -101,6 +107,7 @@ function receiveSections(state, action) {
             commentIds,
             responseIds,
             defaultUserIds,
+            questionIds,
             ...section.attributes
         };
 

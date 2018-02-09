@@ -6,6 +6,7 @@ import NewComment from '../components/NewComment';
 import UserList from '../components/UserList';
 import Loader from '../components/Loader';
 import Counters from '../components/Counters';
+import { STATUS } from '../constants/status';
 
 import {
     toggleManageSectionModal,
@@ -14,7 +15,6 @@ import {
 } from '../actions/section';
 
 import { fetchStaff } from '../actions/staff';
-import { fetchQuestions } from '../actions/questions';
 
 import {
     toggleCommentBox,
@@ -89,12 +89,9 @@ class Section extends Component {
     }
 
     toggleSectionCollapse() {
-        const { id, isCollapsed, dispatch } = this.props;
+        const { id, dispatch } = this.props;
 
         dispatch(toggleSectionCollapse(id));
-        if (!isCollapsed) {
-            dispatch(fetchQuestions(id));
-        }
     }
 
     render() {
@@ -120,15 +117,15 @@ class Section extends Component {
             pending: 0
         };
 
-        responses.map(
-            response =>
-                counters[
-                    response.status
-                        .toLowerCase()
-                        .split(' ')
-                        .join('')
-                ]++
-        );
+        responses.map(response => {
+            counters[
+                STATUS[response.statusId]
+                    .toLowerCase()
+                    .split(' ')
+                    .join('')
+            ]++;
+        });
+
         let newCommentForm = null;
 
         if (currentTab === 'comments') {

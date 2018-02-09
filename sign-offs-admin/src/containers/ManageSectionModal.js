@@ -11,6 +11,7 @@ import {
 import StaffDropdown from '../components/StaffDropdown';
 import Staff from '../components/Staff';
 import { difference } from 'lodash';
+import { STATUS } from '../constants/status';
 
 class ManageSectionModal extends Component {
     constructor(props) {
@@ -75,6 +76,7 @@ class ManageSectionModal extends Component {
                     toggleSectionStatus={newStatus => {
                         dispatch(
                             changeStaffResponse(
+                                section.id,
                                 staff.id,
                                 staff.responseId,
                                 newStatus.value,
@@ -198,7 +200,7 @@ function mapStateToProps(state, ownProps) {
             name: `${staff.first_name} ${staff.last_name}`,
             responseId: response.responseId,
             statusId: response.statusId,
-            status: response.status
+            status: STATUS[response.statusId]
         };
     });
 

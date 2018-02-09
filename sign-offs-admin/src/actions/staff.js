@@ -34,16 +34,20 @@ export function addStaffResponse(sectionId, staffId) {
         const staffUserId = getState().staff.byId[staffId].user_id;
         const staffResponse = {
             type: 'compliance-assignment',
-            id: null,
-            attributes: {
-                pepp_organisation_custom_field_section_id: sectionId,
-                assigned_to_user_id: staffUserId,
-                pepp_preferred_supplier_id: preferredSupplierId
+            attributes: {},
+            relationships: {
+                staff: {
+                    type: 'users',
+                    id: staffUserId
+                }
             }
         };
 
         return axios
-            .post('/compliance/assignment', { data: staffResponse })
+            .post(
+                `/preferred-suppliers/${preferredSupplierId}/compliance-sections/${sectionId}/assignments`,
+                { data: staffResponse }
+            )
             .then(response => {
                 const responseId = response.data.data.id;
                 dispatch({
@@ -57,25 +61,37 @@ export function addStaffResponse(sectionId, staffId) {
 }
 
 export function deleteStaffResponse(sectionId, staffId, responseId) {
-    return dispatch => {
+    return (dispatch, getState) => {
+        const { preferredSupplierId } = getState().ui;
+
         dispatch({
             type: actions.TOGGLE_STAFF_LOADING,
             staffId
         });
 
-        return axios.delete(`/compliance/assignment/${responseId}`).then(() => {
-            dispatch({
-                type: actions.DELETED_STAFF_RESPONSE,
-                sectionId,
-                staffId,
-                responseId
+        return axios
+            .delete(
+                `/preferred-suppliers/${preferredSupplierId}/compliance-sections/${sectionId}/assignments/${responseId}`
+            )
+            .then(() => {
+                dispatch({
+                    type: actions.DELETED_STAFF_RESPONSE,
+                    sectionId,
+                    staffId,
+                    responseId
+                });
             });
-        });
     };
 }
 
-export function changeStaffResponse(staffId, responseId, statusId, status) {
-    return dispatch => {
+export function changeStaffResponse(
+    sectionId,
+    staffId,
+    responseId,
+    statusId,
+    status
+) {
+    return (dispatch, getState) => {
         dispatch({
             type: actions.TOGGLE_STAFF_LOADING,
             staffId
@@ -86,9 +102,13 @@ export function changeStaffResponse(staffId, responseId, statusId, status) {
             id: responseId,
             attributes: { status: statusId }
         };
+        const { preferredSupplierId } = getState().ui;
 
         return axios
-            .patch('/compliance/assignment-status', { data: newReponse })
+            .patch(
+                `/preferred-suppliers/${preferredSupplierId}/compliance-sections/${sectionId}/assignments/${responseId}`,
+                { data: newReponse }
+            )
             .then(() => {
                 dispatch({
                     type: actions.CHANGE_STAFF_RESPONSE,

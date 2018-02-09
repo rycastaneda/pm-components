@@ -3,7 +3,7 @@ import UserBadge from './UserBadge';
 
 const UserList = ({ users, toggleManageSectionModal }) => {
     const badges = users.map(user => (
-        <UserBadge key={user.id} name={user.name} status={user.status} />
+        <UserBadge key={user.id} name={user.name} statusId={user.statusId} />
     ));
     return (
         <div className="row mar-btm mar-top">

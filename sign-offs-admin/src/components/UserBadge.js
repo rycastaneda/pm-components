@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
+import { STATUS } from '../constants/status';
 
-const UserBadge = ({ name, status }) => {
+const UserBadge = ({ name, statusId }) => {
     const badges = {
         declined: 'badge-bg-danger',
         approved: 'badge-success',
@@ -18,7 +19,7 @@ const UserBadge = ({ name, status }) => {
     return (
         <span
             className={`badge mar-r-sm mar-top-sm ${badges[
-                status.toLowerCase()
+                STATUS[statusId].toLowerCase()
             ]}`}>
             <i className={`fa ${icons[status.toLowerCase()]} mar-r-sm`} />
             {name}
@@ -28,7 +29,7 @@ const UserBadge = ({ name, status }) => {
 
 UserBadge.propTypes = {
     name: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired
+    statusId: PropTypes.number.isRequired
 };
 
 export default UserBadge;

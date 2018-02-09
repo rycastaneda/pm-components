@@ -1,6 +1,6 @@
 import * as actions from '../constants';
 
-const INITIAL_STATE = { 
+const INITIAL_STATE = {
     byId: {},
     allIds: []
 };
@@ -10,12 +10,16 @@ export function comments(state = INITIAL_STATE, action) {
         case actions.RECEIVE_SECTIONS:
             return receiveSections(state, action);
         case actions.TOGGLE_COMMENT_EDIT:
-            state.byId[action.commentId].isEditing = !state.byId[action.commentId].isEditing;
+            state.byId[action.commentId].isEditing = !state.byId[
+                action.commentId
+            ].isEditing;
             return { ...state };
         case actions.TOGGLE_COMMENT_LOADING:
-            state.byId[action.commentId].isLoading = !state.byId[action.commentId].isLoading;
+            state.byId[action.commentId].isLoading = !state.byId[
+                action.commentId
+            ].isLoading;
             return { ...state };
-        case actions.SUBMITTED_EDIT_COMMENT: 
+        case actions.SUBMITTED_EDIT_COMMENT:
             return submittedEditComment(state, action);
         case actions.SUBMITTED_NEW_COMMENT:
             return submittedNewComment(state, action);
@@ -31,8 +35,8 @@ function receiveSections(state, action) {
 
     if (action.sections.included) {
         action.sections.included
-            .filter(include => include.type === 'comments')
-            .map((include) => {
+            .filter(include => include.type === 'compliance-comments')
+            .map(include => {
                 byId[include.id] = {
                     ...include.attributes,
                     staffId: include.relationships.staff.data.id,
@@ -66,7 +70,6 @@ function submittedNewComment(state, action) {
     return { ...state };
 }
 
-
 function submittedEditComment(state, action) {
     let comment = state.byId[action.commentId];
 
@@ -78,11 +81,10 @@ function submittedEditComment(state, action) {
     return { ...state };
 }
 
-
 function deleteComment(state, action) {
     const ids = {};
 
-    Object.keys(state.byId).map((commentId) => {
+    Object.keys(state.byId).map(commentId => {
         if (+commentId === action.commentId) {
             return;
         }

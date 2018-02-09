@@ -16,10 +16,9 @@ export function fetchSections(
             supplierUserId
         });
 
-        // TODO: api endpoint
         return axios
             .get(
-                `/compliance/assignments/${supplierUserId}/${preferredSupplierId}?include=assignments,comments`
+                `/preferred-suppliers/${preferredSupplierId}/compliance-sections?include=fields.values,fields.supplierUploads,defaultAssignments,assignments,comments`
             )
             .then(response => {
                 return dispatch({

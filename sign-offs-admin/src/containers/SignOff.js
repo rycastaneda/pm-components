@@ -116,22 +116,18 @@ function mapStateToProps(state) {
             const response = rawResponses.byId[responseId];
             const name = `${rawStaff.byId[response.staffId]
                 .first_name} ${rawStaff.byId[response.staffId].last_name}`;
-            const status = response.status;
+            const statusId = response.statusId;
 
             return {
                 id: response.staffId,
                 name,
-                status
+                statusId
             };
         });
 
-        let questions = [];
-
-        if (rawQuestions.bySectionId[sectionId]) {
-            questions = rawQuestions.bySectionId[sectionId].map(questionId => {
-                rawQuestions.byId[questionId];
-            });
-        }
+        let questions = section.questionIds.map(questionId => {
+            return rawQuestions.byId[questionId];
+        });
 
         return {
             ...section,
