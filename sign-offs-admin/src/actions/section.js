@@ -16,9 +16,17 @@ export function fetchSections(
             supplierUserId
         });
 
+        const includes = [
+            'fields.values',
+            'fields.supplierUploads',
+            'defaultAssignments',
+            'assignments',
+            'comments'
+        ].join(',');
+
         return axios
             .get(
-                `/preferred-suppliers/${preferredSupplierId}/compliance-sections?include=fields.values,fields.supplierUploads,defaultAssignments,assignments,comments`
+                `/preferred-suppliers/${preferredSupplierId}/compliance-sections?include=${includes}`
             )
             .then(response => {
                 return dispatch({

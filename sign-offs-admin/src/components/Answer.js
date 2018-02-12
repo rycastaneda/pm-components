@@ -6,13 +6,6 @@ const Answer = ({ type, answer }) => {
         case 'yes_no':
             finalAnswer = answer === '1' ? 'Yes' : 'No';
             break;
-        case 'upload':
-            finalAnswer = !+answer ? (
-                'No file uploaded'
-            ) : (
-                <a href={answer}>File</a>
-            );
-            break;
     }
 
     return <strong>{finalAnswer}</strong>;

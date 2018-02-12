@@ -25,9 +25,21 @@ function receiveQuestions(state, action) {
     action.sections.included
         .filter(include => include.type === 'compliance-fields')
         .map(question => {
+            let uploadIds = [];
+
+            if (
+                question.relationships &&
+                question.relationships.supplierUploads
+            ) {
+                uploadIds = question.relationships.supplierUploads.data.map(
+                    upload => upload.id
+                );
+            }
+
             byId[question.id] = {
                 ...question,
                 question: question.attributes.label,
+                uploadIds,
                 answer: question.relationships
                     ? valueIdToAnswer[question.relationships.values.data.id]
                     : null

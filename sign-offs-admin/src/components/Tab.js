@@ -20,6 +20,7 @@ const Tab = ({
                 return (
                     <div key={index}>
                         <Question
+                            uploads={question.uploads}
                             question={question.question}
                             answer={question.answer}
                             type={question.attributes.type}

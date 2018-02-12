@@ -99,7 +99,7 @@ export function submitNewComment(sectionId, comment) {
                     .filter(include => include.type === 'staff')
                     .pop();
                 const commentId = response.data.data.id;
-                const date = response.data.data.attributes.date;
+                const date = response.data.data.attributes.created_at.date;
                 dispatch({
                     type: actions.SUBMITTED_NEW_COMMENT,
                     sectionId,
