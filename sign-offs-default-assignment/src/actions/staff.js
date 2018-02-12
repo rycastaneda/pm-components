@@ -32,18 +32,24 @@ export function assignStaff(sectionId, staffId, callback) {
             sectionId
         });
 
+        const panelId = getState().ui.panelId;
+        const staffUserId = getState().staff.byId[staffId].user_id;
         const data = {
             type: 'compliance-default-assignment',
-            id: null,
-            attributes: {
-                pepp_organisation_custom_field_section_id: sectionId,
-                pepp_staff_user_id: getState().staff.byId[staffId].user_id,
-                panel_id: getState().ui.panelId
+            attributes: {},
+            relationships: {
+                staff: {
+                    type: 'users',
+                    id: staffUserId
+                }
             }
         };
 
         return axios
-            .post('/compliance/default-assignment', { data })
+            .post(
+                `/panels/${panelId}/compliance-sections/${sectionId}/assignments`,
+                { data }
+            )
             .then(response => {
                 dispatch({
                     type: actions.ASSIGN_STAFF,
@@ -71,8 +77,12 @@ export function removeStaff(sectionId, staffId, callback) {
 
         const assignmentId = getState().sections.byId[sectionId]
             .userIdToAssignmentId[staffId];
+        const panelId = getState().ui.panelId;
+
         return axios
-            .delete(`/compliance/default-assignment/${assignmentId}`)
+            .delete(
+                `/panels/${panelId}/compliance-sections/${sectionId}/assignments/${assignmentId}`
+            )
             .then(() => {
                 dispatch({
                     type: actions.REMOVE_STAFF,

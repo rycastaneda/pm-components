@@ -10,18 +10,12 @@ export function fetchSections(panelId) {
 
         return axios
             .get(
-                `/compliance/default-assignments/${panelId}?include=defaultAssignments`
+                `/panels/${panelId}/compliance-sections?include=defaultAssignments,assignments`
             )
             .then(response => {
                 return dispatch({
                     type: actions.RECEIVE_SECTIONS,
                     sections: response.data
-                });
-            })
-            .catch(response => {
-                dispatch({
-                    type: actions.API_ERROR,
-                    error: response.response.data.message
                 });
             });
     };

@@ -52,7 +52,9 @@ function receiveSections(state, action) {
 
     if (action.sections.included) {
         action.sections.included
-            .filter(include => include.type === 'default-assignments')
+            .filter(
+                include => include.type === 'default-compliance-assignments'
+            )
             .map(assignment => {
                 assignmentIdToUserId[assignment.id] =
                     assignment.relationships.staff.data.id;
