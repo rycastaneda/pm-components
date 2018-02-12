@@ -9,22 +9,27 @@ export function fetchAssignments(parameters, forDownload) {
             ...parameters
         });
 
-        const keywordUrl = `keyword=${parameters.keyword}`;
-        const fields =
-            'fields[compliance-assignments]=section_id,preferred_supplier_id,supplier,panels,section,assignee,last_updated,comments';
-        const orderBy = `orderBy[${parameters.orderByField}]=${parameters.orderByDirection}`;
-        const filterUrl = Object.keys(parameters.filters)
-            .map(field => {
-                return `filters[${field}]=${parameters.filters[field]}`;
-            })
-            .join('&');
-        const pageUrl = `page=${parameters.page}&perPage=${parameters.perPage}`;
+        // const keywordUrl = `keyword=${parameters.keyword}`;
+        // const fields =
+        // 'fields[compliance-assignments]=section_id,preferred_supplier_id,supplier,panels,section,assignee,last_updated,comments';
+        // const orderBy = `orderBy[${parameters.orderByField}]=${parameters.orderByDirection}`;
+        // const filterUrl = Object.keys(parameters.filters)
+        //     .map(field => {
+        //         return `filters[${field}]=${parameters.filters[field]}`;
+        //     })
+        //     .join('&');
+        const pageUrl = `page=${parameters.page}&per_page=${parameters.perPage}`;
+        const includes = [
+            'user.panels.complianceSections.defaultAssignments',
+            'panels.complianceSections.assignments',
+            'panels.complianceSections.comments'
+        ];
 
-        const endpoint = `/compliance/reports?${[
-            keywordUrl,
-            fields,
-            orderBy,
-            filterUrl,
+        const endpoint = `/preferred-suppliers?include=${includes.join(',')}&${[
+            // keywordUrl,
+            // fields,
+            // orderBy,
+            // filterUrl,
             pageUrl
         ].join('&')}`;
 

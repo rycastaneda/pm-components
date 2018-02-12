@@ -18,9 +18,17 @@ export function fetchSections(
             supplierUserId
         });
 
+        const includes = [
+            'fields.values',
+            'fields.supplierUploads',
+            'defaultAssignments',
+            'assignments',
+            'comments'
+        ].join(',');
+
         return axios
             .get(
-                `/compliance/assignments/${supplierUserId}/${preferredSupplierId}?include=assignments,comments`
+                `/preferred-suppliers/${preferredSupplierId}/compliance-sections?include=${includes}`
             )
             .then(response => {
                 return dispatch({
@@ -29,6 +37,7 @@ export function fetchSections(
                 });
             })
             .catch(response => {
+                console.log('response', response); // eslint-disable-line quotes, no-console
                 dispatch({
                     type: actions.API_ERROR,
                     error: response.response.data.message
