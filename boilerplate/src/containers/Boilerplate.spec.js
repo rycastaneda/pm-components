@@ -7,7 +7,11 @@ import Boilerplate from './Boilerplate';
 describe('Boilerplate component: ', () => {
     it('should render boilerplate text', () => {
         const store = {
-            getState: function() {},
+            getState: function() {
+                return {
+                    boilerplate: {}
+                };
+            },
             subscribe: function() {},
             dispatch: sinon.spy()
         };
