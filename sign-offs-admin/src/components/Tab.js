@@ -23,7 +23,7 @@ const Tab = ({
                             uploads={question.uploads}
                             question={question.question}
                             answer={question.answer}
-                            type={question.attributes.type}
+                            type={question.type}
                         />
                     </div>
                 );
@@ -44,12 +44,13 @@ const Tab = ({
                 ) : (
                     <Comment
                         comment={comment.text}
+                        date={comment.date}
+                        staff={comment.staff}
                         isReadOnly={
                             isReadOnly || +comment.staffId !== +currentStaffId
                         }
                         toggleCommentEdit={toggleCommentEdit(comment)}
                         deleteComment={deleteComment(comment.id)}
-                        {...comment}
                     />
                 );
 

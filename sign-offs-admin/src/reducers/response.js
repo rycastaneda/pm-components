@@ -11,11 +11,10 @@ export function response(state = INITIAL_STATE, action) {
             return receiveSections(state, action);
         case actions.CHANGE_STAFF_RESPONSE:
             state.byId[action.responseId].statusId = action.statusId;
-            state.byId[action.responseId].status = action.status;
             return { ...state };
         case actions.ADDED_STAFF_RESPONSE:
             state.byId[action.responseId] = {
-                status: 'Pending',
+                statusId: action.statusId,
                 staffId: action.staffId
             };
             state.allIds.push(action.responseId);
@@ -56,7 +55,6 @@ function receiveSections(state, action) {
             .map(include => {
                 byId[include.id] = {
                     statusId: include.attributes.status,
-                    status: include.attributes.status_label,
                     staffId: include.relationships.assignedStaff.data.id
                 };
                 return include;

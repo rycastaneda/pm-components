@@ -29,7 +29,6 @@ export function addStaffResponse(sectionId, staffId) {
         dispatch({
             type: actions.TOGGLE_MANAGE_SECTION_MODAL_LOADING
         });
-
         const { preferredSupplierId } = getState().ui;
         const staffUserId = getState().staff.byId[staffId].user_id;
         const staffResponse = {
@@ -50,11 +49,13 @@ export function addStaffResponse(sectionId, staffId) {
             )
             .then(response => {
                 const responseId = response.data.data.id;
+                const statusId = response.data.data.attributes.status;
                 dispatch({
                     type: actions.ADDED_STAFF_RESPONSE,
                     sectionId,
                     staffId,
-                    responseId
+                    responseId,
+                    statusId
                 });
             });
     };

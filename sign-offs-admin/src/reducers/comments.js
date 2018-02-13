@@ -61,7 +61,7 @@ function submittedNewComment(state, action) {
     state.byId[action.commentId] = {
         isEditing: false,
         isLoading: false,
-        comment: action.comment,
+        text: action.comment,
         staffId: action.staffId,
         date: action.date
     };
@@ -76,7 +76,7 @@ function submittedEditComment(state, action) {
 
     comment.isEditing = false;
     comment.isLoading = false;
-    comment.comment = action.comment;
+    comment.text = action.comment;
     comment.date = action.date;
 
     return { ...state };

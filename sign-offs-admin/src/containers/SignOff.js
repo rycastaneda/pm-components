@@ -120,7 +120,6 @@ function mapStateToProps(state) {
             const name = `${rawStaff.byId[response.staffId]
                 .first_name} ${rawStaff.byId[response.staffId].last_name}`;
             const statusId = response.statusId;
-
             return {
                 id: response.staffId,
                 name,

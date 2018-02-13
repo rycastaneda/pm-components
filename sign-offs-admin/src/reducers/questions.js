@@ -37,7 +37,7 @@ function receiveQuestions(state, action) {
             }
 
             byId[question.id] = {
-                ...question,
+                type: question.attributes.type,
                 question: question.attributes.label,
                 uploadIds,
                 answer: question.relationships
