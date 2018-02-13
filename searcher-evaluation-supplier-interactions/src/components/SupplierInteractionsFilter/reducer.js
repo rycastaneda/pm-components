@@ -1,8 +1,12 @@
 import * as actions from './actionsTypes';
 
+
+const rootElement = document.getElementById('searcher-evaluation-supplier-interactions');
+const interactionTypes = rootElement.dataset.interactionTypes.split(',');
+
 const initialState = {
     filterSearchKey: '',
-    interactionTypes: ['Any', 'Engagement', 'Evaluation', 'Message', 'RFQ'],
+    interactionTypes: interactionTypes || ['Any', 'Engagement', 'Evaluation', 'Message', 'RFQ'],
     staffInitiators: ['Any', 'Test staff 1', 'Test staff 2', 'Test staff 3'],
     interactionTypeSelected: 'Any',
     initiatedBySelected: 'Any',
