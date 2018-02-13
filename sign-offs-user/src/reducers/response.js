@@ -22,7 +22,7 @@ function receiveSections(state, action) {
     const byId = {};
     if (action.sections.included) {
         action.sections.included
-            .filter(include => include.type === 'assignments')
+            .filter(include => include.type === 'compliance-assignments')
             .map(include => {
                 byId[include.id] = {
                     statusId: include.attributes.status,

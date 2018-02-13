@@ -35,10 +35,11 @@ function receiveSections(state, action) {
 
     if (action.sections.included) {
         action.sections.included
-            .filter(include => include.type === 'comments')
+            .filter(include => include.type === 'compliance-comments')
             .map(include => {
                 byId[include.id] = {
-                    ...include.attributes,
+                    text: include.attributes.text,
+                    date: include.attributes.created_at.date,
                     staffId: include.relationships.staff.data.id,
                     isEditing: false,
                     isLoading: false

@@ -33,7 +33,8 @@ function receiveSections(state, action) {
                     id: staff.id,
                     ...staff.attributes,
                     name: `${staff.attributes.first_name} ${staff.attributes
-                        .last_name}`
+                        .last_name}`,
+                    isLoading: true
                 };
                 return staff;
             });

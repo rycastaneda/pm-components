@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Section from './Section';
 import { fetchSections, toggleAllSectionsCollapse } from '../actions/section';
 import Loader from '../components/Loader';
+import { format } from 'date-fns';
 
 class SignOff extends Component {
     constructor(props) {
@@ -89,6 +90,7 @@ function mapStateToProps(state) {
         comments: rawComments,
         staff: rawStaff,
         response: rawResponses,
+        uploads: rawUploads,
         ui
     } = state;
 
@@ -112,6 +114,8 @@ function mapStateToProps(state) {
             let { first_name, last_name } = rawStaff.byId[comment.staffId];
             return {
                 ...comment,
+                text: comment.text,
+                date: format(comment.date, 'MM-DD-YYYY HH:mma'),
                 id: commentId,
                 staff: `${first_name} ${last_name}`
             };
@@ -131,14 +135,15 @@ function mapStateToProps(state) {
             };
         });
 
-        let questions = [];
+        let questions = section.questionIds.map(questionId => {
+            let question = rawQuestions.byId[questionId];
 
-        if (rawQuestions.bySectionId[sectionId]) {
-            questions = rawQuestions.bySectionId[sectionId].map(questionId => {
-                return rawQuestions.byId[questionId];
-            });
-        }
+            question.uploads = question.uploadIds.map(
+                uploadId => rawUploads.byId[uploadId]
+            );
 
+            return question;
+        });
         return {
             ...section,
             id: +sectionId,

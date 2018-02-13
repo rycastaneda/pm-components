@@ -17,31 +17,39 @@ export function toggleCommentEdit(commentId) {
 }
 
 export function deleteComment(sectionId, commentId) {
-    return dispatch => {
+    return (dispatch, getState) => {
+        const { preferredSupplierId } = getState().ui;
+
         dispatch({
             type: actions.TOGGLE_COMMENT_LOADING,
             commentId
         });
 
-        return axios.delete(`/compliance/comment/${commentId}`).then(() => {
-            dispatch({
-                type: actions.DELETED_COMMENT,
-                commentId,
-                sectionId
+        return axios
+            .delete(
+                `/preferred-suppliers/${preferredSupplierId}/compliance-sections/${sectionId}/comments/${commentId}`
+            )
+            .then(() => {
+                dispatch({
+                    type: actions.DELETED_COMMENT,
+                    commentId,
+                    sectionId
+                });
             });
-        });
     };
 }
 
 export function submitEditComment(sectionId, commentId, comment) {
-    return dispatch => {
+    return (dispatch, getState) => {
+        const { preferredSupplierId } = getState().ui;
+
         dispatch({
             type: actions.TOGGLE_COMMENT_LOADING,
             commentId
         });
 
         let newComment = {
-            type: 'compliance-comment',
+            type: 'compliance-comments',
             id: commentId,
             attributes: {
                 text: comment
@@ -49,7 +57,10 @@ export function submitEditComment(sectionId, commentId, comment) {
         };
 
         return axios
-            .patch('/compliance/comment', { data: newComment })
+            .patch(
+                `/preferred-suppliers/${preferredSupplierId}/compliance-sections/${sectionId}/comments/${commentId}`,
+                { data: newComment }
+            )
             .then(() => {
                 dispatch({
                     type: actions.SUBMITTED_EDIT_COMMENT,
@@ -71,25 +82,24 @@ export function submitNewComment(sectionId, comment) {
         const { preferredSupplierId } = getState().ui;
 
         let newComment = {
-            type: 'compliance-comment',
-            id: null,
+            type: 'compliance-comments',
             attributes: {
-                pepp_organisation_custom_field_section_id: sectionId,
-                text: comment,
-                pepp_preferred_supplier_id: preferredSupplierId
+                text: comment
             }
         };
 
         return axios
-            .post('/compliance/comment', { data: newComment })
+            .post(
+                `/preferred-suppliers/${preferredSupplierId}/compliance-sections/${sectionId}/comments`,
+                { data: newComment }
+            )
             .then(response => {
                 const staffId = response.data.data.relationships.staff.data.id;
                 const staff = response.data.included
                     .filter(include => include.type === 'staff')
                     .pop();
                 const commentId = response.data.data.id;
-                const date = response.data.data.attributes.date;
-
+                const date = response.data.data.attributes.created_at.date;
                 dispatch({
                     type: actions.SUBMITTED_NEW_COMMENT,
                     sectionId,

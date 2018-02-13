@@ -3,9 +3,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 const HOST = process.env.HOST || 'local-org-okfelix.pmstg.com';
-const PORT = process.env.PORT || '5049';
+const PORT = process.env.PORT || '5051';
 
-module.exports =  {
+module.exports = {
     context: __dirname,
     devServer: {
         contentBase: './dist',
@@ -21,7 +21,8 @@ module.exports =  {
     entry: [
         `webpack-dev-server/client?http://${HOST}:${PORT}`,
         `webpack/hot/dev-server`,
-        './src/index.js'],
+        './src/index.js'
+    ],
     output: {
         path: `${__dirname}/dist`,
         filename: 'bundle.js'
@@ -59,7 +60,7 @@ module.exports =  {
         // Define node environment to be 'develop'
         new webpack.DefinePlugin({
             'process.env': {
-                'NODE_ENV': JSON.stringify('develop')
+                NODE_ENV: JSON.stringify('develop')
             }
         }),
         new webpack.NoErrorsPlugin(),

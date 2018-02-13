@@ -38,12 +38,14 @@ const Tab = ({
                     />
                 ) : (
                     <Comment
+                        text={comment.text}
+                        staff={comment.staff}
+                        date={comment.date}
                         isReadOnly={
                             isReadOnly || +comment.staffId !== +currentStaffId
                         }
                         toggleCommentEdit={toggleCommentEdit(comment)}
                         deleteComment={deleteComment(comment.id)}
-                        {...comment}
                     />
                 );
 

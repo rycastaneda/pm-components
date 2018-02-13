@@ -1,14 +1,12 @@
 import * as actions from '../constants';
-import { includes } from 'lodash';
-const INITIAL_STATE = { 
-    bySectionId: {},
+const INITIAL_STATE = {
     byId: {},
     allIds: []
 };
 
 export function questions(state = INITIAL_STATE, action) {
     switch (action.type) {
-        case actions.RECEIVE_QUESTIONS:
+        case actions.RECEIVE_SECTIONS:
             return receiveQuestions(state, action);
         default:
             return state;
@@ -16,37 +14,40 @@ export function questions(state = INITIAL_STATE, action) {
 }
 
 function receiveQuestions(state, action) {
-    const {
-        byId,
-        bySectionId,
-        allIds
-    } = state; 
+    const { byId, allIds } = state;
+    const valueIdToAnswer = {};
+    action.sections.included
+        .filter(include => include.type === 'compliance-field-values')
+        .map(answer => {
+            valueIdToAnswer[answer.id] = answer.attributes.value;
+        });
 
-    action.questions.data.map((question) => {
-        byId[question.id] = { 
-            ...question, 
+    const questions = action.sections.included.filter(
+        include => include.type === 'compliance-fields'
+    );
+
+    questions.map(question => {
+        let uploadIds = [];
+
+        if (question.relationships && question.relationships.supplierUploads) {
+            uploadIds = question.relationships.supplierUploads.data.map(
+                upload => upload.id
+            );
+        }
+        byId[question.id] = {
+            id: question.id,
+            type: question.attributes.type,
             question: question.attributes.label,
-            answer: question.attributes.value
+            uploadIds,
+            answer: question.relationships
+                ? valueIdToAnswer[question.relationships.values.data.id]
+                : null
         };
-
-        if (!includes(allIds, question.id)) {
-            allIds.push(question.id);  
-        } 
-
-        if (bySectionId[question.attributes.section_id] && 
-            !includes(bySectionId[question.attributes.section_id], question.id)
-        ) {
-            return bySectionId[question.attributes.section_id].push(question.id);
-        } 
-
-        bySectionId[question.attributes.section_id] = [question.id];
-
+        allIds.push(question.id);
     });
 
     return {
-        bySectionId,
         byId,
         allIds
     };
 }
-

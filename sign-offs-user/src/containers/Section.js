@@ -18,8 +18,6 @@ import {
     deleteComment
 } from '../actions/comments';
 
-import { fetchQuestions } from '../actions/questions';
-
 class Section extends Component {
     constructor(props) {
         super(props);
@@ -75,21 +73,9 @@ class Section extends Component {
     }
 
     toggleSectionCollapse() {
-        const { id, isCollapsed, dispatch } = this.props;
+        const { id, dispatch } = this.props;
 
         dispatch(toggleSectionCollapse(id));
-        if (!isCollapsed) {
-            dispatch(fetchQuestions(id));
-        }
-    }
-
-    componentDidMount() {
-        const { id, isCollapsed, dispatch } = this.props;
-
-        if (isCollapsed) {
-            // if section is collapsed already, load questions
-            dispatch(fetchQuestions(id));
-        }
     }
 
     render() {
@@ -152,6 +138,7 @@ class Section extends Component {
                         toggleSectionStatus={newStatus => {
                             dispatch(
                                 changeStaffResponse(
+                                    id,
                                     response.staffId,
                                     response.id,
                                     newStatus.value,

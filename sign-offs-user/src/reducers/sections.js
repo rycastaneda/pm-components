@@ -155,7 +155,7 @@ function receiveSections(state, action) {
     let assignmentIdToStaff = {};
     if (action.sections.included) {
         action.sections.included
-            .filter(include => include.type === 'assignments')
+            .filter(include => include.type === 'compliance-assignments')
             .map(assignment => {
                 assignmentIdToStaff[assignment.id] = {
                     staffId: assignment.relationships.assignedStaff.id,
@@ -166,10 +166,15 @@ function receiveSections(state, action) {
 
     action.sections.data.map((section, index) => {
         let commentIds = [];
+        let questionIds = [];
         let responseIds = [];
         if (section.relationships) {
             commentIds = section.relationships.comments.data.map(
                 comment => comment.id
+            );
+
+            questionIds = section.relationships.fields.data.map(
+                question => question.id
             );
 
             if (
@@ -190,6 +195,7 @@ function receiveSections(state, action) {
             isShown: false,
             currentTab: 'questions',
             commentIds,
+            questionIds,
             responseIds,
             ...section.attributes
         };

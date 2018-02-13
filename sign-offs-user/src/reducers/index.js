@@ -4,6 +4,7 @@ import { comments } from './comments';
 import { staff } from './staff';
 import { questions } from './questions';
 import { response } from './response';
+import { uploads } from './uploads';
 import { ui } from './ui';
 
 export default combineReducers({
@@ -12,5 +13,6 @@ export default combineReducers({
     questions,
     response,
     ui,
+    uploads,
     staff
 });
