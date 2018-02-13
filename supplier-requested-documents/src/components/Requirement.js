@@ -12,31 +12,31 @@ class Requirement extends Component {
     }
 
     handleFilterDropDocuments(requirementId, files) {
-        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx', '.dwg'];
+        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx', '.dwg', '.ppt', '.pptx', '.mpp', '.vsd', '.pptm', '.dotm', '.xltm'];
         let invalid = [];
-    
+
         let filteredFiles = files.filter((file) => {
             let extension = file.name.split('.').pop().toLowerCase();
-    
+
             if (!~allowedExtenstions.indexOf(`.${extension}`)) {
                 invalid.push(file.name);
             }
-    
+
             return !!~allowedExtenstions.indexOf(`.${extension}`);
         });
-    
+
         if (filteredFiles.length !== files.length) {
             this.setState({
                 error: invalid.join(', ') + ' - file type not supported'
             });
-    
+
             return;
         }
-    
+
         this.setState({
             error: ''
         });
-    
+
         this.props.onDropDocuments(requirementId, filteredFiles);
     }
 
