@@ -87,7 +87,7 @@ class Group extends Component {
 
         this.setState({
             error: filteredFiles.length !== files.length ?
-                invalid.join(', ') + ' - file type not supported Document-Uploader'  : ''
+                invalid.join(', ') + ' - file type not supported'  : ''
         });
     }
 

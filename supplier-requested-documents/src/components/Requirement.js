@@ -27,7 +27,7 @@ class Requirement extends Component {
 
         if (filteredFiles.length !== files.length) {
             this.setState({
-                error: invalid.join(', ') + ' - file type not supported Supplier Requested Documents'
+                error: invalid.join(', ') + ' - file type not supported'
             });
 
             return;

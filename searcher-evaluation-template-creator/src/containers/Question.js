@@ -213,7 +213,7 @@ class Question extends Component {
 
         if (filteredFiles.length !== files.length) {
             this.setState({
-                documentError: invalid.join(', ') + ' - file type not supported Template Creator'
+                documentError: invalid.join(', ') + ' - file type not supported'
             });
 
             return;
