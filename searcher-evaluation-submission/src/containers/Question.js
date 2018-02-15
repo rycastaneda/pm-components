@@ -22,7 +22,7 @@ class Question extends Component {
         this.props.dispatch(deleteDocument(this.props.questionId, documentId));
     }
     onDocumentDrop(files) {
-        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx', '.dwg', '.ppt', '.pptx', '.mpp', '.vsd', '.pptm', '.dotm', '.xltm'];
+        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx', '.dwg', '.ppt', '.pptx', '.mpp', '.vsd', '.pptm', '.docm', '.xlsm', '.vsdx'];
         let invalid = [];
 
         let filteredFiles = files.filter((file) => {

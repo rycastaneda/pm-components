@@ -8487,7 +8487,7 @@
 	    }, {
 	        key: 'onDocumentDrop',
 	        value: function onDocumentDrop(files) {
-	            var allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx', '.dwg', '.ppt', '.pptx', '.mpp', '.vsd', '.pptm', '.dotm', '.xltm'];
+	            var allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx', '.dwg', '.ppt', '.pptx', '.mpp', '.vsd', '.pptm', '.docm', '.xlsm', '.vsdx'];
 	            var invalid = [];
 
 	            var filteredFiles = files.filter(function (file) {

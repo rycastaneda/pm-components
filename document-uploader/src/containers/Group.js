@@ -70,7 +70,7 @@ class Group extends Component {
     }
 
     handleFilterDropDocuments(files) {
-        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx', '.dwg', '.ppt', '.pptx', '.mpp', '.vsd', '.pptm', '.dotm', '.xltm'];
+        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx', '.dwg', '.ppt', '.pptx', '.mpp', '.vsd', '.pptm', '.docm', '.xlsm', '.vsdx'];
         let invalid = [];
 
         let filteredFiles = files.filter((file) => {
