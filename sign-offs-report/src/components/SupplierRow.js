@@ -1,10 +1,9 @@
 import React, { PropTypes } from 'react';
-
 const SupplierRow = ({
     id,
     supplier,
     count,
-    panel,
+    panels,
     dateApplied,
     status,
     isOpen,
@@ -29,7 +28,17 @@ const SupplierRow = ({
                 </div>
             </div>
         </td>
-        <td>{panel}</td>
+        <td width="20%">
+            {panels.map(panel => (
+                <span
+                    key={panel.id}
+                    className={`badge ${panels.length > 1
+                        ? 'mar-top-sm'
+                        : ''}`}>
+                    {panel.title}
+                </span>
+            ))}
+        </td>
         <td>{dateApplied}</td>
         <td>{status}</td>
     </tr>
@@ -39,7 +48,7 @@ SupplierRow.propTypes = {
     id: PropTypes.number,
     supplier: PropTypes.string,
     count: PropTypes.number,
-    panel: PropTypes.string,
+    panels: PropTypes.array,
     dateApplied: PropTypes.string,
     status: PropTypes.string,
     isOpen: PropTypes.bool,

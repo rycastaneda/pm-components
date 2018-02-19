@@ -8,7 +8,7 @@ import api from '../../shared/api.config';
 import axios from 'axios';
 !window._babelPolyfill && require('babel-polyfill'); // prevent polyfill from importing twice
 
-import Assignments from './containers/Assignments';
+import PreferredSuppliers from './containers/PreferredSuppliers';
 import './styles/index.scss';
 
 // Add redux dev tools unless we have a production build
@@ -32,7 +32,7 @@ axios.defaults.headers.common = headers;
 
 render(
   <Provider store={store}>
-    <Assignments />
+    <PreferredSuppliers />
   </Provider>,
   document.querySelector('[data-component="sign-offs-reports"]')
 );

@@ -1,22 +1,22 @@
 export const TABLE_HEADERS = [
     {
         text: 'Supplier',
-        field: 'supplier',
+        field: 'supplier.title',
         sortable: true
     },
     {
         text: 'Panel',
         field: 'panel',
-        sortable: true
+        sortable: false
     },
     {
         text: 'Date of Application',
-        field: 'dateApplied',
+        field: 'submitted_on',
         sortable: true
     },
     {
         text: 'Supplier Status',
-        field: 'supplier_status',
+        field: 'status',
         sortable: true
     }
 ];
@@ -33,7 +33,7 @@ export const ROW_HEADERS = [
         sortable: false
     },
     {
-        text: 'Status',
+        text: 'Sign off Status',
         field: 'status',
         sortable: false
     },

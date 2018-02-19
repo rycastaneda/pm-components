@@ -24,7 +24,7 @@ Header.propTypes = {
     field: PropTypes.string,
     direction: PropTypes.string,
     sortable: PropTypes.bool,
-    onClick: PropTypes.func.isRequired
+    onClick: PropTypes.func
 };
 
 export default Header;

@@ -31,7 +31,7 @@ class Filters extends Component {
     changeFilters(event) {
         event.preventDefault();
         this.props.changeFilters({
-            assignee: this.state.selectedStaff,
+            assigned_to: this.state.selectedStaff,
             status: this.state.selectedStatus
         });
     }
@@ -43,11 +43,9 @@ class Filters extends Component {
     }
 
     onStaffChange(newStaff) {
-        if (newStaff) {
-            this.setState({
-                selectedStaff: newStaff.value
-            });
-        }
+        this.setState({
+            selectedStaff: newStaff ? newStaff.value : 0
+        });
     }
 
     toggleFilters() {
@@ -66,7 +64,12 @@ class Filters extends Component {
     }
 
     render() {
-        const { keyword, staff, canViewAll, downloadAssignments } = this.props;
+        const {
+            keyword,
+            staff,
+            canViewAll,
+            downloadPreferredSuppliers
+        } = this.props;
 
         return (
             <div className="panel panel-default pad-all">
@@ -76,7 +79,7 @@ class Filters extends Component {
                         showFilters={this.state.showFilters}
                         toggleFilters={this.toggleFilters}
                         quickSearch={this.quickSearch}
-                        downloadAssignments={downloadAssignments}
+                        downloadPreferredSuppliers={downloadPreferredSuppliers}
                         searchRef={ref => (this.searchRef = ref)}
                     />
 
@@ -129,7 +132,7 @@ Filters.propTypes = {
     quickSearch: PropTypes.func.isRequired,
     changeFilters: PropTypes.func.isRequired,
     clearFilters: PropTypes.func.isRequired,
-    downloadAssignments: PropTypes.func.isRequired
+    downloadPreferredSuppliers: PropTypes.func.isRequired
 };
 
 export default Filters;

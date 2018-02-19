@@ -1,9 +1,10 @@
 import React, { PropTypes } from 'react';
 import Header from './Header';
 import SupplierRow from './SupplierRow';
-import AssignmentRow from './AssignmentRow';
+import Panel from './Panel';
 import Loader from './Loader';
-import { TABLE_HEADERS, ROW_HEADERS } from '../constants/tables';
+import { TABLE_HEADERS } from '../constants/tables';
+import { prefStatus } from '../constants/supplierStatus';
 
 const Table = ({
     data,
@@ -22,9 +23,8 @@ const Table = ({
     const direction = field => {
         return field === orderByField ? orderByDirection : null;
     };
-
     const tableData = () => {
-        if (!data || !data.length) {
+        if (isLoading || (!data || !data.length)) {
             return (
                 <tr>
                     <td
@@ -46,46 +46,25 @@ const Table = ({
                     goToSupplierDetails={() => goToSupplierDetails(supplier.id)}
                     toggleSupplierRow={toggleSupplierRow}
                     id={supplier.id}
-                    key={supplier.supplierId}
+                    supplier={supplier.title}
+                    count={supplier.count}
+                    panels={supplier.panels}
+                    dateApplied={supplier.dateApplied}
+                    status={prefStatus[supplier.status].label}
                     isOpen={supplier.isOpen}
-                    supplier={supplier.supplierTitle}
-                    count={supplier.assignments.length}
                 />
             ];
 
-            let assignments = [];
             if (supplier.isOpen) {
-                assignments = supplier.assignments.map(row => (
-                    <AssignmentRow
-                        key={row.id}
-                        {...row}
-                        toggleCommentsModal={toggleCommentsModal}
-                    />
-                ));
-
-                rows.push(
-                    <tr>
-                        <td colSpan="5" className="td-center">
-                            <table className="table db-table db-table-sort db-table-sort-nojs">
-                                <thead>
-                                    <tr>
-                                        {ROW_HEADERS.map(header => (
-                                            <Header
-                                                key={header.field}
-                                                onClick={changeOrderBy}
-                                                direction={direction(
-                                                    header.field
-                                                )}
-                                                {...header}
-                                            />
-                                        ))}
-                                    </tr>
-                                </thead>
-                                <tbody>{assignments}</tbody>
-                            </table>
-                        </td>
-                    </tr>
-                );
+                supplier.panels.map(panel => {
+                    rows.push(
+                        <Panel
+                            title={panel.title}
+                            sections={panel.sections}
+                            toggleCommentsModal={toggleCommentsModal}
+                        />
+                    );
+                });
             }
 
             return rows;

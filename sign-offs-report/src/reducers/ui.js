@@ -7,25 +7,27 @@ const INITIAL_STATE = {
     orderByDirection: filters.DEFAULT_ORDER_DIRECTION,
     keyword: '',
     filters: {
-        assignee: '',
-        status: [0, 1]
+        assigned_to: '',
+        status: []
     },
+    isLoading: true,
     page: 1,
     perPage: 30,
     totalPage: 1,
-    currentAssignment: '',
+    currentSection: '',
     canViewAll: true
 };
 
 export function ui(state = INITIAL_STATE, action) {
     switch (action.type) {
-        case actions.FETCH_ASSIGNMENTS:
-            return fetchAssignments(state, action);
-        case actions.RECEIVE_ASSIGNMENTS:
+        case actions.FETCH_PREFERRED_SUPPLIERS:
+            return fetchPreferredSuppliers(state, action);
+        case actions.RECEIVE_PREFERRED_SUPPLIERS:
+            state.isLoading = false;
             state.totalPage = action.assignments.meta.pagination.total_pages;
             return { ...state };
         case actions.TOGGLE_COMMENT_MODAL:
-            state.currentAssignment = action.assignmentId;
+            state.currentSection = action.sectionId;
             return { ...state };
         case actions.API_ERROR:
             return {
@@ -39,7 +41,7 @@ export function ui(state = INITIAL_STATE, action) {
     return state;
 }
 
-function fetchAssignments(state, action) {
+function fetchPreferredSuppliers(state, action) {
     const {
         orderByField,
         orderByDirection,
@@ -52,6 +54,7 @@ function fetchAssignments(state, action) {
 
     return {
         ...state,
+        isLoading: true,
         orderByField,
         orderByDirection,
         keyword,
@@ -59,6 +62,6 @@ function fetchAssignments(state, action) {
         page,
         perPage,
         canViewAll,
-        currentAssignment: ''
+        currentSection: ''
     };
 }

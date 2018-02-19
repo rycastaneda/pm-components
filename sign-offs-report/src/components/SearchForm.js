@@ -6,7 +6,7 @@ const SearchForm = ({
     searchRef,
     quickSearch,
     toggleFilters,
-    downloadAssignments
+    downloadPreferredSuppliers
 }) => {
     return (
         <form onSubmit={quickSearch}>
@@ -29,11 +29,14 @@ const SearchForm = ({
                 </button>
             </div>
             <div className={`col-xs-4 col-md-6 align-right`}>
-                <button className="btn" onClick={toggleFilters}>
+                <button type="button" className="btn" onClick={toggleFilters}>
                     <i className="fa fa-sort-amount-desc" />
                     {`${showFilters ? 'Hide Filters' : 'Show Filters'}`}
                 </button>
-                <button className="btn mar-l-sm" onClick={downloadAssignments}>
+                <button
+                    type="button"
+                    className="btn mar-l-sm"
+                    onClick={() => downloadPreferredSuppliers(false, true)}>
                     <i className="fa fa-download" />
                     Download as CSV
                 </button>
@@ -48,7 +51,7 @@ SearchForm.propTypes = {
     searchRef: PropTypes.any,
     quickSearch: PropTypes.func.isRequired,
     toggleFilters: PropTypes.func.isRequired,
-    downloadAssignments: PropTypes.func.isRequired
+    downloadPreferredSuppliers: PropTypes.func.isRequired
 };
 
 export default SearchForm;

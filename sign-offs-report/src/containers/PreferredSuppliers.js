@@ -1,28 +1,27 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import {
-    fetchAssignments,
+    fetchPreferredSuppliers,
     fetchStaff,
-    fetchComments,
     toggleCommentModal,
     toggleSupplierRow
-} from '../actions/assignments';
+} from '../actions/preferredSuppliers';
 import Filters from './Filters';
+import { getPreferredSuppliers } from '../reducers/preferredSuppliers';
 import Table from '../components/Table';
 import PaginatePerPage from '../components/PaginatePerPage';
 import CommentModal from './CommentModal';
 
-export class Assignments extends Component {
+export class PreferredSuppliers extends Component {
     constructor(props) {
         super(props);
         this.quickSearch = this.quickSearch.bind(this);
-        this.fetchAssignments = this.fetchAssignments.bind(this);
+        this.fetchPreferredSuppliers = this.fetchPreferredSuppliers.bind(this);
         this.changeFilters = this.changeFilters.bind(this);
         this.clearFilters = this.clearFilters.bind(this);
         this.changeOrderBy = this.changeOrderBy.bind(this);
         this.changePage = this.changePage.bind(this);
         this.toggleCommentsModal = this.toggleCommentsModal.bind(this);
-        this.fetchComments = this.fetchComments.bind(this);
         this.toggleSupplierRow = this.toggleSupplierRow.bind(this);
     }
 
@@ -31,17 +30,17 @@ export class Assignments extends Component {
         const parent = this.domRef.parentNode; // eslint-disable-line
         this.canViewAll = parent.getAttribute('data-view-all') === '1';
         this.defaultFilters = parameters;
-        this.fetchAssignments();
+        this.fetchPreferredSuppliers();
         if (!staff.data.length && this.canViewAll) {
             dispatch(fetchStaff());
         }
     }
 
-    fetchAssignments(canViewAll, forDownload) {
+    fetchPreferredSuppliers(canViewAll, forDownload) {
         const { parameters, dispatch } = this.props;
 
         dispatch(
-            fetchAssignments(
+            fetchPreferredSuppliers(
                 { ...parameters, canViewAll: this.canViewAll },
                 forDownload
             )
@@ -50,7 +49,7 @@ export class Assignments extends Component {
 
     clearFilters() {
         this.props.dispatch(
-            fetchAssignments({
+            fetchPreferredSuppliers({
                 ...this.defaultFilters,
                 filters: { assignee: '', status: [] }
             })
@@ -59,19 +58,19 @@ export class Assignments extends Component {
 
     changeFilters(filters) {
         this.props.dispatch(
-            fetchAssignments({ ...this.props.parameters, filters })
+            fetchPreferredSuppliers({ ...this.props.parameters, filters })
         );
     }
 
     quickSearch(keyword) {
         this.props.dispatch(
-            fetchAssignments({ ...this.props.parameters, keyword })
+            fetchPreferredSuppliers({ ...this.props.parameters, keyword })
         );
     }
 
     changePage(page, perPage) {
         this.props.dispatch(
-            fetchAssignments({
+            fetchPreferredSuppliers({
                 ...this.props.parameters,
                 page: page ? page.selected + 1 : this.props.parameters.page,
                 perPage: perPage || this.props.parameters.perPage
@@ -80,33 +79,19 @@ export class Assignments extends Component {
     }
 
     toggleCommentsModal(event) {
-        const { dispatch, currentAssignment } = this.props;
-
-        dispatch(toggleCommentModal(event.target.id || currentAssignment.id));
+        const { dispatch, currentSection } = this.props;
+        dispatch(toggleCommentModal(event.target.id || currentSection.id));
     }
 
     toggleSupplierRow(supplierId) {
         const { dispatch } = this.props;
-
         dispatch(toggleSupplierRow(supplierId));
-    }
-
-    fetchComments() {
-        const { dispatch, currentAssignment } = this.props;
-
-        dispatch(
-            fetchComments(
-                currentAssignment.id,
-                currentAssignment.sectionId,
-                currentAssignment.preferredSupplierId
-            )
-        );
     }
 
     changeOrderBy(event) {
         const { orderByDirection } = this.props.parameters;
         this.props.dispatch(
-            fetchAssignments({
+            fetchPreferredSuppliers({
                 ...this.props.parameters,
                 orderByField: event.target.id,
                 orderByDirection: orderByDirection === 'asc' ? 'desc' : 'asc'
@@ -125,7 +110,12 @@ export class Assignments extends Component {
             perPage
         } = this.props.parameters;
 
-        const { assignments, staff, isLoading, currentAssignment } = this.props;
+        const {
+            preferredSuppliers,
+            staff,
+            isLoading,
+            currentSection
+        } = this.props;
 
         return (
             <div ref={ref => (this.domRef = ref)}>
@@ -135,14 +125,14 @@ export class Assignments extends Component {
                     status={filters.status}
                     staff={staff}
                     canViewAll={canViewAll}
-                    downloadAssignments={this.fetchAssignments}
+                    downloadPreferredSuppliers={this.fetchPreferredSuppliers}
                     quickSearch={this.quickSearch}
                     changeFilters={this.changeFilters}
                     clearFilters={this.clearFilters}
                 />
                 <Table
                     isLoading={isLoading}
-                    data={assignments}
+                    data={preferredSuppliers}
                     orderByDirection={orderByDirection}
                     orderByField={orderByField}
                     changeOrderBy={this.changeOrderBy}
@@ -150,7 +140,7 @@ export class Assignments extends Component {
                     toggleSupplierRow={this.toggleSupplierRow}
                 />
 
-                {assignments.length ? (
+                {preferredSuppliers.length ? (
                     <PaginatePerPage
                         pageCount={totalPage}
                         onPageChange={this.changePage}
@@ -161,16 +151,17 @@ export class Assignments extends Component {
                     />
                 ) : null}
                 <CommentModal
-                    assignment={currentAssignment}
+                    id={+currentSection.id}
+                    comments={currentSection.comments}
+                    isShown={currentSection.isShown}
                     toggleCommentModal={this.toggleCommentsModal}
-                    fetchComments={this.fetchComments}
                 />
             </div>
         );
     }
 }
 
-Assignments.propTypes = {
+PreferredSuppliers.propTypes = {
     dispatch: PropTypes.func.isRequired,
     parameters: PropTypes.shape({
         error: PropTypes.string,
@@ -184,28 +175,20 @@ Assignments.propTypes = {
         canViewAll: PropTypes.bool.isRequired
     }),
     isLoading: PropTypes.bool.isRequired,
-    assignments: PropTypes.array,
+    preferredSuppliers: PropTypes.array,
     staff: PropTypes.object,
-    currentAssignment: PropTypes.object
+    currentSection: PropTypes.object
 };
 
 function mapStateToProps(state) {
     const {
         ui,
-        assignments: rawAssignments,
-        suppliers: rawSuppliers,
         staff: rawStaff,
+        sections: rawSections,
         comments: rawComments
     } = state;
 
-    let assignments = rawSuppliers.allIds.map(supplierId => {
-        let supplier = rawSuppliers.byId[supplierId];
-        supplier.assignments = supplier.assignmentIds.map(
-            assignmentId => rawAssignments.byId[assignmentId]
-        );
-        return supplier;
-    });
-
+    let preferredSuppliers = getPreferredSuppliers(state);
     let staff = {
         data: rawStaff.allIds
             .map(staffId => {
@@ -221,14 +204,18 @@ function mapStateToProps(state) {
         isLoading: rawStaff.isLoading
     };
 
-    let currentAssignment;
+    let currentSection = {
+        id: false,
+        comments: [],
+        isShown: false
+    };
 
-    if (ui.currentAssignment) {
-        const assignment = rawAssignments.byId[ui.currentAssignment];
-        currentAssignment = {
-            ...assignment,
-            commentCount: assignment.comments,
-            comments: assignment.commentIds.map(commentId => {
+    if (ui.currentSection) {
+        const section = rawSections.byId[ui.currentSection];
+        currentSection = {
+            id: ui.currentSection,
+            isShown: section.isShown,
+            comments: section.commentIds.map(commentId => {
                 const comment = rawComments.byId[commentId];
                 const staff = rawStaff.byId[comment.staffId];
                 return {
@@ -241,11 +228,11 @@ function mapStateToProps(state) {
 
     return {
         parameters: { ...ui },
-        assignments,
+        preferredSuppliers,
         staff,
-        isLoading: rawAssignments.isLoading,
-        currentAssignment
+        isLoading: ui.isLoading,
+        currentSection
     };
 }
 
-export default connect(mapStateToProps)(Assignments); // adds dispatch prop
+export default connect(mapStateToProps)(PreferredSuppliers); // adds dispatch prop

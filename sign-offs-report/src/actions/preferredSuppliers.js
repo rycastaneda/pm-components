@@ -2,70 +2,68 @@ import * as actions from '../constants';
 import axios from 'axios';
 import { format } from 'date-fns';
 
-export function fetchAssignments(parameters, forDownload) {
+export function fetchPreferredSuppliers(parameters, forDownload) {
     return dispatch => {
         dispatch({
-            type: actions.FETCH_ASSIGNMENTS,
+            type: actions.FETCH_PREFERRED_SUPPLIERS,
             ...parameters
         });
 
-        // const keywordUrl = `keyword=${parameters.keyword}`;
-        // const fields =
-        // 'fields[compliance-assignments]=section_id,preferred_supplier_id,supplier,panels,section,assignee,last_updated,comments';
-        // const orderBy = `orderBy[${parameters.orderByField}]=${parameters.orderByDirection}`;
-        // const filterUrl = Object.keys(parameters.filters)
-        //     .map(field => {
-        //         return `filters[${field}]=${parameters.filters[field]}`;
-        //     })
-        //     .join('&');
+        const { status, assigned_to } = parameters.filters;
+        const keywordUrl = `filter[keyword]=${parameters.keyword}`;
+        const sort = `sort=${parameters.orderByDirection === 'desc'
+            ? '-'
+            : ''}${parameters.orderByField}`;
         const pageUrl = `page=${parameters.page}&per_page=${parameters.perPage}`;
         const includes = [
-            'user.panels.complianceSections.defaultAssignments',
             'panels.complianceSections.assignments',
-            'panels.complianceSections.comments'
+            'panels.complianceSections.comments',
+            'panels.complianceSections.defaultAssignments',
+            'staff'
         ];
 
-        const endpoint = `/preferred-suppliers?include=${includes.join(',')}&${[
-            // keywordUrl,
-            // fields,
-            // orderBy,
-            // filterUrl,
+        const endpoint = `/preferred-suppliers?include=${[
+            includes.join(','),
+            parameters.keyword ? keywordUrl : '',
+            sort,
+            status ? 'filter[status]=' + status : '',
+            assigned_to ? 'filter[assigned_to]=' + assigned_to : '',
             pageUrl
-        ].join('&')}`;
+        ]
+            .filter(parts => parts)
+            .join('&')}`;
 
         if (forDownload) {
             return downloadBlob(
-                endpoint,
+                '/preferred-suppliers/export-compliance-report',
                 `Sign Offs Report - ${format(new Date(), 'MMMM D, YYYY')}.csv`,
                 () => {
                     dispatch({
-                        type: actions.DOWNLOADED_ASSIGNMENTS
+                        type: actions.DOWNLOADED_PREFERRED_SUPPLIERS
                     });
                 }
             );
         }
 
-        return axios
-            .get(endpoint)
-            .then(response => {
-                return dispatch({
-                    type: actions.RECEIVE_ASSIGNMENTS,
-                    assignments: response.data
-                });
-            })
-            .catch(response => {
-                dispatch({
-                    type: actions.API_ERROR,
-                    error: response.response.data.message
-                });
+        return axios.get(endpoint).then(response => {
+            return dispatch({
+                type: actions.RECEIVE_PREFERRED_SUPPLIERS,
+                assignments: response.data
             });
+        });
+        // .catch(response => {
+        //     dispatch({
+        //         type: actions.API_ERROR,
+        //         error: response.response.data.message
+        //     });
+        // });
     };
 }
 
-export function toggleCommentModal(assignmentId) {
+export function toggleCommentModal(sectionId) {
     return {
         type: actions.TOGGLE_COMMENT_MODAL,
-        assignmentId
+        sectionId
     };
 }
 
@@ -88,24 +86,6 @@ export function fetchStaff() {
                 staff: response.data
             });
         });
-    };
-}
-
-export function fetchComments(assignmentId, sectionId, preferredSupplierId) {
-    return dispatch => {
-        dispatch({
-            type: actions.FETCH_COMMENT
-        });
-
-        return axios
-            .get(`/compliance/comments/${sectionId}/${preferredSupplierId}`)
-            .then(response => {
-                dispatch({
-                    type: actions.RECEIVE_COMMENT,
-                    assignmentId,
-                    comments: response.data
-                });
-            });
     };
 }
 

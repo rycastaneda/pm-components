@@ -7,35 +7,29 @@ const INITIAL_STATE = {
 
 export function suppliers(state = INITIAL_STATE, action) {
     switch (action.type) {
-        case actions.RECEIVE_ASSIGNMENTS:
-            return receiveAssignments(state, action);
-        case actions.TOGGLE_SUPPLIER_ROW:
-            state.byId[action.supplierId].isOpen = !state.byId[
-                action.supplierId
-            ].isOpen;
-            return { ...state };
+        case actions.RECEIVE_PREFERRED_SUPPLIERS:
+            return receivePreferredSuppliers(state, action);
     }
 
     return state;
 }
 
-function receiveAssignments(state, action) {
+function receivePreferredSuppliers(state, action) {
     const byId = {};
     const allIds = [];
-    action.assignments.data.map(report => {
-        let supplier = byId[report.attributes.preferred_supplier_id];
-        if (supplier) {
-            supplier.assignmentIds.push(report.id);
-            return;
-        }
-        byId[report.attributes.preferred_supplier_id] = {
-            id: report.attributes.preferred_supplier_id,
-            supplierTitle: report.attributes.supplier,
-            isOpen: false,
-            assignmentIds: [report.id]
-        };
 
-        allIds.push(report.attributes.preferred_supplier_id);
+    const suppliers = action.assignments.included
+        ? action.assignments.included.filter(
+              include => include.type === 'suppliers'
+          )
+        : [];
+
+    suppliers.map(supplier => {
+        byId[supplier.id] = {
+            id: supplier.id,
+            ...supplier.attributes
+        };
+        allIds.push(supplier.id);
     });
 
     return {

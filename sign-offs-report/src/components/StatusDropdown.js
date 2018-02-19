@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { options } from '../constants/filters';
+import { prefStatus } from '../constants/supplierStatus';
 import Select from 'react-select';
 
 const StatusDropdown = ({ selectedStatus, onStatusChange }) => {
@@ -12,7 +12,7 @@ const StatusDropdown = ({ selectedStatus, onStatusChange }) => {
             valueRenderer={valueRender}
             backspaceToRemoveMessage=""
             multi={true}
-            options={options}
+            options={Object.values(prefStatus)}
             value={selectedStatus}
             onChange={onStatusChange}
         />
