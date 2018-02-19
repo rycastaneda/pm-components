@@ -77,6 +77,7 @@ export function getPreferredSuppliers(state) {
 
     function getSection(sectionId) {
         let section = rawSections.byId[sectionId];
+        count += section.assignmentIds.length;
         return {
             ...section,
             assignments: section.assignmentIds.map(getAssignment),
@@ -86,7 +87,6 @@ export function getPreferredSuppliers(state) {
 
     function getPanel(panelId) {
         let panel = rawPanels.byId[panelId];
-        count += panel.sectionIds.length;
         return { ...panel, sections: panel.sectionIds.map(getSection) };
     }
 
@@ -101,5 +101,5 @@ export function getPreferredSuppliers(state) {
                 count
             };
         })
-        .filter(supplier => supplier.panels.length);
+        .filter(supplier => supplier.count);
 }
