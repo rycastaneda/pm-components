@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-const ViewSelector = ({ view, changeView }) => {
+const ViewSelector = ({ view, changeView, canViewAll }) => {
     const setActive = (view, currentView) =>
         view === currentView ? 'btn-default' : 'btn-reverse';
 
@@ -13,13 +13,15 @@ const ViewSelector = ({ view, changeView }) => {
                 onClick={changeView}>
                 Single
             </button>
-            <button
-                id="all"
-                type="button"
-                className={`btn ${setActive('all', view)}`}
-                onClick={changeView}>
-                All
-            </button>
+            {canViewAll ? (
+                <button
+                    id="all"
+                    type="button"
+                    className={`btn ${setActive('all', view)}`}
+                    onClick={changeView}>
+                    All
+                </button>
+            ) : null}
             <button
                 id="compare"
                 type="button"
@@ -33,7 +35,8 @@ const ViewSelector = ({ view, changeView }) => {
 
 ViewSelector.propTypes = {
     view: PropTypes.string.isRequired,
-    changeView: PropTypes.func.isRequired
+    changeView: PropTypes.func.isRequired,
+    canViewAll: PropTypes.bool.isRequired
 };
 
 export default ViewSelector;

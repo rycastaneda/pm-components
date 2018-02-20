@@ -41,7 +41,7 @@
     "react": "15.3.2",
     "react-addons-test-utils": "15.3.2",
     "react-autosuggest": "6.0.4",
-    "react-datetime" : "2.8.2",
+    "react-datetime": "2.8.2",
     "react-dom": "15.3.2",
     "react-dropdown": "1.1.0",
     "react-hot-loader": "3.0.0-beta.4",

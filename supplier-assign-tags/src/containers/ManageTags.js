@@ -138,7 +138,7 @@ class ManageTags extends Component {
                                 placeholder="Enter your comment"
                                 defaultValue={this.state.focusedTagComment}
                                 onChange={event => this.setState({ focusedTagComment:event.target.value }) }
-                            / >
+                            />
                         </div>
                         <div className="mar-top  col-xs-12">
                             <button className="btn pull-right"

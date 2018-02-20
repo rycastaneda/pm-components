@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import build from 'redux-object';
+import { selectFromStore } from '../../utils/selectFromStore';
 import * as actions from '../../actions/evaluationAssignmentsAction';
 
 const RfqListDropdown = ({ evaluationTypesRfq, isLoading, actions }) => (
@@ -43,8 +43,8 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const  isLoading = state.evaluationAssignment.meta['/request-for-quotations'].loading;
-    const evaluationTypesRfq = (state.evaluationAssignment.meta['/request-for-quotations'].data || []).map(object => build(state.evaluationAssignment, 'requestForQuotations', object.id));
+    const  isLoading = state.evaluationAssignment.meta['/request-for-quotations?filter[sent]=1&filter[archived]=0'].loading;
+    const evaluationTypesRfq = selectFromStore(state.evaluationAssignment, '/request-for-quotations', 'requestForQuotations');
 
     return {
         ...ownProps,

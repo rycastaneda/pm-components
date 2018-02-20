@@ -2,7 +2,8 @@ import * as actions from '../constants/ActionTypes';
 
 const INITIAL_STATE = {
     byId: {},
-    allIds: []
+    allIds: [],
+    expandAll: false
 };
 
 export function criterion(state = INITIAL_STATE, action) {
@@ -13,13 +14,23 @@ export function criterion(state = INITIAL_STATE, action) {
             state.byId[action.criterionId].currentTab = action.tab;
             return { ...state };
         case actions.TOGGLE_CRITERION_COLLAPSE:
-            state.byId[action.criterionId].isOpen = !state.byId[
-                action.criterionId
-            ].isOpen;
-            return { ...state };
+            return toggleCriterionCollapse(state, action);
     }
 
     return state;
+}
+
+function toggleCriterionCollapse(state, action) {
+    if (action.criterionId) {
+        state.byId[action.criterionId].isOpen = !state.byId[action.criterionId]
+            .isOpen;
+    } else {
+        state.allIds.map(criteriaId => {
+            state.byId[criteriaId].isOpen = !state.expandAll;
+        });
+        state.expandAll = !state.expandAll;
+    }
+    return { ...state };
 }
 
 function receiveCriteria(state, action) {
@@ -27,7 +38,7 @@ function receiveCriteria(state, action) {
     if (action.evaluation.included) {
         action.evaluation.included
             .filter(included => included.type === 'evaluation-criteria')
-            .map(criteria => {
+            .map((criteria, index) => {
                 let questionIds = [];
 
                 if (criteria.relationships) {
@@ -40,7 +51,7 @@ function receiveCriteria(state, action) {
                     id: +criteria.id,
                     questionIds,
                     ...criteria.attributes,
-                    isOpen: false,
+                    isOpen: !index, // open first one
                     currentTab: 'responses'
                 };
 
@@ -52,6 +63,7 @@ function receiveCriteria(state, action) {
 
     return {
         byId,
-        allIds
+        allIds,
+        expandAll: state.expandAll
     };
 }
