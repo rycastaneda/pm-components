@@ -17,8 +17,8 @@ const mockStore = configureMockStore(middlewares);
 axios.defaults.baseURL = 'https://httpbin.org/anything';
 
 describe('Evaluation actions', function() {
-
     const assignmentId = 1;
+    const canViewAll = true;
     const view = 'all';
     const criterionId = 1;
     const tab = 'reports';
@@ -52,16 +52,16 @@ describe('Evaluation actions', function() {
             }
         });
         return store
-            .dispatch(actions.fetchEvaluation(assignmentId, view))
+            .dispatch(actions.fetchEvaluation(assignmentId, view, canViewAll))
             .then(() => {
                 let actions = store.getActions();
                 expect(actions[0]).to.eql({
                     type: FETCH_EVALUATION,
                     assignmentId,
-                    currentView: view
+                    currentView: view,
+                    canViewAll
                 });
                 expect(actions[1].type).to.eql(RECEIVE_EVALUATION);
             });
     });
-
 });

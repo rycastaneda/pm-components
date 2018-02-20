@@ -192,7 +192,8 @@ export function parseAssignmentsFromData(evaluationAssignmentsData, userProfile)
             } = item;
 
             createdBy = createdBy.id;
-            let assignedOn = moment(createdAt.date).format('DD/MM/YYYY');
+
+            let assignedOn = moment.utc(createdAt.date).local().format('DD/MM/YYYY');
             let evaluationTemplate = { id:template.id, active:template.id, title:template.title };
             let assignedUser = assigneeUser.staff;
             let userName = assignedUser.firstName+' '+assignedUser.lastName;
@@ -200,6 +201,7 @@ export function parseAssignmentsFromData(evaluationAssignmentsData, userProfile)
             let linkedTo = { id:assignmentType.id, title:assignmentType.title };
             assignmentStatus = { id:assignmentStatus.id, title:assignmentStatus.title };
             let isAdmin =  Boolean(userProfile.pitRole === 'admin');
+            let isViewAll = Boolean(userProfile.pitRole === 'view_all');
             // creator can delete his own assignments
             let isDeleteAllowed = isAdmin||(item.createdBy === userProfile.userId);
             isDeleteAllowed =isDeleteAllowed&&(assignmentStatus.id==='1');
@@ -209,21 +211,19 @@ export function parseAssignmentsFromData(evaluationAssignmentsData, userProfile)
                 case '1':
                     supplier = {
                         id: assignmentEntityInstance.id,
-                        title:assignmentEntityInstance.title
+                        title: assignmentEntityInstance.title
                     };
                     break;
                 case '2':
-                    supplier = assignmentEntityInstance.matchedSupplier[0];
                     supplier = {
-                        id: supplier.id,
-                        title:supplier.title
+                        id: assignmentEntityInstance.matchedSupplier.id,
+                        title: assignmentEntityInstance.matchedSupplier.title
                     };
                     break;
                 default:
-                    supplier = assignmentEntityInstance.supplier;
                     supplier = {
-                        id: supplier.id,
-                        title:supplier.title
+                        id: assignmentEntityInstance.supplier.id,
+                        title: assignmentEntityInstance.supplier.title
                     };
             }
 
@@ -241,7 +241,7 @@ export function parseAssignmentsFromData(evaluationAssignmentsData, userProfile)
             let view_compare_url = EVALUATION_ASSIGNMENT_ANALYSE+id+'#compare';
             // admin can delete any assignment
 
-            return { id, assignedOn, createdBy, evaluationTemplate, assignedUser, linkedTo, assignmentStatus, supplier, complete_url, view_all_url, view_single_url, isDeleteAllowed, isMarkInProgressAllowed, view_compare_url };
+            return { id, assignedOn, createdBy, evaluationTemplate, assignedUser, linkedTo, assignmentStatus, supplier, complete_url, view_all_url, view_single_url, isAdmin, isViewAll, isDeleteAllowed, isMarkInProgressAllowed, view_compare_url };
         });
     }
     return evaluationAssignments;

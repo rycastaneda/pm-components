@@ -6,6 +6,7 @@ import { staff } from './staff';
 import { comments } from './comments';
 import { entity } from './entity';
 import { assignments } from './assignments';
+import { uploads } from './uploads';
 import { ui } from './ui';
 
 export default combineReducers({
@@ -15,6 +16,7 @@ export default combineReducers({
     questions,
     staff,
     comments,
+    uploads,
     ui,
     entity
 });

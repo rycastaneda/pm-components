@@ -22,6 +22,7 @@ function receiveComment(state, action) {
 
     // Map comment id to staffId which is from user then to staff
     const commentIdtoStaffId = {};
+    const commentIdtoAssignmentId = {};
     if (
         data.relationships.relatedAssignments &&
         data.relationships.relatedAssignments.data.length
@@ -34,12 +35,14 @@ function receiveComment(state, action) {
                 let userId = assignment.relationships.assigneeUser.data.id;
 
                 commentIdtoStaffId[response.id] = getStaffId(userId);
+                commentIdtoAssignmentId[response.id] = assignment.id;
             });
         });
     } else {
         data.relationships.questionResponses.data.filter(response => {
             let userId = data.relationships.assigneeUser.data.id;
             commentIdtoStaffId[response.id] = getStaffId(userId);
+            commentIdtoAssignmentId[response.id] = data.id;
         });
     }
 
@@ -62,6 +65,10 @@ function receiveComment(state, action) {
                 score: +comment.attributes.response_value,
                 staffId: commentIdtoStaffId[comment.id],
                 questionId: comment.relationships.question.data.id,
+                assignmentId: commentIdtoAssignmentId[comment.id],
+                documentIds: comment.relationships.documents.data.map(
+                    upload => upload.id
+                ),
                 criteriaId:
                     questionIdtoCriteriaId[
                         comment.relationships.question.data.id

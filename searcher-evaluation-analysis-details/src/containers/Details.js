@@ -1,6 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchEvaluation, changeView } from '../actions/evaluation';
+import {
+    fetchEvaluation,
+    changeView,
+    toggleCriterionCollapse
+} from '../actions/evaluation';
 
 import Criterion from './Criterion';
 import Loader from '../components/Loader';
@@ -11,6 +15,7 @@ export class Details extends Component {
     constructor(props) {
         super(props);
         this.changeView = this.changeView.bind(this);
+        this.toggleCriterionCollapse = this.toggleCriterionCollapse.bind(this);
     }
 
     componentDidMount() {
@@ -18,9 +23,11 @@ export class Details extends Component {
         const assignmentId = parent.getAttribute(
             'data-evaluation-assignment-id'
         );
-        const currentView = parent.getAttribute('data-view');
-
-        this.props.dispatch(fetchEvaluation(assignmentId, currentView));
+        const canViewAll = parent.getAttribute('data-view-all') === '1';
+        const currentView = location.hash.substr(1);
+        this.props.dispatch(
+            fetchEvaluation(assignmentId, currentView, canViewAll)
+        );
     }
 
     changeView(event) {
@@ -28,11 +35,42 @@ export class Details extends Component {
         this.props.dispatch(fetchEvaluation(null, event.target.id));
     }
 
+    toggleCriterionCollapse() {
+        this.props.dispatch(toggleCriterionCollapse(null));
+    }
+
     render() {
-        const { criteria, currentView, isLoading, error } = this.props;
+        const {
+            criteria,
+            currentView,
+            isLoading,
+            error,
+            expandAll,
+            canViewAll,
+            staffAssignee,
+            staffAssigneeId
+        } = this.props;
         const criteriaComponents = criteria.map(criterion => {
-            return <Criterion key={criterion.id} {...criterion} />;
+            return (
+                <Criterion
+                    key={criterion.id}
+                    {...criterion}
+                    staffAssignee={staffAssignee}
+                    staffAssigneeId={staffAssigneeId}
+                />
+            );
         });
+
+        const expandToggle = (
+            <div className="pull-left">
+                <button
+                    className="btn db-function mar-top-sm"
+                    onClick={this.toggleCriterionCollapse}>
+                    {expandAll ? 'Collapse All' : 'Expand All'}
+                </button>
+            </div>
+        );
+
         return (
             <div ref={ref => (this.domRef = ref)}>
                 {error ? (
@@ -40,12 +78,15 @@ export class Details extends Component {
                 ) : (
                     <div>
                         <div className="row">
+                            {currentView !== 'compare' ? expandToggle : null}
                             <div className="pull-right">
                                 <ViewSelector
                                     view={currentView}
                                     changeView={this.changeView}
+                                    canViewAll={canViewAll}
                                 />
                             </div>
+                            <div className="clearfix" />
                         </div>
                         <div className="row mar-top-sm criteria-list">
                             {isLoading ? (
@@ -67,7 +108,11 @@ Details.propTypes = {
     dispatch: PropTypes.func.isRequired,
     criteria: PropTypes.array.isRequired,
     currentView: PropTypes.string.isRequired,
+    staffAssignee: PropTypes.string.isRequired,
+    staffAssigneeId: PropTypes.number.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    expandAll: PropTypes.bool.isRequired,
+    canViewAll: PropTypes.bool.isRequired,
     error: PropTypes.string
 };
 
@@ -79,6 +124,7 @@ function mapStateToProps(state) {
         questions: rawQuestions,
         staff: rawStaff,
         comments: rawComments,
+        uploads: rawUploads,
         ui
     } = state;
 
@@ -86,11 +132,31 @@ function mapStateToProps(state) {
     let isLoading = ui.isLoading.who === 'evaluation' && !ui.isLoading.done;
     let currentView = ui.currentView;
     let error = ui.error;
+    let canViewAll = ui.canViewAll;
+    let expandAll = rawCriterion.expandAll;
+    let staffAssignee = '';
+    let staffAssigneeId = 0;
+
+    if (isLoading) {
+        return {
+            criteria,
+            currentView,
+            isLoading,
+            error,
+            expandAll,
+            canViewAll,
+            staffAssignee,
+            staffAssigneeId
+        };
+    }
 
     const getComments = commentId => {
         let comment = rawComments.byId[commentId];
         let staff = rawStaff.byId[comment.staffId];
         comment.staff = staff.name;
+        comment.uploads = comment.documentIds.map(
+            documentId => rawUploads.byId[documentId]
+        );
         return comment;
     };
 
@@ -107,25 +173,27 @@ function mapStateToProps(state) {
         return criteria;
     };
 
-    if (isLoading) {
-        return {
-            criteria,
-            currentView,
-            isLoading,
-            error
-        };
-    }
-
     let criteriaIds = rawCriterion.allIds;
     if (ui.currentView !== 'compare') {
         let evaluationId = rawAssignments.byId[ui.assignmentId].templateId;
-
-        criteriaIds = rawEvaluation.byId[evaluationId].criteriaIds;
+        let evaluation = rawEvaluation.byId[evaluationId];
+        criteriaIds = evaluation.criteriaIds;
+        staffAssignee = rawStaff.byId[evaluation.staffAssigneeId].name;
+        staffAssigneeId = +evaluation.staffAssigneeId;
     }
 
     criteria = criteriaIds.map(getCriteria);
 
-    return { criteria, currentView, isLoading, error };
+    return {
+        criteria,
+        currentView,
+        isLoading,
+        error,
+        expandAll,
+        canViewAll,
+        staffAssignee,
+        staffAssigneeId
+    };
 }
 
 export default connect(mapStateToProps)(Details); // adds dispatch prop
