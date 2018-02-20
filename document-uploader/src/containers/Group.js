@@ -70,7 +70,7 @@ class Group extends Component {
     }
 
     handleFilterDropDocuments(files) {
-        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx', '.dwg'];
+        const allowedExtenstions = ['.pdf', '.png', '.jpg', '.jpeg', '.csv', '.xls', '.xlsx', '.doc', '.docx', '.dwg', '.ppt', '.pptx', '.mpp', '.vsd', '.pptm', '.docm', '.xlsm', '.vsdx'];
         let invalid = [];
 
         let filteredFiles = files.filter((file) => {
@@ -86,7 +86,7 @@ class Group extends Component {
         this.handleDropDocuments(filteredFiles);
 
         this.setState({
-            error: filteredFiles.length !== files.length ? 
+            error: filteredFiles.length !== files.length ?
                 invalid.join(', ') + ' - file type not supported'  : ''
         });
     }

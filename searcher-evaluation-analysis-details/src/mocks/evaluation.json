@@ -80,6 +80,19 @@
       }
     },
     {
+          "type": "uploads",
+          "id": "330262",
+          "attributes": {
+            "original_name": "Screen Shot 2018-01-08 at 3.40.07 PM.png",
+            "hash": "7ZD93PzcKln2sKWm1292795151",
+            "created_on": "2018-01-14 23:35:21",
+            "filetype": "png",
+            "filesize": 126297,
+            "path": "documents\/7ZD93PzcKln2sKWm1292795151",
+            "download_url": "https:\/\/s3.ap-southeast-2.amazonaws.com\/upload.staging.plantminer.com.au\/documents\/7ZD93PzcKln2sKWm1292795151?response-content-disposition=attachment%3B%20filename%3D%22Screen%20Shot%202018-01-08%20at%203.40.07%20PM.png%22&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJIU6BIH6USLHNP2Q%2F20180116%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20180116T003439Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=b51c8e900677413496d171c3bb70ef6754cdc82d01507bf9b7b56929f58a2c56"
+          }
+        },
+    {
       "type": "evaluation-question-type-definitions",
       "id": "3",
       "attributes": {
@@ -757,8 +770,13 @@
       },
       "relationships": {
         "documents": {
-          "data": []
-        },
+                  "data": [
+                    {
+                      "type": "uploads",
+                      "id": "330262"
+                    }
+                  ]
+                },
         "question": {
           "data": {
             "type": "evaluation-questions",

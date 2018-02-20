@@ -18,5 +18,8 @@
 	"engines": {
 		"node": ">=4",
 		"npm": ">=3.0.0"
+	},
+	"dependencies": {
+		"babel-polyfill": "^6.26.0"
 	}
 }

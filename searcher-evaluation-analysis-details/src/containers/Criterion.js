@@ -32,12 +32,22 @@ export class Criterion extends Component {
             questions,
             isOpen,
             currentTab,
-            currentView
+            currentView,
+            staffAssigneeId,
+            staffAssignee,
+            suppliers
         } = this.props;
 
         const questionComponents = questions.length ? (
             questions.map((question, index) => (
-                <Question key={question.id} number={index + 1} {...question} />
+                <Question
+                    key={question.id}
+                    number={index + 1}
+                    {...question}
+                    suppliers={suppliers}
+                    staffAssignee={staffAssignee}
+                    staffAssigneeId={staffAssigneeId}
+                />
             ))
         ) : (
             <div className="mar-top-sm text-center">No Responses yet.</div>
@@ -51,35 +61,34 @@ export class Criterion extends Component {
                         ? ''
                         : 'collapsed'}`}>
                     <div className="row">
-                        <div className="col-md-6">
-                            <div className="pmaccordion__title font-rg">{title}</div>
-                        </div>
-                        <div className="col-md-6 text-right">
-                            <div className="weight">
-                                Weighting: <strong>{weight}%</strong>
+                        <div className="col-sm-9 col-md-9">
+                            <div className="pmaccordion__title font-rg">
+                                {title}
                             </div>
+                        </div>
+                        <div className="col-sm-3 col-md-3 text-right">
+                            <span className="weight">
+                                Weighting: <strong>{weight}%</strong>
+                            </span>
                         </div>
                     </div>
                 </a>
 
-                <div
-                    className={`collapse ${isOpen
-                        ? 'in'
-                        : ''}`}>
-                        <div className="pmaccordion__body">
-                    {currentView === 'all' ? (
-                        <Header
-                            currentView={currentView}
-                            currentTab={currentTab}
-                            changeTab={this.changeTab}
-                        />
-                    ) : null}
-                    {currentTab === 'responses' ? (
-                        questionComponents
-                    ) : (
-                        <Report questions={questions} />
-                    )}
-                </div>
+                <div className={`collapse ${isOpen ? 'in' : ''}`}>
+                    <div className="pmaccordion__body">
+                        {currentView === 'all' ? (
+                            <Header
+                                currentView={currentView}
+                                currentTab={currentTab}
+                                changeTab={this.changeTab}
+                            />
+                        ) : null}
+                        {currentTab === 'responses' ? (
+                            questionComponents
+                        ) : (
+                            <Report questions={questions} />
+                        )}
+                    </div>
                 </div>
             </div>
         );
@@ -93,13 +102,26 @@ Criterion.propTypes = {
     isOpen: PropTypes.bool,
     currentView: PropTypes.string,
     currentTab: PropTypes.string,
+    suppliers: PropTypes.array,
     questions: PropTypes.array,
     reports: PropTypes.array,
+    staffAssignee: PropTypes.string,
+    staffAssigneeId: PropTypes.number.isRequired,
     dispatch: PropTypes.func
 };
 
 function mapStateToProps(state) {
-    return { currentView: state.ui.currentView };
+    const { staff: rawStaff } = state;
+
+    let suppliers = [];
+
+    if (state.ui.currentView === 'all') {
+        suppliers = rawStaff.allIds
+            .filter(supplierId => !rawStaff.byId[supplierId].isChair)
+            .map(supplierId => rawStaff.byId[supplierId]);
+    }
+
+    return { currentView: state.ui.currentView, suppliers };
 }
 
 export default connect(mapStateToProps)(Criterion); // adds dispatch prop
