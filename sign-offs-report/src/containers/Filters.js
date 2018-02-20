@@ -95,9 +95,9 @@ class Filters extends Component {
                                         onStatusChange={this.onStatusChange}
                                     />
                                 </div>
-                                <div className="form-group staff-dropdown">
-                                    <label>Assigned To</label>
-                                    {canViewAll ? (
+                                {canViewAll ? (
+                                    <div className="form-group staff-dropdown">
+                                        <label>Assigned To</label>
                                         <StaffDropdown
                                             staff={staff.data}
                                             isLoading={staff.isLoading}
@@ -106,8 +106,8 @@ class Filters extends Component {
                                             }
                                             onStaffChange={this.onStaffChange}
                                         />
-                                    ) : null}
-                                </div>
+                                    </div>
+                                ) : null}
                                 <button className="btn mar-r-sm" type="submit">
                                     Apply Filters
                                 </button>

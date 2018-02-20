@@ -13,7 +13,7 @@ export function fetchStaff(sectionId) {
         });
 
         return axios
-            .get('/staff')
+            .get('/staff?filter[pitRoles]=1,2,3&filter[is_deleted]=0')
             .then(response => {
                 dispatch({
                     type: actions.RECEIVE_STAFF,
