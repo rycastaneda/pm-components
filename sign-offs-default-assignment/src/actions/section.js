@@ -10,7 +10,7 @@ export function fetchSections(panelId) {
 
         return axios
             .get(
-                `/panels/${panelId}/compliance-sections?include=defaultAssignments,assignments`
+                `/panels/${panelId}/compliance-sections?include=defaultAssignments`
             )
             .then(response => {
                 return dispatch({
