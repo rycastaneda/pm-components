@@ -11,7 +11,7 @@ export function fetchStaff(refresh = false) {
             type: actions.TOGGLE_MANAGE_SECTION_MODAL_LOADING
         });
 
-        return axios.get('/staff').then(response => {
+        return axios.get('/staff?filter[pitRoles]=1,2,3&filter[is_deleted]=0').then(response => {
             dispatch({
                 type: actions.RECEIVE_STAFF,
                 staffs: response.data
