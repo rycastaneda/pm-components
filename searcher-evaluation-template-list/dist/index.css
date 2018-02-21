@@ -1,5 +1,7 @@
 .evaluation_templates .pepp-content .db-content {
   padding-bottom: 160px; }
+  .evaluation_templates .pepp-content .db-content td:first-of-type {
+    word-break: break-all; }
 
 .loading-animation {
   top: 0;
@@ -64,6 +66,9 @@
     background: #e68020;
     height: 10%;
     margin-top: 25%; } }
+
+.evaluation_templates .pepp-content .db-content ::-ms-clear {
+  display: none; }
 
 .toast-container {
   background: #3fcc8b;

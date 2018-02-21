@@ -16,7 +16,8 @@ export function getUsers(userData) {
     });
 }
 
-export function getTemplateServiceUrlFor(keyword=null, status =null, date=null, userId=null, maxRowLength=null, page=null) {
+export function getTemplateServiceUrlFor(keyword=null, status =null, userId=null, maxRowLength=null, page=null, isDateRangeValid, dateTimeEnd, dateTimeStart) {
+    window.console.log('build da url.');
     let urlPostfix='meta=instances,completed';
     if (page) {
         urlPostfix +='&page='+page;
@@ -35,8 +36,9 @@ export function getTemplateServiceUrlFor(keyword=null, status =null, date=null, 
             urlPostfix+=0;
         }
     }
-    if (date) {
-        urlPostfix +='&filter[created_at]='+date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+    if (isDateRangeValid) {
+        urlPostfix +=`&filter[start_date]=${dateTimeStart}`;
+        urlPostfix +=`&filter[end_date]=${dateTimeEnd}`;
     }
     if (userId) {
         urlPostfix +='&filter[created_by]='+userId;

@@ -12,7 +12,7 @@ export const EVALUATION_ASSIGNMENT_ANALYSE = '/searcher/evaluation_assignments/a
 export function getAssignmentServiceUrlFor(queryParams, isExport=false) {
 
     let urlPostfix = '';
-    let { currentPage, maxRowLength, selectedStatus, selectedLinkedTo, selectedTemplate, selectedAssignedTo, selectedSupplier, selectedEntityInstanceId, selectedAssignedOn } =queryParams;
+    const { currentPage, maxRowLength, selectedStatus, selectedLinkedTo, selectedTemplate, selectedAssignedTo, selectedSupplier, selectedEntityInstanceId } = queryParams;
     if (currentPage) {
         urlPostfix += '?page=' + currentPage;
     }
@@ -39,11 +39,17 @@ export function getAssignmentServiceUrlFor(queryParams, isExport=false) {
     if (selectedSupplier&&selectedSupplier!=='') {
         urlPostfix +='&filter[preferred_supplier_id]='+selectedSupplier;
     }
-    if (selectedAssignedOn&&selectedAssignedOn!=='') {
-        let assignedOn = new Date(selectedAssignedOn);
-        selectedAssignedOn = assignedOn.getFullYear()+'-'+(assignedOn.getMonth()+1)+'-'+assignedOn.getDate();
-        urlPostfix +='&filter[created_at]='+selectedAssignedOn;
+    if (queryParams.isDateRangeValid) {
+        urlPostfix += `&filter[start_date]=${queryParams.dateTimeStart}`;
+        urlPostfix += `&filter[end_date]=${queryParams.dateTimeEnd}`;
     }
+
+    // if (selectedAssignedOn&&selectedAssignedOn!=='') {
+    //     let assignedOn = new Date(selectedAssignedOn);
+    //     selectedAssignedOn = assignedOn.getFullYear()+'-'+(assignedOn.getMonth()+1)+'-'+assignedOn.getDate();
+    //     urlPostfix +='&filter[created_at]='+selectedAssignedOn;
+    // }
+
     let urlPrefix;
     if (isExport) {
         urlPrefix =EVALUATION_ASSIGNMENT_EXPORT_SERVICE;
