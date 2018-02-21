@@ -21,7 +21,7 @@ const AssignmentRow = ({
             <td className="td-center comments">
                 {commentCount ? (
                     <i
-                        className=" col-brand pointer"
+                        className="fa fa-comments col-brand pointer"
                         id={sectionId}
                         onClick={toggleCommentsModal}
                     />

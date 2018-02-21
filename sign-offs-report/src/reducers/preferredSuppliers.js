@@ -105,6 +105,7 @@ export function getPreferredSuppliers(state) {
                         return {
                             ...assignment,
                             id: +assignmentId,
+                            lastUpdated: format(assignment.lastUpdated, 'MM-DD-YYYY'),
                             comments: section.commentIds.map(getComment),
                             sectionId: +section.id,
                             sectionTitle: section.title,
@@ -124,7 +125,6 @@ export function getPreferredSuppliers(state) {
                 id: +supplierId,
                 title: rawSuppliers.byId[supplier.supplierId].title,
                 panels: supplier.panelIds
-                    .concat(supplier.panelIds)
                     .map(panelId => rawPanels.byId[panelId]),
                 dateApplied: supplier.dateApplied,
                 status: supplier.status,
@@ -133,6 +133,7 @@ export function getPreferredSuppliers(state) {
             };
         })
         .filter(supplier => {
+            console.log("supplier", supplier); // eslint-disable-line quotes, no-console
             return supplier.assignments.length;
         });
 }
