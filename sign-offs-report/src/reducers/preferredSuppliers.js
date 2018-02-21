@@ -70,14 +70,13 @@ export function getPreferredSuppliers(state) {
         .map(supplierId => {
             let supplier = rawPrefSuppliers.byId[supplierId];
 
-            function getPanel(sectionId) {
+            function getPanels(sectionId) {
                 return rawPanels.allIds
                     .filter(panelId => {
                         let panel = rawPanels.byId[panelId];
                         return panel.sectionIds.includes(sectionId);
                     })
-                    .map(panelId => rawPanels.byId[panelId])
-                    .pop();
+                    .map(panelId => rawPanels.byId[panelId]);
             }
 
             function getComment(commentId) {
@@ -100,7 +99,7 @@ export function getPreferredSuppliers(state) {
                     .map(assignmentId => {
                         let assignment = rawAssignments.byId[assignmentId];
                         let section = getSection(assignmentId);
-                        let panel = getPanel(section.id);
+                        let panels = getPanels(section.id);
                         let staff = rawStaff.byId[+assignment.staffId];
                         return {
                             ...assignment,
@@ -109,7 +108,7 @@ export function getPreferredSuppliers(state) {
                             comments: section.commentIds.map(getComment),
                             sectionId: +section.id,
                             sectionTitle: section.title,
-                            panelTitle: panel.short_name,
+                            panels,
                             staffName: staff
                                 ? `${staff.first_name} ${staff.last_name}`
                                 : ''
@@ -133,7 +132,6 @@ export function getPreferredSuppliers(state) {
             };
         })
         .filter(supplier => {
-            console.log("supplier", supplier); // eslint-disable-line quotes, no-console
             return supplier.assignments.length;
         });
 }

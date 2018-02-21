@@ -4,20 +4,24 @@ import Header from './Header';
 import { ROW_HEADERS } from '../constants/tables';
 
 const Panel = ({ assignments, toggleCommentsModal }) => {
-    const assignmentComponents = assignments.map(assignment => (
-        <AssignmentRow
-            key={assignment.id}
-            id={assignment.id}
-            sectionId={assignment.sectionId}
-            sectionTitle={assignment.sectionTitle}
-            staffName={assignment.staffName}
-            statusId={assignment.statusId}
-            panelTitle={assignment.panelTitle}
-            lastUpdated={assignment.lastUpdated}
-            commentCount={assignment.comments.length}
-            toggleCommentsModal={toggleCommentsModal}
-        />
-    ));
+    const assignmentComponents = assignments.map(assignment => {
+        return assignment.panels.map(panel => {
+            return (
+                <AssignmentRow
+                    key={assignment.id + '-' + panel.short_name}
+                    id={assignment.id}
+                    sectionId={assignment.sectionId}
+                    sectionTitle={assignment.sectionTitle}
+                    staffName={assignment.staffName}
+                    statusId={assignment.statusId}
+                    panelTitle={panel.short_name}
+                    lastUpdated={assignment.lastUpdated}
+                    commentCount={assignment.comments.length}
+                    toggleCommentsModal={toggleCommentsModal}
+                />
+            );
+        });
+    });
 
     return (
         <tr>
