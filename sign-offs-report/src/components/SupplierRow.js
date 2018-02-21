@@ -6,6 +6,7 @@ const SupplierRow = ({
     panels,
     dateApplied,
     status,
+    statusClass,
     isOpen,
     toggleSupplierRow,
     goToSupplierDetails
@@ -28,19 +29,23 @@ const SupplierRow = ({
                 </div>
             </div>
         </td>
-        <td width="20%">
-            {panels.map(panel => (
+        <td width="30%">
+            {panels.map((panel, idx) => (
                 <span
-                    key={panel.id}
-                    className={`badge ${panels.length > 1
-                        ? 'mar-top-sm'
-                        : ''}`}>
-                    {panel.title}
+                    key={idx}
+                    data-content={panel.title}
+                    className={`label label-lg label-plantminer bs-tooltip ${panels.length >
+                    3
+                        ? 'mar-top-sm mar-l-sm'
+                        : 'mar-l-sm'}`}>
+                    {panel.short_name}
                 </span>
             ))}
         </td>
-        <td>{dateApplied}</td>
-        <td>{status}</td>
+        <td className="td-center">{dateApplied}</td>
+        <td className="td-center">
+            <span className={`bs-label bs-label-${statusClass}`}>{status}</span>
+        </td>
     </tr>
 );
 
@@ -51,6 +56,7 @@ SupplierRow.propTypes = {
     panels: PropTypes.array,
     dateApplied: PropTypes.string,
     status: PropTypes.string,
+    statusClass: PropTypes.string,
     isOpen: PropTypes.bool,
     toggleSupplierRow: PropTypes.func,
     goToSupplierDetails: PropTypes.func

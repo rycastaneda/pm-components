@@ -38,6 +38,11 @@ export const ROW_HEADERS = [
         sortable: false
     },
     {
+        text: 'Panel',
+        field: 'panel',
+        sortable: false
+    },
+    {
         text: 'Last Updated',
         field: 'lastUpdated',
         sortable: false

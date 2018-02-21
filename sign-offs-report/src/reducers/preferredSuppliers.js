@@ -27,8 +27,11 @@ export function preferredSuppliers(state = INITIAL_STATE, action) {
 }
 
 function receivePreferredSuppliers(state, action) {
-    let byId = {};
-    let allIds = [];
+    let { byId, allIds } = state;
+
+    if (action.type === actions.RECEIVE_PREFERRED_SUPPLIERS) {
+        allIds = [];
+    }
 
     action.assignments.data.map(prefSupplier => {
         byId[prefSupplier.id] = {
@@ -63,43 +66,73 @@ export function getPreferredSuppliers(state) {
         comments: rawComments
     } = state;
 
-    let count = 0;
-
-    function getAssignment(assignmentId) {
-        let assignment = rawAssignments.byId[assignmentId];
-        return { ...assignment, assignedTo: rawStaff.byId[assignment.staffId] };
-    }
-
-    function getComment(commentId) {
-        let comment = rawComments.byId[commentId];
-        return { ...comment, staff: rawStaff.byId[comment.staffId] };
-    }
-
-    function getSection(sectionId) {
-        let section = rawSections.byId[sectionId];
-        count += section.assignmentIds.length;
-        return {
-            ...section,
-            assignments: section.assignmentIds.map(getAssignment),
-            comments: section.commentIds.map(getComment)
-        };
-    }
-
-    function getPanel(panelId) {
-        let panel = rawPanels.byId[panelId];
-        return { ...panel, sections: panel.sectionIds.map(getSection) };
-    }
-
     return rawPrefSuppliers.allIds
         .map(supplierId => {
             let supplier = rawPrefSuppliers.byId[supplierId];
-            count = 0;
+
+            function getPanel(sectionId) {
+                return rawPanels.allIds
+                    .filter(panelId => {
+                        let panel = rawPanels.byId[panelId];
+                        return panel.sectionIds.includes(sectionId);
+                    })
+                    .map(panelId => rawPanels.byId[panelId])
+                    .pop();
+            }
+
+            function getComment(commentId) {
+                let comment = rawComments.byId[commentId];
+                return { ...comment, staff: rawStaff.byId[comment.staffId] };
+            }
+
+            function getSection(assignmentId) {
+                return rawSections.allIds
+                    .filter(sectionId => {
+                        let section = rawSections.byId[sectionId];
+                        return section.assignmentIds.includes(assignmentId);
+                    })
+                    .map(sectionId => rawSections.byId[sectionId])
+                    .pop();
+            }
+
+            function getAssignments() {
+                return rawAssignments.allIds
+                    .map(assignmentId => {
+                        let assignment = rawAssignments.byId[assignmentId];
+                        let section = getSection(assignmentId);
+                        let panel = getPanel(section.id);
+                        let staff = rawStaff.byId[+assignment.staffId];
+                        return {
+                            ...assignment,
+                            id: +assignmentId,
+                            comments: section.commentIds.map(getComment),
+                            sectionId: +section.id,
+                            sectionTitle: section.title,
+                            panelTitle: panel.short_name,
+                            staffName: staff
+                                ? `${staff.first_name} ${staff.last_name}`
+                                : ''
+                        };
+                    })
+                    .filter(
+                        assignment =>
+                            assignment.preferredSupplierId === +supplierId
+                    );
+            }
+
             return {
-                ...supplier,
+                id: +supplierId,
                 title: rawSuppliers.byId[supplier.supplierId].title,
-                panels: supplier.panelIds.map(getPanel),
-                count
+                panels: supplier.panelIds
+                    .concat(supplier.panelIds)
+                    .map(panelId => rawPanels.byId[panelId]),
+                dateApplied: supplier.dateApplied,
+                status: supplier.status,
+                isOpen: supplier.isOpen,
+                assignments: getAssignments()
             };
         })
-        .filter(supplier => supplier.count);
+        .filter(supplier => {
+            return supplier.assignments.length;
+        });
 }

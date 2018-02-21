@@ -113,6 +113,7 @@ export class PreferredSuppliers extends Component {
         const {
             preferredSuppliers,
             staff,
+            suppliers,
             isLoading,
             currentSection
         } = this.props;
@@ -123,7 +124,9 @@ export class PreferredSuppliers extends Component {
                     keyword={keyword}
                     selectedStaff={+filters.assignee}
                     status={filters.status}
+                    selectedSupplier={filters.supplierId}
                     staff={staff}
+                    suppliers={suppliers}
                     canViewAll={canViewAll}
                     downloadPreferredSuppliers={this.fetchPreferredSuppliers}
                     quickSearch={this.quickSearch}
@@ -175,6 +178,7 @@ PreferredSuppliers.propTypes = {
         canViewAll: PropTypes.bool.isRequired
     }),
     isLoading: PropTypes.bool.isRequired,
+    suppliers: PropTypes.array,
     preferredSuppliers: PropTypes.array,
     staff: PropTypes.object,
     currentSection: PropTypes.object
@@ -184,11 +188,22 @@ function mapStateToProps(state) {
     const {
         ui,
         staff: rawStaff,
+        preferredSuppliers: rawPrefSuppliers,
+        suppliers: rawSuppliers,
         sections: rawSections,
         comments: rawComments
     } = state;
 
     let preferredSuppliers = getPreferredSuppliers(state);
+    let suppliers = rawPrefSuppliers.allIds.map(supplierId => {
+        let value = rawPrefSuppliers.byId[supplierId].supplierId;
+        let label = rawSuppliers.byId[value].title;
+        return {
+            value: +supplierId,
+            label
+        };
+    });
+
     let staff = {
         data: rawStaff.allIds
             .map(staffId => {
@@ -229,6 +244,7 @@ function mapStateToProps(state) {
     return {
         parameters: { ...ui },
         preferredSuppliers,
+        suppliers,
         staff,
         isLoading: ui.isLoading,
         currentSection

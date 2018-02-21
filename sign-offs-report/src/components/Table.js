@@ -50,21 +50,19 @@ const Table = ({
                     count={supplier.count}
                     panels={supplier.panels}
                     dateApplied={supplier.dateApplied}
+                    statusClass={prefStatus[supplier.status].class}
                     status={prefStatus[supplier.status].label}
                     isOpen={supplier.isOpen}
                 />
             ];
 
             if (supplier.isOpen) {
-                supplier.panels.map(panel => {
-                    rows.push(
-                        <Panel
-                            title={panel.title}
-                            sections={panel.sections}
-                            toggleCommentsModal={toggleCommentsModal}
-                        />
-                    );
-                });
+                rows.push(
+                    <Panel
+                        assignments={supplier.assignments}
+                        toggleCommentsModal={toggleCommentsModal}
+                    />
+                );
             }
 
             return rows;

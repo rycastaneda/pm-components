@@ -9,7 +9,7 @@ export function fetchPreferredSuppliers(parameters, forDownload) {
             ...parameters
         });
 
-        const { status, assigned_to } = parameters.filters;
+        const { status, assigned_to, supplierId } = parameters.filters;
         const keywordUrl = `filter[keyword]=${parameters.keyword}`;
         const sort = `sort=${parameters.orderByDirection === 'desc'
             ? '-'
@@ -18,7 +18,6 @@ export function fetchPreferredSuppliers(parameters, forDownload) {
         const includes = [
             'panels.complianceSections.assignments',
             'panels.complianceSections.comments',
-            'panels.complianceSections.defaultAssignments',
             'staff'
         ];
 
@@ -28,6 +27,8 @@ export function fetchPreferredSuppliers(parameters, forDownload) {
             sort,
             status ? 'filter[status]=' + status : '',
             assigned_to ? 'filter[assigned_to]=' + assigned_to : '',
+            supplierId ? 'filter[preferred_supplier_id]=' + supplierId : '',
+            'filter[has_compliance]=1',
             pageUrl
         ]
             .filter(parts => parts)
@@ -51,12 +52,17 @@ export function fetchPreferredSuppliers(parameters, forDownload) {
                 assignments: response.data
             });
         });
-        // .catch(response => {
-        //     dispatch({
-        //         type: actions.API_ERROR,
-        //         error: response.response.data.message
-        //     });
-        // });
+    };
+}
+
+export function getSuppliers() {
+    return dispatch => {
+        axios.get('/preferred-suppliers').then(response => {
+            return dispatch({
+                type: actions.RECEIVE_SUPPLIERS,
+                assignments: response.data
+            });
+        });
     };
 }
 
@@ -80,12 +86,14 @@ export function fetchStaff() {
             type: actions.FETCH_STAFF
         });
 
-        return axios.get('/staff?filter[pitRoles]=1,2,3&filter[is_deleted]=0').then(response => {
-            dispatch({
-                type: actions.RECEIVE_STAFF,
-                staff: response.data
+        return axios
+            .get('/staff?filter[pitRoles]=1,2,3&filter[is_deleted]=0')
+            .then(response => {
+                dispatch({
+                    type: actions.RECEIVE_STAFF,
+                    staff: response.data
+                });
             });
-        });
     };
 }
 

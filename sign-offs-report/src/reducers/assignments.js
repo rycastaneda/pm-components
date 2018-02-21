@@ -23,7 +23,10 @@ function receiveAssignments(state, action) {
             .map(assignment => {
                 byId[assignment.id] = {
                     id: assignment.id,
+                    preferredSupplierId:
+                        assignment.attributes.pepp_preferred_supplier_id,
                     statusId: assignment.attributes.status,
+                    lastUpdated: assignment.attributes.status_updated_on,
                     staffId: assignment.relationships.assignedStaff.data.id
                 };
 

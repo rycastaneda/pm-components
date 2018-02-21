@@ -7,7 +7,8 @@ const INITIAL_STATE = {
     orderByDirection: filters.DEFAULT_ORDER_DIRECTION,
     keyword: '',
     filters: {
-        assigned_to: '',
+        assigned_to: 0,
+        supplierId: 0,
         status: []
     },
     isLoading: true,
