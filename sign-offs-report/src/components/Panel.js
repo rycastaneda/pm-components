@@ -3,9 +3,9 @@ import AssignmentRow from './AssignmentRow';
 import Header from './Header';
 import { ROW_HEADERS } from '../constants/tables';
 
-const Panel = ({ assignments, toggleCommentsModal }) => {
+const Panel = ({ panels, assignments, toggleCommentsModal }) => {
     const assignmentComponents = assignments.map(assignment => {
-        return assignment.panels.map(panel => {
+        return panels.map(panel => {
             return (
                 <AssignmentRow
                     key={assignment.id + '-' + panel.short_name}
@@ -42,6 +42,7 @@ const Panel = ({ assignments, toggleCommentsModal }) => {
 };
 
 Panel.propTypes = {
+    panels: PropTypes.array,
     assignments: PropTypes.array,
     toggleCommentsModal: PropTypes.func
 };

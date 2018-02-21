@@ -59,6 +59,7 @@ const Table = ({
             if (supplier.isOpen) {
                 rows.push(
                     <Panel
+                        panels={supplier.panels}
                         assignments={supplier.assignments}
                         toggleCommentsModal={toggleCommentsModal}
                     />
