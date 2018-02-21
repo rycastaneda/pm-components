@@ -104,7 +104,9 @@ export function getPreferredSuppliers(state) {
                         return {
                             ...assignment,
                             id: +assignmentId,
-                            lastUpdated: format(assignment.lastUpdated, 'MM-DD-YYYY'),
+                            lastUpdated: assignment.lastUpdated
+                                ? format(assignment.lastUpdated, 'MM-DD-YYYY')
+                                : null,
                             comments: section.commentIds.map(getComment),
                             sectionId: +section.id,
                             sectionTitle: section.title,
