@@ -32,7 +32,6 @@ export function onExportAsCSV() {
             selectedTemplate,
             selectedAssignedTo,
             selectedSupplier,
-            selectedAssignedOn,
             preferred_supplier_id,
         } = getState().evaluationAssignments;
         let queryParams = {
@@ -40,7 +39,6 @@ export function onExportAsCSV() {
             selectedTemplate,
             selectedAssignedTo,
             selectedSupplier,
-            selectedAssignedOn,
             preferred_supplier_id
         };
         axios.get(getAssignmentServiceUrlFor(queryParams, true)).then((response) => {
@@ -132,7 +130,6 @@ export function onEvaluationTemplatesPageChange(currPage) {
         selectedTemplate,
         selectedAssignedTo,
         selectedSupplier,
-        selectedAssignedOn,
         preferred_supplier_id,
         userProfile } = getState().evaluationAssignments;
         let queryParams = {
@@ -142,7 +139,6 @@ export function onEvaluationTemplatesPageChange(currPage) {
             selectedTemplate,
             selectedAssignedTo,
             selectedSupplier,
-            selectedAssignedOn,
             preferred_supplier_id };
         getPromiseForAssignmentService(getAssignmentServiceUrlFor (queryParams), queryParams, userProfile, dispatch);
     };
@@ -155,7 +151,6 @@ export function onEvaluationTemplatesDisplayedLengthChange(perPage) {
         selectedTemplate,
         selectedAssignedTo,
         selectedSupplier,
-        selectedAssignedOn,
         selectedEntityInstanceId,
         userProfile } = getState().evaluationAssignments;
         let queryParams = {
@@ -165,7 +160,6 @@ export function onEvaluationTemplatesDisplayedLengthChange(perPage) {
             selectedTemplate,
             selectedAssignedTo,
             selectedSupplier,
-            selectedAssignedOn,
             selectedEntityInstanceId };
 
         dispatch({
@@ -182,22 +176,24 @@ export function onEvaluationAssignmentFilterChange({ selectedStatus,
     selectedTemplate,
     selectedAssignedTo,
     selectedSupplier,
-    selectedAssignedOn,
     selectedEntityInstanceId }) {
 
     return (dispatch, getState) => {
         dispatch(isBusy(true));
-        const state= getState().evaluationAssignments;
-        let { maxRowLength, currentPage, userProfile } = state;
-        let queryParams = {
+        const { maxRowLength, currentPage, userProfile } = getState().evaluationAssignments;
+        const { isDateRangeValid, dateTimeStart, dateTimeEnd }  = getState().pmDateRange;
+
+        const queryParams = {
             maxRowLength,
             currentPage,
+            isDateRangeValid,
+            dateTimeStart,
+            dateTimeEnd,
             selectedStatus,
             selectedLinkedTo,
             selectedTemplate,
             selectedAssignedTo,
             selectedSupplier,
-            selectedAssignedOn,
             selectedEntityInstanceId };
         getPromiseForAssignmentService(getAssignmentServiceUrlFor(queryParams), queryParams, userProfile, dispatch);
     };
