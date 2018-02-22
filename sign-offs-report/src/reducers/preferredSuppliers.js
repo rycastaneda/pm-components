@@ -125,8 +125,9 @@ export function getPreferredSuppliers(state) {
             return {
                 id: +supplierId,
                 title: rawSuppliers.byId[supplier.supplierId].title,
-                panels: supplier.panelIds
-                    .map(panelId => rawPanels.byId[panelId]),
+                panels: supplier.panelIds.map(
+                    panelId => rawPanels.byId[panelId]
+                ),
                 dateApplied: supplier.dateApplied,
                 status: supplier.status,
                 isOpen: supplier.isOpen,

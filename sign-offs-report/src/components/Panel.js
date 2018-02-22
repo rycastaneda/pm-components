@@ -4,8 +4,8 @@ import Header from './Header';
 import { ROW_HEADERS } from '../constants/tables';
 
 const Panel = ({ panels, assignments, toggleCommentsModal }) => {
-    const assignmentComponents = assignments.map(assignment => {
-        return panels.map(panel => {
+    const assignmentComponents = panels.map(panel => {
+        return assignments.map(assignment => {
             return (
                 <AssignmentRow
                     key={assignment.id + '-' + panel.short_name}
