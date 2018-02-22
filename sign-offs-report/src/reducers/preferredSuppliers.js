@@ -38,7 +38,7 @@ function receivePreferredSuppliers(state, action) {
             id: +prefSupplier.id,
             ...prefSupplier.attributes,
             dateApplied: prefSupplier.attributes.submitted_on
-                ? format(prefSupplier.attributes.submitted_on, 'MM-DD-YYYY')
+                ? format(prefSupplier.attributes.submitted_on, 'DD/MM/YYYY')
                 : 'Not Available',
             isOpen: false,
             supplierId: prefSupplier.relationships.supplier.data.id,
@@ -105,7 +105,7 @@ export function getPreferredSuppliers(state) {
                             ...assignment,
                             id: +assignmentId,
                             lastUpdated: assignment.lastUpdated
-                                ? format(assignment.lastUpdated, 'MM-DD-YYYY')
+                                ? format(assignment.lastUpdated, 'DD/MM/YYYY')
                                 : null,
                             comments: section.commentIds.map(getComment),
                             sectionId: +section.id,
