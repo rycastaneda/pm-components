@@ -134,7 +134,6 @@ export function getPreferredSuppliers(state) {
             };
         })
         .filter(supplier => {
-            console.log("supplier", supplier); // eslint-disable-line quotes, no-console
             return supplier.assignments.length;
         });
 }

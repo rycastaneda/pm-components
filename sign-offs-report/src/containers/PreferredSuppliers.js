@@ -31,7 +31,7 @@ export class PreferredSuppliers extends Component {
         this.canViewAll = parent.getAttribute('data-view-all') === '1';
         this.defaultFilters = parameters;
         this.fetchPreferredSuppliers();
-        if (!staff.data.length && this.canViewAll) {
+        if (!staff.data.length) {
             dispatch(fetchStaff());
         }
     }
