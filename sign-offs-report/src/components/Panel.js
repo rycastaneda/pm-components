@@ -5,22 +5,27 @@ import { ROW_HEADERS } from '../constants/tables';
 
 const Panel = ({ panels, assignments, toggleCommentsModal }) => {
     const assignmentComponents = panels.map(panel => {
-        return assignments.map(assignment => {
-            return (
-                <AssignmentRow
-                    key={assignment.id + '-' + panel.short_name}
-                    id={assignment.id}
-                    sectionId={assignment.sectionId}
-                    sectionTitle={assignment.sectionTitle}
-                    staffName={assignment.staffName}
-                    statusId={assignment.statusId}
-                    panelTitle={panel.short_name}
-                    lastUpdated={assignment.lastUpdated}
-                    commentCount={assignment.comments.length}
-                    toggleCommentsModal={toggleCommentsModal}
-                />
-            );
-        });
+        return assignments
+            .filter(assignment => {
+                let panelIds = assignment.panels.map(panel => panel.id);
+                return panelIds.includes(panel.id);
+            }) // ensure that assignment has the panel before rendering
+            .map(assignment => {
+                return (
+                    <AssignmentRow
+                        key={assignment.id + '-' + panel.short_name}
+                        id={assignment.id}
+                        sectionId={assignment.sectionId}
+                        sectionTitle={assignment.sectionTitle}
+                        staffName={assignment.staffName}
+                        statusId={assignment.statusId}
+                        panelTitle={panel.short_name}
+                        lastUpdated={assignment.lastUpdated}
+                        commentCount={assignment.comments.length}
+                        toggleCommentsModal={toggleCommentsModal}
+                    />
+                );
+            });
     });
 
     return (
